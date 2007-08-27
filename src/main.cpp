@@ -34,6 +34,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // to be changed to <> later - mabye
 #include "GC/GC.h"
 
+/*
+    Dependencies:
+    LibSDL
+    SDL_image.h
+    SDL_draw.h
+*/
+
 using namespace GC;
 
 int main ( int argc, char** argv )
