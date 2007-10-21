@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="GameCraftD" />
+		<Option pch_mode="2" />
+		<Option compiler="dmd" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\GameCraftD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="dmd" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-debug" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\GameCraftD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="dmd" />
+				<Compiler>
+					<Add option="-O" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Linker>
+			<Add library="DerelictUtil.lib" />
+			<Add library="DerelictSDL.lib" />
+		</Linker>
+		<Unit filename="GC\GC.d" />
+		<Unit filename="GC\constants.d" />
+		<Unit filename="GC\drawing.d" />
+		<Unit filename="GC\instances.d" />
+		<Unit filename="GC\log.d" />
+		<Unit filename="GC\objects.d" />
+		<Unit filename="GC\sprites.d" />
+		<Unit filename="main.d" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
