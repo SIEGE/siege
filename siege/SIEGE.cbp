@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SIEGE" />
+		<Option pch_mode="2" />
+		<Option compiler="dmd" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\SIEGE" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="dmd" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-debug" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\SIEGE" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="dmd" />
+				<Compiler>
+					<Add option="-O" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-d" />
+		</Compiler>
+		<Unit filename="actors.d" />
+		<Unit filename="main.d" />
+		<Unit filename="siege\ai\all.d" />
+		<Unit filename="siege\ai\boids.d" />
+		<Unit filename="siege\ai\fuzzy.d" />
+		<Unit filename="siege\ai\genetics.d" />
+		<Unit filename="siege\ai\neural.d" />
+		<Unit filename="siege\all.d" />
+		<Unit filename="siege\audio\all.d" />
+		<Unit filename="siege\audio\music.d" />
+		<Unit filename="siege\audio\sample.d" />
+		<Unit filename="siege\audio\source.d" />
+		<Unit filename="siege\core\all.d" />
+		<Unit filename="siege\core\commandlet.d" />
+		<Unit filename="siege\core\console.d" />
+		<Unit filename="siege\core\core.d" />
+		<Unit filename="siege\core\entity.d" />
+		<Unit filename="siege\core\error.d" />
+		<Unit filename="siege\core\event.d" />
+		<Unit filename="siege\core\exception.d" />
+		<Unit filename="siege\core\level.d" />
+		<Unit filename="siege\core\window.d" />
+		<Unit filename="siege\graphics\all.d" />
+		<Unit filename="siege\graphics\draw.d" />
+		<Unit filename="siege\graphics\font.d" />
+		<Unit filename="siege\graphics\sprite.d" />
+		<Unit filename="siege\graphics\surface.d" />
+		<Unit filename="siege\graphics\texture.d" />
+		<Unit filename="siege\graphics\trail.d" />
+		<Unit filename="siege\graphics\turtle.d" />
+		<Unit filename="siege\graphics\viewport.d" />
+		<Unit filename="siege\input\all.d" />
+		<Unit filename="siege\input\joystick.d" />
+		<Unit filename="siege\input\keyboard.d" />
+		<Unit filename="siege\input\mouse.d" />
+		<Unit filename="siege\modules\all.d" />
+		<Unit filename="siege\modules\audio.d" />
+		<Unit filename="siege\modules\fonts.d" />
+		<Unit filename="siege\modules\graphics.d" />
+		<Unit filename="siege\modules\input.d" />
+		<Unit filename="siege\modules\modules.d" />
+		<Unit filename="siege\modules\physics.d" />
+		<Unit filename="siege\modules\windowing.d" />
+		<Unit filename="siege\physics\all.d" />
+		<Unit filename="siege\physics\constraint.d" />
+		<Unit filename="siege\physics\particles\all.d" />
+		<Unit filename="siege\physics\particles\changer.d" />
+		<Unit filename="siege\physics\particles\deflector.d" />
+		<Unit filename="siege\physics\particles\emitter.d" />
+		<Unit filename="siege\physics\particles\particle.d" />
+		<Unit filename="siege\physics\particles\psystem.d" />
+		<Unit filename="siege\physics\pbody.d" />
+		<Unit filename="siege\physics\shape.d" />
+		<Unit filename="siege\physics\space.d" />
+		<Unit filename="siege\siege.d" />
+		<Unit filename="siege\util\all.d" />
+		<Unit filename="siege\util\color.d" />
+		<Unit filename="siege\util\file\all.d" />
+		<Unit filename="siege\util\file\conf.d" />
+		<Unit filename="siege\util\file\json.d" />
+		<Unit filename="siege\util\file\openrj.d" />
+		<Unit filename="siege\util\file\xml.d" />
+		<Unit filename="siege\util\hull.d" />
+		<Unit filename="siege\util\interp.d" />
+		<Unit filename="siege\util\linkedlist.d" />
+		<Unit filename="siege\util\lsystem.d" />
+		<Unit filename="siege\util\misc.d" />
+		<Unit filename="siege\util\path.d" />
+		<Unit filename="siege\util\queue.d" />
+		<Unit filename="siege\util\random.d" />
+		<Unit filename="siege\util\screen\all.d" />
+		<Unit filename="siege\util\screen\intro.d" />
+		<Unit filename="siege\util\screen\load.d" />
+		<Unit filename="siege\util\screen\update.d" />
+		<Unit filename="siege\util\stack.d" />
+		<Unit filename="siege\util\vector.d" />
+		<Unit filename="siege\util\vmath.d" />
+		<Unit filename="siege\widgets\all.d" />
+		<Unit filename="siege\widgets\button.d" />
+		<Unit filename="siege\widgets\common.d" />
+		<Unit filename="siege\widgets\context.d" />
+		<Unit filename="siege\widgets\frame.d" />
+		<Unit filename="siege\widgets\style\all.d" />
+		<Unit filename="siege\widgets\style\simple.d" />
+		<Unit filename="siege\widgets\widget.d" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
