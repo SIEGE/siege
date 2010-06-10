@@ -1,7 +1,7 @@
 module main;
 
 import siege.siege;
-import demos.common;
+import demos.all;
 import std.stdio;
 import std.string;
 
