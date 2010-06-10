@@ -1,0 +1,6 @@
+PROJECT(SGModule-OpenGL)
+
+INCLUDE_DIRECTORIES(../include)
+ADD_LIBRARY(SGModule-OpenGL MODULE main context draw surface texture viewport)
+TARGET_LINK_LIBRARIES(SGModule-OpenGL GL)
+SET_TARGET_PROPERTIES(SGModule-OpenGL PROPERTIES ENABLE_EXPORTS ON)

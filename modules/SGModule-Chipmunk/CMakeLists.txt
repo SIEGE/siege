@@ -1,0 +1,7 @@
+PROJECT(SGModule-Chipmunk)
+
+INCLUDE_DIRECTORIES(../include)
+ADD_LIBRARY(SGModule-Chipmunk MODULE main body constraint shape space test)
+TARGET_LINK_LIBRARIES(SGModule-Chipmunk chipmunk)
+SET_TARGET_PROPERTIES(SGModule-Chipmunk PROPERTIES ENABLE_EXPORTS ON)
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
