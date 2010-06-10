@@ -45,7 +45,7 @@ static:
         SiegeModule[] modules;
         bool hasLoaded;
         bool hasInited;
-        bool exitNow;
+        bool exitNow = false;
         int exitVal;
         bool firstLoop = true;
 
@@ -181,7 +181,8 @@ static:
     int run()
     {
         firstLoop = true;
-        exitNow = false;
+        if(exitNow)
+            return exitVal;
         while(loop())
         {
             window.swapBuffers();
