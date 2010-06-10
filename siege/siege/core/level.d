@@ -1,3 +1,7 @@
+/**
+    \brief Holds a class containing the whole level
+    \todo to be done
+*/
 module siege.core.level;
 
 private

@@ -1,3 +1,6 @@
+/**
+    \brief Color handling structure
+*/
 module siege.util.color;
 
 private
@@ -6,7 +9,9 @@ private
 }
 
 /**
-    Used for colors. Arguments are floating points.
+    \brief An union containing RGBA floating-point colors mapped to [0.0, 1.0]
+    \todo Should this be integer [0, 255] color instead?
+    \todo What do we do with 1.0? 255 or illegal value (but clamped to 255)?
 */
 union Color
 {
@@ -20,39 +25,84 @@ union Color
     float[4] rgba;
 
     /**
-        Get the color in 0xRRGGBBAA format.
+        \brief Create a new color struct {r, g, b, a}
     */
-    uint opCast()
+    static Color opCall(float r, float g, float b, float a)
+    {
+        Color c;
+        c.r = r;
+        c.g = g;
+        c.b = b;
+        c.a = a;
+        return c;
+    }
+    /**
+        \brief Create a new color struct {r, g, b, 1.0}
+    */
+    static Color opCall(float r, float g, float b)
+    {
+        return opCall(r, g, b, 1.0);
+    }
+    /**
+        \brief Create a new color struct {g, g, g, a} (grayscale)
+    */
+    static Color opCall(float g, float a)
+    {
+        return opCall(g, g, g, a);
+    }
+    /**
+        \brief Create a new color struct {g, g, g, 1.0} (grayscale)
+    */
+    static Color opCall(float g)
+    {
+        return opCall(g, g, g, 1.0);
+    }
+    /**
+        \brief Create a new color struct {nan, nan, nan, 1.0} (unknown color)
+    */
+    static Color opCall()
+    {
+        return opCall(float.nan, float.nan, float.nan, 1.0);
+    }
+
+    /**
+        \brief Get the color in a single 0xRRGGBBAA integer
+        \deprecated Use \ref toRGBAInt instead
+    */
+    deprecated uint opCast()
     {
         return (cast(uint)(rgba[0]*255) << 24) |
                (cast(uint)(rgba[1]*255) << 16) |
                (cast(uint)(rgba[2]*255) <<  8) |
                 cast(uint)(rgba[3]*255);
     }
-    /// ditto
-    alias opCast toInt;
+    /**
+        \brief A more descriptive version of opCast
+        \deprecated Use \ref toRGBAInt instead
+    */
+    deprecated alias opCast toInt;
 
+    /* @{ */
+    /// \brief A shorthand for Color.rgba[i]
     float opIndex(size_t id)
     {
         assert(id < 4);
 
         return rgba[id];
     }
+    /// \brief A shorthand for Color.rgba[i] = ...
     void opIndexAssign(float c, size_t id)
     {
         assert(id < 4);
 
         rgba[id] = c;
     }
+    /* @} */
 
-    char[] toString()
-    {
-        return std.string.toString(r)~","
-              ~std.string.toString(g)~","
-              ~std.string.toString(b)~","
-              ~std.string.toString(a);
-    }
-
+    /**
+        \brief Is the color undefined?
+        \return true if it is, false otherwise
+    */
     bool isNan()
     {
         if(!(r == r) || !(g == g) || !(b == b) || !(a == a))
@@ -102,15 +152,91 @@ union Color
         return c;
     }*/
 
+    /**
+        \brief Mix two colors together
+        \param color1 The first color
+        \param color2 The second color
+        \param factor The mixing factor (closer to 1, the less of first color is mixed)
+    */
     static Color mix(Color color1, Color color2, float factor)
     {
         float mfactor = 1.0 - factor;
         return Color(color1.r * mfactor + color2.r * factor, color1.g * mfactor + color2.g * factor, color1.b * mfactor + color2.b * factor, color1.a * mfactor + color2.a * factor);
     }
+
+    /// \name Color conversion
+    /// \todo Conversion to spaces other than RGB
+    /* @{ */
+    /// \brief Get the color in a 0xRRGGBB integer
+    uint toRGBInt()
+    {
+        return (cast(uint)(r*255) << 16) |
+               (cast(uint)(g*255) <<  8) |
+                cast(uint)(b*255);
+    }
+    /// \brief Get the color in a 0xRRGGBBAA integer
+    uint toRGBAInt()
+    {
+        return (cast(uint)(r*255) << 24) |
+               (cast(uint)(g*255) << 16) |
+               (cast(uint)(b*255) <<  8) |
+                cast(uint)(a*255);
+    }
+    /// \brief Get the color in a 0xAARRGGBB integer
+    uint toARGBInt()
+    {
+        return (cast(uint)(a*255) << 24) |
+               (cast(uint)(r*255) << 16) |
+               (cast(uint)(g*255) <<  8) |
+                cast(uint)(b*255);
+    }
+    /// \brief Get the color in a 0xBBGGRR integer
+    uint toBGRInt()
+    {
+        return (cast(uint)(b*255) << 16) |
+               (cast(uint)(g*255) <<  8) |
+                cast(uint)(r*255);
+    }
+    /// \brief Get the color in a 0xAABBGGRR integer
+    uint toABGRInt()
+    {
+        return (cast(uint)(a*255) << 24) |
+               (cast(uint)(b*255) << 16) |
+               (cast(uint)(g*255) <<  8) |
+                cast(uint)(r*255);
+    }
+    /// \brief Get the color in a 0xBBGGRRAA integer
+    uint toBGRAInt()
+    {
+        return (cast(uint)(b*255) << 24) |
+               (cast(uint)(g*255) << 16) |
+               (cast(uint)(r*255) <<  8) |
+                cast(uint)(a*255);
+    }
+
+    /// \brief Get the string representation of the color
+    char[] toString()
+    {
+        return std.string.toString(r)~","
+              ~std.string.toString(g)~","
+              ~std.string.toString(b)~","
+              ~std.string.toString(a);
+    }
+
+    /**
+        \brief Get a color from a 0xRRGGBB integer
+        \todo Create different "versions" for conversion from RGB, RGBA, ARGB...
+        \attention This will be deprecated in the future
+    */
     static Color fromRGBInt(uint c)
     {
         return fromRGBAInt((c << 8) | 0xFF);
     }
+    /**
+        \brief Get a color from a 0xRRGGBBAA integer
+        \todo Create different "versions" for conversion from RGB, RGBA, ARGB...
+        \attention This will be deprecated in the future
+    */
     static Color fromRGBAInt(uint c)
     {
         return Color(((c >> 24) & 255) / cast(float)255,
@@ -118,6 +244,10 @@ union Color
                      ((c >>  8) & 255) / cast(float)255,
                      ( c        & 255) / cast(float)255);
     }
+    /**
+        \brief Get a color from a string
+        \todo Cleanup the code
+    */
     static Color fromString(char[] str)
     {
         if(str.length == 0)
@@ -195,6 +325,7 @@ union Color
 
         return Color();
     }
+    /* @} */
 
     static ColorName Name;
 
@@ -205,10 +336,15 @@ union Color
     }
 }
 
+/* @{ */
+/**
+    \brief A structure for handling HTML color name constants \brief
+    <a href="http://www.w3schools.com/css/css_colornames.asp">Reference: http://www.w3schools.com/css/css_colornames.asp</a>
+    \todo Should this be moved into a separate module?
+*/
 struct ColorName
 {
-    /// Reference: http://www.w3schools.com/css/css_colornames.asp
-    static this()
+    private static this()
     {
         SName["none"]        = Color.fromRGBAInt(0x00000000); // transparent
         SName["transparent"] = Color.fromRGBAInt(0x00000000);
@@ -508,6 +644,9 @@ struct ColorName
         YellowGreen          = Color.fromRGBInt(0x9ACD32);
     }
 
+    /**
+        \brief Used for getting the color from a string
+    */
     static Color opIndex(char[] name)
     {
         if(tolower(name) in SName)
@@ -516,7 +655,7 @@ struct ColorName
     }
 
     static:
-        const Color[char[]] SName;
+        private const Color[char[]] SName;
 
         const Color AliceBlue;
         const Color AntiqueWhite;
@@ -665,3 +804,4 @@ struct ColorName
         const Color Yellow;
         const Color YellowGreen;
 }
+/* @} */

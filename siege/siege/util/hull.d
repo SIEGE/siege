@@ -1,3 +1,7 @@
+/**
+    \brief A module containing polygon and hull-related classes and structures
+    \todo This requires some serious cleanup, won't even bother documenting it until then.
+*/
 module siege.util.hull;
 
 private

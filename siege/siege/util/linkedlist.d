@@ -1,13 +1,16 @@
+/**
+    \brief A linked list implementation
+*/
 module siege.util.linkedlist;
 
-class LinkedListBoundsError: Exception
+private
 {
-    this(char[] msg)
-    {
-        super(msg);
-    }
+    import siege.core.exception;
 }
 
+/**
+    \brief A linked list template class
+*/
 class LinkedList(T)
 {
     private
@@ -15,10 +18,17 @@ class LinkedList(T)
         size_t len = 0;
     }
 
+    /// \brief The first node in the list
     LinkedNode!(T) *firstNode = null;
+    /// \brief The last node in the list
     LinkedNode!(T) *lastNode = null;
 
-    LinkedNode!(T) *append(T item)
+    /**
+        \brief Append an item to the list
+        \param item The item to append
+        \return The node that was created in the process
+    */
+    LinkedNode!(T)* append(T item)
     {
         len++;
 
@@ -39,11 +49,16 @@ class LinkedList(T)
         return node;
     }
 
-    LinkedNode!(T) *prepend(T item)
+    /**
+        \brief Prepend an item to the list
+        \param item The item to prepend
+        \return The node that was created in the process
+    */
+    LinkedNode!(T)* prepend(T item)
     {
         len++;
 
-        LinkedNode!(T) *node = new LinkedNode!(T);
+        LinkedNode!(T)* node = new LinkedNode!(T);
         node.previous = null;
         node.item = item;
         node.next = firstNode;
@@ -60,7 +75,11 @@ class LinkedList(T)
         return node;
     }
 
-    void remove(LinkedNode!(T) *node)
+    /**
+        \brief Remove a node from the list
+        \param node The node to remove
+    */
+    void remove(LinkedNode!(T)* node)
     {
         len--;
 
@@ -72,9 +91,13 @@ class LinkedList(T)
         delete node;
     }
 
+    /**
+        \brief Get the N-th item from the start of the list (pretend to be an array)
+        \param index The item index to fetch
+    */
     T opIndex(uint index)
     {
-        LinkedNode!(T) *p = firstNode;
+        LinkedNode!(T)* p = firstNode;
 
         if (index >= len)
             throw new LinkedListBoundsError("Linked List index out of bounds");
@@ -86,19 +109,35 @@ class LinkedList(T)
         return p.item;
     }
 
+    /**
+        \brief Get the number of items in the list (pretend to be an array)
+    */
     size_t length()
     {
         return len;
     }
 }
 
+/**
+    \brief Linked list node
+*/
 struct LinkedNode(T)
 {
-    LinkedNode!(T) *previous;
+    /// \brief The item
     T item;
+    /* @{ */
+    /// \brief The previous node (null if this is the first node)
+    LinkedNode!(T) *previous;
+    /// \brief The next node (null if this is the last node)
     LinkedNode!(T) *next;
-
+    /* @} */
+    /**
+        \name
+        Aliases for the previous and the next node
+    */
+    /* @{ */
     alias previous left;
     alias next right;
+    /* @} */
 }
 

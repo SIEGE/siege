@@ -1,3 +1,6 @@
+/**
+    \brief Holds the Window class, which maintains and provides an interface for window handling
+*/
 module siege.core.window;
 
 private
@@ -14,6 +17,7 @@ private
 
     import std.format;
     import std.string;
+    import std.c.stdarg;
 
     import siege.modules.graphics;
     import siege.modules.windowing;
@@ -42,7 +46,7 @@ private
                 c = c.next;
             }
             //runEvent!(WindowEventClient, "WindowClose", false);
-            game.exit();
+            game.stop();
         }
         void cbWindowResize(void* window, uint width, uint height)
         {
@@ -61,7 +65,7 @@ class Window
 {
     private
     {
-        char[] format(TypeInfo[] arguments, void* argptr)
+        char[] format(TypeInfo[] arguments, va_list argptr)
         {
             char[] text;
             void putc(dchar c)
@@ -98,7 +102,7 @@ class Window
             sgCoreWindowDestroy(whandle);
     }
 
-    void open(uint width, uint height, uint bpp, bool fullscreen = false)
+    void open(uint width, uint height, uint bpp, uint flags)
     {
         if(width == 0)
             width = 640;
@@ -111,7 +115,7 @@ class Window
             close();
 
         if(sgCoreWindowOpen !is null)
-            sgCoreWindowOpen(whandle, width, height, bpp, fullscreen ? SG_WINDOW_FULLSCREEN : 0);
+            sgCoreWindowOpen(whandle, width, height, bpp, flags);
 
         uint joynum;
         if(sgCoreJoystickGetNumJoysticks !is null)
@@ -182,6 +186,23 @@ class Window
         if(sgCoreWindowGetSize !is null)
             sgCoreWindowGetSize(whandle, cast(uint*)&s.x, cast(uint*)&s.y);
         return s;
+    }
+
+    void width(uint w)
+    {
+        size(iVector(w, size().y));
+    }
+    uint width()
+    {
+        return size().x;
+    }
+    void height(uint h)
+    {
+        size(iVector(size().x, h));
+    }
+    uint height()
+    {
+        return size().y;
     }
 
     void swapBuffers()

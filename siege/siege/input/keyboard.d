@@ -20,7 +20,7 @@ private
 
             bool pressed = keyboard.keyPressed(key);
 
-            if(console.opened())
+            if(console.active)
             {
                 console.evKeyboardKey(key, down);
                 if(pressed)
@@ -33,7 +33,7 @@ private
             LinkedNode!(EventClient) *c = clientList.firstNode;
             while(c !is null)
             {
-                if(cast(KeyboardEventClient)c !is null)
+                if((cast(KeyboardEventClient)c.item !is null) && c.item.active)
                 {
                     c.item.evKeyboardKey(key, down);
                     if(pressed)
@@ -50,7 +50,7 @@ private
 
             bool pressed = keyboard.characterPressed(chr);
 
-            if(console.opened())
+            if(console.active)
             {
                 console.evKeyboardChar(chr, down);
                 if(pressed)
@@ -63,7 +63,7 @@ private
             LinkedNode!(EventClient) *c = clientList.firstNode;
             while(c !is null)
             {
-                if(cast(KeyboardEventClient)c !is null)
+                if((cast(KeyboardEventClient)c.item !is null) && c.item.active)
                 {
                     c.item.evKeyboardChar(chr, down);
                     if(pressed)

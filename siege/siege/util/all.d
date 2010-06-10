@@ -10,6 +10,7 @@ public
     import siege.util.interp;
     import siege.util.linkedlist;
     import siege.util.lsystem;
+    import siege.util.matrix;
     import siege.util.misc;
     import siege.util.path;
     import siege.util.queue;

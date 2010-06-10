@@ -1,3 +1,7 @@
+/**
+    \brief Sorting functions
+    \todo cleanup and document
+*/
 module siege.util.sort;
 
 private

@@ -1,3 +1,6 @@
+/**
+    \brief Vector math
+*/
 module siege.util.vmath;
 
 private
@@ -8,30 +11,24 @@ private
 }
 public import std.math;
 
-/**
-    Distance between two points defined by vectors: (a - b).length
-*/
+/// \brief Get the distance between two points defined by vectors: (a - b).length
 float distance(Vector a, Vector b)
 {
     return (a - b).length;
 }
 
-/**
-    Get the longer/shorter of two vectors
-*/
+/// \brief Get the longer of two vectors
 Vector longer(Vector a, Vector b)
 {
     return (a.length2 > b.length2) ? a : b;
 }
-/// ditto
+/// \brief Get the shorter of two vectors
 Vector shorter(Vector a, Vector b)
 {
     return (a.length2 < b.length2) ? a : b;
 }
 
-/**
-    Get the per-component max/min of two vectors (not to be confused with longer/shorter)
-*/
+/// \brief Get the per-component max of two vectors (not to be confused with longer)
 Vector max(Vector a, Vector b)
 {
     return Vector((a.x > b.x) ? a.x : b.x,
@@ -39,7 +36,7 @@ Vector max(Vector a, Vector b)
                   (a.z > b.z) ? a.z : b.z,
                   (a.w > b.w) ? a.w : b.w);
 }
-/// ditto
+/// \brief Get the per-component min of two vectors (not to be confused with shorter)
 Vector min(Vector a, Vector b)
 {
     return Vector((a.x < b.x) ? a.x : b.x,
@@ -48,61 +45,65 @@ Vector min(Vector a, Vector b)
                   (a.w < b.w) ? a.w : b.w);
 }
 
-/**
-    Per-component absolute of the vector
-*/
+/// \brief Get the per-component absolute value of the vector (note to be confused with the mathematical notation for the length of a vector)
 Vector abs(Vector x)
 {
     return Vector(std.math.abs(x.x), std.math.abs(x.y));
 }
+/// \brief Aliases the math module's abs, so that it remains valid
 alias std.math.abs abs;
 
-/**
-    Per-component power of the vector
-*/
+/// \brief Get the per-component power of the vector
 Vector pow(Vector x, float n)
 {
     return Vector(std.math.pow(x.x, n), std.math.pow(x.y, n));
 }
-/// ditto
+/// \brief Get the per-component power of the vector
 Vector pow(Vector x, uint n)
 {
     return Vector(std.math.pow(cast(real)x.x, n), std.math.pow(cast(real)x.y, n));
 }
+/// \brief Aliases the math module's pow, so that it remains valid
 alias std.math.pow pow;
 
-/**
-    Get the dot product of two <N>D vectors (for dotN)
-    Default 2
-*/
+/// \brief An alias for two-dimensional dot product
 alias dot2 dot;
-/// ditto
+/**
+    \name Dot product
+*/
+/* @{ */
+/// \brief Two-dimensional dot product of two vectors
 float dot2(Vector a, Vector b)
 {
     return a.x * b.x + a.y * b.y;
 }
-/// ditto
+/// \brief Three-dimensional dot product of two vectors
 float dot3(Vector a, Vector b)
 {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
-/// ditto
+/// \brief Four-dimensional dot product of two vectors
 float dot4(Vector a, Vector b)
 {
     return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }
+/* @} */
 
-/**
-    Get the cross product of two <N>D vectors (for crossN)
-    Default 2 (returns only the Z component)
-*/
+/// \brief An alias for two-dimensional cross product
 alias cross2 cross;
-/// ditto
+/**
+    \name Cross product
+*/
+/* @{ */
+/**
+    \brief Two-dimensional cross product of two vectors
+    \return The Z component of the cross product [x1, y1, 0]x[x2, y2, 0]
+*/
 float cross2(Vector a, Vector b)
 {
     return a.x * b.y - a.y * b.x;
 }
-/// ditto
+/// \brief Three-dimensional cross product of two vectors
 Vector cross3(Vector a, Vector b)
 {
     Vector p;
@@ -111,15 +112,10 @@ Vector cross3(Vector a, Vector b)
 	p.z = a.x * b.y - b.x * a.y;
 	return p;
 }
-/**
-    Dot product with 'a' rotated by 90 deg to the left - same as the Z of the cross product in this case
-
-    Note: may be removed in the future
-*/
-deprecated alias cross perp;
+/* @} */
 
 /**
-    "Normal" multiplication of two vectors (not per-component)
+    \brief "Normal" multiplication of two vectors (as opposed to per-component multiplication)
 */
 Vector mul(Vector a, Vector b)
 {

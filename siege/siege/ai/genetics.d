@@ -1,3 +1,7 @@
+/**
+    \brief Genetic alogirthms
+    \todo cleanup and document
+*/
 module siege.ai.genetics;
 
 private

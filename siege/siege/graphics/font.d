@@ -6,6 +6,7 @@ private
 
     import std.string;
     import std.format;
+    import std.c.stdarg;
 
     import siege.graphics.texture;
     import siege.util.vector;
@@ -227,6 +228,11 @@ class FontFace
     }
 }
 
+/**
+    \bug String "Foo\n\nbar" breaks, "Foo\n<space>\nbar" works
+    \bug font.printT works fine with UTF strings, font.print does not
+    \todo Rename font.print to font.writef; add font.printf with C printf syntax; add font.writefln
+*/
 class Font
 {
     protected
@@ -468,7 +474,7 @@ class Font
         return strFormatX(_arguments, _argptr);
     }
 
-    static char[] strFormatX(TypeInfo[] arguments, void* argptr)
+    static char[] strFormatX(TypeInfo[] arguments, va_list argptr)
     {
         char[] text;
 

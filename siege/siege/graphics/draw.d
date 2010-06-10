@@ -84,6 +84,7 @@ interface DrawModuleInterface
 
 class DrawPoint
 {
+static:
     void opCall(float x, float y, Color c)
     {
         draw.begin(Primitive.Points);
@@ -128,6 +129,7 @@ class DrawPoint
 
 class DrawLine
 {
+static:
     void opCall(float x1, float y1, float x2, float y2, Color c1, Color c2)
     {
         draw.begin(Primitive.Lines);
@@ -191,6 +193,7 @@ class DrawLine
 
 class DrawTriangle
 {
+static:
     void opCall(float x1, float y1, float x2, float y2, float x3, float y3, Color c1, Color c2, Color c3, bool fill = true)
     {
         if(fill)
@@ -266,6 +269,7 @@ class DrawTriangle
 
 class DrawQuad
 {
+static:
     void opCall(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, Color c1, Color c2, Color c3, Color c4, bool fill = true)
     {
         if(fill)
@@ -397,10 +401,12 @@ class DrawQuad
 
 class DrawEllipse
 {
+static:
 }
 
 class DrawModule
 {
+static:
     package
     {
         Primitive drawType;
@@ -419,14 +425,6 @@ class DrawModule
     DrawTriangle triangle;
     DrawQuad quad;
     DrawEllipse ellipse;
-    this()
-    {
-        point = new DrawPoint;
-        line = new DrawLine;
-        triangle = new DrawTriangle;
-        quad = new DrawQuad;
-        ellipse = new DrawEllipse;
-    }
 
     void begin(Primitive type, Texture texture = null)
     {

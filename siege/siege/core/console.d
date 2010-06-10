@@ -1,3 +1,7 @@
+/**
+    \brief The ingame console
+    \todo to be done
+*/
 module siege.core.console;
 
 private
@@ -65,6 +69,7 @@ class Console: EventClient
     {
         cols = size.x;
         rows = size.y;
+        deactivate();
     }
     this(uint width, uint height, Font font = null)
     {

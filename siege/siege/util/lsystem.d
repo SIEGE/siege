@@ -1,3 +1,6 @@
+/**
+    \brief A module for <a href="http://en.wikipedia.org/wiki/L-system">Lindenmayer Systems</a>
+*/
 module siege.util.lsystem;
 
 private
@@ -5,28 +8,48 @@ private
     import siege.util.misc;
 }
 
+/**
+    \brief A class which implements a <a href="http://en.wikipedia.org/wiki/L-system">L-System</a>
+    \todo Optimize
+*/
 class LSystem
 {
+    /// \brief The callbacks which are called for each character, on each loop
     void delegate(uint)[char] callbacks;
 
     char[][char] rules;
     char[] string;
 
+    /// \brief Initialize the L-System with a string
     this(char[] string = "")
     {
         this.string = string;
     }
 
+    /**
+        \brief Add a rule to the system, start->end
+        \param start What to replace
+        \param end The replacement for start
+    */
     void addRule(char start, char[] end)
     {
         rules[start] = end;
     }
 
+    /**
+        \brief Add a callback for the system, called on each loop for each character
+        \see callbacks
+    */
     void addCallback(char c, void delegate(uint) callback)
     {
         callbacks[c] = callback;
     }
 
+    /**
+        \brief Solve the system
+        \param iterations The number of iterations to run
+        \return The final string
+    */
     char[] solve(uint iterations = 3)
     {
         char[] buffer1;

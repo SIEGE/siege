@@ -1,10 +1,14 @@
+/**
+    \brief Core of SIEGE
+    \todo Should this be renamed to siege.core.game?
+*/
 module siege.core.core;
 
 private
 {
     import siege.core.event;
 
-    ///
+    //
     import siege.graphics.draw;
     import siege.core.console;
     import siege.core.window;
@@ -13,7 +17,7 @@ private
     import siege.input.joystick;
     import siege.util.linkedlist;
     import siege.physics.space;
-    ///
+    //
 
     import derelict.util.exception;
 
@@ -29,43 +33,79 @@ bool cbMissingProc(char[] lib, char[] proc)
 }
 
 LinkedList!(EventClient) clientList;
-LinkedNode!(EventClient) *currentClient;
 
+/**
+    \brief Core game singleton class
+*/
 class Game
 {
-    protected
+static:
+    private
     {
         SiegeModule[] modules;
         bool hasLoaded;
         bool hasInited;
         bool exitNow;
+        int exitVal;
+        bool firstLoop = true;
+
+        void evLoad()
+        {
+            signal!("evLoad");
+            hasLoaded = true;
+        }
+        void evUnload()
+        {
+            hasLoaded = false;
+            signal!("evUnload");
+        }
+        void evInit()
+        {
+            signal!("evInit");
+            hasInited = true;
+        }
+        void evDeinit()
+        {
+            hasInited = false;
+            signal!("evDeinit");
+        }
     }
 
-    this(char[][] names ...)
-    {
-        writefln("Compiled with %s %s.%s", __VENDOR__, std.string.toString(__VERSION__)[0], std.string.toString(__VERSION__)[1..$]);
-        writefln("Date: %s", __DATE__);
-        writefln("Time: %s", __TIME__);
-        writefln("----------------------------------------");
-
-        derelict.util.exception.Derelict_SetMissingProcCallback(&cbMissingProc);
-        game = this;
-
-        loadModules(names);
-    }
-
+    /* @{ */
+    /**
+        \brief Load a number of modules
+        \param names Names of the modules to load
+    */
     void loadModules(char[][] names ...)
     {
         foreach(name; names)
             loadModule(name);
     }
 
+    /**
+        \brief Load a single module
+        \param name Name of the module to load
+        \warning May be removed in the future
+    */
     void loadModule(char[] name)
     {
+        // TODO: put this SetMissingProcCallback to a better location, so that it doesn't get loaded for every module
+        derelict.util.exception.Derelict_SetMissingProcCallback(&cbMissingProc);
+
         modules ~= new SiegeModule(name);
     }
+    /* @} */
 
-    bool init()
+    /**
+        \brief Init SIEGE
+        \note Must be called after loading modules, but before any other operations.
+        \param width Window width
+        \param height Window height
+        \param bpp Window bits (not bytes) per pixel
+        \param flags Flags for opening the window
+        \return true on success, false on failure
+    */
+    bool init(uint width, uint height, uint bpp, uint flags)
     {
         SGModuleInfo*[] infos = new SGModuleInfo*[](modules.length);
         foreach(i, mod; modules)
@@ -91,20 +131,25 @@ class Game
         evInit();
         Space.main = new Space;
 
-        ///
-        siege.graphics.draw.draw = new DrawModule;
+        //
         siege.core.window.window = new Window;
 
         siege.core.console.console = new Console;
         siege.input.mouse.mouse = new Mouse;
         siege.input.keyboard.keyboard = new Keyboard;
-        ///
+        //
+
+        window.open(width, height, bpp, flags);
 
         return true;
     }
+    /**
+        \brief Deinit SIEGE
+        \note Must be called just before exiting the program
+    */
     void deinit()
     {
-        evUninit();
+        evDeinit();
         evUnload();
 
         LinkedNode!(EventClient)* curr = clientList.firstNode;
@@ -125,186 +170,126 @@ class Game
             delete mod;
     }
 
-    void run()
+    /**
+        \name Main loop
+    */
+    // @{
+    /**
+        \brief Enter the main loop
+        \return Zero on success, nonzero on failure (usually used as the return value of the main function)
+    */
+    int run()
     {
-        window.open(0, 0, 0, false);
+        firstLoop = true;
+        exitNow = false;
+        while(loop())
+        {
+            window.swapBuffers();
+            draw.clear();
+        }
+        return exitVal;
+    }
 
-        //EventClient[] clients;
-        //CoreEventClient ec;
-        alias currentClient c;
+    /**
+        \brief Run a single loop
+        \note Signals evStart if this is the first run and evExit if it is the last run
+        \param code The return code, as if returned from \ref run "run". Should be ignored unless false is returned
+        \return true if the game is to continue to run, false if exit has been requested
+    */
+    bool loop(out int code)
+    {
+        code = exitVal;
+        return loop();
+    }
 
+    /**
+        \brief Run a single loop
+        \note Signals evStart if this is the first run and evExit if it is the last run
+        \return true if the game is to continue to run, false if exit has been requested
+    */
+    bool loop()
+    {
         scope(exit)
         {
-            c = clientList.firstNode;
-            while(c !is null)
+            if(exitNow)
             {
-                c.item.evExit();
-                c = c.next;
+                signal!("evExit");
+                exitNow = false;
             }
         }
 
-        /*foreach(c; classList)
+        if(firstLoop)
         {
-            ec = cast(CoreEventClient)c;
-            if(ec !is null)
-                clients ~= c;
-        }*/
-
-        c = clientList.firstNode;
-        while(c !is null)
-        {
-            c.item.evStart();
-            c = c.next;
+            signal!("evStart");
+            firstLoop = false;
         }
 
-        while(!exitNow)
+        if(console.active)
         {
-            if(console.opened)
-            {
-                console.evTickBegin();
-                console.evTick();
-                console.evTickEnd();
+            console.evTickBegin();
+            console.evTick();
+            console.evTickEnd();
 
-                draw.clear();
-
-                c = clientList.firstNode;
-                while(c !is null)
-                {
-                    if(cast(CoreEventClient)c !is null && cast(Console)c !is null)
-                        c.item.evDraw();
-                    c = c.next;
-                }
-
-                console.evDraw();
-
-                window.swapBuffers();
-                continue;
-            }
-
-            c = clientList.firstNode;
+            LinkedNode!(EventClient)* c = clientList.firstNode;
             while(c !is null)
             {
-                if(cast(CoreEventClient)c !is null)
-                    c.item.evTickBegin();
-                c = c.next;
-            }
-
-            Space.main.step(0.125); // todo: make it not const
-            c = clientList.firstNode;
-            while(c !is null)
-            {
-                if(cast(CoreEventClient)c !is null)
-                    c.item.evTick();
-                c = c.next;
-            }
-
-            c = clientList.firstNode;
-            while(c !is null)
-            {
-                if(cast(CoreEventClient)c !is null)
-                    c.item.evTickEnd();
-                c = c.next;
-            }
-
-            //draw.clear();
-
-            c = clientList.firstNode;
-            while(c !is null)
-            {
-                if(cast(CoreEventClient)c !is null)
+                if(cast(CoreEventClient)c !is null && cast(Console)c !is null)
                     c.item.evDraw();
                 c = c.next;
             }
 
-            window.swapBuffers();
-            foreach(joy; joysticks)
-                joy._poll();
-            draw.clear();
-        }
-    }
+            console.evDraw();
 
-    void evLoad()
-    {
-        alias currentClient c;
-
-        c = clientList.firstNode;
-        while(c !is null)
-        {
-            if(cast(ModuleEventClient)c !is null)
-                c.item.evLoad();
-            c = c.next;
+            return !exitNow;
         }
 
-        hasLoaded = true;
+        signal!("evTickBegin");
+
+        Space.main.step(0.125); // TODO: make it not const
+
+        signal!("evTick");
+        signal!("evTickEnd");
+
+        //draw.clear();
+
+        signal!("evDraw");
+
+        foreach(joy; joysticks)
+            joy._poll();
+
+        return !exitNow;
     }
-    void evUnload()
-    {
-        alias currentClient c;
+    // @}
 
-        hasLoaded = false;
-
-        c = clientList.firstNode;
-        while(c !is null)
-        {
-            if(cast(ModuleEventClient)c !is null)
-                c.item.evUnload();
-            c = c.next;
-        }
-    }
-    void evInit()
-    {
-        alias currentClient c;
-
-        c = clientList.firstNode;
-        while(c !is null)
-        {
-            if(cast(ModuleEventClient)c !is null)
-                c.item.evInit();
-            c = c.next;
-        }
-
-        hasInited = true;
-    }
-    void evUninit()
-    {
-        alias currentClient c;
-
-        hasInited = false;
-
-        c = clientList.firstNode;
-        while(c !is null)
-        {
-            if(cast(ModuleEventClient)c !is null)
-                c.item.evUninit();
-            c = c.next;
-        }
-    }
-
-    void exit()
+    /**
+        \brief Stop the main loop
+        \param ret The value to return from \ref run
+    */
+    void stop(int ret = 0)
     {
         exitNow = true;
+        exitVal = ret;
     }
 
-    /*template runEvent(T, char[] name, bool self = false)
+    /**
+        \brief Send a signal (an event)
+        \param name The name of the event (including the ev- part)
+        \param args The arguments to pass to the event
+    */
+    void signal(char[] name, args ...)()
     {
-        void runEvent()
+        static if(args.length > 0)
+            void delegate(typeof(args)) func;
+        else
+            void delegate() func;
+        for(LinkedNode!(EventClient)* c = clientList.firstNode; c != null; c = c.next)
         {
-            T ec;
-            foreach(c; classList)
+            if((c.item !is null) && c.item.active)
             {
-                ec = cast(T)c;
-                static if(self)
-                {
-                    if(ec !is null)
-                        mixin("ec"~name~"();");
-                }
-                else
-                {
-                    if((ec !is null) && (ec !is cast(T)this))
-                        mixin("ec"~name~"();");
-                }
+                func = mixin("&c.item."~name);
+                func(args);
             }
         }
-    }*/
+    }
 }
 Game game;

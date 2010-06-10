@@ -102,7 +102,8 @@ class SiegeModule
     char[] fname;
     this(char[] name)
     {
-        char[][] files = listdir("Modules", "*[\\/]SGModule-"~name~".*");
+        char[][] files = listdir("Modules", "*[\\/]SGModule-"~name~".*")
+                       ~ listdir("Modules", "*[\\/]libSGModule-"~name~".*");
         if(files.length == 0)
             throw new Exception("Cannot load module " ~ name);
         fname = files[0];

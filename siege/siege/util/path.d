@@ -1,3 +1,7 @@
+/**
+    \brief Paths for objects
+    \todo to be done
+*/
 module siege.util.path;
 
 private

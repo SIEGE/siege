@@ -1,3 +1,6 @@
+/**
+    \brief Holds the \ref Entity class
+*/
 module siege.core.entity;
 
 private
@@ -12,7 +15,8 @@ private
 }
 
 /**
-    Should not be used directly, but is not abstract for testing purposes
+    \brief This is the class which should be used for all objects which directly interact in the game (player, enemies, powerups...)
+    \note Should not be used directly, but is not declared as abstract for testing purposes
 */
 class Entity: Body
 {
@@ -20,6 +24,7 @@ class Entity: Body
     Sprite mask;
     Shape shape;
 
+    /* @{ */
     this(iVector position, float angle, Sprite sprite, Sprite mask = null, bool usePhysics = true)
     {
         this(Vector(position.x, position.y), angle, sprite, mask, usePhysics);
@@ -59,7 +64,9 @@ class Entity: Body
             space ~= shape;
         }
     }
+    /* @} */
 
+    /* @{ */
     void evDraw()
     {
         if(sprite !is null)
@@ -68,4 +75,5 @@ class Entity: Body
             sprite.draw(position, Vector(1.0, 1.0), angle);
         }
     }
+    /* @} */
 }

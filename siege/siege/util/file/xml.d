@@ -1,4 +1,9 @@
 /**
+    \brief XML parser
+    \todo rewrite the code to eliminate in-SIEGE external licensing
+*/
+
+/**
  * Copyright:  (c) 2005-2008 Eric Poggel
  * Authors:    Andy Friesen, Eric Poggel
  * License:    <a href="lgpl.txt">LGPL</a>

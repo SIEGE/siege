@@ -1,3 +1,6 @@
+/**
+    \brief Holds different SIEGE exceptions
+*/
 module siege.core.exception;
 
 class SiegeException: Exception
@@ -82,5 +85,13 @@ class StackUnderflowException: UnderflowException
     this()
     {
         super("Stack underflow");
+    }
+}
+
+class LinkedListBoundsError: Exception
+{
+    this(char[] msg)
+    {
+        super(msg);
     }
 }

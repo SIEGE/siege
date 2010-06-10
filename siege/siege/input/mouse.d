@@ -22,7 +22,7 @@ private
 
             bool pressed = siege.input.mouse.mouse.button[button].pressed;
 
-            if(console.opened)
+            if(console.active)
             {
                 console.evMouseButton(button, down);
                 if(pressed)
@@ -40,18 +40,18 @@ private
                             console.evMouseButtonLeftReleased();
                         break;
                     case 2:
-                        console.evMouseButtonMiddle(down);
-                        if(pressed)
-                            console.evMouseButtonMiddlePressed();
-                        else
-                            console.evMouseButtonMiddleReleased();
-                        break;
-                    case 3:
                         console.evMouseButtonRight(down);
                         if(pressed)
                             console.evMouseButtonRightPressed();
                         else
                             console.evMouseButtonRightReleased();
+                        break;
+                    case 3:
+                        console.evMouseButtonMiddle(down);
+                        if(pressed)
+                            console.evMouseButtonMiddlePressed();
+                        else
+                            console.evMouseButtonMiddleReleased();
                         break;
                     default:
                         break;
@@ -62,7 +62,7 @@ private
             LinkedNode!(EventClient) *c = clientList.firstNode;
             while(c !is null)
             {
-                if(cast(MouseEventClient)c !is null)
+                if((cast(MouseEventClient)c.item !is null) && c.item.active)
                 {
                     c.item.evMouseButton(button, down);
                     if(pressed)
@@ -80,18 +80,18 @@ private
                                 c.item.evMouseButtonLeftReleased();
                             break;
                         case 2:
-                            c.item.evMouseButtonRight(down);
-                            if(pressed)
-                                c.item.evMouseButtonRightPressed();
-                            else
-                                c.item.evMouseButtonRightReleased();
-                            break;
-                        case 3:
                             c.item.evMouseButtonMiddle(down);
                             if(pressed)
                                 c.item.evMouseButtonMiddlePressed();
                             else
                                 c.item.evMouseButtonMiddleReleased();
+                            break;
+                        case 3:
+                            c.item.evMouseButtonRight(down);
+                            if(pressed)
+                                c.item.evMouseButtonRightPressed();
+                            else
+                                c.item.evMouseButtonRightReleased();
                             break;
                         default:
                             break;
@@ -104,7 +104,7 @@ private
         {
             mouse.position.update(x, y);
 
-            if(console.opened)
+            if(console.active)
             {
                 console.evMouseMove(x, y);
                 return;
@@ -113,7 +113,7 @@ private
             LinkedNode!(EventClient) *c = clientList.firstNode;
             while(c !is null)
             {
-                if(cast(MouseEventClient)c !is null)
+                if((cast(MouseEventClient)c.item !is null) && c.item.active)
                     c.item.evMouseMove(x, y);
                 c = c.next;
             }
@@ -122,7 +122,7 @@ private
         {
             mouse.wheel.update(w);
 
-            if(console.opened)
+            if(console.active)
             {
                 console.evMouseWheel(w);
                 return;
@@ -131,7 +131,7 @@ private
             LinkedNode!(EventClient) *c = clientList.firstNode;
             while(c !is null)
             {
-                if(cast(MouseEventClient)c !is null)
+                if((cast(MouseEventClient)c.item !is null) && c.item.active)
                     c.item.evMouseWheel(w);
                 c = c.next;
             }

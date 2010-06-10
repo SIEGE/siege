@@ -1,3 +1,7 @@
+/**
+    \brief Different functions used for interpolation
+    \todo Document and possibly cleanup
+*/
 module siege.util.interp;
 
 private

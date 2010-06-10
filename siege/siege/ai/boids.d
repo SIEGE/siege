@@ -1,3 +1,7 @@
+/**
+    \brief Boids (flocking algorithms)
+    \todo cleanup and document
+*/
 module siege.ai.boids;
 
 private

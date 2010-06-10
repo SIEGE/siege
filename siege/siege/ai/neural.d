@@ -1,3 +1,7 @@
+/**
+    \brief Artificial neural networks
+    \todo cleanup and document
+*/
 module siege.ai.neural;
 
 private

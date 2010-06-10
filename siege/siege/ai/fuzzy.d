@@ -1,3 +1,7 @@
+/**
+    \brief Fuzzy logic
+    \todo cleanup and document
+*/
 module siege.ai.fuzzy;
 
 class Fuzzy

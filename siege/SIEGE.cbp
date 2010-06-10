@@ -29,7 +29,16 @@
 		<Compiler>
 			<Add option="-d" />
 		</Compiler>
-		<Unit filename="actors.d" />
+		<Unit filename="demos\ai\ann.d" />
+		<Unit filename="demos\ai\boids.d" />
+		<Unit filename="demos\ai\fuzzy.d" />
+		<Unit filename="demos\ai\genetic.d" />
+		<Unit filename="demos\audio.d" />
+		<Unit filename="demos\common.d" />
+		<Unit filename="demos\particles.d" />
+		<Unit filename="demos\physics.d" />
+		<Unit filename="demos\sprite.d" />
+		<Unit filename="demos\text.d" />
 		<Unit filename="main.d" />
 		<Unit filename="siege\ai\all.d" />
 		<Unit filename="siege\ai\boids.d" />
@@ -95,6 +104,7 @@
 		<Unit filename="siege\util\interp.d" />
 		<Unit filename="siege\util\linkedlist.d" />
 		<Unit filename="siege\util\lsystem.d" />
+		<Unit filename="siege\util\matrix.d" />
 		<Unit filename="siege\util\misc.d" />
 		<Unit filename="siege\util\path.d" />
 		<Unit filename="siege\util\queue.d" />

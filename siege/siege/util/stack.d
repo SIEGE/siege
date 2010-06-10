@@ -1,3 +1,7 @@
+/**
+    \brief Implements a stack
+    \todo Should this be merged with \ref siege.util.queue "queue"?
+*/
 module siege.util.stack;
 
 private
@@ -9,25 +13,22 @@ private
 }
 
 /**
-    A LIFO (last in, first out).
+    \brief A LIFO (last in, first out) - also called a stack
 */
 struct Stack(T)
 {
     T[] items;
 
-    /**
-        Put an item on the stack.
-    */
+    /// \brief Put an item on the stack
     void push(T item)
     {
         items ~= item;
     }
 
-    /**
-        Remove the value on top of the stack and return it.
 
-        Throws:
-            StackUnderflowException if empty.
+    /**
+        \brief Remove the value from the top of the stack and return it
+        \throw StackUnderflowException if empty
     */
     T pop()
     {
@@ -41,10 +42,8 @@ struct Stack(T)
     }
 
     /**
-        Peek at the value on top of the stack, but do not remove it.
-
-        Throws:
-            StackUnderflowException if empty.
+        \brief Peek at the value on top of the stack, but do not remove it
+        \throw StackUnderflowException if empty
     */
     T peek()
     {
@@ -54,17 +53,13 @@ struct Stack(T)
         return items[$-1];
     }
 
-    /**
-        Get the length of the stack
-    */
+    /// \brief Get the number of items on the stack
     size_t length()
     {
         return items.length;
     }
 
-    /**
-        Removes all elements from the stack
-    */
+    /// \brief Remove all the elements from the stack
     void clear()
     {
         items.length = 0;
@@ -76,16 +71,19 @@ struct Stack(T)
         return r;
     }*/
 
+    /// \brief Get the n-th item from the stack
     T opIndex(size_t ind)
     {
         return items[ind];
     }
 
+    /// \brief Get a string representation of the stack
     char[] toString()
     {
         return std.string.format(items);
     }
 
+    /// \brief Convert the stack to a queue
     Queue!(T) toQueue()
     {
         return Queue!(T)(items);

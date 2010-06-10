@@ -23,7 +23,7 @@ private
 
             bool pressed = joysticks[joy].button[button].pressed;
 
-            if(console.opened())
+            if(console.active)
             {
                 console.evJoystickButton(joy, button, down);
                 if(pressed)
@@ -36,7 +36,7 @@ private
             LinkedNode!(EventClient) *c = clientList.firstNode;
             while(c !is null)
             {
-                if(cast(JoystickEventClient)c !is null)
+                if((cast(JoystickEventClient)c.item !is null) && c.item.active)
                 {
                     c.item.evJoystickButton(joy, button, down);
                     if(pressed)
@@ -59,7 +59,7 @@ private
             float[] pos = axis[0..numaxis];
 
 
-            if(console.opened())
+            if(console.active)
             {
                 console.evJoystickMove(joy, pos.dup);
                 return;
@@ -68,7 +68,7 @@ private
             LinkedNode!(EventClient) *c = clientList.firstNode;
             while(c !is null)
             {
-                if(cast(JoystickEventClient)c !is null)
+                if((cast(JoystickEventClient)c.item !is null) && c.item.active)
                     c.item.evJoystickMove(joy, pos.dup);
                 c = c.next;
             }

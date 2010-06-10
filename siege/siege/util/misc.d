@@ -1,3 +1,7 @@
+/**
+    \brief Miscellaneous utilities that don't belong anywhere else
+    \todo Very messy - will have to clean up
+*/
 module siege.util.misc;
 
 private
@@ -8,14 +12,29 @@ private
     import siege.util.vector;
 }
 
+/**
+    \brief Get the current time
+    \return The current time in seconds
+    \todo Currently returns the UTC time - probably should return local time?
+*/
 real time()
 {
     return getUTCtime() / cast(real) TicksPerSecond;
 }
 
 /**
-    Get the next higher (or equal) power of two number.
+    \brief Sleep for some time
+    \param seconds The time to sleep for in seconds
 */
+void sleep(double seconds)
+{
+    double end = time() + seconds;
+    while(time() < end)
+    {
+    }
+}
+
+/// \brief Get the next higher (or equal) power of two number (smallest 2^n so that x <= 2^n)
 uint higherPower(uint x)
 {
     uint i = 2;
@@ -25,17 +44,13 @@ uint higherPower(uint x)
     }
     return i;
 }
-/**
-    Get the next lower (or equal) power of two number.
-*/
+/// \brief Get the next higher (or equal) power of two number (smallest 2^n so that 2^n <= x)
 uint lowerPower(uint x)
 {
     return higherPower(x) >> 1;
 }
 
-/**
-    Converts a D array to a C array.
-*/
+/// \brief Converts a D 2D array to a C 2D array
 T** toCArray(T, A)(T[][] arr, out A[] len)
 {
     T*[] ptr;
@@ -50,9 +65,7 @@ T** toCArray(T, A)(T[][] arr, out A[] len)
 
     return ptr.ptr;
 }
-/**
-    Converts a C array to a D array
-*/
+/// \brief Converts a C array to a D array
 T[][] fromCArray(T, A)(T** carr, A[] len)
 {
     T[][] arr;
@@ -67,14 +80,16 @@ T[][] fromCArray(T, A)(T** carr, A[] len)
 }
 
 /**
-    Get the higher of two numbers.
+    \brief Get the larger of two numbers
+    \return The larger of two numbers casted to the first
 */
 A max(A,B)(A one, B two)
 {
     return (one > two) ? one : two;
 }
 /**
-    Get the lower of two numbers.
+    \brief Get the smaller of two numbers
+    \return The smaller of two numbers casted to the first
 */
 A min(A,B)(A one, B two)
 {
@@ -82,10 +97,10 @@ A min(A,B)(A one, B two)
 }
 
 /**
-    Find the item in an array.
-
-    Returns:
-        The index of the item if found, -1 otherwise.
+    \brief Find an item in an array
+    \param arr The array to search in
+    \param item The item to search for
+    \return The index of the item if found, -1 otherwise
 */
 int find(T)(T[] arr, T item)
 {
@@ -97,29 +112,13 @@ int find(T)(T[] arr, T item)
     return -1;
 }
 
-/**
-    Removes a member at index ind from the array.
-*/
+/// \brief Removes a member at index ind from the array
 void remove(T)(inout T[] arr, size_t ind)
 {
     arr = arr[0..ind] ~ arr[ind+1..$];
 }
 
-/**
-    Sleep for some time.
-    TODO
-*/
-/*void sleep(double seconds)
-{
-    double end = glfwGetTime() + seconds;
-
-    while(glfwGetTime() < end)
-    {}
-}*/
-
-/**
-    Swap two values.
-*/
+/// \brief Swap two values with one another
 void swap(T)(inout T one, inout T two)
 {
     T temp = one;
@@ -128,10 +127,10 @@ void swap(T)(inout T one, inout T two)
 }
 
 /**
-    Swap three values, so that:
-        one -> three
-        two -> one
-        three -> two
+    \brief Swap three values, so that:
+        \li one -> three
+        \li two -> one
+        \li three -> two
 */
 void swap(T)(inout T one, inout T two, inout T three)
 {
@@ -142,20 +141,18 @@ void swap(T)(inout T one, inout T two, inout T three)
 }
 
 /**
-    Returns the angle difference, [-PI, PI)
+    \brief Get the angle difference
 
-    Returns:
-        If a2 > a1 (counter-clockwise test), returns a counter-clockwise (positive) angle
-        If a2 < a1 (counter-clockwise test), returns a clockwise (negative) angle
+    \return In radians:
+        \li If a2 > a1 (counter-clockwise test), a counter-clockwise (positive) angle
+        \li If a2 < a1 (counter-clockwise test), a clockwise (negative) angle
 */
 float angleDiff(float a1, float a2)
 {
     return -((a2 - a1 + PI) % (2*PI) - PI);
 }
 
-/**
-    Convert a hexadecimal string into a number
-*/
+/// \brief Convert a hexadecimal string into a number
 ulong fromHex(char[] str)
 {
     if(str.length / 2.0 != floor(str.length / 2.0))
@@ -190,14 +187,13 @@ ulong fromHex(char[] str)
 }
 
 /**
-    Returns true if num is in interval [min, max]
-
-    Arguments:
-        num: The number to test
-        min: The start of the interval
-        max: The end of the interval
-        incMin: Should min be considered as inside of the interval?
-        incMac: Should max be considered as inside of the interval?
+    \brief Test if num is in the range [min, max]
+    \param num The number to test
+    \param min The start of the interval
+    \param max The end of the interval
+    \param incMin Should min be considered as inside of the interval?
+    \param incMax should max be considered as inside of the interval?
+    \return true if it is, false otherwise
 */
 bool inRange(T)(T num, T min, T max, bool incMin = true, bool incMax = true)
 {
@@ -210,10 +206,17 @@ bool inRange(T)(T num, T min, T max, bool incMin = true, bool incMax = true)
 }
 
 /**
-    Returns an intersection point between line segments (S) or lines (L), or a NaN vector if there is none.
-
-    Source: http://local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/
+    \name Intersections
+    \brief Get the intersection point between between line segments (S) or lines (L)
+    \param p1 The first point of the first segment/line
+    \param p2 The second point of the first segment/line
+    \param p3 The first point of the second segment/line
+    \param p4 The second point of the second segment/line
+    \return The intersection point or a NaN vector if there is none
+    \todo Intersection with rays
+    \todo Move to a more appropriate location
 */
+/* @{ */
 Vector intersectionSS(Vector p1, Vector p2, Vector p3, Vector p4)
 {
     float ua;
@@ -234,7 +237,6 @@ Vector intersectionSS(Vector p1, Vector p2, Vector p3, Vector p4)
 
     return i;
 }
-/// ditto
 Vector intersectionLL(Vector p1, Vector p2, Vector p3, Vector p4)
 {
     float ua;
@@ -252,7 +254,6 @@ Vector intersectionLL(Vector p1, Vector p2, Vector p3, Vector p4)
 
     return i;
 }
-/// ditto
 Vector intersectionSL(Vector p1, Vector p2, Vector p3, Vector p4)
 {
     float ua;
@@ -273,7 +274,6 @@ Vector intersectionSL(Vector p1, Vector p2, Vector p3, Vector p4)
 
     return i;
 }
-/// ditto
 Vector intersectionLS(Vector p1, Vector p2, Vector p3, Vector p4)
 {
     float ua;
@@ -294,3 +294,4 @@ Vector intersectionLS(Vector p1, Vector p2, Vector p3, Vector p4)
 
     return i;
 }
+/* @} */

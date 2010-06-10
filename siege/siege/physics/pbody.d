@@ -1,5 +1,10 @@
 module siege.physics.pbody;
 
+private
+{
+    import siege.util.vector;
+}
+
 struct CollisionPoint
 {
     Vector position;
