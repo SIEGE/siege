@@ -15,5 +15,4 @@ public
     import siege.modules.modules; // not all
     import siege.physics.all;
     import siege.util.all;
-    import siege.widgets.all;
 }
