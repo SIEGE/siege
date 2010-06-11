@@ -10,5 +10,4 @@ public
     import siege.modules.all;
     import siege.physics.all;
     import siege.util.all;
-    import siege.widgets.all;
 }
