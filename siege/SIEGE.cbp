@@ -116,14 +116,6 @@
 		<Unit filename="siege\util\stack.d" />
 		<Unit filename="siege\util\vector.d" />
 		<Unit filename="siege\util\vmath.d" />
-		<Unit filename="siege\widgets\all.d" />
-		<Unit filename="siege\widgets\button.d" />
-		<Unit filename="siege\widgets\common.d" />
-		<Unit filename="siege\widgets\context.d" />
-		<Unit filename="siege\widgets\frame.d" />
-		<Unit filename="siege\widgets\style\all.d" />
-		<Unit filename="siege\widgets\style\simple.d" />
-		<Unit filename="siege\widgets\widget.d" />
 		<Extensions>
 			<code_completion />
 			<envvars />
