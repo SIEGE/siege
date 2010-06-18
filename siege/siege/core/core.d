@@ -43,22 +43,11 @@ static:
     private
     {
         SiegeModule[] modules;
-        bool hasLoaded;
         bool hasInited;
         bool exitNow = false;
         int exitVal;
         bool firstLoop = true;
 
-        void evLoad()
-        {
-            signal!("evLoad");
-            hasLoaded = true;
-        }
-        void evUnload()
-        {
-            hasLoaded = false;
-            signal!("evUnload");
-        }
         void evInit()
         {
             signal!("evInit");
@@ -127,7 +116,6 @@ static:
 
         clientList = new LinkedList!(EventClient);
 
-        evLoad();
         evInit();
         Space.main = new Space;
 
@@ -150,7 +138,6 @@ static:
     void deinit()
     {
         evDeinit();
-        evUnload();
 
         LinkedNode!(EventClient)* curr = clientList.firstNode;
         LinkedNode!(EventClient)* next;

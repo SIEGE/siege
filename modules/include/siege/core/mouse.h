@@ -5,9 +5,9 @@
 
 typedef struct SGCoreMouseCallbacks
 {
-    void (*button)(void* mouse, SGuint button, SGbool action);
-    void (*move)(void* mouse, SGint x, SGint y);
-    void (*wheel)(void* mouse, SGint w);
+    void SG_EXPORT (*button)(void* mouse, SGuint button, SGbool action);
+    void SG_EXPORT (*move)(void* mouse, SGint x, SGint y);
+    void SG_EXPORT (*wheel)(void* mouse, SGint w);
 } SGCoreMouseCallbacks;
 
 #ifdef __cplusplus

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgGraphicsLoadFile(char* fname, SGuint* width, SGuint* height, SGubyte* bpp, void** data)
+SGuint SG_EXPORT sgGraphicsLoadFile(char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data)
 {
     if(strcmp(fname, "") == 0)
     {
@@ -27,21 +27,21 @@ SGuint SG_EXPORT sgGraphicsLoadFile(char* fname, SGuint* width, SGuint* height, 
     *width = ilGetInteger(IL_IMAGE_WIDTH);
     *height = ilGetInteger(IL_IMAGE_HEIGHT);
 
-    *bpp = 4;//ilGetInteger(IL_IMAGE_BPP);
+    *bpp = 32;//ilGetInteger(IL_IMAGE_BPP);
     //format = GL_RGBA;//ilGetInteger(IL_IMAGE_FORMAT);
     //type = GL_UNSIGNED_BYTE;
 
     ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-    *data = malloc(*width * *height * *bpp);
-    *data = memcpy(*data, ilGetData(), *width * *height * *bpp);
+    *data = malloc(*width * *height * *bpp / 8);
+    *data = memcpy(*data, ilGetData(), *width * *height * *bpp / 8);
 
     ilDeleteImages(1, &img);
 
     return SG_OK;
 }
 
-/*SGuint SG_EXPORT sgGraphicsLoadStream(char* fname, SGuint* width, SGuint* height, SGubyte* bpp, SGPointer* data)
+/*SGuint SG_EXPORT sgGraphicsLoadStream(char* fname, SGuint* width, SGuint* height, SGuint* bpp, SGPointer* data)
 {
     return 1;
 }*/

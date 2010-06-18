@@ -6,8 +6,8 @@ int mouseX;
 int mouseY;
 int mouseW;
 
-void cbMouseButton(int button, int action);
-void cbMouseMove(int x, int y);
-void cbMouseWheel(int w);
+void mouseButton(int button, int action);
+void mouseMove(int x, int y);
+void mouseWheel(int w);
 
 #endif // __MOUSE_H__

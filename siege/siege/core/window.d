@@ -127,10 +127,10 @@ class Window
             joystick = joysticks[0];
 
 
-        iVector s = size();
+        Vector s = size();
         if(sgGraphicsContextCreate !is null)
-            sgGraphicsContextCreate(&ghandle, s.x, s.y, bpp); /// PROBLEM SPOT (sgGraphicsContextResize -> sgGraphicsTextureCreate)
-        Viewport.main = new Viewport(iVector(0, 0), s);
+            sgGraphicsContextCreate(&ghandle, cast(uint)s.x, cast(uint)s.y, bpp); /// PROBLEM SPOT (sgGraphicsContextResize -> sgGraphicsTextureCreate)
+        Viewport.main = new Viewport(Vector(0, 0), s);
 
         cbWindowOpen(whandle);
         cbWindowResize(whandle, width, height);
@@ -172,37 +172,34 @@ class Window
         if(sgGraphicsContextResize !is null)
             sgGraphicsContextResize(ghandle, width, height);
     }
-    void size(iVector s)
-    {
-        size(s.x, s.y);
-    }
     void size(Vector s)
     {
         size(cast(uint)s.x, cast(uint)s.y);
     }
-    iVector size()
+    Vector size()
     {
-        iVector s;
+        uint x;
+        uint y;
         if(sgCoreWindowGetSize !is null)
-            sgCoreWindowGetSize(whandle, cast(uint*)&s.x, cast(uint*)&s.y);
-        return s;
+            sgCoreWindowGetSize(whandle, &x, &y);
+        return Vector(x, y);
     }
 
     void width(uint w)
     {
-        size(iVector(w, size().y));
+        size(Vector(w, size().y));
     }
     uint width()
     {
-        return size().x;
+        return cast(uint)size().x;
     }
     void height(uint h)
     {
-        size(iVector(size().x, h));
+        size(Vector(size().x, h));
     }
     uint height()
     {
-        return size().y;
+        return cast(uint)size().y;
     }
 
     void swapBuffers()

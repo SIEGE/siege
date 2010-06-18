@@ -7,19 +7,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-void cbMouseButton(int button, int action)
+void mouseButton(int button, int action)
 {
+    if(button == 2)
+        button = 3;
+    else if(button == 3)
+        button = 2;
+
     if(main_window->cbMouse->button != NULL)
         main_window->cbMouse->button((void*)1, button, action);
 }
 
-void cbMouseMove(int x, int y)
+void mouseMove(int x, int y)
 {
     if(main_window->cbMouse->move != NULL)
         main_window->cbMouse->move((void*)1, x, y);
 }
 
-void cbMouseWheel(int w)
+void mouseWheel(int w)
 {
     if(main_window->cbMouse->wheel != NULL)
         main_window->cbMouse->wheel((void*)1, w);

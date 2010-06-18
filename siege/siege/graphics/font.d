@@ -7,6 +7,7 @@ private
     import std.string;
     import std.format;
     import std.c.stdarg;
+    import std.utf;
 
     import siege.graphics.texture;
     import siege.util.vector;
@@ -18,6 +19,7 @@ struct CharInfo
 {
     Texture texture;
     Vector size;
+    Vector dsize;
     Vector preTranslate;
     Vector postTranslate;
 }
@@ -156,11 +158,13 @@ class FontFace
             if(c < preload)
                 chars[c] = CharInfo(tex,
                                 Vector(width, height),
+                                Vector(datawidth, dataheight),
                                 Vector(prex, prey),
                                 Vector(postx, posty));
             else
                 cache[c] = CharInfo(tex,
                                 Vector(width, height),
+                                Vector(datawidth, dataheight),
                                 Vector(prex, prey),
                                 Vector(postx, posty));
         }
@@ -229,8 +233,6 @@ class FontFace
 }
 
 /**
-    \bug String "Foo\n\nbar" breaks, "Foo\n<space>\nbar" works
-    \bug font.printT works fine with UTF strings, font.print does not
     \todo Rename font.print to font.writef; add font.printf with C printf syntax; add font.writefln
 */
 class Font
@@ -288,10 +290,6 @@ class Font
     {
         printT(position, strFormatX(_arguments, _argptr));
     }
-    void print(iVector position, ...)
-    {
-        printT(Vector(position.x, position.y), strFormatX(_arguments, _argptr));
-    }
     void print(float x, float y, ...)
     {
         printT(Vector(x, y), strFormatX(_arguments, _argptr));
@@ -306,10 +304,6 @@ class Font
     void printCentered(Vector position, ...)
     {
         printCenteredT(position, strFormatX(_arguments, _argptr));
-    }
-    void printCentered(iVector position, ...)
-    {
-        printCenteredT(Vector(position.x, position.y), strFormatX(_arguments, _argptr));
     }
     void printCentered(float x, float y, ...)
     {
@@ -428,7 +422,7 @@ class Font
             offset = offset + Vector(position.x, position.y - h*i);
 
             ch = face.getChars(lines[i]);
-            if(ch is null)
+            if((ch is null) && (lines[i].length != 0))
                 continue;
             for(j = 0; j < lines[i].length; j++)
             {
@@ -476,7 +470,7 @@ class Font
 
     static char[] strFormatX(TypeInfo[] arguments, va_list argptr)
     {
-        char[] text;
+        dchar[] text;
 
         void formatStep(dchar c)
         {
@@ -485,7 +479,7 @@ class Font
 
         doFormat(&formatStep, arguments, argptr);
 
-        return text;
+        return toUTF8(text);
     }
 
     float height()

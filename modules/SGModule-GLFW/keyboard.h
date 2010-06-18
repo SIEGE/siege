@@ -4,7 +4,7 @@
 SGuint keyGLFWtoSIEGE(int key);
 int keySIEGEtoGLFW(SGuint key);
 
-void GLFWCALL cbKeyboardKey(int key, int down);
-void GLFWCALL cbKeyboardChar(int chr, int down);
+void GLFWCALL keyboardKey(int key, int down);
+void GLFWCALL keyboardChar(int chr, int down);
 
 #endif // __KEYBOARD_H__

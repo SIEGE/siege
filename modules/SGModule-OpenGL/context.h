@@ -6,7 +6,7 @@
 
 typedef struct ContextData
 {
-    SGubyte bpp;
+    SGuint bpp;
     struct TextureData* temp;
     struct SurfaceData* target;
 

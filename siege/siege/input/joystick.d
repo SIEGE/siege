@@ -25,11 +25,11 @@ private
 
             if(console.active)
             {
-                console.evJoystickButton(joy, button, down);
+                console.evJoystickButton(joy, button);
                 if(pressed)
-                    console.evJoystickButtonPressed(joy, button);
+                    console.evJoystickButtonPress(joy, button);
                 else
-                    console.evJoystickButtonReleased(joy, button);
+                    console.evJoystickButtonRelease(joy, button);
                 return;
             }
 
@@ -38,11 +38,11 @@ private
             {
                 if((cast(JoystickEventClient)c.item !is null) && c.item.active)
                 {
-                    c.item.evJoystickButton(joy, button, down);
+                    c.item.evJoystickButton(joy, button);
                     if(pressed)
-                        c.item.evJoystickButtonPressed(joy, button);
+                        c.item.evJoystickButtonPress(joy, button);
                     else
-                        c.item.evJoystickButtonReleased(joy, button);
+                        c.item.evJoystickButtonRelease(joy, button);
                 }
                 c = c.next;
             }

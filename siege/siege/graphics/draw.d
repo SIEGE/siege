@@ -96,10 +96,6 @@ static:
     {
         opCall(p.x, p.y, c);
     }
-    void opCall(iVector p, Color c)
-    {
-        opCall(p.x, p.y, c);
-    }
 
     void opCall(float x, float y)
     {
@@ -108,10 +104,6 @@ static:
         draw.end();
     }
     void opCall(Vector p)
-    {
-        opCall(p.x, p.y);
-    }
-    void opCall(iVector p)
     {
         opCall(p.x, p.y);
     }
@@ -152,10 +144,6 @@ static:
     {
         opCall(p1.x, p1.y, p2.x, p2.y, c1, c2);
     }
-    void opCall(iVector p1, iVector p2, Color c1, Color c2)
-    {
-        opCall(p1.x, p1.y, p2.x, p2.y, c1, c2);
-    }
 
     void opCall(float x1, float y1, float x2, float y2)
     {
@@ -172,10 +160,6 @@ static:
         draw.end();
     }
     void opCall(Vector p1, Vector p2)
-    {
-        opCall(p1.x, p1.y, p2.x, p2.y);
-    }
-    void opCall(iVector p1, iVector p2)
     {
         opCall(p1.x, p1.y, p2.x, p2.y);
     }
@@ -228,10 +212,6 @@ static:
     {
         opCall(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, c1, c2, c3, fill);
     }
-    void opCall(iVector p1, iVector p2, iVector p3, Color c1, Color c2, Color c3, bool fill = true)
-    {
-        opCall(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, c1, c2, c3, fill);
-    }
 
     void opCall(float x1, float y1, float x2, float y2, float x3, float y3, bool fill = true)
     {
@@ -258,10 +238,6 @@ static:
         draw.end();
     }
     void opCall(Vector p1, Vector p2, Vector p3, bool fill = true)
-    {
-        opCall(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, fill);
-    }
-    void opCall(iVector p1, iVector p2, iVector p3, bool fill = true)
     {
         opCall(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, fill);
     }
@@ -308,10 +284,6 @@ static:
     {
         opCall(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y, c1, c2, c3, c4, fill);
     }
-    void opCall(iVector p1, iVector p2, iVector p3, iVector p4, Color c1, Color c2, Color c3, Color c4, bool fill = true)
-    {
-        opCall(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y, c1, c2, c3, c4, fill);
-    }
 
     void opCall(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, bool fill = true)
     {
@@ -343,10 +315,6 @@ static:
     {
         opCall(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y, fill);
     }
-    void opCall(iVector p1, iVector p2, iVector p3, iVector p4, bool fill = true)
-    {
-        opCall(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y, fill);
-    }
 
     /// Rectangle
     void opCall(float x1, float y1, float x2, float y2, Color c1, Color c2, Color c3, Color c4, bool fill = true)
@@ -358,10 +326,6 @@ static:
         opCall(x1, y1, x2, y1, x2, y2, x1, y2, c1, c2, c3, c4, fill);
     }
     void opCall(Vector p1, Vector p2, Color c1, Color c2, Color c3, Color c4, bool fill = true)
-    {
-        opCall(p1.x, p1.y, p2.x, p2.y, c1, c2, c3, c4, fill);
-    }
-    void opCall(iVector p1, iVector p2, Color c1, Color c2, Color c3, Color c4, bool fill = true)
     {
         opCall(p1.x, p1.y, p2.x, p2.y, c1, c2, c3, c4, fill);
     }
@@ -377,10 +341,6 @@ static:
     {
         opCall(p1.x, p1.y, p2.x, p2.y, c, c, c, c, fill);
     }
-    void opCall(iVector p1, iVector p2, Color c, bool fill = true)
-    {
-        opCall(p1.x, p1.y, p2.x, p2.y, c, c, c, c, fill);
-    }
     void opCall(float x1, float y1, float x2, float y2, bool fill = true)
     {
         opCall(x1, y1, x2, y1, x2, y2, x1, y2, fill);
@@ -390,10 +350,6 @@ static:
         opCall(x1, y1, x2, y1, x2, y2, x1, y2, fill);
     }
     void opCall(Vector p1, Vector p2, bool fill = true)
-    {
-        opCall(p1.x, p1.y, p2.x, p2.y, fill);
-    }
-    void opCall(iVector p1, iVector p2, bool fill = true)
     {
         opCall(p1.x, p1.y, p2.x, p2.y, fill);
     }
@@ -463,10 +419,6 @@ static:
     {
         color(Color(col.x, col.y, col.z, col.w));
     }
-    void color(iVector col)
-    {
-        color(Color(col.x / 255.0, col.y / 255.0, col.z / 255.0, col.w / 255.0));
-    }
     void color(float r, float g, float b, float a = 1.0)
     {
         color(Color(r, g, b, a));
@@ -496,10 +448,6 @@ static:
     {
         curTexCoord = coord;
     }
-    void texCoord(iVector coord)
-    {
-        curTexCoord = Vector(coord.x, coord.y);
-    }
 
     void vertex(float x, float y, float z = 0.0)
     {
@@ -514,12 +462,6 @@ static:
         drawColors ~= curColor.rgba;
     }
     void vertex(Vector vert)
-    {
-        drawPoints ~= [vert.x, vert.y, vert.z];
-        drawTexCoords ~= [curTexCoord.x, curTexCoord.y];
-        drawColors ~= curColor.rgba;
-    }
-    void vertex(iVector vert)
     {
         drawPoints ~= [vert.x, vert.y, vert.z];
         drawTexCoords ~= [curTexCoord.x, curTexCoord.y];

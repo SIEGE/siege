@@ -9,19 +9,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-void GLFWCALL cbWindowOpen()
+void GLFWCALL windowOpen()
 {
     if(main_window->cbWindow->open != NULL)
         main_window->cbWindow->open(main_window);
 }
-int GLFWCALL cbWindowClose()
+int GLFWCALL windowClose()
 {
     if(main_window->cbWindow->close != NULL)
         main_window->cbWindow->close(main_window);
 
     return 1;
 }
-void GLFWCALL cbWindowResize(int x, int y)
+void GLFWCALL windowResize(int x, int y)
 {
     if(main_window->cbWindow->resize != NULL)
         main_window->cbWindow->resize(main_window, x, y);
@@ -126,7 +126,7 @@ SGuint SG_EXPORT sgCoreWindowOpen(void* window, SGuint width, SGuint height, SGu
     if(!glfwOpenWindow(width, height, red, green, blue, alpha, depth, stencil, (flags & SG_WINDOW_FULLSCREEN) ? GLFW_FULLSCREEN : GLFW_WINDOW))
         return SG_UNKNOWN_ERROR;
 
-    cbWindowOpen();
+    windowOpen();
 
     Window tmpWindow;
     tmpWindow.cbWindow   = malloc(sizeof(SGCoreWindowCallbacks));
@@ -144,13 +144,13 @@ SGuint SG_EXPORT sgCoreWindowOpen(void* window, SGuint width, SGuint height, SGu
     memset(main_window->cbKeyboard, 0, sizeof(SGCoreKeyboardCallbacks));
     memset(main_window->cbMouse   , 0, sizeof(SGCoreMouseCallbacks));
 
-    glfwSetWindowCloseCallback(cbWindowClose);
-    glfwSetWindowSizeCallback(cbWindowResize);
-    glfwSetMouseButtonCallback(cbMouseButton);
-    glfwSetMousePosCallback(cbMouseMove);
-    glfwSetMouseWheelCallback(cbMouseWheel);
-    glfwSetKeyCallback(cbKeyboardKey);
-    glfwSetCharCallback(cbKeyboardChar);
+    glfwSetWindowCloseCallback(windowClose);
+    glfwSetWindowSizeCallback(windowResize);
+    glfwSetMouseButtonCallback(mouseButton);
+    glfwSetMousePosCallback(mouseMove);
+    glfwSetMouseWheelCallback(mouseWheel);
+    glfwSetKeyCallback(keyboardKey);
+    glfwSetCharCallback(keyboardChar);
     // joystick
 
     memcpy(main_window->cbWindow  , tmpWindow.cbWindow  , sizeof(SGCoreWindowCallbacks));

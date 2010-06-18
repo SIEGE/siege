@@ -24,7 +24,7 @@ SGuint SG_EXPORT sgGraphicsTextureCreate(void** texture, void* context)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgGraphicsTextureCreateData(void** texture, void* context, SGuint width, SGuint height, SGubyte bpp, void* data)
+//SGuint SG_EXPORT sgGraphicsTextureCreateData(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data)
 SGuint SG_EXPORT sgGraphicsTextureDestroy(void* texture)
 {
     if(texture == NULL)
@@ -36,7 +36,7 @@ SGuint SG_EXPORT sgGraphicsTextureDestroy(void* texture)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgGraphicsTextureSetData(void* texture, SGuint width, SGuint height, SGubyte bpp, void* data)
+SGuint SG_EXPORT sgGraphicsTextureSetData(void* texture, SGuint width, SGuint height, SGuint bpp, void* data)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE

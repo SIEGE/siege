@@ -66,12 +66,12 @@ int keySIEGEtoGLFW(SGuint key)
     return glfwkey;
 }
 
-void GLFWCALL cbKeyboardKey(int key, int down)
+void GLFWCALL keyboardKey(int key, int down)
 {
     if(main_window->cbKeyboard->key != NULL)
         main_window->cbKeyboard->key((void*)1, keyGLFWtoSIEGE(key), down);
 }
-void GLFWCALL cbKeyboardChar(int chr, int down)
+void GLFWCALL keyboardChar(int chr, int down)
 {
     if(main_window->cbKeyboard->chr != NULL)
         main_window->cbKeyboard->chr((void*)1, chr, down);

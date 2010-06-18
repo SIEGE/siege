@@ -10,8 +10,8 @@ typedef struct Window
 } Window;
 Window* main_window;
 
-void GLFWCALL cbWindowOpen();
-int GLFWCALL cbWindowClose();
-void GLFWCALL cbWindowResize(int x, int y);
+void GLFWCALL windowOpen();
+int GLFWCALL windowClose();
+void GLFWCALL windowResize(int x, int y);
 
 #endif // __WINDOW_H__

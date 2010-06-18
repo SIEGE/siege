@@ -15,12 +15,12 @@ class Viewport
     {
         void* viewport;
 
-        iVector wpos;
-        iVector wsize;
+        Vector wpos;
+        Vector wsize;
         Vector pos;
         Vector size;
     }
-    this(iVector wpos, iVector wsize, Vector pos = Vector(), Vector size = Vector())
+    this(Vector wpos, Vector wsize, Vector pos = Vector(), Vector size = Vector())
     {
         if(sgGraphicsViewportCreate !is null)
             sgGraphicsViewportCreate(&viewport, window.context());
@@ -29,7 +29,7 @@ class Viewport
     }
     this(uint wx, uint wy, uint wwidth, uint wheight, uint x, uint y, uint width, uint height)
     {
-        this(iVector(wx, wy), iVector(wwidth, wheight), Vector(x, y), Vector(width, height));
+        this(Vector(wx, wy), Vector(wwidth, wheight), Vector(x, y), Vector(width, height));
     }
     ~this()
     {
@@ -37,7 +37,7 @@ class Viewport
             sgGraphicsViewportDestroy(viewport);
     }
 
-    void set(iVector wpos, iVector wsize, Vector pos, Vector size)
+    void set(Vector wpos, Vector wsize, Vector pos, Vector size)
     {
         if(pos.isNan)
             pos = Vector(wpos.x, wpos.y);
@@ -53,7 +53,7 @@ class Viewport
     }
     void set(uint wx, uint wy, uint wwidth, uint wheight, float x, float y, float width, float height)
     {
-        set(iVector(wx, wy), iVector(wwidth, wheight), Vector(x, y), Vector(width, height));
+        set(Vector(wx, wy), Vector(wwidth, wheight), Vector(x, y), Vector(width, height));
     }
     void set()
     {
@@ -61,8 +61,9 @@ class Viewport
     }
     void reset()
     {
+        /// \todo This should use int, not uint - or should it?
         if(sgGraphicsViewportSetView !is null)
-            sgGraphicsViewportSetView(viewport, wpos.x, wpos.y, wsize.x, wsize.y, pos.x, pos.y, size.x, size.y);
+            sgGraphicsViewportSetView(viewport, cast(uint)wpos.x, cast(uint)wpos.y, cast(uint)wsize.x, cast(uint)wsize.y, pos.x, pos.y, size.x, size.y);
     }
 
     /*void get(out uint wx, out uint wy, out uint wwidth, out uint wheight, out float x, out float y, out float width, out float height)

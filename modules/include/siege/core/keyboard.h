@@ -5,8 +5,8 @@
 
 typedef struct SGCoreKeyboardCallbacks
 {
-    void (*key)(void* keyboard, SGuint key, SGbool down);
-    void (*chr)(void* keyboard, SGuint chr, SGbool down);
+    void SG_EXPORT (*key)(void* keyboard, SGuint key, SGbool down);
+    void SG_EXPORT (*chr)(void* keyboard, SGuint chr, SGbool down);
 } SGCoreKeyboardCallbacks;
 
 #ifdef __cplusplus
