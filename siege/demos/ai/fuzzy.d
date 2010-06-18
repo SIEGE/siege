@@ -1,4 +1,4 @@
-module demos.fuzzy;
+module demos.ai.fuzzy;
 
 private
 {
