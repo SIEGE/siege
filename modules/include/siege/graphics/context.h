@@ -7,7 +7,7 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgGraphicsContextCreate(void** context, SGuint width, SGuint height, SGubyte bpp);
+    SGuint SG_EXPORT sgGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp);
     SGuint SG_EXPORT sgGraphicsContextDestroy(void* context);
     SGuint SG_EXPORT sgGraphicsContextResize(void* context, SGuint width, SGuint height);
     SGuint SG_EXPORT sgGraphicsContextClear(void* context, float* color);

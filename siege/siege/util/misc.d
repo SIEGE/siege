@@ -35,7 +35,7 @@ void sleep(double seconds)
 }
 
 /// \brief Get the next higher (or equal) power of two number (smallest 2^n so that x <= 2^n)
-uint higherPower(uint x)
+uint nextPower2(uint x)
 {
     uint i = 2;
     while(i < x)
@@ -45,38 +45,12 @@ uint higherPower(uint x)
     return i;
 }
 /// \brief Get the next higher (or equal) power of two number (smallest 2^n so that 2^n <= x)
-uint lowerPower(uint x)
+uint prevPower2(uint x)
 {
-    return higherPower(x) >> 1;
-}
-
-/// \brief Converts a D 2D array to a C 2D array
-T** toCArray(T, A)(T[][] arr, out A[] len)
-{
-    T*[] ptr;
-    len.length = arr.length;
-    ptr.length = arr.length;
-
-    foreach(i, a; arr)
-    {
-        len[i] = a.length;
-        ptr[i] = (a~cast(T)'\0').ptr;
-    }
-
-    return ptr.ptr;
-}
-/// \brief Converts a C array to a D array
-T[][] fromCArray(T, A)(T** carr, A[] len)
-{
-    T[][] arr;
-    arr.length = len.length;
-
-    for(uint i = 0; i < len.length; i++)
-    {
-        arr[i] = carr[i][0..len[i]];
-    }
-
-    return arr;
+    uint hp = nextPower2(x);
+    if(hp == x)
+        return x;
+    return nextPower2(x) >> 1;
 }
 
 /**
@@ -127,20 +101,6 @@ void swap(T)(inout T one, inout T two)
 }
 
 /**
-    \brief Swap three values, so that:
-        \li one -> three
-        \li two -> one
-        \li three -> two
-*/
-void swap(T)(inout T one, inout T two, inout T three)
-{
-    T temp = one;
-    one = two;
-    two = three;
-    three = temp;
-}
-
-/**
     \brief Get the angle difference
 
     \return In radians:
@@ -150,40 +110,6 @@ void swap(T)(inout T one, inout T two, inout T three)
 float angleDiff(float a1, float a2)
 {
     return -((a2 - a1 + PI) % (2*PI) - PI);
-}
-
-/// \brief Convert a hexadecimal string into a number
-ulong fromHex(char[] str)
-{
-    if(str.length / 2.0 != floor(str.length / 2.0))
-        return 0;
-
-    uint ret;
-
-    foreach(c; str)
-    {
-        if(inRange(c, '0', '9'))
-        {
-            ret <<= 1;
-            ret |= c - '0';
-        }
-        else if(inRange(c, 'A', 'F'))
-        {
-            ret <<= 1;
-            ret |= c - 'A';
-        }
-        else if(inRange(c, 'a', 'f'))
-        {
-            ret <<= 1;
-            ret |= c - 'a';
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    return ret;
 }
 
 /**

@@ -9,12 +9,12 @@ extern "C"
 #endif
     SGuint SG_EXPORT sgGraphicsSurfaceCreate(void** surface, void* context);
     //SGuint SG_EXPORT sgGraphicsSurfaceCreateTexture(void** surface, void* context, void* texture);
-    //SGuint SG_EXPORT sgGraphicsSurfaceCreateData(void** surface, void* context, SGuint width, SGuint height, SGubyte bpp, void* data);
+    //SGuint SG_EXPORT sgGraphicsSurfaceCreateData(void** surface, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
     SGuint SG_EXPORT sgGraphicsSurfaceDestroy(void* surface);
     SGuint SG_EXPORT sgGraphicsSurfaceSetTexture(void* surface, void* texture);
     SGuint SG_EXPORT sgGraphicsSurfaceGetTexture(void* surface, void** texture);
-    SGuint SG_EXPORT sgGraphicsSurfaceSetData(void* surface, SGuint width, SGuint height, SGubyte bpp, void* data);
-    //SGuint SG_EXPORT sgGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGubyte* bpp, void** data);
+    SGuint SG_EXPORT sgGraphicsSurfaceSetData(void* surface, SGuint width, SGuint height, SGuint bpp, void* data);
+    //SGuint SG_EXPORT sgGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data);
     //SGuint SG_EXPORT sgGraphicsSurfaceFreeData(void* data);
     SGuint SG_EXPORT sgGraphicsSurfaceGetSize(void* surface, SGuint* width, SGuint* height);
     SGuint SG_EXPORT sgGraphicsSurfaceDraw(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);

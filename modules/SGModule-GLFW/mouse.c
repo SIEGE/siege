@@ -7,24 +7,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-void GLFWCALL cbMouseButton(int button, int action)
+void GLFWCALL mouseButton(int button, int action)
 {
-    if(button == GLFW_MOUSE_BUTTON_2)
-        button = GLFW_MOUSE_BUTTON_3;
-    else if(button == GLFW_MOUSE_BUTTON_3)
-        button = GLFW_MOUSE_BUTTON_2;
-
     if(main_window->cbMouse->button != NULL)
         main_window->cbMouse->button((void*)1, button - GLFW_MOUSE_BUTTON_1 + 1, action);
 }
 
-void GLFWCALL cbMouseMove(int x, int y)
+void GLFWCALL mouseMove(int x, int y)
 {
     if(main_window->cbMouse->move != NULL)
         main_window->cbMouse->move((void*)1, x, y);
 }
 
-void GLFWCALL cbMouseWheel(int w)
+void GLFWCALL mouseWheel(int w)
 {
     if(main_window->cbMouse->wheel != NULL)
         main_window->cbMouse->wheel((void*)1, w);

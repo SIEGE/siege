@@ -41,28 +41,10 @@ interface CoreEventClient
 */
 interface ModuleEventClient
 {
-    /**
-        \brief Called just before \ref evInit
-        \deprecated This was used for loading the modules back then when modules were hard-compiled into siege
-    */
-    deprecated void evLoad();
-    /**
-        \brief Called just after \ref evUninit
-        \deprecated This was used for unloading the modules back then when modules were hard-compiled into siege
-    */
-    deprecated void evUnload();
-
-    /* @{ */
     /// \brief Called on \ref siege.core.core.Game.init "game.init"
     void evInit();
     /// \brief Called on \ref siege.core.core.Game.deinit "game.deinit"
     void evDeinit();
-    /* @} */
-    /**
-        \brief Same as \ref evDeinit
-        \deprecated evUninit was used as the name for consistency with evUnload - this is no longer required as evUnload was deprecated
-    */
-    deprecated alias evDeinit evUninit;
 }
 
 /**
@@ -99,17 +81,17 @@ interface MouseEventClient
         \param button The button ID
         \param down The button state
     */
-    void evMouseButton(uint button, bool down);
+    void evMouseButton(uint button);
     /**
         \brief A mouse button has just been pressed
         \param button The button ID
     */
-    void evMouseButtonPressed(uint button);
+    void evMouseButtonPress(uint button);
     /**
         \brief A mouse button has just been released
         \param button The button ID
     */
-    void evMouseButtonReleased(uint button);
+    void evMouseButtonRelease(uint button);
     /* @} */
 
     /* @{ */
@@ -119,9 +101,9 @@ interface MouseEventClient
     */
     void evMouseButtonLeft(bool down);
     /// \brief Left mouse button has just been pressed
-    void evMouseButtonLeftPressed();
+    void evMouseButtonLeftPress();
     /// \brief Left mouse button has just been released
-    void evMouseButtonLeftReleased();
+    void evMouseButtonLeftRelease();
     /* @} */
 
     /* @{ */
@@ -131,9 +113,9 @@ interface MouseEventClient
     */
     void evMouseButtonMiddle(bool down);
     /// \brief Middle mouse button has just been pressed
-    void evMouseButtonMiddlePressed();
+    void evMouseButtonMiddlePress();
     /// \brief Middle mouse button has just been released
-    void evMouseButtonMiddleReleased();
+    void evMouseButtonMiddleRelease();
     /* @} */
 
     /* @{ */
@@ -143,9 +125,9 @@ interface MouseEventClient
     */
     void evMouseButtonRight(bool down);
     /// \brief Right mouse button has just been pressed
-    void evMouseButtonRightPressed();
+    void evMouseButtonRightPress();
     /// \brief Right mouse button has just been released
-    void evMouseButtonRightReleased();
+    void evMouseButtonRightRelease();
     /* @} */
 
     /**
@@ -172,17 +154,17 @@ interface KeyboardEventClient
         \param key The key ID
         \param down The key state
     */
-    void evKeyboardKey(uint key, bool down);
+    void evKeyboardKey(uint key);
     /**
         \brief A key has just been pressed
         \param key The key ID
     */
-    void evKeyboardKeyPressed(uint key);
+    void evKeyboardKeyPress(uint key);
     /**
         \brief A key has just been released
         \param key The key ID
     */
-    void evKeyboardKeyReleased(uint key);
+    void evKeyboardKeyRelease(uint key);
     /**
         \brief A keypress has just been repeated
         \param key The key ID
@@ -193,25 +175,13 @@ interface KeyboardEventClient
 
     /* @{ */
     /**
-        \brief A key representing a character is being held down
-        \param chr The character (UTF-32)
-        \param down The key state
-    */
-    void evKeyboardChar(dchar chr, bool down);
-    /**
         \brief A key representing a character has just been pressed
         \param chr The character (UTF-32)
     */
-    void evKeyboardCharPressed(dchar chr);
-    /**
-        \brief A key representing a character has just been released
-        \param chr The character (UTF-32)
-    */
-    void evKeyboardCharReleased(dchar chr);
+    void evKeyboardCharPress(dchar chr);
     /**
         \brief A keypress representing a character has just been repeated
         \param chr The character (UTF-32)
-        \todo Make this work!
     */
     void evKeyboardCharRepeat(dchar chr);
     /* @} */
@@ -229,19 +199,19 @@ interface JoystickEventClient
         \param button The button ID
         \param down The button state
     */
-    void evJoystickButton(uint joy, uint button, bool down);
+    void evJoystickButton(uint joy, uint button);
     /**
         \brief A joystick button has just been pressed
         \param joy The joystick ID
         \param button The button ID
     */
-    void evJoystickButtonPressed(uint joy, uint button);
+    void evJoystickButtonPress(uint joy, uint button);
     /**
         \brief A joystick button has just been released
         \param joy The joystick ID
         \param button The button ID
     */
-    void evJoystickButtonReleased(uint joy, uint button);
+    void evJoystickButtonRelease(uint joy, uint button);
     /* @} */
 
     /**
@@ -397,8 +367,6 @@ abstract class EventClient: CoreEventClient, ModuleEventClient, WindowEventClien
     void evTickEnd() {}
     void evDraw() {}
 
-    void evLoad() {}
-    void evUnload() {}
     void evInit() {}
     void evDeinit() {}
 
@@ -406,33 +374,31 @@ abstract class EventClient: CoreEventClient, ModuleEventClient, WindowEventClien
     void evWindowClose() {}
     void evWindowResize(uint width, uint height) {}
 
-    void evMouseButton(uint button, bool down) {}
-    void evMouseButtonPressed(uint button) {}
-    void evMouseButtonReleased(uint button) {}
+    void evMouseButton(uint button) {}
+    void evMouseButtonPress(uint button) {}
+    void evMouseButtonRelease(uint button) {}
     void evMouseButtonLeft(bool down) {}
-    void evMouseButtonLeftPressed() {}
-    void evMouseButtonLeftReleased() {}
+    void evMouseButtonLeftPress() {}
+    void evMouseButtonLeftRelease() {}
     void evMouseButtonMiddle(bool down) {}
-    void evMouseButtonMiddlePressed() {}
-    void evMouseButtonMiddleReleased() {}
+    void evMouseButtonMiddlePress() {}
+    void evMouseButtonMiddleRelease() {}
     void evMouseButtonRight(bool down) {}
-    void evMouseButtonRightPressed() {}
-    void evMouseButtonRightReleased() {}
+    void evMouseButtonRightPress() {}
+    void evMouseButtonRightRelease() {}
     void evMouseMove(int x, int y) {}
     void evMouseWheel(int wheel) {}
 
-    void evKeyboardKey(uint key, bool down) {}
-    void evKeyboardKeyPressed(uint key) {}
-    void evKeyboardKeyReleased(uint key) {}
+    void evKeyboardKey(uint key) {}
+    void evKeyboardKeyPress(uint key) {}
+    void evKeyboardKeyRelease(uint key) {}
     void evKeyboardKeyRepeat(uint key) {}
-    void evKeyboardChar(dchar chr, bool down) {}
-    void evKeyboardCharPressed(dchar chr) {}
-    void evKeyboardCharReleased(dchar chr) {}
+    void evKeyboardCharPress(dchar chr) {}
     void evKeyboardCharRepeat(dchar chr) {}
 
-    void evJoystickButton(uint joy, uint button, bool down) {}
-    void evJoystickButtonPressed(uint joy, uint button) {}
-    void evJoystickButtonReleased(uint joy, uint button) {}
+    void evJoystickButton(uint joy, uint button) {}
+    void evJoystickButtonPress(uint joy, uint button) {}
+    void evJoystickButtonRelease(uint joy, uint button) {}
     void evJoystickMove(uint joy, float[] pos) {}
 
     void evCollision(Entity other, CollisionPoint point) {}

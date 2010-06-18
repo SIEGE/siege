@@ -21,7 +21,7 @@ class Sprite: EventClient
 
         if(offset.isNan())
         {
-            iVector size = subimages[0].size;
+            Vector size = subimages[0].size;
             offset.x = size.x / 2.0;
             offset.y = size.y / 2.0;
         }
@@ -49,7 +49,7 @@ class Sprite: EventClient
             image -= subimages.length;
     }
 
-    iVector size()
+    Vector size()
     {
         return subimages[0].size;
     }

@@ -65,19 +65,19 @@ class Console: EventClient
     */
     char[][] delegate(char[]) autocomplete = null;
 
-    this(iVector size, Font font = null)
+    this(Vector size, Font fonz = null)
     {
-        cols = size.x;
-        rows = size.y;
+        cols = cast(uint)size.x;
+        rows = cast(uint)size.y;
         deactivate();
     }
     this(uint width, uint height, Font font = null)
     {
-        this(iVector(width, height), font);
+        this(Vector(width, height), font);
     }
     this()
     {
-        this(iVector(79, 20), null);
+        this(Vector(79, 20), null);
     }
 
     void open()
@@ -103,7 +103,7 @@ class Console: EventClient
     {
         return !_opened;
     }
-    void evKeyboardKeyPressed(uint key)
+    void evKeyboardKeyPress(uint key)
     {
         if(key == toggleKey)
         {
@@ -165,7 +165,7 @@ class Console: EventClient
             _insert = !_insert;
         }
     }
-    void evKeyboardCharPressed(dchar chr)
+    void evKeyboardCharPress(dchar chr)
     {
         if(!_opened)
             return;

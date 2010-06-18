@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgGraphicsContextCreate(void** context, SGuint width, SGuint height, SGubyte bpp)
+SGuint SG_EXPORT sgGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp)
 {
     ContextData** cdata = (ContextData**)context;
     *context = calloc(1, sizeof(ContextData));
@@ -28,7 +28,7 @@ SGuint SG_EXPORT sgGraphicsContextCreate(void** context, SGuint width, SGuint he
     (*cdata)->fbo.hasFBO = (ext != NULL);
     checkFBO(&(*cdata)->fbo);
 
-    sgGraphicsContextResize(*context, width, height);
+    //sgGraphicsContextResize(*context, width, height);
     return SG_OK;
 }
 

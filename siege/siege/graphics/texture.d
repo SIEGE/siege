@@ -12,7 +12,6 @@ private
     import siege.modules.graphics;
 }
 
-// todo...
 class Texture
 {
     private
@@ -25,7 +24,7 @@ class Texture
     {
         uint width;
         uint height;
-        ubyte bpp;
+        uint bpp;
         ubyte[] data;
 
         if(!siege.modules.graphics.load(fname, width, height, bpp, data))
@@ -33,7 +32,7 @@ class Texture
 
         this(width, height, bpp, data);
     }
-    this(uint width, uint height, ubyte bpp, ubyte[] data = null)
+    this(uint width, uint height, uint bpp, ubyte[] data = null)
     {
         uint bypp;
         switch(bpp)
@@ -94,12 +93,13 @@ class Texture
             sgGraphicsTextureDraw(texture, location.x, location.y, location.z, scale.x, scale.y, offset.x, offset.y, angle);
     }
 
-    iVector size()
+    Vector size()
     {
-        iVector ret;
+        uint x;
+        uint y;
         if(sgGraphicsTextureGetSize !is null)
-            sgGraphicsTextureGetSize(texture, cast(uint*)&ret.x, cast(uint*)&ret.y);
-        return ret;
+            sgGraphicsTextureGetSize(texture, &x, &y);
+        return Vector(x, y);
     }
     /*iVector asize()
     {
@@ -114,11 +114,11 @@ class Texture
 
     uint width()
     {
-        return size().x;
+        return cast(uint)size().x;
     }
     uint height()
     {
-        return size().y;
+        return cast(uint)size().y;
     }
     /*uint awidth()
     {

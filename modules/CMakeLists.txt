@@ -1,7 +1,9 @@
-cmake_minimum_required(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 project(SIEGEModules)
+#SET(CMAKE_BUILD_TYPE Debug)
 include_directories(include)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules/")
 
 set(CPU_64BIT 0)
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)

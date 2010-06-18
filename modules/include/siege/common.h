@@ -3,12 +3,13 @@
 
 #include <stdint.h>
 
+typedef void     SGvoid;
+typedef uint8_t  SGbool;
+typedef uint32_t SGenum;
+
 typedef uint8_t  SGchar;
 typedef uint16_t SGwchar;
 typedef uint32_t SGdchar;
-
-typedef uint8_t  SGbool;
-typedef uint32_t SGenum;
 
 typedef int8_t   SGbyte;
 typedef uint8_t  SGubyte;
@@ -40,7 +41,7 @@ typedef double SGdouble;
 
 #define SG_INTERFACE_VMAJOR 0
 #define SG_INTERFACE_VMINOR 1
-#define SG_INTERFACE_VPATCH 2
+#define SG_INTERFACE_VPATCH 3
 
 #define SG_TRUE  1
 #define SG_FALSE 0

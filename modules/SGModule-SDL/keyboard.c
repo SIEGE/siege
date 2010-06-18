@@ -63,12 +63,12 @@ int keySIEGEtoSDL(SGuint key)
     return sdlkey;
 }
 
-void cbKeyboardKey(int key, int down)
+void keyboardKey(int key, int down)
 {
     if(main_window->cbKeyboard->key != NULL)
         main_window->cbKeyboard->key((void*)1, keySDLtoSIEGE(key), down);
 }
-void cbKeyboardChar(int chr, int down)
+void keyboardChar(int chr, int down)
 {
     if(main_window->cbKeyboard->chr != NULL)
         main_window->cbKeyboard->chr((void*)1, chr, down);

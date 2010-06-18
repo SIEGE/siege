@@ -22,11 +22,13 @@ private
 
             if(console.active)
             {
-                console.evKeyboardKey(key, down);
+                console.evKeyboardKey(key);
                 if(pressed)
-                    console.evKeyboardKeyPressed(key);
+                    console.evKeyboardKeyPress(key);
+                else if(!down)
+                    console.evKeyboardKeyRelease(key);
                 else
-                    console.evKeyboardKeyReleased(key);
+                    console.evKeyboardKeyRepeat(key);
                 return;
             }
 
@@ -35,11 +37,13 @@ private
             {
                 if((cast(KeyboardEventClient)c.item !is null) && c.item.active)
                 {
-                    c.item.evKeyboardKey(key, down);
+                    c.item.evKeyboardKey(key);
                     if(pressed)
-                        c.item.evKeyboardKeyPressed(key);
+                        c.item.evKeyboardKeyPress(key);
+                    else if(!down)
+                        c.item.evKeyboardKeyRelease(key);
                     else
-                        c.item.evKeyboardKeyReleased(key);
+                        c.item.evKeyboardKeyRepeat(key);
                 }
                 c = c.next;
             }
@@ -52,11 +56,10 @@ private
 
             if(console.active)
             {
-                console.evKeyboardChar(chr, down);
                 if(pressed)
-                    console.evKeyboardCharPressed(chr);
-                else
-                    console.evKeyboardCharReleased(chr);
+                    console.evKeyboardCharPress(chr);
+                else if(down)
+                    console.evKeyboardCharRepeat(chr);
                 return;
             }
 
@@ -65,11 +68,10 @@ private
             {
                 if((cast(KeyboardEventClient)c.item !is null) && c.item.active)
                 {
-                    c.item.evKeyboardChar(chr, down);
                     if(pressed)
-                        c.item.evKeyboardCharPressed(chr);
-                    else
-                        c.item.evKeyboardCharReleased(chr);
+                        c.item.evKeyboardCharPress(chr);
+                    else if(down)
+                        c.item.evKeyboardCharRepeat(chr);
                 }
                 c = c.next;
             }

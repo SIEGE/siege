@@ -92,7 +92,7 @@ void loadModuleGraphics(SharedLib lib)
 extern(C)
 {
     /// Graphics
-    uint function(void** context, uint width, uint height, ubyte bpp) sgGraphicsContextCreate;
+    uint function(void** context, uint width, uint height, uint bpp) sgGraphicsContextCreate;
     uint function(void* context) sgGraphicsContextDestroy;
     uint function(void* context, uint width, uint height) sgGraphicsContextResize;
     uint function(void* context, float* color) sgGraphicsContextClear;
@@ -105,12 +105,12 @@ extern(C)
 
     uint function(void** surface, void* context) sgGraphicsSurfaceCreate;
     //uint function(void** surface, void* context, void* texture) sgGraphicsSurfaceCreateTexture;
-    //uint function(void** surface, void* context, uint width, uint height, ubyte bpp, void* data) sgGraphicsSurfaceCreateData;
+    //uint function(void** surface, void* context, uint width, uint height, uint bpp, void* data) sgGraphicsSurfaceCreateData;
     uint function(void* surface) sgGraphicsSurfaceDestroy;
     uint function(void* surface, void* texture) sgGraphicsSurfaceSetTexture;
     uint function(void* surface, void** texture) sgGraphicsSurfaceGetTexture;
-    uint function(void* surface, uint width, uint height, ubyte bpp, void* data) sgGraphicsSurfaceSetData;
-    //uint function(void* surface, uint* width, uint* height, ubyte* bpp, void** data) sgGraphicsSurfaceGetData;
+    uint function(void* surface, uint width, uint height, uint bpp, void* data) sgGraphicsSurfaceSetData;
+    //uint function(void* surface, uint* width, uint* height, uint* bpp, void** data) sgGraphicsSurfaceGetData;
     //uint function(void* surface, void* data) sgGraphicsSurfaceFreeData;
     uint function(void* surface, uint* width, uint* height) sgGraphicsSurfaceGetSize;
     uint function(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle) sgGraphicsSurfaceDraw;
@@ -119,10 +119,10 @@ extern(C)
     uint function(void* surface) sgGraphicsSurfaceResetTarget;
 
     uint function(void** texture, void* context) sgGraphicsTextureCreate;
-    //uint function(void** texture, void* context, uint width, uint height, ubyte bpp, void* data) sgGraphicsTextureCreateData;
+    //uint function(void** texture, void* context, uint width, uint height, uint bpp, void* data) sgGraphicsTextureCreateData;
     uint function(void* texture) sgGraphicsTextureDestroy;
-    uint function(void* texture, uint width, uint height, ubyte bpp, void* data) sgGraphicsTextureSetData;
-    //uint function(void* texture, uint* width, uint* height, ubyte* bpp, void** data) sgGraphicsTextureGetData;
+    uint function(void* texture, uint width, uint height, uint bpp, void* data) sgGraphicsTextureSetData;
+    //uint function(void* texture, uint* width, uint* height, uint* bpp, void** data) sgGraphicsTextureGetData;
     //uint function(void* data) sgGraphicsTextureFreeData;
     uint function(void* texture, uint* width, uint* height) sgGraphicsTextureGetSize;
     uint function(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle) sgGraphicsTextureDraw;
@@ -139,12 +139,12 @@ extern(C)
     //uint function(void* context*, SGubyte** pattern) sgGraphicsDrawPolygonGetStipple;
 
     /// Graphics Load
-    uint function(char* fname, uint* width, uint* height, ubyte* bpp, void** data) sgGraphicsLoadFile;
-    //uint function(void* stream, uint* width, uint* height, ubyte* bpp, void** data) sgGraphicsLoadStream;
+    uint function(char* fname, uint* width, uint* height, uint* bpp, void** data) sgGraphicsLoadFile;
+    //uint function(void* stream, uint* width, uint* height, uint* bpp, void** data) sgGraphicsLoadStream;
     uint function(void* data) sgGraphicsLoadFreeData;
 }
 
-bool load(char[] fname, out uint width, out uint height, out ubyte bpp, out ubyte[] data)
+bool load(char[] fname, out uint width, out uint height, out uint bpp, out ubyte[] data)
 {
     void* cdata;
     uint ret;
@@ -152,20 +152,19 @@ bool load(char[] fname, out uint width, out uint height, out ubyte bpp, out ubyt
         ret = sgGraphicsLoadFile(toStringz(fname), &width, &height, &bpp, &cdata);
     else
         return false;
-    data = cast(ubyte[])cdata[0..width*height*bpp].dup;
+    data = cast(ubyte[])cdata[0..width*height*bpp/8].dup;
     if(sgGraphicsLoadFreeData !is null)
         sgGraphicsLoadFreeData(cdata);
     if(ret != 0)
         return false;
     //data = toCanvasSize(data, width, height, bpp, flipData);
-    bpp *= 8;
     return true;
 }
 
 ubyte[] toCanvasSize(ubyte[] data, uint width, uint height, uint bypp)
 {
-    uint awidth = higherPower(width);
-    uint aheight = higherPower(height);
+    uint awidth = nextPower2(width);
+    uint aheight = nextPower2(height);
     if(awidth == width && aheight == height)
         return data;
 

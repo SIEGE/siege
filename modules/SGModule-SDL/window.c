@@ -9,19 +9,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-void cbWindowOpen()
+void windowOpen()
 {
     if(main_window->cbWindow->open != NULL)
         main_window->cbWindow->open(main_window);
 }
-int cbWindowClose()
+int windowClose()
 {
     if(main_window->cbWindow->close != NULL)
         main_window->cbWindow->close(main_window);
 
     return 1;
 }
-void cbWindowResize(int x, int y)
+void windowResize(int x, int y)
 {
     if(main_window->cbWindow->resize != NULL)
         main_window->cbWindow->resize(main_window, x, y);
@@ -74,8 +74,8 @@ SGuint SG_EXPORT sgCoreWindowOpen(void* window, SGuint width, SGuint height, SGu
 
     cwindow->surface = SDL_SetVideoMode(width, height, bpp, sdlflags);
 
-    cbWindowOpen();
-    cbWindowResize(width, height);
+    windowOpen();
+    windowResize(width, height);
 
     return SG_OK;
 }
@@ -95,7 +95,7 @@ SGuint SG_EXPORT sgCoreWindowClose(void* window)
     Window* cwindow = (Window*)window;
 
     cwindow->opened = SG_FALSE;
-    cbWindowClose();
+    windowClose();
 
     return SG_OK;
 }
@@ -118,7 +118,7 @@ SGuint SG_EXPORT sgCoreWindowSetSize(void* window, SGuint width, SGuint height)
     Window* cwindow = (Window*)window;
 
     cwindow->surface = SDL_SetVideoMode(width, height, cwindow->surface->format->BitsPerPixel, cwindow->surface->flags);
-    cbWindowResize(width, height);
+    windowResize(width, height);
 
     return SG_OK;
 }
@@ -155,9 +155,9 @@ SGuint SG_EXPORT sgCoreWindowSwapBuffers(void* window)
             case SDL_KEYDOWN:
             case SDL_KEYUP:
                 keyStates = SDL_GetKeyState(&keyNumStates);
-                cbKeyboardKey(event.key.keysym.sym, event.key.state == SDL_PRESSED);
+                keyboardKey(event.key.keysym.sym, event.key.state == SDL_PRESSED);
                 if(event.key.keysym.unicode != 0)
-                    cbKeyboardChar(event.key.keysym.unicode, event.key.state == SDL_PRESSED);
+                    keyboardChar(event.key.keysym.unicode, event.key.state == SDL_PRESSED);
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
@@ -173,12 +173,12 @@ SGuint SG_EXPORT sgCoreWindowSwapBuffers(void* window)
                         mouseW--;
                 }
                 else
-                    cbMouseButton(event.button.button, event.button.state == SDL_PRESSED);
+                    mouseButton(event.button.button, event.button.state == SDL_PRESSED);
                 break;
 
             case SDL_MOUSEMOTION:
                 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
-                cbMouseMove(event.motion.x, event.motion.y);
+                mouseMove(event.motion.x, event.motion.y);
                 break;
 
             case SDL_QUIT:

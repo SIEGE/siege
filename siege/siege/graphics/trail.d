@@ -60,26 +60,24 @@ class Trail
             ppos = pos;
         }
 
-        //glPushAttrib(GL_CURRENT_BIT);
-            siege.graphics.draw.draw.begin(Primitive.LineStrip);
-                ppos = trail[0];
-                for(i = 0; i < trail.length; i++)
+        siege.graphics.draw.draw.begin(Primitive.LineStrip);
+            ppos = trail[0];
+            for(i = 0; i < trail.length; i++)
+            {
+                pos = trail[i];
+                if(pos.isNan)
                 {
-                    pos = trail[i];
-                    if(pos.isNan)
-                    {
-                        siege.graphics.draw.draw.end();
-                        siege.graphics.draw.draw.begin(Primitive.LineStrip);
-                        continue;
-                    }
-                    col = Color.mix(endColor, startColor, currentLength / totalLength);
-                    siege.graphics.draw.draw.color(col);
-                    siege.graphics.draw.draw.vertex(pos);
-
-                    currentLength += (ppos - pos).length;
-                    ppos = pos;
+                    siege.graphics.draw.draw.end();
+                    siege.graphics.draw.draw.begin(Primitive.LineStrip);
+                    continue;
                 }
-            siege.graphics.draw.draw.end();
-        //glPopAttrib();
+                col = Color.mix(endColor, startColor, currentLength / totalLength);
+                siege.graphics.draw.draw.color(col);
+                siege.graphics.draw.draw.vertex(pos);
+
+                currentLength += (ppos - pos).length;
+                ppos = pos;
+            }
+        siege.graphics.draw.draw.end();
     }
 }

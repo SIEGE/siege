@@ -5,9 +5,9 @@
 
 typedef struct SGCoreWindowCallbacks
 {
-    void (*open)(void* window);
-    void (*close)(void* window);
-    void (*resize)(void* window, SGuint width, SGuint height);
+    void SG_EXPORT (*open)(void* window);
+    void SG_EXPORT (*close)(void* window);
+    void SG_EXPORT (*resize)(void* window, SGuint width, SGuint height);
 } SGCoreWindowCallbacks;
 
 #ifdef __cplusplus

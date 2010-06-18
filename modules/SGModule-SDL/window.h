@@ -13,8 +13,8 @@ typedef struct Window
 } Window;
 Window* main_window;
 
-void cbWindowOpen();
-int cbWindowClose();
-void cbWindowResize(int x, int y);
+void windowOpen();
+int windowClose();
+void windowResize(int x, int y);
 
 #endif // __WINDOW_H__

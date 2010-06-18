@@ -33,7 +33,7 @@ class LinkedList(T)
         len++;
 
         LinkedNode!(T) *node = new LinkedNode!(T);
-        node.previous = lastNode;
+        node.prev = lastNode;
         node.item = item;
         node.next = null;
 
@@ -41,7 +41,7 @@ class LinkedList(T)
             firstNode = node;
         if(lastNode !is null)
         {
-            node.previous = lastNode;
+            node.prev = lastNode;
             lastNode.next = node;
         }
         lastNode = node;
@@ -59,7 +59,7 @@ class LinkedList(T)
         len++;
 
         LinkedNode!(T)* node = new LinkedNode!(T);
-        node.previous = null;
+        node.prev = null;
         node.item = item;
         node.next = firstNode;
 
@@ -68,7 +68,7 @@ class LinkedList(T)
         if(firstNode !is null)
         {
             node.next = firstNode;
-            firstNode.previous = node;
+            firstNode.prev = node;
         }
         firstNode = node;
 
@@ -84,9 +84,9 @@ class LinkedList(T)
         len--;
 
         if(node.next !is null)
-            node.next.previous = node.previous;
-        if(node.previous !is null)
-            node.previous.next = node.next;
+            node.next.prev = node.prev;
+        if(node.prev !is null)
+            node.prev.next = node.next;
 
         delete node;
     }
@@ -116,6 +116,43 @@ class LinkedList(T)
     {
         return len;
     }
+
+    /**
+        \brief Overloaded for use with foreach and foreach_reverse
+    */
+    // @{
+        int opApply(int delegate(ref T) dg)
+        {
+            int result = 0;
+
+            LinkedNode!(T)* currentNode = firstNode;
+            while(currentNode !is null)
+            {
+                result = dg(currentNode.item);
+                if(result)
+                    break;
+
+                currentNode = currentNode.next;
+            }
+            return result;
+        }
+
+        int opApplyReverse(int delegate(ref T) dg)
+        {
+            int result = 0;
+
+            LinkedNode!(T)* currentNode = lastNode;
+            while(currentNode !is null)
+            {
+                result = dg(currentNode.item);
+                if(result)
+                    break;
+
+                currentNode = currentNode.prev;
+            }
+            return result;
+        }
+    // @}
 }
 
 /**
@@ -127,7 +164,7 @@ struct LinkedNode(T)
     T item;
     /* @{ */
     /// \brief The previous node (null if this is the first node)
-    LinkedNode!(T) *previous;
+    LinkedNode!(T) *prev;
     /// \brief The next node (null if this is the last node)
     LinkedNode!(T) *next;
     /* @} */
@@ -136,7 +173,9 @@ struct LinkedNode(T)
         Aliases for the previous and the next node
     */
     /* @{ */
-    alias previous left;
+    /// \deprecated Use prev instead
+    deprecated alias prev previous;
+    alias prev left;
     alias next right;
     /* @} */
 }

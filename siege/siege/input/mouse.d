@@ -24,34 +24,34 @@ private
 
             if(console.active)
             {
-                console.evMouseButton(button, down);
+                console.evMouseButton(button);
                 if(pressed)
-                    console.evMouseButtonPressed(button);
+                    console.evMouseButtonPress(button);
                 else
-                    console.evMouseButtonReleased(button);
+                    console.evMouseButtonRelease(button);
 
                 switch(button)
                 {
                     case 1:
                         console.evMouseButtonLeft(down);
                         if(pressed)
-                            console.evMouseButtonLeftPressed();
+                            console.evMouseButtonLeftPress();
                         else
-                            console.evMouseButtonLeftReleased();
+                            console.evMouseButtonLeftRelease();
                         break;
                     case 2:
                         console.evMouseButtonRight(down);
                         if(pressed)
-                            console.evMouseButtonRightPressed();
+                            console.evMouseButtonRightPress();
                         else
-                            console.evMouseButtonRightReleased();
+                            console.evMouseButtonRightRelease();
                         break;
                     case 3:
                         console.evMouseButtonMiddle(down);
                         if(pressed)
-                            console.evMouseButtonMiddlePressed();
+                            console.evMouseButtonMiddlePress();
                         else
-                            console.evMouseButtonMiddleReleased();
+                            console.evMouseButtonMiddleRelease();
                         break;
                     default:
                         break;
@@ -64,34 +64,34 @@ private
             {
                 if((cast(MouseEventClient)c.item !is null) && c.item.active)
                 {
-                    c.item.evMouseButton(button, down);
+                    c.item.evMouseButton(button);
                     if(pressed)
-                        c.item.evMouseButtonPressed(button);
+                        c.item.evMouseButtonPress(button);
                     else
-                        c.item.evMouseButtonReleased(button);
+                        c.item.evMouseButtonRelease(button);
 
                     switch(button)
                     {
                         case 1:
                             c.item.evMouseButtonLeft(down);
                             if(pressed)
-                                c.item.evMouseButtonLeftPressed();
+                                c.item.evMouseButtonLeftPress();
                             else
-                                c.item.evMouseButtonLeftReleased();
+                                c.item.evMouseButtonLeftRelease();
                             break;
                         case 2:
-                            c.item.evMouseButtonMiddle(down);
-                            if(pressed)
-                                c.item.evMouseButtonMiddlePressed();
-                            else
-                                c.item.evMouseButtonMiddleReleased();
-                            break;
-                        case 3:
                             c.item.evMouseButtonRight(down);
                             if(pressed)
-                                c.item.evMouseButtonRightPressed();
+                                c.item.evMouseButtonRightPress();
                             else
-                                c.item.evMouseButtonRightReleased();
+                                c.item.evMouseButtonRightRelease();
+                            break;
+                        case 3:
+                            c.item.evMouseButtonMiddle(down);
+                            if(pressed)
+                                c.item.evMouseButtonMiddlePress();
+                            else
+                                c.item.evMouseButtonMiddleRelease();
                             break;
                         default:
                             break;
@@ -298,17 +298,17 @@ class MousePosition
         mouse.mouse.setPosition(pos.x, pos.y);
     }*/
 
-    iVector previous()
+    Vector previous()
     {
-        return iVector(prev[0], prev[1]);
+        return Vector(prev[0], prev[1]);
     }
-    iVector current()
+    Vector current()
     {
-        return iVector(curr[0], curr[1]);
+        return Vector(curr[0], curr[1]);
     }
-    iVector delta()
+    Vector delta()
     {
-        return current - previous;
+        return current() - previous();
     }
 }
 

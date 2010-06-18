@@ -25,11 +25,6 @@ class Entity: Body
     Shape shape;
 
     /* @{ */
-    this(iVector position, float angle, Sprite sprite, Sprite mask = null, bool usePhysics = true)
-    {
-        this(Vector(position.x, position.y), angle, sprite, mask, usePhysics);
-    }
-
     this(Vector position, float angle, Sprite sprite, Sprite mask = null, bool usePhysics = true)
     {
         this.sprite = sprite;

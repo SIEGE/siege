@@ -65,23 +65,6 @@ union Color
         return opCall(float.nan, float.nan, float.nan, 1.0);
     }
 
-    /**
-        \brief Get the color in a single 0xRRGGBBAA integer
-        \deprecated Use \ref toRGBAInt instead
-    */
-    deprecated uint opCast()
-    {
-        return (cast(uint)(rgba[0]*255) << 24) |
-               (cast(uint)(rgba[1]*255) << 16) |
-               (cast(uint)(rgba[2]*255) <<  8) |
-                cast(uint)(rgba[3]*255);
-    }
-    /**
-        \brief A more descriptive version of opCast
-        \deprecated Use \ref toRGBAInt instead
-    */
-    deprecated alias opCast toInt;
-
     /* @{ */
     /// \brief A shorthand for Color.rgba[i]
     float opIndex(size_t id)

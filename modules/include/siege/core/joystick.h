@@ -5,10 +5,10 @@
 
 typedef struct SGCoreJoystickCallbacks
 {
-    void (*button)(void* joystick, SGuint button, SGbool down);
-    //void (*button)(void* joystick, SGbool* buttons);
-    //void (*move)(void* joystick, SGuint axis, float position);
-    void (*move)(void* joystick, float* axis);
+    void SG_EXPORT (*button)(void* joystick, SGuint button, SGbool down);
+    //void SG_EXPORT (*button)(void* joystick, SGbool* buttons);
+    //void SG_EXPORT (*move)(void* joystick, SGuint axis, float position);
+    void SG_EXPORT (*move)(void* joystick, float* axis);
 } SGCoreJoystickCallbacks;
 
 #ifdef __cplusplus

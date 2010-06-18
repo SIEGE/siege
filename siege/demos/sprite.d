@@ -24,7 +24,7 @@ class SpriteDemo: Demo
     Sprite[char[]] sprites;
     this()
     {
-        name = "Sprite";
+        name = "Sprites";
         brief = "SIEGE sprite handling";
         description = "This demo shows SIEGE's handling of sprites";
     }
@@ -43,7 +43,7 @@ class SpriteDemo: Demo
     {
         sprites["CrateSmall"].draw(64, 256, 0);
         sprites["StrongboxSmall"].draw(640 - 64, 256, 0);
-        sprites["Pacman"].draw(320, 128, (mouse.position.current - iVector(320, 128)).angle() / PI * 180);
+        sprites["Pacman"].draw(320, 128, (mouse.position.current - Vector(320, 128)).angle() / PI * 180);
 
         uint i;
         for(i = 32; i < 640; i += 64)

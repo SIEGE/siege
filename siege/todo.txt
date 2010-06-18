@@ -53,7 +53,6 @@ Will need to change the way C functions are called in ~this()
 
 -toolkit
 -PSP backend
--documentation (!!!)
 
 NOTES
 -----
@@ -76,7 +75,6 @@ TH3O3N/N3O:
 
 TIM:
 - rewrite the console
-- demo system
 - object serialization
 - XML/OpenRJ/config/JSON parsing
 - event queues
@@ -85,5 +83,4 @@ NetSyncTest
 
 BUGS
 ----
-- font size returns wrong (too big) size for non-monospace fonts
-- all sounds stop playing after a while (probably because they are not removed when done playing)
+- font size returns wrong (too big) size for non-monospace fonts (todo: was this fixed?)

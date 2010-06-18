@@ -24,7 +24,7 @@ class Surface
     {
         uint width;
         uint height;
-        ubyte bpp;
+        uint bpp;
         ubyte[] data;
 
         if(!siege.modules.graphics.load(fname, width, height, bpp, data))
@@ -32,7 +32,7 @@ class Surface
 
         this(width, height, bpp, data);
     }
-    this(uint width, uint height, ubyte bpp, ubyte[] data = null)
+    this(uint width, uint height, uint bpp, ubyte[] data = null)
     {
         uint bypp;
         switch(bpp)
@@ -114,12 +114,13 @@ class Surface
         untarget();
     }
 
-    iVector size()
+    Vector size()
     {
-        iVector ret;
+        uint x;
+        uint y;
         if(sgGraphicsSurfaceGetSize !is null)
-            sgGraphicsSurfaceGetSize(surface, cast(uint*)&ret.x, cast(uint*)&ret.y);
-        return ret;
+            sgGraphicsSurfaceGetSize(surface, &x, &y);
+        return Vector(x, y);
     }
     /*iVector asize()
     {
@@ -134,11 +135,11 @@ class Surface
 
     uint width()
     {
-        return size().x;
+        return cast(uint)size().x;
     }
     uint height()
     {
-        return size().y;
+        return cast(uint)size().y;
     }
     /*uint awidth()
     {

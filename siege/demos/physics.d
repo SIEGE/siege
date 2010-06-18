@@ -106,12 +106,12 @@ class PhysicsDemo: Demo
             floor ~= new Floor(sprites["HazardWall"], Vector(i, 320));
     }
 
-    void evMouseButtonLeftPressed()
+    void evMouseButtonLeftPress()
     {
         boxes ~= new MetalBox(Vector(mouse.position.current.x, mouse.position.current.y), 0.0);
     }
 
-    void evMouseButtonRightPressed()
+    void evMouseButtonRightPress()
     {
         boxes ~= new Box(Vector(mouse.position.current.x, mouse.position.current.y), 0.0);
     }

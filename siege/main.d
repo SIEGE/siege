@@ -4,10 +4,11 @@ import siege.siege;
 import demos.all;
 import std.stdio;
 import std.string;
+import std.compiler;
 
 int main(char[][] args)
 {
-    writefln("Compiled with %s %s.%s", __VENDOR__, toString(__VERSION__)[0], toString(__VERSION__)[1..$]);
+    writefln("Compiled with %s %d.%.3d", std.compiler.name, std.compiler.version_major, std.compiler.version_minor);
     writefln("Date: %s", __DATE__);
     writefln("Time: %s", __TIME__);
     writefln("----------------------------------------");

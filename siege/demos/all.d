@@ -11,4 +11,5 @@ public
     import demos.physics;
     import demos.sprite;
     import demos.text;
+    import demos.widgets;
 }
