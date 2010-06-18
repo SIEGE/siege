@@ -1,0 +1,234 @@
+NOTE: WORKING DRAFT
+#$%-=
+
++---+
+|   | 1 byte
++---+
+
++===+
+|   | varying number of bytes
++===+
+
++ - +
+|   | to be defined [TBD]
++ - +
+
+Message:
+    +---+---+=========+
+    | MSGID | MESSAGE |
+    +---+---+=========+
+
+    Handshake:
+        Server ---> Client:
+        +---+---+---+---+---+---+---+---+---+---+
+        | S   I   G   P | PMAJOR| PMINOR| PPATCH|
+        +---+---+---+---+---+---+---+---+---+---+
+
+        Client ---> Server (Get Info):
+        +---+---+---+---+---+---+---+---+---+---+---+---+---+======+
+        | S   I   G   P | PMAJOR| PMINOR| PPATCH| I |WHATNUM| WHAT |
+        +---+---+---+---+---+---+---+---+---+---+---+---+---+======+
+            What: What info to send
+            +---+---+---+
+            |TYP|  ARG  |
+            +---+---+---+
+                Extended (TYP=255):
+                    +===============+
+                    | EXTENDED INFO |
+                    +===============+
+                    ARG:
+                        Additional identifier (exactly what extended info to send)
+                    Extended Info:
+                        Additional game-specific info
+
+
+        Server ---> Client (Info):
+        +---+---+---+======+
+        | Y |INFONUM| INFO |
+        +---+---+---+======+
+            Info: the info
+            +---+======+
+            |TYP| DATA |
+            +---+======+
+            Data:
+                Server Name:
+                    +---+---+======+
+                    |  NLEN | NAME |
+                    +---+---+======+
+                Player Number:
+                    +---+---+---+---+
+                    |      NUM      |
+                    +---+---+---+---+
+                Max Players:
+                    +---+---+---+---+
+                    |      MAX      |
+                    +---+---+---+---+
+
+        Client ---> Server (Request Joining):
+        +---+---+---+---+---+---+---+---+---+---+---+
+        | S   I   G   P | PMAJOR| PMINOR| PPATCH| J |
+        +---+---+---+---+---+---+---+---+---+---+---+
+
+        Server ---> Client (Accept Join):
+            +---+---+---+---+---+---+---+---+---+---+---+---+---+=======+---+---+---+---+====================+
+            | Y |              GID              |    FILENUM    | FILES |    GEXTNUM    | GAME EXTENDED INFO |
+            +---+---+---+---+---+---+---+---+---+---+---+---+---+=======+---+---+---+---+====================+
+            GID:
+                Randomly generated unique 8-byte game ID (MUST be randomly generated to avoid collisions)
+            Files:
+                +---+ - - - - - - +---+---+---+---+======+
+                |FLG|  FILE HASH  |    NAMELEN    | NAME |
+                +---+ - - - - - - +---+---+---+---+======+
+                File Hash:
+                    Hash of the file, for checking [TBD]
+
+            Game Extended Info:
+                +---+---+---+---+======+
+                |    GEXTLEN    | INFO |
+                +---+---+---+---+======+
+                Info:
+                    Optional additional info about the game, of length GEXTLEN (recommended is at least game version information)
+
+        Server ---> Client (Reject):
+            Indicates denial in handshake
+            +---+---+---+---+---+===============+
+            | N |ERRCODE| EXTLEN| EXTENDED INFO |
+            +---+---+---+---+---+===============+
+        Server ---> Client (Error):
+            Indicates an irrecoverable error (often server-side)
+            +---+---+---+---+---+===============+
+            | E |ERRCODE| EXTLEN| EXTENDED INFO |
+            +---+---+---+---+---+===============+
+
+        Client ---> Server (OK):
+            +---+
+            | Y |
+            +---+
+
+        Server ---> Client (OK):
+            +---+ - - - - - -+
+            | Y | SCENE INFO |
+            +---+ - - - - - -+
+            Scene info:
+                Info about the current game scene [TBD]
+
+        Server ---> Client (Update):
+            +---+---+---+---+---+=======+---+---+======+
+            | U |    FILENUM    | FILES |FROMNUM| FROM |
+            +---+---+---+---+---+=======+---+---+======+
+            Files:
+                The list of files to update (see "Server ---> Client (Accept)")
+            From:
+                List of servers to download from, in decreasing order of preference (from the server standpoint)
+                +---+---+---+---+---+---+---+---+=====+
+                |FLG|    LOC    |     URLLEN    | URL |
+                +---+---+---+---+---+---+---+---+=====+
+                FLG:
+                    Flag (what is it - from another server, from HTTP...)
+                LOC:
+                    3-letter ISO country code (see http://www.unc.edu/~rowlett/units/codes/country.htm)
+                URL:
+                    Where to download from (empty string indicates current server)
+
+        Client ---> Server (Updating from Server):
+            +---+---+---+---+---+======+
+            | U |    NAMELEN    | NAME |
+            +---+---+---+---+---+======+
+
+        Server ---> Client (Reject):
+            See above
+
+        Server ---> Client (OK):
+            +---+ - - - - - +---+---+---+---+========+
+            | Y | FILE HASH |    FILELEN    | CHUNKS |
+            +---+ - - - - - +---+---+---+---+========+
+            File Hash:
+                Hash of the file [TBD]
+            Chunks:
+                +---+---+---+---+======+
+                |    CHUNKLEN   | DATA |
+                +---+---+---+---+======+
+                Data:
+                    Data of the file inside the chunk
+
+    Main Message:
+        +---+---+---+---+---+---+==========+
+        |     OBJID     | COMNUM| COMMANDS |
+        +---+---+---+---+---+---+==========+
+        Commands:
+            +---+==============+
+            |CMD| COMMAND DATA |
+            +---+==============+
+            Command Data:
+                Ping/Pong:
+                    +======+
+                    | DATA |
+                    +======+
+                Variable Data:
+                    +---+---+======+
+                    | VARID | DATA |
+                    +---+---+======+
+                New object:
+                    +---+---+
+                    | NEWID |
+                    +---+---+
+                Remove object:
+                    +---+---+
+                    | DELID |
+                    +---+---+
+                Call method:
+                    +---+---+======+
+                    |  MID  | DATA |
+                    +---+---+======+
+                Extension:
+                    +---+---+======+
+                    |  EXT  | DATA |
+                    +---+---+======+
+
+Example handshake:
+    Client connects to a server, the server needs 3 files to be identical (1 optionally).
+    The client concludes that 2 of those files need updating (they are either missing or wrong version)
+    The client sends a request for the files
+
+Examples:
+    Change integer variables x (ID 0) and y (ID 1) to 175 and 262, respectively (inside object with ID 5):
+    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+    |  100  |       5       |   2   | 1 |   0   |      175      | 1 |   1   |      262      |
+    +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+    Broken down:
+        +---+---+
+        |  100  | Message ID (for tracking)
+        +---+---+
+
+        +---+---+---+---+
+        |       5       | Object ID
+        +---+---+---+---+
+
+        +---+---+===+
+        |   2   |...| 2 commands...
+        +---+---+===+
+
+            +---+===+
+            | 1 |...| ...[COMMAND 0] change variable (Command.VAR_CHANGE)...
+            +---+===+
+
+                +---+---+===+
+                |   0   |...| ...with variable ID 0...
+                +---+---+===+
+
+                    +---+---+---+---+
+                    |      175      | ...to 175
+                    +---+---+---+---+
+
+            +---+===+
+            | 1 |...| ...[COMMAND 1] change variable (Command.VAR_CHANGE)...
+            +---+===+
+
+                +---+---+===+
+                |   1   |...| ...with variable ID 1...
+                +---+---+===+
+
+                    +---+---+---+---+
+                    |      262      | ...to 262
+                    +---+---+---+---+
+

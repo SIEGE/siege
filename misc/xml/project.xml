@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<?xml-stylesheet href="style.css" type="text/css"?>-->
+<?xml-stylesheet type="text/xsl" href="style.xsl"?>
+<!-- version = project version -->
+<!-- gversion = GameCraft file version -->
+<project name="Test Project" appid="1234-1234-1234-1234" gversion="0.5" version="1.0">
+    <!-- main project configuration -->
+    <config>
+        <author>Tim Chas</author>
+        <description>A test XML project for GC!</description>
+        <!-- %ext% is converted into extension -->
+        <file>test%ext%</file>
+        <!-- encryption. empty key defaults to appid -->
+        <encryption key="" />
+        <!-- where to put resources -->
+        <resources directory="" />
+        <!-- actual groups - define where the items are placed in the final version -->
+        <groups>
+            <!-- format (uncompressed): /program_dir/resources_dir/group_name/dirs/* -->
+            <!-- format (compressed): /program_dir/resources_dir/group_name.ext > /dirs/contents -->
+            <group name="gfx" encrypt="0">
+                <!-- supported: tar, gzip, bzip, 7zip (ignored if uncompressed) -->
+                <!-- mask sets the actual extension - just renames it -->
+                <!-- .tar.gz with extension "dat" -->
+                <zip type="tar/gzip" mask="dat" />
+                <!-- subdirectories -->
+                <directories>
+                    <directory name="sprites" />
+                    <directory name="backgrounds">
+                        <directory name="bmp">
+                            <directory name="main" />
+                        </directory>
+                        <directory name="jpg" />
+                    </directory>
+                </directories>
+            </group>
+            <group name="sfx" />
+        </groups>
+    </config>
+    <!-- sprites -->
+    <sprites>
+        <!-- virtual groups... 0 = root -->
+        <groups>
+            <group name="test-s">
+                <group name="test-s2" />
+            </group>
+        </groups>
+        <sprite name="spr_test" id="0" group="test-s/test-s2" width="64" height="64">
+            <config>
+                <!-- where to find the file - relative to the project's root -->
+                <file name="test.png" />
+                <!-- do we use a color key for alpha? and what's the location of the key? -->
+                <key use="1" x="0" y="0"/>
+                <!-- origin, aka pivot -->
+                <pivot x="0" y="0" />
+            </config>
+            <!-- subimages -->
+            <images>
+                <image id="0" x="0" y="0" />
+            </images>
+            <!-- release is used for release-time config -->
+            <release>
+                <!-- what group to put the file in? and in what directory? -->
+                <group>gfx/sprites</group>
+            </release>
+        </sprite>
+    </sprites>
+    <!-- objects -->
+    <objects>
+        <groups>
+            <group name="test-o" />
+        </groups>
+    <!-- NOTE: [] might become (\034 - 28 - FS - File Separator)! -->
+
+    <!-- Internally:
+        (\036 - 30 - RS - Record Separator)
+        (\036)[directory/id:name]
+
+        Example:
+            (\036)[objects/main/0:obj_test]
+
+        Breakdown:
+            (\036) is a special char that tells the program that we're inserting an item from a list here
+            [] starts and ends the item
+            "objects/main" is the directory structure from the root
+            "0" is the object ID
+            "obj_test" is the object name -->
+        <object name="obj_test" id="0" group="">
+            <events>
+                <!-- (\035 - 29 - GS - Group Separator) (\037 - 31 - US - Unit Separator) -->
+                <!-- D&D: (\035)[[library/group:command]attribute(\037)ATTR(\037)] -->
+                <!-- Example: (\035)[[main/objects:create]id(\037)5(\037)x(\037)32(\037)y(\037)32(\037)] -->
+
+                <!-- Breakdown:
+                    (\035) is a special char that tells the program that we're deling with D&D here.
+                    [      starts the D&D
+                    [ ]    starts (and ends) the "location" part
+                    "id"   tells which attribute
+                    (\037) is a special char, used instead of quotes (" or ')
+                    "5"    tells what's the value of the above attribute
+                    ]      ends the D&D, the program goes into normal parsing again -->
+                <!-- Location Breakdown:
+                    []        starts and ends it
+                    "library" library name
+                    "group"   the group ID (think namespace)
+                    "command" the actual command ID -->
+                <event type="create">int i=0;</event>
+                <event type="step" alt="main">i++;</event>
+                <event type="draw">print_console(string(i));</event>
+            </events>
+        </object>
+    </objects>
+    <!-- backgrounds -->
+    <backgrounds>
+        <groups>
+            <group name="bmp" />
+            <group name="jpg" />
+        </groups>
+        <background name="bg_back" id="0" group="bmp" width="128" height="128">
+            <config>
+                <!-- where to find the file - relative to the project's root -->
+                <file name="back.bmp" />
+                <!-- do we use a color key for alpha? and what's the location of the key? -->
+                <key use="1" x="0" y="0"/>
+            </config>
+            <!-- do we use a tileset? if so, how is it set? -->
+            <tileset use="0" width="0" height="0" xoffset="0" yoffset="0" xspacing="0" yspacing="0"/>
+            <release>
+                <!-- what group to put the file in? and in what directory? -->
+                <group>gfx/backgrounds/bmp/main</group>
+            </release>
+        </background>
+    </backgrounds>
+    <!-- levels (rooms?) -->
+    <levels>
+        <groups>
+            <group name="test-l" />
+        </groups>
+        <level name="lvl_test" id="0" width="640" height="480" group="test-l">
+            <!-- what code to run at the start and at the end? -->
+            <code>
+                <start>print_console("LEVEL CREATED!");</start>
+                <end>print_console("LEVEL ENDED!");</end>
+            </code>
+            <!-- main level config -->
+            <config>
+                <!-- what background to use? -->
+                <background>0</background>
+                <!-- level order (in-game)... starts at the lowest number -->
+                <order>0</order>
+            </config>
+            <objects>
+                <!-- objects in the level and their starting script -->
+                <object id="0" x="64" y="64" angle="0">
+                    <start>print_console("OBJECT CREATED!");</start>
+                    <end>print_console("OBJECT DESTROYED!");</end>
+                </object>
+            </objects>
+        </level>
+    </levels>
+    <!-- other automatically gathered info -->
+    <log>
+        <changelog>
+            <items date="13838">
+                <!-- 15:07:30... approx -->
+                <item id="2" time="54450">Project "Test Project" Created</item>
+                <item id="4" time="54510">Project Settings Changed</item>
+                <item id="5" time="54570">Sprite "spr_test" Added</item>
+                <item id="6" time="54630">Object "obj_test" Added</item>
+                <item id="7" time="54690">Background "bg_back" Added</item>
+                <item id="8" time="54750">Level "lvl_test" Added</item>
+                <item id="9" time="54810">Object "obj_test" Modified</item>
+                <item id="10" time="54870">Level "lvl_test" Modified</item>
+            </items>
+        </changelog>
+	<!-- ADDED -->
+        <backups>
+            <backup date="13838" time="54450" file="" />
+        </backups>
+    </log>
+</project>
