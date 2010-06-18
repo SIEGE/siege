@@ -1,4 +1,4 @@
-module demos.ann;
+module demos.ai.ann;
 
 private
 {

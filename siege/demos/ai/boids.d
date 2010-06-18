@@ -1,4 +1,4 @@
-module demos.boids;
+module demos.ai.boids;
 
 private
 {

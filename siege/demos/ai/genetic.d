@@ -1,4 +1,4 @@
-module demos.genetic;
+module demos.ai.genetic;
 
 private
 {
