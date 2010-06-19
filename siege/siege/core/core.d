@@ -107,7 +107,7 @@ static:
                 mod.sgModuleMatch(infos.ptr, infos.length, &mok);
             if(!mok)
             {
-                std.c.stdio.fprintf(std.c.stdio.stderr, "Could not load module %s: Uncompatiable with other modules\n", infos[i].name);
+                std.c.stdio.fprintf(std.c.stdio.stderr, "Could not load module %s: Incompatible with other modules\n", infos[i].name);
                 ok = false;
             }
         }

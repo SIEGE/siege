@@ -1,4 +1,4 @@
-module siege.modules.windowing;
+module siege.modules.window;
 
 private
 {

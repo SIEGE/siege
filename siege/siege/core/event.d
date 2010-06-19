@@ -14,6 +14,17 @@ private
 }
 
 /**
+    \brief Holds module-related events - these are called on \ref siege.core.core.Game.init "game.init" and \ref siege.core.core.Game.deinit "game.deinit"
+*/
+interface ModuleEventClient
+{
+    /// \brief Called on \ref siege.core.core.Game.init "game.init"
+    void evInit();
+    /// \brief Called on \ref siege.core.core.Game.deinit "game.deinit"
+    void evDeinit();
+}
+
+/**
     \brief Holds the "core" events - that is, events related with the most basic game control
 */
 interface CoreEventClient
@@ -33,17 +44,6 @@ interface CoreEventClient
     /// \brief Fourth event to be called in each loop - drawing should be done in here
     void evDraw();
     /* @} */
-}
-
-/**
-    \brief Holds module-related events - these are called on \ref siege.core.core.Game.init "game.init" and \ref siege.core.core.Game.deinit "game.deinit"
-*/
-interface ModuleEventClient
-{
-    /// \brief Called on \ref siege.core.core.Game.init "game.init"
-    void evInit();
-    /// \brief Called on \ref siege.core.core.Game.deinit "game.deinit"
-    void evDeinit();
 }
 
 /**
@@ -347,15 +347,15 @@ abstract class EventClient: CoreEventClient, ModuleEventClient, WindowEventClien
         active = false;
     }
 
+    void evInit() {}
+    void evDeinit() {}
+
     void evStart() {}
     void evExit() {}
     void evTick() {}
     void evTickBegin() {}
     void evTickEnd() {}
     void evDraw() {}
-
-    void evInit() {}
-    void evDeinit() {}
 
     void evWindowOpen() {}
     void evWindowClose() {}

@@ -20,7 +20,7 @@ private
     import std.c.stdarg;
 
     import siege.modules.graphics;
-    import siege.modules.windowing;
+    import siege.modules.window;
     import siege.modules.input;
 
     extern(C)
