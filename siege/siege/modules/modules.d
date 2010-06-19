@@ -9,7 +9,7 @@ private
     import siege.modules.graphics;
     import siege.modules.input;
     import siege.modules.physics;
-    import siege.modules.windowing;
+    import siege.modules.window;
 
     import std.file;
     import std.gc;

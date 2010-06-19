@@ -82,7 +82,7 @@
 		<Unit filename="siege\modules\input.d" />
 		<Unit filename="siege\modules\modules.d" />
 		<Unit filename="siege\modules\physics.d" />
-		<Unit filename="siege\modules\windowing.d" />
+		<Unit filename="siege\modules\window.d" />
 		<Unit filename="siege\physics\all.d" />
 		<Unit filename="siege\physics\constraint.d" />
 		<Unit filename="siege\physics\particles\all.d" />

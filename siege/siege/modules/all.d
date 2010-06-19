@@ -8,5 +8,5 @@ public
     import siege.modules.input;
     import siege.modules.modules;
     import siege.modules.physics;
-    import siege.modules.windowing;
+    import siege.modules.window;
 }
