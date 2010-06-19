@@ -133,7 +133,7 @@ class Window
         Viewport.main = new Viewport(Vector(0, 0), s);
 
         cbWindowOpen(whandle);
-        cbWindowResize(whandle, width, height);
+        cbWindowResize(whandle, s.x, s.y);
     }
     bool opened()
     {
