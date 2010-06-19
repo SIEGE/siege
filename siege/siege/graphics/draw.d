@@ -385,7 +385,7 @@ static:
     void begin(Primitive type, Texture texture = null)
     {
         if(drawPoints.length != 0 || drawTexCoords.length != 0 || drawColors.length != 0)
-            throw new Exception("Cannot draw.begin called twice.");
+            throw new Exception("Cannot draw.begin - called twice.");
 
         drawType = type;
         drawTexture = texture;
