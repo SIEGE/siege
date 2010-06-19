@@ -4,7 +4,7 @@ http://www.libsdl.de/logo/
 GLFW:
 n/a
 
-SndFIle:
+SndFile:
 n/a (http://www.mega-nerd.com/libsndfile/libsndfile.jpg perhaps?)
 
 Chipmunk:
