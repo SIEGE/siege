@@ -27,36 +27,22 @@ private
     {
         void cbWindowOpen(void* window)
         {
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if(cast(WindowEventClient)c !is null)
-                    c.item.evWindowOpen();
-                c = c.next;
-            }
-            //runEvent!(WindowEventClient, "WindowOpen", false);
+            foreach(client; clientList)
+                if((client !is null) && client.active)
+                    client.evWindowOpen();
         }
         void cbWindowClose(void* window)
         {
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if(cast(WindowEventClient)c !is null)
-                    c.item.evWindowClose();
-                c = c.next;
-            }
-            //runEvent!(WindowEventClient, "WindowClose", false);
+            foreach(client; clientList)
+                if((client !is null) && client.active)
+                    client.evWindowClose();
             game.stop();
         }
         void cbWindowResize(void* window, uint width, uint height)
         {
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if(cast(WindowEventClient)c !is null)
-                    c.item.evWindowResize(width, height);
-                c = c.next;
-            }
+            foreach(client; clientList)
+                if((client !is null) && client.active)
+                    client.evWindowResize(width, height);
         }
     }
 }

@@ -324,16 +324,15 @@ interface LevelEventClient
 abstract class EventClient: CoreEventClient, ModuleEventClient, WindowEventClient, MouseEventClient, KeyboardEventClient, JoystickEventClient, NetworkEventClient, PhysicsEventClient, LevelEventClient
 {
     bool active;
-    LinkedNode!(EventClient) *node;
 
-    this()
+    this(float priority = 0.0)
     {
         active = true;
-        node = clientList.append(this);
+        clientList.add(priority, this);
     }
     ~this()
     {
-        clientList.remove(node);
+        clientList.removeItem(this);
     }
 
     /// \brief Activate the EventClient, thus making it accept events (default)

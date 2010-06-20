@@ -41,7 +41,6 @@ class Console: EventClient
 {
     private
     {
-        bool _opened = false;
         bool _insert = true;
 
         uint cols;
@@ -67,6 +66,7 @@ class Console: EventClient
 
     this(Vector size, Font fonz = null)
     {
+        super(1000000);
         cols = cast(uint)size.x;
         rows = cast(uint)size.y;
         deactivate();
@@ -82,26 +82,26 @@ class Console: EventClient
 
     void open()
     {
-        _opened = true;
+        activate();
     }
 
     void close()
     {
-        _opened = false;
+        deactivate();
     }
 
     void toggle()
     {
-        _opened = !_opened;
+        active = !active;
     }
 
     bool opened()
     {
-        return _opened;
+        return active;
     }
     bool closed()
     {
-        return !_opened;
+        return !active;
     }
     void evKeyboardKeyPress(uint key)
     {
@@ -167,9 +167,6 @@ class Console: EventClient
     }
     void evKeyboardCharPress(dchar chr)
     {
-        if(!_opened)
-            return;
-
         addInput(chr);
     }
 
@@ -205,8 +202,7 @@ class Console: EventClient
     }
     void evDraw()
     {
-        if(_opened)
-            draw();
+        draw();
     }
 
     char[] linewrap(char[] text)

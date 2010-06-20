@@ -23,29 +23,15 @@ private
 
             bool pressed = joysticks[joy].button[button].pressed;
 
-            if(console.active)
-            {
-                console.evJoystickButton(joy, button);
-                if(pressed)
-                    console.evJoystickButtonPress(joy, button);
-                else
-                    console.evJoystickButtonRelease(joy, button);
-                return;
-            }
-
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if((cast(JoystickEventClient)c.item !is null) && c.item.active)
+            foreach(client; clientList)
+                if((client !is null) && client.active)
                 {
-                    c.item.evJoystickButton(joy, button);
+                    client.evJoystickButton(joy, button);
                     if(pressed)
-                        c.item.evJoystickButtonPress(joy, button);
+                        client.evJoystickButtonPress(joy, button);
                     else
-                        c.item.evJoystickButtonRelease(joy, button);
+                        client.evJoystickButtonRelease(joy, button);
                 }
-                c = c.next;
-            }
         }
         void cbJoystickMove(void* joystick, float* axis)
         {
@@ -58,20 +44,9 @@ private
                 sgCoreJoystickGetNumAxis(joystick, &numaxis);
             float[] pos = axis[0..numaxis];
 
-
-            if(console.active)
-            {
-                console.evJoystickMove(joy, pos.dup);
-                return;
-            }
-
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if((cast(JoystickEventClient)c.item !is null) && c.item.active)
-                    c.item.evJoystickMove(joy, pos.dup);
-                c = c.next;
-            }
+            foreach(client; clientList)
+                if((client !is null) && client.active)
+                    client.evJoystickMove(joy, pos.dup);
         }
     }
 }

@@ -109,6 +109,7 @@
 		<Unit filename="siege\util\matrix.d" />
 		<Unit filename="siege\util\misc.d" />
 		<Unit filename="siege\util\path.d" />
+		<Unit filename="siege\util\plist.d" />
 		<Unit filename="siege\util\queue.d" />
 		<Unit filename="siege\util\random.d" />
 		<Unit filename="siege\util\screen\all.d" />

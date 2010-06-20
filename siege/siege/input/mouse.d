@@ -22,119 +22,58 @@ private
 
             bool pressed = siege.input.mouse.mouse.button[button].pressed;
 
-            if(console.active)
-            {
-                console.evMouseButton(button);
-                if(pressed)
-                    console.evMouseButtonPress(button);
-                else
-                    console.evMouseButtonRelease(button);
-
-                switch(button)
+            foreach(client; clientList)
+                if((client !is null) && client.active)
                 {
-                    case 1:
-                        console.evMouseButtonLeft();
-                        if(pressed)
-                            console.evMouseButtonLeftPress();
-                        else
-                            console.evMouseButtonLeftRelease();
-                        break;
-                    case 2:
-                        console.evMouseButtonRight();
-                        if(pressed)
-                            console.evMouseButtonRightPress();
-                        else
-                            console.evMouseButtonRightRelease();
-                        break;
-                    case 3:
-                        console.evMouseButtonMiddle();
-                        if(pressed)
-                            console.evMouseButtonMiddlePress();
-                        else
-                            console.evMouseButtonMiddleRelease();
-                        break;
-                    default:
-                        break;
-                }
-                return;
-            }
-
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if((cast(MouseEventClient)c.item !is null) && c.item.active)
-                {
-                    c.item.evMouseButton(button);
+                    client.evMouseButton(button);
                     if(pressed)
-                        c.item.evMouseButtonPress(button);
+                        client.evMouseButtonPress(button);
                     else
-                        c.item.evMouseButtonRelease(button);
+                        client.evMouseButtonRelease(button);
 
                     switch(button)
                     {
                         case 1:
-                            c.item.evMouseButtonLeft();
+                            client.evMouseButtonLeft();
                             if(pressed)
-                                c.item.evMouseButtonLeftPress();
+                                client.evMouseButtonLeftPress();
                             else
-                                c.item.evMouseButtonLeftRelease();
+                                client.evMouseButtonLeftRelease();
                             break;
                         case 2:
-                            c.item.evMouseButtonRight();
+                            client.evMouseButtonRight();
                             if(pressed)
-                                c.item.evMouseButtonRightPress();
+                                client.evMouseButtonRightPress();
                             else
-                                c.item.evMouseButtonRightRelease();
+                                client.evMouseButtonRightRelease();
                             break;
                         case 3:
-                            c.item.evMouseButtonMiddle();
+                            client.evMouseButtonMiddle();
                             if(pressed)
-                                c.item.evMouseButtonMiddlePress();
+                                client.evMouseButtonMiddlePress();
                             else
-                                c.item.evMouseButtonMiddleRelease();
+                                client.evMouseButtonMiddleRelease();
                             break;
                         default:
                             break;
                     }
                 }
-                c = c.next;
-            }
         }
         void cbMouseMove(void* cmouse, int x, int y)
         {
             mouse.position.update(x, y);
 
-            if(console.active)
-            {
-                console.evMouseMove(x, y);
-                return;
-            }
-
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if((cast(MouseEventClient)c.item !is null) && c.item.active)
-                    c.item.evMouseMove(x, y);
-                c = c.next;
-            }
+            foreach(client; clientList)
+                if((client !is null) && client.active)
+                    client.evMouseMove(x, y);
         }
         void cbMouseWheel(void* cmouse, int w)
         {
             mouse.wheel.update(w);
 
-            if(console.active)
-            {
-                console.evMouseWheel(w);
-                return;
-            }
-
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if((cast(MouseEventClient)c.item !is null) && c.item.active)
-                    c.item.evMouseWheel(w);
-                c = c.next;
-            }
+            foreach(client; clientList)
+                if((client !is null) && client.active)
+                    client.evMouseWheel(w);
         }
     }
 }

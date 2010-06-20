@@ -20,33 +20,17 @@ private
 
             bool pressed = keyboard.keyPressed(key);
 
-            if(console.active)
-            {
-                console.evKeyboardKey(key);
-                if(pressed)
-                    console.evKeyboardKeyPress(key);
-                else if(!down)
-                    console.evKeyboardKeyRelease(key);
-                else
-                    console.evKeyboardKeyRepeat(key);
-                return;
-            }
-
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if((cast(KeyboardEventClient)c.item !is null) && c.item.active)
+            foreach(client; clientList)
+                if((client !is null) && client.active)
                 {
-                    c.item.evKeyboardKey(key);
+                    client.evKeyboardKey(key);
                     if(pressed)
-                        c.item.evKeyboardKeyPress(key);
+                        client.evKeyboardKeyPress(key);
                     else if(!down)
-                        c.item.evKeyboardKeyRelease(key);
+                        client.evKeyboardKeyRelease(key);
                     else
-                        c.item.evKeyboardKeyRepeat(key);
+                        client.evKeyboardKeyRepeat(key);
                 }
-                c = c.next;
-            }
         }
         void cbKeyboardChar(void* ckeyboard, dchar chr, bool down)
         {
@@ -54,27 +38,14 @@ private
 
             bool pressed = keyboard.characterPressed(chr);
 
-            if(console.active)
-            {
-                if(pressed)
-                    console.evKeyboardCharPress(chr);
-                else if(down)
-                    console.evKeyboardCharRepeat(chr);
-                return;
-            }
-
-            LinkedNode!(EventClient) *c = clientList.firstNode;
-            while(c !is null)
-            {
-                if((cast(KeyboardEventClient)c.item !is null) && c.item.active)
+            foreach(client; clientList)
+                if((client !is null) && client.active)
                 {
                     if(pressed)
-                        c.item.evKeyboardCharPress(chr);
+                        client.evKeyboardCharPress(chr);
                     else if(down)
-                        c.item.evKeyboardCharRepeat(chr);
+                        client.evKeyboardCharRepeat(chr);
                 }
-                c = c.next;
-            }
         }
     }
 }

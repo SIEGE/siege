@@ -99,28 +99,9 @@ class DemoHandler: EventClient
     void evStart()
     {
         font = new Font("Data/Fonts/DejaVuLGCSans.ttf", 10, 256);
-        demo.evStart();
-    }
-    void evExit()
-    {
-        demo.evExit();
-    }
-
-    void evTick()
-    {
-        demo.evTick();
-    }
-    void evTickBegin()
-    {
-        demo.evTickBegin();
-    }
-    void evTickEnd()
-    {
-        demo.evTickEnd();
     }
     void evDraw()
     {
-        demo.evDraw();
         draw.color(1.0, 1.0, 1.0, 1.0);
         font.print(Vector(2, 48), "%s\n%s\n \n%s\n \nInstructions: ", demo.name, demo.brief, demo.description, demo.instructions);
     }
