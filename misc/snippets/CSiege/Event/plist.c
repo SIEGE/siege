@@ -108,6 +108,7 @@ void sgPListRemovePriority(SGPList* list, float p)
 {
     sgPListRemovePSlice(list, p, p);
 }
+/// \bug Doesn't work for all flags
 void sgPListRemovePSlice(SGPList* list, float p1, float p2)
 {
     if(p1 > p2)
