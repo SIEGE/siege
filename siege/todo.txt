@@ -77,7 +77,6 @@ TIM:
 - rewrite the console
 - object serialization
 - XML/OpenRJ/config/JSON parsing
-- event queues
 - UI
 NetSyncTest
 

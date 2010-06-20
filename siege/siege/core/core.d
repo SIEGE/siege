@@ -15,7 +15,8 @@ private
     import siege.input.mouse;
     import siege.input.keyboard;
     import siege.input.joystick;
-    import siege.util.linkedlist;
+    //import siege.util.linkedlist;
+    import siege.util.plist;
     import siege.physics.space;
     //
 
@@ -32,7 +33,8 @@ bool cbMissingProc(char[] lib, char[] proc)
     return true;
 }
 
-LinkedList!(EventClient) clientList;
+PList!(EventClient) clientList;
+//LinkedList!(EventClient) clientList;
 
 /**
     \brief Core game singleton class
@@ -114,7 +116,7 @@ static:
         if(!ok)
             return false;
 
-        clientList = new LinkedList!(EventClient);
+        //clientList = new LinkedList!(EventClient);
 
         evInit();
         Space.main = new Space;
@@ -139,19 +141,9 @@ static:
     {
         evDeinit();
 
-        LinkedNode!(EventClient)* curr = clientList.firstNode;
-        LinkedNode!(EventClient)* next;
-
-        while(curr !is null)
-        {
-            delete curr.item;
-            curr.item = null;
-            next = curr.next;
-            //delete curr;
-
-            curr = next;
-        }
-        delete clientList;
+        foreach(client; clientList)
+            if(client !is null)
+                delete client;
 
         foreach(mod; modules)
             delete mod;
@@ -212,25 +204,6 @@ static:
             firstLoop = false;
         }
 
-        if(console.active)
-        {
-            console.evTickBegin();
-            console.evTick();
-            console.evTickEnd();
-
-            LinkedNode!(EventClient)* c = clientList.firstNode;
-            while(c !is null)
-            {
-                if(cast(CoreEventClient)c !is null && cast(Console)c !is null)
-                    c.item.evDraw();
-                c = c.next;
-            }
-
-            console.evDraw();
-
-            return !exitNow;
-        }
-
         signal!("evTickBegin");
 
         Space.main.step(0.125); // TODO: make it not const
@@ -260,6 +233,15 @@ static:
     }
 
     /**
+        \brief Stop an event
+        \note When used inside an event, this stops other \ref siege.core.event.EventClient EventClients (those that have not already recieved the event) from recieving it. It has no effect outside of an event.
+    */
+    void stopEvent()
+    {
+        clientList.stop();
+    }
+
+    /**
         \brief Send a signal (an event)
         \param name The name of the event (including the ev- part)
         \param args The arguments to pass to the event
@@ -270,11 +252,12 @@ static:
             void delegate(typeof(args)) func;
         else
             void delegate() func;
-        for(LinkedNode!(EventClient)* c = clientList.firstNode; c != null; c = c.next)
+
+        foreach(client; clientList)
         {
-            if((c.item !is null) && c.item.active)
+            if((client !is null) && client.active)
             {
-                func = mixin("&c.item."~name);
+                func = mixin("&client."~name);
                 func(args);
             }
         }

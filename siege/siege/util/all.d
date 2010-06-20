@@ -13,6 +13,7 @@ public
     import siege.util.matrix;
     import siege.util.misc;
     import siege.util.path;
+    import siege.util.plist;
     import siege.util.queue;
     import siege.util.random;
     import siege.util.stack;
