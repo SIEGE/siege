@@ -1,6 +1,6 @@
 #include "plist.h"
 #include "list.h"
-#include <siege/common.h>
+#include "../common.h"
 
 #include <stdlib.h>
 #include <stddef.h>
@@ -121,12 +121,24 @@ void sgPListRemovePSlice(SGPList* list, float p1, float p2)
     size_t i;
     ptrdiff_t i1 = -1;
     ptrdiff_t i2 = -1;
+    SGbool op1;
+    SGbool op2;
     for(i = 0; i < list->numitems; i++)
     {
         pitem = (SGPItem*)list->items[i];
-        if(pitem->priority < p1) // didn't reach yet
+        if(type & GT || type & GEQ)
+        {
+            op1 = pitem->priority < p1;
+            op2 = pitem->priority > p2;
+        }
+        else //if(type & LT && type & LEQ)
+        {
+            op1 = pitem->priority > p2;
+            op2 = pitem->priority < p1;
+        }
+        if(op1) // didn't reach yet
             continue;
-        if(pitem->priority > p2) // already past it
+        if(op2) // already past it
             break;
 
         if(i1 == -1)
