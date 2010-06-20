@@ -41,8 +41,8 @@ class WidgetHandle: EventClient
     {
         // NOTE: fonts cause a segfault on exit!
         if(font is null)
-            font = new Font("Data/Fonts/DejaVuLGCSansMono.ttf", "Data/Fonts/DejaVuLGCSansMono-Bold.ttf", "Data/Fonts/DejaVuLGCSansMono-Oblique.ttf", "Data/Fonts/DejaVuLGCSansMono-BoldOblique.ttf", 10, 256);
-            //font = new Font("Data/Fonts/DejaVuLGCSans.ttf", "Data/Fonts/DejaVuLGCSans-Bold.ttf", "Data/Fonts/DejaVuLGCSans-Oblique.ttf", "Data/Fonts/DejaVuLGCSans-BoldOblique.ttf", 10, 256);
+            font = new Font("Data/Fonts/DejaVuLGCSansMono.ttf", 10, 256);
+            //font = new Font("Data/Fonts/DejaVuLGCSans.ttf", 10, 256);
 
         widgets = new LinkedList!(Widget);
         this.font = font;
