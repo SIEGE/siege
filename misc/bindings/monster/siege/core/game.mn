@@ -1,0 +1,11 @@
+singleton game;
+
+native loadModules(char[][] names...);
+native loadModule(char[] name);
+native bool initSiege(uint width, uint height, uint bpp, uint flags);
+native deinitSiege();
+native int run();
+//native bool loop(out int code);
+native bool loop();
+native stop(int ret = 0);
+native stopEvent();
