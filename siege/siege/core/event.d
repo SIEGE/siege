@@ -102,21 +102,21 @@ interface MouseEventClient
     /* @} */
 
     /* @{ */
-    /// \brief Middle mouse button is being held down
-    void evMouseButtonMiddle();
-    /// \brief Middle mouse button has just been pressed
-    void evMouseButtonMiddlePress();
-    /// \brief Middle mouse button has just been released
-    void evMouseButtonMiddleRelease();
-    /* @} */
-
-    /* @{ */
     /// \brief Right mouse button is being held down
     void evMouseButtonRight();
     /// \brief Right mouse button has just been pressed
     void evMouseButtonRightPress();
     /// \brief Right mouse button has just been released
     void evMouseButtonRightRelease();
+    /* @} */
+
+    /* @{ */
+    /// \brief Middle mouse button is being held down
+    void evMouseButtonMiddle();
+    /// \brief Middle mouse button has just been pressed
+    void evMouseButtonMiddlePress();
+    /// \brief Middle mouse button has just been released
+    void evMouseButtonMiddleRelease();
     /* @} */
 
     /**
