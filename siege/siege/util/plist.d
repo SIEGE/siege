@@ -17,6 +17,7 @@ struct PList(T)
     private
     {
         bool _stop;
+        ptrdiff_t _i;
     }
 
     uint type = HFO;
@@ -118,6 +119,12 @@ struct PList(T)
 
         priorities = priorities[0..i1] ~ priorities[i2..$];
         items = items[0..i1] ~ items[i2..$];
+
+        // make sure we're at the correct index if items were removed from inside of the event
+        if((i1 <= _i) && (_i < i2))
+            _i -= i1 + 1;
+        else if(i2 <= _i)
+            _i -= i2 - i1;
     }
 
     /// \brief Get the number of items in the list
@@ -155,9 +162,9 @@ struct PList(T)
     {
         _stop = false;
         int result = 0;
-        foreach(item; items)
+        for(_i = 0; _i < items.length; _i++)
         {
-            result = dg(item);
+            result = dg(items[i]);
             if(result || _stop)
                 break;
         }
@@ -168,9 +175,9 @@ struct PList(T)
     {
         _stop = false;
         int result = 0;
-        foreach_reverse(item; items)
+        for(_i = items.length - 1; _i >= 0; _i--)
         {
-            result = dg(item);
+            result = dg(items[i]);
             if(result || _stop)
                 break;
         }
