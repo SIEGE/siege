@@ -164,7 +164,7 @@ struct PList(T)
         int result = 0;
         for(_i = 0; _i < items.length; _i++)
         {
-            result = dg(items[i]);
+            result = dg(items[_i]);
             if(result || _stop)
                 break;
         }
@@ -177,7 +177,7 @@ struct PList(T)
         int result = 0;
         for(_i = items.length - 1; _i >= 0; _i--)
         {
-            result = dg(items[i]);
+            result = dg(items[_i]);
             if(result || _stop)
                 break;
         }
