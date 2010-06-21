@@ -73,6 +73,7 @@ SGuint SG_EXPORT sgCoreWindowOpen(void* window, SGuint width, SGuint height, SGu
         sdlflags |= SDL_RESIZABLE;
 
     cwindow->surface = SDL_SetVideoMode(width, height, bpp, sdlflags);
+    cwindow->opened = SG_TRUE;
 
     windowOpen();
     windowResize(width, height);
@@ -140,6 +141,11 @@ SGuint SG_EXPORT sgCoreWindowSwapBuffers(void* window)
         return SG_OK; // SG_INVALID_VALUE
     Window* cwindow = (Window*)window;
 
+    /*SGbool opened;
+    sgCoreWindowIsOpened(window, &opened);*/
+    if(!cwindow->opened)
+        return SG_OK;
+
     SDL_Event event;
 
     while (SDL_PollEvent(&event))
@@ -183,7 +189,7 @@ SGuint SG_EXPORT sgCoreWindowSwapBuffers(void* window)
 
             case SDL_QUIT:
                 sgCoreWindowClose(window);
-                break;
+                return SG_OK;
 
             default:
                 break;
