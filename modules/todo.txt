@@ -8,4 +8,4 @@ much, much (much!) more...
 -graphics & audio modules
     -> return formats accepted (to simplify the modules)
     -> task of converting formats falls to the frontend
--clean up this folder, make a CodeBlocks workspace
+
