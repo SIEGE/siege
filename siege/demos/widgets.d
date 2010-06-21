@@ -54,20 +54,20 @@ class WidgetHandle: EventClient
             widget.evDraw();
     }
 
-    void evMouseButtonPressed(uint button)
+    void evMouseButtonPress(uint button)
     {
         foreach(widget; widgets)
         {
             if(widget.inside(mouse.position.current))
-                widget.lcMouseButtonPressed(button);
+                widget.lcMouseButtonPress(button);
         }
     }
-    void evMouseButtonReleased(uint button)
+    void evMouseButtonRelease(uint button)
     {
         foreach(widget; widgets)
         {
             if(widget.inside(mouse.position.current))
-                widget.lcMouseButtonReleased(button);
+                widget.lcMouseButtonRelease(button);
         }
     }
     void evMouseMove(int x, int y)
@@ -122,10 +122,10 @@ abstract class Widget: EventClient
         return inside(pos.x, pos.y);
     }
 
-    void lcMouseButtonPressed(uint button)
+    void lcMouseButtonPress(uint button)
     {
     }
-    void lcMouseButtonReleased(uint button)
+    void lcMouseButtonRelease(uint button)
     {
     }
     void lcMouseEnter()
@@ -140,17 +140,17 @@ class Button: Widget
 {
     bool over = false;
     bool down = false;
-    char[] input;
+    char[] text;
 
-    this(WidgetHandle handle, Vector position, Vector size, char[] input)
+    this(WidgetHandle handle, Vector position, Vector size, char[] text)
     {
         if(size == Vector(0, 0))
-            size = handle.font.strSizeT(input);
+            size = handle.font.strSizeT(text);
 
         super(handle);
         this.position = position;
         this.size = size;
-        this.input = input;
+        this.text = text;
     }
 
     void evDraw()
@@ -171,15 +171,15 @@ class Button: Widget
             draw.color(0.0, 0.5, 0.75, 1.0);
         draw.quad(position, position + size, false);
 
-        handle.font.printCenteredT(position + size / 2, input);
+        handle.font.printCenteredT(position + size / 2, text);
     }
 
-    void lcMouseButtonPressed(uint button)
+    void lcMouseButtonPress(uint button)
     {
         if(button == 1)
             down = true;
     }
-    void evMouseButtonReleased(uint button)
+    void evMouseButtonRelease(uint button)
     {
         if(button == 1)
             down = false;
@@ -242,6 +242,10 @@ class Input: Widget
         handle.font.printT(position + Vector(0, size.y / 2), toUTF8(input));
     }
 
+    void evKeyboardKeyPress(uint key)
+    {
+        evKeyboardKeyRepeat(key);
+    }
     void evKeyboardKeyRepeat(uint key)
     {
         if(!focus)
@@ -275,12 +279,18 @@ class Input: Widget
         else if(key == SG_KEYBOARD_KEY_INSERT)
             insert = !insert;
     }
+    void evKeyboardCharPress(dchar chr)
+    {
+        evKeyboardCharRepeat(chr);
+    }
     void evKeyboardCharRepeat(dchar chr)
     {
         if(!focus)
             return;
 
-        if(chr == '\b') // handled in evKeyboardKey
+        if(chr == '\b') // backspace -- handled in evKeyboardKey
+            return;
+        else if(chr == '\x7F') // delete (127)
             return;
         else if(chr == '\n') // not accepted in one-line inputs
             return;
@@ -296,12 +306,12 @@ class Input: Widget
         cursor++;
     }
 
-    void evMouseButtonPressed(uint button)
+    void evMouseButtonPress(uint button)
     {
         if(!inside(mouse.position.current))
             focus = false;
     }
-    void lcMouseButtonPressed(uint button)
+    void lcMouseButtonPress(uint button)
     {
         focus = true;
     }
