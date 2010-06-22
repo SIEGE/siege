@@ -19,7 +19,8 @@ extern "C"
 
     SGuint SG_EXPORT sgmAudioFileCreate(void** file, char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
     SGuint SG_EXPORT sgmAudioFileDestroy(void* file);
-    SGuint SG_EXPORT sgmAudioFileRead(void* file, void* data, SGuint datalen);
+    SGuint SG_EXPORT sgmAudioFileNumSamples(void* file, SGuint* samples);
+    SGuint SG_EXPORT sgmAudioFileRead(void* file, void* data, SGuint* datalen);
 #ifdef __cplusplus
 }
 #endif

@@ -8,12 +8,12 @@ private
 
 class Music: Source
 {
-    this(Buffer buffer, float pitch = 1.0, float gain = 0.25, bool loop = true)
+    this(Buffer buffer, float priority = 0.0, float pitch = 1.0, float gain = 0.25, bool loop = true)
     {
-        super(buffer, pitch, gain, loop);
+        super(buffer, priority, pitch, gain, loop);
     }
-    this(float pitch = 1.0, float gain = 0.25, bool loop = true)
+    this(float priority = 0.0, float pitch = 1.0, float gain = 0.25, bool loop = true)
     {
-        super(pitch, gain, loop);
+        super(priority, pitch, gain, loop);
     }
 }
