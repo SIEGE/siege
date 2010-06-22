@@ -1,5 +1,5 @@
-#ifndef __SIEGE_CORE_JOYSTICK_H__
-#define __SIEGE_CORE_JOYSTICK_H__
+#ifndef __SIEGE_BACKEND_CORE_JOYSTICK_H__
+#define __SIEGE_BACKEND_CORE_JOYSTICK_H__
 
 #include "../../common.h"
 
@@ -38,4 +38,4 @@ extern "C"
 }
 #endif
 
-#endif // __SIEGE_CORE_JOYSTICK_H__
+#endif // __SIEGE_BACKEND_CORE_JOYSTICK_H__

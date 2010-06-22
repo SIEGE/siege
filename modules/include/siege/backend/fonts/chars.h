@@ -1,5 +1,5 @@
-#ifndef __SIEGE_FONTS_CHARS_H__
-#define __SIEGE_FONTS_CHARS_H__
+#ifndef __SIEGE_BACKEND_FONTS_CHARS_H__
+#define __SIEGE_BACKEND_FONTS_CHARS_H__
 
 #include "../../common.h"
 
@@ -13,4 +13,4 @@ extern "C"
 }
 #endif
 
-#endif // __SIEGE_FONTS_CHARS_H__
+#endif // __SIEGE_BACKEND_FONTS_CHARS_H__

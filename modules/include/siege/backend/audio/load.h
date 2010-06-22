@@ -1,5 +1,5 @@
-#ifndef __SIEGE_AUDIO_LOAD_H__
-#define __SIEGE_AUDIO_LOAD_H__
+#ifndef __SIEGE_BACKEND_AUDIO_LOAD_H__
+#define __SIEGE_BACKEND_AUDIO_LOAD_H__
 
 #include "../../common.h"
 
@@ -19,4 +19,4 @@ extern "C"
 }
 #endif
 
-#endif // __SIEGE_AUDIO_LOAD_H__
+#endif // __SIEGE_BACKEND_AUDIO_LOAD_H__

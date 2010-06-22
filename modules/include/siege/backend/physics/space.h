@@ -1,5 +1,5 @@
-#ifndef __SIEGE_PHYSICS_SPACE_H__
-#define __SIEGE_PHYSICS_SPACE_H__
+#ifndef __SIEGE_BACKEND_PHYSICS_SPACE_H__
+#define __SIEGE_BACKEND_PHYSICS_SPACE_H__
 
 #include "../../common.h"
 
@@ -25,4 +25,4 @@ extern "C"
 }
 #endif
 
-#endif // __SIEGE_PHYSICS_SPACE_H__
+#endif // __SIEGE_BACKEND_PHYSICS_SPACE_H__
