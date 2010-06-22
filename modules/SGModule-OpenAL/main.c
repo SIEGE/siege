@@ -12,7 +12,7 @@ ALint state(ALuint source)
     return s;
 }
 
-SGuint SG_EXPORT sgModuleInit(void* gc, SGModuleInfo** minfo)
+SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*) calloc(1, sizeof(SGModuleInfo));
     (*minfo)->imajor = SG_INTERFACE_VMAJOR;
@@ -49,7 +49,7 @@ SGuint SG_EXPORT sgModuleInit(void* gc, SGModuleInfo** minfo)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgModuleExit(SGModuleInfo* minfo)
+SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
 {
     alcDestroyContext(context);
     alcCloseDevice(device);
@@ -58,9 +58,9 @@ SGuint SG_EXPORT sgModuleExit(SGModuleInfo* minfo)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgModuleFree(void* data)
+//SGuint SG_EXPORT sgmModuleFree(void* data)
 
-SGuint SG_EXPORT sgModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
+SGuint SG_EXPORT sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
 {
     *ok = SG_TRUE; // we're independent of other modules
     return SG_OK;

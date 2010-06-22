@@ -1,18 +1,18 @@
 #include "main.h"
-#include "sample.h"
+#include "buffer.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgAudioSampleCreate(void** source)
+SGuint SG_EXPORT sgmAudioBufferCreate(void** buffer)
 {
-    alGenBuffers(1, (ALuint*)source);
+    alGenBuffers(1, (ALuint*)buffer);
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgAudioSampleDestroy(void* source)
+SGuint SG_EXPORT sgmAudioBufferDestroy(void* buffer)
 {
-    alDeleteBuffers(1, (ALuint*)&source);
+    alDeleteBuffers(1, (ALuint*)&buffer);
     return SG_OK;
 }
 
@@ -116,7 +116,7 @@ void* toStereo(SGuint channels, void* data, SGuint* datalen, ALuint* alformat)
     return data;
 }
 
-SGuint SG_EXPORT sgAudioSampleSetData(void* source, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
+SGuint SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
 {
     //AL_FORMAT_[MONO, STEREO][8, 16]
     ALuint alformat;
@@ -212,14 +212,14 @@ SGuint SG_EXPORT sgAudioSampleSetData(void* source, SGuint channels, SGuint form
             break;
     }
     data = toStereo(channels, data, &datalen, &alformat);
-    alBufferData(*(ALuint*)&source, alformat, data, datalen, frequency);
+    alBufferData(*(ALuint*)&buffer, alformat, data, datalen, frequency);
     return SG_OK;
 }
-//SGuint SG_EXPORT sgAudioSampleGetData(void* sample, SGuint* channels, SGuint* format, SGuint* frequency, SGPointer* data, SGuint* datalen);
-/*SGuint SG_EXPORT sgAudioSampleCreateData(void** source, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
+//SGuint SG_EXPORT sgmAudioBufferGetData(void* buffer, SGuint* channels, SGuint* format, SGuint* frequency, SGPointer* data, SGuint* datalen);
+/*SGuint SG_EXPORT sgmAudioBufferCreateData(void** buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
 {
-    SGuint ret = sgAudioSampleCreate(source);
+    SGuint ret = sgmAudioBufferCreate(buffer);
     if(ret != SG_OK)
         return ret;
-    return sgAudioSampleData(*info, channels, type, frequency, data, datalen);
+    return sgmAudioBufferData(*info, channels, type, frequency, data, datalen);
 }*/
