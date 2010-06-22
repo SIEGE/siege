@@ -57,8 +57,8 @@ extern "C"
     SGuint SG_EXPORT sgmAudioSourceGetPosition(void* source, float* x, float* y, float* z);
     SGuint SG_EXPORT sgmAudioSourceSetVelocity(void* source, float x, float y, float z);
     SGuint SG_EXPORT sgmAudioSourceGetVelocity(void* source, float* x, float* y, float* z);
-    SGuint SG_EXPORT sgmAudioSourceSetFalloff(void* source, float falloff);
-    SGuint SG_EXPORT sgmAudioSourceGetFalloff(void* source, float* falloff);
+    //SGuint SG_EXPORT sgmAudioSourceSetFalloff(void* source, float falloff);
+    //SGuint SG_EXPORT sgmAudioSourceGetFalloff(void* source, float* falloff);
     SGuint SG_EXPORT sgmAudioSourceSetPitch(void* source, float pitch);
     SGuint SG_EXPORT sgmAudioSourceGetPitch(void* source, float* pitch);
     SGuint SG_EXPORT sgmAudioSourceSetVolume(void* source, float volume);
