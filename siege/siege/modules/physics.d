@@ -25,52 +25,52 @@ enum: uint
 void loadModulePhysics(SharedLib lib)
 {
     /// Physics
-    checkBindFunc(sgPhysicsBodyCreate)("sgPhysicsBodyCreate", lib);
-    checkBindFunc(sgPhysicsBodyDestroy)("sgPhysicsBodyDestroy", lib);
+    checkBindFunc(sgPhysicsBodyCreate)("sgmPhysicsBodyCreate", lib);
+    checkBindFunc(sgPhysicsBodyDestroy)("sgmPhysicsBodyDestroy", lib);
 
-    checkBindFunc(sgPhysicsBodySetMass)("sgPhysicsBodySetMass", lib);
-    checkBindFunc(sgPhysicsBodyGetMass)("sgPhysicsBodyGetMass", lib);
-    checkBindFunc(sgPhysicsBodySetMoment)("sgPhysicsBodySetMoment", lib);
-    checkBindFunc(sgPhysicsBodyGetMoment)("sgPhysicsBodyGetMoment", lib);
-    checkBindFunc(sgPhysicsBodySetPosition)("sgPhysicsBodySetPosition", lib);
-    checkBindFunc(sgPhysicsBodyGetPosition)("sgPhysicsBodyGetPosition", lib);
-    checkBindFunc(sgPhysicsBodySetVelocity)("sgPhysicsBodySetVelocity", lib);
-    checkBindFunc(sgPhysicsBodyGetVelocity)("sgPhysicsBodyGetVelocity", lib);
-    checkBindFunc(sgPhysicsBodySetForce)("sgPhysicsBodySetForce", lib);
-    checkBindFunc(sgPhysicsBodyGetForce)("sgPhysicsBodyGetForce", lib);
-    checkBindFunc(sgPhysicsBodySetAngle)("sgPhysicsBodySetAngle", lib);
-    checkBindFunc(sgPhysicsBodyGetAngle)("sgPhysicsBodyGetAngle", lib);
-    checkBindFunc(sgPhysicsBodySetAngularVelocity)("sgPhysicsBodySetAngularVelocity", lib);
-    checkBindFunc(sgPhysicsBodyGetAngularVelocity)("sgPhysicsBodyGetAngularVelocity", lib);
-    checkBindFunc(sgPhysicsBodySetTorque)("sgPhysicsBodySetTorque", lib);
-    checkBindFunc(sgPhysicsBodyGetTorque)("sgPhysicsBodyGetTorque", lib);
-    checkBindFunc(sgPhysicsBodySetData)("sgPhysicsBodySetData", lib);
-    checkBindFunc(sgPhysicsBodyGetData)("sgPhysicsBodyGetData", lib);
+    checkBindFunc(sgPhysicsBodySetMass)("sgmPhysicsBodySetMass", lib);
+    checkBindFunc(sgPhysicsBodyGetMass)("sgmPhysicsBodyGetMass", lib);
+    checkBindFunc(sgPhysicsBodySetMoment)("sgmPhysicsBodySetMoment", lib);
+    checkBindFunc(sgPhysicsBodyGetMoment)("sgmPhysicsBodyGetMoment", lib);
+    checkBindFunc(sgPhysicsBodySetPosition)("sgmPhysicsBodySetPosition", lib);
+    checkBindFunc(sgPhysicsBodyGetPosition)("sgmPhysicsBodyGetPosition", lib);
+    checkBindFunc(sgPhysicsBodySetVelocity)("sgmPhysicsBodySetVelocity", lib);
+    checkBindFunc(sgPhysicsBodyGetVelocity)("sgmPhysicsBodyGetVelocity", lib);
+    checkBindFunc(sgPhysicsBodySetForce)("sgmPhysicsBodySetForce", lib);
+    checkBindFunc(sgPhysicsBodyGetForce)("sgmPhysicsBodyGetForce", lib);
+    checkBindFunc(sgPhysicsBodySetAngle)("sgmPhysicsBodySetAngle", lib);
+    checkBindFunc(sgPhysicsBodyGetAngle)("sgmPhysicsBodyGetAngle", lib);
+    checkBindFunc(sgPhysicsBodySetAngularVelocity)("sgmPhysicsBodySetAngularVelocity", lib);
+    checkBindFunc(sgPhysicsBodyGetAngularVelocity)("sgmPhysicsBodyGetAngularVelocity", lib);
+    checkBindFunc(sgPhysicsBodySetTorque)("sgmPhysicsBodySetTorque", lib);
+    checkBindFunc(sgPhysicsBodyGetTorque)("sgmPhysicsBodyGetTorque", lib);
+    checkBindFunc(sgPhysicsBodySetData)("sgmPhysicsBodySetData", lib);
+    checkBindFunc(sgPhysicsBodyGetData)("sgmPhysicsBodyGetData", lib);
 
     // constraint
 
-    checkBindFunc(sgPhysicsShapeCreate)("sgPhysicsShapeCreate", lib);
-    checkBindFunc(sgPhysicsShapeDestroy)("sgPhysicsShapeDestroy", lib);
+    checkBindFunc(sgPhysicsShapeCreate)("sgmPhysicsShapeCreate", lib);
+    checkBindFunc(sgPhysicsShapeDestroy)("sgmPhysicsShapeDestroy", lib);
 
-    checkBindFunc(sgPhysicsSpaceCreate)("sgPhysicsSpaceCreate", lib);
-    checkBindFunc(sgPhysicsSpaceDestroy)("sgPhysicsSpaceDestroy", lib);
-    checkBindFunc(sgPhysicsSpaceStep)("sgPhysicsSpaceStep", lib);
-    checkBindFunc(sgPhysicsSpaceSetGravity)("sgPhysicsSpaceSetGravity", lib);
+    checkBindFunc(sgPhysicsSpaceCreate)("sgmPhysicsSpaceCreate", lib);
+    checkBindFunc(sgPhysicsSpaceDestroy)("sgmPhysicsSpaceDestroy", lib);
+    checkBindFunc(sgPhysicsSpaceStep)("sgmPhysicsSpaceStep", lib);
+    checkBindFunc(sgPhysicsSpaceSetGravity)("sgmPhysicsSpaceSetGravity", lib);
 
-    checkBindFunc(sgPhysicsSpaceAddShape)("sgPhysicsSpaceAddShape", lib);
-    checkBindFunc(sgPhysicsSpaceRemoveShape)("sgPhysicsSpaceRemoveShape", lib);
-    //checkBindFunc(sgPhysicsSpaceAddStaticShape)("sgPhysicsSpaceAddStaticShape", lib);
-    //checkBindFunc(sgPhysicsSpaceRemoveStaticShape)("sgPhysicsSpaceRemoveStaticShape", lib);
-    checkBindFunc(sgPhysicsSpaceAddBody)("sgPhysicsSpaceAddBody", lib);
-    checkBindFunc(sgPhysicsSpaceRemoveBody)("sgPhysicsSpaceRemoveBody", lib);
-    checkBindFunc(sgPhysicsSpaceAddConstraint)("sgPhysicsSpaceAddConstraint", lib);
-    checkBindFunc(sgPhysicsSpaceRemoveConstraint)("sgPhysicsSpaceRemoveConstraint", lib);
+    checkBindFunc(sgPhysicsSpaceAddShape)("sgmPhysicsSpaceAddShape", lib);
+    checkBindFunc(sgPhysicsSpaceRemoveShape)("sgmPhysicsSpaceRemoveShape", lib);
+    //checkBindFunc(sgPhysicsSpaceAddStaticShape)("sgmPhysicsSpaceAddStaticShape", lib);
+    //checkBindFunc(sgPhysicsSpaceRemoveStaticShape)("sgmPhysicsSpaceRemoveStaticShape", lib);
+    checkBindFunc(sgPhysicsSpaceAddBody)("sgmPhysicsSpaceAddBody", lib);
+    checkBindFunc(sgPhysicsSpaceRemoveBody)("sgmPhysicsSpaceRemoveBody", lib);
+    checkBindFunc(sgPhysicsSpaceAddConstraint)("sgmPhysicsSpaceAddConstraint", lib);
+    checkBindFunc(sgPhysicsSpaceRemoveConstraint)("sgmPhysicsSpaceRemoveConstraint", lib);
 
-    checkBindFunc(sgPhysicsBodyWorldToLocal_TEST)("sgPhysicsBodyWorldToLocal_TEST", lib);
-    checkBindFunc(sgPhysicsBodyLocalToWorld_TEST)("sgPhysicsBodyLocalToWorld_TEST", lib);
-    checkBindFunc(sgPhysicsShapeGetBB_TEST)("sgPhysicsShapeGetBB_TEST", lib);
-    checkBindFunc(sgPhysicsShapeGetPoints_TEST)("sgPhysicsShapeGetPoints_TEST", lib);
-    checkBindFunc(sgPhysicsShapeFreePoints_TEST)("sgPhysicsShapeFreePoints_TEST", lib);
+    checkBindFunc(sgPhysicsBodyWorldToLocal_TEST)("sgmPhysicsBodyWorldToLocal_TEST", lib);
+    checkBindFunc(sgPhysicsBodyLocalToWorld_TEST)("sgmPhysicsBodyLocalToWorld_TEST", lib);
+    checkBindFunc(sgPhysicsShapeGetBB_TEST)("sgmPhysicsShapeGetBB_TEST", lib);
+    checkBindFunc(sgPhysicsShapeGetPoints_TEST)("sgmPhysicsShapeGetPoints_TEST", lib);
+    checkBindFunc(sgPhysicsShapeFreePoints_TEST)("sgmPhysicsShapeFreePoints_TEST", lib);
 }
 
 extern(C)

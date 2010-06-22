@@ -37,56 +37,56 @@ enum: uint
 void loadModuleGraphics(SharedLib lib)
 {
     /// Graphics
-    checkBindFunc(sgGraphicsContextCreate)("sgGraphicsContextCreate", lib);
-    checkBindFunc(sgGraphicsContextDestroy)("sgGraphicsContextDestroy", lib);
-    checkBindFunc(sgGraphicsContextResize)("sgGraphicsContextResize", lib);
-    checkBindFunc(sgGraphicsContextClear)("sgGraphicsContextClear", lib);
+    checkBindFunc(sgGraphicsContextCreate)("sgmGraphicsContextCreate", lib);
+    checkBindFunc(sgGraphicsContextDestroy)("sgmGraphicsContextDestroy", lib);
+    checkBindFunc(sgGraphicsContextResize)("sgmGraphicsContextResize", lib);
+    checkBindFunc(sgGraphicsContextClear)("sgmGraphicsContextClear", lib);
 
-    checkBindFunc(sgGraphicsViewportCreate)("sgGraphicsViewportCreate", lib);
-    //checkBindFunc(sgGraphicsViewportCreateView)("sgGraphicsViewportCreateView", lib);
-    checkBindFunc(sgGraphicsViewportDestroy)("sgGraphicsViewportDestroy", lib);
-    checkBindFunc(sgGraphicsViewportSetView)("sgGraphicsViewportSetView", lib);
-    //checkBindFunc(sgGraphicsViewportGetView)("sgGraphicsViewportGetView", lib);
+    checkBindFunc(sgGraphicsViewportCreate)("sgmGraphicsViewportCreate", lib);
+    //checkBindFunc(sgGraphicsViewportCreateView)("sgmGraphicsViewportCreateView", lib);
+    checkBindFunc(sgGraphicsViewportDestroy)("sgmGraphicsViewportDestroy", lib);
+    checkBindFunc(sgGraphicsViewportSetView)("sgmGraphicsViewportSetView", lib);
+    //checkBindFunc(sgGraphicsViewportGetView)("sgmGraphicsViewportGetView", lib);
 
-    checkBindFunc(sgGraphicsSurfaceCreate)("sgGraphicsSurfaceCreate", lib);
-    //checkBindFunc(sgGraphicsSurfaceCreateTexture)("sgGraphicsSurfaceCreateTexture", lib);
-    //checkBindFunc(sgGraphicsSurfaceCreateData)("sgGraphicsSurfaceCreateData", lib);
-    checkBindFunc(sgGraphicsSurfaceDestroy)("sgGraphicsSurfaceDestroy", lib);
-    checkBindFunc(sgGraphicsSurfaceSetTexture)("sgGraphicsSurfaceSetTexture", lib);
-    checkBindFunc(sgGraphicsSurfaceGetTexture)("sgGraphicsSurfaceGetTexture", lib);
-    checkBindFunc(sgGraphicsSurfaceSetData)("sgGraphicsSurfaceSetData", lib);
-    //checkBindFunc(sgGraphicsSurfaceGetData)("sgGraphicsSurfaceGetData", lib);
-    //checkBindFunc(sgGraphicsSurfaceFreeData)("sgGraphicsSurfaceFreeData", lib);
-    checkBindFunc(sgGraphicsSurfaceGetSize)("sgGraphicsSurfaceGetSize", lib);
-    checkBindFunc(sgGraphicsSurfaceDraw)("sgGraphicsSurfaceDraw", lib);
-    checkBindFunc(sgGraphicsSurfaceSetTarget)("sgGraphicsSurfaceSetTarget", lib);
-    //checkBindFunc(sgGraphicsSurfaceGetTarget)("sgGraphicsSurfaceGetTarget", lib);
-    checkBindFunc(sgGraphicsSurfaceResetTarget)("sgGraphicsSurfaceResetTarget", lib);
+    checkBindFunc(sgGraphicsSurfaceCreate)("sgmGraphicsSurfaceCreate", lib);
+    //checkBindFunc(sgGraphicsSurfaceCreateTexture)("sgmGraphicsSurfaceCreateTexture", lib);
+    //checkBindFunc(sgGraphicsSurfaceCreateData)("sgmGraphicsSurfaceCreateData", lib);
+    checkBindFunc(sgGraphicsSurfaceDestroy)("sgmGraphicsSurfaceDestroy", lib);
+    checkBindFunc(sgGraphicsSurfaceSetTexture)("sgmGraphicsSurfaceSetTexture", lib);
+    checkBindFunc(sgGraphicsSurfaceGetTexture)("sgmGraphicsSurfaceGetTexture", lib);
+    checkBindFunc(sgGraphicsSurfaceSetData)("sgmGraphicsSurfaceSetData", lib);
+    //checkBindFunc(sgGraphicsSurfaceGetData)("sgmGraphicsSurfaceGetData", lib);
+    //checkBindFunc(sgGraphicsSurfaceFreeData)("sgmGraphicsSurfaceFreeData", lib);
+    checkBindFunc(sgGraphicsSurfaceGetSize)("sgmGraphicsSurfaceGetSize", lib);
+    checkBindFunc(sgGraphicsSurfaceDraw)("sgmGraphicsSurfaceDraw", lib);
+    checkBindFunc(sgGraphicsSurfaceSetTarget)("sgmGraphicsSurfaceSetTarget", lib);
+    //checkBindFunc(sgGraphicsSurfaceGetTarget)("sgmGraphicsSurfaceGetTarget", lib);
+    checkBindFunc(sgGraphicsSurfaceResetTarget)("sgmGraphicsSurfaceResetTarget", lib);
 
-    checkBindFunc(sgGraphicsTextureCreate)("sgGraphicsTextureCreate", lib);
-    //checkBindFunc(sgGraphicsTextureCreateData)("sgGraphicsTextureCreateData", lib);
-    checkBindFunc(sgGraphicsTextureDestroy)("sgGraphicsTextureDestroy", lib);
-    checkBindFunc(sgGraphicsTextureSetData)("sgGraphicsTextureSetData", lib);
-    //checkBindFunc(sgGraphicsTextureGetData)("sgGraphicsTextureGetData", lib);
-    //checkBindFunc(sgGraphicsTextureFreeData)("sgGraphicsTextureFreeData", lib);
-    checkBindFunc(sgGraphicsTextureGetSize)("sgGraphicsTextureGetSize", lib);
-    checkBindFunc(sgGraphicsTextureDraw)("sgGraphicsTextureDraw", lib);
+    checkBindFunc(sgGraphicsTextureCreate)("sgmGraphicsTextureCreate", lib);
+    //checkBindFunc(sgGraphicsTextureCreateData)("sgmGraphicsTextureCreateData", lib);
+    checkBindFunc(sgGraphicsTextureDestroy)("sgmGraphicsTextureDestroy", lib);
+    checkBindFunc(sgGraphicsTextureSetData)("sgmGraphicsTextureSetData", lib);
+    //checkBindFunc(sgGraphicsTextureGetData)("sgmGraphicsTextureGetData", lib);
+    //checkBindFunc(sgGraphicsTextureFreeData)("sgmGraphicsTextureFreeData", lib);
+    checkBindFunc(sgGraphicsTextureGetSize)("sgmGraphicsTextureGetSize", lib);
+    checkBindFunc(sgGraphicsTextureDraw)("sgmGraphicsTextureDraw", lib);
 
-    checkBindFunc(sgGraphicsDrawPrimitive)("sgGraphicsDrawPrimitive", lib);
-    checkBindFunc(sgGraphicsDrawSetColor)("sgGraphicsDrawSetColor", lib);
-    checkBindFunc(sgGraphicsDrawPointSetSize)("sgGraphicsDrawPointSetSize", lib);
-    //bindFunc(sgGraphicsDrawPointGetSize)("sgGraphicsDrawPointGetSize", lib);
-    checkBindFunc(sgGraphicsDrawLineSetWidth)("sgGraphicsDrawLineSetWidth", lib);
-    //bindFunc(sgGraphicsDrawLineGetWidth)("sgGraphicsDrawLineGetWidth", lib);
-    //bindFunc(sgGraphicsDrawLineSetStipple)("sgGraphicsDrawLineSetStipple", lib);
-    //bindFunc(sgGraphicsDrawLineGetStipple)("sgGraphicsDrawLineGetStipple", lib);
-    //bindFunc(sgGraphicsDrawPolygonSetStipple)("sgGraphicsDrawPolygonSetStipple", lib);
-    //bindFunc(sgGraphicsDrawPolygonGetStipple)("sgGraphicsDrawPolygonGetStipple", lib);
+    checkBindFunc(sgGraphicsDrawPrimitive)("sgmGraphicsDrawPrimitive", lib);
+    checkBindFunc(sgGraphicsDrawSetColor)("sgmGraphicsDrawSetColor", lib);
+    checkBindFunc(sgGraphicsDrawPointSetSize)("sgmGraphicsDrawPointSetSize", lib);
+    //checkBindFunc(sgGraphicsDrawPointGetSize)("sgmGraphicsDrawPointGetSize", lib);
+    checkBindFunc(sgGraphicsDrawLineSetWidth)("sgmGraphicsDrawLineSetWidth", lib);
+    //checkBindFunc(sgGraphicsDrawLineGetWidth)("sgmGraphicsDrawLineGetWidth", lib);
+    //checkBindFunc(sgGraphicsDrawLineSetStipple)("sgmGraphicsDrawLineSetStipple", lib);
+    //checkBindFunc(sgGraphicsDrawLineGetStipple)("sgmGraphicsDrawLineGetStipple", lib);
+    //checkBindFunc(sgGraphicsDrawPolygonSetStipple)("sgmGraphicsDrawPolygonSetStipple", lib);
+    //checkBindFunc(sgGraphicsDrawPolygonGetStipple)("sgmGraphicsDrawPolygonGetStipple", lib);
 
     /// Graphics Load
-    checkBindFunc(sgGraphicsLoadFile)("sgGraphicsLoadFile", lib);
-    //checkBindFunc(sgGraphicsLoadStream)("sgGraphicsLoadStream", lib);
-    checkBindFunc(sgGraphicsLoadFreeData)("sgGraphicsLoadFreeData", lib);
+    checkBindFunc(sgGraphicsLoadFile)("sgmGraphicsLoadFile", lib);
+    //checkBindFunc(sgGraphicsLoadStream)("sgmGraphicsLoadStream", lib);
+    checkBindFunc(sgGraphicsLoadFreeData)("sgmGraphicsLoadFreeData", lib);
 }
 
 extern(C)

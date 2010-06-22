@@ -10,12 +10,12 @@ private
 void loadModuleFonts(SharedLib lib)
 {
     /// Fonts
-    checkBindFunc(sgFontsFaceCreate)("sgFontsFaceCreate", lib);
-    checkBindFunc(sgFontsFaceDestroy)("sgFontsFaceDestroy", lib);
-    checkBindFunc(sgFontsFaceSetHeight)("sgFontsFaceSetHeight", lib);
-    //checkBindFunc(sgFontsFaceGetHeight)("sgFontsFaceGetHeight", lib);
-    checkBindFunc(sgFontsCharsCreate)("sgFontsCharsCreate", lib);
-    checkBindFunc(sgFontsCharsFreeData)("sgFontsCharsFreeData", lib);
+    checkBindFunc(sgFontsFaceCreate)("sgmFontsFaceCreate", lib);
+    checkBindFunc(sgFontsFaceDestroy)("sgmFontsFaceDestroy", lib);
+    checkBindFunc(sgFontsFaceSetHeight)("sgmFontsFaceSetHeight", lib);
+    //checkBindFunc(sgFontsFaceGetHeight)("sgmFontsFaceGetHeight", lib);
+    checkBindFunc(sgFontsCharsCreate)("sgmFontsCharsCreate", lib);
+    checkBindFunc(sgFontsCharsFreeData)("sgmFontsCharsFreeData", lib);
 }
 
 extern(C)

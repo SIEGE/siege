@@ -3,14 +3,22 @@
 
 #include "../../common.h"
 
+#ifdef SG_LEGACY_API
+#    define sgGraphicsContextCreate sgmGraphicsContextCreate
+#    define sgGraphicsContextDestroy sgmGraphicsContextDestroy
+#    define sgGraphicsContextResize sgmGraphicsContextResize
+#    define sgGraphicsContextClear sgmGraphicsContextClearColor
+#endif // SG_LEGACY_API
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp);
-    SGuint SG_EXPORT sgGraphicsContextDestroy(void* context);
-    SGuint SG_EXPORT sgGraphicsContextResize(void* context, SGuint width, SGuint height);
-    SGuint SG_EXPORT sgGraphicsContextClear(void* context, float* color);
+    SGuint SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp);
+    SGuint SG_EXPORT sgmGraphicsContextDestroy(void* context);
+    SGuint SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint height);
+    //SGuint SG_EXPORT sgmGraphicsContextClear(void* context);
+    SGuint SG_EXPORT sgmGraphicsContextClearColor(void* context, float* color);
 #ifdef __cplusplus
 }
 #endif
