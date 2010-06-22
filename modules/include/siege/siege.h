@@ -1,42 +1,17 @@
 #ifndef __SIEGE_H__
 #define __SIEGE_H__
 
+#ifndef SG_LEGACY_API
+// WARNING: this will be removed once SIEGE is merged in
+#define SG_LEGACY_API
+#endif // SG_LEGACY_API
+
+#ifdef SG_LEGACY_API
+#include "backend.h"
+#else
+// normal siege.h code goes in here
+#endif // SG_LEGACY_API
+
 #include "common.h"
-
-#include "module.h"
-/// Graphics
-#include "graphics/context.h"
-#include "graphics/draw.h"
-#include "graphics/surface.h"
-#include "graphics/texture.h"
-#include "graphics/viewport.h"
-/// Graphics Load
-#include "graphics/load.h"
-/// Audio
-#include "audio/sample.h"
-#include "audio/source.h"
-/// Audio Load
-#include "audio/load.h"
-/// Input
-#include "core/joystick.h"
-#include "core/keyboard.h"
-#include "core/mouse.h"
-/// Windowing
-#include "core/window.h"
-/// Fonts
-#include "fonts/face.h"
-#include "fonts/chars.h"
-/// Physics
-#include "physics/body.h"
-#include "physics/constraint.h"
-#include "physics/shape.h"
-#include "physics/space.h"
-
-/// Test (things in a state of flux, will be removed or at least renamed)
-#ifdef SIEGE_TEST
-#   include "physics/test.h"
-#endif // SIEGE_TEST
-
-#include "debug.h"
 
 #endif // __SIEGE_H__
