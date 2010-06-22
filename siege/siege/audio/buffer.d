@@ -19,8 +19,8 @@ class Buffer
 
     this()
     {
-        if(sgAudioBufferCreate !is null)
-            sgAudioBufferCreate(&shandle);
+        if(sgmAudioBufferCreate !is null)
+            sgmAudioBufferCreate(&shandle);
     }
     this(char[] fname)
     {
@@ -31,24 +31,24 @@ class Buffer
         uint frequency;
         void* cdata;
         uint datalen;
-        if(sgAudioLoadFile !is null)
-            sgAudioLoadFile(toStringz(fname), &channels, &format, &frequency, &cdata, &datalen);
-        if(sgAudioBufferSetData !is null)
-            sgAudioBufferSetData(shandle, channels, format, frequency, cdata, datalen);
-        if(sgAudioLoadFreeData !is null)
-            sgAudioLoadFreeData(cdata);
+        if(sgmAudioLoadFile !is null)
+            sgmAudioLoadFile(toStringz(fname), &channels, &format, &frequency, &cdata, &datalen);
+        if(sgmAudioBufferSetData !is null)
+            sgmAudioBufferSetData(shandle, channels, format, frequency, cdata, datalen);
+        if(sgmAudioLoadFreeData !is null)
+            sgmAudioLoadFreeData(cdata);
     }
     ~this()
     {
-        if(sgAudioBufferDestroy !is null)
-            sgAudioBufferDestroy(shandle);
+        if(sgmAudioBufferDestroy !is null)
+            sgmAudioBufferDestroy(shandle);
     }
 
     void data()
     {
         /// TODO
-        //if(sgAudioBufferSetData !is null)
-        //    sgAudioBufferSetData();
+        //if(sgmAudioBufferSetData !is null)
+        //    sgmAudioBufferSetData();
     }
 
     void* handle()

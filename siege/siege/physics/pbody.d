@@ -107,26 +107,26 @@ class BodyVelocity
 
     void linear(Vector l)
     {
-        if(sgPhysicsBodySetVelocity !is null)
-            sgPhysicsBodySetVelocity(bhandle, l.x, l.y);
+        if(sgmPhysicsBodySetVelocity !is null)
+            sgmPhysicsBodySetVelocity(bhandle, l.x, l.y);
     }
     Vector linear()
     {
         Vector l;
-        if(sgPhysicsBodyGetVelocity !is null)
-            sgPhysicsBodyGetVelocity(bhandle, &l.x, &l.y);
+        if(sgmPhysicsBodyGetVelocity !is null)
+            sgmPhysicsBodyGetVelocity(bhandle, &l.x, &l.y);
         return l;
     }
     void angular(float a)
     {
-        if(sgPhysicsBodySetAngularVelocity !is null)
-            sgPhysicsBodySetAngularVelocity(bhandle, a);
+        if(sgmPhysicsBodySetAngularVelocity !is null)
+            sgmPhysicsBodySetAngularVelocity(bhandle, a);
     }
     float angular()
     {
         float a;
-        if(sgPhysicsBodyGetAngularVelocity !is null)
-            sgPhysicsBodyGetAngularVelocity(bhandle, &a);
+        if(sgmPhysicsBodyGetAngularVelocity !is null)
+            sgmPhysicsBodyGetAngularVelocity(bhandle, &a);
         return a;
     }
 }
@@ -186,14 +186,14 @@ class Body: EventClient
                 type = SG_PHYSICS_BODY_SEMISTATIC;
         }
 
-        if(sgPhysicsBodyCreate !is null)
-            sgPhysicsBodyCreate(&bhandle, type);
-        if(sgPhysicsBodySetPosition !is null)
-            sgPhysicsBodySetPosition(bhandle, data.position.x, data.position.y);
-        if(sgPhysicsBodySetAngle !is null)
-            sgPhysicsBodySetAngle(bhandle, data.angle * 180 / PI);
-        if(sgPhysicsBodySetData !is null)
-            sgPhysicsBodySetData(bhandle, cast(void*)this);
+        if(sgmPhysicsBodyCreate !is null)
+            sgmPhysicsBodyCreate(&bhandle, type);
+        if(sgmPhysicsBodySetPosition !is null)
+            sgmPhysicsBodySetPosition(bhandle, data.position.x, data.position.y);
+        if(sgmPhysicsBodySetAngle !is null)
+            sgmPhysicsBodySetAngle(bhandle, data.angle * 180 / PI);
+        if(sgmPhysicsBodySetData !is null)
+            sgmPhysicsBodySetData(bhandle, cast(void*)this);
 
         velocity = new BodyVelocity(bhandle);
         //damping = new BodyDamping(bhandle);
@@ -201,58 +201,58 @@ class Body: EventClient
 
     ~this()
     {
-        if(sgPhysicsBodyDestroy !is null)
-            sgPhysicsBodyDestroy(bhandle);
+        if(sgmPhysicsBodyDestroy !is null)
+            sgmPhysicsBodyDestroy(bhandle);
     }
 
     void position(Vector p)
     {
-        if(sgPhysicsBodySetPosition !is null)
-            sgPhysicsBodySetPosition(bhandle, p.x, p.y);
+        if(sgmPhysicsBodySetPosition !is null)
+            sgmPhysicsBodySetPosition(bhandle, p.x, p.y);
     }
     Vector position()
     {
         Vector p;
-        if(sgPhysicsBodyGetPosition !is null)
-            sgPhysicsBodyGetPosition(bhandle, &p.x, &p.y);
+        if(sgmPhysicsBodyGetPosition !is null)
+            sgmPhysicsBodyGetPosition(bhandle, &p.x, &p.y);
         return p;
     }
     void angle(float a)
     {
-        if(sgPhysicsBodySetAngle !is null)
-            sgPhysicsBodySetAngle(bhandle, angle * 180 / PI);
+        if(sgmPhysicsBodySetAngle !is null)
+            sgmPhysicsBodySetAngle(bhandle, angle * 180 / PI);
     }
     float angle()
     {
         float a;
-        if(sgPhysicsBodyGetAngle !is null)
-            sgPhysicsBodyGetAngle(bhandle, &a);
+        if(sgmPhysicsBodyGetAngle !is null)
+            sgmPhysicsBodyGetAngle(bhandle, &a);
         return a * 180 / PI;
     }
 
     void mass(float m)
     {
-        if(sgPhysicsBodySetMass !is null)
-            sgPhysicsBodySetMass(bhandle, m);
+        if(sgmPhysicsBodySetMass !is null)
+            sgmPhysicsBodySetMass(bhandle, m);
     }
     float mass()
     {
         float m;
-        if(sgPhysicsBodyGetMass !is null)
-            sgPhysicsBodyGetMass(bhandle, &m);
+        if(sgmPhysicsBodyGetMass !is null)
+            sgmPhysicsBodyGetMass(bhandle, &m);
         return m;
     }
 
     void moment(float m)
     {
-        if(sgPhysicsBodySetMoment !is null)
-            sgPhysicsBodySetMoment(bhandle, m);
+        if(sgmPhysicsBodySetMoment !is null)
+            sgmPhysicsBodySetMoment(bhandle, m);
     }
     float moment()
     {
         float m;
-        if(sgPhysicsBodyGetMoment !is null)
-            sgPhysicsBodyGetMoment(bhandle, &m);
+        if(sgmPhysicsBodyGetMoment !is null)
+            sgmPhysicsBodyGetMoment(bhandle, &m);
         return m;
     }
 

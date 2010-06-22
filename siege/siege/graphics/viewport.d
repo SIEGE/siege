@@ -22,8 +22,8 @@ class Viewport
     }
     this(Vector wpos, Vector wsize, Vector pos = Vector(), Vector size = Vector())
     {
-        if(sgGraphicsViewportCreate !is null)
-            sgGraphicsViewportCreate(&viewport, window.context());
+        if(sgmGraphicsViewportCreate !is null)
+            sgmGraphicsViewportCreate(&viewport, window.context());
 
         set(wpos, wsize, pos, size);
     }
@@ -33,8 +33,8 @@ class Viewport
     }
     ~this()
     {
-        if(sgGraphicsViewportDestroy !is null)
-            sgGraphicsViewportDestroy(viewport);
+        if(sgmGraphicsViewportDestroy !is null)
+            sgmGraphicsViewportDestroy(viewport);
     }
 
     void set(Vector wpos, Vector wsize, Vector pos, Vector size)
@@ -62,8 +62,8 @@ class Viewport
     void reset()
     {
         /// \todo This should use int, not uint - or should it?
-        if(sgGraphicsViewportSetView !is null)
-            sgGraphicsViewportSetView(viewport, cast(uint)wpos.x, cast(uint)wpos.y, cast(uint)wsize.x, cast(uint)wsize.y, pos.x, pos.y, size.x, size.y);
+        if(sgmGraphicsViewportSetView !is null)
+            sgmGraphicsViewportSetView(viewport, cast(uint)wpos.x, cast(uint)wpos.y, cast(uint)wsize.x, cast(uint)wsize.y, pos.x, pos.y, size.x, size.y);
     }
 
     /*void get(out uint wx, out uint wy, out uint wwidth, out uint wheight, out float x, out float y, out float width, out float height)

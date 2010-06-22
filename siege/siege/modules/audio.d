@@ -52,109 +52,109 @@ uint formatSizeof(uint format)
 void loadModuleAudio(SharedLib lib)
 {
     /// Audio
-    checkBindFunc(sgAudioSourceMaxSources)("sgmAudioSourceMaxSources", lib);
+    checkBindFunc(sgmAudioSourceMaxSources)("sgmAudioSourceMaxSources", lib);
 
-    checkBindFunc(sgAudioBufferCreate)("sgmAudioBufferCreate", lib);
-    //checkBindFunc(sgAudioBufferCreateData)("sgmAudioBufferCreateData", lib);
-    checkBindFunc(sgAudioBufferSetData)("sgmAudioBufferSetData", lib);
-    //checkBindFunc(sgAudioBufferGetData)("sgmAudioBufferGetData", lib);
-    //checkBindFunc(sgAudioBufferFreeData)("sgmAudioBufferFreeData", lib);
-    checkBindFunc(sgAudioBufferDestroy)("sgmAudioBufferDestroy", lib);
+    checkBindFunc(sgmAudioBufferCreate)("sgmAudioBufferCreate", lib);
+    //checkBindFunc(sgmAudioBufferCreateData)("sgmAudioBufferCreateData", lib);
+    checkBindFunc(sgmAudioBufferSetData)("sgmAudioBufferSetData", lib);
+    //checkBindFunc(sgmAudioBufferGetData)("sgmAudioBufferGetData", lib);
+    //checkBindFunc(sgmAudioBufferFreeData)("sgmAudioBufferFreeData", lib);
+    checkBindFunc(sgmAudioBufferDestroy)("sgmAudioBufferDestroy", lib);
 
-    checkBindFunc(sgAudioSourceCreate)("sgmAudioSourceCreate", lib);
-    //checkBindFunc(sgAudioSourceCreateData)("sgmAudioSourceCreateData", lib);
-    checkBindFunc(sgAudioSourceDestroy)("sgmAudioSourceDestroy", lib);
-    checkBindFunc(sgAudioSourcePlay)("sgmAudioSourcePlay", lib);
-    checkBindFunc(sgAudioSourceIsPlaying)("sgmAudioSourceIsPlaying", lib);
-    checkBindFunc(sgAudioSourcePause)("sgmAudioSourcePause", lib);
-    checkBindFunc(sgAudioSourceIsPaused)("sgmAudioSourceIsPaused", lib);
-    checkBindFunc(sgAudioSourceRewind)("sgmAudioSourceRewind", lib);
-    //checkBindFunc(sgAudioSourceIsRewinded)("sgmAudioSourceIsRewinded", lib);
-    checkBindFunc(sgAudioSourceStop)("sgmAudioSourceStop", lib);
-    checkBindFunc(sgAudioSourceIsStopped)("sgmAudioSourceIsStopped", lib);
-    checkBindFunc(sgAudioSourceSetBuffer)("sgmAudioSourceSetBuffer", lib);
-    //checkBindFunc(sgAudioSourceGetBuffer)("sgmAudioSourceGetBuffer", lib);
-    checkBindFunc(sgAudioSourceQueueBuffers)("sgmAudioSourceQueueBuffers", lib);
-    checkBindFunc(sgAudioSourceUnqueueBuffers)("sgmAudioSourceUnqueueBuffers", lib);
-    checkBindFunc(sgAudioSourceGetNumProcessedBuffers)("sgmAudioSourceNumProcessedBuffers", lib);
-    checkBindFunc(sgAudioSourceGetNumQueuedBuffers)("sgmAudioSourceNumQueuedBuffers", lib);
-    checkBindFunc(sgAudioSourceSetPosition)("sgmAudioSourceSetPosition", lib);
-    checkBindFunc(sgAudioSourceGetPosition)("sgmAudioSourceGetPosition", lib);
-    checkBindFunc(sgAudioSourceSetVelocity)("sgmAudioSourceSetVelocity", lib);
-    checkBindFunc(sgAudioSourceGetVelocity)("sgmAudioSourceGetVelocity", lib);
-    //checkBindFunc(sgAudioSourceSetFalloff)("sgmAudioSourceSetFalloff", lib);
-    //checkBindFunc(sgAudioSourceGetFalloff)("sgmAudioSourceGetFalloff", lib);
-    checkBindFunc(sgAudioSourceSetPitch)("sgmAudioSourceSetPitch", lib);
-    checkBindFunc(sgAudioSourceGetPitch)("sgmAudioSourceGetPitch", lib);
-    checkBindFunc(sgAudioSourceSetVolume)("sgmAudioSourceSetVolume", lib);
-    checkBindFunc(sgAudioSourceGetVolume)("sgmAudioSourceGetVolume", lib);
-    checkBindFunc(sgAudioSourceSetLooping)("sgmAudioSourceSetLooping", lib);
-    checkBindFunc(sgAudioSourceGetLooping)("sgmAudioSourceGetLooping", lib);
+    checkBindFunc(sgmAudioSourceCreate)("sgmAudioSourceCreate", lib);
+    //checkBindFunc(sgmAudioSourceCreateData)("sgmAudioSourceCreateData", lib);
+    checkBindFunc(sgmAudioSourceDestroy)("sgmAudioSourceDestroy", lib);
+    checkBindFunc(sgmAudioSourcePlay)("sgmAudioSourcePlay", lib);
+    checkBindFunc(sgmAudioSourceIsPlaying)("sgmAudioSourceIsPlaying", lib);
+    checkBindFunc(sgmAudioSourcePause)("sgmAudioSourcePause", lib);
+    checkBindFunc(sgmAudioSourceIsPaused)("sgmAudioSourceIsPaused", lib);
+    checkBindFunc(sgmAudioSourceRewind)("sgmAudioSourceRewind", lib);
+    //checkBindFunc(sgmAudioSourceIsRewinded)("sgmAudioSourceIsRewinded", lib);
+    checkBindFunc(sgmAudioSourceStop)("sgmAudioSourceStop", lib);
+    checkBindFunc(sgmAudioSourceIsStopped)("sgmAudioSourceIsStopped", lib);
+    checkBindFunc(sgmAudioSourceSetBuffer)("sgmAudioSourceSetBuffer", lib);
+    //checkBindFunc(sgmAudioSourceGetBuffer)("sgmAudioSourceGetBuffer", lib);
+    checkBindFunc(sgmAudioSourceQueueBuffers)("sgmAudioSourceQueueBuffers", lib);
+    checkBindFunc(sgmAudioSourceUnqueueBuffers)("sgmAudioSourceUnqueueBuffers", lib);
+    checkBindFunc(sgmAudioSourceGetNumProcessedBuffers)("sgmAudioSourceNumProcessedBuffers", lib);
+    checkBindFunc(sgmAudioSourceGetNumQueuedBuffers)("sgmAudioSourceNumQueuedBuffers", lib);
+    checkBindFunc(sgmAudioSourceSetPosition)("sgmAudioSourceSetPosition", lib);
+    checkBindFunc(sgmAudioSourceGetPosition)("sgmAudioSourceGetPosition", lib);
+    checkBindFunc(sgmAudioSourceSetVelocity)("sgmAudioSourceSetVelocity", lib);
+    checkBindFunc(sgmAudioSourceGetVelocity)("sgmAudioSourceGetVelocity", lib);
+    //checkBindFunc(sgmAudioSourceSetFalloff)("sgmAudioSourceSetFalloff", lib);
+    //checkBindFunc(sgmAudioSourceGetFalloff)("sgmAudioSourceGetFalloff", lib);
+    checkBindFunc(sgmAudioSourceSetPitch)("sgmAudioSourceSetPitch", lib);
+    checkBindFunc(sgmAudioSourceGetPitch)("sgmAudioSourceGetPitch", lib);
+    checkBindFunc(sgmAudioSourceSetVolume)("sgmAudioSourceSetVolume", lib);
+    checkBindFunc(sgmAudioSourceGetVolume)("sgmAudioSourceGetVolume", lib);
+    checkBindFunc(sgmAudioSourceSetLooping)("sgmAudioSourceSetLooping", lib);
+    checkBindFunc(sgmAudioSourceGetLooping)("sgmAudioSourceGetLooping", lib);
 
     /// Audio Load
-    checkBindFunc(sgAudioLoadFile)("sgmAudioLoadFile", lib);
-    //checkBindFunc(sgAudioLoadStream)("sgmAudioLoadStream", lib);
-    checkBindFunc(sgAudioLoadFreeData)("sgmAudioLoadFreeData", lib);
+    checkBindFunc(sgmAudioLoadFile)("sgmAudioLoadFile", lib);
+    //checkBindFunc(sgmAudioLoadStream)("sgmAudioLoadStream", lib);
+    checkBindFunc(sgmAudioLoadFreeData)("sgmAudioLoadFreeData", lib);
 
-    checkBindFunc(sgAudioFileCreate)("sgmAudioFileCreate", lib);
-    checkBindFunc(sgAudioFileDestroy)("sgmAudioFileDestroy", lib);
+    checkBindFunc(sgmAudioFileCreate)("sgmAudioFileCreate", lib);
+    checkBindFunc(sgmAudioFileDestroy)("sgmAudioFileDestroy", lib);
     checkBindFunc(sgmAudioFileNumSamples)("sgmAudioFileNumSamples", lib);
-    checkBindFunc(sgAudioFileRead)("sgmAudioFileRead", lib);
+    checkBindFunc(sgmAudioFileRead)("sgmAudioFileRead", lib);
 }
 
 extern(C)
 {
     /// Audio
 /// \todo USE
-    uint function(uint* max) sgAudioSourceMaxSources;
+    uint function(uint* max) sgmAudioSourceMaxSources;
 
-    uint function(void** buffer) sgAudioBufferCreate;
-    //uint function(void** buffer, uint channels, uint type, uint frequency, void* data, uint datalen) sgAudioBufferCreateData;
-    uint function(void* buffer, uint channels, uint type, uint frequency, void* data, uint datalen) sgAudioBufferSetData;
-    //uint function(void* buffer, uint* channels, uint* type, uint* frequency, void** data, uint* datalen) sgAudioBufferGetData;
-    //uint function(void* data) sgAudioBufferFreeData;
-    uint function(void* buffer) sgAudioBufferDestroy;
+    uint function(void** buffer) sgmAudioBufferCreate;
+    //uint function(void** buffer, uint channels, uint type, uint frequency, void* data, uint datalen) sgmAudioBufferCreateData;
+    uint function(void* buffer, uint channels, uint type, uint frequency, void* data, uint datalen) sgmAudioBufferSetData;
+    //uint function(void* buffer, uint* channels, uint* type, uint* frequency, void** data, uint* datalen) sgmAudioBufferGetData;
+    //uint function(void* data) sgmAudioBufferFreeData;
+    uint function(void* buffer) sgmAudioBufferDestroy;
 
-    uint function(void** source) sgAudioSourceCreate;
-    //uint function(void** source, void* buffer, float pitch, float gain, bool looping) sgAudioSourceCreateData;
-    uint function(void* source) sgAudioSourceDestroy;
-    uint function(void* source) sgAudioSourcePlay;
-    uint function(void* source, bool* playing) sgAudioSourceIsPlaying;
-    uint function(void* source) sgAudioSourcePause;
-    uint function(void* source, bool* paused) sgAudioSourceIsPaused;
-    uint function(void* source) sgAudioSourceRewind;
-    //uint function(void* source, bool* rewinded) sgAudioSourceIsRewinded;
-    uint function(void* source) sgAudioSourceStop;
-    uint function(void* source, bool* stopped) sgAudioSourceIsStopped;
-    uint function(void* source, void* buffer) sgAudioSourceSetBuffer;
-    //uint function(void* source, void** buffer) sgAudioSourceGetBuffer;
+    uint function(void** source) sgmAudioSourceCreate;
+    //uint function(void** source, void* buffer, float pitch, float gain, bool looping) sgmAudioSourceCreateData;
+    uint function(void* source) sgmAudioSourceDestroy;
+    uint function(void* source) sgmAudioSourcePlay;
+    uint function(void* source, bool* playing) sgmAudioSourceIsPlaying;
+    uint function(void* source) sgmAudioSourcePause;
+    uint function(void* source, bool* paused) sgmAudioSourceIsPaused;
+    uint function(void* source) sgmAudioSourceRewind;
+    //uint function(void* source, bool* rewinded) sgmAudioSourceIsRewinded;
+    uint function(void* source) sgmAudioSourceStop;
+    uint function(void* source, bool* stopped) sgmAudioSourceIsStopped;
+    uint function(void* source, void* buffer) sgmAudioSourceSetBuffer;
+    //uint function(void* source, void** buffer) sgmAudioSourceGetBuffer;
 /// \todo USE
-    uint function(void* source, void** buffers, uint numbuffers) sgAudioSourceQueueBuffers;
-    uint function(void* source, uint numbuffers) sgAudioSourceUnqueueBuffers;
+    uint function(void* source, void** buffers, uint numbuffers) sgmAudioSourceQueueBuffers;
+    uint function(void* source, uint numbuffers) sgmAudioSourceUnqueueBuffers;
 /// \warning Will most likely change very soon
-    uint function(void* source, uint* processed) sgAudioSourceGetNumProcessedBuffers;
-    uint function(void* source, uint* queued) sgAudioSourceGetNumQueuedBuffers;
-    uint function(void* source, float x, float y, float z) sgAudioSourceSetPosition;
-    uint function(void* source, float* x, float* y, float* z) sgAudioSourceGetPosition;
-    uint function(void* source, float x, float y, float z) sgAudioSourceSetVelocity;
-    uint function(void* source, float* x, float* y, float* z) sgAudioSourceGetVelocity;
-    //uint function(void* source, float falloff) sgAudioSourceSetFalloff;
-    //uint function(void* source, float* falloff) sgAudioSourceGetFalloff;
-    uint function(void* source, float pitch) sgAudioSourceSetPitch;
-    uint function(void* source, float* pitch) sgAudioSourceGetPitch;
-    uint function(void* source, float volume) sgAudioSourceSetVolume;
-    uint function(void* source, float* volume) sgAudioSourceGetVolume;
-    uint function(void* source, bool looping) sgAudioSourceSetLooping;
-    uint function(void* source, bool* looping) sgAudioSourceGetLooping;
+    uint function(void* source, uint* processed) sgmAudioSourceGetNumProcessedBuffers;
+    uint function(void* source, uint* queued) sgmAudioSourceGetNumQueuedBuffers;
+    uint function(void* source, float x, float y, float z) sgmAudioSourceSetPosition;
+    uint function(void* source, float* x, float* y, float* z) sgmAudioSourceGetPosition;
+    uint function(void* source, float x, float y, float z) sgmAudioSourceSetVelocity;
+    uint function(void* source, float* x, float* y, float* z) sgmAudioSourceGetVelocity;
+    //uint function(void* source, float falloff) sgmAudioSourceSetFalloff;
+    //uint function(void* source, float* falloff) sgmAudioSourceGetFalloff;
+    uint function(void* source, float pitch) sgmAudioSourceSetPitch;
+    uint function(void* source, float* pitch) sgmAudioSourceGetPitch;
+    uint function(void* source, float volume) sgmAudioSourceSetVolume;
+    uint function(void* source, float* volume) sgmAudioSourceGetVolume;
+    uint function(void* source, bool looping) sgmAudioSourceSetLooping;
+    uint function(void* source, bool* looping) sgmAudioSourceGetLooping;
 
     /// Audio Load
-    uint function(char* fname, uint* channels, uint* format, uint* frequency, void** data, uint* datalen)  sgAudioLoadFile;
-    //uint function(void* stream, uint* channels, uint* format, uint* frequency, void** data, uint* datalen) sgAudioLoadStream;
-    uint function(void* data) sgAudioLoadFreeData;
+    uint function(char* fname, uint* channels, uint* format, uint* frequency, void** data, uint* datalen)  sgmAudioLoadFile;
+    //uint function(void* stream, uint* channels, uint* format, uint* frequency, void** data, uint* datalen) sgmAudioLoadStream;
+    uint function(void* data) sgmAudioLoadFreeData;
 /// \todo USE
-    uint function(void** file, char* fname, uint* channels, uint* format, uint* frequency) sgAudioFileCreate;
-    uint function(void* file) sgAudioFileDestroy;
+    uint function(void** file, char* fname, uint* channels, uint* format, uint* frequency) sgmAudioFileCreate;
+    uint function(void* file) sgmAudioFileDestroy;
     uint function(void* file, uint* samples) sgmAudioFileNumSamples;
-    uint function(void* file, void* data, uint* datalen) sgAudioFileRead;
+    uint function(void* file, void* data, uint* datalen) sgmAudioFileRead;
 }
 

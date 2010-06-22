@@ -110,8 +110,8 @@ static:
 
     void size(float s)
     {
-        if(sgGraphicsDrawPointSetSize !is null)
-            sgGraphicsDrawPointSetSize(window.context(), s);
+        if(sgmGraphicsDrawPointSetSize !is null)
+            sgmGraphicsDrawPointSetSize(window.context(), s);
     }
     /*float size()
     {
@@ -166,8 +166,8 @@ static:
 
     void width(float w)
     {
-        if(sgGraphicsDrawLineSetWidth !is null)
-            sgGraphicsDrawLineSetWidth(window.context(), w);
+        if(sgmGraphicsDrawLineSetWidth !is null)
+            sgmGraphicsDrawLineSetWidth(window.context(), w);
     }
     /*float width()
     {
@@ -396,8 +396,8 @@ static:
         if(drawTexture !is null)
             texture = drawTexture.handle();
 
-        if(sgGraphicsDrawPrimitive !is null)
-            sgGraphicsDrawPrimitive(window.context(), texture, drawType, drawPoints.length / 3, drawPoints.ptr, drawTexCoords.ptr, drawColors.ptr);
+        if(sgmGraphicsDrawPrimitive !is null)
+            sgmGraphicsDrawPrimitive(window.context(), texture, drawType, drawPoints.length / 3, drawPoints.ptr, drawTexCoords.ptr, drawColors.ptr);
         drawPoints.length = 0;
         drawTexCoords.length = 0;
         drawColors.length = 0;
@@ -405,14 +405,14 @@ static:
 
     void clear(Color col = Color(0, 0, 0, 0))
     {
-        if(sgGraphicsContextClear !is null)
-            sgGraphicsContextClear(window.context(), col.rgba.ptr);
+        if(sgmGraphicsContextClear !is null)
+            sgmGraphicsContextClear(window.context(), col.rgba.ptr);
     }
 
     void color(Color col)
     {
-        if(sgGraphicsDrawSetColor !is null)
-            sgGraphicsDrawSetColor(window.context(), col.rgba.ptr);
+        if(sgmGraphicsDrawSetColor !is null)
+            sgmGraphicsDrawSetColor(window.context(), col.rgba.ptr);
         curColor = col;
     }
     void color(Vector col)

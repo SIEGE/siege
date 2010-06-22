@@ -83,18 +83,18 @@ class SiegeModule
 {
     extern(C)
     {
-        uint function(void* gc, SGModuleInfo** minfo)                 sgModuleInit;
-        uint function(SGModuleInfo* minfo)                            sgModuleExit;
-        //uint function(void* data)                                     sgModuleFree;
-        uint function(SGModuleInfo** minfos, uint numinfos, bool* ok) sgModuleMatch;
+        uint function(void* gc, SGModuleInfo** minfo)                 sgmModuleInit;
+        uint function(SGModuleInfo* minfo)                            sgmModuleExit;
+        //uint function(void* data)                                     sgmModuleFree;
+        uint function(SGModuleInfo** minfos, uint numinfos, bool* ok) sgmModuleMatch;
     }
 
     void loadModuleGeneral(SharedLib lib)
     {
-        checkBindFunc(sgModuleInit)("sgmModuleInit", lib);
-        checkBindFunc(sgModuleExit)("sgmModuleExit", lib);
-        //checkBindFunc(sgModuleFree)("sgmModuleFree", lib);
-        checkBindFunc(sgModuleMatch)("sgmModuleMatch", lib);
+        checkBindFunc(sgmModuleInit)("sgmModuleInit", lib);
+        checkBindFunc(sgmModuleExit)("sgmModuleExit", lib);
+        //checkBindFunc(sgmModuleFree)("sgmModuleFree", lib);
+        checkBindFunc(sgmModuleMatch)("sgmModuleMatch", lib);
     }
 
     SharedLib lib;
@@ -121,16 +121,16 @@ class SiegeModule
         loadModuleGeneral(lib);
         loadModule(lib);
 
-        if(sgModuleInit !is null)
-            sgModuleInit(getGCHandle(), &moduleInfo);
+        if(sgmModuleInit !is null)
+            sgmModuleInit(getGCHandle(), &moduleInfo);
     }
 
     ~this()
     {
-        //if(sgModuleFree !is null)
-        //    sgModuleFree(moduleInfo);
-        if(sgModuleExit !is null)
-            sgModuleExit(moduleInfo);
+        //if(sgmModuleFree !is null)
+        //    sgmModuleFree(moduleInfo);
+        if(sgmModuleExit !is null)
+            sgmModuleExit(moduleInfo);
     }
 }
 

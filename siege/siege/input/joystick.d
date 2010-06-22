@@ -18,8 +18,8 @@ private
         void cbJoystickButton(void* joystick, uint button, bool down)
         {
             uint joy;
-            if(sgCoreJoystickGetID !is null)
-                sgCoreJoystickGetID(joystick, &joy);
+            if(sgmCoreJoystickGetID !is null)
+                sgmCoreJoystickGetID(joystick, &joy);
 
             bool pressed = joysticks[joy].button[button].pressed;
 
@@ -36,12 +36,12 @@ private
         void cbJoystickMove(void* joystick, float* axis)
         {
             uint joy;
-            if(sgCoreJoystickGetID !is null)
-                sgCoreJoystickGetID(joystick, &joy);
+            if(sgmCoreJoystickGetID !is null)
+                sgmCoreJoystickGetID(joystick, &joy);
 
             uint numaxis;
-            if(sgCoreJoystickGetNumAxis !is null)
-                sgCoreJoystickGetNumAxis(joystick, &numaxis);
+            if(sgmCoreJoystickGetNumAxis !is null)
+                sgmCoreJoystickGetNumAxis(joystick, &numaxis);
             float[] pos = axis[0..numaxis];
 
             foreach(client; clientList)
@@ -280,8 +280,8 @@ class Joystick
         if(find(flags, SG_JOYSTICK_BUTTON_NOCB) != -1)
         {
             bool[] barr = new bool[](button.length);
-            if(sgCoreJoystickGetButtons !is null)
-                sgCoreJoystickGetButtons(jhandle, barr.ptr);
+            if(sgmCoreJoystickGetButtons !is null)
+                sgmCoreJoystickGetButtons(jhandle, barr.ptr);
             foreach(i, b; barr)
             {
                 button._update(i, b);
@@ -292,8 +292,8 @@ class Joystick
         if(find(flags, SG_JOYSTICK_AXIS_NOCB) != -1)
         {
             float[] parr = new float[](position.length);
-            if(sgCoreJoystickGetAxis !is null)
-                sgCoreJoystickGetAxis(jhandle, parr.ptr);
+            if(sgmCoreJoystickGetAxis !is null)
+                sgmCoreJoystickGetAxis(jhandle, parr.ptr);
             foreach(i, p; parr)
             {
                 position._update(i, p);
@@ -310,8 +310,8 @@ class Joystick
     {
         // TODO: PUT FLAGS INTO STATIC THIS
         uint* cflags;
-        if(sgCoreJoystickGetFlags !is null)
-            sgCoreJoystickGetFlags(&cflags);
+        if(sgmCoreJoystickGetFlags !is null)
+            sgmCoreJoystickGetFlags(&cflags);
         if(cflags !is null)
         {
             uint i;
@@ -319,36 +319,36 @@ class Joystick
                 i++;
             flags = cflags[0..i].dup;
         }
-        if(sgCoreJoystickFreeFlags !is null)
-            sgCoreJoystickFreeFlags(cflags);
+        if(sgmCoreJoystickFreeFlags !is null)
+            sgmCoreJoystickFreeFlags(cflags);
         // --------------------------------
 
         callbacks.button = &cbJoystickButton;
         callbacks.move = &cbJoystickMove;
 
-        if(sgCoreJoystickCreate !is null)
-            sgCoreJoystickCreate(&jhandle, window.handle, number);
+        if(sgmCoreJoystickCreate !is null)
+            sgmCoreJoystickCreate(&jhandle, window.handle, number);
 
-        if(sgCoreJoystickSetCallbacks !is null)
-            sgCoreJoystickSetCallbacks(jhandle, &callbacks);
+        if(sgmCoreJoystickSetCallbacks !is null)
+            sgmCoreJoystickSetCallbacks(jhandle, &callbacks);
 
         this.number = number;
 
         uint buttons;
-        if(sgCoreJoystickGetNumButtons !is null)
-            sgCoreJoystickGetNumButtons(jhandle, &buttons);
+        if(sgmCoreJoystickGetNumButtons !is null)
+            sgmCoreJoystickGetNumButtons(jhandle, &buttons);
 
         uint axis;
-        if(sgCoreJoystickGetNumAxis !is null)
-            sgCoreJoystickGetNumAxis(jhandle, &buttons);
+        if(sgmCoreJoystickGetNumAxis !is null)
+            sgmCoreJoystickGetNumAxis(jhandle, &buttons);
 
         button = new JoystickButtonHandle(buttons);
         position = new JoystickPositionHandle(axis);
     }
     ~this()
     {
-        if(sgCoreJoystickDestroy !is null)
-            sgCoreJoystickDestroy(jhandle);
+        if(sgmCoreJoystickDestroy !is null)
+            sgmCoreJoystickDestroy(jhandle);
     }
 
     JoystickButtonHandle button;

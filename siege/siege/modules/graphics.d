@@ -37,124 +37,124 @@ enum: uint
 void loadModuleGraphics(SharedLib lib)
 {
     /// Graphics
-    checkBindFunc(sgGraphicsContextCreate)("sgmGraphicsContextCreate", lib);
-    checkBindFunc(sgGraphicsContextDestroy)("sgmGraphicsContextDestroy", lib);
-    checkBindFunc(sgGraphicsContextResize)("sgmGraphicsContextResize", lib);
-    checkBindFunc(sgGraphicsContextClear)("sgmGraphicsContextClear", lib);
+    checkBindFunc(sgmGraphicsContextCreate)("sgmGraphicsContextCreate", lib);
+    checkBindFunc(sgmGraphicsContextDestroy)("sgmGraphicsContextDestroy", lib);
+    checkBindFunc(sgmGraphicsContextResize)("sgmGraphicsContextResize", lib);
+    checkBindFunc(sgmGraphicsContextClear)("sgmGraphicsContextClear", lib);
 
-    checkBindFunc(sgGraphicsViewportCreate)("sgmGraphicsViewportCreate", lib);
-    //checkBindFunc(sgGraphicsViewportCreateView)("sgmGraphicsViewportCreateView", lib);
-    checkBindFunc(sgGraphicsViewportDestroy)("sgmGraphicsViewportDestroy", lib);
-    checkBindFunc(sgGraphicsViewportSetView)("sgmGraphicsViewportSetView", lib);
-    //checkBindFunc(sgGraphicsViewportGetView)("sgmGraphicsViewportGetView", lib);
+    checkBindFunc(sgmGraphicsViewportCreate)("sgmGraphicsViewportCreate", lib);
+    //checkBindFunc(sgmGraphicsViewportCreateView)("sgmGraphicsViewportCreateView", lib);
+    checkBindFunc(sgmGraphicsViewportDestroy)("sgmGraphicsViewportDestroy", lib);
+    checkBindFunc(sgmGraphicsViewportSetView)("sgmGraphicsViewportSetView", lib);
+    //checkBindFunc(sgmGraphicsViewportGetView)("sgmGraphicsViewportGetView", lib);
 
-    checkBindFunc(sgGraphicsSurfaceCreate)("sgmGraphicsSurfaceCreate", lib);
-    //checkBindFunc(sgGraphicsSurfaceCreateTexture)("sgmGraphicsSurfaceCreateTexture", lib);
-    //checkBindFunc(sgGraphicsSurfaceCreateData)("sgmGraphicsSurfaceCreateData", lib);
-    checkBindFunc(sgGraphicsSurfaceDestroy)("sgmGraphicsSurfaceDestroy", lib);
-    checkBindFunc(sgGraphicsSurfaceSetTexture)("sgmGraphicsSurfaceSetTexture", lib);
-    checkBindFunc(sgGraphicsSurfaceGetTexture)("sgmGraphicsSurfaceGetTexture", lib);
-    checkBindFunc(sgGraphicsSurfaceSetData)("sgmGraphicsSurfaceSetData", lib);
-    //checkBindFunc(sgGraphicsSurfaceGetData)("sgmGraphicsSurfaceGetData", lib);
-    //checkBindFunc(sgGraphicsSurfaceFreeData)("sgmGraphicsSurfaceFreeData", lib);
-    checkBindFunc(sgGraphicsSurfaceGetSize)("sgmGraphicsSurfaceGetSize", lib);
-    checkBindFunc(sgGraphicsSurfaceDraw)("sgmGraphicsSurfaceDraw", lib);
-    checkBindFunc(sgGraphicsSurfaceSetTarget)("sgmGraphicsSurfaceSetTarget", lib);
-    //checkBindFunc(sgGraphicsSurfaceGetTarget)("sgmGraphicsSurfaceGetTarget", lib);
-    checkBindFunc(sgGraphicsSurfaceResetTarget)("sgmGraphicsSurfaceResetTarget", lib);
+    checkBindFunc(sgmGraphicsSurfaceCreate)("sgmGraphicsSurfaceCreate", lib);
+    //checkBindFunc(sgmGraphicsSurfaceCreateTexture)("sgmGraphicsSurfaceCreateTexture", lib);
+    //checkBindFunc(sgmGraphicsSurfaceCreateData)("sgmGraphicsSurfaceCreateData", lib);
+    checkBindFunc(sgmGraphicsSurfaceDestroy)("sgmGraphicsSurfaceDestroy", lib);
+    checkBindFunc(sgmGraphicsSurfaceSetTexture)("sgmGraphicsSurfaceSetTexture", lib);
+    checkBindFunc(sgmGraphicsSurfaceGetTexture)("sgmGraphicsSurfaceGetTexture", lib);
+    checkBindFunc(sgmGraphicsSurfaceSetData)("sgmGraphicsSurfaceSetData", lib);
+    //checkBindFunc(sgmGraphicsSurfaceGetData)("sgmGraphicsSurfaceGetData", lib);
+    //checkBindFunc(sgmGraphicsSurfaceFreeData)("sgmGraphicsSurfaceFreeData", lib);
+    checkBindFunc(sgmGraphicsSurfaceGetSize)("sgmGraphicsSurfaceGetSize", lib);
+    checkBindFunc(sgmGraphicsSurfaceDraw)("sgmGraphicsSurfaceDraw", lib);
+    checkBindFunc(sgmGraphicsSurfaceSetTarget)("sgmGraphicsSurfaceSetTarget", lib);
+    //checkBindFunc(sgmGraphicsSurfaceGetTarget)("sgmGraphicsSurfaceGetTarget", lib);
+    checkBindFunc(sgmGraphicsSurfaceResetTarget)("sgmGraphicsSurfaceResetTarget", lib);
 
-    checkBindFunc(sgGraphicsTextureCreate)("sgmGraphicsTextureCreate", lib);
-    //checkBindFunc(sgGraphicsTextureCreateData)("sgmGraphicsTextureCreateData", lib);
-    checkBindFunc(sgGraphicsTextureDestroy)("sgmGraphicsTextureDestroy", lib);
-    checkBindFunc(sgGraphicsTextureSetData)("sgmGraphicsTextureSetData", lib);
-    //checkBindFunc(sgGraphicsTextureGetData)("sgmGraphicsTextureGetData", lib);
-    //checkBindFunc(sgGraphicsTextureFreeData)("sgmGraphicsTextureFreeData", lib);
-    checkBindFunc(sgGraphicsTextureGetSize)("sgmGraphicsTextureGetSize", lib);
-    checkBindFunc(sgGraphicsTextureDraw)("sgmGraphicsTextureDraw", lib);
+    checkBindFunc(sgmGraphicsTextureCreate)("sgmGraphicsTextureCreate", lib);
+    //checkBindFunc(sgmGraphicsTextureCreateData)("sgmGraphicsTextureCreateData", lib);
+    checkBindFunc(sgmGraphicsTextureDestroy)("sgmGraphicsTextureDestroy", lib);
+    checkBindFunc(sgmGraphicsTextureSetData)("sgmGraphicsTextureSetData", lib);
+    //checkBindFunc(sgmGraphicsTextureGetData)("sgmGraphicsTextureGetData", lib);
+    //checkBindFunc(sgmGraphicsTextureFreeData)("sgmGraphicsTextureFreeData", lib);
+    checkBindFunc(sgmGraphicsTextureGetSize)("sgmGraphicsTextureGetSize", lib);
+    checkBindFunc(sgmGraphicsTextureDraw)("sgmGraphicsTextureDraw", lib);
 
-    checkBindFunc(sgGraphicsDrawPrimitive)("sgmGraphicsDrawPrimitive", lib);
-    checkBindFunc(sgGraphicsDrawSetColor)("sgmGraphicsDrawSetColor", lib);
-    checkBindFunc(sgGraphicsDrawPointSetSize)("sgmGraphicsDrawPointSetSize", lib);
-    //checkBindFunc(sgGraphicsDrawPointGetSize)("sgmGraphicsDrawPointGetSize", lib);
-    checkBindFunc(sgGraphicsDrawLineSetWidth)("sgmGraphicsDrawLineSetWidth", lib);
-    //checkBindFunc(sgGraphicsDrawLineGetWidth)("sgmGraphicsDrawLineGetWidth", lib);
-    //checkBindFunc(sgGraphicsDrawLineSetStipple)("sgmGraphicsDrawLineSetStipple", lib);
-    //checkBindFunc(sgGraphicsDrawLineGetStipple)("sgmGraphicsDrawLineGetStipple", lib);
-    //checkBindFunc(sgGraphicsDrawPolygonSetStipple)("sgmGraphicsDrawPolygonSetStipple", lib);
-    //checkBindFunc(sgGraphicsDrawPolygonGetStipple)("sgmGraphicsDrawPolygonGetStipple", lib);
+    checkBindFunc(sgmGraphicsDrawPrimitive)("sgmGraphicsDrawPrimitive", lib);
+    checkBindFunc(sgmGraphicsDrawSetColor)("sgmGraphicsDrawSetColor", lib);
+    checkBindFunc(sgmGraphicsDrawPointSetSize)("sgmGraphicsDrawPointSetSize", lib);
+    //checkBindFunc(sgmGraphicsDrawPointGetSize)("sgmGraphicsDrawPointGetSize", lib);
+    checkBindFunc(sgmGraphicsDrawLineSetWidth)("sgmGraphicsDrawLineSetWidth", lib);
+    //checkBindFunc(sgmGraphicsDrawLineGetWidth)("sgmGraphicsDrawLineGetWidth", lib);
+    //checkBindFunc(sgmGraphicsDrawLineSetStipple)("sgmGraphicsDrawLineSetStipple", lib);
+    //checkBindFunc(sgmGraphicsDrawLineGetStipple)("sgmGraphicsDrawLineGetStipple", lib);
+    //checkBindFunc(sgmGraphicsDrawPolygonSetStipple)("sgmGraphicsDrawPolygonSetStipple", lib);
+    //checkBindFunc(sgmGraphicsDrawPolygonGetStipple)("sgmGraphicsDrawPolygonGetStipple", lib);
 
     /// Graphics Load
-    checkBindFunc(sgGraphicsLoadFile)("sgmGraphicsLoadFile", lib);
-    //checkBindFunc(sgGraphicsLoadStream)("sgmGraphicsLoadStream", lib);
-    checkBindFunc(sgGraphicsLoadFreeData)("sgmGraphicsLoadFreeData", lib);
+    checkBindFunc(sgmGraphicsLoadFile)("sgmGraphicsLoadFile", lib);
+    //checkBindFunc(sgmGraphicsLoadStream)("sgmGraphicsLoadStream", lib);
+    checkBindFunc(sgmGraphicsLoadFreeData)("sgmGraphicsLoadFreeData", lib);
 }
 
 extern(C)
 {
     /// Graphics
-    uint function(void** context, uint width, uint height, uint bpp) sgGraphicsContextCreate;
-    uint function(void* context) sgGraphicsContextDestroy;
-    uint function(void* context, uint width, uint height) sgGraphicsContextResize;
-    uint function(void* context, float* color) sgGraphicsContextClear;
+    uint function(void** context, uint width, uint height, uint bpp) sgmGraphicsContextCreate;
+    uint function(void* context) sgmGraphicsContextDestroy;
+    uint function(void* context, uint width, uint height) sgmGraphicsContextResize;
+    uint function(void* context, float* color) sgmGraphicsContextClear;
 
-    uint function(void** viewport, void* context) sgGraphicsViewportCreate;
-    //uint function(void** viewport, void* context, uint wx, uint wy, uint wwidth, uint wheight, float x, float y, float width, float height) sgGraphicsViewportCreateView;
-    uint function(void* viewport) sgGraphicsViewportDestroy;
-    uint function(void* viewport, uint wx, uint wy, uint wwidth, uint wheight, float x, float y, float width, float height) sgGraphicsViewportSetView;
-    //uint function(void* viewport, uint* wx, uint* wy, uint* wwidth, uint* wheight, float* x, float* y, float* width, float* height) sgGraphicsViewportGetView;
+    uint function(void** viewport, void* context) sgmGraphicsViewportCreate;
+    //uint function(void** viewport, void* context, uint wx, uint wy, uint wwidth, uint wheight, float x, float y, float width, float height) sgmGraphicsViewportCreateView;
+    uint function(void* viewport) sgmGraphicsViewportDestroy;
+    uint function(void* viewport, uint wx, uint wy, uint wwidth, uint wheight, float x, float y, float width, float height) sgmGraphicsViewportSetView;
+    //uint function(void* viewport, uint* wx, uint* wy, uint* wwidth, uint* wheight, float* x, float* y, float* width, float* height) sgmGraphicsViewportGetView;
 
-    uint function(void** surface, void* context) sgGraphicsSurfaceCreate;
-    //uint function(void** surface, void* context, void* texture) sgGraphicsSurfaceCreateTexture;
-    //uint function(void** surface, void* context, uint width, uint height, uint bpp, void* data) sgGraphicsSurfaceCreateData;
-    uint function(void* surface) sgGraphicsSurfaceDestroy;
-    uint function(void* surface, void* texture) sgGraphicsSurfaceSetTexture;
-    uint function(void* surface, void** texture) sgGraphicsSurfaceGetTexture;
-    uint function(void* surface, uint width, uint height, uint bpp, void* data) sgGraphicsSurfaceSetData;
-    //uint function(void* surface, uint* width, uint* height, uint* bpp, void** data) sgGraphicsSurfaceGetData;
-    //uint function(void* surface, void* data) sgGraphicsSurfaceFreeData;
-    uint function(void* surface, uint* width, uint* height) sgGraphicsSurfaceGetSize;
-    uint function(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle) sgGraphicsSurfaceDraw;
-    uint function(void* surface) sgGraphicsSurfaceSetTarget;
-    //uint function(void** surface) sgGraphicsSurfaceGetTarget;
-    uint function(void* surface) sgGraphicsSurfaceResetTarget;
+    uint function(void** surface, void* context) sgmGraphicsSurfaceCreate;
+    //uint function(void** surface, void* context, void* texture) sgmGraphicsSurfaceCreateTexture;
+    //uint function(void** surface, void* context, uint width, uint height, uint bpp, void* data) sgmGraphicsSurfaceCreateData;
+    uint function(void* surface) sgmGraphicsSurfaceDestroy;
+    uint function(void* surface, void* texture) sgmGraphicsSurfaceSetTexture;
+    uint function(void* surface, void** texture) sgmGraphicsSurfaceGetTexture;
+    uint function(void* surface, uint width, uint height, uint bpp, void* data) sgmGraphicsSurfaceSetData;
+    //uint function(void* surface, uint* width, uint* height, uint* bpp, void** data) sgmGraphicsSurfaceGetData;
+    //uint function(void* surface, void* data) sgmGraphicsSurfaceFreeData;
+    uint function(void* surface, uint* width, uint* height) sgmGraphicsSurfaceGetSize;
+    uint function(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle) sgmGraphicsSurfaceDraw;
+    uint function(void* surface) sgmGraphicsSurfaceSetTarget;
+    //uint function(void** surface) sgmGraphicsSurfaceGetTarget;
+    uint function(void* surface) sgmGraphicsSurfaceResetTarget;
 
-    uint function(void** texture, void* context) sgGraphicsTextureCreate;
-    //uint function(void** texture, void* context, uint width, uint height, uint bpp, void* data) sgGraphicsTextureCreateData;
-    uint function(void* texture) sgGraphicsTextureDestroy;
-    uint function(void* texture, uint width, uint height, uint bpp, void* data) sgGraphicsTextureSetData;
-    //uint function(void* texture, uint* width, uint* height, uint* bpp, void** data) sgGraphicsTextureGetData;
-    //uint function(void* data) sgGraphicsTextureFreeData;
-    uint function(void* texture, uint* width, uint* height) sgGraphicsTextureGetSize;
-    uint function(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle) sgGraphicsTextureDraw;
+    uint function(void** texture, void* context) sgmGraphicsTextureCreate;
+    //uint function(void** texture, void* context, uint width, uint height, uint bpp, void* data) sgmGraphicsTextureCreateData;
+    uint function(void* texture) sgmGraphicsTextureDestroy;
+    uint function(void* texture, uint width, uint height, uint bpp, void* data) sgmGraphicsTextureSetData;
+    //uint function(void* texture, uint* width, uint* height, uint* bpp, void** data) sgmGraphicsTextureGetData;
+    //uint function(void* data) sgmGraphicsTextureFreeData;
+    uint function(void* texture, uint* width, uint* height) sgmGraphicsTextureGetSize;
+    uint function(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle) sgmGraphicsTextureDraw;
 
-    uint function(void* context, void* texture, uint type, uint numverts, float* points, float* texcoords, float* colors) sgGraphicsDrawPrimitive;
-    uint function(void* context, float* color) sgGraphicsDrawSetColor;
-    uint function(void* context, float size) sgGraphicsDrawPointSetSize;
-    //uint function(void* context, float* size) sgGraphicsDrawPointGetSize;
-    uint function(void* context, float size) sgGraphicsDrawLineSetWidth;
-    //uint function(void* context, float* size) sgGraphicsDrawLineGetWidth;
-    //uint function(void* context, uint factor, uint pattern) sgGraphicsDrawLineSetStipple;
-    //uint function(void* context, uint* factor, uint* pattern) sgGraphicsDrawLineGetStipple;
-    //uint function(void* context, SGubyte* pattern) sgGraphicsDrawPolygonSetStipple;
-    //uint function(void* context*, SGubyte** pattern) sgGraphicsDrawPolygonGetStipple;
+    uint function(void* context, void* texture, uint type, uint numverts, float* points, float* texcoords, float* colors) sgmGraphicsDrawPrimitive;
+    uint function(void* context, float* color) sgmGraphicsDrawSetColor;
+    uint function(void* context, float size) sgmGraphicsDrawPointSetSize;
+    //uint function(void* context, float* size) sgmGraphicsDrawPointGetSize;
+    uint function(void* context, float size) sgmGraphicsDrawLineSetWidth;
+    //uint function(void* context, float* size) sgmGraphicsDrawLineGetWidth;
+    //uint function(void* context, uint factor, uint pattern) sgmGraphicsDrawLineSetStipple;
+    //uint function(void* context, uint* factor, uint* pattern) sgmGraphicsDrawLineGetStipple;
+    //uint function(void* context, SGubyte* pattern) sgmGraphicsDrawPolygonSetStipple;
+    //uint function(void* context*, SGubyte** pattern) sgmGraphicsDrawPolygonGetStipple;
 
     /// Graphics Load
-    uint function(char* fname, uint* width, uint* height, uint* bpp, void** data) sgGraphicsLoadFile;
-    //uint function(void* stream, uint* width, uint* height, uint* bpp, void** data) sgGraphicsLoadStream;
-    uint function(void* data) sgGraphicsLoadFreeData;
+    uint function(char* fname, uint* width, uint* height, uint* bpp, void** data) sgmGraphicsLoadFile;
+    //uint function(void* stream, uint* width, uint* height, uint* bpp, void** data) sgmGraphicsLoadStream;
+    uint function(void* data) sgmGraphicsLoadFreeData;
 }
 
 bool load(char[] fname, out uint width, out uint height, out uint bpp, out ubyte[] data)
 {
     void* cdata;
     uint ret;
-    if(sgGraphicsLoadFile !is null)
-        ret = sgGraphicsLoadFile(toStringz(fname), &width, &height, &bpp, &cdata);
+    if(sgmGraphicsLoadFile !is null)
+        ret = sgmGraphicsLoadFile(toStringz(fname), &width, &height, &bpp, &cdata);
     else
         return false;
     data = cast(ubyte[])cdata[0..width*height*bpp/8].dup;
-    if(sgGraphicsLoadFreeData !is null)
-        sgGraphicsLoadFreeData(cdata);
+    if(sgmGraphicsLoadFreeData !is null)
+        sgmGraphicsLoadFreeData(cdata);
     if(ret != 0)
         return false;
     //data = toCanvasSize(data, width, height, bpp, flipData);

@@ -23,56 +23,56 @@ class Space
 
     this(Vector gravity = Vector(0, 10))
     {
-        if(sgPhysicsSpaceCreate !is null)
-            sgPhysicsSpaceCreate(&shandle);
-        if(sgPhysicsSpaceSetGravity !is null)
-            sgPhysicsSpaceSetGravity(shandle, gravity.x, gravity.y);
+        if(sgmPhysicsSpaceCreate !is null)
+            sgmPhysicsSpaceCreate(&shandle);
+        if(sgmPhysicsSpaceSetGravity !is null)
+            sgmPhysicsSpaceSetGravity(shandle, gravity.x, gravity.y);
     }
 
     ~this()
     {
-        if(sgPhysicsSpaceDestroy !is null)
-            sgPhysicsSpaceDestroy(shandle);
+        if(sgmPhysicsSpaceDestroy !is null)
+            sgmPhysicsSpaceDestroy(shandle);
     }
 
     void step(float time)
     {
-        if(sgPhysicsSpaceStep !is null)
-            sgPhysicsSpaceStep(shandle, time);
+        if(sgmPhysicsSpaceStep !is null)
+            sgmPhysicsSpaceStep(shandle, time);
     }
 
     void gravity(Vector g)
     {
-        if(sgPhysicsSpaceSetGravity !is null)
-            sgPhysicsSpaceSetGravity(shandle, g.x, g.y);
+        if(sgmPhysicsSpaceSetGravity !is null)
+            sgmPhysicsSpaceSetGravity(shandle, g.x, g.y);
     }
     /*Vector gravity()
     {
         Vector g;
-        if(sgPhysicsSpaceGetGravity !is null)
-            sgPhysicsSpaceGetGravity(shandle, &g.x, &g.y);
+        if(sgmPhysicsSpaceGetGravity !is null)
+            sgmPhysicsSpaceGetGravity(shandle, &g.x, &g.y);
         return g;
     }*/
 
     Space opCatAssign(Shape shape)
     {
         sshapes ~= shape;
-        if(sgPhysicsSpaceAddShape !is null)
-            sgPhysicsSpaceAddShape(shandle, shape.handle());
+        if(sgmPhysicsSpaceAddShape !is null)
+            sgmPhysicsSpaceAddShape(shandle, shape.handle());
         return this;
     }
     Space opCatAssign(Body pbody)
     {
         sbodies ~= pbody;
-        if(sgPhysicsSpaceAddBody !is null)
-            sgPhysicsSpaceAddBody(shandle, pbody.handle());
+        if(sgmPhysicsSpaceAddBody !is null)
+            sgmPhysicsSpaceAddBody(shandle, pbody.handle());
         return this;
     }
     Space opCatAssign(Constraint constraint)
     {
         sconstraints ~= constraint;
-        if(sgPhysicsSpaceAddConstraint !is null)
-            sgPhysicsSpaceAddConstraint(shandle, constraint.handle());
+        if(sgmPhysicsSpaceAddConstraint !is null)
+            sgmPhysicsSpaceAddConstraint(shandle, constraint.handle());
         return this;
     }
 

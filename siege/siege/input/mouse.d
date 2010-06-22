@@ -306,23 +306,23 @@ class Mouse
         callbacks.move = &cbMouseMove;
         callbacks.wheel = &cbMouseWheel;
 
-        if(sgCoreMouseCreate !is null)
-            sgCoreMouseCreate(&mhandle, window.handle());
+        if(sgmCoreMouseCreate !is null)
+            sgmCoreMouseCreate(&mhandle, window.handle());
 
-        if(sgCoreMouseSetCallbacks !is null)
-            sgCoreMouseSetCallbacks(mhandle, &callbacks);
+        if(sgmCoreMouseSetCallbacks !is null)
+            sgmCoreMouseSetCallbacks(mhandle, &callbacks);
 
         uint buttons;
-        if(sgCoreMouseGetNumButtons !is null)
-            sgCoreMouseGetNumButtons(mhandle, &buttons);
+        if(sgmCoreMouseGetNumButtons !is null)
+            sgmCoreMouseGetNumButtons(mhandle, &buttons);
         button = new MouseButtonHandle(buttons);
         position = new MousePosition;
         wheel = new MouseWheel;
     }
     ~this()
     {
-        if(sgCoreMouseDestroy !is null)
-            sgCoreMouseDestroy(mhandle);
+        if(sgmCoreMouseDestroy !is null)
+            sgmCoreMouseDestroy(mhandle);
     }
 
     void* handle()
