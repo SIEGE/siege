@@ -3,30 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgPhysicsBodyCreate sgmPhysicsBodyCreate
-#    define sgPhysicsBodyDestroy sgmPhysicsBodyDestroy
-
-#    define sgPhysicsBodySetMass sgmPhysicsBodySetMass
-#    define sgPhysicsBodyGetMass sgmPhysicsBodyGetMass
-#    define sgPhysicsBodySetMoment sgmPhysicsBodySetMoment
-#    define sgPhysicsBodyGetMoment sgmPhysicsBodyGetMoment
-#    define sgPhysicsBodySetPosition sgmPhysicsBodySetPosition
-#    define sgPhysicsBodyGetPosition sgmPhysicsBodyGetPosition
-#    define sgPhysicsBodySetVelocity sgmPhysicsBodySetVelocity
-#    define sgPhysicsBodyGetVelocity sgmPhysicsBodyGetVelocity
-#    define sgPhysicsBodySetForce sgmPhysicsBodySetForce
-#    define sgPhysicsBodyGetForce sgmPhysicsBodyGetForce
-#    define sgPhysicsBodySetAngle sgmPhysicsBodySetAngle
-#    define sgPhysicsBodyGetAngle sgmPhysicsBodyGetAngle
-#    define sgPhysicsBodySetAngularVelocity sgmPhysicsBodySetAngularVelocity
-#    define sgPhysicsBodyGetAngularVelocity sgmPhysicsBodyGetAngularVelocity
-#    define sgPhysicsBodySetTorque sgmPhysicsBodySetTorque
-#    define sgPhysicsBodyGetTorque sgmPhysicsBodyGetTorque
-#    define sgPhysicsBodySetData sgmPhysicsBodySetData
-#    define sgPhysicsBodyGetData sgmPhysicsBodyGetData
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

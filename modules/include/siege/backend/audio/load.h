@@ -3,12 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgAudioLoadFile sgmAudioLoadFile
-//#    define sgAudioLoadStream sgmAudioLoadStream
-#    define sgAudioLoadFreeData sgmAudioLoadFreeData
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

@@ -30,42 +30,13 @@ enum: uint
 
 struct CheckBinder(T)
 {
-    char[] newName(char[] pname)
-    {
-        int i;
-        i = std.string.find(pname, "sgm");
-        if(i == 0)
-            return pname;
-        i = std.string.find(pname, "sg");
-        if(i == 0)
-            return pname[0..2] ~ "m" ~ pname[2..$];
-        return pname;
-    }
-    char[] oldName(char[] pname)
-    {
-        int i;
-        i = std.string.find(pname, "sgm");
-        if(i == 0)
-            return pname[0..2] ~ pname[3..$];
-        return pname;
-    }
-
-    void opCall(char[] n, char[] o, SharedLib lib)
+    void opCall(char[] n, SharedLib lib)
     {
         void* pptr = *fptr;
         //if(*fptr is null)
         *fptr = Derelict_GetProc(lib, n); // first check new name
         if(*fptr is null)
-        {
-            *fptr = Derelict_GetProc(lib, o); // then fallback to old name
-            if(*fptr is null)
-                *fptr = pptr;
-        }
-    }
-
-    void opCall(char[] n, SharedLib lib)
-    {
-        opCall(n, oldName(n), lib);
+            *fptr = pptr;
     }
 
     private void** fptr;

@@ -77,12 +77,12 @@ void GLFWCALL keyboardChar(int chr, int down)
         main_window->cbKeyboard->chr((void*)1, chr, down);
 }
 
-SGuint SG_EXPORT sgCoreKeyboardCreate(void** keyboard, void* window)
+SGuint SG_EXPORT sgmCoreKeyboardCreate(void** keyboard, void* window)
 {
     *keyboard = malloc(1);
     return SG_OK;
 }
-SGuint SG_EXPORT sgCoreKeyboardDestroy(void* keyboard)
+SGuint SG_EXPORT sgmCoreKeyboardDestroy(void* keyboard)
 {
     if(keyboard == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -90,8 +90,8 @@ SGuint SG_EXPORT sgCoreKeyboardDestroy(void* keyboard)
     free(keyboard);
     return SG_OK;
 }
-//SGuint SG_EXPORT sgCoreKeyboardSetKey(void* keyboard, SGuint key, SGbool down);
-SGuint SG_EXPORT sgCoreKeyboardGetKey(void* keyboard, SGuint key, SGbool* down)
+//SGuint SG_EXPORT sgmCoreKeyboardSetKey(void* keyboard, SGuint key, SGbool down);
+SGuint SG_EXPORT sgmCoreKeyboardGetKey(void* keyboard, SGuint key, SGbool* down)
 {
     if(keyboard == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -99,10 +99,10 @@ SGuint SG_EXPORT sgCoreKeyboardGetKey(void* keyboard, SGuint key, SGbool* down)
     *down = glfwGetKey(keySIEGEtoGLFW(key));
     return SG_OK;
 }
-//SGuint SG_EXPORT sgCoreKeyboardSetChr(void* keyboard, SGuint chr, SGbool down);
-//SGuint SG_EXPORT sgCoreKeyboardGetChr(void* keyboard, SGuint chr, SGbool* down);
+//SGuint SG_EXPORT sgmCoreKeyboardSetChr(void* keyboard, SGuint chr, SGbool down);
+//SGuint SG_EXPORT sgmCoreKeyboardGetChr(void* keyboard, SGuint chr, SGbool* down);
 
-SGuint SG_EXPORT sgCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallbacks* callbacks)
+SGuint SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallbacks* callbacks)
 {
     if(keyboard == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -114,4 +114,4 @@ SGuint SG_EXPORT sgCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallba
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgCoreKeyboardGetCallbacks(void* keyboard, SGCoreKeyboardCallbacks** callbacks);
+//SGuint SG_EXPORT sgmCoreKeyboardGetCallbacks(void* keyboard, SGCoreKeyboardCallbacks** callbacks);

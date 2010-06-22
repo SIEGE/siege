@@ -3,14 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgPhysicsBodyWorldToLocal_TEST sgmPhysicsBodyWorldToLocal_TEST
-#    define sgPhysicsBodyLocalToWorld_TEST sgmPhysicsBodyLocalToWorld_TEST
-#    define sgPhysicsShapeGetBB_TEST sgmPhysicsShapeGetBB_TEST
-#    define sgPhysicsShapeGetPoints_TEST sgmPhysicsShapeGetPoints_TEST
-#    define sgPhysicsShapeFreePoints_TEST sgmPhysicsShapeFreePoints_TEST
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

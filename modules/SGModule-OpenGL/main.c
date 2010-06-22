@@ -56,7 +56,7 @@ SGuint higherPower(SGuint num)
     return ret;
 }
 
-SGuint SG_EXPORT sgModuleInit(void* gc, SGModuleInfo** minfo)
+SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*)calloc(1, sizeof(SGModuleInfo));
     (*minfo)->imajor = SG_INTERFACE_VMAJOR;
@@ -73,7 +73,7 @@ SGuint SG_EXPORT sgModuleInit(void* gc, SGModuleInfo** minfo)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgModuleExit(SGModuleInfo* minfo)
+SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
 {
     if(minfo == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -82,9 +82,9 @@ SGuint SG_EXPORT sgModuleExit(SGModuleInfo* minfo)
     return SG_OK;
 }
 
-//SGuint SG_EXPORT sgModuleFree(void* data)
+//SGuint SG_EXPORT sgmModuleFree(void* data)
 
-SGuint SG_EXPORT sgModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
+SGuint SG_EXPORT sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
 {
     *ok = SG_TRUE; // we'll let the core module decide for us...
     return SG_OK;

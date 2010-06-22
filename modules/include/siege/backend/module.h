@@ -3,14 +3,6 @@
 
 #include "../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgModuleInit sgmModuleInit
-#    define sgModuleExit sgmModuleExit
-//#    define sgModuleFree sgmModuleFree
-
-#    define sgModuleMatch sgmModuleMatch
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

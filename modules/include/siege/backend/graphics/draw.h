@@ -3,19 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgGraphicsDrawPrimitive sgmGraphicsDrawPrimitive
-#    define sgGraphicsDrawSetColor sgmGraphicsDrawSetColor
-#    define sgGraphicsDrawPointSetSize sgmGraphicsDrawPointSetSize
-//#    define sgGraphicsDrawPointGetSize sgmGraphicsDrawPointGetSize
-#    define sgGraphicsDrawLineSetWidth sgmGraphicsDrawLineSetWidth
-//#    define sgGraphicsDrawLineGetWidth sgmGraphicsDrawLineGetWidth
-//#    define sgGraphicsDrawLineSetStipple sgmGraphicsDrawLineSetStipple
-//#    define sgGraphicsDrawLineGetStipple sgmGraphicsDrawLineGetStipple
-//#    define sgGraphicsDrawPolygonSetStipple sgmGraphicsDrawPolygonSetStipple
-//#    define sgGraphicsDrawPolygonGetStipple sgmGraphicsDrawPolygonGetStipple
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

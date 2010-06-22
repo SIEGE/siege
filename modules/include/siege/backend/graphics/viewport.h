@@ -3,14 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgGraphicsViewportCreate sgmGraphicsViewportCreate
-//#    define sgGraphicsViewportCreateView sgmGraphicsViewportCreateView
-#    define sgGraphicsViewportDestroy sgmGraphicsViewportDestroy
-#    define sgGraphicsViewportSetView sgmGraphicsViewportSetView
-//#    define sgGraphicsViewportGetView sgmGraphicsViewportGetView
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

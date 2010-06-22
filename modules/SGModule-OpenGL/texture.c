@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgGraphicsTextureCreate(void** texture, void* context)
+SGuint SG_EXPORT sgmGraphicsTextureCreate(void** texture, void* context)
 {
     TextureData** tdata = (TextureData**)texture;
     *tdata = calloc(1, sizeof(TextureData));
@@ -24,8 +24,8 @@ SGuint SG_EXPORT sgGraphicsTextureCreate(void** texture, void* context)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgGraphicsTextureCreateData(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data)
-SGuint SG_EXPORT sgGraphicsTextureDestroy(void* texture)
+//SGuint SG_EXPORT sgmGraphicsTextureCreateData(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data)
+SGuint SG_EXPORT sgmGraphicsTextureDestroy(void* texture)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -36,7 +36,7 @@ SGuint SG_EXPORT sgGraphicsTextureDestroy(void* texture)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgGraphicsTextureSetData(void* texture, SGuint width, SGuint height, SGuint bpp, void* data)
+SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint height, SGuint bpp, void* data)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -88,9 +88,9 @@ SGuint SG_EXPORT sgGraphicsTextureSetData(void* texture, SGuint width, SGuint he
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGubyte* bpp, void** data)
-//SGuint SG_EXPORT sgGraphicsTextureFreeData(void* data)
-SGuint SG_EXPORT sgGraphicsTextureGetSize(void* texture, SGuint* width, SGuint* height)
+//SGuint SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGubyte* bpp, void** data)
+//SGuint SG_EXPORT sgmGraphicsTextureFreeData(void* data)
+SGuint SG_EXPORT sgmGraphicsTextureGetSize(void* texture, SGuint* width, SGuint* height)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -102,7 +102,7 @@ SGuint SG_EXPORT sgGraphicsTextureGetSize(void* texture, SGuint* width, SGuint* 
 }
 
 // TODO: make this work
-SGuint SG_EXPORT sgGraphicsTextureDraw(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
+SGuint SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE

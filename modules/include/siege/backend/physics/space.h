@@ -3,23 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgPhysicsSpaceCreate sgmPhysicsSpaceCreate
-#    define sgPhysicsSpaceDestroy sgmPhysicsSpaceDestroy
-#    define sgPhysicsSpaceStep sgmPhysicsSpaceStep
-#    define sgPhysicsSpaceSetGravity sgmPhysicsSpaceSetGravity
-//#    define sgPhysicsSpaceGetGravity sgmPhysicsSpaceGetGravity
-
-#    define sgPhysicsSpaceAddShape sgmPhysicsSpaceAddShape
-#    define sgPhysicsSpaceRemoveShape sgmPhysicsSpaceRemoveShape
-//#    define sgPhysicsSpaceAddStaticShape sgmPhysicsSpaceAddStaticShape
-//#    define sgPhysicsSpaceRemoveStaticShape sgmPhysicsSpaceRemoveStaticShape
-#    define sgPhysicsSpaceAddBody sgmPhysicsSpaceAddBody
-#    define sgPhysicsSpaceRemoveBody sgmPhysicsSpaceRemoveBody
-#    define sgPhysicsSpaceAddConstraint sgmPhysicsSpaceAddConstraint
-#    define sgPhysicsSpaceRemoveConstraint sgmPhysicsSpaceRemoveConstraint
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {
