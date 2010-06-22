@@ -41,7 +41,7 @@ typedef double SGdouble;
 
 #define SG_INTERFACE_VMAJOR 0
 #define SG_INTERFACE_VMINOR 1
-#define SG_INTERFACE_VPATCH 3
+#define SG_INTERFACE_VPATCH 4
 
 #define SG_TRUE  1
 #define SG_FALSE 0
