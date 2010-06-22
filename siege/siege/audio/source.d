@@ -16,24 +16,24 @@ class Source
         void* shandle;
     }
 
-    this()
+    this(float priority = 0.0)
     {
         if(sgAudioSourceCreate !is null)
             sgAudioSourceCreate(&shandle);
     }
-    this(Buffer buffer)
+    this(Buffer buffer, float priority = 0.0)
     {
         this();
         this.buffer = buffer;
     }
-    this(float pitch, float volume, bool looping)
+    this(float priority, float pitch, float volume, bool looping)
     {
         this();
         this.pitch = pitch;
         this.volume = volume;
         this.looping = looping;
     }
-    this(Buffer buffer, float pitch, float volume, bool looping)
+    this(Buffer buffer, float priority, float pitch, float volume, bool looping)
     {
         this();
         this.buffer = buffer;
@@ -142,7 +142,7 @@ class Source
         return vel;
     }
 
-    void falloff(float f)
+    /*void falloff(float f)
     {
         if(sgAudioSourceSetFalloff !is null)
             sgAudioSourceSetFalloff(shandle, f);
@@ -153,7 +153,7 @@ class Source
         if(sgAudioSourceGetFalloff !is null)
             sgAudioSourceGetFalloff(shandle, &f);
         return f;
-    }
+    }*/
 
     void pitch(float p)
     {

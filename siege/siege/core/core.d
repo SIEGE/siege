@@ -18,6 +18,7 @@ private
     //import siege.util.linkedlist;
     import siege.util.plist;
     import siege.physics.space;
+    import siege.audio.source;
     //
 
     import derelict.util.exception;
