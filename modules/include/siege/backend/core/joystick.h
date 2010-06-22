@@ -1,7 +1,7 @@
 #ifndef __SIEGE_CORE_JOYSTICK_H__
 #define __SIEGE_CORE_JOYSTICK_H__
 
-#include "../common.h"
+#include "../../common.h"
 
 typedef struct SGCoreJoystickCallbacks
 {

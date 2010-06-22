@@ -1,7 +1,7 @@
 #ifndef __SIEGE_PHYSICS_TEST_H__
 #define __SIEGE_PHYSICS_TEST_H__
 
-#include "../common.h"
+#include "../../common.h"
 
 #ifdef __cplusplus
 extern "C"

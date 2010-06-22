@@ -1,7 +1,7 @@
 #ifndef __SIEGE_FONTS_FACE_H__
 #define __SIEGE_FONTS_FACE_H__
 
-#include "../common.h"
+#include "../../common.h"
 
 #ifdef __cplusplus
 extern "C"
