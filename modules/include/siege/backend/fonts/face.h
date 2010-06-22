@@ -3,14 +3,21 @@
 
 #include "../../common.h"
 
+#ifdef SG_LEGACY_API
+#    define sgFontsFaceCreate sgmFontsFaceCreate
+#    define sgFontsFaceDestroy sgmFontsFaceDestroy
+#    define sgFontsFaceSetHeight sgmFontsFaceSetHeight
+//#    define sgFontsFaceGetHeight sgmFontsFaceGetHeight
+#endif // SG_LEGACY_API
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgFontsFaceCreate(void** face, char* fname);
-    SGuint SG_EXPORT sgFontsFaceDestroy(void* face);
-    SGuint SG_EXPORT sgFontsFaceSetHeight(void* face, float height);
-    //SGuint SG_EXPORT sgFontsFaceGetHeight(void* face, float* height);
+    SGuint SG_EXPORT sgmFontsFaceCreate(void** face, char* fname);
+    SGuint SG_EXPORT sgmFontsFaceDestroy(void* face);
+    SGuint SG_EXPORT sgmFontsFaceSetHeight(void* face, float height);
+    //SGuint SG_EXPORT sgmFontsFaceGetHeight(void* face, float* height);
 #ifdef __cplusplus
 }
 #endif

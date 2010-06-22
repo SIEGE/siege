@@ -4,7 +4,7 @@ private
 {
     import siege.util.vector;
 
-    import siege.audio.sample;
+    import siege.audio.buffer;
 
     import siege.modules.audio;
 }
@@ -21,24 +21,24 @@ class Source
         if(sgAudioSourceCreate !is null)
             sgAudioSourceCreate(&shandle);
     }
-    this(Sample sample)
+    this(Buffer buffer)
     {
         this();
-        this.sample = sample;
+        this.buffer = buffer;
     }
-    this(float pitch, float gain, bool looping)
+    this(float pitch, float volume, bool looping)
     {
         this();
         this.pitch = pitch;
-        this.gain = gain;
+        this.volume = volume;
         this.looping = looping;
     }
-    this(Sample sample, float pitch, float gain, bool looping)
+    this(Buffer buffer, float pitch, float volume, bool looping)
     {
         this();
-        this.sample = sample;
+        this.buffer = buffer;
         this.pitch = pitch;
-        this.gain = gain;
+        this.volume = volume;
         this.looping = looping;
     }
     ~this()
@@ -104,16 +104,16 @@ class Source
         return stopped;
     }
 
-    void sample(Sample s)
+    void buffer(Buffer b)
     {
-        if(sgAudioSourceSetSample !is null)
-            sgAudioSourceSetSample(shandle, s.handle);
+        if(sgAudioSourceSetBuffer !is null)
+            sgAudioSourceSetBuffer(shandle, b.handle);
     }
-    /*Sample sample()
+    /*Buffer buffer()
     {
         void* handle;
-        if(sgAudioSourceGetSample !is null)
-            sgAudioSourceGetSample(shandle, &handle);
+        if(sgAudioSourceGetBuffer !is null)
+            sgAudioSourceGetBuffer(shandle, &handle);
     }*/
 
     void position(Vector pos)
@@ -142,6 +142,19 @@ class Source
         return vel;
     }
 
+    void falloff(float f)
+    {
+        if(sgAudioSourceSetFalloff !is null)
+            sgAudioSourceSetFalloff(shandle, f);
+    }
+    float falloff()
+    {
+        float f;
+        if(sgAudioSourceGetFalloff !is null)
+            sgAudioSourceGetFalloff(shandle, &f);
+        return f;
+    }
+
     void pitch(float p)
     {
         if(sgAudioSourceSetPitch !is null)
@@ -155,16 +168,16 @@ class Source
         return p;
     }
 
-    void gain(float g)
+    void volume(float g)
     {
-        if(sgAudioSourceSetGain !is null)
-            sgAudioSourceSetGain(shandle, g);
+        if(sgAudioSourceSetVolume !is null)
+            sgAudioSourceSetVolume(shandle, g);
     }
-    float gain()
+    float volume()
     {
         float g;
-        if(sgAudioSourceGetGain !is null)
-            sgAudioSourceGetGain(shandle, &g);
+        if(sgAudioSourceGetVolume !is null)
+            sgAudioSourceGetVolume(shandle, &g);
         return g;
     }
 

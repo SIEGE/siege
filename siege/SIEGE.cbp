@@ -50,6 +50,7 @@
 		<Unit filename="siege\ai\neural.d" />
 		<Unit filename="siege\all.d" />
 		<Unit filename="siege\audio\all.d" />
+		<Unit filename="siege\audio\buffer.d" />
 		<Unit filename="siege\audio\music.d" />
 		<Unit filename="siege\audio\sample.d" />
 		<Unit filename="siege\audio\source.d" />

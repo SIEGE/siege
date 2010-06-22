@@ -84,52 +84,52 @@ enum: uint
 void loadModuleInput(SharedLib lib)
 {
     /// Input - Joystick
-    checkBindFunc(sgCoreJoystickGetFlags)("sgCoreJoystickGetFlags", lib);
-    checkBindFunc(sgCoreJoystickFreeFlags)("sgCoreJoystickFreeFlags", lib);
+    checkBindFunc(sgCoreJoystickGetFlags)("sgmCoreJoystickGetFlags", lib);
+    checkBindFunc(sgCoreJoystickFreeFlags)("sgmCoreJoystickFreeFlags", lib);
 
-    checkBindFunc(sgCoreJoystickGetNumJoysticks)("sgCoreJoystickGetNumJoysticks", lib);
-    checkBindFunc(sgCoreJoystickCreate)("sgCoreJoystickCreate", lib);
-    checkBindFunc(sgCoreJoystickDestroy)("sgCoreJoystickDestroy", lib);
-    checkBindFunc(sgCoreJoystickGetID)("sgCoreJoystickGetID", lib);
-    checkBindFunc(sgCoreJoystickGetNumButtons)("sgCoreJoystickGetNumButtons", lib);
-    //checkBindFunc(sgCoreJoystickSetButtons)("sgCoreJoystickButtonSetState", lib);
-    checkBindFunc(sgCoreJoystickGetButtons)("sgCoreJoystickButtonGetState", lib);
-    checkBindFunc(sgCoreJoystickGetNumAxis)("sgCoreJoystickGetNumAxis", lib);
-    //checkBindFunc(sgCoreJoystickSetAxis)("sgCoreJoystickAxisSetPosition", lib);
-    checkBindFunc(sgCoreJoystickGetAxis)("sgCoreJoystickAxisGetPosition", lib);
+    checkBindFunc(sgCoreJoystickGetNumJoysticks)("sgmCoreJoystickGetNumJoysticks", lib);
+    checkBindFunc(sgCoreJoystickCreate)("sgmCoreJoystickCreate", lib);
+    checkBindFunc(sgCoreJoystickDestroy)("sgmCoreJoystickDestroy", lib);
+    checkBindFunc(sgCoreJoystickGetID)("sgmCoreJoystickGetID", lib);
+    checkBindFunc(sgCoreJoystickGetNumButtons)("sgmCoreJoystickGetNumButtons", lib);
+    //checkBindFunc(sgCoreJoystickSetButtons)("sgmCoreJoystickButtonSetState", lib);
+    checkBindFunc(sgCoreJoystickGetButtons)("sgmCoreJoystickButtonGetState", lib);
+    checkBindFunc(sgCoreJoystickGetNumAxis)("sgmCoreJoystickGetNumAxis", lib);
+    //checkBindFunc(sgCoreJoystickSetAxis)("sgmCoreJoystickAxisSetPosition", lib);
+    checkBindFunc(sgCoreJoystickGetAxis)("sgmCoreJoystickAxisGetPosition", lib);
 
-    checkBindFunc(sgCoreJoystickSetCallbacks)("sgCoreJoystickSetCallbacks", lib);
-    //checkBindFunc(sgCoreJoystickGetCallbacks)("sgCoreJoystickGetCallbacks", lib);
+    checkBindFunc(sgCoreJoystickSetCallbacks)("sgmCoreJoystickSetCallbacks", lib);
+    //checkBindFunc(sgCoreJoystickGetCallbacks)("sgmCoreJoystickGetCallbacks", lib);
 
     /// Input - Keyboard
-    checkBindFunc(sgCoreKeyboardCreate)("sgCoreKeyboardCreate", lib);
-    checkBindFunc(sgCoreKeyboardDestroy)("sgCoreKeyboardDestroy", lib);
-    //checkBindFunc(sgCoreKeyboardSetKey)("sgCoreKeyboardSetKey", lib);
-    checkBindFunc(sgCoreKeyboardGetKey)("sgCoreKeyboardGetKey", lib);
-    //checkBindFunc(sgCoreKeyboardSetChr)("sgCoreKeyboardSetChr", lib);
-    //checkBindFunc(sgCoreKeyboardGetChr)("sgCoreKeyboardGetChr", lib);
+    checkBindFunc(sgCoreKeyboardCreate)("sgmCoreKeyboardCreate", lib);
+    checkBindFunc(sgCoreKeyboardDestroy)("sgmCoreKeyboardDestroy", lib);
+    //checkBindFunc(sgCoreKeyboardSetKey)("sgmCoreKeyboardSetKey", lib);
+    checkBindFunc(sgCoreKeyboardGetKey)("sgmCoreKeyboardGetKey", lib);
+    //checkBindFunc(sgCoreKeyboardSetChr)("sgmCoreKeyboardSetChr", lib);
+    //checkBindFunc(sgCoreKeyboardGetChr)("sgmCoreKeyboardGetChr", lib);
 
-    checkBindFunc(sgCoreKeyboardSetCallbacks)("sgCoreKeyboardSetCallbacks", lib);
-    //checkBindFunc(sgCoreKeyboardGetCallbacks)("sgCoreKeyboardGetCallbacks", lib);
+    checkBindFunc(sgCoreKeyboardSetCallbacks)("sgmCoreKeyboardSetCallbacks", lib);
+    //checkBindFunc(sgCoreKeyboardGetCallbacks)("sgmCoreKeyboardGetCallbacks", lib);
 
     /// Input - Mouse
-    checkBindFunc(sgCoreMouseCreate)("sgCoreMouseCreate", lib);
-    checkBindFunc(sgCoreMouseDestroy)("sgCoreMouseDestroy", lib);
+    checkBindFunc(sgCoreMouseCreate)("sgmCoreMouseCreate", lib);
+    checkBindFunc(sgCoreMouseDestroy)("sgmCoreMouseDestroy", lib);
     // should these two [sgCoreMouseShow,sgCoreMouseHide] be put into a single function?
-    checkBindFunc(sgCoreMouseShow)("sgCoreMouseShow", lib);
-    checkBindFunc(sgCoreMouseHide)("sgCoreMouseHide", lib);
-    //checkBindFunc(sgCoreMouseIsShown)("sgCoreMouseIsShown", lib);
-    //checkBindFunc(sgCoreMouseIsHidden)("sgCoreMouseIsHidden", lib);
-    checkBindFunc(sgCoreMouseGetNumButtons)("sgCoreMouseGetNumButtons", lib);
-    //checkBindFunc(sgCoreMouseSetButtons)("sgCoreMouseButtonSetState", lib);
-    checkBindFunc(sgCoreMouseGetButtons)("sgCoreMouseButtonGetState", lib);
-    checkBindFunc(sgCoreMouseSetPosition)("sgCoreMouseSetPosition", lib);
-    checkBindFunc(sgCoreMouseGetPosition)("sgCoreMouseGetPosition", lib);
-    //checkBindFunc(sgCoreMouseSetWheel)("sgCoreMouseSetWheel", lib);
-    checkBindFunc(sgCoreMouseGetWheel)("sgCoreMouseGetWheel", lib);
+    checkBindFunc(sgCoreMouseShow)("sgmCoreMouseShow", lib);
+    checkBindFunc(sgCoreMouseHide)("sgmCoreMouseHide", lib);
+    //checkBindFunc(sgCoreMouseIsShown)("sgmCoreMouseIsShown", lib);
+    //checkBindFunc(sgCoreMouseIsHidden)("sgmCoreMouseIsHidden", lib);
+    checkBindFunc(sgCoreMouseGetNumButtons)("sgmCoreMouseGetNumButtons", lib);
+    //checkBindFunc(sgCoreMouseSetButtons)("sgmCoreMouseButtonSetState", lib);
+    checkBindFunc(sgCoreMouseGetButtons)("sgmCoreMouseButtonGetState", lib);
+    checkBindFunc(sgCoreMouseSetPosition)("sgmCoreMouseSetPosition", lib);
+    checkBindFunc(sgCoreMouseGetPosition)("sgmCoreMouseGetPosition", lib);
+    //checkBindFunc(sgCoreMouseSetWheel)("sgmCoreMouseSetWheel", lib);
+    checkBindFunc(sgCoreMouseGetWheel)("sgmCoreMouseGetWheel", lib);
 
-    checkBindFunc(sgCoreMouseSetCallbacks)("sgCoreMouseSetCallbacks", lib);
-    //checkBindFunc(sgCoreMouseGetCallbacks)("sgCoreMouseGetCallbacks", lib);
+    checkBindFunc(sgCoreMouseSetCallbacks)("sgmCoreMouseSetCallbacks", lib);
+    //checkBindFunc(sgCoreMouseGetCallbacks)("sgmCoreMouseGetCallbacks", lib);
 }
 
 extern(C)

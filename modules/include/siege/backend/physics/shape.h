@@ -3,12 +3,17 @@
 
 #include "../../common.h"
 
+#ifdef SG_LEGACY_API
+#    define sgPhysicsShapeCreate sgmPhysicsShapeCreate
+#    define sgPhysicsShapeDestroy sgmPhysicsShapeDestroy
+#endif // SG_LEGACY_API
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgPhysicsShapeCreate(void** shape, void* body, float xoffset, float yoffset, SGenum type, SGuint numverts, float* vertices);
-    SGuint SG_EXPORT sgPhysicsShapeDestroy(void* shape);
+    SGuint SG_EXPORT sgmPhysicsShapeCreate(void** shape, void* body, float xoffset, float yoffset, SGenum type, SGuint numverts, float* vertices);
+    SGuint SG_EXPORT sgmPhysicsShapeDestroy(void* shape);
 #ifdef __cplusplus
 }
 #endif

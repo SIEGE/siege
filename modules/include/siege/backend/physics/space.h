@@ -3,24 +3,41 @@
 
 #include "../../common.h"
 
+#ifdef SG_LEGACY_API
+#    define sgPhysicsSpaceCreate sgmPhysicsSpaceCreate
+#    define sgPhysicsSpaceDestroy sgmPhysicsSpaceDestroy
+#    define sgPhysicsSpaceStep sgmPhysicsSpaceStep
+#    define sgPhysicsSpaceSetGravity sgmPhysicsSpaceSetGravity
+//#    define sgPhysicsSpaceGetGravity sgmPhysicsSpaceGetGravity
+
+#    define sgPhysicsSpaceAddShape sgmPhysicsSpaceAddShape
+#    define sgPhysicsSpaceRemoveShape sgmPhysicsSpaceRemoveShape
+//#    define sgPhysicsSpaceAddStaticShape sgmPhysicsSpaceAddStaticShape
+//#    define sgPhysicsSpaceRemoveStaticShape sgmPhysicsSpaceRemoveStaticShape
+#    define sgPhysicsSpaceAddBody sgmPhysicsSpaceAddBody
+#    define sgPhysicsSpaceRemoveBody sgmPhysicsSpaceRemoveBody
+#    define sgPhysicsSpaceAddConstraint sgmPhysicsSpaceAddConstraint
+#    define sgPhysicsSpaceRemoveConstraint sgmPhysicsSpaceRemoveConstraint
+#endif // SG_LEGACY_API
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgPhysicsSpaceCreate(void** space);
-    SGuint SG_EXPORT sgPhysicsSpaceDestroy(void* space);
-    SGuint SG_EXPORT sgPhysicsSpaceStep(void* space, float time);
-    SGuint SG_EXPORT sgPhysicsSpaceSetGravity(void* space, float x, float y);
-    //SGuint SG_EXPORT sgPhysicsSpaceGetGravity(void* space, float* x, float* y);
+    SGuint SG_EXPORT sgmPhysicsSpaceCreate(void** space);
+    SGuint SG_EXPORT sgmPhysicsSpaceDestroy(void* space);
+    SGuint SG_EXPORT sgmPhysicsSpaceStep(void* space, float time);
+    SGuint SG_EXPORT sgmPhysicsSpaceSetGravity(void* space, float x, float y);
+    //SGuint SG_EXPORT sgmPhysicsSpaceGetGravity(void* space, float* x, float* y);
 
-    SGuint SG_EXPORT sgPhysicsSpaceAddShape(void* space, void* shape);
-    SGuint SG_EXPORT sgPhysicsSpaceRemoveShape(void* space, void* shape);
-    //SGuint SG_EXPORT sgPhysicsSpaceAddStaticShape(void* space, void* shape);
-    //SGuint SG_EXPORT sgPhysicsSpaceRemoveStaticShape(void* space, void* shape);
-    SGuint SG_EXPORT sgPhysicsSpaceAddBody(void* space, void* body);
-    SGuint SG_EXPORT sgPhysicsSpaceRemoveBody(void* space, void* body);
-    SGuint SG_EXPORT sgPhysicsSpaceAddConstraint(void* space, void* constraint);
-    SGuint SG_EXPORT sgPhysicsSpaceRemoveConstraint(void* space, void* constraint);
+    SGuint SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape);
+    SGuint SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape);
+    //SGuint SG_EXPORT sgmPhysicsSpaceAddStaticShape(void* space, void* shape);
+    //SGuint SG_EXPORT sgmPhysicsSpaceRemoveStaticShape(void* space, void* shape);
+    SGuint SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body);
+    SGuint SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body);
+    SGuint SG_EXPORT sgmPhysicsSpaceAddConstraint(void* space, void* constraint);
+    SGuint SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint);
 #ifdef __cplusplus
 }
 #endif

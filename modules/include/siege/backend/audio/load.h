@@ -3,13 +3,23 @@
 
 #include "../../common.h"
 
+#ifdef SG_LEGACY_API
+#    define sgAudioLoadFile sgmAudioLoadFile
+//#    define sgAudioLoadStream sgmAudioLoadStream
+#    define sgAudioLoadFreeData sgmAudioLoadFreeData
+#endif // SG_LEGACY_API
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgAudioLoadFile(char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    //SGuint SG_EXPORT sgAudioLoadStream(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    SGuint SG_EXPORT sgAudioLoadFreeData(void* data);
+    SGuint SG_EXPORT SG_DEPRECATED sgmAudioLoadFile(char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
+    //SGuint SG_EXPORT SG_DEPRECATED sgmAudioLoadStream(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
+    SGuint SG_EXPORT SG_DEPRECATED sgmAudioLoadFreeData(void* data);
+
+    SGuint SG_EXPORT sgmAudioFileCreate(void** file, char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
+    SGuint SG_EXPORT sgmAudioFileDestroy(void* file);
+    SGuint SG_EXPORT sgmAudioFileRead(void* file, void* data, SGuint datalen);
 #ifdef __cplusplus
 }
 #endif

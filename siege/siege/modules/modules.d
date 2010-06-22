@@ -30,13 +30,42 @@ enum: uint
 
 struct CheckBinder(T)
 {
-    void opCall(char[] n, SharedLib lib)
+    char[] newName(char[] pname)
+    {
+        int i;
+        i = std.string.find(pname, "sgm");
+        if(i == 0)
+            return pname;
+        i = std.string.find(pname, "sg");
+        if(i == 0)
+            return pname[0..2] ~ "m" ~ pname[2..$];
+        return pname;
+    }
+    char[] oldName(char[] pname)
+    {
+        int i;
+        i = std.string.find(pname, "sgm");
+        if(i == 0)
+            return pname[0..2] ~ pname[3..$];
+        return pname;
+    }
+
+    void opCall(char[] n, char[] o, SharedLib lib)
     {
         void* pptr = *fptr;
         //if(*fptr is null)
-        *fptr = Derelict_GetProc(lib, n);
+        *fptr = Derelict_GetProc(lib, n); // first check new name
         if(*fptr is null)
-            *fptr = pptr;
+        {
+            *fptr = Derelict_GetProc(lib, o); // then fallback to old name
+            if(*fptr is null)
+                *fptr = pptr;
+        }
+    }
+
+    void opCall(char[] n, SharedLib lib)
+    {
+        opCall(n, oldName(n), lib);
     }
 
     private void** fptr;
@@ -91,10 +120,10 @@ class SiegeModule
 
     void loadModuleGeneral(SharedLib lib)
     {
-        checkBindFunc(sgModuleInit)("sgModuleInit", lib);
-        checkBindFunc(sgModuleExit)("sgModuleExit", lib);
-        //checkBindFunc(sgModuleFree)("sgModuleFree", lib);
-        checkBindFunc(sgModuleMatch)("sgModuleMatch", lib);
+        checkBindFunc(sgModuleInit)("sgmModuleInit", lib);
+        checkBindFunc(sgModuleExit)("sgmModuleExit", lib);
+        //checkBindFunc(sgModuleFree)("sgmModuleFree", lib);
+        checkBindFunc(sgModuleMatch)("sgmModuleMatch", lib);
     }
 
     SharedLib lib;

@@ -3,14 +3,14 @@ module siege.audio.music;
 private
 {
     import siege.audio.source;
-    import siege.audio.sample;
+    import siege.audio.buffer;
 }
 
 class Music: Source
 {
-    this(Sample sample, float pitch = 1.0, float gain = 0.25, bool loop = true)
+    this(Buffer buffer, float pitch = 1.0, float gain = 0.25, bool loop = true)
     {
-        super(sample, pitch, gain, loop);
+        super(buffer, pitch, gain, loop);
     }
     this(float pitch = 1.0, float gain = 0.25, bool loop = true)
     {

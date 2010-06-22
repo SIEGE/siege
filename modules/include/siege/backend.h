@@ -11,7 +11,11 @@
 /// Graphics Load
 #include "backend/graphics/load.h"
 /// Audio
+#ifdef SG_LEGACY_API
 #include "backend/audio/sample.h"
+#else
+#include "backend/audio/buffer.h"
+#endif // SG_LEGACY_API
 #include "backend/audio/source.h"
 /// Audio Load
 #include "backend/audio/load.h"
