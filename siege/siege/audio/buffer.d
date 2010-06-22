@@ -21,7 +21,7 @@ class Buffer
         if(sgAudioBufferCreate !is null)
             sgAudioBufferCreate(&shandle);
     }
-    this(char[] fname)
+    this(char[] fname, uint numbuffers = 0, uint buffersize = 4096)
     {
         this();
 

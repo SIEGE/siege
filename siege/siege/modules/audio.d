@@ -48,6 +48,8 @@ void loadModuleAudio(SharedLib lib)
     checkBindFunc(sgAudioSourceIsStopped)("sgmAudioSourceIsStopped", lib);
     checkBindFunc(sgAudioSourceSetBuffer)("sgmAudioSourceSetBuffer", "sgAudioSourceSetSample", lib);
     //checkBindFunc(sgAudioSourceGetBuffer)("sgmAudioSourceGetBuffer", "sgAudioSourceGetSample", lib);
+    checkBindFunc(sgmAudioSourceQueueBuffers)("sgmAudioSourceQueueBuffers", lib);
+    checkBindFunc(sgmAudioSourceUnqueueBuffers)("sgmAudioSourceUnqueueBuffers", lib);
     checkBindFunc(sgAudioSourceNumProcessedBuffers)("sgmAudioSourceNumProcessedBuffers", lib);
     checkBindFunc(sgAudioSourceNumQueuedBuffers)("sgmAudioSourceNumQueuedBuffers", lib);
     checkBindFunc(sgAudioSourceSetPosition)("sgmAudioSourceSetPosition", lib);
@@ -100,6 +102,8 @@ extern(C)
     uint function(void* source, void* buffer) sgAudioSourceSetBuffer;
     //uint function(void* source, void** buffer) sgAudioSourceGetBuffer;
 /// \todo USE
+    uint function(void* source, void** buffers, uint numbuffers) sgmAudioSourceQueueBuffers;
+    uint function(void* source, uint numbuffers) sgmAudioSourceUnqueueBuffers;
 /// \warning Will most likely change very soon
     uint function(void* source, uint* processed) sgAudioSourceNumProcessedBuffers;
     uint function(void* source, uint* queued) sgAudioSourceNumQueuedBuffers;
