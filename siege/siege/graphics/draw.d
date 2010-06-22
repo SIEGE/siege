@@ -9,6 +9,8 @@ private
 
     import siege.graphics.texture;
     import siege.modules.graphics;
+
+    import std.math;
 }
 
 enum Primitive: ubyte
@@ -358,6 +360,85 @@ static:
 class DrawEllipse
 {
 static:
+    void opCall(Vector pos, Vector axis, float angle, uint sides, bool fill = true)
+    {
+        float coef = 2.0 * PI / sides;
+        if(fill)
+        {
+            draw.begin(Primitive.TriangleFan);
+            draw.vertex(pos);
+        }
+        else
+        {
+            draw.begin(Primitive.LineStrip);
+        }
+        cfloat beta = expi(angle * PI / 180.0);
+        cfloat alpha;
+
+        for(uint i = 0; i <= sides; i++)
+        {
+            alpha = expi(i * coef);
+
+            draw.vertex(pos.x + (axis.x * alpha.re * beta.re - axis.y * alpha.im * beta.im), pos.y + (axis.x * alpha.re * beta.im + axis.y * alpha.im * beta.re));
+        }
+        draw.end();
+    }
+
+    void opCall(float x, float y, float ax, float ay, float angle, uint sides, bool fill = true)
+    {
+        opCall(Vector(x, y), Vector(ax, ay), angle, sides, fill);
+    }
+    void opCall(Vector pos, Vector axis, float angle, uint sides, Color color1, Color color2, bool fill = true)
+    {
+        float coef = 2.0 * PI / sides;
+        if(fill)
+        {
+            draw.begin(Primitive.TriangleFan);
+            draw.color(color1);
+            draw.vertex(pos);
+        }
+        else
+        {
+            draw.begin(Primitive.LineStrip);
+        }
+        draw.color(color2);
+
+        cfloat beta = expi(angle * PI / 180.0);
+        cfloat alpha;
+        for(uint i = 0; i <= sides; i++)
+        {
+            alpha = expi(i * coef);
+
+            draw.vertex(pos.x + (axis.x * alpha.re * beta.re - axis.y * alpha.im * beta.im), pos.y + (axis.x * alpha.re * beta.im + axis.y * alpha.im * beta.re));
+        }
+        draw.end();
+    }
+    void opCall(float x, float y, float ax, float ay, float angle, uint sides, Color color1, Color color2, bool fill = true)
+    {
+        opCall(Vector(x, y), Vector(ax, ay), angle, sides, color1, color2, fill);
+    }
+}
+
+class DrawCircle
+{
+static:
+    void opCall(Vector pos, float radius, uint sides, bool fill = true)
+    {
+        draw.ellipse(pos, Vector(radius, radius), 0, sides, fill);
+    }
+
+    void opCall(float x, float y, float radius, uint sides, bool fill = true)
+    {
+        draw.ellipse(Vector(x, y), Vector(radius, radius), 0, sides, fill);
+    }
+    void opCall(Vector pos, float radius, uint sides, Color color1, Color color2, bool fill = true)
+    {
+        draw.ellipse(pos, Vector(radius, radius), 0, sides, color1, color2, fill);
+    }
+    void opCall(float x, float y, float radius, uint sides, Color color1, Color color2, bool fill = true)
+    {
+        draw.ellipse(Vector(x, y), Vector(radius, radius), 0, sides, color1, color2, fill);
+    }
 }
 
 class DrawModule
@@ -381,6 +462,7 @@ static:
     DrawTriangle triangle;
     DrawQuad quad;
     DrawEllipse ellipse;
+    DrawCircle circle;
 
     void begin(Primitive type, Texture texture = null)
     {
