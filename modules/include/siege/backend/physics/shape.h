@@ -1,5 +1,5 @@
-#ifndef __SIEGE_PHYSICS_SHAPE_H__
-#define __SIEGE_PHYSICS_SHAPE_H__
+#ifndef __SIEGE_BACKEND_PHYSICS_SHAPE_H__
+#define __SIEGE_BACKEND_PHYSICS_SHAPE_H__
 
 #include "../../common.h"
 
@@ -13,4 +13,4 @@ extern "C"
 }
 #endif
 
-#endif // __SIEGE_PHYSICS_SHAPE_H__
+#endif // __SIEGE_BACKEND_PHYSICS_SHAPE_H__

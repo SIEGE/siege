@@ -1,5 +1,5 @@
-#ifndef __SIEGE_GRAPHICS_CONTEXT_H__
-#define __SIEGE_GRAPHICS_CONTEXT_H__
+#ifndef __SIEGE_BACKEND_GRAPHICS_CONTEXT_H__
+#define __SIEGE_BACKEND_GRAPHICS_CONTEXT_H__
 
 #include "../../common.h"
 
@@ -16,4 +16,4 @@ extern "C"
 }
 #endif
 
-#endif // __SIEGE_GRAPHICS_CONTEXT_H__
+#endif // __SIEGE_BACKEND_GRAPHICS_CONTEXT_H__
