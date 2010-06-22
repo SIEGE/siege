@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgGraphicsSurfaceCreate(void** surface, void* context)
+SGuint SG_EXPORT sgmGraphicsSurfaceCreate(void** surface, void* context)
 {
     if(context == NULL)
         return SG_INVALID_VALUE;
@@ -17,19 +17,19 @@ SGuint SG_EXPORT sgGraphicsSurfaceCreate(void** surface, void* context)
     (*sdata)->context = context;
     (*sdata)->isFBO = cdata->fbo.hasFBO;
 
-    sgGraphicsTextureCreate((void**)&(*sdata)->texture, context);
+    sgmGraphicsTextureCreate((void**)&(*sdata)->texture, context);
 
     if(cdata->fbo.hasFBO)
     {
         cdata->fbo.glGenFramebuffersEXT(1, &(*sdata)->fboid);
-        sgGraphicsSurfaceSetTexture(*sdata, (*sdata)->texture);
+        sgmGraphicsSurfaceSetTexture(*sdata, (*sdata)->texture);
     }
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgGraphicsSurfaceCreateTexture(void** surface, void* context, void* texture);
-//SGuint SG_EXPORT sgGraphicsSurfaceCreateData(void** surface, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
-SGuint SG_EXPORT sgGraphicsSurfaceDestroy(void* surface)
+//SGuint SG_EXPORT sgmGraphicsSurfaceCreateTexture(void** surface, void* context, void* texture);
+//SGuint SG_EXPORT sgmGraphicsSurfaceCreateData(void** surface, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
+SGuint SG_EXPORT sgmGraphicsSurfaceDestroy(void* surface)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -40,7 +40,7 @@ SGuint SG_EXPORT sgGraphicsSurfaceDestroy(void* surface)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgGraphicsSurfaceSetTexture(void* surface, void* texture) // TODO: handle no FBOs available
+SGuint SG_EXPORT sgmGraphicsSurfaceSetTexture(void* surface, void* texture) // TODO: handle no FBOs available
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -59,7 +59,7 @@ SGuint SG_EXPORT sgGraphicsSurfaceSetTexture(void* surface, void* texture) // TO
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgGraphicsSurfaceGetTexture(void* surface, void** texture)
+SGuint SG_EXPORT sgmGraphicsSurfaceGetTexture(void* surface, void** texture)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -69,40 +69,40 @@ SGuint SG_EXPORT sgGraphicsSurfaceGetTexture(void* surface, void** texture)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgGraphicsSurfaceSetData(void* surface, SGuint width, SGuint height, SGuint bpp, void* data)
+SGuint SG_EXPORT sgmGraphicsSurfaceSetData(void* surface, SGuint width, SGuint height, SGuint bpp, void* data)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
     SurfaceData* sdata = (SurfaceData*)surface;
 
-    return sgGraphicsTextureSetData(sdata->texture, width, height, bpp, data);
+    return sgmGraphicsTextureSetData(sdata->texture, width, height, bpp, data);
 }
-//SGuint SG_EXPORT sgGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data)
-//SGuint SG_EXPORT sgGraphicsSurfaceFreeData(void* surface, void* data)
-SGuint SG_EXPORT sgGraphicsSurfaceGetSize(void* surface, SGuint* width, SGuint* height)
+//SGuint SG_EXPORT sgmGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data)
+//SGuint SG_EXPORT sgmGraphicsSurfaceFreeData(void* surface, void* data)
+SGuint SG_EXPORT sgmGraphicsSurfaceGetSize(void* surface, SGuint* width, SGuint* height)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
     SurfaceData* sdata = (SurfaceData*)surface;
-    return sgGraphicsTextureGetSize(sdata->texture, width, height);
+    return sgmGraphicsTextureGetSize(sdata->texture, width, height);
 }
-SGuint SG_EXPORT sgGraphicsSurfaceDraw(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
+SGuint SG_EXPORT sgmGraphicsSurfaceDraw(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
     SurfaceData* sdata = (SurfaceData*)surface;
 
-    return sgGraphicsTextureDraw(sdata->texture, x, y, z, xscale, yscale, xoffset, yoffset, angle);
+    return sgmGraphicsTextureDraw(sdata->texture, x, y, z, xscale, yscale, xoffset, yoffset, angle);
 }
-SGuint SG_EXPORT sgGraphicsSurfaceSetTarget(void* surface)
+SGuint SG_EXPORT sgmGraphicsSurfaceSetTarget(void* surface)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
     SurfaceData* sdata = (SurfaceData*)surface;
     ContextData* cdata = (ContextData*)sdata->context;
 
-// I HAS A HAX (doing the absolute best I can to solve the offset/scale problem in sgGraphicsTextureDraw
+// I HAS A HAX (doing the absolute best I can to solve the offset/scale problem in sgmGraphicsTextureDraw
 /*    glMatrixMode(GL_PROJECTION);
     //glPushAttrib(GL_VIEWPORT_BIT);
     glPushMatrix();
@@ -118,7 +118,7 @@ SGuint SG_EXPORT sgGraphicsSurfaceSetTarget(void* surface)
     {
         ContextData* context = (ContextData*)sdata->texture->context;
         if(context->target != NULL)
-            sgGraphicsSurfaceResetTarget(context->target);
+            sgmGraphicsSurfaceResetTarget(context->target);
 
         if(context->temp == NULL)
             return SG_UNKNOWN_ERROR; // temp surface not properly loaded
@@ -131,7 +131,7 @@ SGuint SG_EXPORT sgGraphicsSurfaceSetTarget(void* surface)
 
         // draw SURF
         glDisable(GL_DEPTH_TEST);
-        sgGraphicsSurfaceDraw(sdata, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
+        sgmGraphicsSurfaceDraw(sdata, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
         glEnable(GL_DEPTH_TEST);
 
         context->target = sdata;
@@ -139,8 +139,8 @@ SGuint SG_EXPORT sgGraphicsSurfaceSetTarget(void* surface)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgGraphicsSurfaceGetTarget(void** surface)
-SGuint SG_EXPORT sgGraphicsSurfaceResetTarget(void* surface)
+//SGuint SG_EXPORT sgmGraphicsSurfaceGetTarget(void** surface)
+SGuint SG_EXPORT sgmGraphicsSurfaceResetTarget(void* surface)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -165,7 +165,7 @@ SGuint SG_EXPORT sgGraphicsSurfaceResetTarget(void* surface)
 
         // draw TEMP
         glDisable(GL_DEPTH_TEST);
-        sgGraphicsSurfaceDraw(sdata, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
+        sgmGraphicsSurfaceDraw(sdata, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
         glEnable(GL_DEPTH_TEST);
 
         cdata->target = NULL;

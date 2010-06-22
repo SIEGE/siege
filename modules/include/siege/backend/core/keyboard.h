@@ -3,18 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgCoreKeyboardCreate sgmCoreKeyboardCreate
-#    define sgCoreKeyboardDestroy sgmCoreKeyboardDestroy
-//#    define sgCoreKeyboardSetKey sgmCoreKeyboardSetKey
-#    define sgCoreKeyboardGetKey sgmCoreKeyboardGetKey
-//#    define sgCoreKeyboardSetChr sgmCoreKeyboardSetChr
-//#    define sgCoreKeyboardGetChr sgmCoreKeyboardGetChr
-
-#    define sgCoreKeyboardSetCallbacks sgmCoreKeyboardSetCallbacks
-//#    define sgCoreKeyboardGetCallbacks sgmCoreKeyboardGetCallbacks
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

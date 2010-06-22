@@ -3,32 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#   define sgAudioSourceCreate sgmAudioSourceCreate
-//#   define sgAudioSourceCreateData sgmAudioSourceCreateData
-#    define sgAudioSourceDestroy sgmAudioSourceDestroy
-#    define sgAudioSourcePlay sgmAudioSourcePlay
-#    define sgAudioSourceIsPlaying sgmAudioSourceIsPlaying
-#    define sgAudioSourcePause sgmAudioSourcePause
-#    define sgAudioSourceIsPaused sgmAudioSourceIsPaused
-#    define sgAudioSourceRewind sgmAudioSourceRewind
-//#    define sgAudioSourceIsRewinded sgmAudioSourceIsRewinded
-#    define sgAudioSourceStop sgmAudioSourceStop
-#    define sgAudioSourceIsStopped sgmAudioSourceIsStopped
-#    define sgAudioSourceSetSample sgmAudioSourceSetBuffer
-//#    define sgAudioSourceGetSample sgmAudioSourceGetBuffer
-#    define sgAudioSourceSetPosition sgmAudioSourceSetPosition
-#    define sgAudioSourceGetPosition sgmAudioSourceGetPosition
-#    define sgAudioSourceSetVelocity sgmAudioSourceSetVelocity
-#    define sgAudioSourceGetVelocity sgmAudioSourceGetVelocity
-#    define sgAudioSourceSetPitch sgmAudioSourceSetPitch
-#    define sgAudioSourceGetPitch sgmAudioSourceGetPitch
-#    define sgAudioSourceSetGain sgmAudioSourceSetVolume
-#    define sgAudioSourceGetGain sgmAudioSourceGetVolume
-#    define sgAudioSourceSetLooping sgmAudioSourceSetLooping
-#    define sgAudioSourceGetLooping sgmAudioSourceGetLooping
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

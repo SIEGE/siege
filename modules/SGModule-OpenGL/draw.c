@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgGraphicsDrawPrimitive(void* context, void* texture, SGuint type, SGuint numverts, float* vertices, float* texcoords, float* colors)
+SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGuint type, SGuint numverts, float* vertices, float* texcoords, float* colors)
 {
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertices);
@@ -96,17 +96,17 @@ SGuint SG_EXPORT sgGraphicsDrawPrimitive(void* context, void* texture, SGuint ty
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgGraphicsDrawSetColor(void* context, float* color)
+SGuint SG_EXPORT sgmGraphicsDrawSetColor(void* context, float* color)
 {
     glColor4fv(color);
     return SG_OK;
 }
-SGuint SG_EXPORT sgGraphicsDrawPointSetSize(void* context, float size)
+SGuint SG_EXPORT sgmGraphicsDrawPointSetSize(void* context, float size)
 {
     glPointSize(size);
     return SG_OK;
 }
-SGuint SG_EXPORT sgGraphicsDrawLineSetWidth(void* context, float size)
+SGuint SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
 {
     glLineWidth(size);
     return SG_OK;

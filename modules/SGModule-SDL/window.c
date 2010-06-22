@@ -27,7 +27,7 @@ void windowResize(int x, int y)
         main_window->cbWindow->resize(main_window, x, y);
 }
 
-SGuint SG_EXPORT sgCoreWindowCreate(void** window)
+SGuint SG_EXPORT sgmCoreWindowCreate(void** window)
 {
     *window = calloc(1, sizeof(Window));
     Window** cwindow = (Window**)window;
@@ -41,13 +41,13 @@ SGuint SG_EXPORT sgCoreWindowCreate(void** window)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgCoreWindowDestroy(void* window)
+SGuint SG_EXPORT sgmCoreWindowDestroy(void* window)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
     Window* cwindow = (Window*)window;
 
-    sgCoreWindowClose(window);
+    sgmCoreWindowClose(window);
     free(cwindow->cbWindow);
     free(cwindow->cbJoystick);
     free(cwindow->cbKeyboard);
@@ -56,7 +56,7 @@ SGuint SG_EXPORT sgCoreWindowDestroy(void* window)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgCoreWindowOpen(void* window, SGuint width, SGuint height, SGubyte bpp, SGenum flags)
+SGuint SG_EXPORT sgmCoreWindowOpen(void* window, SGuint width, SGuint height, SGubyte bpp, SGenum flags)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -80,7 +80,7 @@ SGuint SG_EXPORT sgCoreWindowOpen(void* window, SGuint width, SGuint height, SGu
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgCoreWindowIsOpened(void* window, SGbool* opened)
+SGuint SG_EXPORT sgmCoreWindowIsOpened(void* window, SGbool* opened)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -89,7 +89,7 @@ SGuint SG_EXPORT sgCoreWindowIsOpened(void* window, SGbool* opened)
     *opened = cwindow->opened;
     return SG_OK;
 }
-SGuint SG_EXPORT sgCoreWindowClose(void* window)
+SGuint SG_EXPORT sgmCoreWindowClose(void* window)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -100,8 +100,8 @@ SGuint SG_EXPORT sgCoreWindowClose(void* window)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgCoreWindowIsClosed(void* window, SGbool* closed);
-SGuint SG_EXPORT sgCoreWindowSetTitle(void* window, char* title) /// TODO: icon title + icon
+//SGuint SG_EXPORT sgmCoreWindowIsClosed(void* window, SGbool* closed);
+SGuint SG_EXPORT sgmCoreWindowSetTitle(void* window, char* title) /// TODO: icon title + icon
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -110,9 +110,9 @@ SGuint SG_EXPORT sgCoreWindowSetTitle(void* window, char* title) /// TODO: icon 
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgCoreWindowGetTitle(void* window, char** title);
-//SGuint SG_EXPORT sgCoreWindowFreeTitle(char* title);
-SGuint SG_EXPORT sgCoreWindowSetSize(void* window, SGuint width, SGuint height)
+//SGuint SG_EXPORT sgmCoreWindowGetTitle(void* window, char** title);
+//SGuint SG_EXPORT sgmCoreWindowFreeTitle(char* title);
+SGuint SG_EXPORT sgmCoreWindowSetSize(void* window, SGuint width, SGuint height)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -123,7 +123,7 @@ SGuint SG_EXPORT sgCoreWindowSetSize(void* window, SGuint width, SGuint height)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgCoreWindowGetSize(void* window, SGuint* width, SGuint* height)
+SGuint SG_EXPORT sgmCoreWindowGetSize(void* window, SGuint* width, SGuint* height)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -134,15 +134,15 @@ SGuint SG_EXPORT sgCoreWindowGetSize(void* window, SGuint* width, SGuint* height
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgCoreWindowPollEvents(void* window);
-SGuint SG_EXPORT sgCoreWindowSwapBuffers(void* window)
+//SGuint SG_EXPORT sgmCoreWindowPollEvents(void* window);
+SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
     Window* cwindow = (Window*)window;
 
     /*SGbool opened;
-    sgCoreWindowIsOpened(window, &opened);*/
+    sgmCoreWindowIsOpened(window, &opened);*/
     if(!cwindow->opened)
         return SG_OK;
 
@@ -156,7 +156,7 @@ SGuint SG_EXPORT sgCoreWindowSwapBuffers(void* window)
                 SDL_PollEvent(&event); // next one is SDL_KEYUP
                 break;
             case SDL_VIDEORESIZE:
-                sgCoreWindowSetSize(window, event.resize.w, event.resize.h);
+                sgmCoreWindowSetSize(window, event.resize.w, event.resize.h);
                 break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
@@ -188,7 +188,7 @@ SGuint SG_EXPORT sgCoreWindowSwapBuffers(void* window)
                 break;
 
             case SDL_QUIT:
-                sgCoreWindowClose(window);
+                sgmCoreWindowClose(window);
                 return SG_OK;
 
             default:
@@ -204,7 +204,7 @@ SGuint SG_EXPORT sgCoreWindowSwapBuffers(void* window)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgCoreWindowSetCallbacks(void* window, SGCoreWindowCallbacks* callbacks)
+SGuint SG_EXPORT sgmCoreWindowSetCallbacks(void* window, SGCoreWindowCallbacks* callbacks)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -217,4 +217,4 @@ SGuint SG_EXPORT sgCoreWindowSetCallbacks(void* window, SGCoreWindowCallbacks* c
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgCoreWindowGetCallbacks(void* window, SGCoreWindowCallbacks** callbacks);
+//SGuint SG_EXPORT sgmCoreWindowGetCallbacks(void* window, SGCoreWindowCallbacks** callbacks);

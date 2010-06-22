@@ -54,12 +54,12 @@ void loadModuleAudio(SharedLib lib)
     /// Audio
     checkBindFunc(sgAudioSourceMaxSources)("sgmAudioSourceMaxSources", lib);
 
-    checkBindFunc(sgAudioBufferCreate)("sgmAudioBufferCreate", "sgAudioSampleCreate", lib);
-    //checkBindFunc(sgAudioBufferCreateData)("sgmAudioBufferCreateData", "sgAudioSampleCreateData", lib);
-    checkBindFunc(sgAudioBufferSetData)("sgmAudioBufferSetData", "sgAudioSampleSetData", lib);
-    //checkBindFunc(sgAudioBufferGetData)("sgmAudioBufferGetData", "sgAudioSampleGetData", lib);
-    //checkBindFunc(sgAudioBufferFreeData)("sgmAudioBufferFreeData", "sgAudioSampleFreeData", lib);
-    checkBindFunc(sgAudioBufferDestroy)("sgmAudioBufferDestroy", "sgAudioSampleDestroy", lib);
+    checkBindFunc(sgAudioBufferCreate)("sgmAudioBufferCreate", lib);
+    //checkBindFunc(sgAudioBufferCreateData)("sgmAudioBufferCreateData", lib);
+    checkBindFunc(sgAudioBufferSetData)("sgmAudioBufferSetData", lib);
+    //checkBindFunc(sgAudioBufferGetData)("sgmAudioBufferGetData", lib);
+    //checkBindFunc(sgAudioBufferFreeData)("sgmAudioBufferFreeData", lib);
+    checkBindFunc(sgAudioBufferDestroy)("sgmAudioBufferDestroy", lib);
 
     checkBindFunc(sgAudioSourceCreate)("sgmAudioSourceCreate", lib);
     //checkBindFunc(sgAudioSourceCreateData)("sgmAudioSourceCreateData", lib);
@@ -72,8 +72,8 @@ void loadModuleAudio(SharedLib lib)
     //checkBindFunc(sgAudioSourceIsRewinded)("sgmAudioSourceIsRewinded", lib);
     checkBindFunc(sgAudioSourceStop)("sgmAudioSourceStop", lib);
     checkBindFunc(sgAudioSourceIsStopped)("sgmAudioSourceIsStopped", lib);
-    checkBindFunc(sgAudioSourceSetBuffer)("sgmAudioSourceSetBuffer", "sgAudioSourceSetSample", lib);
-    //checkBindFunc(sgAudioSourceGetBuffer)("sgmAudioSourceGetBuffer", "sgAudioSourceGetSample", lib);
+    checkBindFunc(sgAudioSourceSetBuffer)("sgmAudioSourceSetBuffer", lib);
+    //checkBindFunc(sgAudioSourceGetBuffer)("sgmAudioSourceGetBuffer", lib);
     checkBindFunc(sgAudioSourceQueueBuffers)("sgmAudioSourceQueueBuffers", lib);
     checkBindFunc(sgAudioSourceUnqueueBuffers)("sgmAudioSourceUnqueueBuffers", lib);
     checkBindFunc(sgAudioSourceGetNumProcessedBuffers)("sgmAudioSourceNumProcessedBuffers", lib);
@@ -86,8 +86,8 @@ void loadModuleAudio(SharedLib lib)
     //checkBindFunc(sgAudioSourceGetFalloff)("sgmAudioSourceGetFalloff", lib);
     checkBindFunc(sgAudioSourceSetPitch)("sgmAudioSourceSetPitch", lib);
     checkBindFunc(sgAudioSourceGetPitch)("sgmAudioSourceGetPitch", lib);
-    checkBindFunc(sgAudioSourceSetVolume)("sgmAudioSourceSetVolume", "sgAudioSourceSetGain", lib);
-    checkBindFunc(sgAudioSourceGetVolume)("sgmAudioSourceGetVolume", "sgAudioSourceSetGain", lib);
+    checkBindFunc(sgAudioSourceSetVolume)("sgmAudioSourceSetVolume", lib);
+    checkBindFunc(sgAudioSourceGetVolume)("sgmAudioSourceGetVolume", lib);
     checkBindFunc(sgAudioSourceSetLooping)("sgmAudioSourceSetLooping", lib);
     checkBindFunc(sgAudioSourceGetLooping)("sgmAudioSourceGetLooping", lib);
 

@@ -1,8 +1,9 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#include <siege/backend.h>
+
 #include <SDL/SDL.h>
-#include <siege/siege.h>
 
 SGbool useGL;
 

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp)
+SGuint SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp)
 {
     ContextData** cdata = (ContextData**)context;
     *context = calloc(1, sizeof(ContextData));
@@ -28,22 +28,22 @@ SGuint SG_EXPORT sgGraphicsContextCreate(void** context, SGuint width, SGuint he
     (*cdata)->fbo.hasFBO = (ext != NULL);
     checkFBO(&(*cdata)->fbo);
 
-    //sgGraphicsContextResize(*context, width, height);
+    //sgmGraphicsContextResize(*context, width, height);
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgGraphicsContextDestroy(void* context)
+SGuint SG_EXPORT sgmGraphicsContextDestroy(void* context)
 {
     if(context == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    sgGraphicsTextureDestroy(((ContextData*)context)->temp);
+    sgmGraphicsTextureDestroy(((ContextData*)context)->temp);
     free(context);
 
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgGraphicsContextResize(void* context, SGuint width, SGuint height)
+SGuint SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint height)
 {
     if(context == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -62,14 +62,14 @@ SGuint SG_EXPORT sgGraphicsContextResize(void* context, SGuint width, SGuint hei
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    sgGraphicsTextureDestroy(cdata->temp);
-    sgGraphicsTextureCreate((void**)&cdata->temp, cdata);
-    sgGraphicsTextureSetData(cdata->temp, width, height, cdata->bpp, NULL);
+    sgmGraphicsTextureDestroy(cdata->temp);
+    sgmGraphicsTextureCreate((void**)&cdata->temp, cdata);
+    sgmGraphicsTextureSetData(cdata->temp, width, height, cdata->bpp, NULL);
 
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgGraphicsContextClear(void* context, float* color)
+SGuint SG_EXPORT sgmGraphicsContextClear(void* context, float* color)
 {
     if(context == NULL)
         return SG_OK; // SG_INVALID_VALUE

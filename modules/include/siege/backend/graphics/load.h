@@ -3,12 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgGraphicsLoadFile sgmGraphicsLoadFile
-//#    define sgGraphicsLoadStream sgmGraphicsLoadStream
-#    define sgGraphicsLoadFreeData sgmGraphicsLoadFreeData
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

@@ -3,15 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgAudioSampleCreate sgmAudioBufferCreate
-//#    define sgAudioSampleCreateData sgmAudioBufferCreateData
-#    define sgAudioSampleDestroy sgmAudioBufferDestroy
-#    define sgAudioSampleSetData sgmAudioBufferSetData
-//#    define sgAudioSampleGetData sgmAudioBufferGetData
-//#    define sgAudioSampleFreeData sgmAudioBufferFreeData
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgGraphicsLoadFile(char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data)
+SGuint SG_EXPORT sgmGraphicsLoadFile(char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data)
 {
     if(strcmp(fname, "") == 0)
     {
@@ -41,12 +41,12 @@ SGuint SG_EXPORT sgGraphicsLoadFile(char* fname, SGuint* width, SGuint* height, 
     return SG_OK;
 }
 
-/*SGuint SG_EXPORT sgGraphicsLoadStream(char* fname, SGuint* width, SGuint* height, SGuint* bpp, SGPointer* data)
+/*SGuint SG_EXPORT sgmGraphicsLoadStream(char* fname, SGuint* width, SGuint* height, SGuint* bpp, SGPointer* data)
 {
     return 1;
 }*/
 
-SGuint sgGraphicsLoadFreeData(void* data)
+SGuint sgmGraphicsLoadFreeData(void* data)
 {
     free(data);
     return SG_OK;

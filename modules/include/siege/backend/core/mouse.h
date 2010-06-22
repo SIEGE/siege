@@ -3,26 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgCoreMouseCreate sgmCoreMouseCreate
-#    define sgCoreMouseDestroy sgmCoreMouseDestroy
-
-#    define sgCoreMouseShow sgmCoreMouseShow
-#    define sgCoreMouseHide sgmCoreMouseHide
-//#    define sgCoreMouseIsShown sgmCoreMouseIsShown
-//#    define sgCoreMouseIsHidden sgmCoreMouseIsHidden
-#    define sgCoreMouseGetNumButtons sgmCoreMouseGetNumButtons
-//#    define sgCoreMouseSetButtons sgmCoreMouseSetButtons
-#    define sgCoreMouseGetButtons sgmCoreMouseGetButtons
-#    define sgCoreMouseSetPosition sgmCoreMouseSetPosition
-#    define sgCoreMouseGetPosition sgmCoreMouseGetPosition
-//#    define sgCoreMouseSetWheel sgmCoreMouseSetWheel
-#    define sgCoreMouseGetWheel sgmCoreMouseGetWheel
-
-#    define sgCoreMouseSetCallbacks sgmCoreMouseSetCallbacks
-//#    define sgCoreMouseGetCallbacks sgmCoreMouseGetCallbacks
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

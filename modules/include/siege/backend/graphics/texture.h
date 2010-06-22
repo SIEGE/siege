@@ -3,17 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgGraphicsTextureCreate sgmGraphicsTextureCreate
-//#    define sgGraphicsTextureCreateData sgmGraphicsTextureCreateData
-#    define sgGraphicsTextureDestroy sgmGraphicsTextureDestroy
-#    define sgGraphicsTextureSetData sgmGraphicsTextureSetData
-//#    define sgGraphicsTextureGetData sgmGraphicsTextureGetData
-//#    define sgGraphicsTextureFreeData sgmGraphicsTextureFreeData
-#    define sgGraphicsTextureGetSize sgmGraphicsTextureGetSize
-#    define sgGraphicsTextureDraw sgmGraphicsTextureDraw
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

@@ -3,25 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgCoreWindowCreate sgmCoreWindowCreate
-#    define sgCoreWindowDestroy sgmCoreWindowDestroy
-#    define sgCoreWindowOpen sgmCoreWindowOpen
-#    define sgCoreWindowIsOpened sgmCoreWindowIsOpened
-#    define sgCoreWindowClose sgmCoreWindowClose
-//#    define sgCoreWindowIsClosed sgmCoreWindowIsClosed
-#    define sgCoreWindowSetTitle sgmCoreWindowSetTitle
-//#    define sgCoreWindowGetTitle sgmCoreWindowGetTitle
-//#    define sgCoreWindowFreeTitle sgmCoreWindowFreeTitle
-#    define sgCoreWindowSetSize sgmCoreWindowSetSize
-#    define sgCoreWindowGetSize sgmCoreWindowGetSize
-//#    define sgCoreWindowPollEvents sgmCoreWindowPollEvents
-#    define sgCoreWindowSwapBuffers sgmCoreWindowSwapBuffers
-
-#    define sgCoreWindowSetCallbacks sgmCoreWindowSetCallbacks
-//#    define sgCoreWindowGetCallbacks sgmCoreWindowGetCallbacks
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

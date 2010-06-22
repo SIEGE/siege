@@ -3,23 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgGraphicsSurfaceCreate sgmGraphicsSurfaceCreate
-//#    define sgGraphicsSurfaceCreateTexture sgmGraphicsSurfaceCreateTexture
-//#    define sgGraphicsSurfaceCreateData sgmGraphicsSurfaceCreateData
-#    define sgGraphicsSurfaceDestroy sgmGraphicsSurfaceDestroy
-#    define sgGraphicsSurfaceSetTexture sgmGraphicsSurfaceSetTexture
-#    define sgGraphicsSurfaceGetTexture sgmGraphicsSurfaceGetTexture
-#    define sgGraphicsSurfaceSetData sgmGraphicsSurfaceSetData
-//#    define sgGraphicsSurfaceGetData sgmGraphicsSurfaceGetData
-//#    define sgGraphicsSurfaceFreeData sgmGraphicsSurfaceFreeData
-#    define sgGraphicsSurfaceGetSize sgmGraphicsSurfaceGetSize
-#    define sgGraphicsSurfaceDraw sgmGraphicsSurfaceDraw
-#    define sgGraphicsSurfaceSetTarget sgmGraphicsSurfaceSetTarget
-//#    define sgGraphicsSurfaceGetTarget sgmGraphicsSurfaceGetTarget
-#    define sgGraphicsSurfaceResetTarget sgmGraphicsSurfaceResetTarget
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

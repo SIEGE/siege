@@ -3,13 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgGraphicsContextCreate sgmGraphicsContextCreate
-#    define sgGraphicsContextDestroy sgmGraphicsContextDestroy
-#    define sgGraphicsContextResize sgmGraphicsContextResize
-#    define sgGraphicsContextClear sgmGraphicsContextClearColor
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

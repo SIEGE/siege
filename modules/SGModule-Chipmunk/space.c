@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgPhysicsSpaceCreate(void** space)
+SGuint SG_EXPORT sgmPhysicsSpaceCreate(void** space)
 {
     *space = cpSpaceNew();
     cpSpace** cspace = (cpSpace**)space;
@@ -14,7 +14,7 @@ SGuint SG_EXPORT sgPhysicsSpaceCreate(void** space)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgPhysicsSpaceDestroy(void* space)
+SGuint SG_EXPORT sgmPhysicsSpaceDestroy(void* space)
 {
     if(space == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -24,7 +24,7 @@ SGuint SG_EXPORT sgPhysicsSpaceDestroy(void* space)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgPhysicsSpaceStep(void* space, float time)
+SGuint SG_EXPORT sgmPhysicsSpaceStep(void* space, float time)
 {
     if(space == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -33,7 +33,7 @@ SGuint SG_EXPORT sgPhysicsSpaceStep(void* space, float time)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgPhysicsSpaceSetGravity(void* space, float x, float y)
+SGuint SG_EXPORT sgmPhysicsSpaceSetGravity(void* space, float x, float y)
 {
     if(space == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -42,9 +42,9 @@ SGuint SG_EXPORT sgPhysicsSpaceSetGravity(void* space, float x, float y)
     cspace->gravity.y = y;
     return SG_OK;
 }
-//SGuint SG_EXPORT sgPhysicsSpaceGetGravity(void* space, float* x, float* y);
+//SGuint SG_EXPORT sgmPhysicsSpaceGetGravity(void* space, float* x, float* y);
 
-SGuint SG_EXPORT sgPhysicsSpaceAddShape(void* space, void* shape)
+SGuint SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -56,7 +56,7 @@ SGuint SG_EXPORT sgPhysicsSpaceAddShape(void* space, void* shape)
         cpSpaceAddStaticShape(space, shape);
     return SG_OK;
 }
-SGuint SG_EXPORT sgPhysicsSpaceRemoveShape(void* space, void* shape)
+SGuint SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -68,9 +68,9 @@ SGuint SG_EXPORT sgPhysicsSpaceRemoveShape(void* space, void* shape)
         cpSpaceRemoveStaticShape(space, shape);
     return SG_OK;
 }
-//SGuint SG_EXPORT sgPhysicsSpaceAddStaticShape(void* space, void* shape);
-//SGuint SG_EXPORT sgPhysicsSpaceRemoveStaticShape(void* space, void* shape);
-SGuint SG_EXPORT sgPhysicsSpaceAddBody(void* space, void* body)
+//SGuint SG_EXPORT sgmPhysicsSpaceAddStaticShape(void* space, void* shape);
+//SGuint SG_EXPORT sgmPhysicsSpaceRemoveStaticShape(void* space, void* shape);
+SGuint SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -79,7 +79,7 @@ SGuint SG_EXPORT sgPhysicsSpaceAddBody(void* space, void* body)
         cpSpaceAddBody(space, body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgPhysicsSpaceRemoveBody(void* space, void* body)
+SGuint SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -88,14 +88,14 @@ SGuint SG_EXPORT sgPhysicsSpaceRemoveBody(void* space, void* body)
         cpSpaceRemoveBody(space, body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgPhysicsSpaceAddConstraint(void* space, void* constraint)
+SGuint SG_EXPORT sgmPhysicsSpaceAddConstraint(void* space, void* constraint)
 {
     if(space == NULL || constraint == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpSpaceAddConstraint(space, constraint);
     return SG_OK;
 }
-SGuint SG_EXPORT sgPhysicsSpaceRemoveConstraint(void* space, void* constraint)
+SGuint SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint)
 {
     if(space == NULL || constraint == NULL)
         return SG_OK; // SG_INVALID_VALUE

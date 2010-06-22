@@ -3,25 +3,6 @@
 
 #include "../../common.h"
 
-#ifdef SG_LEGACY_API
-#    define sgCoreJoystickGetFlags sgmCoreJoystickGetFlags
-#    define sgCoreJoystickFreeFlags sgmCoreJoystickFreeFlags
-
-#    define sgCoreJoystickGetNumJoysticks sgmCoreJoystickGetNumJoysticks
-#    define sgCoreJoystickCreate sgmCoreJoystickCreate
-#    define sgCoreJoystickDestroy sgmCoreJoystickDestroy
-#    define sgCoreJoystickGetID sgmCoreJoystickGetID
-#    define sgCoreJoystickGetNumButtons sgmCoreJoystickGetNumButtons
-//#    define sgCoreJoystickSetButtons sgmCoreJoystickSetButtons
-#    define sgCoreJoystickGetButtons sgmCoreJoystickGetButtons
-#    define sgCoreJoystickGetNumAxis sgmCoreJoystickGetNumAxis
-//#    define sgCoreJoystickSetAxis sgmCoreJoystickSetAxis
-#    define sgCoreJoystickGetAxis sgmCoreJoystickGetAxis
-
-#    define sgCoreJoystickSetCallbacks sgmCoreJoystickSetCallbacks
-//#    define sgCoreJoystickGetCallbacks sgmCoreJoystickGetCallbacks
-#endif // SG_LEGACY_API
-
 #ifdef __cplusplus
 extern "C"
 {

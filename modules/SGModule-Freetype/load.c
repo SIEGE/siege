@@ -2,7 +2,7 @@
 #include "load.h"
 
 
-SGuint SG_EXPORT sgFontsFaceCreate(void** face, char* fname)
+SGuint SG_EXPORT sgmFontsFaceCreate(void** face, char* fname)
 {
     *face = malloc(sizeof(FontFace));
     int ret = FT_New_Face(library, fname, 0, &(*(FontFace**)face)->ftface);
@@ -10,7 +10,7 @@ SGuint SG_EXPORT sgFontsFaceCreate(void** face, char* fname)
         return SG_UNKNOWN_ERROR;
     return SG_OK;
 }
-SGuint SG_EXPORT sgFontsFaceDestroy(void* face)
+SGuint SG_EXPORT sgmFontsFaceDestroy(void* face)
 {
     if(face == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -18,7 +18,7 @@ SGuint SG_EXPORT sgFontsFaceDestroy(void* face)
     free(face);
     return SG_OK;
 }
-SGuint SG_EXPORT sgFontsFaceSetHeight(void* face, float height)
+SGuint SG_EXPORT sgmFontsFaceSetHeight(void* face, float height)
 {
     if(face == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -26,12 +26,12 @@ SGuint SG_EXPORT sgFontsFaceSetHeight(void* face, float height)
     FT_Set_Char_Size(((FontFace*)face)->ftface, (SGuint)(height * 64), (SGuint)(height * 64), 96, 96);
     return SG_OK;
 }
-/*SGuint SG_EXPORT sgFontsFaceGetHeight(void* face, float* height)
+/*SGuint SG_EXPORT sgmFontsFaceGetHeight(void* face, float* height)
 {
     *height = ((FontFace*)face)->height;
     return SG_OK;
 }*/
-SGuint SG_EXPORT sgFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, float* width, float* height, float* prex, float* prey, float* postx, float* posty, SGuint* datawidth, SGuint* dataheight, void** data)
+SGuint SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, float* width, float* height, float* prex, float* prey, float* postx, float* posty, SGuint* datawidth, SGuint* dataheight, void** data)
 {
     if(face == NULL)
     {
@@ -92,7 +92,7 @@ SGuint SG_EXPORT sgFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, f
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgFontsCharsFreeData(void* data)
+SGuint SG_EXPORT sgmFontsCharsFreeData(void* data)
 {
     free(data);
     return SG_OK;

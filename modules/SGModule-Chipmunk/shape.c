@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgPhysicsShapeCreate(void** shape, void* body, float xoffset, float yoffset, SGenum type, SGuint numverts, float* vertices)
+SGuint SG_EXPORT sgmPhysicsShapeCreate(void** shape, void* body, float xoffset, float yoffset, SGenum type, SGuint numverts, float* vertices)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -45,7 +45,7 @@ SGuint SG_EXPORT sgPhysicsShapeCreate(void** shape, void* body, float xoffset, f
     (*cshape)->u = 0.75;
     return SG_OK;
 }
-SGuint SG_EXPORT sgPhysicsShapeDestroy(void* shape)
+SGuint SG_EXPORT sgmPhysicsShapeDestroy(void* shape)
 {
     if(shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
