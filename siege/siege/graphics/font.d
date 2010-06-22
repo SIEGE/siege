@@ -86,7 +86,7 @@ class Font
             if(charset.length == 0)
                 return true;
 
-            if(sgFontsCharsCreate is null)
+            if(sgmFontsCharsCreate is null)
                 return false;
 
             uint datawidth;
@@ -104,13 +104,13 @@ class Font
 
             foreach(i, c; charset)
             {
-                ret |= sgFontsCharsCreate(face, &c, 1, &width, &height, &prex, &prey, &postx, &posty, &datawidth, &dataheight, &cdata);
+                ret |= sgmFontsCharsCreate(face, &c, 1, &width, &height, &prex, &prey, &postx, &posty, &datawidth, &dataheight, &cdata);
                 if(ret != 0)
                     return false;
 
                 rgba = toRGBA(cast(ubyte[])cdata[0..datawidth*dataheight]);
-                if(sgFontsCharsFreeData !is null)
-                    sgFontsCharsFreeData(cdata);
+                if(sgmFontsCharsFreeData !is null)
+                    sgmFontsCharsFreeData(cdata);
 
                 Texture tex = new Texture(datawidth, dataheight, 32, rgba);
                 if(c < preload)
@@ -148,8 +148,8 @@ class Font
             void*[] cdata = new void*[](charset.length);
             uint ret;
 
-            if(sgFontsCharsCreate !is null)
-                ret = sgFontsCharsCreate(cast(void**)&mid, face, charset.ptr, charset.length, width.ptr, height.ptr, prex.ptr, prey.ptr, postx.ptr, posty.ptr, datawidth.ptr, dataheight.ptr, cdata.ptr);
+            if(sgmFontsCharsCreate !is null)
+                ret = sgmFontsCharsCreate(cast(void**)&mid, face, charset.ptr, charset.length, width.ptr, height.ptr, prex.ptr, prey.ptr, postx.ptr, posty.ptr, datawidth.ptr, dataheight.ptr, cdata.ptr);
             else
                 return false;
 
@@ -158,8 +158,8 @@ class Font
             foreach(i, c; charset)
             {
                 rgba[i] = toRGBA(cast(ubyte[])cdata[i][0..datawidth[i]*dataheight[i]]);
-                if(mid.sgModuleFree !is null)
-                    mid.sgModuleFree(cdata[i]);
+                if(mid.sgmModuleFree !is null)
+                    mid.sgmModuleFree(cdata[i]);
             }
 
             foreach(i, c; charset)
@@ -197,13 +197,13 @@ class Font
         this.preload = preload;
 
         uint ret;
-        if(sgFontsFaceCreate !is null)
-            ret = sgFontsFaceCreate(&face, toStringz(fname));
+        if(sgmFontsFaceCreate !is null)
+            ret = sgmFontsFaceCreate(&face, toStringz(fname));
         if(ret != 0)
             throw new Exception("Cannot create font " ~ fname);
 
-        if(sgFontsFaceSetHeight !is null)
-            sgFontsFaceSetHeight(face, fheight);
+        if(sgmFontsFaceSetHeight !is null)
+            sgmFontsFaceSetHeight(face, fheight);
 
         chars = new CharInfo[](preload);
 
@@ -220,8 +220,8 @@ class Font
         foreach(c; cache)
             delete c.texture;
 
-        if(sgFontsFaceDestroy !is null)
-            sgFontsFaceDestroy(face);
+        if(sgmFontsFaceDestroy !is null)
+            sgmFontsFaceDestroy(face);
     }
 
     Font resize(float height, bool dup = false)

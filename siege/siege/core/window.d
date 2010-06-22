@@ -76,16 +76,16 @@ class Window
         callbacks.close = &cbWindowClose;
         //callbacks.resize = &cbWindowResize;
 
-        if(sgCoreWindowCreate !is null)
-            sgCoreWindowCreate(&whandle);
+        if(sgmCoreWindowCreate !is null)
+            sgmCoreWindowCreate(&whandle);
 
-        if(sgCoreWindowSetCallbacks !is null)
-            sgCoreWindowSetCallbacks(whandle, &callbacks);
+        if(sgmCoreWindowSetCallbacks !is null)
+            sgmCoreWindowSetCallbacks(whandle, &callbacks);
     }
     ~this()
     {
-        if(sgCoreWindowDestroy !is null)
-            sgCoreWindowDestroy(whandle);
+        if(sgmCoreWindowDestroy !is null)
+            sgmCoreWindowDestroy(whandle);
     }
 
     void open(uint width, uint height, uint bpp, uint flags)
@@ -100,12 +100,12 @@ class Window
         if(opened())
             close();
 
-        if(sgCoreWindowOpen !is null)
-            sgCoreWindowOpen(whandle, width, height, bpp, flags);
+        if(sgmCoreWindowOpen !is null)
+            sgmCoreWindowOpen(whandle, width, height, bpp, flags);
 
         uint joynum;
-        if(sgCoreJoystickGetNumJoysticks !is null)
-            sgCoreJoystickGetNumJoysticks(whandle, &joynum);
+        if(sgmCoreJoystickGetNumJoysticks !is null)
+            sgmCoreJoystickGetNumJoysticks(whandle, &joynum);
         joysticks.length = joynum;
         foreach(i, inout joy; joysticks)
             joy = new Joystick(i + 1);
@@ -114,8 +114,8 @@ class Window
 
 
         Vector s = size();
-        if(sgGraphicsContextCreate !is null)
-            sgGraphicsContextCreate(&ghandle, cast(uint)s.x, cast(uint)s.y, bpp); /// PROBLEM SPOT (sgGraphicsContextResize -> sgGraphicsTextureCreate)
+        if(sgmGraphicsContextCreate !is null)
+            sgmGraphicsContextCreate(&ghandle, cast(uint)s.x, cast(uint)s.y, bpp); /// PROBLEM SPOT (sgmGraphicsContextResize -> sgmGraphicsTextureCreate)
         Viewport.main = new Viewport(Vector(0, 0), s);
 
         cbWindowOpen(whandle);
@@ -124,16 +124,16 @@ class Window
     bool opened()
     {
         bool opened;
-        if(sgCoreWindowIsOpened !is null)
-            sgCoreWindowIsOpened(whandle, &opened);
+        if(sgmCoreWindowIsOpened !is null)
+            sgmCoreWindowIsOpened(whandle, &opened);
         return opened;
     }
     void close()
     {
-        if(sgGraphicsContextDestroy !is null)
-            sgGraphicsContextDestroy(ghandle);
-        if(sgCoreWindowClose !is null)
-            sgCoreWindowClose(whandle);
+        if(sgmGraphicsContextDestroy !is null)
+            sgmGraphicsContextDestroy(ghandle);
+        if(sgmCoreWindowClose !is null)
+            sgmCoreWindowClose(whandle);
     }
 
     void title(...)
@@ -143,8 +143,8 @@ class Window
     void titleT(char[] title)
     {
         _title = title.dup;
-        if(sgCoreWindowSetTitle !is null)
-            sgCoreWindowSetTitle(whandle, toStringz(_title));
+        if(sgmCoreWindowSetTitle !is null)
+            sgmCoreWindowSetTitle(whandle, toStringz(_title));
     }
     char[] title()
     {
@@ -153,10 +153,10 @@ class Window
 
     void size(uint width, uint height)
     {
-        if(sgCoreWindowSetSize !is null)
-            sgCoreWindowSetSize(whandle, width, height);
-        if(sgGraphicsContextResize !is null)
-            sgGraphicsContextResize(ghandle, width, height);
+        if(sgmCoreWindowSetSize !is null)
+            sgmCoreWindowSetSize(whandle, width, height);
+        if(sgmGraphicsContextResize !is null)
+            sgmGraphicsContextResize(ghandle, width, height);
     }
     void size(Vector s)
     {
@@ -166,8 +166,8 @@ class Window
     {
         uint x;
         uint y;
-        if(sgCoreWindowGetSize !is null)
-            sgCoreWindowGetSize(whandle, &x, &y);
+        if(sgmCoreWindowGetSize !is null)
+            sgmCoreWindowGetSize(whandle, &x, &y);
         return Vector(x, y);
     }
 
@@ -190,8 +190,8 @@ class Window
 
     void swapBuffers()
     {
-        if(sgCoreWindowSwapBuffers !is null)
-            sgCoreWindowSwapBuffers(whandle);
+        if(sgmCoreWindowSwapBuffers !is null)
+            sgmCoreWindowSwapBuffers(whandle);
     }
 
     void* handle()

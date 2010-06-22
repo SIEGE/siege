@@ -65,8 +65,8 @@ class Shape
 
     ~this()
     {
-        if(sgPhysicsShapeDestroy !is null)
-            sgPhysicsShapeDestroy(shandle);
+        if(sgmPhysicsShapeDestroy !is null)
+            sgmPhysicsShapeDestroy(shandle);
     }
 
     void* handle()
@@ -78,8 +78,8 @@ class Shape
     {
         float t, l, b, r;
 
-        if(sgPhysicsShapeGetBB_TEST !is null)
-            sgPhysicsShapeGetBB_TEST(shandle, &t, &l, &b, &r);
+        if(sgmPhysicsShapeGetBB_TEST !is null)
+            sgmPhysicsShapeGetBB_TEST(shandle, &t, &l, &b, &r);
 
         draw.color(bbox);
         draw.begin(Primitive.LineLoop);
@@ -103,8 +103,8 @@ class SegmentShape: Shape
         pbody.mass = pbody.mass + newmass;
         pbody.moment = pbody.moment + pbody.data.rotscale * newmass * (diff.length2 + width*width) / 12; // WARNING: NEEDS TO BE SET PROPERLY
 
-        if(sgPhysicsShapeCreate !is null)
-            sgPhysicsShapeCreate(&shandle, pbody.handle(), 0, 0, type, 2, [a.x, a.y, b.x, b.y, width].ptr);
+        if(sgmPhysicsShapeCreate !is null)
+            sgmPhysicsShapeCreate(&shandle, pbody.handle(), 0, 0, type, 2, [a.x, a.y, b.x, b.y, width].ptr);
     }
 
     void drawDBG(Color bbox = Color(0.5, 0.5, 0.5, 0.5), Color poly = Color(0.0, 0.5, 0.75, 0.75))
@@ -112,13 +112,13 @@ class SegmentShape: Shape
         super.drawDBG(bbox, poly);
         uint pnum;
         float* points;
-        if(sgPhysicsBodyLocalToWorld_TEST is null)
+        if(sgmPhysicsBodyLocalToWorld_TEST is null)
             return;
-        if(sgPhysicsShapeGetPoints_TEST !is null)
-            sgPhysicsShapeGetPoints_TEST(shandle, &pnum, &points);
+        if(sgmPhysicsShapeGetPoints_TEST !is null)
+            sgmPhysicsShapeGetPoints_TEST(shandle, &pnum, &points);
 
-        sgPhysicsBodyLocalToWorld_TEST(pbody.handle(), &points[0], &points[1]);
-        sgPhysicsBodyLocalToWorld_TEST(pbody.handle(), &points[2], &points[3]);
+        sgmPhysicsBodyLocalToWorld_TEST(pbody.handle(), &points[0], &points[1]);
+        sgmPhysicsBodyLocalToWorld_TEST(pbody.handle(), &points[2], &points[3]);
 
         draw.color(poly);
         draw.line.width(points[4]);
@@ -128,8 +128,8 @@ class SegmentShape: Shape
         draw.end();
         draw.line.width(1.0);
 
-        if(sgPhysicsShapeFreePoints_TEST !is null)
-            sgPhysicsShapeFreePoints_TEST(points);
+        if(sgmPhysicsShapeFreePoints_TEST !is null)
+            sgmPhysicsShapeFreePoints_TEST(points);
     }
 }
 
@@ -157,8 +157,8 @@ class PolyShape: Shape
         foreach(i, v; vertices)
             fverts[2*i..2*i+2] = [v.x, v.y].dup;
 
-        if(sgPhysicsShapeCreate !is null)
-            sgPhysicsShapeCreate(&shandle, pbody.handle(), offset.x, offset.y, type, vertices.length, fverts.ptr);
+        if(sgmPhysicsShapeCreate !is null)
+            sgmPhysicsShapeCreate(&shandle, pbody.handle(), offset.x, offset.y, type, vertices.length, fverts.ptr);
     }
 
     void drawDBG(Color bbox = Color(0.5, 0.5, 0.5, 0.5), Color poly = Color(0.0, 0.5, 0.75, 0.75))
@@ -166,13 +166,13 @@ class PolyShape: Shape
         super.drawDBG(bbox, poly);
         uint pnum;
         float* points;
-        if(sgPhysicsBodyLocalToWorld_TEST is null)
+        if(sgmPhysicsBodyLocalToWorld_TEST is null)
             return;
-        if(sgPhysicsShapeGetPoints_TEST !is null)
-            sgPhysicsShapeGetPoints_TEST(shandle, &pnum, &points);
+        if(sgmPhysicsShapeGetPoints_TEST !is null)
+            sgmPhysicsShapeGetPoints_TEST(shandle, &pnum, &points);
 
         for(uint i = 0; i < pnum; i++)
-            sgPhysicsBodyLocalToWorld_TEST(pbody.handle(), &points[2*i], &points[2*i+1]);
+            sgmPhysicsBodyLocalToWorld_TEST(pbody.handle(), &points[2*i], &points[2*i+1]);
 
         draw.color(poly);
         draw.begin(Primitive.LineLoop);
@@ -180,8 +180,8 @@ class PolyShape: Shape
                 draw.vertex(points[2*i], points[2*i+1]);
         draw.end();
 
-        if(sgPhysicsShapeFreePoints_TEST !is null)
-            sgPhysicsShapeFreePoints_TEST(points);
+        if(sgmPhysicsShapeFreePoints_TEST !is null)
+            sgmPhysicsShapeFreePoints_TEST(points);
     }
 }
 
@@ -195,8 +195,8 @@ class CircleShape: Shape
         pbody.mass = pbody.mass + newmass;
         pbody.moment = pbody.moment + newmass * radius * radius / 2;
 
-        if(sgPhysicsShapeCreate !is null)
-            sgPhysicsShapeCreate(&shandle, pbody.handle(), offset.x, offset.y, type, 0, &radius);
+        if(sgmPhysicsShapeCreate !is null)
+            sgmPhysicsShapeCreate(&shandle, pbody.handle(), offset.x, offset.y, type, 0, &radius);
     }
 
     void drawDBG(Color bbox = Color(0.5, 0.5, 0.5, 0.5), Color poly = Color(0.0, 0.5, 0.75, 0.75))
@@ -204,12 +204,12 @@ class CircleShape: Shape
         super.drawDBG(bbox, poly);
         uint pnum;
         float* points;
-        if(sgPhysicsBodyLocalToWorld_TEST is null)
+        if(sgmPhysicsBodyLocalToWorld_TEST is null)
             return;
-        if(sgPhysicsShapeGetPoints_TEST !is null)
-            sgPhysicsShapeGetPoints_TEST(shandle, &pnum, &points);
+        if(sgmPhysicsShapeGetPoints_TEST !is null)
+            sgmPhysicsShapeGetPoints_TEST(shandle, &pnum, &points);
 
-        sgPhysicsBodyLocalToWorld_TEST(pbody.handle(), &points[0], &points[1]);
+        sgmPhysicsBodyLocalToWorld_TEST(pbody.handle(), &points[0], &points[1]);
 
         uint sides = 16;
         cfloat c;
@@ -222,7 +222,7 @@ class CircleShape: Shape
             }
         draw.end();
 
-        if(sgPhysicsShapeFreePoints_TEST !is null)
-            sgPhysicsShapeFreePoints_TEST(points);
+        if(sgmPhysicsShapeFreePoints_TEST !is null)
+            sgmPhysicsShapeFreePoints_TEST(points);
     }
 }

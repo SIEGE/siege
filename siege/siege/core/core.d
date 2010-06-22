@@ -106,8 +106,8 @@ static:
         foreach(i, mod; modules)
         {
             bool mok = true;
-            if(mod.sgModuleMatch !is null)
-                mod.sgModuleMatch(infos.ptr, infos.length, &mok);
+            if(mod.sgmModuleMatch !is null)
+                mod.sgmModuleMatch(infos.ptr, infos.length, &mok);
             if(!mok)
             {
                 std.c.stdio.fprintf(std.c.stdio.stderr, "Could not load module %s: Incompatible with other modules\n", infos[i].name);

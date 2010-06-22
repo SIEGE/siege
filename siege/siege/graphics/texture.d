@@ -63,15 +63,15 @@ class Texture
         if(data !is null)
             data = toCanvasSize(data, width, height, bypp);
 
-        if(sgGraphicsTextureCreate !is null)
-            sgGraphicsTextureCreate(&texture, window.context());
-        if(sgGraphicsTextureSetData !is null)
-            sgGraphicsTextureSetData(texture, width, height, bpp, data.ptr);
+        if(sgmGraphicsTextureCreate !is null)
+            sgmGraphicsTextureCreate(&texture, window.context());
+        if(sgmGraphicsTextureSetData !is null)
+            sgmGraphicsTextureSetData(texture, width, height, bpp, data.ptr);
     }
     ~this()
     {
-        if(sgGraphicsTextureDestroy !is null)
-            sgGraphicsTextureDestroy(texture);
+        if(sgmGraphicsTextureDestroy !is null)
+            sgmGraphicsTextureDestroy(texture);
     }
 
     void draw(Vector location = Vector(0.0, 0.0, 0.0), Vector scale = Vector(1.0, 1.0), float angle = 0.0)
@@ -79,8 +79,8 @@ class Texture
         /*if(!(location.z == location.z))
             location.z = 0;
 
-        if(sgGraphicsTextureDraw !is null)
-            sgGraphicsTextureDraw(texture, location.x, location.y, location.z, scale.x, scale.y, angle);*/
+        if(sgmGraphicsTextureDraw !is null)
+            sgmGraphicsTextureDraw(texture, location.x, location.y, location.z, scale.x, scale.y, angle);*/
         draw(location, scale, Vector(0.0, 0.0), angle);
     }
     void draw(Vector location, Vector scale, Vector offset, float angle = 0.0)
@@ -89,16 +89,16 @@ class Texture
         if(!(location.z == location.z))
             location.z = 0;
 
-        if(sgGraphicsTextureDraw !is null)
-            sgGraphicsTextureDraw(texture, location.x, location.y, location.z, scale.x, scale.y, offset.x, offset.y, angle);
+        if(sgmGraphicsTextureDraw !is null)
+            sgmGraphicsTextureDraw(texture, location.x, location.y, location.z, scale.x, scale.y, offset.x, offset.y, angle);
     }
 
     Vector size()
     {
         uint x;
         uint y;
-        if(sgGraphicsTextureGetSize !is null)
-            sgGraphicsTextureGetSize(texture, &x, &y);
+        if(sgmGraphicsTextureGetSize !is null)
+            sgmGraphicsTextureGetSize(texture, &x, &y);
         return Vector(x, y);
     }
     /*iVector asize()

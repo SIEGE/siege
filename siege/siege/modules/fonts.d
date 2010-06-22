@@ -10,26 +10,26 @@ private
 void loadModuleFonts(SharedLib lib)
 {
     /// Fonts
-    checkBindFunc(sgFontsFaceCreate)("sgmFontsFaceCreate", lib);
-    checkBindFunc(sgFontsFaceDestroy)("sgmFontsFaceDestroy", lib);
-    checkBindFunc(sgFontsFaceSetHeight)("sgmFontsFaceSetHeight", lib);
-    //checkBindFunc(sgFontsFaceGetHeight)("sgmFontsFaceGetHeight", lib);
-    checkBindFunc(sgFontsCharsCreate)("sgmFontsCharsCreate", lib);
-    checkBindFunc(sgFontsCharsFreeData)("sgmFontsCharsFreeData", lib);
+    checkBindFunc(sgmFontsFaceCreate)("sgmFontsFaceCreate", lib);
+    checkBindFunc(sgmFontsFaceDestroy)("sgmFontsFaceDestroy", lib);
+    checkBindFunc(sgmFontsFaceSetHeight)("sgmFontsFaceSetHeight", lib);
+    //checkBindFunc(sgmFontsFaceGetHeight)("sgmFontsFaceGetHeight", lib);
+    checkBindFunc(sgmFontsCharsCreate)("sgmFontsCharsCreate", lib);
+    checkBindFunc(sgmFontsCharsFreeData)("sgmFontsCharsFreeData", lib);
 }
 
 extern(C)
 {
     /// Fonts
-    uint function(void** face, char* fname)                                                                                                                          sgFontsFaceCreate;
-    uint function(void* face)                                                                                                                                        sgFontsFaceDestroy;
-    uint function(void* face, float height)                                                                                                                          sgFontsFaceSetHeight;
-    //uint function(void* face, float* height)                                                                                                                         sgFontsFaceGetHeight;
+    uint function(void** face, char* fname)                                                                                                                          sgmFontsFaceCreate;
+    uint function(void* face)                                                                                                                                        sgmFontsFaceDestroy;
+    uint function(void* face, float height)                                                                                                                          sgmFontsFaceSetHeight;
+    //uint function(void* face, float* height)                                                                                                                         sgmFontsFaceGetHeight;
     uint function(void* face,
                 dchar* chars, uint charnum,
                 float* width, float* height,
                 float* prex, float* prey,
                 float* postx, float* posty,
-                uint* datawidth, uint* dataheight, void** data) sgFontsCharsCreate;
-    uint function(void* data) sgFontsCharsFreeData;
+                uint* datawidth, uint* dataheight, void** data) sgmFontsCharsCreate;
+    uint function(void* data) sgmFontsCharsFreeData;
 }

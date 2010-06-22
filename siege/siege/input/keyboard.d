@@ -85,16 +85,16 @@ class Keyboard
         callbacks.key = &cbKeyboardKey;
         callbacks.chr = &cbKeyboardChar;
 
-        if(sgCoreKeyboardCreate !is null)
-            sgCoreKeyboardCreate(&khandle, window.handle);
+        if(sgmCoreKeyboardCreate !is null)
+            sgmCoreKeyboardCreate(&khandle, window.handle);
 
-        if(sgCoreKeyboardSetCallbacks !is null)
-            sgCoreKeyboardSetCallbacks(khandle, &callbacks);
+        if(sgmCoreKeyboardSetCallbacks !is null)
+            sgmCoreKeyboardSetCallbacks(khandle, &callbacks);
     }
     ~this()
     {
-        if(sgCoreKeyboardDestroy !is null)
-            sgCoreKeyboardDestroy(khandle);
+        if(sgmCoreKeyboardDestroy !is null)
+            sgmCoreKeyboardDestroy(khandle);
     }
 
     bool key(uint key)

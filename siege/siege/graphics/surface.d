@@ -63,15 +63,15 @@ class Surface
         if(data !is null)
             data = toCanvasSize(data, width, height, bypp);
 
-        if(sgGraphicsSurfaceCreate !is null)
-            sgGraphicsSurfaceCreate(&surface, window.context());
-        if(sgGraphicsSurfaceSetData !is null)
-            sgGraphicsSurfaceSetData(surface, width, height, bpp, data.ptr);
+        if(sgmGraphicsSurfaceCreate !is null)
+            sgmGraphicsSurfaceCreate(&surface, window.context());
+        if(sgmGraphicsSurfaceSetData !is null)
+            sgmGraphicsSurfaceSetData(surface, width, height, bpp, data.ptr);
     }
     ~this()
     {
-        if(sgGraphicsSurfaceDestroy !is null)
-            sgGraphicsSurfaceDestroy(surface);
+        if(sgmGraphicsSurfaceDestroy !is null)
+            sgmGraphicsSurfaceDestroy(surface);
     }
 
     void draw(Vector location = Vector(0.0, 0.0, 0.0), Vector scale = Vector(1.0, 1.0), float angle = 0.0)
@@ -79,8 +79,8 @@ class Surface
         /*if(!(location.z == location.z))
             location.z = 0;
 
-        if(sgGraphicsSurfaceDraw !is null)
-            sgGraphicsSurfaceDraw(surface, location.x, location.y, location.z, scale.x, scale.y, angle);*/
+        if(sgmGraphicsSurfaceDraw !is null)
+            sgmGraphicsSurfaceDraw(surface, location.x, location.y, location.z, scale.x, scale.y, angle);*/
         draw(location, scale, Vector(0.0, 0.0), angle);
     }
     void draw(Vector location, Vector scale, Vector offset, float angle = 0.0)
@@ -89,28 +89,28 @@ class Surface
         if(!(location.z == location.z))
             location.z = 0;
 
-        if(sgGraphicsSurfaceDraw !is null)
-            sgGraphicsSurfaceDraw(surface, location.x, location.y, location.z, scale.x, scale.y, offset.x, offset.y, angle);
+        if(sgmGraphicsSurfaceDraw !is null)
+            sgmGraphicsSurfaceDraw(surface, location.x, location.y, location.z, scale.x, scale.y, offset.x, offset.y, angle);
     }
 
     void target()
     {
-        if(sgGraphicsSurfaceSetTarget !is null)
-            sgGraphicsSurfaceSetTarget(surface);
+        if(sgmGraphicsSurfaceSetTarget !is null)
+            sgmGraphicsSurfaceSetTarget(surface);
         starget = surface;
     }
     void untarget()
     {
-        if(sgGraphicsSurfaceResetTarget !is null)
-            sgGraphicsSurfaceResetTarget(starget);
+        if(sgmGraphicsSurfaceResetTarget !is null)
+            sgmGraphicsSurfaceResetTarget(starget);
         starget = null;
     }
 
     void clear(Color color = Color(0, 0, 0, 0))
     {
         target();
-        if(sgGraphicsContextClear !is null)
-            sgGraphicsContextClear(window.context(), color.rgba.ptr);
+        if(sgmGraphicsContextClear !is null)
+            sgmGraphicsContextClear(window.context(), color.rgba.ptr);
         untarget();
     }
 
@@ -118,8 +118,8 @@ class Surface
     {
         uint x;
         uint y;
-        if(sgGraphicsSurfaceGetSize !is null)
-            sgGraphicsSurfaceGetSize(surface, &x, &y);
+        if(sgmGraphicsSurfaceGetSize !is null)
+            sgmGraphicsSurfaceGetSize(surface, &x, &y);
         return Vector(x, y);
     }
     /*iVector asize()

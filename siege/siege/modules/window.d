@@ -16,22 +16,22 @@ enum: uint
 void loadModuleWindowing(SharedLib lib)
 {
     /// Windowing
-    checkBindFunc(sgCoreWindowCreate)("sgmCoreWindowCreate", lib);
-    checkBindFunc(sgCoreWindowDestroy)("sgmCoreWindowDestroy", lib);
-    checkBindFunc(sgCoreWindowOpen)("sgmCoreWindowOpen", lib);
-    checkBindFunc(sgCoreWindowIsOpened)("sgmCoreWindowIsOpened", lib);
-    checkBindFunc(sgCoreWindowClose)("sgmCoreWindowClose", lib);
-    //checkBindFunc(sgCoreWindowIsClosed)("sgmCoreWindowIsClosed", lib);
-    checkBindFunc(sgCoreWindowSetTitle)("sgmCoreWindowSetTitle", lib);
-    //checkBindFunc(sgCoreWindowGetTitle)("sgmCoreWindowGetTitle", lib);
-    //checkBindFunc(sgCoreWindowFreeTitle)("sgmCoreWindowFreeTitle", lib);
-    checkBindFunc(sgCoreWindowSetSize)("sgmCoreWindowSetSize", lib);
-    checkBindFunc(sgCoreWindowGetSize)("sgmCoreWindowGetSize", lib);
-    //checkBindFunc(sgCoreWindowPollEvents)("sgmCoreWindowPollEvents", lib);
-    checkBindFunc(sgCoreWindowSwapBuffers)("sgmCoreWindowSwapBuffers", lib);
+    checkBindFunc(sgmCoreWindowCreate)("sgmCoreWindowCreate", lib);
+    checkBindFunc(sgmCoreWindowDestroy)("sgmCoreWindowDestroy", lib);
+    checkBindFunc(sgmCoreWindowOpen)("sgmCoreWindowOpen", lib);
+    checkBindFunc(sgmCoreWindowIsOpened)("sgmCoreWindowIsOpened", lib);
+    checkBindFunc(sgmCoreWindowClose)("sgmCoreWindowClose", lib);
+    //checkBindFunc(sgmCoreWindowIsClosed)("sgmCoreWindowIsClosed", lib);
+    checkBindFunc(sgmCoreWindowSetTitle)("sgmCoreWindowSetTitle", lib);
+    //checkBindFunc(sgmCoreWindowGetTitle)("sgmCoreWindowGetTitle", lib);
+    //checkBindFunc(sgmCoreWindowFreeTitle)("sgmCoreWindowFreeTitle", lib);
+    checkBindFunc(sgmCoreWindowSetSize)("sgmCoreWindowSetSize", lib);
+    checkBindFunc(sgmCoreWindowGetSize)("sgmCoreWindowGetSize", lib);
+    //checkBindFunc(sgmCoreWindowPollEvents)("sgmCoreWindowPollEvents", lib);
+    checkBindFunc(sgmCoreWindowSwapBuffers)("sgmCoreWindowSwapBuffers", lib);
 
-    checkBindFunc(sgCoreWindowSetCallbacks)("sgmCoreWindowSetCallbacks", lib);
-    //checkBindFunc(sgCoreWindowGetCallbacks)("sgmCoreWindowGetCallbacks", lib);
+    checkBindFunc(sgmCoreWindowSetCallbacks)("sgmCoreWindowSetCallbacks", lib);
+    //checkBindFunc(sgmCoreWindowGetCallbacks)("sgmCoreWindowGetCallbacks", lib);
 }
 
 extern(C)
@@ -44,20 +44,20 @@ extern(C)
     }
 
     /// Windowing
-    uint function(void** window) sgCoreWindowCreate;
-    uint function(void* window) sgCoreWindowDestroy;
-    uint function(void* window, uint width, uint height, ubyte bpp, uint flags) sgCoreWindowOpen;
-    uint function(void* window, bool* opened) sgCoreWindowIsOpened;
-    uint function(void* window) sgCoreWindowClose;
-    //uint function(void* window, bool* closed) sgCoreWindowIsClosed;
-    uint function(void* window, char* title) sgCoreWindowSetTitle;
-    //uint function(void* window, char** title) sgCoreWindowGetTitle;
-    //uint function(char* title) sgCoreWindowFreeTitle;
-    uint function(void* window, uint width, uint height) sgCoreWindowSetSize;
-    uint function(void* window, uint* width, uint* height) sgCoreWindowGetSize;
-    //uint function(void* window) sgCoreWindowPollEvents;
-    uint function(void* window) sgCoreWindowSwapBuffers;
+    uint function(void** window) sgmCoreWindowCreate;
+    uint function(void* window) sgmCoreWindowDestroy;
+    uint function(void* window, uint width, uint height, ubyte bpp, uint flags) sgmCoreWindowOpen;
+    uint function(void* window, bool* opened) sgmCoreWindowIsOpened;
+    uint function(void* window) sgmCoreWindowClose;
+    //uint function(void* window, bool* closed) sgmCoreWindowIsClosed;
+    uint function(void* window, char* title) sgmCoreWindowSetTitle;
+    //uint function(void* window, char** title) sgmCoreWindowGetTitle;
+    //uint function(char* title) sgmCoreWindowFreeTitle;
+    uint function(void* window, uint width, uint height) sgmCoreWindowSetSize;
+    uint function(void* window, uint* width, uint* height) sgmCoreWindowGetSize;
+    //uint function(void* window) sgmCoreWindowPollEvents;
+    uint function(void* window) sgmCoreWindowSwapBuffers;
 
-    uint function(void* window, SGCoreWindowCallbacks* callbacks) sgCoreWindowSetCallbacks;
-    //uint function(void* window, SGCoreWindowCallbacks** callbacks) sgCoreWindowGetCallbacks;
+    uint function(void* window, SGCoreWindowCallbacks* callbacks) sgmCoreWindowSetCallbacks;
+    //uint function(void* window, SGCoreWindowCallbacks** callbacks) sgmCoreWindowGetCallbacks;
 }
