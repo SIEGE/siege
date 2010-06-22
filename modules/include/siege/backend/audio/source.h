@@ -1,7 +1,7 @@
 #ifndef __SIEGE_AUDIO_SOURCE_H__
 #define __SIEGE_AUDIO_SOURCE_H__
 
-#include "../common.h"
+#include "../../common.h"
 
 #ifdef __cplusplus
 extern "C"

@@ -1,7 +1,7 @@
 #ifndef __SIEGE_AUDIO_LOAD_H__
 #define __SIEGE_AUDIO_LOAD_H__
 
-#include "../common.h"
+#include "../../common.h"
 
 #ifdef __cplusplus
 extern "C"

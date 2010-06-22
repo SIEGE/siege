@@ -1,7 +1,7 @@
 #ifndef __SIEGE_CORE_MOUSE_H__
 #define __SIEGE_CORE_MOUSE_H__
 
-#include "../common.h"
+#include "../../common.h"
 
 typedef struct SGCoreMouseCallbacks
 {
