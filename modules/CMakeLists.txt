@@ -24,8 +24,11 @@ if(WIN32) # also true when on cygwin
     set(BIN_DIR windows-x86)
   endif(CPU_64BIT)
 elseif(APPLE)
-  message(SEND_ERROR "TODO")
-  set(BIN_DIR darwin)
+  if(CPU_64BIT)
+    set(BIN_DIR darwin-x86_64)
+  else(CPU_64BIT)
+    set(BIN_DIR darwin-x86)
+  endif(CPU_64BIT)
 elseif(UNIX) # note: has to be last as UNIX is true for APPLE and CYGWIN
   if(CPU_64BIT)
     set(BIN_DIR linux-x86_64)
