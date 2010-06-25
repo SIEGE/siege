@@ -31,7 +31,7 @@ SGuint SG_EXPORT sgmAudioLoadFreeData(void* data)
 SGuint SG_EXPORT sgmAudioFileCreate(void** file, char* fname, SGuint* channels, SGuint* format, SGuint* frequency)
 {
     LFile** lfile = (LFile**)file;
-    *lfile = malloc(sizeof(LFile*));
+    *lfile = malloc(sizeof(LFile));
     if(*lfile == NULL)
         return SG_UNKNOWN_ERROR;
 
