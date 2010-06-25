@@ -9,7 +9,7 @@ SGuint SG_EXPORT sgmAudioSourceMaxSources(SGuint* max)
     if(max == NULL)
         return SG_OK; // SG_INVALID_VALUE
     alGetError();
-    ALuint threshold = 65536;
+    ALuint threshold = 256;
 
     ALuint* buf = malloc(threshold * sizeof(ALuint));
     for(*max = 1; *max <= threshold; (*max)++)
