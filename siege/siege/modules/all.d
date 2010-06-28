@@ -3,6 +3,7 @@ module siege.modules.all;
 public
 {
     import siege.modules.audio;
+    import siege.modules.common;
     import siege.modules.fonts;
     import siege.modules.graphics;
     import siege.modules.input;

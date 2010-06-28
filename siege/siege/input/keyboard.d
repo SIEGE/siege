@@ -6,8 +6,6 @@ private
     import siege.core.event;
     import siege.core.window;
 
-    import siege.core.console;
-
     import siege.util.linkedlist;
 
     import siege.modules.input;

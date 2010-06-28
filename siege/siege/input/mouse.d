@@ -12,8 +12,6 @@ private
 
     import siege.modules.input;
 
-    import siege.core.console;
-
     extern(C)
     {
         void cbMouseButton(void* cmouse, uint button, bool down)

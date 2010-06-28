@@ -78,6 +78,7 @@
 		<Unit filename="siege\input\mouse.d" />
 		<Unit filename="siege\modules\all.d" />
 		<Unit filename="siege\modules\audio.d" />
+		<Unit filename="siege\modules\common.d" />
 		<Unit filename="siege\modules\fonts.d" />
 		<Unit filename="siege\modules\graphics.d" />
 		<Unit filename="siege\modules\input.d" />

@@ -9,8 +9,6 @@ private
     import siege.util.misc;
     import siege.util.linkedlist;
 
-    import siege.core.console;
-
     import siege.modules.input;
 
     extern(C)

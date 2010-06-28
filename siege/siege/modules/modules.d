@@ -4,6 +4,7 @@ private
 {
     import derelict.util.loader;
 
+    import siege.modules.common;
     import siege.modules.audio;
     import siege.modules.fonts;
     import siege.modules.graphics;
@@ -26,26 +27,6 @@ enum: uint
     SG_MODULE_AUDIOLOAD    = 0x20,
     SG_MODULE_FONTLOAD     = 0x40,
     SG_MODULE_PHYSICS      = 0x80,
-}
-
-struct CheckBinder(T)
-{
-    void opCall(char[] n, SharedLib lib)
-    {
-        void* pptr = *fptr;
-        //if(*fptr is null)
-        *fptr = Derelict_GetProc(lib, n); // first check new name
-        if(*fptr is null)
-            *fptr = pptr;
-    }
-
-    private void** fptr;
-}
-CheckBinder!(T) checkBindFunc(T)(inout T a)
-{
-    CheckBinder!(T) res;
-    res.fptr = cast(void**)&a;
-    return res;
 }
 
 void loadModule(SharedLib lib)
