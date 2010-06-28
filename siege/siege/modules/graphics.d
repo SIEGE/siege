@@ -4,7 +4,7 @@ private
 {
     import derelict.util.loader;
 
-    import siege.modules.modules;
+    import siege.modules.common;
 
     import siege.util.misc;
 
