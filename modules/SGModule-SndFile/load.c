@@ -2,6 +2,7 @@
 #include "load.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 SGuint SG_EXPORT sgmAudioLoadFile(char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen)
 {
@@ -35,7 +36,7 @@ SGuint SG_EXPORT sgmAudioFileCreate(void** file, char* fname, SGuint* channels, 
     if(*lfile == NULL)
         return SG_UNKNOWN_ERROR;
 
-    (*lfile)->info.format = 0;
+    memset(&(*lfile)->info.format, 0, sizeof(SF_INFO));
     (*lfile)->snd = sf_open(fname, SFM_READ, &(*lfile)->info);
     if((*lfile)->snd == NULL)
         return SG_UNKNOWN_ERROR;
