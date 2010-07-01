@@ -98,12 +98,12 @@ SGuint SG_EXPORT sgmAudioSourceIsStopped(void* source, SGbool* stopped)
     *stopped = state(*(ALuint*)&source) == AL_STOPPED;
     return SG_OK;
 }
-/*SGuint SG_EXPORT sgmAudioSourceSetBuffer(void* source, void* buffer)
+SGuint SG_EXPORT sgmAudioSourceSetBuffer(void* source, void* buffer)
 {
     alSourcei(*(ALuint*)&source, AL_BUFFER, *(ALuint*)&buffer);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmAudioSourceGetBuffer(void* source, void** buffer)
+/*SGuint SG_EXPORT sgmAudioSourceGetBuffer(void* source, void** buffer)
 {
     return SG_OK;
 }*/
@@ -124,14 +124,14 @@ SGuint SG_EXPORT sgmAudioSourceUnqueueBuffers(void* source, SGuint numbuffers)
     free(arr);
     return SG_OK;
 }
-SGuint sgAudioSourceGetNumProcessedBuffers(void* source, SGuint* processed)
+SGuint sgmAudioSourceGetNumProcessedBuffers(void* source, SGuint* processed)
 {
     ALuint p;
     alGetSourcei(*(ALuint*)&source, AL_BUFFERS_PROCESSED, &p);
     *processed = p;
     return SG_OK;
 }
-SGuint sgAudioSourceGetNumQueuedBuffers(void* source, SGuint* queued)
+SGuint sgmAudioSourceGetNumQueuedBuffers(void* source, SGuint* queued)
 {
     ALuint q;
     alGetSourcei(*(ALuint*)&source, AL_BUFFERS_QUEUED, &q);

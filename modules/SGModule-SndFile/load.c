@@ -36,7 +36,7 @@ SGuint SG_EXPORT sgmAudioFileCreate(void** file, char* fname, SGuint* channels, 
     if(*lfile == NULL)
         return SG_UNKNOWN_ERROR;
 
-    memset(&(*lfile)->info.format, 0, sizeof(SF_INFO));
+    memset(&(*lfile)->info, 0, sizeof(SF_INFO));
     (*lfile)->snd = sf_open(fname, SFM_READ, &(*lfile)->info);
     if((*lfile)->snd == NULL)
         return SG_UNKNOWN_ERROR;
