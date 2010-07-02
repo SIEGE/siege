@@ -281,15 +281,19 @@ class Font
         Vector size = Vector(0.0, 0.0);
         uint i, j;
         float w, h;
+        CharInfo[] info;
+        dchar[] line;
         for(i = 0; i < lines.length; i++)
         {
             w = 0.0;
             h = 0.0;
-            for(j = 0; j < lines[i].length; j++)
+            line = toUTF32(lines[i]);
+            info = getChars(line);
+            for(j = 0; j < line.length; j++)
             {
                 /*if(j != 0)
                     w += face.chars[i].preTranslate.x;*/
-                w += chars[i].size.x;
+                w += info[j].size.x;
                 /*if(j != lines[i].length - 1)
                     w += face.chars[i].postTranslate.x;*/
             }
