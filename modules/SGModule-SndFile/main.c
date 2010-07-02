@@ -13,15 +13,15 @@ SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
 
     char buffer[256];
     int buflen;
-    buflen = sf_command(NULL, SFC_GET_LIB_VERSION, buffer, sizeof(buffer) / sizeof(char));
+    //buflen = sf_command(NULL, SFC_GET_LIB_VERSION, buffer, sizeof(buffer) / sizeof(char));
     int vmajor, vminor, vpatch;
     sscanf(buffer, "%d.%d.%d", &vmajor, &vminor, &vpatch);
 
     (*minfo)->vmajor = vmajor;
     (*minfo)->vminor = vminor;
     (*minfo)->vpatch = vpatch;
-    (*minfo)->type = SG_MODULE_AUDIOLOAD;
-    (*minfo)->name = "SndFile";
+    (*minfo)->type = SG_MODULE_AI;
+    (*minfo)->name = "AI";
 
     return SG_OK;
 }

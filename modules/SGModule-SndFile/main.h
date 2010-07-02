@@ -2,7 +2,6 @@
 #define __MAIN_H__
 
 #include <siege/backend.h>
-
-#include <sndfile.h>
-
+///// Other headers, AI libs if used
+////
 #endif // __MAIN_H__
