@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGint SG_EXPORT SGmAIFuzzyInit1(Fuzzy *F)
+SGint SG_EXPORT SGmAIFuzzyFInit1(Fuzzy *F)
 {
     F->num = 0;
     F->defuzzed = SG_FALSE;
@@ -12,7 +12,7 @@ SGint SG_EXPORT SGmAIFuzzyInit1(Fuzzy *F)
     return SG_OK;
 }
 
-SGint SG_EXPORT SGmAIFuzzyInit2(Fuzzy *F, SGfloat ff)
+SGint SG_EXPORT SGmAIFuzzyFInit2(Fuzzy *F, SGfloat ff)
 {
     F->num = ff;
     F->defuzzed = SG_FALSE;
@@ -20,7 +20,7 @@ SGint SG_EXPORT SGmAIFuzzyInit2(Fuzzy *F, SGfloat ff)
     return SG_OK;
 }
 
-SGint SG_EXPORT SGmAIFuzzyInit3(Fuzzy *F, SGfloat ff, SGchar *name)
+SGint SG_EXPORT SGmAIFuzzyFInit3(Fuzzy *F, SGfloat ff, SGchar *name)
 {
     F->num = ff;
     F->defuzzed = SG_FALSE;
@@ -29,7 +29,7 @@ SGint SG_EXPORT SGmAIFuzzyInit3(Fuzzy *F, SGfloat ff, SGchar *name)
     return SG_OK;
 }
 
-SGint SG_EXPORT SGmAIFuzzyInit4(Fuzzy *F, SGdouble ff, SGchar* name)
+SGint SG_EXPORT SGmAIFuzzyFInit4(Fuzzy *F, SGdouble ff, SGchar* name)
 {
     F->num = (SGfloat)ff;
     F->defuzzed = SG_FALSE;
@@ -38,7 +38,7 @@ SGint SG_EXPORT SGmAIFuzzyInit4(Fuzzy *F, SGdouble ff, SGchar* name)
     return SG_OK;
 }
 
-SGint SG_EXPORT SGmAIFuzzyInit5(Fuzzy *F, SGchar* name)
+SGint SG_EXPORT SGmAIFuzzyFInit5(Fuzzy *F, SGchar* name)
 {
     F->num = 0;
     F->defuzzed = SG_FALSE;
@@ -47,29 +47,29 @@ SGint SG_EXPORT SGmAIFuzzyInit5(Fuzzy *F, SGchar* name)
     return SG_OK;
 }
 
-SGint SG_EXPORT SGmAIFuzzySetName(Fuzzy *F, SGchar* name)
+SGint SG_EXPORT SGmAIFuzzyFSetName(Fuzzy *F, SGchar* name)
 {
     F->name = name;
     return SG_OK;
 }
 
-SGchar* SG_EXPORT SGmAIFuzzyGetName(Fuzzy *F)
+SGchar* SG_EXPORT SGmAIFuzzyFGetName(Fuzzy *F)
 {
     return F->name;
 }
 
-SGint SG_EXPORT SGmAIFuzzySetNumber(Fuzzy *F, SGdouble n)
+SGint SG_EXPORT SGmAIFuzzyFSetNumber(Fuzzy *F, SGdouble n)
 {
     F->num = (SGfloat)n;
     return SG_OK;
 }
 
-SGdouble SG_EXPORT SGmAIFuzzyGetNumber(Fuzzy *F)
+SGdouble SG_EXPORT SGmAIFuzzyFGetNumber(Fuzzy *F)
 {
     return (SGdouble)F->num;
 }
 
-SGbool SG_EXPORT SGmAIFuzzyContained(Fuzzy *F, SGdouble n)
+SGbool SG_EXPORT SGmAIFuzzyFContained(Fuzzy *F, SGdouble n)
 {
     if (F->num < (SGfloat)n)
 			return SG_TRUE;
@@ -77,30 +77,30 @@ SGbool SG_EXPORT SGmAIFuzzyContained(Fuzzy *F, SGdouble n)
 			return SG_FALSE;
 }
 
-SGchar* SG_EXPORT SGmAIFuzzyShow(Fuzzy *F)
+SGchar* SG_EXPORT SGmAIFuzzyFShow(Fuzzy *F)
 {
-    assert(strcmp(SGmAIFuzzyGetName(F),"")==0);
+    assert(strcmp(SGmAIFuzzyFGetName(F),"")==0);
     return F->name;
 }
 
-SGint SG_EXPORT SGmAIFuzzySetDefuzzed(Fuzzy *F)
+SGint SG_EXPORT SGmAIFuzzyFSetDefuzzed(Fuzzy *F)
 {
     F->defuzzed = SG_TRUE;
     return SG_OK;
 }
 
-SGbool SG_EXPORT SGmAIFuzzyGetDefuzzed(Fuzzy *F)
+SGbool SG_EXPORT SGmAIFuzzyFGetDefuzzed(Fuzzy *F)
 {
     return F->defuzzed;
 }
 
-SGint SG_EXPORT SGmAIFuzzySetEvaluated(Fuzzy *F)
+SGint SG_EXPORT SGmAIFuzzyFSetEvaluated(Fuzzy *F)
 {
     F->evaluated = SG_TRUE;
     return SG_OK;
 }
 
-SGbool SG_EXPORT SGmAIFuzzyGetEvaluated(Fuzzy *F)
+SGbool SG_EXPORT SGmAIFuzzyFGetEvaluated(Fuzzy *F)
 {
     return F->evaluated;
 }
