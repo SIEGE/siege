@@ -44,6 +44,12 @@ void cbLine(CCharacter* string, Cuint length, Cuint line)
     {
         buf[0] = cstr[i];
         color = (SDL_Color){string[i].fgcolor.r, string[i].fgcolor.g, string[i].fgcolor.b, string[i].fgcolor.a};
+        if(buf[0] == 3)
+        {
+            consurf = TTF_RenderText_Blended(mono, "C", color);
+            SDL_BlitSurface(consurf, NULL, window, &rect);
+            SDL_FreeSurface(consurf);
+        }
         consurf = TTF_RenderText_Blended(mono, buf, color);
 
         SDL_BlitSurface(consurf, NULL, window, &rect);
