@@ -396,6 +396,8 @@ void conInputTn(CConsole* c, char* ntext, Cuint length)
 {
     if(c->input.hide)
         return;
+    if(length == 1 && *ntext == 27) // do nothing with the escape char
+        return;
 
     char* text = malloc((length + 1) * sizeof(char));
     strncpy(text, ntext, length);
