@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 SGuint SG_EXPORT sgmGraphicsTextureCreate(void** texture, void* context)
 {
@@ -111,7 +112,7 @@ SGuint SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z
 
     glPushMatrix();
     glTranslatef(x, y, 0.0);
-    glRotatef(angle, 0.0, 0.0, -1.0);
+    glRotatef(angle * 180.0 / M_PI, 0.0, 0.0, -1.0);
     glScalef(xscale, yscale, 1.0);
     glTranslatef(-x - xoffset, -y - yoffset, 0.0);
 
