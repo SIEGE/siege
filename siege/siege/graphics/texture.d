@@ -3,6 +3,7 @@ module siege.graphics.texture;
 private
 {
     import std.c.stdio;
+    import std.math;
 
     import siege.util.color;
     import siege.util.vector;
@@ -90,7 +91,7 @@ class Texture
             location.z = 0;
 
         if(sgmGraphicsTextureDraw !is null)
-            sgmGraphicsTextureDraw(texture, location.x, location.y, location.z, scale.x, scale.y, offset.x, offset.y, angle);
+            sgmGraphicsTextureDraw(texture, location.x, location.y, location.z, scale.x, scale.y, offset.x, offset.y, angle * PI / 180.0);
     }
 
     Vector size()
