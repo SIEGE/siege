@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SIEGE" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="build\libSIEGE" prefix_auto="0" extension_auto="1" />
+				<Option working_dir="build" />
+				<Option object_output="build\obj\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="build\libSIEGE" prefix_auto="0" extension_auto="1" />
+				<Option working_dir="build" />
+				<Option object_output="build\obj\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="include" />
+		</Compiler>
+		<Unit filename="siege\audio\buffer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\audio\source.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\core\core.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\core\entity.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\core\event.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\core\window.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\graphics\draw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\graphics\font.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\graphics\sprite.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\graphics\surface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\graphics\texture.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\graphics\trail.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\graphics\turtle.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\graphics\viewport.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\input\joystick.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\input\keyboard.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\input\mouse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\modules\audio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\modules\fonts.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\modules\graphics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\modules\input.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\modules\modules.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\modules\physics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\modules\window.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\physics\body.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\physics\collision.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\physics\constraint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\physics\shape.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\physics\space.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\util\color.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\util\link.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\util\list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\util\matrix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\util\plist.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\util\rand.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\util\string.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\util\vector.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
