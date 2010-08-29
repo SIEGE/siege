@@ -129,6 +129,9 @@
 		<Unit filename="siege\util\link.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="siege\util\linkedlist.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="siege\util\list.c">
 			<Option compilerVar="CC" />
 		</Unit>
