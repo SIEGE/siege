@@ -1,6 +1,5 @@
 #define SG_BUILD_LIBRARY
 #include <siege/util/list.h>
-#include <siege/common.h>
 
 #include <stdlib.h>
 #include <string.h>
