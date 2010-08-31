@@ -83,7 +83,6 @@ void SG_EXPORT sgViewportReset(SGViewport* viewport)
 {
     if(viewport == NULL)
         return;
-    /// \todo This should use int, not uint - or should it?
     if(_sg_modGraphics.sgmGraphicsViewportSetView != NULL)
         _sg_modGraphics.sgmGraphicsViewportSetView(viewport->handle, viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey, viewport->posx, viewport->posy, viewport->sizex, viewport->sizey);
 }
