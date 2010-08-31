@@ -71,8 +71,6 @@ SGbool SG_EXPORT sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum fl
     if(_sg_modWindow.sgmCoreWindowOpen != NULL)
         _sg_modWindow.sgmCoreWindowOpen(_sg_winHandle, width, height, bpp, flags);
 
-    /// \todo joysticks
-
     sgWindowGetSize(&width, &height);
     if(_sg_modGraphics.sgmGraphicsContextCreate != NULL)
         _sg_modGraphics.sgmGraphicsContextCreate(&_sg_gfxHandle, width, height, bpp);
