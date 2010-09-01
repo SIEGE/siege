@@ -68,8 +68,7 @@ SGModuleGraphics* SG_EXPORT sgModuleGetGraphics(void)
     return &_sg_modGraphics;
 }
 
-/// \todo: move somewhere else?
-SGuint SG_EXPORT nextPower2(SGuint num)
+SGuint SG_EXPORT _sgNextPower2(SGuint num)
 {
     SGuint i;
     for(i = 2; i < num; i <<= 1)
@@ -80,8 +79,8 @@ SGuint SG_EXPORT nextPower2(SGuint num)
 
 SGubyte* SG_EXPORT _sgGraphicsToCanvasSize(SGuint width, SGuint height, SGuint bpp, SGubyte* data)
 {
-    SGuint awidth = nextPower2(width);
-    SGuint aheight = nextPower2(height);
+    SGuint awidth = _sgNextPower2(width);
+    SGuint aheight = _sgNextPower2(height);
     SGuint bypp;
     switch(bpp)
     {
