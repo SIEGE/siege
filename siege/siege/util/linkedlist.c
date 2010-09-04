@@ -40,6 +40,7 @@ SGLinkedNode* SG_EXPORT sgLinkedListPrepend(SGLinkedList* list, void* ptr, SGLin
     node->internal = NULL;
 
     list->first = node;
+    return node;
 }
 SGLinkedNode* SG_EXPORT sgLinkedListAppend(SGLinkedList* list, void* ptr, SGLinkedNodeFree free)
 {
@@ -58,6 +59,7 @@ SGLinkedNode* SG_EXPORT sgLinkedListAppend(SGLinkedList* list, void* ptr, SGLink
     node->internal = NULL;
 
     list->last = node;
+    return node;
 }
 void SG_EXPORT sgLinkedListRemoveNode(SGLinkedNode* node)
 {
