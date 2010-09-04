@@ -5,7 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 
-SGbool _sgColorInit(void)
+SGbool SG_EXPORT _sgColorInit(void)
 {
     _sg_colNum = 652;
     _sg_colFlags = malloc(_sg_colNum * sizeof(SGubyte));
@@ -673,7 +673,7 @@ SGbool _sgColorInit(void)
 
     return SG_TRUE;
 }
-SGbool _sgColorDeinit(void)
+SGbool SG_EXPORT _sgColorDeinit(void)
 {
     free(_sg_colFlags);
     free(_sg_colNames);
@@ -682,7 +682,7 @@ SGbool _sgColorDeinit(void)
     return SG_TRUE;
 }
 
-void _sgColorPreprocess(char* buf, size_t buflen, char* name)
+void SG_EXPORT _sgColorPreprocess(char* buf, size_t buflen, char* name)
 {
     size_t i, j;
     for(i = 0; name[i] && (j < (buflen - 1)); i++)
@@ -695,7 +695,7 @@ void _sgColorPreprocess(char* buf, size_t buflen, char* name)
     }
     buf[j] = 0;
 }
-SGColor _sgColorValue(char* name, SGubyte flag)
+SGColor SG_EXPORT _sgColorValue(char* name, SGubyte flag)
 {
     char buf[256];
     size_t i;
@@ -715,96 +715,96 @@ SGColor _sgColorValue(char* name, SGubyte flag)
     return sgColorNan();
 }
 
-SGColor sgColor4f(float r, float g, float b, float a)
+SGColor SG_EXPORT sgColor4f(float r, float g, float b, float a)
 {
     SGColor c = {r, g, b, a};
     return c;
 }
-SGColor sgColor3f(float r, float g, float b)
+SGColor SG_EXPORT sgColor3f(float r, float g, float b)
 {
     return sgColor4f(r, g, b, 1.0);
 }
-SGColor sgColor2f(float g, float a)
+SGColor SG_EXPORT sgColor2f(float g, float a)
 {
     return sgColor4f(g, g, g, a);
 }
-SGColor sgColor1f(float g)
+SGColor SG_EXPORT sgColor1f(float g)
 {
     return sgColor4f(g, g, g, 1.0);
 }
-SGColor sgColor4fv(float* f)
+SGColor SG_EXPORT sgColor4fv(float* f)
 {
     return sgColor4f(f[0], f[1], f[2], f[3]);
 }
-SGColor sgColor3fv(float* f)
+SGColor SG_EXPORT sgColor3fv(float* f)
 {
     return sgColor4f(f[0], f[1], f[2], 1.0);
 }
-SGColor sgColor2fv(float* f)
+SGColor SG_EXPORT sgColor2fv(float* f)
 {
     return sgColor4f(f[0], f[0], f[0], f[1]);
 }
-SGColor sgColor1fv(float* f)
+SGColor SG_EXPORT sgColor1fv(float* f)
 {
     return sgColor4f(f[0], f[0], f[0], 1.0);
 }
-SGColor sgColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
+SGColor SG_EXPORT sgColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
 {
     return sgColor4f(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
 }
-SGColor sgColor3ub(SGubyte r, SGubyte g, SGubyte b)
+SGColor SG_EXPORT sgColor3ub(SGubyte r, SGubyte g, SGubyte b)
 {
     return sgColor4ub(r, g, b, 255);
 }
-SGColor sgColor2ub(SGubyte g, SGubyte a)
+SGColor SG_EXPORT sgColor2ub(SGubyte g, SGubyte a)
 {
     return sgColor4ub(g, g, g, a);
 }
-SGColor sgColor1ub(SGubyte g)
+SGColor SG_EXPORT sgColor1ub(SGubyte g)
 {
     return sgColor4ub(g, g, g, 255);
 }
-SGColor sgColor4ubv(SGubyte* ub)
+SGColor SG_EXPORT sgColor4ubv(SGubyte* ub)
 {
     return sgColor4ub(ub[0], ub[1], ub[2], ub[3]);
 }
-SGColor sgColor3ubv(SGubyte* ub)
+SGColor SG_EXPORT sgColor3ubv(SGubyte* ub)
 {
     return sgColor4ub(ub[0], ub[1], ub[2], 255);
 }
-SGColor sgColor2ubv(SGubyte* ub)
+SGColor SG_EXPORT sgColor2ubv(SGubyte* ub)
 {
     return sgColor4ub(ub[0], ub[0], ub[0], ub[1]);
 }
-SGColor sgColor1ubv(SGubyte* ub)
+SGColor SG_EXPORT sgColor1ubv(SGubyte* ub)
 {
     return sgColor4ub(ub[0], ub[0], ub[0], 255);
 }
-SGColor sgColorRGBA(SGuint color)
+SGColor SG_EXPORT sgColorRGBA(SGuint color)
 {
     return sgColor4ub(color >> 24, color >> 16, color >> 8, color);
 }
-SGColor sgColorBGRA(SGuint color)
+SGColor SG_EXPORT sgColorBGRA(SGuint color)
 {
     return sgColor4ub(color >> 8, color >> 16, color >> 24, color);
 }
-SGColor sgColorARGB(SGuint color)
+SGColor SG_EXPORT sgColorARGB(SGuint color)
 {
     return sgColor4ub(color >> 16, color >> 8, color, color >> 24);
 }
-SGColor sgColorABGR(SGuint color)
+SGColor SG_EXPORT sgColorABGR(SGuint color)
 {
     return sgColor4ub(color, color >> 8, color >> 16, color >> 24);
 }
-SGColor sgColorRGB(SGuint color)
+SGColor SG_EXPORT sgColorRGB(SGuint color)
 {
     return sgColor4ub(color >> 16, color >> 8, color, 255);
 }
-SGColor sgColorBGR(SGuint color)
+SGColor SG_EXPORT sgColorBGR(SGuint color)
 {
     return sgColor4ub(color, color >> 8, color >> 16, 255);
 }
-SGColor sgColorX11(char* name)
+SGColor SG_EXPORT sgColorX11(char* name)
 {
     char bufn[256];
     _sgColorPreprocess(bufn, sizeof(bufn), name);
@@ -823,7 +823,7 @@ SGColor sgColorX11(char* name)
 
     return _sgColorValue(bufn, 1);
 }
-SGColor sgColorWeb(char* name)
+SGColor SG_EXPORT sgColorWeb(char* name)
 {
     char bufn[256];
     _sgColorPreprocess(bufn, sizeof(bufn), name);
@@ -842,45 +842,45 @@ SGColor sgColorWeb(char* name)
 
     return _sgColorValue(bufn, 2);
 }
-SGColor sgColorNan(void)
+SGColor SG_EXPORT sgColorNan(void)
 {
     return sgColor4f(SG_NAN, SG_NAN, SG_NAN, SG_NAN);
 }
 
-SGbool sgColorIsNan(SGColor c)
+SGbool SG_EXPORT sgColorIsNan(SGColor c)
 {
     return (c.r != c.r) || (c.g != c.g) || (c.b != c.b) || (c.a != c.a);
 }
 
-SGColor sgColorMix(SGColor a, SGColor b, float t)
+SGColor SG_EXPORT sgColorMix(SGColor a, SGColor b, float t)
 {
     return sgColor4f(a.r + t * (b.r - a.r),
                      a.g + t * (b.g - a.g),
                      a.b + t * (b.b - a.b),
                      a.a + t * (b.a - a.a));
 }
-SGColor sgColorAdd1c(SGColor a, SGColor b)
+SGColor SG_EXPORT sgColorAdd1c(SGColor a, SGColor b)
 {
     return sgColor4f(a.r + b.r,
                      a.g + b.g,
                      a.b + b.b,
                      a.a + b.a);
 }
-SGColor sgColorSub1c(SGColor a, SGColor b)
+SGColor SG_EXPORT sgColorSub1c(SGColor a, SGColor b)
 {
     return sgColor4f(a.r - b.r,
                      a.g - b.g,
                      a.b - b.b,
                      a.a - b.a);
 }
-SGColor sgColorMul1c(SGColor a, SGColor b)
+SGColor SG_EXPORT sgColorMul1c(SGColor a, SGColor b)
 {
     return sgColor4f(a.r * b.r,
                      a.g * b.g,
                      a.b * b.b,
                      a.a * b.a);
 }
-SGColor sgColorDiv1c(SGColor a, SGColor b)
+SGColor SG_EXPORT sgColorDiv1c(SGColor a, SGColor b)
 {
     return sgColor4f(a.r / b.r,
                      a.g / b.g,

@@ -13,27 +13,27 @@ typedef struct SGTexture
     void* handle;
 } SGTexture;
 
-SGTexture* sgTextureCreateFile(char* fname);
-SGTexture* sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data);
-SGTexture* sgTextureCreate(SGuint width, SGuint height, SGenum bpp);
-void sgTextureDestroy(SGTexture* texture);
+SGTexture* SG_EXPORT sgTextureCreateFile(char* fname);
+SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data);
+SGTexture* SG_EXPORT sgTextureCreate(SGuint width, SGuint height, SGenum bpp);
+void SG_EXPORT sgTextureDestroy(SGTexture* texture);
 
-void sgTextureDrawRads3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
-void sgTextureDrawDegs3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
-void sgTextureDrawRads3f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float angle);
-void sgTextureDrawDegs3f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float angle);
-/*void sgTextureDraw(SGTexture* texture, float x, float y, float xscale, float yscale, float angle);
-void sgTextureDraw(SGTexture* texture, float x, float y, float z, float xscale, float yscale);
-void sgTextureDraw(SGTexture* texture, float x, float y, float xscale, float yscale);
-void sgTextureDraw(SGTexture* texture, float x, float y, float z, float angle);
-void sgTextureDraw(SGTexture* texture, float x, float y, float angle);
-void sgTextureDraw(SGTexture* texture, float x, float y, float z);
-void sgTextureDraw(SGTexture* texture, float x, float y);*/
-void sgTextureDraw(SGTexture* texture);
+void SG_EXPORT sgTextureDrawRads3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
+void SG_EXPORT sgTextureDrawDegs3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
+void SG_EXPORT sgTextureDrawRads3f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float angle);
+void SG_EXPORT sgTextureDrawDegs3f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float angle);
+/*void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float xscale, float yscale, float angle);
+void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float z, float xscale, float yscale);
+void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float xscale, float yscale);
+void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float z, float angle);
+void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float angle);
+void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float z);
+void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y);*/
+void SG_EXPORT sgTextureDraw(SGTexture* texture);
 
-void sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height);
-SGuint sgTextureGetWidth(SGTexture* texture);
-SGuint sgTextureGetHeight(SGTexture* texture);
+void SG_EXPORT sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height);
+SGuint SG_EXPORT sgTextureGetWidth(SGTexture* texture);
+SGuint SG_EXPORT sgTextureGetHeight(SGTexture* texture);
 
 #ifdef __cplusplus
 }
