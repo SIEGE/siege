@@ -1,3 +1,9 @@
+/**
+    \mainpage
+
+    Welcome to the SIEGE documentation!
+*/
+
 #ifndef __SIEGE_H__
 #define __SIEGE_H__
 
