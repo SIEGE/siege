@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char* sgPrintf(char* format, ...)
+char* SG_EXPORT sgPrintf(char* format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -13,7 +13,7 @@ char* sgPrintf(char* format, ...)
     va_end(args);
     return str;
 }
-char* sgPrintfv(char* format, va_list args)
+char* SG_EXPORT sgPrintfv(char* format, va_list args)
 {
     int buflen = 0;
     int ret = 0;
@@ -36,7 +36,7 @@ char* sgPrintfv(char* format, va_list args)
     return realloc(buf, ret + 1);
 }
 
-char* sgLineEnd(char* text)
+char* SG_EXPORT sgLineEnd(char* text)
 {
     if(text == NULL)
         return NULL;
@@ -55,11 +55,11 @@ char* sgLineEnd(char* text)
     else
         return (lf > cr) ? lf : cr;
 }
-SGuint sgLineLength(char* text)
+SGuint SG_EXPORT sgLineLength(char* text)
 {
     return sgLineEnd(text) - text;
 }
-char* sgNextLine(char* text)
+char* SG_EXPORT sgNextLine(char* text)
 {
     char* ptr = text;
 
@@ -80,7 +80,7 @@ char* sgNextLine(char* text)
     }
     return NULL;
 }
-SGuint sgNumLines(char* text)
+SGuint SG_EXPORT sgNumLines(char* text)
 {
     SGuint numlines = 0;
 
@@ -93,7 +93,7 @@ SGuint sgNumLines(char* text)
     return numlines;
 }
 /// \todo TODO
-void sgCharToUTF32(char* text, SGuint textlen, SGdchar* str)
+void SG_EXPORT sgCharToUTF32(char* text, SGuint textlen, SGdchar* str)
 {
     size_t i;
     for(i = 0; i < textlen; i++)

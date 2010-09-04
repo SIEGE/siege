@@ -28,12 +28,15 @@ typedef uint64_t SGulong;
 typedef float  SGfloat;
 typedef double SGdouble;
 
-#ifdef __GCC__
-#define SG_DEPRECATED __attribute__((deprecated))
+#ifdef __GNUC__
+#   define SG_HINT_DEPRECATED __attribute__((deprecated))
+#   define SG_HINT_PRINTF(str, chk) __attribute__((format(printf, str, chk)))
 #elif defined(_MSC_VER)
-#define SG_DEPRECATED __declspec(deprecated)
+#   define SG_HINT_DEPRECATED __declspec(deprecated)
+#   define SG_HINT_PRINTF(str, chk)
 #else
-#define SG_DEPRECATED
+#   define SG_HINT_DEPRECATED
+#   define SG_HINT_PRINTF(str, chk)
 #endif // __GCC__
 
 // use test
