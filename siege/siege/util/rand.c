@@ -3,20 +3,20 @@
 
 #include <stdlib.h>
 
-SGbool _sgRandInit()
+SGbool SG_EXPORT _sgRandInit()
 {
     return SG_TRUE;
 }
-SGbool _sgRandDeinit()
+SGbool SG_EXPORT _sgRandDeinit()
 {
     return SG_TRUE;
 }
 
-void _sgRandMersenneCreate32(SGRand* rand)
+void SG_EXPORT _sgRandMersenneCreate32(SGRand* rand)
 {
     rand->data = malloc(sizeof(SGuint) * 625);
 }
-void _sgRandMersenneSeed32(SGRand* rand, SGuint seed, SGuint index)
+void SG_EXPORT _sgRandMersenneSeed32(SGRand* rand, SGuint seed, SGuint index)
 {
     SGuint* ind = (SGuint*)rand->data;
     SGuint* mt = (SGuint*)rand->data + sizeof(SGuint);
@@ -27,7 +27,7 @@ void _sgRandMersenneSeed32(SGRand* rand, SGuint seed, SGuint index)
     for(i = 1; i < 624; i++)
         mt[i] = (0x6C078965 * (mt[i-1] ^ (mt[i-1] >> 30))) & 0xFFFFFFFF;
 }
-void _sgRandMersenneGenNumbers32(SGRand* rand)
+void SG_EXPORT _sgRandMersenneGenNumbers32(SGRand* rand)
 {
     //SGuint* ind = (SGuint*)rand->data;
     SGuint* mt = (SGuint*)rand->data + sizeof(SGuint);
@@ -41,7 +41,7 @@ void _sgRandMersenneGenNumbers32(SGRand* rand)
             mt[i] = mt[i] ^ 0x9908B0DF;
     }
 }
-SGuint _sgRandMersenneGen32(SGRand* rand)
+SGuint SG_EXPORT _sgRandMersenneGen32(SGRand* rand)
 {
     SGuint* ind = (SGuint*)rand->data;
     SGuint* mt = (SGuint*)rand->data + sizeof(SGuint);
@@ -59,7 +59,7 @@ SGuint _sgRandMersenneGen32(SGRand* rand)
     return y;
 }
 
-SGRand* sgRandCreate32(SGenum type, SGuint seed, SGuint index)
+SGRand* SG_EXPORT sgRandCreate32(SGenum type, SGuint seed, SGuint index)
 {
     SGRand* rand = malloc(sizeof(SGRand));
     if(rand == NULL)
@@ -80,7 +80,7 @@ SGRand* sgRandCreate32(SGenum type, SGuint seed, SGuint index)
 
     return rand;
 }
-void sgRandDestroy(SGRand* rand)
+void SG_EXPORT sgRandDestroy(SGRand* rand)
 {
     if(rand == NULL)
         return;
@@ -88,7 +88,7 @@ void sgRandDestroy(SGRand* rand)
     free(rand->data);
     free(rand);
 }
-void sgRandSeed32(SGRand* rand, SGuint seed, SGuint index)
+void SG_EXPORT sgRandSeed32(SGRand* rand, SGuint seed, SGuint index)
 {
     if(rand == NULL)
         return;
@@ -103,7 +103,7 @@ void sgRandSeed32(SGRand* rand, SGuint seed, SGuint index)
             break;
     }
 }
-SGuint sgRandGen32(SGRand* rand)
+SGuint SG_EXPORT sgRandGen32(SGRand* rand)
 {
     if(rand == NULL)
         return 0;
@@ -121,7 +121,7 @@ SGuint sgRandGen32(SGRand* rand)
 }
 
 // aliases
-void sgRandDestroy32(SGRand* rand)
+void SG_EXPORT sgRandDestroy32(SGRand* rand)
 {
     sgRandDestroy(rand);
 }

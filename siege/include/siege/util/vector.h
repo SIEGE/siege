@@ -25,33 +25,33 @@ typedef struct SGVec4
     float x, y, z, w;
 } SGVec4;
 
-SGVec2 sgVec2f(float x, float y);
-SGVec2 sgVec2fv(float* f);
-SGVec2 sgVec2PolarRads(float rads, float len);
-SGVec2 sgVec2PolarDegs(float degs, float len);
-SGVec2 sgVec2Nan(void);
+SGVec2 SG_EXPORT sgVec2f(float x, float y);
+SGVec2 SG_EXPORT sgVec2fv(float* f);
+SGVec2 SG_EXPORT sgVec2PolarRads(float rads, float len);
+SGVec2 SG_EXPORT sgVec2PolarDegs(float degs, float len);
+SGVec2 SG_EXPORT sgVec2Nan(void);
 
-SGVec2 sgVec2Normalize(SGVec2 vec);
+SGVec2 SG_EXPORT sgVec2Normalize(SGVec2 vec);
 
-SGVec2 sgVec2SetLength(SGVec2 vec, float length);
-float sgVec2GetLength(SGVec2 vec);
-float sgVec2GetLength2(SGVec2 vec);
+SGVec2 SG_EXPORT sgVec2SetLength(SGVec2 vec, float length);
+float SG_EXPORT sgVec2GetLength(SGVec2 vec);
+float SG_EXPORT sgVec2GetLength2(SGVec2 vec);
 
-SGVec2 sgVec2SetAngleRads(SGVec2 vec, float rads);
-float sgVec2GetAngleRads(SGVec2 vec);
-SGVec2 sgVec2SetAngleDegs(SGVec2 vec, float degs);
-float sgVec2GetAngleDegs(SGVec2 vec);
+SGVec2 SG_EXPORT sgVec2SetAngleRads(SGVec2 vec, float rads);
+float SG_EXPORT sgVec2GetAngleRads(SGVec2 vec);
+SGVec2 SG_EXPORT sgVec2SetAngleDegs(SGVec2 vec, float degs);
+float SG_EXPORT sgVec2GetAngleDegs(SGVec2 vec);
 
-SGbool sgVec2IsNan(SGVec2 vec);
+SGbool SG_EXPORT sgVec2IsNan(SGVec2 vec);
 
-SGVec2 sgVec2Neg(SGVec2 a);
-SGVec2 sgVec2Add(SGVec2 a, SGVec2 b);
-SGVec2 sgVec2Sub(SGVec2 a, SGVec2 b);
-SGVec2 sgVec2Mul(SGVec2 a, SGVec2 b);
-SGVec2 sgVec2Div(SGVec2 a, SGVec2 b);
+SGVec2 SG_EXPORT sgVec2Neg(SGVec2 a);
+SGVec2 SG_EXPORT sgVec2Add(SGVec2 a, SGVec2 b);
+SGVec2 SG_EXPORT sgVec2Sub(SGVec2 a, SGVec2 b);
+SGVec2 SG_EXPORT sgVec2Mul(SGVec2 a, SGVec2 b);
+SGVec2 SG_EXPORT sgVec2Div(SGVec2 a, SGVec2 b);
 
-float sgVec2Dot(SGVec2 a, SGVec2 b);
-float sgVec2Cross(SGVec2 a, SGVec2 b);
+float SG_EXPORT sgVec2Dot(SGVec2 a, SGVec2 b);
+float SG_EXPORT sgVec2Cross(SGVec2 a, SGVec2 b);
 
 
 

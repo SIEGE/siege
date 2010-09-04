@@ -7,17 +7,17 @@
 #include <stdio.h>
 #include <math.h>
 
-SGbool _sgSurfaceInit()
+SGbool SG_EXPORT _sgSurfaceInit()
 {
     _sg_surfTarget = NULL;
     return SG_TRUE;
 }
-SGbool _sgSurfaceDeinit()
+SGbool SG_EXPORT _sgSurfaceDeinit()
 {
     return SG_TRUE;
 }
 
-SGSurface* sgSurfaceCreateFile(char* fname)
+SGSurface* SG_EXPORT sgSurfaceCreateFile(char* fname)
 {
     SGuint width;
     SGuint height;
@@ -35,7 +35,7 @@ SGSurface* sgSurfaceCreateFile(char* fname)
         _sg_modGraphics.sgmGraphicsLoadFreeData(data);
     return surface;
 }
-SGSurface* sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data)
+SGSurface* SG_EXPORT sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data)
 {
     SGSurface* surface = malloc(sizeof(SGSurface));
     if(surface == NULL)
@@ -53,59 +53,59 @@ SGSurface* sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* da
     free(data);
     return surface;
 }
-SGSurface* sgSurfaceCreate(SGuint width, SGuint height, SGenum bpp)
+SGSurface* SG_EXPORT sgSurfaceCreate(SGuint width, SGuint height, SGenum bpp)
 {
     return sgSurfaceCreateData(width, height, bpp, NULL);
 }
-void sgSurfaceDestroy(SGSurface* surface)
+void SG_EXPORT sgSurfaceDestroy(SGSurface* surface)
 {
     if(_sg_modGraphics.sgmGraphicsSurfaceDestroy != NULL)
         _sg_modGraphics.sgmGraphicsSurfaceDestroy(surface->handle);
     free(surface);
 }
 
-void sgSurfaceDrawRads3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
+void SG_EXPORT sgSurfaceDrawRads3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     if(_sg_modGraphics.sgmGraphicsSurfaceDraw != NULL)
         _sg_modGraphics.sgmGraphicsSurfaceDraw(surface->handle, x, y, z, xscale, yscale, xoffset, yoffset, angle);
 }
-void sgSurfaceDrawDegs3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
+void SG_EXPORT sgSurfaceDrawDegs3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     sgSurfaceDrawRads3f2f2f1f(surface, x, y, z, xscale, yscale, xoffset, yoffset, angle * M_PI / 180.0);
 }
-void sgSurfaceDrawRads3f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float angle)
+void SG_EXPORT sgSurfaceDrawRads3f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float angle)
 {
     sgSurfaceDrawRads3f2f2f1f(surface, x, y, z, xscale, yscale, 0.0, 0.0, angle);
 }
-void sgSurfaceDrawDegs3f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float angle)
+void SG_EXPORT sgSurfaceDrawDegs3f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float angle)
 {
     sgSurfaceDrawDegs3f2f2f1f(surface, x, y, z, xscale, yscale, 0.0, 0.0, angle);
 }
-/*void sgSurfaceDraw(SGSurface* surface, float x, float y, float xscale, float yscale, float angle);
-void sgSurfaceDraw(SGSurface* surface, float x, float y, float z, float xscale, float yscale);
-void sgSurfaceDraw(SGSurface* surface, float x, float y, float xscale, float yscale);
-void sgSurfaceDraw(SGSurface* surface, float x, float y, float z, float angle);
-void sgSurfaceDraw(SGSurface* surface, float x, float y, float angle);
-void sgSurfaceDraw(SGSurface* surface, float x, float y, float z);
-void sgSurfaceDraw(SGSurface* surface, float x, float y);*/
-void sgSurfaceDraw(SGSurface* surface)
+/*void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float xscale, float yscale, float angle);
+void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float z, float xscale, float yscale);
+void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float xscale, float yscale);
+void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float z, float angle);
+void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float angle);
+void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float z);
+void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y);*/
+void SG_EXPORT sgSurfaceDraw(SGSurface* surface)
 {
     sgSurfaceDrawRads3f2f2f1f(surface, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void sgSurfaceTarget(SGSurface* surface)
+void SG_EXPORT sgSurfaceTarget(SGSurface* surface)
 {
     if(_sg_modGraphics.sgmGraphicsSurfaceSetTarget != NULL)
         _sg_modGraphics.sgmGraphicsSurfaceSetTarget(surface->handle);
     _sg_surfTarget = surface->handle;
 }
-void sgSurfaceUntarget(SGSurface* surface)
+void SG_EXPORT sgSurfaceUntarget(SGSurface* surface)
 {
     if(_sg_modGraphics.sgmGraphicsSurfaceResetTarget != NULL)
         _sg_modGraphics.sgmGraphicsSurfaceResetTarget(_sg_surfTarget);
     _sg_surfTarget = NULL;
 }
-void sgSurfaceClear4f(SGSurface* surface, float r, float g, float b, float a)
+void SG_EXPORT sgSurfaceClear4f(SGSurface* surface, float r, float g, float b, float a)
 {
     float col[4];
     col[0] = r;
@@ -117,40 +117,40 @@ void sgSurfaceClear4f(SGSurface* surface, float r, float g, float b, float a)
         _sg_modGraphics.sgmGraphicsContextClear(_sg_gfxHandle, col);
     sgSurfaceUntarget(surface);
 }
-void sgSurfaceClear3f(SGSurface* surface, float r, float g, float b)
+void SG_EXPORT sgSurfaceClear3f(SGSurface* surface, float r, float g, float b)
 {
     sgSurfaceClear4f(surface, r, g, b, 1.0f);
 }
-void sgSurfaceClear2f(SGSurface* surface, float g, float a)
+void SG_EXPORT sgSurfaceClear2f(SGSurface* surface, float g, float a)
 {
     sgSurfaceClear4f(surface, g, g, g, a);
 }
-void sgSurfaceClear1f(SGSurface* surface, float g)
+void SG_EXPORT sgSurfaceClear1f(SGSurface* surface, float g)
 {
     sgSurfaceClear4f(surface, g, g, g, 1.0f);
 }
-void sgSurfaceClear4ub(SGSurface* surface, SGubyte r, SGubyte g, SGubyte b, SGubyte a)
+void SG_EXPORT sgSurfaceClear4ub(SGSurface* surface, SGubyte r, SGubyte g, SGubyte b, SGubyte a)
 {
     sgSurfaceClear4f(surface, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 }
-void sgSurfaceClear3ub(SGSurface* surface, SGubyte r, SGubyte g, SGubyte b)
+void SG_EXPORT sgSurfaceClear3ub(SGSurface* surface, SGubyte r, SGubyte g, SGubyte b)
 {
     sgSurfaceClear4f(surface, r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 }
-void sgSurfaceClear2ub(SGSurface* surface, SGubyte g, SGubyte a)
+void SG_EXPORT sgSurfaceClear2ub(SGSurface* surface, SGubyte g, SGubyte a)
 {
     sgSurfaceClear4f(surface, g / 255.0f, g / 255.0f, g / 255.0f, a / 255.0f);
 }
-void sgSurfaceClear1ub(SGSurface* surface, SGubyte g)
+void SG_EXPORT sgSurfaceClear1ub(SGSurface* surface, SGubyte g)
 {
     sgSurfaceClear4f(surface, g / 255.0f, g / 255.0f, g / 255.0f, 1.0f);
 }
-void sgSurfaceClear(SGSurface* surface)
+void SG_EXPORT sgSurfaceClear(SGSurface* surface)
 {
     sgSurfaceClear4f(surface, 0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height)
+void SG_EXPORT sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height)
 {
     if((width == NULL) && (height == NULL))
         return;
@@ -165,7 +165,7 @@ void sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height)
     if(_sg_modGraphics.sgmGraphicsSurfaceGetSize != NULL)
         _sg_modGraphics.sgmGraphicsSurfaceGetSize(surface->handle, width, height);
 }
-SGuint sgSurfaceGetWidth(SGSurface* surface)
+SGuint SG_EXPORT sgSurfaceGetWidth(SGSurface* surface)
 {
     SGuint width;
     SGuint height;
@@ -173,7 +173,7 @@ SGuint sgSurfaceGetWidth(SGSurface* surface)
         _sg_modGraphics.sgmGraphicsSurfaceGetSize(surface->handle, &width, &height);
     return width;
 }
-SGuint sgSurfaceGetHeight(SGSurface* surface)
+SGuint SG_EXPORT sgSurfaceGetHeight(SGSurface* surface)
 {
     SGuint width;
     SGuint height;
