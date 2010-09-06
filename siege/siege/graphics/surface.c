@@ -90,7 +90,7 @@ void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float z);
 void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y);*/
 void SG_EXPORT sgSurfaceDraw(SGSurface* surface)
 {
-    sgSurfaceDrawRads3f2f2f1f(surface, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    sgSurfaceDrawRads3f2f2f1f(surface, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void SG_EXPORT sgSurfaceTarget(SGSurface* surface)
