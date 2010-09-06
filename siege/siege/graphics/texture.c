@@ -80,7 +80,7 @@ void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float z);
 void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y);*/
 void SG_EXPORT sgTextureDraw(SGTexture* texture)
 {
-    sgTextureDrawRads3f2f2f1f(texture, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    sgTextureDrawRads3f2f2f1f(texture, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void SG_EXPORT sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height)
