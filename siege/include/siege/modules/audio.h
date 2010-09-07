@@ -12,7 +12,6 @@ extern "C"
 typedef struct SGModuleAudio
 {
     /// Audio
-/// \todo USE
     SGuint SG_EXPORT (*sgmAudioSourceMaxSources)(SGuint* max);
 
     SGuint SG_EXPORT (*sgmAudioBufferCreate)(void** buffer);
@@ -35,7 +34,7 @@ typedef struct SGModuleAudio
     SGuint SG_EXPORT (*sgmAudioSourceIsStopped)(void* source, SGbool* stopped);
     SGuint SG_EXPORT (*sgmAudioSourceSetBuffer)(void* source, void* buffer);
     //SGuint SG_EXPORT (*sgmAudioSourceGetBuffer)(void* source, void** buffer);
-/// \todo USE
+
     SGuint SG_EXPORT (*sgmAudioSourceQueueBuffers)(void* source, void** buffers, SGuint numbuffers);
     SGuint SG_EXPORT (*sgmAudioSourceUnqueueBuffers)(void* source, SGuint numbuffers);
 /// \warning Will most likely change very soon
