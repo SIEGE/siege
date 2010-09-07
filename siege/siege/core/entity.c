@@ -315,6 +315,12 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, _SGEntityCall* call)
     return SG_TRUE;
 }
 
+SGvoid SG_EXPORT _sg_evDraw(SGEntity* entity)
+{
+    if(entity->visible)
+        sgEntityDraw(entity);
+}
+
 SGEntity* SG_EXPORT sgEntityCreate(float priority, SGenum type)
 {
     SGEntity* entity = malloc(sizeof(SGEntity));
@@ -330,7 +336,7 @@ SGEntity* SG_EXPORT sgEntityCreate(float priority, SGenum type)
     entity->depth = 0.0;
     entity->angle = 0.0;
 
-    entity->evDraw = sgEntityDraw;
+    entity->evDraw = _sg_evDraw;
 
     sgPListAdd(_sg_cList, priority, entity);
     return entity;
@@ -513,8 +519,6 @@ void SG_EXPORT sgEntityDraw(SGEntity* entity)
     if(entity == NULL)
         return;
     if(entity->sprite == NULL)
-        return;
-    if(!entity->visible)
         return;
 
     if(entity->body != NULL)

@@ -18,33 +18,133 @@ typedef struct _SGEntityCall
 
 /**
     \brief Entity, the main game "class"
+    \todo Should we add a destructor event?
 
     This is the "class" which acts as sort of glue for siege - it glues together sprites, physics, audio, etc...
     It is meant to be used for just about everything in a level.
 */
 typedef struct SGEntity
 {
+    /**
+        \brief Entity event type
+
+        This controls which events of the entity can be triggered.
+    */
     SGenum type;
+    /**
+        \brief Is the entity active?
+
+        If set to SG_TRUE, the Entity can take events, otherwise it is skipped.
+    */
     SGbool active;
+    /**
+        \brief Is the entity pausable?
+
+        If set to SG_TRUE, then the entity is skipped during event handling if the game is paused.
+    */
     SGbool pausable;
+    /**
+        \private
+        \brief Entity event handle
+
+        This provides a handle for handling the entity's events.
+
+        \warning
+            For internal use only.
+    */
     SGEvent* event;
+    /**
+        \brief User-provided data
+        \todo If we don't add a destructor event: Should a "free" callback be added?
+        \note Don't forget to free the data before destroying the entity!
+        SIEGE handles this as an opaque pointer.
+    */
     SGvoid* data;
 
+    /**
+        \brief Is the entity visible?
+
+        If an entity is invisible, it is not automatically drawn.
+    */
     SGbool visible;
+
+    /**
+        \private
+        \name Attachments
+    */
+    // @{
+    /**
+        \private
+        \brief The attached sprite
+        \warning
+            For internal use only.
+    */
     struct SGSprite* sprite;
+    /**
+        \private
+        \brief The attached mask
+        \warning
+            For internal use only.
+    */
     struct SGSprite* mask;
+    /**
+        \private
+        \brief The attached physics body
+        \warning
+            For internal use only.
+    */
     struct SGPhysicsBody* body;
+    /**
+        \private
+        \brief The attached audio source
+        \warning
+            For internal use only.
+    */
     struct SGSource* source;
+    // @}
+
+    /**
+        \private
+        \brief Entity's x position
+        \note
+            Not used if a body is attached.
+        \warning
+            For internal use only.
+    */
     float x;
+    /**
+        \private
+        \brief Entity's y position
+        \note
+            Not used if a body is attached.
+        \warning
+            For internal use only.
+    */
     float y;
+    /**
+        \private
+        \brief Entity's depth
+        \warning
+            For internal use only.
+    */
     float depth;
+    /**
+        \private
+        \brief Entity's angle in radians
+        \note
+            Not used if a body is attached.
+        \warning
+            For internal use only.
+    */
     float angle;
 
     /**
-        \name Initialization/deinitialization events
+        \name Module-related events
     */
     // @{
+    /// \brief Called on \ref sgInit "sgInit"
     SGvoid SG_EXPORT (*evInit)(struct SGEntity* entity);
+    /// \brief Called on \ref sgDeinit "sgDeinit"
     SGvoid SG_EXPORT (*evDeinit)(struct SGEntity* entity);
     // @}
 
@@ -52,11 +152,17 @@ typedef struct SGEntity
         \name Core events
     */
     // @{
+    /// \brief Called on the first loop, when \ref sgLoop "sgLoop" is first called or on \ref sgRun "sgRun"
     SGvoid SG_EXPORT (*evStart)(struct SGEntity* entity);
+    /// \brief Called before exiting SIEGE loop, usually on \ref sgStop "sgStop"
     SGvoid SG_EXPORT (*evExit)(struct SGEntity* entity);
+    /// \brief Second event called in each loop
     SGvoid SG_EXPORT (*evTick)(struct SGEntity* entity);
+    /// \brief First event called in each loop
     SGvoid SG_EXPORT (*evTickBegin)(struct SGEntity* entity);
+    /// \brief Third event called in each loop
     SGvoid SG_EXPORT (*evTickEnd)(struct SGEntity* entity);
+    /// \brief Fourth event called in each loop - drawing should be done here
     SGvoid SG_EXPORT (*evDraw)(struct SGEntity* entity);
     // @}
 
@@ -64,32 +170,71 @@ typedef struct SGEntity
         \name Window events
     */
     // @{
+    /// \brief The window has been opened
     SGvoid SG_EXPORT (*evWindowOpen)(struct SGEntity* entity);
+    /// \brief The window has been closed
     SGvoid SG_EXPORT (*evWindowClose)(struct SGEntity* entity);
+    /**
+        \brief The window has been resized
+        \param width The new window width
+        \param height The new window height
+    */
     SGvoid SG_EXPORT (*evWindowResize)(struct SGEntity* entity, SGuint width, SGuint height);
     // @}
 
     /**
         \name Mouse events
+        \todo Local mouse events (events when the mouse is over an item)
+        \todo What do with do with the mouse wheel? It seems that most APIs detect the wheel as buttons, should we do the same?
     */
     // @{
+    /**
+        \brief A mouse button is being held down
+        \param button The button ID
+    */
     SGvoid SG_EXPORT (*evMouseButton)(struct SGEntity* entity, SGuint button);
+    /**
+        \brief A mouse button has just been pressed
+        \param button The button ID
+    */
     SGvoid SG_EXPORT (*evMouseButtonPress)(struct SGEntity* entity, SGuint button);
+    /**
+        \brief A mouse button has just been released
+        \param button The button ID
+    */
     SGvoid SG_EXPORT (*evMouseButtonRelease)(struct SGEntity* entity, SGuint button);
 
+    /// \brief The left mouse button is being held down
     SGvoid SG_EXPORT (*evMouseButtonLeft)(struct SGEntity* entity);
+    /// \brief The left mouse button has just been pressed
     SGvoid SG_EXPORT (*evMouseButtonLeftPress)(struct SGEntity* entity);
+    /// \brief The left mouse button has just been released
     SGvoid SG_EXPORT (*evMouseButtonLeftRelease)(struct SGEntity* entity);
 
+    /// \brief The right mouse button is being held down
     SGvoid SG_EXPORT (*evMouseButtonRight)(struct SGEntity* entity);
+    /// \brief The right mouse button has just been pressed
     SGvoid SG_EXPORT (*evMouseButtonRightPress)(struct SGEntity* entity);
+    /// \brief The right mouse button has just been released
     SGvoid SG_EXPORT (*evMouseButtonRightRelease)(struct SGEntity* entity);
 
+    /// \brief The middle mouse button is being held down
     SGvoid SG_EXPORT (*evMouseButtonMiddle)(struct SGEntity* entity);
+    /// \brief The middle mouse button has just been pressed
     SGvoid SG_EXPORT (*evMouseButtonMiddlePress)(struct SGEntity* entity);
+    /// \brief The middle mouse button has just been released
     SGvoid SG_EXPORT (*evMouseButtonMiddleRelease)(struct SGEntity* entity);
 
+    /**
+        \brief The mouse has been moved
+        \param x New x mouse position
+        \param y New y mouse position
+    */
     SGvoid SG_EXPORT (*evMouseMove)(struct SGEntity* entity, SGint x, SGint y);
+    /**
+        \brief The mouse wheel has been scrolled
+        \param wheel New mouse wheel position
+    */
     SGvoid SG_EXPORT (*evMouseWheel)(struct SGEntity* entity, SGint wheel);
     // @}
 
@@ -97,14 +242,38 @@ typedef struct SGEntity
         \name Keyboard events
     */
     // @{
+    /**
+        \brief A key is being held down
+        \param key The key ID
+    */
     SGvoid SG_EXPORT (*evKeyboardKey)(struct SGEntity* entity, SGuint key);
+    /**
+        \brief A key has just been pressed
+        \param key The key ID
+    */
     SGvoid SG_EXPORT (*evKeyboardKeyPress)(struct SGEntity* entity, SGuint key);
+    /**
+        \brief A key has just been released
+        \param key The key ID
+    */
     SGvoid SG_EXPORT (*evKeyboardKeyRelease)(struct SGEntity* entity, SGuint key);
+    /**
+        \brief A key repeat according to the key repeat interval
+        \param key The key ID
+    */
     SGvoid SG_EXPORT (*evKeyboardKeyRepeat)(struct SGEntity* entity, SGuint key);
 
     //SGvoid SG_EXPORT (*evKeyboardChar)(struct SGEntity* entity, SGdchar chr);
+    /**
+        \brief A key representing a character has just been pressed
+        \param chr The character (UTF-32)
+    */
     SGvoid SG_EXPORT (*evKeyboardCharPress)(struct SGEntity* entity, SGdchar chr);
     //SGvoid SG_EXPORT (*evKeyboardCharRelease)(struct SGEntity* entity, SGdchar chr);
+    /**
+        \brief A key representing a character has just been repeated according to the key repeat interval
+        \param chr The character (UTF-32)
+    */
     SGvoid SG_EXPORT (*evKeyboardCharRepeat)(struct SGEntity* entity, SGdchar chr);
     // @}
 
@@ -112,9 +281,30 @@ typedef struct SGEntity
         \name Joystick events
     */
     // @{
+    /**
+        \brief A joystick button is being held down
+        \param joy The joystick ID
+        \param button The button ID
+    */
     SGvoid SG_EXPORT (*evJoystickButton)(struct SGEntity* entity, SGuint joy, SGuint button);
+    /**
+        \brief A joystick button has just been pressed
+        \param joy The joystick ID
+        \param button The button ID
+    */
     SGvoid SG_EXPORT (*evJoystickButtonPress)(struct SGEntity* entity, SGuint joy, SGuint button);
+    /**
+        \brief A joystick button has just been released
+        \param joy The joystick ID
+        \param button The button ID
+    */
     SGvoid SG_EXPORT (*evJoystickButtonRelease)(struct SGEntity* entity, SGuint joy, SGuint button);
+    /**
+        \brief The joystick axis have moved
+        \param joy The joystick ID
+        \param axis The axis positions
+        \param numaxus The number of axis
+    */
     SGvoid SG_EXPORT (*evJoystickMove)(struct SGEntity* entity, SGuint joy, SGfloat* axis, SGuint numaxis);
     // @}
 
@@ -124,20 +314,80 @@ typedef struct SGEntity
         \name Collision events
     */
     // @{
+    /**
+        \brief Two objects are in collision with one another
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollision)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
+    /**
+        \brief Collision event for the first of two objects
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionOne)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
+    /**
+        \brief Collision event for the second of two objects
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionTwo)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
 
+    /**
+        \brief Two objects have just come in collision with one another
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
+    /**
+        \brief Collision start event for the first of two objects
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionOneBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
+    /**
+        \brief Collision start event for the second of two objects
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionTwoBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
 
+    /**
+        \brief Two objects are no longer in collision with one another
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
+    /**
+        \brief Collision end event for the first of two objects
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionOneEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
+    /**
+        \brief Collision end event for the second of two objects
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionTwoEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
 
+    /**
+        \brief The result of the collision has been computed
+        \param other The other object
+        \param point Collision result info
+    */
     SGvoid SG_EXPORT (*evCollisionResult)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionResult* result);
+    /**
+        \brief Collision result event for the first of two objects
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionOneResult)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionResult* result);
+    /**
+        \brief Collision result event for the second of two objects
+        \param other The other object
+        \param point Collision point info
+    */
     SGvoid SG_EXPORT (*evCollisionTwoResult)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionResult* result);
     // @}
 
@@ -145,12 +395,15 @@ typedef struct SGEntity
         \name Level events
     */
     // @{
+    /// \brief A level has just loaded and started
     SGvoid SG_EXPORT (*evLevelStart)(struct SGEntity* entity);
+    /// \brief A level has just ended
     SGvoid SG_EXPORT (*evLevelEnd)(struct SGEntity* entity);
     // @}
 } SGEntity;
 
 SGbool SG_EXPORT _sg_evCall(SGEntity* entity, _SGEntityCall* call);
+SGvoid SG_EXPORT _sg_evDraw(SGEntity* entity);
 
 SGbool SG_EXPORT _sgEntityInit(void);
 SGbool SG_EXPORT _sgEntityDeinit(void);
@@ -330,7 +583,7 @@ float SG_EXPORT sgEntityGetPosX(SGEntity* entity);
         sgEntitySetPos
         sgEntitySetPosX
 */
-void SG_EXPORT sgEntitySetPosY(SGEntity* entity, float x);
+void SG_EXPORT sgEntitySetPosY(SGEntity* entity, float y);
 /**
     \memberof SGEntity
     \brief Get the body's y position
@@ -445,7 +698,7 @@ float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity);
     \brief Draw the entity with its position and orientation
     \param entity The entity to draw
 
-    If a sprite is attached, this function draws the sprite at the entity's position and orientation, otherwise it does nothing.
+    If a sprite is attached and the entity is visible, this function draws the sprite at the entity's position and orientation, otherwise it does nothing.
 */
 void SG_EXPORT sgEntityDraw(SGEntity* entity);
 // @}
