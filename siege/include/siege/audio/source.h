@@ -28,7 +28,7 @@ typedef struct SGSourceDispatch
         \brief Internal handle
 
         \warning
-            For internal use only
+            For internal use only.
     */
     void* handle;
 } SGSourceDispatch;
