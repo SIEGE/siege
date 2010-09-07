@@ -63,6 +63,14 @@ void SG_EXPORT sgTextureDrawDegs3f2f2f1f(SGTexture* texture, float x, float y, f
 {
     sgTextureDrawRads3f2f2f1f(texture, x, y, z, xscale, yscale, xoffset, yoffset, angle * M_PI / 180.0);
 }
+void SG_EXPORT sgTextureDrawRads2f2f2f1f(SGTexture* texture, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, 0.0, xscale, yscale, xoffset, yoffset, angle);
+}
+void SG_EXPORT sgTextureDrawDegs2f2f2f1f(SGTexture* texture, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle)
+{
+    sgTextureDrawDegs3f2f2f1f(texture, x, y, 0.0, xscale, yscale, xoffset, yoffset, angle);
+}
 void SG_EXPORT sgTextureDrawRads3f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float angle)
 {
     sgTextureDrawRads3f2f2f1f(texture, x, y, z, xscale, yscale, 0.0, 0.0, angle);
@@ -71,13 +79,54 @@ void SG_EXPORT sgTextureDrawDegs3f2f1f(SGTexture* texture, float x, float y, flo
 {
     sgTextureDrawDegs3f2f2f1f(texture, x, y, z, xscale, yscale, 0.0, 0.0, angle);
 }
-/*void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float xscale, float yscale, float angle);
-void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float z, float xscale, float yscale);
-void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float xscale, float yscale);
-void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float z, float angle);
-void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float angle);
-void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y, float z);
-void SG_EXPORT sgTextureDraw(SGTexture* texture, float x, float y);*/
+void SG_EXPORT sgTextureDrawRads2f2f1f(SGTexture* texture, float x, float y, float xscale, float yscale, float angle)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, 0.0, xscale, yscale, 0.0, 0.0, angle);
+}
+void SG_EXPORT sgTextureDrawDegs2f2f1f(SGTexture* texture, float x, float y, float xscale, float yscale, float angle)
+{
+    sgTextureDrawDegs3f2f2f1f(texture, x, y, 0.0, xscale, yscale, 0.0, 0.0, angle);
+}
+void SG_EXPORT sgTextureDrawRads3f1f(SGTexture* texture, float x, float y, float z, float angle)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, z, 1.0, 1.0, 0.0, 0.0, angle);
+}
+void SG_EXPORT sgTextureDrawDegs3f1f(SGTexture* texture, float x, float y, float z, float angle)
+{
+    sgTextureDrawDegs3f2f2f1f(texture, x, y, z, 1.0, 1.0, 0.0, 0.0, angle);
+}
+void SG_EXPORT sgTextureDrawRads2f1f(SGTexture* texture, float x, float y, float angle)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, 0.0, 1.0, 1.0, 0.0, 0.0, angle);
+}
+void SG_EXPORT sgTextureDrawDegs2f1f(SGTexture* texture, float x, float y, float angle)
+{
+    sgTextureDrawDegs3f2f2f1f(texture, x, y, 0.0, 1.0, 1.0, 0.0, 0.0, angle);
+}
+void SG_EXPORT sgTextureDraw3f2f2f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, z, xscale, yscale, xoffset, yoffset, 0.0);
+}
+void SG_EXPORT sgTextureDraw2f2f2f(SGTexture* texture, float x, float y, float xscale, float yscale, float xoffset, float yoffset)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, 0.0, xscale, yscale, xoffset, yoffset, 0.0);
+}
+void SG_EXPORT sgTextureDraw3f2f(SGTexture* texture, float x, float y, float z, float xscale, float yscale)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, z, xscale, yscale, 0.0, 0.0, 0.0);
+}
+void SG_EXPORT sgTextureDraw2f2f(SGTexture* texture, float x, float y, float xscale, float yscale)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, 0.0, xscale, yscale, 0.0, 0.0, 0.0);
+}
+void SG_EXPORT sgTextureDraw3f(SGTexture* texture, float x, float y, float z)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, z, 1.0, 1.0, 0.0, 0.0, 0.0);
+}
+void SG_EXPORT sgTextureDraw2f(SGTexture* texture, float x, float y)
+{
+    sgTextureDrawRads3f2f2f1f(texture, x, y, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
+}
 void SG_EXPORT sgTextureDraw(SGTexture* texture)
 {
     sgTextureDrawRads3f2f2f1f(texture, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);

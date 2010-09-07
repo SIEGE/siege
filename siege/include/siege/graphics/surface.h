@@ -27,15 +27,22 @@ void SG_EXPORT sgSurfaceDestroy(SGSurface* surface);
 
 void SG_EXPORT sgSurfaceDrawRads3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
 void SG_EXPORT sgSurfaceDrawDegs3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
+void SG_EXPORT sgSurfaceDrawRads2f2f2f1f(SGSurface* surface, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle);
+void SG_EXPORT sgSurfaceDrawDegs2f2f2f1f(SGSurface* surface, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle);
 void SG_EXPORT sgSurfaceDrawRads3f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float angle);
 void SG_EXPORT sgSurfaceDrawDegs3f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float angle);
-/*void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float xscale, float yscale, float angle);
-void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float z, float xscale, float yscale);
-void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float xscale, float yscale);
-void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float z, float angle);
-void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float angle);
-void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y, float z);
-void SG_EXPORT sgSurfaceDraw(SGSurface* surface, float x, float y);*/
+void SG_EXPORT sgSurfaceDrawRads2f2f1f(SGSurface* surface, float x, float y, float xscale, float yscale, float angle);
+void SG_EXPORT sgSurfaceDrawDegs2f2f1f(SGSurface* surface, float x, float y, float xscale, float yscale, float angle);
+void SG_EXPORT sgSurfaceDrawRads3f1f(SGSurface* surface, float x, float y, float z, float angle);
+void SG_EXPORT sgSurfaceDrawDegs3f1f(SGSurface* surface, float x, float y, float z, float angle);
+void SG_EXPORT sgSurfaceDrawRads2f1f(SGSurface* surface, float x, float y, float angle);
+void SG_EXPORT sgSurfaceDrawDegs2f1f(SGSurface* surface, float x, float y, float angle);
+void SG_EXPORT sgSurfaceDraw3f2f2f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset);
+void SG_EXPORT sgSurfaceDraw2f2f2f(SGSurface* surface, float x, float y, float xscale, float yscale, float xoffset, float yoffset);
+void SG_EXPORT sgSurfaceDraw3f2f(SGSurface* surface, float x, float y, float z, float xscale, float yscale);
+void SG_EXPORT sgSurfaceDraw2f2f(SGSurface* surface, float x, float y, float xscale, float yscale);
+void SG_EXPORT sgSurfaceDraw3f(SGSurface* surface, float x, float y, float z);
+void SG_EXPORT sgSurfaceDraw2f(SGSurface* surface, float x, float y);
 void SG_EXPORT sgSurfaceDraw(SGSurface* surface);
 
 void SG_EXPORT sgSurfaceTarget(SGSurface* surface);
