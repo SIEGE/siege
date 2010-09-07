@@ -39,6 +39,8 @@ void SG_EXPORT sgSpriteDrawRads3f1f(SGSprite* sprite, float x, float y, float z,
 void SG_EXPORT sgSpriteDrawDegs3f1f(SGSprite* sprite, float x, float y, float z, float angle);
 void SG_EXPORT sgSpriteDrawRads2f1f(SGSprite* sprite, float x, float y, float angle);
 void SG_EXPORT sgSpriteDrawDegs2f1f(SGSprite* sprite, float x, float y, float angle);
+void SG_EXPORT sgSpriteDraw3f2f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale);
+void SG_EXPORT sgSpriteDraw2f2f(SGSprite* sprite, float x, float y, float xscale, float yscale);
 void SG_EXPORT sgSpriteDraw3f(SGSprite* sprite, float x, float y, float z);
 void SG_EXPORT sgSpriteDraw2f(SGSprite* sprite, float x, float y);
 
