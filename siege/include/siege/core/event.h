@@ -10,6 +10,16 @@ extern "C"
 {
 #endif // __cplusplus
 
+/**
+    \name Event types
+*/
+// @{
+/**
+    \private
+    \def SG_EV_INTERNAL
+
+    Used internally for \ref SGEntity "SGEntity"
+*/
 #define SG_EV_INTERNAL ((SGenum)-1)
 
 // EventClient types -- these should be OR'd together
@@ -23,8 +33,13 @@ extern "C"
 #define SG_EVT_PHYSICS  0x00800000
 #define SG_EVT_LEVEL    0x01000000
 #define SG_EVT_ALL      0xFFFF0000
+// @}
 
-// EventClient functions -- used in calls
+/**
+    \name Event functions
+    \brief Used in \ref SGEntity "SGEntity"
+*/
+// @{
 #define SG_EVF_INIT   (SG_EVT_MODULE | 0x0001)
 #define SG_EVF_DEINIT (SG_EVT_MODULE | 0x0002)
 
@@ -92,8 +107,10 @@ extern "C"
 
 #define SG_EVF_LVLSTART (SG_EVT_LEVEL | 0x0001)
 #define SG_EVF_LVLEND   (SG_EVT_LEVEL | 0x0002)
+// @}
 
 /**
+    \brief Event callback function pointer type
     \param data Used-provided data
     \param args Event arguments (depends on the type of event)
     \return SG_TRUE to continue with the next event, SG_FALSE to stop
@@ -106,20 +123,72 @@ SGPList* _sg_cList;
 SGbool _sg_evStop;
 #endif // SG_BUILD_LIBRARY
 
+/**
+    \brief SIEGE event handler "container"
+*/
 typedef struct SGEvent
 {
+    /**
+        \private
+        \brief The event's priority
+    */
     float priority;
+    /**
+        \brief The event's type
+    */
     SGenum type;
+    /**
+        \brief User-provided data
+
+        This is treated as an opaque pointer by SIEGE.
+    */
     void* data;
+    /**
+        \brief Event callback function
+
+        This function is called when the event is triggered.
+    */
     SGEventCall func;
 } SGEvent;
 
 SGbool SG_EXPORT _sgEventInit(void);
 SGbool SG_EXPORT _sgEventDeinit(void);
+
+// @{
+/**
+    \memberof SGEvent
+    \brief Create an event handler
+    \param priority Event handler priority
+    \param type Event handler type
+    \param data User data for the event handler
+    \param func Function to call when the event is triggered
+    \return The newly created event handler if successful, NULL otherwise.
+*/
 SGEvent* SG_EXPORT sgEventCreate(float priority, SGenum type, void* data, SGEventCall func);
+/**
+    \memberof SGEvent
+    \brief Destroy an event handler
+    \param event The event handler to destroy. It should not be used anymore after this call.
+*/
 void SG_EXPORT sgEventDestroy(SGEvent* event);
+// @}
+
+// @{
+/**
+    \brief Trigger an event
+    \param type The event type to trigger
+    \param args The arguments to pass (treated as an opaque pointer by SIEGE)
+
+    This function triggers an event, and in turn, every event handler of the correct type (unless previously stopped).
+*/
 void SG_EXPORT sgEventCall(SGenum type, void* args);
+/**
+    \brief Stop an event
+
+    This function stops an event in its tracks, meaning that it doesn't "propagate" to event handlers further down.
+*/
 void SG_EXPORT sgEventStop(void);
+// @}
 
 #ifdef __cplusplus
 }
