@@ -62,11 +62,10 @@ void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
         _sg_modGraphics.sgmGraphicsDrawSetColor(_sg_gfxHandle, _sg_drawCurColor);
 }
 _SG_COLOR_OVERLOADS_FUNC(sgDrawColor);
-void SG_EXPORT sgDrawTexCoord2f(float x, float y)
+void SG_EXPORT sgDrawTexCoord2f(float s, float t)
 {
-    /// \todo Init to 0 at the start of SIEGE
-    _sg_drawCurTexCoord[0] = x;
-    _sg_drawCurTexCoord[1] = y;
+    _sg_drawCurTexCoord[0] = s;
+    _sg_drawCurTexCoord[1] = t;
 }
 void SG_EXPORT sgDrawVertex3f(float x, float y, float z)
 {

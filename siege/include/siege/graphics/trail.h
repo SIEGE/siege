@@ -34,6 +34,7 @@ typedef struct SGTrail
 
 void SG_EXPORT _sgTrailPopPoint(SGTrail* trail);
 
+// @{
 /**
     \memberof SGTrail
     \brief Create a trail
@@ -47,6 +48,7 @@ SGTrail* SG_EXPORT sgTrailCreate(SGuint maxpoints);
     \param trail The trail to destroy. It should not be used anymore after this call.
 */
 void SG_EXPORT sgTrailDestroy(SGTrail* trail);
+// @}
 
 //void SG_EXPORT sgTrailSetGradient(SGGradient* grad);
 
