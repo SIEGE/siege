@@ -25,7 +25,7 @@ typedef struct SGModule
     SGLibrary* lib;
     SGModuleInfo* minfo;
 
-    SGuint SG_EXPORT (*sgmModuleInit)(void* gc, SGModuleInfo** minfo);
+    SGuint SG_EXPORT (*sgmModuleInit)(SGModuleInfo** minfo);
     SGuint SG_EXPORT (*sgmModuleExit)(SGModuleInfo* minfo);
     //SGuint SG_EXPORT (*sgmModuleFree)(void* data);
     SGuint SG_EXPORT (*sgmModuleMatch)(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);

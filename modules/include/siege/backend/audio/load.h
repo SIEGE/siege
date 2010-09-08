@@ -7,9 +7,9 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_DEPRECATED sgmAudioLoadFile(char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    //SGuint SG_EXPORT SG_DEPRECATED sgmAudioLoadStream(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    SGuint SG_EXPORT SG_DEPRECATED sgmAudioLoadFreeData(void* data);
+    SGuint SG_EXPORT SG_HINT_DEPRECATED sgmAudioLoadFile(char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
+    //SGuint SG_EXPORT SG_HINT_DEPRECATED sgmAudioLoadStream(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
+    SGuint SG_EXPORT SG_HINT_DEPRECATED sgmAudioLoadFreeData(void* data);
 
     SGuint SG_EXPORT sgmAudioFileCreate(void** file, char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
     SGuint SG_EXPORT sgmAudioFileDestroy(void* file);

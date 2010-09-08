@@ -6,16 +6,16 @@
 #include <string.h>
 #include <math.h>
 
-SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
+SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*)calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->imajor = SG_INTERFACE_VMAJOR;
-    (*minfo)->iminor = SG_INTERFACE_VMINOR;
-    (*minfo)->ipatch = SG_INTERFACE_VPATCH;
+    (*minfo)->vmajor = SG_INTERFACE_VMAJOR;
+    (*minfo)->vminor = SG_INTERFACE_VMINOR;
+    (*minfo)->vpatch = SG_INTERFACE_VPATCH;
     // unknown version
-    (*minfo)->vmajor = 0;
-    (*minfo)->vminor = 0;
-    (*minfo)->vpatch = 0;
+    (*minfo)->mmajor = 0;
+    (*minfo)->mminor = 0;
+    (*minfo)->mpatch = 0;
     (*minfo)->type = SG_MODULE_PHYSICS;
     (*minfo)->name = "Chipmunk";
 

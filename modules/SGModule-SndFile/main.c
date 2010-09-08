@@ -4,22 +4,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
+SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*)calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->imajor = SG_INTERFACE_VMAJOR;
-    (*minfo)->iminor = SG_INTERFACE_VMINOR;
-    (*minfo)->ipatch = SG_INTERFACE_VPATCH;
+    (*minfo)->vmajor = SG_INTERFACE_VMAJOR;
+    (*minfo)->vminor = SG_INTERFACE_VMINOR;
+    (*minfo)->vpatch = SG_INTERFACE_VPATCH;
 
     char buffer[256];
     int buflen;
     buflen = sf_command(NULL, SFC_GET_LIB_VERSION, buffer, sizeof(buffer) / sizeof(char));
-    int vmajor, vminor, vpatch;
-    sscanf(buffer, "%d.%d.%d", &vmajor, &vminor, &vpatch);
+    int mmajor, mminor, mpatch;
+    sscanf(buffer, "%d.%d.%d", &mmajor, &mminor, &mpatch);
 
-    (*minfo)->vmajor = vmajor;
-    (*minfo)->vminor = vminor;
-    (*minfo)->vpatch = vpatch;
+    (*minfo)->mmajor = mmajor;
+    (*minfo)->mminor = mminor;
+    (*minfo)->mpatch = mpatch;
     (*minfo)->type = SG_MODULE_AUDIOLOAD;
     (*minfo)->name = "SndFile";
 

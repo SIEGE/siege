@@ -469,21 +469,21 @@ typedef double SGdouble;
 typedef struct SGModuleInfo
 {
     /**
-        \name Interface version
+        \name SIEGE version
     */
     // @{
-    SGushort imajor;
-    SGushort iminor;
-    SGushort ipatch;
+    SGushort vmajor;
+    SGushort vminor;
+    SGushort vpatch;
     // @}
 
     /**
         \name Module version
     */
     // @{
-    SGushort vmajor;
-    SGushort vminor;
-    SGushort vpatch;
+    SGushort mmajor;
+    SGushort mminor;
+    SGushort mpatch;
     // @}
 
     SGuint type;
