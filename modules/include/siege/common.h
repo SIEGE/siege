@@ -8,14 +8,30 @@ extern "C"
 {
 #endif // __cplusplus
 
+// @{
 typedef void     SGvoid;
 typedef uint8_t  SGbool;
+/// \brief Equivalent to SGuint
 typedef uint32_t SGenum;
+// @}
 
+/// \name Characters
+// @{
 typedef uint8_t  SGchar;
 typedef uint16_t SGwchar;
 typedef uint32_t SGdchar;
+// }@
 
+/**
+    \name Integers
+
+    Sizes:
+    - SG[u]byte: 8 bits
+    - SG[u]short: 16 bits
+    - SG[u]int: 32 bits
+    - SG[u]long: 64 bits
+*/
+// @{
 typedef int8_t   SGbyte;
 typedef uint8_t  SGubyte;
 typedef int16_t  SGshort;
@@ -24,42 +40,159 @@ typedef int32_t  SGint;
 typedef uint32_t SGuint;
 typedef int64_t  SGlong;
 typedef uint64_t SGulong;
+// @}
 
+/// \name Floating point
+// @{
 typedef float  SGfloat;
 typedef double SGdouble;
+// @}
 
-#ifdef __GCC__
-#define SG_DEPRECATED __attribute__((deprecated))
+/**
+    \brief Used for things like pasting together SG_INTERFACE_VSTRING
+*/
+// @{
+#define _SG_STRING(P) #P
+#define _SG_STRING_MACRO(P) _SG_STRING(P)
+// @}
+
+/**
+    \name Hints
+
+    Different hints which give the compiler more info, in order to produce warning messages and similar where applicable.
+*/
+// @{
+#ifdef __GNUC__
+#   define SG_HINT_DEPRECATED __attribute__((deprecated))
+#   define SG_HINT_PRINTF(str, chk) __attribute__((format(printf, str, chk)))
 #elif defined(_MSC_VER)
-#define SG_DEPRECATED __declspec(deprecated)
+#   define SG_HINT_DEPRECATED __declspec(deprecated)
+#   define SG_HINT_PRINTF(str, chk)
 #else
-#define SG_DEPRECATED
-#endif // __GCC__
+/**
+    \brief Deprecated function hint
 
-// use test
+    Indicates that the function is deprecated and thus scheduled for removal. Usage of deprecated functions is not recommended.
+*/
+#   define SG_HINT_DEPRECATED
+/**
+    \brief Printf-like syntax hint
+    \param str Index of the format string (starting with 1)
+    \param chk Index of the first varargs (starting with 1) or 0 if the function accepts va_args directly
+
+    Indicates that the syntax of the function resembles that of printf.
+*/
+#   define SG_HINT_PRINTF(str, chk)
+#endif // __GCC__
+// @}
+
+/**
+    \brief Use test functionality
+    \deprecated
+        This is included for testing purposes and therefore may be removed in the future.
+
+    Defined to indicate that some "test" functionality should be used in the modules.
+*/
 #define SIEGE_TEST
 
 #ifndef SG_EXPORT
+/**
+    \brief Exported in siege calling convention
+
+    This is used in all SIEGE functions. SIEGE currently uses the cdecl calling convention.
+*/
 //#define SG_EXPORT _cdecl
 #define SG_EXPORT
 #endif
 
-#define SG_INTERFACE_VMAJOR 0
-#define SG_INTERFACE_VMINOR 1
-#define SG_INTERFACE_VPATCH 5
+/**
+    \name Version information
+*/
+// @{
+#define SG_VERSION_MAJOR 0
+#define SG_VERSION_MINOR 1
+#define SG_VERSION_PATCH 6
+/**
+    \brief Version string
 
+    In VMAJOR.VMINOR.VPATCH form, for example "0.1.5".
+*/
+#define SG_VERSION_STRING ( _SG_STRING_MACRO(SG_VERSION_MAJOR) "." _SG_STRING_MACRO(SG_VERSION_MINOR) "." _SG_STRING_MACRO(SG_VERSION_PATCH) )
+// @}
+
+/**
+    \name Interface version information
+    \deprecated
+        Superseded by SG_VERSION_* - use that instead.
+*/
+// @{
+/**
+    \deprecated Use \ref SG_VERSION_MAJOR "SG_VERSION_MAJOR" instead.
+*/
+#define SG_INTERFACE_VMAJOR SG_VERSION_MAJOR
+/**
+    \deprecated Use \ref SG_VERSION_MINOR "SG_VERSION_MINOR" instead.
+*/
+#define SG_INTERFACE_VMINOR SG_VERSION_MINOR
+/**
+    \deprecated Use \ref SG_VERSION_PATCH "SG_VERSION_PATCH" instead.
+*/
+#define SG_INTERFACE_VPATCH SG_VERSION_PATCH
+/**
+    \brief Interface version string
+    \deprecated Use \ref SG_VERSION_STRING "SG_VERSION_STRING" instead.
+
+    In VMAJOR.VMINOR.VPATCH form, for example "0.1.5".
+*/
+#define SG_INTERFACE_VSTRING SG_VERSION_STRING
+// @}
+
+/**
+    \name Booleans
+
+    These are used in conjunction with \ref SGbool "SGbool".
+*/
+// @{
 #define SG_TRUE  1
 #define SG_FALSE 0
+// @}
 
+/**
+    \name Floating point constants
+*/
+// @{
+/**
+    Used by some functions to indicate "invalid value" when returning.
+*/
 #define SG_NAN 0.0f/0.0f
+/**
+    Currently used with physics, to indicate infinite mass (or moment of inertia).
+*/
+#define SG_INF 1.0f/0.0f
 //#define SG_NAN strtod("NAN", NULL)
-//#define SG_INFINITY
+//#define SG_INF strtod("INF", NULL)
+// @}
 
+/**
+    \name Module error values
+
+    These values are to be returned from backend modules, to indicate roughly if (and which) error has occured.
+
+    They are currently not used in the frontend -> client space, but they may be in the future.
+*/
+// @{
 #define SG_OK            0
 #define SG_NO_ERROR      0
 #define SG_UNKNOWN_ERROR 1
 #define SG_INVALID_VALUE 2
+// }@
 
+/**
+    \name Module types
+
+    Used in modules, to indicate which interface groups they implement. These are \b not used in SIEGE frontend - they are merely used in other modules, for checking module compatibility.
+*/
+// @{
 #define SG_MODULE_WINDOW       0x01
 #define SG_MODULE_INPUT        0x02
 #define SG_MODULE_CORE         (SG_MODULE_WINDOW | SG_MODULE_INPUT)
@@ -69,7 +202,14 @@ typedef double SGdouble;
 #define SG_MODULE_AUDIOLOAD    0x20
 #define SG_MODULE_FONTLOAD     0x40
 #define SG_MODULE_PHYSICS      0x80
+// }@
 
+/**
+    \name Audio formats
+
+    These are used to indicate the format of the data passed to audio buffers.
+*/
+// @{
 #define SG_AUDIO_FORMAT_S8  0x01
 #define SG_AUDIO_FORMAT_S16 0x02
 #define SG_AUDIO_FORMAT_S24 0x03
@@ -82,42 +222,170 @@ typedef double SGdouble;
 
 #define SG_AUDIO_FORMAT_F   0x0A
 #define SG_AUDIO_FORMAT_D   0x0B
+// }@
 
+/**
+    \name Graphics primitives types
+*/
+// @{
+/**
+    Each vertex makes a point.
+*/
 #define SG_GRAPHICS_PRIMITIVE_POINTS            0x01
+/**
+    Each 2 vertices make a line. The number of passed vertices must be even.
+*/
 #define SG_GRAPHICS_PRIMITIVE_LINES             0x02
+/**
+    Last vertex of previous line becomes the first vertex of the next one, drawing a connected line defined by the set of vertices.
+    \sa
+        SG_GRAPHICS_PRIMITIVE_TRIANGLE_STRIP
+        SG_GRAPHICS_PRIMITIVE_QUAD_STRIP
+*/
 #define SG_GRAPHICS_PRIMITIVE_LINE_STRIP        0x03
+/**
+    The first vertex is the "origin" for all the lines.
+    \sa
+        SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN
+*/
 #define SG_GRAPHICS_PRIMITIVE_LINE_FAN          0x04
+/**
+    Lines are created in a loop. This is similar to \ref SG_GRAPHICS_PRIMITIVE_LINE_STRIP "SG_GRAPHICS_PRIMITIVE_LINE_STRIP", except that the last and first vertex become connected by a line.
+    \sa
+        SG_GRAPHICS_PRIMITIVE_LINE_STRIP
+*/
 #define SG_GRAPHICS_PRIMITIVE_LINE_LOOP         0x05
+/**
+    Each 3 vertices make a triangle. The number of passed vertices must be a multiple of 3.
+*/
 #define SG_GRAPHICS_PRIMITIVE_TRIANGLES         0x06
+/**
+    Last 2 vertices of the previous triangle become the first two vertices of the next one, making a connected hull. This is analogous to \ref SG_GRAPHICS_PRIMITIVE_LINE_STRIP "SG_GRAPHICS_PRIMITIVE_LINE_STRIP".
+    \sa
+        SG_GRAPHICS_PRIMITIVE_LINE_STRIP
+*/
 #define SG_GRAPHICS_PRIMITIVE_TRIANGLE_STRIP    0x07
+/**
+    The first vertex becomes a "common point" between all the triangles. This is analogous to \ref SG_GRAPHICS_PRIMITIVE_LINE_FAN "SG_GRAPHICS_PRIMITIVE_LINE_FAN".
+    \sa
+        SG_GRAPHICS_PRIMITIVE_LINE_FAN
+*/
 #define SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN      0x08
 //#define SG_GRAPHICS_PRIMITIVE_TRIANGLE_LOOP     0x09
+/**
+    Each 4 vertices make a quad. The number of passed vertices must be a multiple of 4.
+*/
 #define SG_GRAPHICS_PRIMITIVE_QUADS             0x0A
+/**
+    Last 2 vertices of the previous quad become the first two vertices of the next one. This is analogous to \ref SG_GRAPHICS_PRIMITIVE_LINE_STRIP "SG_GRAPHICS_PRIMITIVE_LINE_STRIP" and \ref SG_GRAPHICS_PRIMITIVE_TRIANGLE_STRIP "SG_GRAPHICS_PRIMITIVE_TRIANGLE_STRIP".
+    \sa
+        SG_GRAPHICS_PRIMITIVE_LINE_STRIP
+        SG_GRAPHICS_PRIMITIVE_TRIANGLE_STRIP
+*/
 #define SG_GRAPHICS_PRIMITIVE_QUAD_STRIP        0x0B
 //#define SG_GRAPHICS_PRIMITIVE_QUAD_FAN          0x0C
 //#define SG_GRAPHICS_PRIMITIVE_QUAD_LOOP         0x0D
 
+/**
+    Create a convex polygon - the vertices passed are assumed to form one.
+*/
 #define SG_GRAPHICS_PRIMITIVE_CONVEX_POLYGON        0x10
+/**
+    Create polygon that is possibly concave (but not self-intersecting).
+    \note
+        The vertices passed may be implicitly converted to a series of convex polygons.
+    \note
+        It is perfectly fine (if not best for performance) to pass a convex polygon as a concave one.
+*/
 #define SG_GRAPHICS_PRIMITIVE_CONCAVE_POLYGON       0x20
+/**
+    Create a polygon that is possibly self-intersecting.
+    \note
+        The vertices passed may be implicitly converted to a series of convex polygons.
+    \note
+        It is perfectly fine (if not best for performance) to pass non-intersecting polygon as an intersecting one.
+*/
 #define SG_GRAPHICS_PRIMITIVE_INTERSECTING_POLYGON  0x30
+// }@
 
+/**
+    \name Graphics info flags
+    \deprecated
+        These may be removed in the future.
+*/
+// @{
+/**
+    \brief Cannot use NPOT textures
+
+    This flag indicates that the backend does not support power-of-two textures, and that conversion to such sizes may be necessarry by the frontend.
+*/
 #define SG_GRAPHICS_TEXTURE_NPOT    0x01
+// }@
 
+/**
+    \name Physics shapes
+*/
+// @{
+/**
+    Segment shape, defined by two points and possibly a width.
+*/
 #define SG_PHYSICS_SHAPE_SEGMENT 0x01
+/**
+    Polygon shape, defined by a set of points.
+*/
 #define SG_PHYSICS_SHAPE_POLYGON 0x02
+/**
+    A circle shape, defined by an inner and outer radius.
+*/
 #define SG_PHYSICS_SHAPE_CIRCLE  0x03
+// @}
 
+/**
+    \name Physics body types
+*/
+// @{
+/**
+    Completely non-interactive body type.
+*/
 #define SG_PHYSICS_BODY_PASSIVE    0x01
+/**
+    "Normal" body type, with normal physics interaction.
+*/
 #define SG_PHYSICS_BODY_NORMAL     0x02
+/**
+    A body type with seemingly infinite mass, but still movable (usually through user interaction).
+    \note
+        May be deprecated in the future.
+*/
 #define SG_PHYSICS_BODY_SEMISTATIC 0x03
+/**
+    A completely static, non-movable body type with seemingly infinite mass.
+*/
 #define SG_PHYSICS_BODY_STATIC     0x04
+// @}
 
+/**
+    \name Window flags
+*/
+// @{
 #define SG_WINDOW_FULLSCREEN 0x01
 #define SG_WINDOW_RESIZABLE  0x02
+// @}
 
+/**
+    \name Joystick info flags
+    \deprecated
+        These may be removed in the future.
+*/
+// @{
 #define SG_JOYSTICK_BUTTON_NOCB 0x01
 #define SG_JOYSTICK_AXIS_NOCB   0x11
+// @}
 
+/**
+    \name Keyboard keys
+*/
+// @{
 #define SG_KEYBOARD_KEY_UNKNOWN     0x000
 #define SG_KEYBOARD_KEY_SPACE       0x020
 #define SG_KEYBOARD_KEY_ESC         0x100
@@ -182,28 +450,41 @@ typedef double SGdouble;
 #define SG_KEYBOARD_KEY_KP_DECIMAL  0x314
 #define SG_KEYBOARD_KEY_KP_EQUAL    0x315
 #define SG_KEYBOARD_KEY_KP_ENTER    0x316
+// @}
 
+/**
+    \name Mouse buttons
+*/
+// @{
 #define SG_MOUSE_BUTTON_LEFT   1
 #define SG_MOUSE_BUTTON_RIGHT  2
 #define SG_MOUSE_BUTTON_MIDDLE 3
+// @}
 
-/*typedef struct SGModuleFlags
-{
-    // 0-terminated
-    SGenum* sAudioFormat;
-    SGenum* sGraphicsPrimitive;
-    SGenum* sGraphicsTextures;
-} SGModuleFlags;*/
+/**
+    \brief Module info
 
+    Used in modules, to send information about the module to SIEGE and other modules.
+*/
 typedef struct SGModuleInfo
 {
+    /**
+        \name Interface version
+    */
+    // @{
     SGushort imajor;
     SGushort iminor;
     SGushort ipatch;
+    // @}
 
+    /**
+        \name Module version
+    */
+    // @{
     SGushort vmajor;
     SGushort vminor;
     SGushort vpatch;
+    // @}
 
     SGuint type;
     char* name;

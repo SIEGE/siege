@@ -49,6 +49,14 @@ typedef double SGdouble;
 // @}
 
 /**
+    \brief Used for things like pasting together SG_INTERFACE_VSTRING
+*/
+// @{
+#define _SG_STRING(P) #P
+#define _SG_STRING_MACRO(P) _SG_STRING(P)
+// @}
+
+/**
     \name Hints
 
     Different hints which give the compiler more info, in order to produce warning messages and similar where applicable.
@@ -101,15 +109,42 @@ typedef double SGdouble;
     \name Version information
 */
 // @{
-#define SG_INTERFACE_VMAJOR 0
-#define SG_INTERFACE_VMINOR 1
-#define SG_INTERFACE_VPATCH 5
+#define SG_VERSION_MAJOR 0
+#define SG_VERSION_MINOR 1
+#define SG_VERSION_PATCH 6
 /**
     \brief Version string
 
-    In VMAJOR.VMINOR.VPATCH form, for example 0.1.5
+    In VMAJOR.VMINOR.VPATCH form, for example "0.1.5".
 */
-#define SG_INTERFACE_VSTRING (#SG_INTERFACE_VMAJOR "." #SG_INTERFACE_VMINOR "." #SG_INTERFACE_VPATCH)
+#define SG_VERSION_STRING ( _SG_STRING_MACRO(SG_VERSION_MAJOR) "." _SG_STRING_MACRO(SG_VERSION_MINOR) "." _SG_STRING_MACRO(SG_VERSION_PATCH) )
+// @}
+
+/**
+    \name Interface version information
+    \deprecated
+        Superseded by SG_VERSION_* - use that instead.
+*/
+// @{
+/**
+    \deprecated Use \ref SG_VERSION_MAJOR "SG_VERSION_MAJOR" instead.
+*/
+#define SG_INTERFACE_VMAJOR SG_VERSION_MAJOR
+/**
+    \deprecated Use \ref SG_VERSION_MINOR "SG_VERSION_MINOR" instead.
+*/
+#define SG_INTERFACE_VMINOR SG_VERSION_MINOR
+/**
+    \deprecated Use \ref SG_VERSION_PATCH "SG_VERSION_PATCH" instead.
+*/
+#define SG_INTERFACE_VPATCH SG_VERSION_PATCH
+/**
+    \brief Interface version string
+    \deprecated Use \ref SG_VERSION_STRING "SG_VERSION_STRING" instead.
+
+    In VMAJOR.VMINOR.VPATCH form, for example "0.1.5".
+*/
+#define SG_INTERFACE_VSTRING SG_VERSION_STRING
 // @}
 
 /**
