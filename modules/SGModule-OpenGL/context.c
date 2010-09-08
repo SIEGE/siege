@@ -23,7 +23,7 @@ SGuint SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint h
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
-    const char* extensions = glGetString(GL_EXTENSIONS);
+    const char* extensions = (const char*)glGetString(GL_EXTENSIONS);
     char* ext = strstr(extensions, "_framebuffer_object"); // EXT_framebuffer_object or ARB_framebuffer_object or w/e
     (*cdata)->fbo.hasFBO = (ext != NULL);
     checkFBO(&(*cdata)->fbo);
