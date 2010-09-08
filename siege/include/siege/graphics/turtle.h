@@ -156,7 +156,7 @@ void SG_EXPORT sgTurtleReset(SGTurtle* turtle);
 void SG_EXPORT sgTurtlePush(SGTurtle* turtle);
 /**
     \memberof SGTurtle
-    \param Pop the turtle's state off the stack and set it
+    \brief Pop the turtle's state off the stack and set it
     \param turtle The turtle of which state we want to pop and set
 
     This function gets the state on top of its stack, removes it and then sets it as the current state.
