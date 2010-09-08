@@ -15,7 +15,7 @@ SGbool SG_EXPORT _sgTurtleDeinit(void)
     return SG_TRUE;
 }
 
-SGTurtle* SG_EXPORT sgTurtleCreate(float x, float y, float angle, SGbool draw)
+SGTurtle* SG_EXPORT sgTurtleCreateRads(float x, float y, float rads, SGbool draw)
 {
     SGTurtle* turtle = malloc(sizeof(SGTurtle));
     turtle->stack = NULL;
@@ -23,10 +23,14 @@ SGTurtle* SG_EXPORT sgTurtleCreate(float x, float y, float angle, SGbool draw)
 
     turtle->start.x = x;
     turtle->start.y = y;
-    turtle->start.angle = angle;
+    turtle->start.angle = rads;
     turtle->start.draw = draw;
     sgTurtleReset(turtle);
     return turtle;
+}
+SGTurtle* SG_EXPORT sgTurtleCreateDegs(float x, float y, float degs, SGbool draw)
+{
+    return sgTurtleCreateRads(x, y, degs * M_PI / 180.0, draw);
 }
 void SG_EXPORT sgTurtleDestroy(SGTurtle* turtle)
 {
@@ -36,6 +40,7 @@ void SG_EXPORT sgTurtleDestroy(SGTurtle* turtle)
     free(turtle->stack);
     free(turtle);
 }
+
 void SG_EXPORT sgTurtleReset(SGTurtle* turtle)
 {
     if(turtle == NULL)
@@ -63,6 +68,7 @@ void SG_EXPORT sgTurtlePop(SGTurtle* turtle)
     memcpy(&turtle->curr, &turtle->stack[turtle->stacklen], sizeof(SGTurtleState));
     turtle->stack = realloc(turtle->stack, turtle->stacklen * sizeof(SGTurtleState));
 }
+
 void SG_EXPORT sgTurtleStep(SGTurtle* turtle, float dist)
 {
     if(turtle == NULL)
@@ -90,6 +96,7 @@ void SG_EXPORT sgTurtleJump(SGTurtle* turtle, float x, float y)
 {
     sgTurtleSetPos(turtle, x, y);
 }
+
 void SG_EXPORT sgTurtlePenUp(SGTurtle* turtle)
 {
     sgTurtleSetPen(turtle, SG_FALSE);
