@@ -25,16 +25,77 @@ typedef struct SGVec4
     float x, y, z, w;
 } SGVec4;
 
+/**
+    \memberof SGVec2
+    \brief Create a 2D vector from coordinates
+    \param x X coordinate
+    \param y Y coordinate
+    \return A new 2D vector.
+*/
 SGVec2 SG_EXPORT sgVec2f(float x, float y);
+/**
+    \memberof SGVec2
+    \brief Create a 2D vector from a coordinate pointer
+    \param f A pointer to 2 float coordinates
+    \return A new 2D vector.
+*/
 SGVec2 SG_EXPORT sgVec2fv(float* f);
+/**
+    \memberof SGVec2
+    \brief Create a 2D vector from polar coordinates in radians
+    \param rads Vector's angle in radians
+    \param len Vector's length
+    \return A new 2D vector.
+*/
 SGVec2 SG_EXPORT sgVec2PolarRads(float rads, float len);
+/**
+    \memberof SGVec2
+    \brief Create a 2D vector from polar coordinates in degrees
+    \param degs Vector's angle in degrees
+    \param len Vector's length
+    \return A new 2D vector.
+*/
 SGVec2 SG_EXPORT sgVec2PolarDegs(float degs, float len);
+/**
+    \memberof SGVec2
+    \brief Create a 2D NaN vector
+    \return A new 2D vector with SG_NAN,SG_NAN coordinates.
+*/
 SGVec2 SG_EXPORT sgVec2Nan(void);
 
+/**
+    \memberof SGVec2
+    \brief Normalize the vector
+    \param vec The vector to normalize
+    \return The normalized vector.
+
+    This function changes the vector so that its length is 1.
+*/
 SGVec2 SG_EXPORT sgVec2Normalize(SGVec2 vec);
 
+/**
+    \memberof SGVec2
+    \brief Set the vector's length
+    \param vec The vector of which the length we want to set
+    \param length The new length
+    \return A vector with the same angle but new length.
+*/
 SGVec2 SG_EXPORT sgVec2SetLength(SGVec2 vec, float length);
+/**
+    \memberof SGVec2
+    \brief Get the vector's length
+    \param vec The vector of which the length we want to get
+    \return The length of the vector.
+    \note
+        If the squared length is required, it is more efficient to use \ref sgVec2GetLength2 "sgVec2GetLength2".
+*/
 float SG_EXPORT sgVec2GetLength(SGVec2 vec);
+/**
+    \memberof SGVec2
+    \brief Get the vector's squared length
+    \param vec The vector of which the squared length we want to get
+    \return The length of the vector, squared.
+*/
 float SG_EXPORT sgVec2GetLength2(SGVec2 vec);
 
 SGVec2 SG_EXPORT sgVec2SetAngleRads(SGVec2 vec, float rads);
