@@ -206,7 +206,10 @@ SGuint SG_EXPORT sgmCoreWindowGetSize(void* window, SGuint* width, SGuint* heigh
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    glfwGetWindowSize(width, height);
+    int w, h;
+    glfwGetWindowSize(&w, &h);
+    *width = w;
+    *height = h;
 
     return SG_OK;
 }
