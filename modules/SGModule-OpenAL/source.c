@@ -126,14 +126,14 @@ SGuint SG_EXPORT sgmAudioSourceUnqueueBuffers(void* source, SGuint numbuffers)
 }
 SGuint sgmAudioSourceGetNumProcessedBuffers(void* source, SGuint* processed)
 {
-    ALuint p;
+    ALint p;
     alGetSourcei(*(ALuint*)&source, AL_BUFFERS_PROCESSED, &p);
     *processed = p;
     return SG_OK;
 }
 SGuint sgmAudioSourceGetNumQueuedBuffers(void* source, SGuint* queued)
 {
-    ALuint q;
+    ALint q;
     alGetSourcei(*(ALuint*)&source, AL_BUFFERS_QUEUED, &q);
     *queued = q;
     return SG_OK;
