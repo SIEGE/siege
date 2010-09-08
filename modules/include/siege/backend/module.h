@@ -7,7 +7,7 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo);
+    SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo);
     SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo);
     //SGuint SG_EXPORT sgmModuleFree(void* data);
 

@@ -82,17 +82,9 @@ SGModule* SG_EXPORT sgModuleLoad(char* name)
     free(fname);
 
     module->sgmModuleInit = sgGetProcAddress(module->lib, "sgmModuleInit");
-    if(module->sgmModuleInit == NULL)
-        module->sgmModuleInit = sgGetProcAddress(module->lib, "sgmModuleInit");
     module->sgmModuleExit = sgGetProcAddress(module->lib, "sgmModuleExit");
-    if(module->sgmModuleExit == NULL)
-        module->sgmModuleInit = sgGetProcAddress(module->lib, "sgmModuleExit");
     //module->sgmModuleFree = sgGetProcAddress(module->lib, "sgmModuleFree");
-    //if(module->sgmModuleFree == NULL)
-    //    module->sgmModuleInit = sgGetProcAddress(module->lib, "sgmModuleFree");
     module->sgmModuleMatch = sgGetProcAddress(module->lib, "sgmModuleMatch");
-    if(module->sgmModuleMatch == NULL)
-        module->sgmModuleInit = sgGetProcAddress(module->lib, "sgmModuleMatch");
 
     _sgModuleLoadAudio(module->lib);
     _sgModuleLoadWindow(module->lib);
@@ -104,7 +96,7 @@ SGModule* SG_EXPORT sgModuleLoad(char* name)
     _sg_modFirst = SG_FALSE;
 
     if(module->sgmModuleInit != NULL)
-        module->sgmModuleInit(NULL, &module->minfo);
+        module->sgmModuleInit(&module->minfo);
     sgListAppend(_sg_modList, module);
     return module;
 }

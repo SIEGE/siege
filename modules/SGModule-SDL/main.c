@@ -6,17 +6,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
+SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->imajor = SG_INTERFACE_VMAJOR;
-    (*minfo)->iminor = SG_INTERFACE_VMINOR;
-    (*minfo)->ipatch = SG_INTERFACE_VPATCH;
+    (*minfo)->vmajor = SG_INTERFACE_VMAJOR;
+    (*minfo)->vminor = SG_INTERFACE_VMINOR;
+    (*minfo)->vpatch = SG_INTERFACE_VPATCH;
 
     SDL_version ver = *SDL_Linked_Version();
-    (*minfo)->vmajor = ver.major;
-    (*minfo)->vminor = ver.minor;
-    (*minfo)->vpatch = ver.patch;
+    (*minfo)->mmajor = ver.major;
+    (*minfo)->mminor = ver.minor;
+    (*minfo)->mpatch = ver.patch;
     (*minfo)->type = SG_MODULE_WINDOW | SG_MODULE_INPUT;
     (*minfo)->name = "SDL";
 

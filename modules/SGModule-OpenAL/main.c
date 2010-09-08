@@ -12,12 +12,12 @@ ALint state(ALuint source)
     return s;
 }
 
-SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
+SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*) calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->imajor = SG_INTERFACE_VMAJOR;
-    (*minfo)->iminor = SG_INTERFACE_VMINOR;
-    (*minfo)->ipatch = SG_INTERFACE_VPATCH;
+    (*minfo)->vmajor = SG_INTERFACE_VMAJOR;
+    (*minfo)->vminor = SG_INTERFACE_VMINOR;
+    (*minfo)->vpatch = SG_INTERFACE_VPATCH;
 
     device = alcOpenDevice(NULL);
     context = alcCreateContext(device, NULL);
@@ -33,16 +33,16 @@ SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
         numdots++;
     }
     numdots--;
-    int vmajor, vminor;
-    int vpatch = 0;
+    int mmajor, mminor;
+    int mpatch = 0;
     if(numdots == 1)
-        sscanf(version, "%d.%d", &vmajor, &vminor);
+        sscanf(version, "%d.%d", &mmajor, &mminor);
     else
-        sscanf(version, "%d.%d.%d", &vmajor, &vminor, &vpatch);
+        sscanf(version, "%d.%d.%d", &mmajor, &mminor, &mpatch);
 
-    (*minfo)->vmajor = vmajor;
-    (*minfo)->vminor = vminor;
-    (*minfo)->vpatch = vpatch;
+    (*minfo)->mmajor = mmajor;
+    (*minfo)->mminor = mminor;
+    (*minfo)->mpatch = mpatch;
     (*minfo)->type = SG_MODULE_AUDIO;
     (*minfo)->name = "OpenAL";
 

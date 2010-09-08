@@ -5,22 +5,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
+SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*) calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->imajor = SG_INTERFACE_VMAJOR;
-    (*minfo)->iminor = SG_INTERFACE_VMINOR;
-    (*minfo)->ipatch = SG_INTERFACE_VPATCH;
+    (*minfo)->vmajor = SG_INTERFACE_VMAJOR;
+    (*minfo)->vminor = SG_INTERFACE_VMINOR;
+    (*minfo)->vpatch = SG_INTERFACE_VPATCH;
 
     int ret = FT_Init_FreeType(&library);
     if(ret != 0)
         return SG_UNKNOWN_ERROR;
 
-    /*int vmajor, vminor, vpatch;
-    FT_Library_Version(library, &vmajor, &vminor, &vpatch);
-    (*minfo)->vmajor = vmajor;
-    (*minfo)->vminor = vminor;
-    (*minfo)->vpatch = vpatch;
+    /*int mmajor, mminor, mpatch;
+    FT_Library_Version(library, &mmajor, &mminor, &mpatch);
+    (*minfo)->mmajor = mmajor;
+    (*minfo)->mminor = mminor;
+    (*minfo)->mpatch = mpatch;
     (*minfo)->type = SG_MODULE_FONTLOAD;*/
     (*minfo)->name = "Freetype";
 

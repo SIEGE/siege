@@ -20,8 +20,8 @@ extern "C"
     //SGuint SG_EXPORT sgmAudioSourceIsRewinded(void* source, SGbool* rewinded);
     SGuint SG_EXPORT sgmAudioSourceStop(void* source);
     SGuint SG_EXPORT sgmAudioSourceIsStopped(void* source, SGbool* stopped);
-    SGuint SG_EXPORT SG_DEPRECATED sgmAudioSourceSetBuffer(void* source, void* buffer);
-    //SGuint SG_EXPORT SG_DEPRECATED sgmAudioSourceGetBuffer(void* source, void** buffer);
+    SGuint SG_EXPORT SG_HINT_DEPRECATED sgmAudioSourceSetBuffer(void* source, void* buffer);
+    //SGuint SG_EXPORT SG_HINT_DEPRECATED sgmAudioSourceGetBuffer(void* source, void** buffer);
     SGuint SG_EXPORT sgmAudioSourceQueueBuffers(void* source, void** buffers, SGuint numbuffers);
     SGuint SG_EXPORT sgmAudioSourceUnqueueBuffers(void* source, SGuint numbuffers);
 /// \warning Will most likely change very soon

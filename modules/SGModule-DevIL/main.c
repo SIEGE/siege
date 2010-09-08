@@ -5,20 +5,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
+SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*)calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->imajor = SG_INTERFACE_VMAJOR;
-    (*minfo)->iminor = SG_INTERFACE_VMINOR;
-    (*minfo)->ipatch = SG_INTERFACE_VPATCH;
+    (*minfo)->vmajor = SG_INTERFACE_VMAJOR;
+    (*minfo)->vminor = SG_INTERFACE_VMINOR;
+    (*minfo)->vpatch = SG_INTERFACE_VPATCH;
 
     ilInit();
 
     /*int version = ilGetInteger(IL_VERSION_NUM);
 
-    (*minfo)->vmajor = version / 100;
-    (*minfo)->vminor = version / 10 - (*minfo)->vmajor * 100;
-    (*minfo)->vpatch = version / 1 - (*minfo)->vminor * 10 - (*minfo)->vmajor * 100;
+    (*minfo)->mmajor = version / 100;
+    (*minfo)->mminor = version / 10 - (*minfo)->mmajor * 100;
+    (*minfo)->mpatch = version / 1 - (*minfo)->mminor * 10 - (*minfo)->mmajor * 100;
     (*minfo)->type = SG_MODULE_GRAPHICSLOAD;*/
     (*minfo)->name = "DevIL";
 

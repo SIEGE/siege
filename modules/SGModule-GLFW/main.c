@@ -6,18 +6,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmModuleInit(void* gc, SGModuleInfo** minfo)
+SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->imajor = SG_INTERFACE_VMAJOR;
-    (*minfo)->iminor = SG_INTERFACE_VMINOR;
-    (*minfo)->ipatch = SG_INTERFACE_VPATCH;
+    (*minfo)->vmajor = SG_INTERFACE_VMAJOR;
+    (*minfo)->vminor = SG_INTERFACE_VMINOR;
+    (*minfo)->vpatch = SG_INTERFACE_VPATCH;
 
-    int vmajor, vminor, vpatch;
-    glfwGetVersion(&vmajor, &vminor, &vpatch);;
-    (*minfo)->vmajor = vmajor;
-    (*minfo)->vminor = vminor;
-    (*minfo)->vpatch = vpatch;
+    int mmajor, mminor, mpatch;
+    glfwGetVersion(&mmajor, &mminor, &mpatch);;
+    (*minfo)->mmajor = mmajor;
+    (*minfo)->mminor = mminor;
+    (*minfo)->mpatch = mpatch;
     (*minfo)->type = SG_MODULE_CORE;
     (*minfo)->name = "GLFW";
 
