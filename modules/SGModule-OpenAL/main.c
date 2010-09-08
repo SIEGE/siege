@@ -15,9 +15,9 @@ ALint state(ALuint source)
 SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*) calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->vmajor = SG_INTERFACE_VMAJOR;
-    (*minfo)->vminor = SG_INTERFACE_VMINOR;
-    (*minfo)->vpatch = SG_INTERFACE_VPATCH;
+    (*minfo)->vmajor = SG_VERSION_MAJOR;
+    (*minfo)->vminor = SG_VERSION_MINOR;
+    (*minfo)->vpatch = SG_VERSION_PATCH;
 
     device = alcOpenDevice(NULL);
     context = alcCreateContext(device, NULL);
