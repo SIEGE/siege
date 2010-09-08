@@ -5,8 +5,15 @@
 
 #include <stdarg.h>
 
-char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(char* format, ...);
-char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(char* format, va_list args);
+// has to be done to avoid a doxygen bug
+#define _SG_PRINTF SG_HINT_PRINTF(1, 2)
+#define _SG_VPRINTF SG_HINT_PRINTF(1, 0)
+
+char* SG_EXPORT _SG_PRINTF sgPrintf(char* format, ...);
+char* SG_EXPORT _SG_VPRINTF sgPrintfv(char* format, va_list args);
+
+#undef _SG_PRINTF
+#undef _SG_VPRINTF
 
 char* SG_EXPORT sgLineEnd(char* text);
 SGuint SG_EXPORT sgLineLength(char* text);
