@@ -7,7 +7,7 @@
 
 SGbool SG_EXPORT _sgViewportInit(void)
 {
-    _sg_viewList = sgListCreate();
+    _sg_viewList = sgLinkedListCreate();
     if(_sg_viewList == NULL)
         return SG_FALSE;
     return SG_TRUE;
@@ -15,14 +15,10 @@ SGbool SG_EXPORT _sgViewportInit(void)
 
 SGbool SG_EXPORT _sgViewportDeinit(void)
 {
-    SGViewport* viewport;
-    ptrdiff_t i;
-    for(i = _sg_viewList->numitems - 1; i >= 0; i--)
-    {
-        viewport = _sg_viewList->items[i];
-        sgViewportDestroy(viewport);
-    }
-    sgListDestroy(_sg_viewList);
+    SGLinkedNode* node;
+    for(node = _sg_viewList->first; node != NULL; node = node->next)
+        sgViewportDestroy(node->item);
+    sgLinkedListDestroy(_sg_viewList);
     return SG_TRUE;
 }
 
@@ -47,7 +43,7 @@ SGViewport* SG_EXPORT sgViewportCreate(void)
 
     if(_sg_modGraphics.sgmGraphicsViewportCreate != NULL)
         _sg_modGraphics.sgmGraphicsViewportCreate(viewport->handle, _sg_gfxHandle);
-    sgListAppend(_sg_viewList, viewport);
+    sgLinkedListAppend(_sg_viewList, viewport);
     return viewport;
 }
 void SG_EXPORT sgViewportDestroy(SGViewport* viewport)
@@ -57,7 +53,7 @@ void SG_EXPORT sgViewportDestroy(SGViewport* viewport)
 
     if(_sg_modGraphics.sgmGraphicsViewportDestroy != NULL)
         _sg_modGraphics.sgmGraphicsViewportDestroy(viewport->handle);
-    sgListRemoveItem(_sg_viewList, viewport);
+    sgLinkedListRemoveItem(_sg_viewList, viewport);
     free(viewport);
 }
 void SG_EXPORT sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)

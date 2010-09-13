@@ -7,17 +7,17 @@
 
 SGbool SG_EXPORT _sgEventInit(void)
 {
-    _sg_evList = sgPListCreate(SG_PLIST_HFO);
+    _sg_evList = sgPLinkedListCreate(SG_PLIST_HFO);
     if(_sg_evList != NULL)
         return SG_TRUE;
     return SG_FALSE;
 }
 SGbool SG_EXPORT _sgEventDeinit(void)
 {
-    size_t i;
-    for(i = 0; i < _sg_evList->numitems; i++)
-        free(_sg_evList->items[i]);
-    sgPListDestroy(_sg_evList);
+    //SGPLinkedNode* node;
+    //for(node = _sg_evList->first; node != NULL; node = node->next)
+    //    free(node);
+    sgLinkedListDestroy(_sg_evList);
     return SG_TRUE;
 }
 SGEvent* SG_EXPORT sgEventCreate(float priority, SGenum type, void* data, SGEventCall func)
@@ -27,24 +27,24 @@ SGEvent* SG_EXPORT sgEventCreate(float priority, SGenum type, void* data, SGEven
     event->type = type;
     event->data = data;
     event->func = func;
-    sgPListAdd(_sg_evList, priority, event);
+    sgPLinkedListInsertPriority(_sg_evList, priority, event);
     return event;
 }
 void SG_EXPORT sgEventDestroy(SGEvent* event)
 {
-    sgPListRemoveItem(_sg_evList, event);
+    sgLinkedListRemoveItem(_sg_evList, event);
 }
 void SG_EXPORT sgEventCall(SGenum type, void* args)
 {
     _sg_evStop = SG_FALSE;
     SGbool cont = SG_TRUE;
     SGEvent* event;
-    size_t i;
-    for(i = 0; (i < _sg_evList->numitems) && cont; i++)
+    SGPLinkedNode* node;
+    for(node = _sg_evList->first; (node != NULL) && cont; node = node->next)
     {
         if(_sg_evStop)
             break;
-        event = (SGEvent*)((SGPItem*)_sg_evList->items[i])->item;
+        event = node->item;
         if(type == event->type)
             cont = event->func(event->data, args);
     }

@@ -4,73 +4,187 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGList* SG_EXPORT sgListCreate(void)
+SGLinkedList* SG_EXPORT sgLinkedListCreate(void)
 {
-    SGList* list = malloc(sizeof(SGList));
-    list->numitems = 0;
-    list->items = NULL;
+    SGLinkedList* list = malloc(sizeof(SGLinkedList));
+    if(list == NULL)
+        return NULL;
+    list->first = NULL;
+    list->last = NULL;
+    list->internal = NULL;
     return list;
 }
-void SG_EXPORT sgListDestroy(SGList* list)
+void SG_EXPORT sgLinkedListDestroy(SGLinkedList* list)
 {
-    free(list->items);
+    if(list == NULL)
+        return;
+
+    while(list->first != NULL)
+        sgLinkedListRemoveNode(list, list->first);
+
+    if(list->internalFree != NULL)
+        list->internalFree(list->internal);
     free(list);
 }
-void SG_EXPORT sgListEach(SGList* list, void* data, SGbool (*cb)(SGList* list, void* item, void* data, size_t i))
+
+size_t SG_EXPORT sgLinkedListLength(SGLinkedList* list)
 {
+    if(list == NULL)
+        return 0;
+
     size_t i;
-    for(i = 0; i < list->numitems; i++)
-        if(!cb(list, list->items[i], data, i))
-            return;
+    SGLinkedNode* node = list->first;
+    for(i = 0; node != NULL; i++)
+        node = node->next;
+    return i;
 }
-void SG_EXPORT sgListAppend(SGList* list, void* item)
+
+SGLinkedNode* SG_EXPORT sgLinkedListFindItem(SGLinkedList* list, void* item)
 {
-    list->items = realloc(list->items, (list->numitems + 1) * sizeof(void*));
-    list->items[list->numitems] = item;
-    list->numitems++;
+    if(list == NULL)
+        return NULL;
+
+    SGLinkedNode* node;
+    for(node = list->first; node != NULL; node = node->next)
+        if(node->item == item)
+            return node;
+    return NULL;
 }
-void SG_EXPORT sgListInsert(SGList* list, size_t i, void* item)
+SGLinkedNode* SG_EXPORT sgLinkedListFindIndex(SGLinkedList* list, size_t index)
 {
-    if(i >= list->numitems)
+    if(list == NULL)
+        return NULL;
+
+    size_t i;
+    SGLinkedNode* node;
+    for(node = list->first, i = 0; node != NULL; node = node->next, i++)
+        if(i == index)
+            return node;
+    return NULL;
+}
+
+SGLinkedNode* SG_EXPORT sgLinkedListInsertNode(SGLinkedList* list, SGLinkedNode* after, void* item)
+{
+    if(list == NULL)
+        return NULL;
+
+    SGLinkedNode* node = malloc(sizeof(SGLinkedNode));
+    if(node == NULL)
+        return NULL;
+
+    node->list = list;
+
+    if(after == NULL) // first item
     {
-        sgListAppend(list, item);
-        return;
+        node->prev = NULL;
+        node->next = list->first;
+        if(list->first)
+            list->first->prev = node;
+        list->first = node;
+    }
+    else // not first item
+    {
+        node->prev = after;
+        node->next = after->next;
+        if(after->next)
+            after->next->prev = node;
+        after->next = node;
+
+        if(after == list->last)
+            list->last = node;
     }
 
-    list->items = realloc(list->items, (list->numitems + 1) * sizeof(void*));
-    memmove(list->items + i + 1, list->items + i, (list->numitems - i) * sizeof(void*));
-    list->items[i] = item;
-    list->numitems++;
+    node->item = item;
+    node->internal = NULL;
+    return node;
 }
-void SG_EXPORT sgListRemoveIndex(SGList* list, size_t i)
+SGLinkedNode* SG_EXPORT sgLinkedListInsertItem(SGLinkedList* list, void* after, void* item)
 {
-    sgListRemoveSlice(list, i, i + 1);
+    SGLinkedNode* node = sgLinkedListFindItem(list, after);
+    if(node == NULL)
+        return NULL;
+    return sgLinkedListInsertNode(list, node, item);
 }
-void SG_EXPORT sgListRemoveSlice(SGList* list, size_t i1, size_t i2)
+SGLinkedNode* SG_EXPORT sgLinkedListInsertIndex(SGLinkedList* list, size_t after, void* item)
 {
-    if(i1 > list->numitems)
+    SGLinkedNode* node = sgLinkedListFindIndex(list, after);
+    if(node == NULL)
+        return NULL;
+    return sgLinkedListInsertNode(list, node, item);
+}
+SGLinkedNode* SG_EXPORT sgLinkedListPrepend(SGLinkedList* list, void* item)
+{
+    return sgLinkedListInsertNode(list, NULL, item);
+}
+SGLinkedNode* SG_EXPORT sgLinkedListAppend(SGLinkedList* list, void* item)
+{
+    return sgLinkedListInsertNode(list, list->last, item);
+}
+
+void SG_EXPORT sgLinkedListRemoveNode(SGLinkedList* list, SGLinkedNode* node)
+{
+    if(list == NULL)
         return;
-    if(i2 > list->numitems)
+    if(node == NULL)
         return;
 
-    if(i1 > i2)
-    {
-        size_t tmp = i1;
-        i1 = i2;
-        i2 = tmp;
-    }
+    if(list->first == node)
+        list->first = node->next;
+    if(list->last == node)
+        list->last = node->prev;
 
-    memmove(list->items + i1, list->items + i2, (list->numitems - i2) * sizeof(void*));
-    list->items = realloc(list->items, (list->numitems - (i2 - i1)) * sizeof(void*));
-    list->numitems -= (i2 - i1);
+    if(node->prev != NULL)
+        node->prev->next = node->next;
+    if(node->next != NULL)
+        node->next->prev = node->prev;
+
+    if(node->internalFree != NULL)
+        node->internalFree(node->internal);
+    free(node);
 }
-void SG_EXPORT sgListRemoveItem(SGList* list, void* item)
+void SG_EXPORT sgLinkedListRemoveItem(SGLinkedList* list, void* item)
 {
-    size_t i;
-    for(i = 0; i < list->numitems; i++)
-        if(list->items[i] == item)
-        {
-            sgListRemoveIndex(list, i);
-            return;
-        }
+    SGLinkedNode* node = sgLinkedListFindItem(list, item);
+    if(node != NULL)
+        sgLinkedListRemoveNode(list, node);
+}
+void SG_EXPORT sgLinkedListRemoveIndex(SGLinkedList* list, size_t index)
+{
+    SGLinkedNode* node = sgLinkedListFindIndex(list, index);
+    if(node != NULL)
+        sgLinkedListRemoveNode(list, node);
+}
+
+SGLinkedNode* SG_EXPORT sgLinkedListGetFirst(SGLinkedList* list)
+{
+    if(list == NULL)
+        return NULL;
+    return list->first;
+}
+SGLinkedNode* SG_EXPORT sgLinkedListGetLast(SGLinkedList* list)
+{
+    if(list == NULL)
+        return NULL;
+    return list->last;
+}
+
+void* SG_EXPORT sgLinkedListPopFirst(SGLinkedList* list)
+{
+    if(list == NULL)
+        return NULL;
+    if(list->first == NULL)
+        return NULL;
+    void* item = list->first->item;
+    sgLinkedListRemoveNode(list, list->first);
+    return item;
+}
+void* SG_EXPORT sgLinkedListPopLast(SGLinkedList* list)
+{
+    if(list == NULL)
+        return NULL;
+    if(list->last == NULL)
+        return NULL;
+    void* item = list->last->item;
+    sgLinkedListRemoveNode(list, list->last);
+    return item;
 }
