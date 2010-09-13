@@ -118,8 +118,8 @@ extern "C"
 typedef SGbool SG_EXPORT (*SGEventCall)(void* data, void* args);
 
 #ifdef SG_BUILD_LIBRARY
-SGPList* _sg_evList;
-SGPList* _sg_cList;
+SGPLinkedList* _sg_evList;
+SGPLinkedList* _sg_cList;
 SGbool _sg_evStop;
 #endif // SG_BUILD_LIBRARY
 
