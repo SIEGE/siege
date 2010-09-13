@@ -1,151 +1,57 @@
 #define SG_BUILD_LIBRARY
 #include <siege/util/plist.h>
-#include <siege/util/list.h>
-#include <siege/common.h>
 
 #include <stdlib.h>
-#include <stddef.h>
+#include <string.h>
 
-SGbool SG_EXPORT _cbListEach(SGList* list, void* item, void* data, size_t i)
+SGPLinkedList* SG_EXPORT sgPLinkedListCreate(SGenum flags)
 {
-    SGPItem* pitem = (SGPItem*) item;
+    SGPLinkedList* list = sgLinkedListCreate();
+    if(list == NULL)
+        return NULL;
 
-    SGbool SG_EXPORT (*cb)(SGPList* list, void* item, void* data, size_t i, float p) = ((void**)data)[1];
-
-    return cb(list, pitem->item, ((void**)data)[0], i, pitem->priority);
+    SGenum* lflags = malloc(sizeof(SGenum));
+    *lflags = flags;
+    list->internal = lflags;
+    list->internalFree = free;
+    return list;
 }
 
-SGPList* SG_EXPORT sgPListCreate(SGenum flags)
+SGPLinkedNode* SG_EXPORT sgPLinkedListInsertPriority(SGPLinkedList* list, float priority, void* item)
 {
-    SGPList* plist = sgListCreate();
-    plist->internal.ui = flags;
-    return plist;
-}
-void SG_EXPORT sgPListDestroy(SGPList* list)
-{
-    size_t i;
-    for(i = 0; i < list->numitems; i++)
-        free(list->items[i]);
-    sgListDestroy(list);
-}
-void SG_EXPORT sgPListEach(SGPList* list, void* data, SGbool SG_EXPORT (*cb)(SGPList* list, void* item, void* data, size_t i, float p))
-{
-    void* tuple[2];
-    tuple[0] = data;
-    tuple[1] = cb;
+    float* lpriority = malloc(sizeof(float));
+    *lpriority = priority;
 
-    sgListEach(list, tuple, _cbListEach);
-}
-void SG_EXPORT sgPListAdd(SGPList* list, float p, void* item)
-{
-    SGPItem* pi = malloc(sizeof(SGPItem));
-    pi->priority = p;
-    pi->item = item;
+    SGenum lflags = *(SGenum*)list->internal;
 
-    size_t i;
     SGbool op;
-    for(i = 0; i < list->numitems; i++)
+    float npriority;
+    SGPLinkedNode* node;
+    for(node = list->first; node != NULL; node = node->next)
     {
-        if(list->internal.ui & SG_PLIST_GT)
-            op = ((SGPItem*)list->items[i])->priority > p;
-        else if(list->internal.ui & SG_PLIST_GEQ)
-            op = ((SGPItem*)list->items[i])->priority >= p;
-        else if(list->internal.ui & SG_PLIST_LT)
-            op = ((SGPItem*)list->items[i])->priority < p;
+        npriority = *(float*)node->internal;
+
+        if(lflags & SG_PLIST_GT)
+            op = npriority > priority;
+        else if(lflags & SG_PLIST_GEQ)
+            op = npriority >= priority;
+        else if(lflags & SG_PLIST_LT)
+            op = npriority < priority;
         else// if(flags & SG_PLIST_LEQ)
-            op = ((SGPItem*)list->items[i])->priority <= p;
+            op = npriority <= priority;
          // use:
          //     < to have new values with same priority go last (same priority: old value more important)
          //     > to reverse
         if(op)
         {
-            sgListInsert(list, i, pi);
-            return;
+            node = sgLinkedListInsertNode(list, node, item);
+            node->internal = lpriority;
+            return node;
         }
     }
 
     //if(i == list->numitems) // the return handles this
-    sgListAppend(list, pi);
-}
-void SG_EXPORT sgPListRemoveIndex(SGPList* list, size_t i)
-{
-    sgPListRemoveSlice(list, i, i + 1);
-}
-void SG_EXPORT sgPListRemoveSlice(SGList* list, size_t i1, size_t i2)
-{
-    if(i1 > list->numitems)
-        return;
-    if(i2 > list->numitems)
-        return;
-
-    if(i1 > i2)
-    {
-        size_t tmp = i1;
-        i1 = i2;
-        i2 = tmp;
-    }
-
-    size_t i;
-    for(i = i1; i < i2; i++)
-        free(list->items[i]);
-
-    sgListRemoveSlice(list, i1, i2);
-}
-void SG_EXPORT sgPListRemoveItem(SGPList* list, void* item)
-{
-    SGPItem* pitem;
-    size_t i;
-    for(i = 0; i < list->numitems; i++)
-    {
-        pitem = (SGPItem*)list->items[i];
-        if(pitem->item == item)
-        {
-            sgPListRemoveIndex(list, i);
-            return;
-        }
-    }
-}
-void SG_EXPORT sgPListRemovePriority(SGPList* list, float p)
-{
-    sgPListRemovePSlice(list, p, p);
-}
-void SG_EXPORT sgPListRemovePSlice(SGPList* list, float p1, float p2)
-{
-    if(p1 > p2)
-    {
-        float tmp = p1;
-        p1 = p2;
-        p2 = tmp;
-    }
-
-    SGPItem* pitem;
-    size_t i;
-    ptrdiff_t i1 = -1;
-    ptrdiff_t i2 = -1;
-    SGbool op1;
-    SGbool op2;
-    for(i = 0; i < list->numitems; i++)
-    {
-        pitem = (SGPItem*)list->items[i];
-        if((list->internal.ui & SG_PLIST_GT) || (list->internal.ui & SG_PLIST_GEQ))
-        {
-            op1 = pitem->priority < p1;
-            op2 = pitem->priority > p2;
-        }
-        else //if((list->internal.ui & SG_PLIST_LT) && (list->internal.ui & SG_PLIST_LEQ))
-        {
-            op1 = pitem->priority > p2;
-            op2 = pitem->priority < p1;
-        }
-        if(op1) // didn't reach yet
-            continue;
-        if(op2) // already past it
-            break;
-
-        if(i1 == -1)
-            i1 = i;
-        i2 = i;
-    }
-
-    sgPListRemoveSlice(list, i1, i2 + 1);
+    node = sgLinkedListAppend(list, item);
+    node->internal = lpriority;
+    return node;
 }

@@ -50,17 +50,17 @@ char* SG_EXPORT _sgModuleGetFile(char* module)
 SGbool SG_EXPORT _sgModuleInit(void)
 {
     _sg_modFirst = SG_TRUE;
-    _sg_modList = sgListCreate();
+    _sg_modList = sgLinkedListCreate();
     if(_sg_modList == NULL)
         return SG_FALSE;
     return SG_TRUE;
 }
 SGbool SG_EXPORT _sgModuleDeinit(void)
 {
-    ptrdiff_t i;
-    for(i = _sg_modList->numitems - 1; i >= 0; i--)
-        sgModuleUnload(_sg_modList->items[i]);
-    sgListDestroy(_sg_modList);
+    SGLinkedNode* node;
+    for(node = _sg_modList->first; node != NULL; node = node->next)
+        sgModuleUnload(node->item);
+    sgLinkedListDestroy(_sg_modList);
     return SG_TRUE;
 }
 
@@ -83,7 +83,6 @@ SGModule* SG_EXPORT sgModuleLoad(char* name)
 
     module->sgmModuleInit = sgGetProcAddress(module->lib, "sgmModuleInit");
     module->sgmModuleExit = sgGetProcAddress(module->lib, "sgmModuleExit");
-    //module->sgmModuleFree = sgGetProcAddress(module->lib, "sgmModuleFree");
     module->sgmModuleMatch = sgGetProcAddress(module->lib, "sgmModuleMatch");
 
     _sgModuleLoadAudio(module->lib);
@@ -97,7 +96,7 @@ SGModule* SG_EXPORT sgModuleLoad(char* name)
 
     if(module->sgmModuleInit != NULL)
         module->sgmModuleInit(&module->minfo);
-    sgListAppend(_sg_modList, module);
+    module->node = sgLinkedListAppend(_sg_modList, module);
     return module;
 }
 
@@ -106,13 +105,11 @@ void SG_EXPORT sgModuleUnload(SGModule* module)
     if(module == NULL)
         return;
 
-    //if(module->sgmModuleFree != NULL)
-    //    module->sgmModuleFree(module->minfo);
     if(module->sgmModuleExit != NULL)
         module->sgmModuleExit(module->minfo);
 
     free(module->name);
     sgLibraryUnload(module->lib);
-    sgListRemoveItem(_sg_modList, module);
+    sgLinkedListRemoveNode(_sg_modList, module->node);
     free(module);
 }

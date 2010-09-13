@@ -23,7 +23,7 @@ typedef struct SGViewport
 } SGViewport;
 
 #ifdef SG_BUILD_LIBRARY
-SGList* _sg_viewList;
+SGLinkedList* _sg_viewList;
 SGViewport* sgMainViewport;
 #endif // SG_BUILD_LIBRARY
 

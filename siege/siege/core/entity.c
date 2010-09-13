@@ -10,17 +10,17 @@
 
 SGbool SG_EXPORT _sgEntityInit(void)
 {
-    _sg_cList = sgPListCreate(SG_PLIST_HFO);
+    _sg_cList = sgPLinkedListCreate(SG_PLIST_HFO);
     if(_sg_cList != NULL)
         return SG_TRUE;
     return SG_FALSE;
 }
 SGbool SG_EXPORT _sgEntityDeinit(void)
 {
-    ptrdiff_t i;
-    for(i = _sg_cList->numitems - 1; i >= 0; i--)
-        sgEntityDestroy(_sg_cList->items[i]);
-    sgPListDestroy(_sg_cList);
+    //SGPLinkedNode* node;
+    //for(node = _sg_cList->first; node != NULL; node = node->next)
+    //    free(node);
+    sgLinkedListDestroy(_sg_cList);
     return SG_TRUE;
 }
 
@@ -338,7 +338,7 @@ SGEntity* SG_EXPORT sgEntityCreate(float priority, SGenum type)
 
     entity->evDraw = _sg_evDraw;
 
-    sgPListAdd(_sg_cList, priority, entity);
+    sgPLinkedListInsertPriority(_sg_cList, priority, entity);
     return entity;
 }
 void SG_EXPORT sgEntityDestroy(SGEntity* entity)
@@ -346,7 +346,7 @@ void SG_EXPORT sgEntityDestroy(SGEntity* entity)
     if(entity == NULL)
         return;
 
-    sgPListRemoveItem(_sg_cList, entity);
+    sgLinkedListRemoveItem(_sg_cList, entity);
     sgEventDestroy(entity->event);
 
     free(entity);
