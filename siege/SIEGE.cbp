@@ -36,6 +36,45 @@
 			<Add option="-Wall" />
 			<Add directory="include" />
 		</Compiler>
+		<Unit filename="include\siege\audio\buffer.h" />
+		<Unit filename="include\siege\audio\source.h" />
+		<Unit filename="include\siege\common.h" />
+		<Unit filename="include\siege\core\core.h" />
+		<Unit filename="include\siege\core\entity.h" />
+		<Unit filename="include\siege\core\event.h" />
+		<Unit filename="include\siege\core\window.h" />
+		<Unit filename="include\siege\graphics\draw.h" />
+		<Unit filename="include\siege\graphics\font.h" />
+		<Unit filename="include\siege\graphics\sprite.h" />
+		<Unit filename="include\siege\graphics\surface.h" />
+		<Unit filename="include\siege\graphics\texture.h" />
+		<Unit filename="include\siege\graphics\trail.h" />
+		<Unit filename="include\siege\graphics\turtle.h" />
+		<Unit filename="include\siege\graphics\viewport.h" />
+		<Unit filename="include\siege\input\joystick.h" />
+		<Unit filename="include\siege\input\keyboard.h" />
+		<Unit filename="include\siege\input\mouse.h" />
+		<Unit filename="include\siege\modules\audio.h" />
+		<Unit filename="include\siege\modules\fonts.h" />
+		<Unit filename="include\siege\modules\graphics.h" />
+		<Unit filename="include\siege\modules\input.h" />
+		<Unit filename="include\siege\modules\modules.h" />
+		<Unit filename="include\siege\modules\physics.h" />
+		<Unit filename="include\siege\modules\window.h" />
+		<Unit filename="include\siege\physics\body.h" />
+		<Unit filename="include\siege\physics\collision.h" />
+		<Unit filename="include\siege\physics\constraint.h" />
+		<Unit filename="include\siege\physics\shape.h" />
+		<Unit filename="include\siege\physics\space.h" />
+		<Unit filename="include\siege\siege.h" />
+		<Unit filename="include\siege\util\color.h" />
+		<Unit filename="include\siege\util\link.h" />
+		<Unit filename="include\siege\util\list.h" />
+		<Unit filename="include\siege\util\matrix.h" />
+		<Unit filename="include\siege\util\plist.h" />
+		<Unit filename="include\siege\util\rand.h" />
+		<Unit filename="include\siege\util\string.h" />
+		<Unit filename="include\siege\util\vector.h" />
 		<Unit filename="siege\audio\buffer.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -127,9 +166,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="siege\util\link.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="siege\util\linkedlist.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="siege\util\list.c">

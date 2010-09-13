@@ -56,21 +56,23 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
     _sgEventInit();
     _sgEntityInit();
     size_t i;
-    SGModuleInfo** infos = malloc(_sg_modList->numitems * sizeof(SGModuleInfo*));
+    size_t nmodules = sgLinkedListLength(_sg_modList);
+    SGLinkedNode* node;
+    SGModuleInfo** infos = malloc(nmodules * sizeof(SGModuleInfo*));
     SGModule* module;
-    for(i = 0; i < _sg_modList->numitems; i++)
+    for(i = 0, node = _sg_modList->first; node != NULL; node = node->next, i++)
     {
-        module = _sg_modList->items[i];
+        module = node->item;
         infos[i] = module->minfo;
     }
     SGbool ok = SG_TRUE;
     SGbool mok;
-    for(i = 0; i < _sg_modList->numitems; i++)
+    for(node = _sg_modList->first; node != NULL; node = node->next)
     {
-        module = _sg_modList->items[i];
+        module = node->item;
         mok = SG_TRUE;
         if(module->sgmModuleMatch != NULL)
-            module->sgmModuleMatch(infos, _sg_modList->numitems, &mok);
+            module->sgmModuleMatch(infos, nmodules, &mok);
         if(!mok)
         {
             fprintf(stderr, "Could not load module %s: Incompatible with other modules\n", module->minfo->name);

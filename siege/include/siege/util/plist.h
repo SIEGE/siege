@@ -1,8 +1,10 @@
-#ifndef __SIEGE_UTIL_PLIST_H__
-#define __SIEGE_UTIL_PLIST_H__
+#ifndef __SIEGE_UTIL_PLINKEDLIST_H__
+#define __SIEGE_UTIL_PLINKEDLIST_H__
 
-#include "list.h"
 #include "../common.h"
+#include "list.h"
+
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -21,26 +23,15 @@ extern "C"
 #define SG_PLIST_LFN SG_PLIST_GEQ
 #define SG_PLIST_LFO SG_PLIST_GT
 
-typedef struct SGList SGPList;
+typedef struct SGLinkedNode SGPLinkedNode;
+typedef struct SGLinkedList SGPLinkedList;
 
-typedef struct SGPItem
-{
-    float priority;
-    void* item;
-} SGPItem;
+SGPLinkedList* SG_EXPORT sgPLinkedListCreate(SGenum flags);
 
-SGPList* SG_EXPORT sgPListCreate(SGenum flags);
-void SG_EXPORT sgPListDestroy(SGPList* list);
-void SG_EXPORT sgPListEach(SGPList* list, void* data, SGbool SG_EXPORT (*cb)(SGPList* list, void* item, void* data, size_t i, float p));
-void SG_EXPORT sgPListAdd(SGPList* list, float p, void* item);
-void SG_EXPORT sgPListRemoveIndex(SGPList* list, size_t i);
-void SG_EXPORT sgPListRemoveSlice(SGList* list, size_t i1, size_t i2);
-void SG_EXPORT sgPListRemoveItem(SGPList* list, void* item);
-void SG_EXPORT sgPListRemovePriority(SGPList* list, float p);
-void SG_EXPORT sgPListRemovePSlice(SGList* list, float p1, float p2);
+SGPLinkedNode* SG_EXPORT sgPLinkedListInsertPriority(SGPLinkedList* list, float priority, void* item);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // __SIEGE_UTIL_PLIST_H__
+#endif // __SIEGE_UTIL_PLINKEDLIST_H__

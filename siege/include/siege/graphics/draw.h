@@ -49,8 +49,6 @@ extern "C"
 #endif // __cplusplus
 
 #ifdef SG_BUILD_LIBRARY
-SGPList* _sg_evList;
-SGPList* _sg_cList;
 SGenum _sg_drawType;
 SGTexture* _sg_drawTexture;
 float _sg_drawCurPoint[3];
