@@ -39,6 +39,7 @@
 		<Unit filename="include\siege\audio\buffer.h" />
 		<Unit filename="include\siege\audio\source.h" />
 		<Unit filename="include\siege\common.h" />
+		<Unit filename="include\siege\core\console.h" />
 		<Unit filename="include\siege\core\core.h" />
 		<Unit filename="include\siege\core\entity.h" />
 		<Unit filename="include\siege\core\event.h" />
@@ -79,6 +80,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="siege\audio\source.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="siege\core\console.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="siege\core\core.c">

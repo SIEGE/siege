@@ -1,6 +1,7 @@
 #define SG_BUILD_LIBRARY
 #include <siege/audio/buffer.h>
 #include <siege/audio/source.h>
+#include <siege/core/console.h>
 #include <siege/core/core.h>
 #include <siege/core/event.h>
 #include <siege/core/entity.h>
@@ -100,7 +101,8 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
     _sgKeyboardInit();
     _sgMouseInit();
     _sgJoystickInit();
-    /// \todo console
+
+    _sgConsoleInit();
 
     _sgDrawInit();
 
@@ -123,6 +125,8 @@ SGbool SG_EXPORT sgDeinit(void)
     _sgRandDeinit();
 
     _sgDrawDeinit();
+
+    _sgConsoleDeinit();
 
     _sgJoystickDeinit();
     _sgMouseDeinit();

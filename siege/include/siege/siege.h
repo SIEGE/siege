@@ -11,6 +11,7 @@
 
 #include "audio/buffer.h"
 #include "audio/source.h"
+#include "core/console.h"
 #include "core/core.h"
 #include "core/entity.h"
 #include "core/event.h"
