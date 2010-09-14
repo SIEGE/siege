@@ -175,6 +175,7 @@ void SG_EXPORT sgEventDestroy(SGEvent* event);
 
 // @{
 /**
+    \memberof SGEvent
     \brief Trigger an event
     \param type The event type to trigger
     \param args The arguments to pass (treated as an opaque pointer by SIEGE)
@@ -183,6 +184,7 @@ void SG_EXPORT sgEventDestroy(SGEvent* event);
 */
 void SG_EXPORT sgEventCall(SGenum type, void* args);
 /**
+    \memberof SGEvent
     \brief Stop an event
 
     This function stops an event in its tracks, meaning that it doesn't "propagate" to event handlers further down.

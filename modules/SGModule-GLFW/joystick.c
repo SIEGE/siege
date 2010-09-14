@@ -6,22 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmCoreJoystickGetFlags(SGenum** flags)
-{
-    *flags = (SGenum[]) {SG_JOYSTICK_BUTTON_NOCB, SG_JOYSTICK_AXIS_NOCB, 0};
-    return SG_OK;
-}
-SGuint SG_EXPORT sgmCoreJoystickFreeFlags(SGenum* flags)
-{
-    if(flags == NULL)
-        return SG_OK; // SG_INVALID_VALUE
-
-    // we don't do it because we assign a static array to flags in the first place...
-    //free(flags);
-
-    return SG_OK;
-}
-
 SGuint SG_EXPORT sgmCoreJoystickGetNumJoysticks(void* window, SGuint* numjoys)
 {
     if(window == NULL)

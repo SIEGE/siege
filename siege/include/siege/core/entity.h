@@ -23,7 +23,6 @@ typedef struct _SGEntityCall
 
 /**
     \brief Entity, the main game "class"
-    \todo Should we add a destructor event?
 
     This is the "class" which acts as sort of glue for siege - it glues together sprites, physics, audio, etc...
     It is meant to be used for just about everything in a level.
@@ -60,7 +59,6 @@ typedef struct SGEntity
     SGEvent* event;
     /**
         \brief User-provided data
-        \todo If we don't add a destructor event: Should a "free" callback be added?
         \note Don't forget to free the data before destroying the entity!
         SIEGE handles this as an opaque pointer.
     */
@@ -189,8 +187,6 @@ typedef struct SGEntity
 
     /**
         \name Mouse events
-        \todo Local mouse events (events when the mouse is over an item)
-        \todo What do with do with the mouse wheel? It seems that most APIs detect the wheel as buttons, should we do the same?
     */
     // @{
     /**
@@ -635,8 +631,6 @@ float SG_EXPORT sgEntityGetDepth(SGEntity* entity);
 
 /**
     \name Angle
-    \todo Should we add grads (0-400 grad) and "loops" (0.0 - 1.0)?
-    \todo Should positive be up or down?
 */
 // @{
 /**
@@ -695,7 +689,6 @@ float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity);
 
 /**
     \name Drawing
-    \todo Should this be overloaded?
 */
 // @{
 /**

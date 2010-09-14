@@ -6,9 +6,6 @@ void SG_EXPORT _sgModuleLoadInput(SGLibrary* lib)
 {
     void* fptr;
     /// Input - Joystick
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickGetFlags);
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickFreeFlags);
-
     _SG_BINDS(_sg_modInput, sgmCoreJoystickGetNumJoysticks);
     _SG_BINDS(_sg_modInput, sgmCoreJoystickCreate);
     _SG_BINDS(_sg_modInput, sgmCoreJoystickDestroy);

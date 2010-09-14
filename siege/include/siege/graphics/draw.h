@@ -199,9 +199,6 @@ void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fi
     \name Ellipses
 */
 // @{
-/**
-    \todo Implement
-*/
 void SG_EXPORT sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill);
 // @}
 
