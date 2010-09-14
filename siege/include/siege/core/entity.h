@@ -4,6 +4,11 @@
 #include "../common.h"
 #include "event.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif // __cplusplus
+
 struct SGSprite;
 struct SGPhysicsBody;
 struct SGSource;
@@ -702,5 +707,9 @@ float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity);
 */
 void SG_EXPORT sgEntityDraw(SGEntity* entity);
 // @}
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // __SIEGE_CORE_ENTITY_H__
