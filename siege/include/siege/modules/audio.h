@@ -57,7 +57,7 @@ typedef struct SGModuleAudio
     SGuint SG_EXPORT (*sgmAudioLoadFile)(char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
     //SGuint SG_EXPORT (*sgmAudioLoadStream)(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
     SGuint SG_EXPORT (*sgmAudioLoadFreeData)(void* data);
-/// \todo USE
+
     SGuint SG_EXPORT (*sgmAudioFileCreate)(void** file, char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
     SGuint SG_EXPORT (*sgmAudioFileDestroy)(void* file);
     SGuint SG_EXPORT (*sgmAudioFileNumSamples)(void* file, SGuint* samples);

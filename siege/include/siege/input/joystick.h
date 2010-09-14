@@ -28,7 +28,6 @@ typedef struct _SGJoystick
 SGuint _sg_joyNum;
 _SGJoystick** _sg_joyJoys;
 SGCoreJoystickCallbacks _sg_joyCallbacks;
-SGenum* _sg_joyFlags;
 #endif // SG_BUILD_LIBRARY
 
 void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down);

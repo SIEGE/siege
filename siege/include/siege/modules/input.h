@@ -31,9 +31,6 @@ extern "C"
 typedef struct SGModuleInput
 {
     /// Input - Joystick
-    SGuint SG_EXPORT (*sgmCoreJoystickGetFlags)(SGuint** flags);
-    SGuint SG_EXPORT (*sgmCoreJoystickFreeFlags)(SGuint* flags);
-
     SGuint SG_EXPORT (*sgmCoreJoystickGetNumJoysticks)(void* window, SGuint* numjoys);
     SGuint SG_EXPORT (*sgmCoreJoystickCreate)(void** joystick, void* window, SGuint id);
     SGuint SG_EXPORT (*sgmCoreJoystickDestroy)(void* joystick);

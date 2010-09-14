@@ -73,10 +73,6 @@ SGbool SG_EXPORT _sgJoystickInit(void)
     _sg_joyCallbacks.move = _sg_cbJoystickMove;
     memset(&_sg_joyCallbacks, 0, sizeof(SGCoreJoystickCallbacks));
 
-    _sg_joyFlags = NULL;
-    if(_sg_modInput.sgmCoreJoystickGetFlags != NULL)
-        _sg_modInput.sgmCoreJoystickGetFlags(&_sg_joyFlags);
-
     return SG_TRUE;
 }
 SGbool SG_EXPORT _sgJoystickDeinit(void)
@@ -85,9 +81,6 @@ SGbool SG_EXPORT _sgJoystickDeinit(void)
     for(i = 0; i < _sg_joyNum; i++)
         _sgJoystickDestroy(_sg_joyJoys[i]);
     free(_sg_joyJoys);
-
-    if(_sg_modInput.sgmCoreJoystickFreeFlags != NULL)
-        _sg_modInput.sgmCoreJoystickFreeFlags(_sg_joyFlags);
 
     return SG_TRUE;
 }

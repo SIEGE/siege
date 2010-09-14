@@ -111,40 +111,13 @@ typedef double SGdouble;
 // @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 1
-#define SG_VERSION_PATCH 6
+#define SG_VERSION_PATCH 7
 /**
     \brief Version string
 
     In VMAJOR.VMINOR.VPATCH form, for example "0.1.5".
 */
 #define SG_VERSION_STRING ( _SG_STRING_MACRO(SG_VERSION_MAJOR) "." _SG_STRING_MACRO(SG_VERSION_MINOR) "." _SG_STRING_MACRO(SG_VERSION_PATCH) )
-// @}
-
-/**
-    \name Interface version information
-    \deprecated
-        Superseded by SG_VERSION_* - use that instead.
-*/
-// @{
-/**
-    \deprecated Use \ref SG_VERSION_MAJOR "SG_VERSION_MAJOR" instead.
-*/
-#define SG_INTERFACE_VMAJOR SG_VERSION_MAJOR
-/**
-    \deprecated Use \ref SG_VERSION_MINOR "SG_VERSION_MINOR" instead.
-*/
-#define SG_INTERFACE_VMINOR SG_VERSION_MINOR
-/**
-    \deprecated Use \ref SG_VERSION_PATCH "SG_VERSION_PATCH" instead.
-*/
-#define SG_INTERFACE_VPATCH SG_VERSION_PATCH
-/**
-    \brief Interface version string
-    \deprecated Use \ref SG_VERSION_STRING "SG_VERSION_STRING" instead.
-
-    In VMAJOR.VMINOR.VPATCH form, for example "0.1.5".
-*/
-#define SG_INTERFACE_VSTRING SG_VERSION_STRING
 // @}
 
 /**
@@ -370,16 +343,6 @@ typedef double SGdouble;
 // @{
 #define SG_WINDOW_FULLSCREEN 0x01
 #define SG_WINDOW_RESIZABLE  0x02
-// @}
-
-/**
-    \name Joystick info flags
-    \deprecated
-        These may be removed in the future.
-*/
-// @{
-#define SG_JOYSTICK_BUTTON_NOCB 0x01
-#define SG_JOYSTICK_AXIS_NOCB   0x11
 // @}
 
 /**
