@@ -13,7 +13,7 @@ extern "C"
 
     The buffer holds the audio data for the \ref SGSource "sources" to play. Please note that a single buffer can be used in multiple sources.
 */
-typedef struct SGBuffer
+typedef struct SGAudioBuffer
 {
     /**
         \private
@@ -23,30 +23,30 @@ typedef struct SGBuffer
             For internal use only.
     */
     void* handle;
-} SGBuffer;
+} SGAudioBuffer;
 
-SGbool SG_EXPORT _sgBufferInit(void);
-SGbool SG_EXPORT _sgBufferDeinit(void);
+SGbool SG_EXPORT _sgAudioBufferInit(void);
+SGbool SG_EXPORT _sgAudioBufferDeinit(void);
 
 // @{
 /**
-    \memberof SGBuffer
+    \memberof SGAudioBuffer
     \brief Create an audio buffer
     \param fname Filename of the audio file to load
     \return The newly created buffer if successful, NULL otherwise.
 */
-SGBuffer* SG_EXPORT sgBufferCreate(char* fname);
+SGAudioBuffer* SG_EXPORT sgAudioBufferCreate(char* fname);
 /**
-    \memberof SGBuffer
+    \memberof SGAudioBuffer
     \brief Destroy an audio buffer
     \param buffer The buffer to destroy. It should not be used anymore after this call.
 */
-void SG_EXPORT sgBufferDestroy(SGBuffer* buffer);
+void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer);
 // @}
 
 // @{
 /**
-    \memberof SGBuffer
+    \memberof SGAudioBuffer
     \brief Set the data of an audio buffer
     \param buffer The buffer of which the data should be modified
     \param channels The number of channels in the data
@@ -55,7 +55,7 @@ void SG_EXPORT sgBufferDestroy(SGBuffer* buffer);
     \param data Audio data to pass to the buffer
     \param datalen Length of the audio data in bytes
 */
-void SG_EXPORT sgBufferSetData(SGBuffer* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen);
+void SG_EXPORT sgAudioBufferSetData(SGAudioBuffer* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen);
 // @}
 
 #ifdef __cplusplus

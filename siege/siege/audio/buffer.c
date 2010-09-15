@@ -4,18 +4,18 @@
 
 #include <stdlib.h>
 
-SGbool SG_EXPORT _sgBufferInit(void)
+SGbool SG_EXPORT _sgAudioBufferInit(void)
 {
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgBufferDeinit(void)
+SGbool SG_EXPORT _sgAudioBufferDeinit(void)
 {
     return SG_TRUE;
 }
 
-SGBuffer* SG_EXPORT sgBufferCreate(char* fname)
+SGAudioBuffer* SG_EXPORT sgAudioBufferCreate(char* fname)
 {
-    SGBuffer* buffer = malloc(sizeof(SGBuffer));
+    SGAudioBuffer* buffer = malloc(sizeof(SGAudioBuffer));
 
     if(_sg_modAudio.sgmAudioBufferCreate != NULL)
         _sg_modAudio.sgmAudioBufferCreate(&buffer->handle);
@@ -34,7 +34,7 @@ SGBuffer* SG_EXPORT sgBufferCreate(char* fname)
 
     return buffer;
 }
-void SG_EXPORT sgBufferDestroy(SGBuffer* buffer)
+void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer)
 {
     if(buffer == NULL)
         return;
@@ -44,7 +44,7 @@ void SG_EXPORT sgBufferDestroy(SGBuffer* buffer)
     free(buffer);
 }
 
-void SG_EXPORT sgBufferSetData(SGBuffer* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
+void SG_EXPORT sgAudioBufferSetData(SGAudioBuffer* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
 {
     if(buffer == NULL)
         return;

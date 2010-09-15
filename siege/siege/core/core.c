@@ -95,8 +95,8 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
     _sgTurtleInit();
     _sgSurfaceInit();
 
-    _sgBufferInit();
-    _sgSourceInit();
+    _sgAudioBufferInit();
+    _sgAudioSourceInit();
 
     _sgKeyboardInit();
     _sgMouseInit();
@@ -132,8 +132,8 @@ SGbool SG_EXPORT sgDeinit(void)
     _sgMouseDeinit();
     _sgKeyboardDeinit();
 
-    _sgSourceDeinit();
-    _sgBufferDeinit();
+    _sgAudioSourceDeinit();
+    _sgAudioBufferDeinit();
 
     _sgSurfaceDeinit();
     _sgTurtleDeinit();

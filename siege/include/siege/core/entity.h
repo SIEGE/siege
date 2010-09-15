@@ -11,7 +11,7 @@ extern "C"
 
 struct SGSprite;
 struct SGPhysicsBody;
-struct SGSource;
+struct SGAudioSource;
 
 // employs an EventClient wrapper over the "generalized" events above
 typedef struct _SGEntityCall
@@ -103,7 +103,7 @@ typedef struct SGEntity
         \warning
             For internal use only.
     */
-    struct SGSource* source;
+    struct SGAudioSource* source;
     // @}
 
     /**
@@ -504,14 +504,14 @@ struct SGPhysicsBody* SG_EXPORT sgEntityGetPhysicsBody(SGEntity* entity);
     \param entity The entity of which the audio source we want to attach
     \param source The audio source which should be attached or NULL to detach
 */
-void SG_EXPORT sgEntitySetSource(SGEntity* entity, struct SGSource* source);
+void SG_EXPORT sgEntitySetAudioSource(SGEntity* entity, struct SGAudioSource* source);
 /**
     \memberof SGEntity
     \brief Get the currently attached audio source
     \param entity The entity of which the audio source we want to get
     \return The audio source if one was attached, NULL otherwise
 */
-struct SGSource* SG_EXPORT sgEntityGetSource(SGEntity* entity);
+struct SGAudioSource* SG_EXPORT sgEntityGetAudioSource(SGEntity* entity);
 // @}
 
 /**
