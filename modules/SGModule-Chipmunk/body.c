@@ -106,14 +106,14 @@ SGuint SG_EXPORT sgmPhysicsBodySetAngle(void* body, float angle)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpBodySetAngle(body, -angle);
+    cpBodySetAngle(body, angle);
     return SG_OK;
 }
 SGuint SG_EXPORT sgmPhysicsBodyGetAngle(void* body, float* angle)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    *angle = -cpBodyGetAngle(body);
+    *angle = cpBodyGetAngle(body);
     return SG_OK;
 }
 SGuint SG_EXPORT sgmPhysicsBodySetAngularVelocity(void* body, float angvel)
