@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 SGbool SG_EXPORT _sgDrawInit(void)
 {
@@ -160,9 +161,27 @@ void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fi
     sgDrawQuad(x1, y1, x2, y1, x2, y2, x1, y2, fill);
 }
 
-/// \todo TODO
 void SG_EXPORT sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill)
 {
+    float ra = (rx + ry) / 2.0;
+    SGuint numsides = (SGuint)(ra * 1.4);
+    SGuint i;
+
+    if(fill)
+    {
+        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
+        sgDrawVertex2f(x, y);
+    }
+    else
+        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
+
+    for(i = 0; i < numsides + (fill ? 1 : 0); i++)
+    {
+        float a = 2.0 * M_PI * i / (float)numsides;
+        sgDrawVertex2f(x + cos(a) * rx, y + sin(a) * ry);
+    }
+
+    sgDrawEnd();
 }
 
 void SG_EXPORT sgDrawCircle(float x, float y, float radius, SGbool fill)
