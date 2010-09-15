@@ -30,7 +30,7 @@ int main()
     {
         sgSpriteDraw2f(sprCrateSmall, 64, 256);
         sgSpriteDraw2f(sprStrongboxSmall, 640 - 64, 256);
-        sgSpriteDrawRads2f1f(sprPacman, 320, 128, atan2(-sgMouseGetPosY() + 128, sgMouseGetPosX() - 320));
+        sgSpriteDrawRads2f1f(sprPacman, 320, 128, atan2(sgMouseGetPosY() - 128, sgMouseGetPosX() - 320));
 
         for(i = 32; i < 640; i += 64)
             sgSpriteDraw2f(sprFloorMetalPlate, i, 448);
