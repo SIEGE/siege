@@ -17,12 +17,12 @@ extern "C"
     The dispatch helps handle the sources. Each dispatch refers to a backend source, and is (when in use) assigned a frontend source.
     This makes sure that sources are managed in a conservative fashion and recycled whenever possible.
 */
-typedef struct SGSourceDispatch
+typedef struct SGAudioSourceDispatch
 {
     /**
         \brief The source that this dispatch handles
     */
-    struct SGSource* source;
+    struct SGAudioSource* source;
     /**
         \private
         \brief Internal handle
@@ -31,14 +31,14 @@ typedef struct SGSourceDispatch
             For internal use only.
     */
     void* handle;
-} SGSourceDispatch;
+} SGAudioSourceDispatch;
 
 /**
     \brief Audio source
 
     This is the actual "class" responsible for positioning and playing a sound.
 */
-typedef struct SGSource
+typedef struct SGAudioSource
 {
     /**
         \private
@@ -47,7 +47,7 @@ typedef struct SGSource
         \warning
             For internal use only.
     */
-    SGSourceDispatch* dispatch;
+    SGAudioSourceDispatch* dispatch;
     /**
         \brief Priority of the source
 
@@ -55,20 +55,20 @@ typedef struct SGSource
         That way you can, for example, make the explosion near you "override" a bird tweeting on a tree.
     */
     float priority;
-} SGSource;
+} SGAudioSource;
 
 #ifdef SG_BUILD_LIBRARY
-SGSourceDispatch* _sg_srcDisList;
+SGAudioSourceDispatch* _sg_srcDisList;
 SGuint _sg_srcDisLength;
 #endif // SG_BUILD_LIBRARY
 
-SGbool SG_EXPORT _sgSourceInit(void);
-SGbool SG_EXPORT _sgSourceDeinit(void);
+SGbool SG_EXPORT _sgAudioSourceInit(void);
+SGbool SG_EXPORT _sgAudioSourceDeinit(void);
 
-SGSourceDispatch* SG_EXPORT _sgSourceGetFreeDispatch(SGSource* source);
+SGAudioSourceDispatch* SG_EXPORT _sgAudioSourceGetFreeDispatch(SGAudioSource* source);
 
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Create an audio source
     \param buffer The buffer file to use
     \param priority The source priority
@@ -79,13 +79,13 @@ SGSourceDispatch* SG_EXPORT _sgSourceGetFreeDispatch(SGSource* source);
         The first parameter may be removed in the very near future!
     \return The newly created source if successful, NULL otherwise.
 */
-SGSource* SG_EXPORT sgSourceCreate(SGBuffer* buffer, float priority, float volume, float pitch, SGbool looping);
+SGAudioSource* SG_EXPORT sgAudioSourceCreate(SGAudioBuffer* buffer, float priority, float volume, float pitch, SGbool looping);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Destroy an audio source
     \param source The source to destroy - it should not be used anymore after this call
 */
-void SG_EXPORT sgSourceDestroy(SGSource* source);
+void SG_EXPORT sgAudioSourceDestroy(SGAudioSource* source);
 
 /**
     \name Basic functions
@@ -94,58 +94,58 @@ void SG_EXPORT sgSourceDestroy(SGSource* source);
 */
 // @{
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Play an audio source
     \param source The source to play
 */
-void SG_EXPORT sgSourcePlay(SGSource* source);
+void SG_EXPORT sgAudioSourcePlay(SGAudioSource* source);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Is an audio source playing?
     \param source The source of which the status should be checked
     \return SG_TRUE if it is playing, SG_FALSE otherwise
 */
-SGbool SG_EXPORT sgSourceIsPlaying(SGSource* source);
+SGbool SG_EXPORT sgAudioSourceIsPlaying(SGAudioSource* source);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Pause an audio source
     \param source The source to pause
 */
-void SG_EXPORT sgSourcePause(SGSource* source);
+void SG_EXPORT sgAudioSourcePause(SGAudioSource* source);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Is an audio source paused?
     \param source The source of which the status should be checked
     \return SG_TRUE if it is paused, SG_FALSE otherwise
 */
-SGbool SG_EXPORT sgSourceIsPaused(SGSource* source);
+SGbool SG_EXPORT sgAudioSourceIsPaused(SGAudioSource* source);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Rewind an audio source
     \param source The source to rewind
 */
-void SG_EXPORT sgSourceRewind(SGSource* source);
-//SGbool SG_EXPORT sgSourceIsRewinded(SGSource* source);
+void SG_EXPORT sgAudioSourceRewind(SGAudioSource* source);
+//SGbool SG_EXPORT sgAudioSourceIsRewinded(SGAudioSource* source);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Stop an audio source
     \param source The source to stop
 */
-void SG_EXPORT sgSourceStop(SGSource* source);
+void SG_EXPORT sgAudioSourceStop(SGAudioSource* source);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Is an audio source stopped?
     \param source The source of which the status should be checked
     \return SG_TRUE if it is stopped, SG_FALSE otherwise
 */
-SGbool SG_EXPORT sgSourceIsStopped(SGSource* source);
+SGbool SG_EXPORT sgAudioSourceIsStopped(SGAudioSource* source);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Is an audio source active (in use)?
     \param source The source of which the status should be checked
     \return SG_TRUE if it is active, SG_FALSE otherwise
 */
-SGbool SG_EXPORT sgSourceIsActive(SGSource* source);
+SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source);
 // @}
 
 /**
@@ -155,7 +155,7 @@ SGbool SG_EXPORT sgSourceIsActive(SGSource* source);
 */
 // @{
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Queue multiple buffers into a source
     \param source The source into which the buffers should be queued
     \param buffers The buffers to queue
@@ -163,20 +163,20 @@ SGbool SG_EXPORT sgSourceIsActive(SGSource* source);
 
     This function queues \c numbuffers buffers into \c source.
     \sa
-        sgSourceQueueBuffer
+        sgAudioSourceQueueBuffer
 */
-void SG_EXPORT sgSourceQueueBuffers(SGSource* source, SGBuffer** buffers, SGuint numbuffers);
+void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, SGuint numbuffers);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Queue a single buffer into a source
     \param source The source into which the buffer should be queued
     \param buffer The buffer to queue
 
     This function queues \c numbuffers buffers into \c source.
     \sa
-        sgSourceQueueBuffers
+        sgAudioSourceQueueBuffers
 */
-void SG_EXPORT sgSourceQueueBuffer(SGSource* source, SGBuffer* buffer);
+void SG_EXPORT sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* buffer);
 // @}
 
 /**
@@ -184,7 +184,7 @@ void SG_EXPORT sgSourceQueueBuffer(SGSource* source, SGBuffer* buffer);
 */
 // @{
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Set the x,y,z position
     \param source The source which we want to set the position of
     \param[in] x X position
@@ -192,26 +192,26 @@ void SG_EXPORT sgSourceQueueBuffer(SGSource* source, SGBuffer* buffer);
     \param[in] z Z position
 
     \sa
-        sgSourceSetPosition2f
-        sgSourceGetPosition3f
-        sgSourceSetVelocity3f
+        sgAudioSourceSetPosition2f
+        sgAudioSourceGetPosition3f
+        sgAudioSourceSetVelocity3f
 */
-void SG_EXPORT sgSourceSetPosition3f(SGSource* source, float x, float y, float z);
+void SG_EXPORT sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y, float z);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Set the x,y position, and z implicitly to 0
     \param source The source which we want to set the position of
     \param[in] x X position
     \param[in] y Y position
 
     \sa
-        sgSourceSetPosition3f
-        sgSourceGetPosition2f
-        sgSourceSetVelocity2f
+        sgAudioSourceSetPosition3f
+        sgAudioSourceGetPosition2f
+        sgAudioSourceSetVelocity2f
 */
-void SG_EXPORT sgSourceSetPosition2f(SGSource* source, float x, float y);
+void SG_EXPORT sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float y);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Get the x,y,z position
     \param source The source which we want to get the position of
     \param[out] x X position
@@ -219,24 +219,24 @@ void SG_EXPORT sgSourceSetPosition2f(SGSource* source, float x, float y);
     \param[out] z Z position
 
     \sa
-        sgSourceSetPosition3f
-        sgSourceGetPosition2f
-        sgSourceGetVelocity3f
+        sgAudioSourceSetPosition3f
+        sgAudioSourceGetPosition2f
+        sgAudioSourceGetVelocity3f
 */
-void SG_EXPORT sgSourceGetPosition3f(SGSource* source, float* x, float* y, float* z);
+void SG_EXPORT sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float* y, float* z);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Get the x,y position
     \param source The source which we want to get the position of
     \param[out] x X position
     \param[out] y Y position
 
     \sa
-        sgSourceSetPosition2f
-        sgSourceGetPosition3f
-        sgSourceGetVelocity2f
+        sgAudioSourceSetPosition2f
+        sgAudioSourceGetPosition3f
+        sgAudioSourceGetVelocity2f
 */
-void SG_EXPORT sgSourceGetPosition2f(SGSource* source, float* x, float* y);
+void SG_EXPORT sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float* y);
 // @}
 
 /**
@@ -244,7 +244,7 @@ void SG_EXPORT sgSourceGetPosition2f(SGSource* source, float* x, float* y);
 */
 // @{
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Set the x,y,z velocity
     \param source The source which we want to set the velocity of
     \param[in] x X velocity
@@ -252,26 +252,26 @@ void SG_EXPORT sgSourceGetPosition2f(SGSource* source, float* x, float* y);
     \param[in] z Z velocity
 
     \sa
-        sgSourceSetVelocity2f
-        sgSourceGetVelocity3f
-        sgSourceSetPosition3f
+        sgAudioSourceSetVelocity2f
+        sgAudioSourceGetVelocity3f
+        sgAudioSourceSetPosition3f
 */
-void SG_EXPORT sgSourceSetVelocity3f(SGSource* source, float x, float y, float z);
+void SG_EXPORT sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float y, float z);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Set the x,y velocity, and z implicitly to 0
     \param source The source which we want to set the velocity of
     \param[in] x X velocity
     \param[in] y Y velocity
 
     \sa
-        sgSourceSetVelocity3f
-        sgSourceGetVelocity2f
-        sgSourceSetPosition2f
+        sgAudioSourceSetVelocity3f
+        sgAudioSourceGetVelocity2f
+        sgAudioSourceSetPosition2f
 */
-void SG_EXPORT sgSourceSetVelocity2f(SGSource* source, float x, float y);
+void SG_EXPORT sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float y);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Get the x,y,z velocity
     \param source The source which we want to get the velocity of
     \param[out] x X velocity
@@ -279,35 +279,35 @@ void SG_EXPORT sgSourceSetVelocity2f(SGSource* source, float x, float y);
     \param[out] z Z velocity
 
     \sa
-        sgSourceSetVelocity3f
-        sgSourceGetVelocity2f
-        sgSourceGetPosition3f
+        sgAudioSourceSetVelocity3f
+        sgAudioSourceGetVelocity2f
+        sgAudioSourceGetPosition3f
 */
-void SG_EXPORT sgSourceGetVelocity3f(SGSource* source, float* x, float* y, float* z);
+void SG_EXPORT sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float* y, float* z);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Get the x,y velocity
     \param source The source which we want to get the velocity of
     \param[out] x X velocity
     \param[out] y Y velocity
 
     \sa
-        sgSourceSetVelocity2f
-        sgSourceGetVelocity3f
-        sgSourceGetPosition2f
+        sgAudioSourceSetVelocity2f
+        sgAudioSourceGetVelocity3f
+        sgAudioSourceGetPosition2f
 */
-void SG_EXPORT sgSourceGetVelocity2f(SGSource* source, float* x, float* y);
+void SG_EXPORT sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float* y);
 // @}
 
-//void SG_EXPORT sgSourceSetFalloff(SGSource* source, float falloff);
-//float SG_EXPORT sgSourceGetFalloff(SGSource* source);
+//void SG_EXPORT sgAudioSourceSetFalloff(SGAudioSource* source, float falloff);
+//float SG_EXPORT sgAudioSourceGetFalloff(SGAudioSource* source);
 
 /**
     \name Pitch
 */
 // @{
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Set the pitch
     \param source The source which we want to set the pitch of
     \param[in] pitch The pitch to set
@@ -315,23 +315,23 @@ void SG_EXPORT sgSourceGetVelocity2f(SGSource* source, float* x, float* y);
     Pitch 1.0 leaves the buffer to play as it is in the "original".
 
     \sa
-        sgSourceGetPitch
-        sgSourceSetVolume
-        sgSourceSetLooping
+        sgAudioSourceGetPitch
+        sgAudioSourceSetVolume
+        sgAudioSourceSetLooping
 */
-void SG_EXPORT sgSourceSetPitch(SGSource* source, float pitch);
+void SG_EXPORT sgAudioSourceSetPitch(SGAudioSource* source, float pitch);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Get the pitch
     \param source The source which we want to get the pitch of
     \return The pitch
 
     \sa
-        sgSourceSetPitch
-        sgSourceGetVolume
-        sgSourceGetLooping
+        sgAudioSourceSetPitch
+        sgAudioSourceGetVolume
+        sgAudioSourceGetLooping
 */
-float SG_EXPORT sgSourceGetPitch(SGSource* source);
+float SG_EXPORT sgAudioSourceGetPitch(SGAudioSource* source);
 // @}
 
 /**
@@ -339,7 +339,7 @@ float SG_EXPORT sgSourceGetPitch(SGSource* source);
 */
 // @{
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Set the volume
     \param source The source which we want to set the volume of
     \param[in] volume The volume to set
@@ -347,23 +347,23 @@ float SG_EXPORT sgSourceGetPitch(SGSource* source);
     Volume 1.0 leaves the buffer to play as it is in the "original".
 
     \sa
-        sgSourceGetVolume
-        sgSourceSetPitch
-        sgSourceSetLooping
+        sgAudioSourceGetVolume
+        sgAudioSourceSetPitch
+        sgAudioSourceSetLooping
 */
-void SG_EXPORT sgSourceSetVolume(SGSource* source, float volume);
+void SG_EXPORT sgAudioSourceSetVolume(SGAudioSource* source, float volume);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Get the volume
     \param source The source which we want to get the volume of
     \return The volume
 
     \sa
-        sgSourceSetVolume
-        sgSourceGetPitch
-        sgSourceGetLooping
+        sgAudioSourceSetVolume
+        sgAudioSourceGetPitch
+        sgAudioSourceGetLooping
 */
-float SG_EXPORT sgSourceGetVolume(SGSource* source);
+float SG_EXPORT sgAudioSourceGetVolume(SGAudioSource* source);
 // @}
 
 /**
@@ -371,7 +371,7 @@ float SG_EXPORT sgSourceGetVolume(SGSource* source);
 */
 // @{
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Set the source in (or out of) a loop
     \param source The source which we want to loop (or stop looping)
     \param[in] looping The looping to set
@@ -379,23 +379,23 @@ float SG_EXPORT sgSourceGetVolume(SGSource* source);
     Pitch 1.0 leaves the buffer to play as it is in the "original".
 
     \sa
-        sgSourceGetLooping
-        sgSourceSetPitch
-        sgSourceSetVolume
+        sgAudioSourceGetLooping
+        sgAudioSourceSetPitch
+        sgAudioSourceSetVolume
 */
-void SG_EXPORT sgSourceSetLooping(SGSource* source, SGbool looping);
+void SG_EXPORT sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping);
 /**
-    \memberof SGSource
+    \memberof SGAudioSource
     \brief Is the source looping?
     \param source The source of which the status of the loop we want to get
     \return SG_TRUE if the source is in a loop, SG_FALSE otherwise
 
     \sa
-        sgSourceSetLooping
-        sgSourceGetPitch
-        sgSourceGetVolume
+        sgAudioSourceSetLooping
+        sgAudioSourceGetPitch
+        sgAudioSourceGetVolume
 */
-SGbool SG_EXPORT sgSourceGetLooping(SGSource* source);
+SGbool SG_EXPORT sgAudioSourceGetLooping(SGAudioSource* source);
 // @}
 
 #ifdef __cplusplus
