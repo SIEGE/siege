@@ -142,6 +142,14 @@ typedef struct SGEntity
     float angle;
 
     /**
+        \name Entity-related events
+    */
+    // @{
+    /// \brief Called when the entity is about to be destroyed
+    SGvoid SG_EXPORT (*evDestroy)(struct SGEntity* entity);
+    // @}
+
+    /**
         \name Module-related events
     */
     // @{

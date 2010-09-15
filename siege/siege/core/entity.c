@@ -346,6 +346,9 @@ void SG_EXPORT sgEntityDestroy(SGEntity* entity)
     if(entity == NULL)
         return;
 
+    if(entity->evDestroy != NULL)
+        entity->evDestroy(entity);
+
     sgLinkedListRemoveItem(_sg_cList, entity);
     sgEventDestroy(entity->event);
 
