@@ -1,0 +1,31 @@
+digraph Widgets
+{
+    Widget [color=lightgrey];
+    Bar [color=lightgrey];
+    ScrollBar [color=lightgrey];
+
+    Widget -> Frame;
+              Frame -> Window;
+              Frame -> TabFrame;
+    Widget -> Viewport;
+    Widget -> MenuItem;
+              MenuItem -> MenuSeparator;
+    Widget -> Bar;
+              Bar -> TabBar;
+              Bar -> TitleBar;
+              Bar -> ScrollBar;
+                     ScrollBar -> HScrollBar;
+                     ScrollBar -> VScrollBar;
+              Bar -> StatusBar;
+              Bar -> ToolBar;
+              Bar -> MenuBar;
+    Widget -> TextBox;
+              TextBox -> TextArea;
+                         TextArea -> Label;
+                                     Label -> FadingLabel;
+    Widget -> Button;
+              Button -> TitleButton;
+              Button -> ToggleButton;
+              Button -> RadioButton;
+              Button -> TabButton;
+}

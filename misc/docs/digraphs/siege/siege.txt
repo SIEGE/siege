@@ -1,0 +1,62 @@
+digraph SIEGE
+{
+    subgraph clusterBindings
+    {
+        label = "Bindings";
+        //style = filled;
+        color = lightblue;
+        node [style=filled, color=lightblue];
+
+        //"C";
+        "C++";
+        "D";
+        "CPython";
+        "Squirrel";
+        "Other bindings?";
+    }
+
+    subgraph clusterFrontend
+    {
+        label = "Frontend";
+        //style = filled;
+        color = lightgrey;
+        node [style=filled, color=lightgrey];
+
+        "CSiege";
+    }
+
+    subgraph clusterModules
+    {
+        label = "Modules";
+        //style = filled;
+        color = lightyellow;
+        node [style=filled, color=lightyellow];
+
+        "SDL";
+        "GLFW";
+        "OpenGL";
+        "OpenAL";
+        "DevIL";
+        "Freetype";
+        "SndFile";
+        "Chipmunk";
+        "Other modules?";
+    }
+
+    //"C" -> "CSiege";
+    "C++" -> "CSiege";
+    "D" -> "CSiege";
+    "CPython" -> "CSiege";
+    "Squirrel" -> "CSiege";
+    "Other bindings?" -> "CSiege" [style=dotted];
+
+    "CSiege" -> "SDL";
+    "CSiege" -> "GLFW";
+    "CSiege" -> "OpenGL";
+    "CSiege" -> "OpenAL";
+    "CSiege" -> "DevIL";
+    "CSiege" -> "Freetype";
+    "CSiege" -> "SndFile";
+    "CSiege" -> "Chipmunk";
+    "CSiege" -> "Other modules?" [style=dotted];
+}
