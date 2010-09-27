@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="640px"
+   height="480px"
+   id="svg6139"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   sodipodi:docbase="C:\CodeBlocks\Logos"
+   sodipodi:docname="gclogo_square.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs6141">
+    <linearGradient
+       id="linearGradient7140">
+      <stop
+         style="stop-color:#00fcff;stop-opacity:1;"
+         offset="0"
+         id="stop7142" />
+      <stop
+         style="stop-color:#007fff;stop-opacity:1;"
+         offset="1"
+         id="stop7144" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient7132">
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="0"
+         id="stop7134" />
+      <stop
+         style="stop-color:#ff7f00;stop-opacity:1;"
+         offset="1"
+         id="stop7136" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient7120">
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="0"
+         id="stop7122" />
+      <stop
+         style="stop-color:#ff7f00;stop-opacity:1;"
+         offset="1"
+         id="stop7124" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7120"
+       id="linearGradient7126"
+       x1="145.85815"
+       y1="70.17733"
+       x2="469.84399"
+       y2="364.47519"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(18.070922,10.326241)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7132"
+       id="linearGradient7138"
+       x1="472.7695"
+       y1="369.63834"
+       x2="158.42201"
+       y2="83.085152"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.77472527"
+     inkscape:cx="320"
+     inkscape:cy="240"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="px"
+     inkscape:window-width="1680"
+     inkscape:window-height="994"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4" />
+  <metadata
+     id="metadata6144">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <rect
+       style="opacity:0.75;fill:url(#linearGradient7126);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect6149"
+       width="348.51065"
+       height="318.82275"
+       x="152.31206"
+       y="68.241142"
+       ry="34.851067"
+       rx="81.319153" />
+    <text
+       xml:space="preserve"
+       style="font-size:176.51573181px;font-style:normal;font-weight:normal;fill:url(#linearGradient7138);fill-opacity:1.0;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial Black"
+       x="183.27763"
+       y="290.78619"
+       id="text7128"><tspan
+         sodipodi:role="line"
+         id="tspan7130"
+         x="183.27763"
+         y="290.78619"
+         style="fill-opacity:1.0;fill:url(#linearGradient7138);stroke:none;stroke-opacity:1">GC</tspan></text>
+  </g>
+</svg>

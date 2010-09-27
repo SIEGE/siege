@@ -1,0 +1,83 @@
+#ifndef __NAVMESH_H__
+#define __NAVMESH_H__
+
+#include <stdlib.h>
+#include "astar.h"
+
+typedef struct WVertexData
+{
+    struct WVertex** links;
+    size_t numlinks;
+
+    float x;
+    float y;
+} WVertexData;
+
+typedef struct WEdgeData
+{
+    struct WEdge** links;
+    size_t numlinks;
+} WEdgeData;
+
+typedef struct WFaceData
+{
+    struct WFace** links;
+    size_t numlinks;
+} WFaceData;
+
+typedef struct WVertex
+{
+    struct WVertex** verts;
+    size_t numverts;
+    struct WEdge** edges;
+    size_t numedges;
+    struct WFace** faces;
+    size_t numfaces;
+    struct WVertexData* data;
+} WVertex;
+
+typedef struct WEdge
+{
+    struct WVertex* vert1;
+    struct WVertex* vert2;
+    struct WFace* face1;
+    struct WFace* face2;
+
+    struct WEdgeData* data;
+} WEdge;
+
+typedef struct WFace
+{
+    struct WVertex** verts;
+    size_t numverts;
+    struct WEdge** edges;
+    size_t numedges;
+    struct WFace** faces;
+    size_t numfaces;
+    struct WFaceData* data;
+} WFace;
+
+typedef struct WMesh
+{
+    ASearch* search;
+    struct WMesh** links;
+    size_t numlinks;
+
+    struct WVertex** verts;
+    size_t numverts;
+    struct WEdge** edges;
+    size_t numedges;
+    struct WFace** faces;
+    size_t numfaces;
+} WMesh;
+
+int WLineIntersects(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float* x, float* y);
+int WPolyInside(float* px, float* py, size_t numpoints, float x, float y);
+WMesh* WPolyCreate(float* x, float* y, size_t numpoints);
+void WMeshDestroy(WMesh* mesh);
+void WMeshLink(WMesh* from, WMesh* to);
+void WMeshDlink(WMesh* one, WMesh* two);
+void WMeshUnlink(WMesh* from, WMesh* to);
+void WMeshDUnlink(WMesh* one, WMesh* two);
+
+#endif // __NAVMESH_H__

@@ -1,0 +1,16 @@
+﻿NOTE: UTF8 file
+
+Tim Čas [DarkUranium]
+- project founder & leader
+- main programmer
+tim@libsiege.org -> darkuranium@gmail.com
+http://libsiege.org
+
+Manuel Fernandes [Th3On3/N3o]
+- design help
+- programming
+
+Alexander Springer [Jack T]
+- GameCraft logo design
+jack@libsiege.org -> info@spr-design.de
+http://jtpc.de
