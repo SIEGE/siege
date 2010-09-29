@@ -1,5 +1,21 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
+MACRO(CONFIGURE_FILES srcDir destDir)
+    MAKE_DIRECTORY(${destDir})
+
+    FILE(GLOB files RELATIVE ${srcDir} ${srcDir}/*)
+    FOREACH(file ${files})
+        SET(srcPath ${srcDir}/${file})
+        SET(destPath ${destDir}/${file})
+
+        IF(NOT IS_DIRECTORY ${srcPath})
+            CONFIGURE_FILE(${srcPath} ${destPath} COPYONLY)
+        ELSE(NOT IS_DIRECTORY ${srcPath})
+            CONFIGURE_FILES(${srcPath} ${destPath})
+        ENDIF(NOT IS_DIRECTORY ${srcPath})
+    ENDFOREACH(file)
+ENDMACRO(CONFIGURE_FILES)
+
 PROJECT(SIEGE)
 
 #IF(CYGWIN) # should we have a separate target for cygwin?
@@ -15,6 +31,8 @@ ELSE(WIN32)
     MESSAGE(WARNING "Unknown platform!")
 ENDIF(WIN32)
 SET(ARCH ${CMAKE_SYSTEM_PROCESSOR})
+
+CONFIGURE_FILES("${CMAKE_SOURCE_DIR}/data" "${CMAKE_BINARY_DIR}/data")
 
 INCLUDE(InstallRequiredSystemLibraries)
 
