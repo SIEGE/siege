@@ -18,12 +18,12 @@ int main()
     sgInit(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Sprite Demo");
 
-    sprCrateSmall = sgSpriteCreateFile("Data/Sprites/CrateSmall.png");
-    sprFloorMetalPlate = sgSpriteCreateFile("Data/Sprites/FloorMetalPlate.png");
-    sprHazardWall = sgSpriteCreateFile("Data/Sprites/HazardWall.png");
-    sprPacman = sgSpriteCreateFile("Data/Sprites/Pacman.png");
-    sprStrongboxSmall = sgSpriteCreateFile("Data/Sprites/StrongboxSmall.png");
-    sprSupportBar = sgSpriteCreateFile("Data/Sprites/SupportBar.png");
+    sprCrateSmall = sgSpriteCreateFile("data/sprites/CrateSmall.png");
+    sprFloorMetalPlate = sgSpriteCreateFile("data/sprites/FloorMetalPlate.png");
+    sprHazardWall = sgSpriteCreateFile("data/sprites/HazardWall.png");
+    sprPacman = sgSpriteCreateFile("data/sprites/Pacman.png");
+    sprStrongboxSmall = sgSpriteCreateFile("data/sprites/StrongboxSmall.png");
+    sprSupportBar = sgSpriteCreateFile("data/sprites/SupportBar.png");
 
     SGuint i;
     while(sgLoop(NULL))

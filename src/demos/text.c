@@ -12,7 +12,7 @@ int main()
     sgInit(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Text Demo");
 
-    font = sgFontCreate("Data/Fonts/DejaVuLGCSans.ttf", 10, 256);
+    font = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 10, 256);
 
     SGuint width = sgWindowGetWidth();
     SGuint height = sgWindowGetHeight();

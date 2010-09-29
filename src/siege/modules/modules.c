@@ -17,9 +17,9 @@ char* SG_EXPORT _sgModuleGetFile(char* module)
     DIR* dir;
     struct dirent* ent;
 
-    char* buf = malloc(strlen("Modules/libSGModule-") + strlen(module) + strlen(".debug.") + 25);
+    char* buf = malloc(strlen("modules/libSGModule-") + strlen(module) + strlen(".debug.") + 25);
 
-    dir = opendir("Modules");
+    dir = opendir("modules");
     if(dir != NULL)
     {
         while((ent = readdir(dir)))
@@ -29,13 +29,13 @@ char* SG_EXPORT _sgModuleGetFile(char* module)
             strcat(buf, ".");
             if(strstr(ent->d_name, buf + 3) == ent->d_name) // prefer without "lib"
             {
-                strcpy(buf, "Modules/");
+                strcpy(buf, "modules/");
                 strcat(buf, ent->d_name);
                 return buf;
             }
             if(strstr(ent->d_name, buf) == ent->d_name)
             {
-                strcpy(buf, "Modules/");
+                strcpy(buf, "modules/");
                 strcat(buf, ent->d_name);
                 return buf;
             }
