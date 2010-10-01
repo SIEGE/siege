@@ -5,6 +5,14 @@
 
 #include <stdarg.h>
 
+#ifdef SG_BUILD_LIBRARY
+size_t _sg_strBufLen;
+char* _sg_strBuf;
+#endif // SG_BUILD_LIBRARY
+
+SGbool SG_EXPORT _sgStringInit(void);
+SGbool SG_EXPORT _sgStringDeinit(void);
+
 // has to be done to avoid a doxygen bug
 #define _SG_PRINTF SG_HINT_PRINTF(1, 2)
 #define _SG_VPRINTF SG_HINT_PRINTF(1, 0)

@@ -5,6 +5,18 @@
 #include <stdio.h>
 #include <string.h>
 
+SGbool SG_EXPORT _sgStringInit(void)
+{
+    _sg_strBufLen = 0;
+    _sg_strBuf = NULL;
+    return SG_TRUE;
+}
+SGbool SG_EXPORT _sgStringDeinit(void)
+{
+    free(_sg_strBuf);
+    return SG_TRUE;
+}
+
 char* SG_EXPORT sgPrintf(char* format, ...)
 {
     va_list args;
@@ -15,25 +27,21 @@ char* SG_EXPORT sgPrintf(char* format, ...)
 }
 char* SG_EXPORT sgPrintfv(char* format, va_list args)
 {
-    int buflen = 0;
     int ret = 0;
-    char* buf = NULL;
+    _sg_strBufLen = 0;
 
     do
     {
-        buflen += 256;
-        buf = realloc(buf, buflen);
-        ret = vsnprintf(buf, buflen, format, args);
+        _sg_strBufLen += 256;
+        _sg_strBuf = realloc(_sg_strBuf, _sg_strBufLen);
+        ret = vsnprintf(_sg_strBuf, _sg_strBufLen, format, args);
     }
-    while(ret >= buflen);
+    while(ret >= _sg_strBufLen);
 
     if(ret < 0)
-    {
-        free(buf);
         return NULL;
-    }
 
-    return realloc(buf, ret + 1);
+    return _sg_strBuf;
 }
 
 char* SG_EXPORT sgLineEnd(char* text)

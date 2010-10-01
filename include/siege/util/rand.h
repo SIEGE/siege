@@ -3,13 +3,19 @@
 
 #include "../common.h"
 
-#define SG_RAND_MERSENNE 1
+#define SG_RAND_MT19937 1
+
+#define SG_RAND_MERSENNE SG_RAND_MT19937
 
 typedef struct SGRand
 {
     SGenum type;
     SGubyte* data;
 } SGRand;
+
+#ifdef SG_BUILD_LIBRARY
+SGuint _sg_randSeed;
+#endif // SG_BUILD_LIBRARY
 
 SGbool SG_EXPORT _sgRandInit();
 SGbool SG_EXPORT _sgRandDeinit();

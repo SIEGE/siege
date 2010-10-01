@@ -2,9 +2,11 @@
 #include <siege/util/rand.h>
 
 #include <stdlib.h>
+#include <time.h>
 
 SGbool SG_EXPORT _sgRandInit()
 {
+    _sg_randSeed = time(NULL);
     return SG_TRUE;
 }
 SGbool SG_EXPORT _sgRandDeinit()
@@ -18,6 +20,9 @@ void SG_EXPORT _sgRandMersenneCreate32(SGRand* rand)
 }
 void SG_EXPORT _sgRandMersenneSeed32(SGRand* rand, SGuint seed, SGuint index)
 {
+    if(seed == 0)
+        seed = _sg_randSeed;
+
     SGuint* ind = (SGuint*)rand->data;
     SGuint* mt = (SGuint*)rand->data + sizeof(SGuint);
 

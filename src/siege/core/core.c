@@ -31,6 +31,7 @@
 #include <siege/util/color.h>
 #include <siege/util/link.h>
 #include <siege/util/rand.h>
+#include <siege/util/string.h>
 #include <siege/physics/space.h>
 
 #include <stdlib.h>
@@ -68,8 +69,11 @@ SGbool SG_EXPORT sgLoadModule(char* name)
 
 SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 {
+    _sgStringInit();
+
     _sgEventInit();
     _sgEntityInit();
+
     size_t i;
     size_t nmodules = sgLinkedListLength(_sg_modList);
     SGLinkedNode* node;
@@ -158,8 +162,11 @@ SGbool SG_EXPORT sgDeinit(void)
     _sgEntityDeinit();
     _sgEventDeinit();
 
+    _sgStringDeinit();
+
     _sgModuleDeinit();
     _sgLibraryDeinit();
+
     return SG_TRUE;
 }
 
