@@ -1,5 +1,10 @@
 Misc:
-- ai
+- ai:
+-- ai/boids
+-- ai/ann
+-- ai/genalos
+-- ai/pathfinding (A*, motion planning)
+-- ai/fuzzy
 - core/console
 - physics/constraint (need backend API)
 - util/file:
