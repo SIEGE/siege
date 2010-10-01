@@ -12,8 +12,8 @@
     Tim Chas <darkuranium@gmail.com>.
 */
 
-#ifndef __SIEGE_UTIL_LINK_H__
-#define __SIEGE_UTIL_LINK_H__
+#ifndef __SIEGE_UTIL_ARRAY_H__
+#define __SIEGE_UTIL_ARRAY_H__
 
 #include "../common.h"
 
@@ -22,20 +22,16 @@ extern "C"
 {
 #endif // __cplusplus
 
-typedef struct SGLibrary
-{
-    char* fname;
-    void* handle;
-} SGLibrary;
+typedef void SG_EXPORT (*SGMapFunction)(void* ptr);
+typedef void SG_EXPORT (*SGFoldFunction)(void* result, void* ptr1, void* ptr2);
 
-SGbool SG_EXPORT _sgLibraryInit(void);
-SGbool SG_EXPORT _sgLibraryDeinit(void);
-SGLibrary* SG_EXPORT sgLibraryLoad(char* fname);
-void SG_EXPORT sgLibraryUnload(SGLibrary* lib);
-void* SG_EXPORT sgGetProcAddress(SGLibrary* lib, char* proc);
+void* SG_EXPORT sgMap(void* base, size_t num, size_t size, SGMapFunction func);
+
+void* SG_EXPORT sgRFold(void* base, size_t num, size_t size, SGFoldFunction func);
+void* SG_EXPORT sgLFold(void* base, size_t num, size_t size, SGFoldFunction func);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // __SIEGE_UTIL_LINK_H__
+#endif // __SIEGE_UTIL_ARRAY_H__
