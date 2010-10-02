@@ -17,7 +17,6 @@
 
 #include "../common.h"
 #include "../util/list.h"
-#include "_astemp.h"
 
 #include <stdlib.h>
 
@@ -28,29 +27,26 @@ typedef SGbool SG_EXPORT (*SGAStarIsGoal)(struct SGAStarNode*, struct SGAStarNod
 
 typedef struct SGAStarNode
 {
+    struct SGAStarNode* from;
+    SGLinkedList* links;
+    void* data; // userdata
+
     struct
     {
         float g;
         float h;
         float f;
     } score;
-    struct SGAStarNode** links;
-    size_t numlinks;
-    struct SGAStarNode* from;
-    void* data; //userdata
 } SGAStarNode;
 
 typedef struct SGAStar
 {
     struct
     {
-        struct SGAStarNode** closed;
-        size_t numclosed;
-        struct SGAStarNode** open;
-        size_t numopen;
+        SGLinkedList* open;
+        SGLinkedList* closed;
     } set;
-    struct SGAStarNode** path;
-    size_t numpath;
+    SGLinkedList* path;
     struct SGAStarNode* current;
     struct SGAStarNode* goal;
 
@@ -65,7 +61,7 @@ typedef struct SGAStar
 SGAStar* SG_EXPORT SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);
 void SG_EXPORT SGAStarDestroy(SGAStar* search);
 int SG_EXPORT SGAStarStep(SGAStar* search);
-SGAStarNode** SG_EXPORT SGAStarPath(SGAStar* search, size_t* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
+SGLinkedList* SG_EXPORT SGAStarPath(SGAStar* search, SGuint* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
 
 SGAStarNode* SG_EXPORT SGAStarNodeCreate(void* data);
 void SG_EXPORT SGAStarNodeDestroy(SGAStarNode* node);

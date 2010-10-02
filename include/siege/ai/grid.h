@@ -20,50 +20,49 @@
 
 #include <stdlib.h>
 
-#define E_CLEAR 0
-#define E_WALL  1
-#define E_START 2
-#define E_GOAL  3
+#define SG_PATH_GRID_CLEAR 0
+#define SG_PATH_GRID_WALL  1
+#define SG_PATH_GRID_START 2
+#define SG_PATH_GRID_GOAL  3
 
-typedef struct EGrid
+typedef struct SGPathGridData
+{
+    SGuint x;
+    SGuint y;
+    SGenum type;
+    float cost;
+} SGPathGridData;
+
+typedef struct SGPathGrid
 {
     SGAStar* search;
     SGAStarNode*** grid;
-    size_t width;
-    size_t height;
+    SGuint width;
+    SGuint height;
 
-    struct EGridData** path;
-    size_t numpath;
+    SGLinkedList* path;
     SGAStarNode* start;
     SGAStarNode* goal;
 
-    char done;
-    char diag;
-    char wdiag;
-} EGrid;
+    SGbool done;
+    SGbool diag;
+    SGbool wdiag;
+} SGPathGrid;
 
-typedef struct EGridData
-{
-    size_t x;
-    size_t y;
-    unsigned int type;
-    float cost;
-} EGridData;
+float SG_EXPORT _SGPathGridG(SGAStarNode* from, SGAStarNode* to);
+float SG_EXPORT _SGPathGridH(SGAStarNode* from, SGAStarNode* to);
+SGbool SG_EXPORT _SGPathGridGoal(SGAStarNode* from, SGAStarNode* to);
 
-float SG_EXPORT _EGridG(SGAStarNode* from, SGAStarNode* to);
-float SG_EXPORT _EGridH(SGAStarNode* from, SGAStarNode* to);
-int SG_EXPORT _EGridGoal(SGAStarNode* from, SGAStarNode* to);
-
-EGrid* SG_EXPORT EGridCreate(size_t width, size_t height, char diag, char wdiag);
-void SG_EXPORT EGridDestroy(EGrid* grid);
-SGAStarNode* SG_EXPORT EGridGetNode(EGrid* grid, size_t x, size_t y);
-EGridData* SG_EXPORT EGridGetData(EGrid* grid, size_t x, size_t y);
-void SG_EXPORT EGridAddClear(EGrid* grid, size_t x, size_t y);
-void SG_EXPORT EGridAddWall(EGrid* grid, size_t x, size_t y);
-void SG_EXPORT EGridAddStart(EGrid* grid, size_t x, size_t y);
-void SG_EXPORT EGridAddGoal(EGrid* grid, size_t x, size_t y);
-void SG_EXPORT EGridSearchCreate(EGrid* grid);
-int SG_EXPORT EGridSearchStep(EGrid* grid);
-EGridData** SG_EXPORT EGridSearchPath(EGrid* grid, size_t* pathlen);
+SGPathGrid* SG_EXPORT SGPathGridCreate(size_t width, size_t height, char diag, char wdiag);
+void SG_EXPORT SGPathGridDestroy(SGPathGrid* grid);
+SGAStarNode* SG_EXPORT SGPathGridGetNode(SGPathGrid* grid, size_t x, size_t y);
+SGPathGridData* SG_EXPORT SGPathGridGetData(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT SGPathGridAddClear(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT SGPathGridAddWall(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT SGPathGridAddStart(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT SGPathGridAddGoal(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT SGPathGridSearchCreate(SGPathGrid* grid);
+int SG_EXPORT SGPathGridSearchStep(SGPathGrid* grid);
+SGLinkedList* SG_EXPORT SGPathGridSearchPath(SGPathGrid* grid, size_t* pathlen);
 
 #endif // __SIEGE_AI_GRID_H__

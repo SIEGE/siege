@@ -14,45 +14,44 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/ai/grid.h>
-/*
-float SG_EXPORT _EGridG(SGAStarNode* from, SGAStarNode* to)
+
+float SG_EXPORT _SGPathGridG(SGAStarNode* from, SGAStarNode* to)
 {
-    EGridData* fdata = from->data;
-    EGridData* tdata = to->data;
+    SGPathGridData* fdata = from->data;
+    SGPathGridData* tdata = to->data;
 
     float dx = tdata->x - (float)fdata->x;
     float dy = tdata->y - (float)fdata->y;
     return from->score.g + sqrt(dx*dx + dy*dy) * tdata->cost;
 }
-float SG_EXPORT _EGridH(SGAStarNode* from, SGAStarNode* to)
+float SG_EXPORT _SGPathGridH(SGAStarNode* from, SGAStarNode* to)
 {
-    EGridData* fdata = from->data;
-    EGridData* tdata = to->data;
+    SGPathGridData* fdata = from->data;
+    SGPathGridData* tdata = to->data;
 
     float dx = tdata->x - (float)fdata->x;
     float dy = tdata->y - (float)fdata->y;
     return sqrt(dx*dx + dy*dy);
 }
-int SG_EXPORT _EGridGoal(SGAStarNode* from, SGAStarNode* to)
+SGbool SG_EXPORT _SGPathGridGoal(SGAStarNode* from, SGAStarNode* to)
 {
     return from == to;
 }
 
-EGrid* SG_EXPORT EGridCreate(size_t width, size_t height, char diag, char wdiag)
+SGPathGrid* SG_EXPORT SGPathGridCreate(size_t width, size_t height, char diag, char wdiag)
 {
     size_t x, y;
-    EGridData* data;
-    EGrid* grid = malloc(sizeof(EGrid));
+    SGPathGridData* data;
+    SGPathGrid* grid = malloc(sizeof(SGPathGrid));
     grid->search = NULL;
     grid->grid = malloc(width * sizeof(SGAStarNode**));
     grid->width = width;
     grid->height = height;
-    grid->path = NULL;
-    grid->numpath = 0;
+    grid->path = sgLinkedListCreate();
     grid->start = NULL;
     grid->goal = NULL;
 
-    grid->done = 0;
+    grid->done = SG_FALSE;
     grid->diag = diag;
     grid->wdiag = wdiag;
 
@@ -61,10 +60,10 @@ EGrid* SG_EXPORT EGridCreate(size_t width, size_t height, char diag, char wdiag)
         grid->grid[x] = malloc(height * sizeof(SGAStarNode*));
         for(y = 0; y < height + 2; y++)
         {
-            data = malloc(sizeof(EGridData));
+            data = malloc(sizeof(SGPathGridData));
             data->x = x - 1;
             data->y = y - 1;
-            data->type = E_CLEAR;
+            data->type = SG_PATH_GRID_CLEAR;
             data->cost = 1.0;
             grid->grid[x][y] = SGAStarNodeCreate(data);
         }
@@ -113,11 +112,11 @@ EGrid* SG_EXPORT EGridCreate(size_t width, size_t height, char diag, char wdiag)
 
     return grid;
 }
-void SG_EXPORT EGridDestroy(EGrid* grid)
+void SG_EXPORT SGPathGridDestroy(SGPathGrid* grid)
 {
     if(grid->search != NULL)
         SGAStarDestroy(grid->search);
-    free(grid->path);
+    sgLinkedListDestroy(grid->path);
     size_t x, y;
     for(x = 0; x < grid->width + 1; x++)
     {
@@ -129,25 +128,25 @@ void SG_EXPORT EGridDestroy(EGrid* grid)
         free(grid->grid[x]);
     }
 }
-SGAStarNode* SG_EXPORT EGridGetNode(EGrid* grid, size_t x, size_t y)
+SGAStarNode* SG_EXPORT SGPathGridGetNode(SGPathGrid* grid, size_t x, size_t y)
 {
     if(x >= grid->width || y >= grid->height)
         return NULL;
     return grid->grid[x+1][y+1];
 }
-EGridData* SG_EXPORT EGridGetData(EGrid* grid, size_t x, size_t y)
+SGPathGridData* SG_EXPORT SGPathGridGetData(SGPathGrid* grid, size_t x, size_t y)
 {
-    SGAStarNode* node = EGridGetNode(grid, x, y);
+    SGAStarNode* node = SGPathGridGetNode(grid, x, y);
     if(node == NULL)
         return NULL;
     return node->data;
 }
-void SG_EXPORT EGridAddClear(EGrid* grid, size_t x, size_t y)
+void SG_EXPORT SGPathGridAddClear(SGPathGrid* grid, size_t x, size_t y)
 {
-    SGAStarNode* node = EGridGetNode(grid, x, y);
+    SGAStarNode* node = SGPathGridGetNode(grid, x, y);
     if(node != NULL)
     {
-        ((EGridData*)node->data)->type = E_CLEAR;
+        ((SGPathGridData*)node->data)->type = SG_PATH_GRID_CLEAR;
         x++;
         y++;
         SGAStarNodeLink(grid->grid[x  ][y+1], grid->grid[x][y]);
@@ -156,38 +155,38 @@ void SG_EXPORT EGridAddClear(EGrid* grid, size_t x, size_t y)
         SGAStarNodeLink(grid->grid[x+1][y  ], grid->grid[x][y]);
         if(grid->diag)
         {
-            if(grid->wdiag || ((((EGridData*)grid->grid[x  ][y+1]->data)->type != E_WALL)
-                           &&  (((EGridData*)grid->grid[x-1][y  ]->data)->type != E_WALL)))
+            if(grid->wdiag || ((((SGPathGridData*)grid->grid[x  ][y+1]->data)->type != SG_PATH_GRID_WALL)
+                           &&  (((SGPathGridData*)grid->grid[x-1][y  ]->data)->type != SG_PATH_GRID_WALL)))
                 SGAStarNodeLink(grid->grid[x-1][y+1], grid->grid[x][y]);
-            if(grid->wdiag || ((((EGridData*)grid->grid[x  ][y-1]->data)->type != E_WALL)
-                           &&  (((EGridData*)grid->grid[x-1][y  ]->data)->type != E_WALL)))
+            if(grid->wdiag || ((((SGPathGridData*)grid->grid[x  ][y-1]->data)->type != SG_PATH_GRID_WALL)
+                           &&  (((SGPathGridData*)grid->grid[x-1][y  ]->data)->type != SG_PATH_GRID_WALL)))
                 SGAStarNodeLink(grid->grid[x-1][y-1], grid->grid[x][y]);
-            if(grid->wdiag || ((((EGridData*)grid->grid[x  ][y-1]->data)->type != E_WALL)
-                           &&  (((EGridData*)grid->grid[x+1][y  ]->data)->type != E_WALL)))
+            if(grid->wdiag || ((((SGPathGridData*)grid->grid[x  ][y-1]->data)->type != SG_PATH_GRID_WALL)
+                           &&  (((SGPathGridData*)grid->grid[x+1][y  ]->data)->type != SG_PATH_GRID_WALL)))
                 SGAStarNodeLink(grid->grid[x+1][y-1], grid->grid[x][y]);
-            if(grid->wdiag || ((((EGridData*)grid->grid[x  ][y+1]->data)->type != E_WALL)
-                           &&  (((EGridData*)grid->grid[x+1][y  ]->data)->type != E_WALL)))
+            if(grid->wdiag || ((((SGPathGridData*)grid->grid[x  ][y+1]->data)->type != SG_PATH_GRID_WALL)
+                           &&  (((SGPathGridData*)grid->grid[x+1][y  ]->data)->type != SG_PATH_GRID_WALL)))
                 SGAStarNodeLink(grid->grid[x+1][y+1], grid->grid[x][y]);
         }
         if(grid->wdiag)
         {
             printf("%d\n", grid->wdiag);
-            if(((EGridData*)grid->grid[x  ][y+1]->data)->type != E_WALL)
+            if(((SGPathGridData*)grid->grid[x  ][y+1]->data)->type != SG_PATH_GRID_WALL)
             {
                 SGAStarNodeLink(grid->grid[x-1][y  ], grid->grid[x  ][y+1]);
                 SGAStarNodeLink(grid->grid[x+1][y  ], grid->grid[x  ][y+1]);
             }
-            if(((EGridData*)grid->grid[x-1][y  ]->data)->type != E_WALL)
+            if(((SGPathGridData*)grid->grid[x-1][y  ]->data)->type != SG_PATH_GRID_WALL)
             {
                 SGAStarNodeLink(grid->grid[x  ][y+1], grid->grid[x-1][y  ]);
                 SGAStarNodeLink(grid->grid[x  ][y-1], grid->grid[x-1][y  ]);
             }
-            if(((EGridData*)grid->grid[x  ][y-1]->data)->type != E_WALL)
+            if(((SGPathGridData*)grid->grid[x  ][y-1]->data)->type != SG_PATH_GRID_WALL)
             {
                 SGAStarNodeLink(grid->grid[x-1][y  ], grid->grid[x  ][y-1]);
                 SGAStarNodeLink(grid->grid[x+1][y  ], grid->grid[x  ][y-1]);
             }
-            if(((EGridData*)grid->grid[x+1][y  ]->data)->type != E_WALL)
+            if(((SGPathGridData*)grid->grid[x+1][y  ]->data)->type != SG_PATH_GRID_WALL)
             {
                 SGAStarNodeLink(grid->grid[x  ][y+1], grid->grid[x+1][y  ]);
                 SGAStarNodeLink(grid->grid[x  ][y-1], grid->grid[x+1][y  ]);
@@ -195,12 +194,12 @@ void SG_EXPORT EGridAddClear(EGrid* grid, size_t x, size_t y)
         }
     }
 }
-void SG_EXPORT EGridAddWall(EGrid* grid, size_t x, size_t y)
+void SG_EXPORT SGPathGridAddWall(SGPathGrid* grid, size_t x, size_t y)
 {
-    SGAStarNode* node = EGridGetNode(grid, x, y);
+    SGAStarNode* node = SGPathGridGetNode(grid, x, y);
     if(node != NULL)
     {
-        ((EGridData*)node->data)->type = E_WALL;
+        ((SGPathGridData*)node->data)->type = SG_PATH_GRID_WALL;
         x++;
         y++;
         SGAStarNodeUnlink(grid->grid[x  ][y+1], grid->grid[x][y]);
@@ -227,44 +226,49 @@ void SG_EXPORT EGridAddWall(EGrid* grid, size_t x, size_t y)
         }
     }
 }
-void SG_EXPORT EGridAddStart(EGrid* grid, size_t x, size_t y)
+void SG_EXPORT SGPathGridAddStart(SGPathGrid* grid, size_t x, size_t y)
 {
-    SGAStarNode* node = EGridGetNode(grid, x, y);
+    SGAStarNode* node = SGPathGridGetNode(grid, x, y);
     if(node != NULL)
     {
-        ((EGridData*)node->data)->type = E_START;
+        ((SGPathGridData*)node->data)->type = SG_PATH_GRID_START;
         grid->start = node;
     }
 }
-void SG_EXPORT EGridAddGoal(EGrid* grid, size_t x, size_t y)
+void SG_EXPORT SGPathGridAddGoal(SGPathGrid* grid, size_t x, size_t y)
 {
-    SGAStarNode* node = EGridGetNode(grid, x, y);
+    SGAStarNode* node = SGPathGridGetNode(grid, x, y);
     if(node != NULL)
     {
-        ((EGridData*)node->data)->type = E_GOAL;
+        ((SGPathGridData*)node->data)->type = SG_PATH_GRID_GOAL;
         grid->goal = node;
     }
 }
-void SG_EXPORT EGridSearchCreate(EGrid* grid)
+void SG_EXPORT SGPathGridSearchCreate(SGPathGrid* grid)
 {
-    grid->search = SGAStarCreate(grid->start, grid->goal, _EGridG, _EGridH, _EGridGoal);
+    grid->search = SGAStarCreate(grid->start, grid->goal, _SGPathGridG, _SGPathGridH, _SGPathGridGoal);
 }
-int SG_EXPORT EGridSearchStep(EGrid* grid)
+int SG_EXPORT SGPathGridSearchStep(SGPathGrid* grid)
 {
     int s = SGAStarStep(grid->search);
     if(s != 0)
-        grid->done = 1;
+        grid->done = SG_TRUE;
     return s;
 }
-EGridData** SG_EXPORT EGridSearchPath(EGrid* grid, size_t* pathlen)
+SGLinkedList* SG_EXPORT SGPathGridSearchPath(SGPathGrid* grid, SGuint* pathlen)
 {
-    SGAStarNode** nodes = SGAStarPath(grid->search, &grid->numpath);
-    grid->path = realloc(grid->path, grid->numpath * sizeof(EGridData*));
-    size_t i;
-    for(i = 0; i < grid->numpath; i++)
-        grid->path[i] = nodes[i]->data;
+    sgLinkedListDestroy(grid->path);
+    grid->path = sgLinkedListCreate();
 
-    *pathlen = grid->numpath;
+    SGLinkedList* list = SGAStarPath(grid->search, pathlen);
+    SGLinkedNode* node;
+    SGAStarNode* anode;
+
+    for(node = list->first; node != NULL; node = node->next)
+    {
+        anode = node->item;
+        sgLinkedListAppend(grid->path, anode->data);
+    }
+
     return grid->path;
 }
-*/

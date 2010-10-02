@@ -18,13 +18,10 @@
 SGAStar* SG_EXPORT SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal)
 {
     SGAStar* search = malloc(sizeof(SGAStar));
-    search->set.closed = NULL;
-    search->set.numclosed = 0;
-    search->set.open = malloc(sizeof(SGAStarNode*));
-    search->set.open[0] = start;
-    search->set.numopen = 1;
-    search->path = NULL;
-    search->numpath = 0;
+    search->set.open = sgLinkedListCreate();
+    sgLinkedListAppend(search->set.open, start);
+    search->set.closed = sgLinkedListCreate();
+    search->path = sgLinkedListCreate();
     search->current = NULL;
     search->goal = goal;
 
@@ -40,31 +37,34 @@ SGAStar* SG_EXPORT SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarS
 }
 void SG_EXPORT SGAStarDestroy(SGAStar* search)
 {
-    free(search->set.open);
-    free(search->set.closed);
-    free(search->path);
+    sgLinkedListDestroy(search->set.open);
+    sgLinkedListDestroy(search->set.closed);
+    sgLinkedListDestroy(search->path);
     free(search);
 }
+
 // returns TRUE if found, FALSE if not found, -1 on error
 int SG_EXPORT SGAStarStep(SGAStar* search)
 {
-    if(search->set.numopen == 0)
+    if(!sgLinkedListLength(search->set.open))
         return -1; // FAILURE
 
-    size_t minfi = search->set.numopen; // impossible value
-    size_t i, j;
+    SGLinkedNode* finode = NULL;
+    SGLinkedNode* node;
+    SGAStarNode* anode;
     float minf = SG_INF;
-    for(i = 0; i < search->set.numopen; i++)
+    for(node = search->set.open->first; node != NULL; node = node->next)
     {
-        if(search->set.open[i]->score.f <= minf) // we allow for == in order to allow for score.f to be SG_INF
+        anode = node->item;
+        if(anode->score.f <= minf) // we allow for == in order to allow for score.f to be SG_INF
         {
-            minfi = i;
-            minf = search->set.open[i]->score.f;
+            finode = node;
+            minf = anode->score.f;
         }
     }
-    if(minfi == search->set.numopen)
+    if(finode == NULL)
         return -1; // FAILURE - some weird error just happened
-    SGAStarNode* min = search->set.open[minfi];
+    SGAStarNode* min = finode->item;
     search->current = min;
 
     if(search->cb.isgoal != NULL)
@@ -75,18 +75,21 @@ int SG_EXPORT SGAStarStep(SGAStar* search)
     else if(min == search->goal) // fallback
         return 1;
 
-    ARR_REMOVE(search->set.open, search->set.numopen, minfi);
-
-    ARR_ADD(search->set.closed, search->set.numclosed, min);
+    sgLinkedListRemoveNode(search->set.open, finode);
+    sgLinkedListAppend(search->set.closed, min);
 
     char inside;
     float teng;
     char tenbetter;
-    for(i = 0; i < min->numlinks; i++)
+    SGLinkedNode* open;
+    SGLinkedNode* closed;
+    for(node = min->links->first; node != NULL; node = node->next)
     {
+        anode = node->item;
+
         inside = 0;
-        for(j = 0; j < search->set.numclosed; j++)
-            if(min->links[i] == search->set.closed[j])
+        for(closed = search->set.closed->first; closed != NULL; closed = closed->next)
+            if(anode == closed->item)
             {
                 inside = 1;
                 break;
@@ -95,52 +98,58 @@ int SG_EXPORT SGAStarStep(SGAStar* search)
             continue;
 
         if(search->cb.g != NULL)
-            teng = search->cb.g(min, min->links[i]);
+            teng = search->cb.g(min, anode);
         else // FALLBACK - cost is g+1 (the number of steps)
             teng = min->score.g + 1;
 
         inside = 0;
-        for(j = 0; j < search->set.numopen; j++)
-            if(min->links[i] == search->set.open[j])
+        for(open = search->set.open->first; open != NULL; open = open->next)
+            if(anode == open->item)
             {
                 inside = 1;
                 break;
             }
         if(!inside)
         {
-            ARR_ADD(search->set.open, search->set.numopen, min->links[i]);
+            sgLinkedListAppend(search->set.open, anode);
             tenbetter = 1;
         }
-        else if(teng < min->links[i]->score.g)
+        else if(teng < anode->score.g)
             tenbetter = 1;
         else
             tenbetter = 0;
         if(tenbetter)
         {
-            min->links[i]->from = min;
-            min->links[i]->score.g = teng;
+            anode->from = min;
+            anode->score.g = teng;
             if(search->cb.h != NULL)
-                min->links[i]->score.h = search->cb.h(min->links[i], search->goal);
+                anode->score.h = search->cb.h(anode, search->goal);
             else // FALLBACK - assume 0 cost, turning this into a breath-first search (feeling optimistic today, aren't we?)
-                min->links[i]->score.h = 0;
-            min->links[i]->score.f = min->links[i]->score.g + min->links[i]->score.h;
+                anode->score.h = 0;
+            anode->score.f = anode->score.g + anode->score.h;
         }
     }
 
     return 0; // CONTINUE - didn't find the finish, we have to continue
 }
-SGAStarNode** SG_EXPORT SGAStarPath(SGAStar* search, size_t* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
+SGLinkedList* SG_EXPORT SGAStarPath(SGAStar* search, SGuint* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
 {
-    search->numpath = 0;
+    // sgLinkedListClear(search->path);
+    sgLinkedListDestroy(search->path);
+    search->path = sgLinkedListCreate();
+
+    if(pathlen != NULL)
+        *pathlen = 0;
+
     SGAStarNode* current = search->current;
     while(current != NULL)
     {
-        ARR_ADD(search->path, search->numpath, current);
+        sgLinkedListAppend(search->path, current);
         current = current->from;
-    }
 
-    if(pathlen != NULL)
-        *pathlen = search->numpath;
+        if(pathlen != NULL)
+            (*pathlen)++;
+    }
 
     return search->path;
 }
@@ -148,24 +157,23 @@ SGAStarNode** SG_EXPORT SGAStarPath(SGAStar* search, size_t* pathlen) // reconst
 SGAStarNode* SG_EXPORT SGAStarNodeCreate(void* data)
 {
     SGAStarNode* node = malloc(sizeof(SGAStarNode));
+    node->from = NULL;
+    node->links = sgLinkedListCreate();
+    node->data = data;
     node->score.g = SG_INF;
     node->score.h = SG_INF;
     node->score.f = SG_INF;
-    node->links = NULL;
-    node->numlinks = 0;
-    node->from = NULL;
-    node->data = data;
     return node;
 }
 void SG_EXPORT SGAStarNodeDestroy(SGAStarNode* node)
 {
-    free(node->links);
+    sgLinkedListDestroy(node->links);
     free(node);
 }
 void SG_EXPORT SGAStarNodeLink(SGAStarNode* from, SGAStarNode* to)
 {
     SGAStarNodeUnlink(from, to); // to prevent duplication
-    ARR_ADD(from->links, from->numlinks, to);
+    sgLinkedListAppend(from->links, to);
 }
 void SG_EXPORT SGAStarNodeDLink(SGAStarNode* one, SGAStarNode* two)
 {
@@ -174,13 +182,7 @@ void SG_EXPORT SGAStarNodeDLink(SGAStarNode* one, SGAStarNode* two)
 }
 void SG_EXPORT SGAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to)
 {
-    size_t i;
-    for(i = 0; i < from->numlinks; i++)
-        if(from->links[i] == to)
-        {
-            ARR_REMOVE(from->links, from->numlinks, i);
-            return;
-        }
+    sgLinkedListRemoveItem(from->links, to);
 }
 void SG_EXPORT SGAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two)
 {
