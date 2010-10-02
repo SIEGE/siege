@@ -16,14 +16,15 @@
 #define __SIEGE_AI_ASTAR_H__
 
 #include "../common.h"
+#include "../util/list.h"
 #include "_astemp.h"
 
 #include <stdlib.h>
 
 struct SGAStarNode;
 
-typedef float  (*SGAStarScore)(struct SGAStarNode*, struct SGAStarNode*);
-typedef SGbool (*SGAStarIsGoal)(struct SGAStarNode*, struct SGAStarNode*);
+typedef float  SG_EXPORT (*SGAStarScore)(struct SGAStarNode*, struct SGAStarNode*);
+typedef SGbool SG_EXPORT (*SGAStarIsGoal)(struct SGAStarNode*, struct SGAStarNode*);
 
 typedef struct SGAStarNode
 {
@@ -61,16 +62,16 @@ typedef struct SGAStar
     } cb;
 } SGAStar;
 
-SGAStar* SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);
-void SGAStarDestroy(SGAStar* search);
-int SGAStarStep(SGAStar* search);
-SGAStarNode** SGAStarPath(SGAStar* search, size_t* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
+SGAStar* SG_EXPORT SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);
+void SG_EXPORT SGAStarDestroy(SGAStar* search);
+int SG_EXPORT SGAStarStep(SGAStar* search);
+SGAStarNode** SG_EXPORT SGAStarPath(SGAStar* search, size_t* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
 
-SGAStarNode* SGAStarNodeCreate(void* data);
-void SGAStarNodeDestroy(SGAStarNode* node);
-void SGAStarNodeLink(SGAStarNode* from, SGAStarNode* to);
-void SGAStarNodeDLink(SGAStarNode* one, SGAStarNode* two);
-void SGAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to);
-void SGAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two);
+SGAStarNode* SG_EXPORT SGAStarNodeCreate(void* data);
+void SG_EXPORT SGAStarNodeDestroy(SGAStarNode* node);
+void SG_EXPORT SGAStarNodeLink(SGAStarNode* from, SGAStarNode* to);
+void SG_EXPORT SGAStarNodeDLink(SGAStarNode* one, SGAStarNode* two);
+void SG_EXPORT SGAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to);
+void SG_EXPORT SGAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two);
 
 #endif // __SIEGE_AI_ASTAR_H__

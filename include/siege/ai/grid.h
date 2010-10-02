@@ -50,20 +50,20 @@ typedef struct EGridData
     float cost;
 } EGridData;
 
-float _EGridG(SGAStarNode* from, SGAStarNode* to);
-float _EGridH(SGAStarNode* from, SGAStarNode* to);
-int _EGridGoal(SGAStarNode* from, SGAStarNode* to);
+float SG_EXPORT _EGridG(SGAStarNode* from, SGAStarNode* to);
+float SG_EXPORT _EGridH(SGAStarNode* from, SGAStarNode* to);
+int SG_EXPORT _EGridGoal(SGAStarNode* from, SGAStarNode* to);
 
-EGrid* EGridCreate(size_t width, size_t height, char diag, char wdiag);
-void EGridDestroy(EGrid* grid);
-SGAStarNode* EGridGetNode(EGrid* grid, size_t x, size_t y);
-EGridData* EGridGetData(EGrid* grid, size_t x, size_t y);
-void EGridAddClear(EGrid* grid, size_t x, size_t y);
-void EGridAddWall(EGrid* grid, size_t x, size_t y);
-void EGridAddStart(EGrid* grid, size_t x, size_t y);
-void EGridAddGoal(EGrid* grid, size_t x, size_t y);
-void EGridSearchCreate(EGrid* grid);
-int EGridSearchStep(EGrid* grid);
-EGridData** EGridSearchPath(EGrid* grid, size_t* pathlen);
+EGrid* SG_EXPORT EGridCreate(size_t width, size_t height, char diag, char wdiag);
+void SG_EXPORT EGridDestroy(EGrid* grid);
+SGAStarNode* SG_EXPORT EGridGetNode(EGrid* grid, size_t x, size_t y);
+EGridData* SG_EXPORT EGridGetData(EGrid* grid, size_t x, size_t y);
+void SG_EXPORT EGridAddClear(EGrid* grid, size_t x, size_t y);
+void SG_EXPORT EGridAddWall(EGrid* grid, size_t x, size_t y);
+void SG_EXPORT EGridAddStart(EGrid* grid, size_t x, size_t y);
+void SG_EXPORT EGridAddGoal(EGrid* grid, size_t x, size_t y);
+void SG_EXPORT EGridSearchCreate(EGrid* grid);
+int SG_EXPORT EGridSearchStep(EGrid* grid);
+EGridData** SG_EXPORT EGridSearchPath(EGrid* grid, size_t* pathlen);
 
 #endif // __SIEGE_AI_GRID_H__

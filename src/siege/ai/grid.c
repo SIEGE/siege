@@ -15,7 +15,7 @@
 #define SG_BUILD_LIBRARY
 #include <siege/ai/grid.h>
 /*
-float _EGridG(SGAStarNode* from, SGAStarNode* to)
+float SG_EXPORT _EGridG(SGAStarNode* from, SGAStarNode* to)
 {
     EGridData* fdata = from->data;
     EGridData* tdata = to->data;
@@ -24,7 +24,7 @@ float _EGridG(SGAStarNode* from, SGAStarNode* to)
     float dy = tdata->y - (float)fdata->y;
     return from->score.g + sqrt(dx*dx + dy*dy) * tdata->cost;
 }
-float _EGridH(SGAStarNode* from, SGAStarNode* to)
+float SG_EXPORT _EGridH(SGAStarNode* from, SGAStarNode* to)
 {
     EGridData* fdata = from->data;
     EGridData* tdata = to->data;
@@ -33,12 +33,12 @@ float _EGridH(SGAStarNode* from, SGAStarNode* to)
     float dy = tdata->y - (float)fdata->y;
     return sqrt(dx*dx + dy*dy);
 }
-int _EGridGoal(SGAStarNode* from, SGAStarNode* to)
+int SG_EXPORT _EGridGoal(SGAStarNode* from, SGAStarNode* to)
 {
     return from == to;
 }
 
-EGrid* EGridCreate(size_t width, size_t height, char diag, char wdiag)
+EGrid* SG_EXPORT EGridCreate(size_t width, size_t height, char diag, char wdiag)
 {
     size_t x, y;
     EGridData* data;
@@ -113,7 +113,7 @@ EGrid* EGridCreate(size_t width, size_t height, char diag, char wdiag)
 
     return grid;
 }
-void EGridDestroy(EGrid* grid)
+void SG_EXPORT EGridDestroy(EGrid* grid)
 {
     if(grid->search != NULL)
         SGAStarDestroy(grid->search);
@@ -129,20 +129,20 @@ void EGridDestroy(EGrid* grid)
         free(grid->grid[x]);
     }
 }
-SGAStarNode* EGridGetNode(EGrid* grid, size_t x, size_t y)
+SGAStarNode* SG_EXPORT EGridGetNode(EGrid* grid, size_t x, size_t y)
 {
     if(x >= grid->width || y >= grid->height)
         return NULL;
     return grid->grid[x+1][y+1];
 }
-EGridData* EGridGetData(EGrid* grid, size_t x, size_t y)
+EGridData* SG_EXPORT EGridGetData(EGrid* grid, size_t x, size_t y)
 {
     SGAStarNode* node = EGridGetNode(grid, x, y);
     if(node == NULL)
         return NULL;
     return node->data;
 }
-void EGridAddClear(EGrid* grid, size_t x, size_t y)
+void SG_EXPORT EGridAddClear(EGrid* grid, size_t x, size_t y)
 {
     SGAStarNode* node = EGridGetNode(grid, x, y);
     if(node != NULL)
@@ -195,7 +195,7 @@ void EGridAddClear(EGrid* grid, size_t x, size_t y)
         }
     }
 }
-void EGridAddWall(EGrid* grid, size_t x, size_t y)
+void SG_EXPORT EGridAddWall(EGrid* grid, size_t x, size_t y)
 {
     SGAStarNode* node = EGridGetNode(grid, x, y);
     if(node != NULL)
@@ -227,7 +227,7 @@ void EGridAddWall(EGrid* grid, size_t x, size_t y)
         }
     }
 }
-void EGridAddStart(EGrid* grid, size_t x, size_t y)
+void SG_EXPORT EGridAddStart(EGrid* grid, size_t x, size_t y)
 {
     SGAStarNode* node = EGridGetNode(grid, x, y);
     if(node != NULL)
@@ -236,7 +236,7 @@ void EGridAddStart(EGrid* grid, size_t x, size_t y)
         grid->start = node;
     }
 }
-void EGridAddGoal(EGrid* grid, size_t x, size_t y)
+void SG_EXPORT EGridAddGoal(EGrid* grid, size_t x, size_t y)
 {
     SGAStarNode* node = EGridGetNode(grid, x, y);
     if(node != NULL)
@@ -245,18 +245,18 @@ void EGridAddGoal(EGrid* grid, size_t x, size_t y)
         grid->goal = node;
     }
 }
-void EGridSearchCreate(EGrid* grid)
+void SG_EXPORT EGridSearchCreate(EGrid* grid)
 {
     grid->search = SGAStarCreate(grid->start, grid->goal, _EGridG, _EGridH, _EGridGoal);
 }
-int EGridSearchStep(EGrid* grid)
+int SG_EXPORT EGridSearchStep(EGrid* grid)
 {
     int s = SGAStarStep(grid->search);
     if(s != 0)
         grid->done = 1;
     return s;
 }
-EGridData** EGridSearchPath(EGrid* grid, size_t* pathlen)
+EGridData** SG_EXPORT EGridSearchPath(EGrid* grid, size_t* pathlen)
 {
     SGAStarNode** nodes = SGAStarPath(grid->search, &grid->numpath);
     grid->path = realloc(grid->path, grid->numpath * sizeof(EGridData*));

@@ -15,7 +15,7 @@
 #define SG_BUILD_LIBRARY
 #include <siege/ai/astar.h>
 
-SGAStar* SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal)
+SGAStar* SG_EXPORT SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal)
 {
     SGAStar* search = malloc(sizeof(SGAStar));
     search->set.closed = NULL;
@@ -38,7 +38,7 @@ SGAStar* SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SG
 
     return search;
 }
-void SGAStarDestroy(SGAStar* search)
+void SG_EXPORT SGAStarDestroy(SGAStar* search)
 {
     free(search->set.open);
     free(search->set.closed);
@@ -46,7 +46,7 @@ void SGAStarDestroy(SGAStar* search)
     free(search);
 }
 // returns TRUE if found, FALSE if not found, -1 on error
-int SGAStarStep(SGAStar* search)
+int SG_EXPORT SGAStarStep(SGAStar* search)
 {
     if(search->set.numopen == 0)
         return -1; // FAILURE
@@ -76,14 +76,8 @@ int SGAStarStep(SGAStar* search)
         return 1;
 
     ARR_REMOVE(search->set.open, search->set.numopen, minfi);
-    //memmove(&search->set.open[minfi], &search->set.open[minfi+1], (search->set.numopen - (minfi + 1)) * sizeof(SGAStarNode*));
-    //search->set.open = realloc(search->set.open, (search->set.numopen - 1) * sizeof(SGAStarNode*));
-    //search->set.numopen--;
 
     ARR_ADD(search->set.closed, search->set.numclosed, min);
-    //search->set.closed = realloc(search->set.closed, (search->set.numclosed + 1) * sizeof(SGAStarNode*));
-    //search->set.closed[search->set.numclosed] = min;
-    //search->set.numclosed++;
 
     char inside;
     float teng;
@@ -135,7 +129,7 @@ int SGAStarStep(SGAStar* search)
 
     return 0; // CONTINUE - didn't find the finish, we have to continue
 }
-SGAStarNode** SGAStarPath(SGAStar* search, size_t* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
+SGAStarNode** SG_EXPORT SGAStarPath(SGAStar* search, size_t* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
 {
     search->numpath = 0;
     SGAStarNode* current = search->current;
@@ -151,7 +145,7 @@ SGAStarNode** SGAStarPath(SGAStar* search, size_t* pathlen) // reconstruct the p
     return search->path;
 }
 
-SGAStarNode* SGAStarNodeCreate(void* data)
+SGAStarNode* SG_EXPORT SGAStarNodeCreate(void* data)
 {
     SGAStarNode* node = malloc(sizeof(SGAStarNode));
     node->score.g = SG_INF;
@@ -163,24 +157,22 @@ SGAStarNode* SGAStarNodeCreate(void* data)
     node->data = data;
     return node;
 }
-void SGAStarNodeDestroy(SGAStarNode* node)
+void SG_EXPORT SGAStarNodeDestroy(SGAStarNode* node)
 {
     free(node->links);
     free(node);
 }
-void SGAStarNodeLink(SGAStarNode* from, SGAStarNode* to)
+void SG_EXPORT SGAStarNodeLink(SGAStarNode* from, SGAStarNode* to)
 {
     SGAStarNodeUnlink(from, to); // to prevent duplication
     ARR_ADD(from->links, from->numlinks, to);
-    //from->links = realloc(from->links, (from->numlinks + 1) * sizeof(SGAStarNode*));
-    //from->links[(from->numlinks)++] = to;
 }
-void SGAStarNodeDLink(SGAStarNode* one, SGAStarNode* two)
+void SG_EXPORT SGAStarNodeDLink(SGAStarNode* one, SGAStarNode* two)
 {
     SGAStarNodeLink(one, two);
     SGAStarNodeLink(two, one);
 }
-void SGAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to)
+void SG_EXPORT SGAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to)
 {
     size_t i;
     for(i = 0; i < from->numlinks; i++)
@@ -190,7 +182,7 @@ void SGAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to)
             return;
         }
 }
-void SGAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two)
+void SG_EXPORT SGAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two)
 {
     SGAStarNodeUnlink(one, two);
     SGAStarNodeUnlink(two, one);
