@@ -20,12 +20,11 @@
 #include <string.h>
 #include <time.h>
 
-void* SG_EXPORT sgMap(void* base, size_t num, size_t size, SGMapFunction func)
+void* SG_EXPORT sgMap(void* to, size_t tosize, void* base, size_t size, size_t num, SGMapFunction func)
 {
     size_t i;
     for(i = 0; i < num; i++)
-        //memmove(base + i * size, func(base + i * size), i * size);
-        func(base + i * size);
+        func(to + i * tosize, base + i * size);
     return base;
 }
 
@@ -39,7 +38,7 @@ void* SG_EXPORT sgMap(void* base, size_t num, size_t size, SGMapFunction func)
     Final: | 2   ?   ? |
            +---+---+---+
 */
-void* SG_EXPORT sgRFold(void* base, size_t num, size_t size, SGFoldFunction func)
+void* SG_EXPORT sgRFold(void* base, size_t size, size_t num, SGFoldFunction func)
 {
     ptrdiff_t i;
     for(i = num - 1; i >= 1; i--)
@@ -57,7 +56,7 @@ void* SG_EXPORT sgRFold(void* base, size_t num, size_t size, SGFoldFunction func
     Final: |-4   ?   ? |
            +---+---+---+
 */
-void* SG_EXPORT sgLFold(void* base, size_t num, size_t size, SGFoldFunction func)
+void* SG_EXPORT sgLFold(void* base, size_t size, size_t num, SGFoldFunction func)
 {
     ptrdiff_t i;
     for(i = 0; i < num - 1; i++)

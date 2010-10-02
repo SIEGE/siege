@@ -22,13 +22,13 @@ extern "C"
 {
 #endif // __cplusplus
 
-typedef void SG_EXPORT (*SGMapFunction)(void* ptr);
+typedef void SG_EXPORT (*SGMapFunction)(void* result, void* ptr);
 typedef void SG_EXPORT (*SGFoldFunction)(void* result, void* ptr1, void* ptr2);
 
-void* SG_EXPORT sgMap(void* base, size_t num, size_t size, SGMapFunction func);
+void* SG_EXPORT sgMap(void* to, size_t tosize, void* base, size_t size, size_t num, SGMapFunction func);
 
-void* SG_EXPORT sgRFold(void* base, size_t num, size_t size, SGFoldFunction func);
-void* SG_EXPORT sgLFold(void* base, size_t num, size_t size, SGFoldFunction func);
+void* SG_EXPORT sgRFold(void* base, size_t size, size_t num, SGFoldFunction func);
+void* SG_EXPORT sgLFold(void* base, size_t size, size_t num, SGFoldFunction func);
 
 #ifdef __cplusplus
 }

@@ -43,10 +43,10 @@
 #include "util/color.h"
 #include "util/link.h"
 #include "util/list.h"
+#include "util/matrix.h"
 #include "util/plist.h"
 #include "util/rand.h"
 #include "util/string.h"
 #include "util/vector.h"
-#include "util/matrix.h"
 
 #endif // __SIEGE_H__
