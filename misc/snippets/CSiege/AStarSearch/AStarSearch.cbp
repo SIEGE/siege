@@ -48,10 +48,6 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="navmesh.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="navmesh.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -9,7 +9,6 @@
 
 #include "astar.h"
 #include "grid.h"
-#include "navmesh.h"
 #undef main
 
 #define WIDTH 640
@@ -169,15 +168,12 @@ void maze(EGrid* grid)
 }
 #undef DESTROY
 
-void drawMesh(WMesh* mesh);
 void drawGrid(EGrid* grid);
 
 SDL_Event event;
 SDL_Surface* window;
 EGrid* grid;
 EGridData** data;
-WMesh* mesh;
-WPoly* polys[3];
 int done = SDL_FALSE;
 char sready = 0;
 char lmouse = 0;
@@ -209,25 +205,6 @@ int main()
     EGridAddStart(grid, 1, 1);
     EGridAddGoal(grid, WIDTH / CELL - 2, HEIGHT / CELL - 2);
     //maze(grid);
-
-    mesh = WMeshCreate();
-    float points1x[] = { 32, 320, 320,  32};
-    float points1y[] = { 32, 240, 448, 448};
-    polys[0] = WPolyCreate(mesh, points1x, points1y, sizeof(points1x) / sizeof(float));
-    float points2x[] = {320, 608, 608, 320};
-    float points2y[] = {240,  32, 448, 448};
-    polys[1] = WPolyCreate(mesh, points2x, points2y, sizeof(points2x) / sizeof(float));
-    //float points3x[] = { 32, 608, 320};
-    //float points3y[] = { 32,  32, 240};
-    //polys[2] = WPolyCreate(mesh, points3x, points3y, sizeof(points3x) / sizeof(float));
-
-    WPolyDlink(polys[0], polys[1]);
-    //WPolyDlink(polys[0], polys[2]);
-    //WPolyDlink(polys[1], polys[2]);
-
-    WMeshAddStart(mesh, 64, 64);
-    WMeshAddGoal(mesh, 512, 256);
-    WMeshSearchCreate(mesh);
 
     while(!done)
     {
@@ -270,20 +247,17 @@ int main()
         if(mmouse)
         {
             EGridSearchStep(grid);
-            WMeshSearchStep(mesh);
             sready = 1;
         }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         drawGrid(grid);
-        drawMesh(mesh);
 
         SDL_GL_SwapBuffers();
     }
 
     EGridDestroy(grid);
-    WMeshDestroy(mesh);
 
     IMG_Quit();
     SDL_Quit();
@@ -291,84 +265,6 @@ int main()
     return 0;
 }
 
-void drawMesh(WMesh* mesh)
-{
-    size_t i, j, k;
-    WVertex* data;
-    for(i = 0; i < mesh->numpolys; i++)
-    {
-        glBegin(GL_LINE_LOOP);
-        glColor4f(0, 1, 1, 1);
-        for(j = 0; j < mesh->polys[i]->numverts; j++)
-        {
-            glVertex2f(mesh->polys[i]->verts[j]->x, mesh->polys[i]->verts[j]->y);
-        }
-        glEnd();
-
-        glColor4f(1, 0, 0, 1);
-        glBegin(GL_LINES);
-        for(j = 0; j < mesh->polys[i]->numverts; j++)
-        {
-            if(mesh->polys[i]->verts[j]->node != NULL)
-            {
-                for(k = 0; k < mesh->polys[i]->verts[j]->node->numlinks; k++)
-                {
-                    data = mesh->polys[i]->verts[j]->node->links[k]->data;
-                    glVertex2f(mesh->polys[i]->verts[j]->x, mesh->polys[i]->verts[j]->y);
-                    glVertex2f(data->x, data->y);
-                }
-            }
-        }
-        if(mesh->start->node != NULL)
-            for(k = 0; k < mesh->start->node->numlinks; k++)
-            {
-                data = mesh->start->node->links[k]->data;
-                glVertex2f(mesh->start->x, mesh->start->y);
-                glVertex2f(data->x, data->y);
-            }
-        if(mesh->goal->node != NULL)
-            for(k = 0; k < mesh->goal->node->numlinks; k++)
-            {
-                data = mesh->goal->node->links[k]->data;
-                glVertex2f(mesh->goal->x, mesh->goal->y);
-                glVertex2f(data->x, data->y);
-            }
-        glEnd();
-    }
-
-    glBegin(GL_QUADS);
-    glColor4f(1, 0, 0, 1);
-    if(mesh->start != NULL)
-    {
-        glVertex2f(mesh->start->x - 16, mesh->start->y - 16);
-        glVertex2f(mesh->start->x + 16, mesh->start->y - 16);
-        glVertex2f(mesh->start->x + 16, mesh->start->y + 16);
-        glVertex2f(mesh->start->x - 16, mesh->start->y + 16);
-    }
-    glColor4f(0, 1, 0, 1);
-    if(mesh->goal != NULL)
-    {
-        glVertex2f(mesh->goal->x - 16, mesh->goal->y - 16);
-        glVertex2f(mesh->goal->x + 16, mesh->goal->y - 16);
-        glVertex2f(mesh->goal->x + 16, mesh->goal->y + 16);
-        glVertex2f(mesh->goal->x - 16, mesh->goal->y + 16);
-    }
-    glEnd();
-
-    WVertex** path;
-    if(sready)
-    {
-        path = WMeshSearchPath(mesh, &j);
-
-        glBegin(GL_LINE_STRIP);
-        glColor4f(0.0, 1.0, 0.0, 1.0);
-        for(i = 0; i < j; i++)
-        {
-            glVertex2f(path[i]->x, path[i]->y * CELL + CELL/2);
-        }
-        glEnd();
-    }
-}
 void drawGrid(EGrid* grid)
 {
     size_t x, y;
