@@ -63,6 +63,6 @@ void SG_EXPORT SGPathGridAddStart(SGPathGrid* grid, size_t x, size_t y);
 void SG_EXPORT SGPathGridAddGoal(SGPathGrid* grid, size_t x, size_t y);
 void SG_EXPORT SGPathGridSearchCreate(SGPathGrid* grid);
 int SG_EXPORT SGPathGridSearchStep(SGPathGrid* grid);
-SGLinkedList* SG_EXPORT SGPathGridSearchPath(SGPathGrid* grid, size_t* pathlen);
+SGLinkedList* SG_EXPORT SGPathGridSearchPath(SGPathGrid* grid, SGuint* pathlen);
 
 #endif // __SIEGE_AI_GRID_H__

@@ -15,6 +15,8 @@
 #define SG_BUILD_LIBRARY
 #include <siege/ai/grid.h>
 
+#include <math.h>
+
 float SG_EXPORT _SGPathGridG(SGAStarNode* from, SGAStarNode* to)
 {
     SGPathGridData* fdata = from->data;
@@ -170,7 +172,6 @@ void SG_EXPORT SGPathGridAddClear(SGPathGrid* grid, size_t x, size_t y)
         }
         if(grid->wdiag)
         {
-            printf("%d\n", grid->wdiag);
             if(((SGPathGridData*)grid->grid[x  ][y+1]->data)->type != SG_PATH_GRID_WALL)
             {
                 SGAStarNodeLink(grid->grid[x-1][y  ], grid->grid[x  ][y+1]);
