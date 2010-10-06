@@ -58,16 +58,16 @@ typedef struct SGAStar
     } cb;
 } SGAStar;
 
-SGAStar* SG_EXPORT SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);
-void SG_EXPORT SGAStarDestroy(SGAStar* search);
-int SG_EXPORT SGAStarStep(SGAStar* search);
-SGLinkedList* SG_EXPORT SGAStarPath(SGAStar* search, SGuint* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
+SGAStar* SG_EXPORT sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);
+void SG_EXPORT sgAStarDestroy(SGAStar* search);
+int SG_EXPORT sgAStarStep(SGAStar* search);
+SGLinkedList* SG_EXPORT sgAStarPath(SGAStar* search, SGuint* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
 
-SGAStarNode* SG_EXPORT SGAStarNodeCreate(void* data);
-void SG_EXPORT SGAStarNodeDestroy(SGAStarNode* node);
-void SG_EXPORT SGAStarNodeLink(SGAStarNode* from, SGAStarNode* to);
-void SG_EXPORT SGAStarNodeDLink(SGAStarNode* one, SGAStarNode* two);
-void SG_EXPORT SGAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to);
-void SG_EXPORT SGAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two);
+SGAStarNode* SG_EXPORT sgAStarNodeCreate(void* data);
+void SG_EXPORT sgAStarNodeDestroy(SGAStarNode* node);
+void SG_EXPORT sgAStarNodeLink(SGAStarNode* from, SGAStarNode* to);
+void SG_EXPORT sgAStarNodeDLink(SGAStarNode* one, SGAStarNode* two);
+void SG_EXPORT sgAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to);
+void SG_EXPORT sgAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two);
 
 #endif // __SIEGE_AI_ASTAR_H__

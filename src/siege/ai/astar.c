@@ -15,7 +15,7 @@
 #define SG_BUILD_LIBRARY
 #include <siege/ai/astar.h>
 
-SGAStar* SG_EXPORT SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal)
+SGAStar* SG_EXPORT sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal)
 {
     SGAStar* search = malloc(sizeof(SGAStar));
     search->set.open = sgLinkedListCreate();
@@ -35,7 +35,7 @@ SGAStar* SG_EXPORT SGAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarS
 
     return search;
 }
-void SG_EXPORT SGAStarDestroy(SGAStar* search)
+void SG_EXPORT sgAStarDestroy(SGAStar* search)
 {
     sgLinkedListDestroy(search->set.open);
     sgLinkedListDestroy(search->set.closed);
@@ -44,7 +44,7 @@ void SG_EXPORT SGAStarDestroy(SGAStar* search)
 }
 
 // returns TRUE if found, FALSE if not found, -1 on error
-int SG_EXPORT SGAStarStep(SGAStar* search)
+int SG_EXPORT sgAStarStep(SGAStar* search)
 {
     if(!sgLinkedListLength(search->set.open))
         return -1; // FAILURE
@@ -132,7 +132,7 @@ int SG_EXPORT SGAStarStep(SGAStar* search)
 
     return 0; // CONTINUE - didn't find the finish, we have to continue
 }
-SGLinkedList* SG_EXPORT SGAStarPath(SGAStar* search, SGuint* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
+SGLinkedList* SG_EXPORT sgAStarPath(SGAStar* search, SGuint* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
 {
     // sgLinkedListClear(search->path);
     sgLinkedListDestroy(search->path);
@@ -154,7 +154,7 @@ SGLinkedList* SG_EXPORT SGAStarPath(SGAStar* search, SGuint* pathlen) // reconst
     return search->path;
 }
 
-SGAStarNode* SG_EXPORT SGAStarNodeCreate(void* data)
+SGAStarNode* SG_EXPORT sgAStarNodeCreate(void* data)
 {
     SGAStarNode* node = malloc(sizeof(SGAStarNode));
     node->from = NULL;
@@ -165,27 +165,27 @@ SGAStarNode* SG_EXPORT SGAStarNodeCreate(void* data)
     node->score.f = SG_INF;
     return node;
 }
-void SG_EXPORT SGAStarNodeDestroy(SGAStarNode* node)
+void SG_EXPORT sgAStarNodeDestroy(SGAStarNode* node)
 {
     sgLinkedListDestroy(node->links);
     free(node);
 }
-void SG_EXPORT SGAStarNodeLink(SGAStarNode* from, SGAStarNode* to)
+void SG_EXPORT sgAStarNodeLink(SGAStarNode* from, SGAStarNode* to)
 {
-    SGAStarNodeUnlink(from, to); // to prevent duplication
+    sgAStarNodeUnlink(from, to); // to prevent duplication
     sgLinkedListAppend(from->links, to);
 }
-void SG_EXPORT SGAStarNodeDLink(SGAStarNode* one, SGAStarNode* two)
+void SG_EXPORT sgAStarNodeDLink(SGAStarNode* one, SGAStarNode* two)
 {
-    SGAStarNodeLink(one, two);
-    SGAStarNodeLink(two, one);
+    sgAStarNodeLink(one, two);
+    sgAStarNodeLink(two, one);
 }
-void SG_EXPORT SGAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to)
+void SG_EXPORT sgAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to)
 {
     sgLinkedListRemoveItem(from->links, to);
 }
-void SG_EXPORT SGAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two)
+void SG_EXPORT sgAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two)
 {
-    SGAStarNodeUnlink(one, two);
-    SGAStarNodeUnlink(two, one);
+    sgAStarNodeUnlink(one, two);
+    sgAStarNodeUnlink(two, one);
 }

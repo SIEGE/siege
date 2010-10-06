@@ -49,20 +49,20 @@ typedef struct SGPathGrid
     SGbool wdiag;
 } SGPathGrid;
 
-float SG_EXPORT _SGPathGridG(SGAStarNode* from, SGAStarNode* to);
-float SG_EXPORT _SGPathGridH(SGAStarNode* from, SGAStarNode* to);
-SGbool SG_EXPORT _SGPathGridGoal(SGAStarNode* from, SGAStarNode* to);
+float SG_EXPORT _sgPathGridG(SGAStarNode* from, SGAStarNode* to);
+float SG_EXPORT _sgPathGridH(SGAStarNode* from, SGAStarNode* to);
+SGbool SG_EXPORT _sgPathGridGoal(SGAStarNode* from, SGAStarNode* to);
 
-SGPathGrid* SG_EXPORT SGPathGridCreate(size_t width, size_t height, char diag, char wdiag);
-void SG_EXPORT SGPathGridDestroy(SGPathGrid* grid);
-SGAStarNode* SG_EXPORT SGPathGridGetNode(SGPathGrid* grid, size_t x, size_t y);
-SGPathGridData* SG_EXPORT SGPathGridGetData(SGPathGrid* grid, size_t x, size_t y);
-void SG_EXPORT SGPathGridAddClear(SGPathGrid* grid, size_t x, size_t y);
-void SG_EXPORT SGPathGridAddWall(SGPathGrid* grid, size_t x, size_t y);
-void SG_EXPORT SGPathGridAddStart(SGPathGrid* grid, size_t x, size_t y);
-void SG_EXPORT SGPathGridAddGoal(SGPathGrid* grid, size_t x, size_t y);
-void SG_EXPORT SGPathGridSearchCreate(SGPathGrid* grid);
-int SG_EXPORT SGPathGridSearchStep(SGPathGrid* grid);
-SGLinkedList* SG_EXPORT SGPathGridSearchPath(SGPathGrid* grid, SGuint* pathlen);
+SGPathGrid* SG_EXPORT sgPathGridCreate(size_t width, size_t height, char diag, char wdiag);
+void SG_EXPORT sgPathGridDestroy(SGPathGrid* grid);
+SGAStarNode* SG_EXPORT sgPathGridGetNode(SGPathGrid* grid, size_t x, size_t y);
+SGPathGridData* SG_EXPORT sgPathGridGetData(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT sgPathGridAddClear(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT sgPathGridAddWall(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT sgPathGridAddStart(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT sgPathGridAddGoal(SGPathGrid* grid, size_t x, size_t y);
+void SG_EXPORT sgPathGridSearchCreate(SGPathGrid* grid);
+int SG_EXPORT sgPathGridSearchStep(SGPathGrid* grid);
+SGLinkedList* SG_EXPORT sgPathGridSearchPath(SGPathGrid* grid, SGuint* pathlen);
 
 #endif // __SIEGE_AI_GRID_H__
