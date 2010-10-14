@@ -83,8 +83,8 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
     _sgEntityInit();
 
     size_t i;
-    size_t nmodules = sgLinkedListLength(_sg_modList);
-    SGLinkedNode* node;
+    size_t nmodules = sgListLength(_sg_modList);
+    SGListNode* node;
     SGModuleInfo** infos = malloc(nmodules * sizeof(SGModuleInfo*));
     SGModule* module;
     for(i = 0, node = _sg_modList->first; node != NULL; node = node->next, i++)

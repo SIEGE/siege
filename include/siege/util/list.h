@@ -24,49 +24,49 @@ extern "C"
 {
 #endif // __cplusplus
 
-typedef struct SGLinkedNode
+typedef struct SGListNode
 {
-    struct SGLinkedList* list;
-    struct SGLinkedNode* prev;
-    struct SGLinkedNode* next;
+    struct SGList* list;
+    struct SGListNode* prev;
+    struct SGListNode* next;
     void* item;
 
     void* internal;
     void (*internalFree)(void*);
-} SGLinkedNode;
+} SGListNode;
 
-typedef struct SGLinkedList
+typedef struct SGList
 {
-    struct SGLinkedNode* first;
-    struct SGLinkedNode* last;
+    struct SGListNode* first;
+    struct SGListNode* last;
 
     void* internal;
     void (*internalFree)(void*);
-} SGLinkedList;
+} SGList;
 
-SGLinkedList* SG_EXPORT sgLinkedListCreate(void);
-void SG_EXPORT sgLinkedListDestroy(SGLinkedList* list);
+SGList* SG_EXPORT sgListCreate(void);
+void SG_EXPORT sgListDestroy(SGList* list);
 
-size_t SG_EXPORT sgLinkedListLength(SGLinkedList* list);
+size_t SG_EXPORT sgListLength(SGList* list);
 
-SGLinkedNode* SG_EXPORT sgLinkedListFindItem(SGLinkedList* list, void* item);
-SGLinkedNode* SG_EXPORT sgLinkedListFindIndex(SGLinkedList* list, size_t index);
+SGListNode* SG_EXPORT sgListFindItem(SGList* list, void* item);
+SGListNode* SG_EXPORT sgListFindIndex(SGList* list, size_t index);
 
-SGLinkedNode* SG_EXPORT sgLinkedListInsertNode(SGLinkedList* list, SGLinkedNode* after, void* item);
-SGLinkedNode* SG_EXPORT sgLinkedListInsertItem(SGLinkedList* list, void* after, void* item);
-SGLinkedNode* SG_EXPORT sgLinkedListInsertIndex(SGLinkedList* list, size_t after, void* item);
-SGLinkedNode* SG_EXPORT sgLinkedListPrepend(SGLinkedList* list, void* item);
-SGLinkedNode* SG_EXPORT sgLinkedListAppend(SGLinkedList* list, void* item);
+SGListNode* SG_EXPORT sgListInsertNode(SGList* list, SGListNode* after, void* item);
+SGListNode* SG_EXPORT sgListInsertItem(SGList* list, void* after, void* item);
+SGListNode* SG_EXPORT sgListInsertIndex(SGList* list, size_t after, void* item);
+SGListNode* SG_EXPORT sgListPrepend(SGList* list, void* item);
+SGListNode* SG_EXPORT sgListAppend(SGList* list, void* item);
 
-void SG_EXPORT sgLinkedListRemoveNode(SGLinkedList* list, SGLinkedNode* node);
-void SG_EXPORT sgLinkedListRemoveItem(SGLinkedList* list, void* item);
-void SG_EXPORT sgLinkedListRemoveIndex(SGLinkedList* list, size_t index);
+void SG_EXPORT sgListRemoveNode(SGList* list, SGListNode* node);
+void SG_EXPORT sgListRemoveItem(SGList* list, void* item);
+void SG_EXPORT sgListRemoveIndex(SGList* list, size_t index);
 
-SGLinkedNode* SG_EXPORT sgLinkedListGetFirst(SGLinkedList* list);
-SGLinkedNode* SG_EXPORT sgLinkedListGetLast(SGLinkedList* list);
+SGListNode* SG_EXPORT sgListGetFirst(SGList* list);
+SGListNode* SG_EXPORT sgListGetLast(SGList* list);
 
-void* SG_EXPORT sgLinkedListPopFirst(SGLinkedList* list);
-void* SG_EXPORT sgLinkedListPopLast(SGLinkedList* list);
+void* SG_EXPORT sgListPopFirst(SGList* list);
+void* SG_EXPORT sgListPopLast(SGList* list);
 
 #ifdef __cplusplus
 }
