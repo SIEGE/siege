@@ -16,6 +16,7 @@
 #define __SIEGE_CORE_H__
 
 #include "../common.h"
+#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -24,7 +25,8 @@ extern "C"
 
 /**
     \brief Load a number of modules
-    \param modules The NULL-terminated list of modules to load
+    \param n The number of modules to load
+    \param args The list of modules to load
     \return The number of successfully loaded modules.
     \warning
         This function should be called \b before \ref sgInit "sgInit"!
@@ -38,9 +40,32 @@ extern "C"
     In debug builds, SIEGE tries to find the ".debug." versions first.
 
     \sa
+        sgLoadModules
+        sgLoadModule
+
+*/
+SGuint SG_EXPORT sgLoadModulesv(int n, va_list args);
+/**
+    \brief Load a number of modules
+    \param n The number of modules to load
+    \param ... The list of modules to load
+    \return The number of successfully loaded modules.
+    \warning
+        This function should be called \b before \ref sgInit "sgInit"!
+
+    The "Modules" folder is used to look for the modules.
+    For example, if the module "Foo" is requested, SIEGE will look for it in this order (replace ".so" with whatever the dynamic library ending of the OS is)
+    - Modules/SGModule-Foo.so
+    - Modules/libSGModule-Foo.so
+    - Modules/SGModule-Foo.debug.so
+    - Modules/libSGModule-Foo.debug.so
+    In debug builds, SIEGE tries to find the ".debug." versions first.
+
+    \sa
+        sgLoadModulesv
         sgLoadModule
 */
-SGuint SG_EXPORT sgLoadModules(char** modules);
+SGuint SG_EXPORT sgLoadModules(int n, ...);
 /**
     \brief Load a single module
     \param name Name of the module to load
