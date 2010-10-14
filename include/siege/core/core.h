@@ -84,7 +84,7 @@ SGuint SG_EXPORT sgLoadModules(int n, ...);
     \sa
         sgLoadModules
 */
-SGbool SG_EXPORT sgLoadModule(char* name);
+SGbool SG_EXPORT sgLoadModule(const char* name);
 /**
     \brief Initialize SIEGE
     \param width Window width

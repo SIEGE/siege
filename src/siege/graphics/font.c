@@ -147,7 +147,7 @@ SGubyte* SG_EXPORT _sgFontToRGBA(SGFont* font, SGubyte* data, SGuint datalen)
     }
     return newData;
 }
-void SG_EXPORT _sgFontCenterOffsetT(SGFont* font, float* x, float* y, char* text)
+void SG_EXPORT _sgFontCenterOffsetT(SGFont* font, float* x, float* y, const char* text)
 {
     //SGuint numlines = sgNumLines(text);
     float cx;
@@ -157,7 +157,7 @@ void SG_EXPORT _sgFontCenterOffsetT(SGFont* font, float* x, float* y, char* text
     *y = cy / 2.0f;
 }
 
-SGFont* SG_EXPORT sgFontCreate(char* fname, float height, SGuint preload)
+SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
 {
     SGFont* font = malloc(sizeof(SGFont));
     if(font == NULL)
@@ -237,20 +237,20 @@ SGFont* SG_EXPORT sgFontResize(SGFont* font, float height)
     return newFont;
 }
 
-void SG_EXPORT sgFontPrint(SGFont* font, float x, float y, char* format, ...)
+void SG_EXPORT sgFontPrint(SGFont* font, float x, float y, const char* format, ...)
 {
     va_list args;
     va_start(args, format);
     sgFontPrintV(font, x, y, format, args);
     va_end(args);
 }
-void SG_EXPORT sgFontPrintV(SGFont* font, float x, float y, char* format, va_list args)
+void SG_EXPORT sgFontPrintV(SGFont* font, float x, float y, const char* format, va_list args)
 {
     char* text = sgPrintfv(format, args);
-    sgFontPrintT(font, x, y, text);
+    sgFontPrintT(font, x, y, (const char*)text);
     free(text);
 }
-void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, char* text)
+void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, const char* text)
 {
     if(font == NULL)
         return;
@@ -259,9 +259,9 @@ void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, char* text)
     float yoffset;
     float h = font->height / 0.63;
 
-    char* start = text;
-    char* end;
-    char* chr;
+    const char* start = text;
+    const char* end;
+    const char* chr;
     SGuint line = 0;
     //SGuint numlines = sgNumLines(text);
 
@@ -293,20 +293,20 @@ void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, char* text)
     free(dline);
 }
 
-void SG_EXPORT sgFontPrintCentered(SGFont* font, float x, float y, char* format, ...)
+void SG_EXPORT sgFontPrintCentered(SGFont* font, float x, float y, const char* format, ...)
 {
     va_list args;
     va_start(args, format);
     sgFontPrintCenteredV(font, x, y, format, args);
     va_end(args);
 }
-void SG_EXPORT sgFontPrintCenteredV(SGFont* font, float x, float y, char* format, va_list args)
+void SG_EXPORT sgFontPrintCenteredV(SGFont* font, float x, float y, const char* format, va_list args)
 {
     char* text = sgPrintfv(format, args);
     sgFontPrintCenteredT(font, x, y, text);
     free(text);
 }
-void SG_EXPORT sgFontPrintCenteredT(SGFont* font, float x, float y, char* text)
+void SG_EXPORT sgFontPrintCenteredT(SGFont* font, float x, float y, const char* text)
 {
     float ox;
     float oy;
@@ -315,20 +315,20 @@ void SG_EXPORT sgFontPrintCenteredT(SGFont* font, float x, float y, char* text)
 }
 
 // prints centered on X, but not on Y
-void SG_EXPORT sgFontPrintXCentered(SGFont* font, float x, float y, char* format, ...)
+void SG_EXPORT sgFontPrintXCentered(SGFont* font, float x, float y, const char* format, ...)
 {
     va_list args;
     va_start(args, format);
     sgFontPrintXCenteredV(font, x, y, format, args);
     va_end(args);
 }
-void SG_EXPORT sgFontPrintXCenteredV(SGFont* font, float x, float y, char* format, va_list args)
+void SG_EXPORT sgFontPrintXCenteredV(SGFont* font, float x, float y, const char* format, va_list args)
 {
     char* text = sgPrintfv(format, args);
     sgFontPrintXCenteredT(font, x, y, text);
     free(text);
 }
-void SG_EXPORT sgFontPrintXCenteredT(SGFont* font, float x, float y, char* text)
+void SG_EXPORT sgFontPrintXCenteredT(SGFont* font, float x, float y, const char* text)
 {
     float ox;
     float oy;
@@ -337,20 +337,20 @@ void SG_EXPORT sgFontPrintXCenteredT(SGFont* font, float x, float y, char* text)
 }
 
 // prints centered on Y, but not on X
-void SG_EXPORT sgFontPrintYCentered(SGFont* font, float x, float y, char* format, ...)
+void SG_EXPORT sgFontPrintYCentered(SGFont* font, float x, float y, const char* format, ...)
 {
     va_list args;
     va_start(args, format);
     sgFontPrintYCenteredV(font, x, y, format, args);
     va_end(args);
 }
-void SG_EXPORT sgFontPrintYCenteredV(SGFont* font, float x, float y, char* format, va_list args)
+void SG_EXPORT sgFontPrintYCenteredV(SGFont* font, float x, float y, const char* format, va_list args)
 {
     char* text = sgPrintfv(format, args);
     sgFontPrintYCenteredT(font, x, y, text);
     free(text);
 }
-void SG_EXPORT sgFontPrintYCenteredT(SGFont* font, float x, float y, char* text)
+void SG_EXPORT sgFontPrintYCenteredT(SGFont* font, float x, float y, const char* text)
 {
     float ox;
     float oy;
@@ -358,32 +358,32 @@ void SG_EXPORT sgFontPrintYCenteredT(SGFont* font, float x, float y, char* text)
     sgFontPrintT(font, x, y + oy, text);
 }
 
-void SG_EXPORT sgFontStrSize(SGFont* font, float* x, float* y, char* format, ...)
+void SG_EXPORT sgFontStrSize(SGFont* font, float* x, float* y, const char* format, ...)
 {
     va_list args;
     va_start(args, format);
     sgFontStrSizeV(font, x, y, format, args);
     va_end(args);
 }
-void SG_EXPORT sgFontStrSizeV(SGFont* font, float* x, float* y, char* format, va_list args)
+void SG_EXPORT sgFontStrSizeV(SGFont* font, float* x, float* y, const char* format, va_list args)
 {
     char* text = sgPrintfv(format, args);
     sgFontStrSizeT(font, x, y, text);
     free(text);
 }
-void SG_EXPORT sgFontStrSizeT(SGFont* font, float* x, float* y, char* text)
+void SG_EXPORT sgFontStrSizeT(SGFont* font, float* x, float* y, const char* text)
 {
     if(font == NULL)
         return;
 
-    char* start = text;
-    char* end;
+    const char* start = text;
+    const char* end;
     SGuint line = 0;
     SGuint numlines = sgNumLines(text);
 
     *x = 0.0f;
     *y = 0.0f;
-    char* chr;
+    const char* chr;
     float w;
     float h;
     SGCharInfo* info = NULL;

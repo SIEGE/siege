@@ -41,8 +41,8 @@ void SG_EXPORT _sgSpriteEvTick(SGEntity* client);
 
 SGSprite* SG_EXPORT sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, float yoffset);
 SGSprite* SG_EXPORT sgSpriteCreateTexture(SGTexture* texture);
-SGSprite* SG_EXPORT sgSpriteCreateFile2f(char* fname, float xoffset, float yoffset);
-SGSprite* SG_EXPORT sgSpriteCreateFile(char* fname);
+SGSprite* SG_EXPORT sgSpriteCreateFile2f(const char* fname, float xoffset, float yoffset);
+SGSprite* SG_EXPORT sgSpriteCreateFile(const char* fname);
 void SG_EXPORT sgSpriteDestroy(SGSprite* sprite);
 
 void SG_EXPORT sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle);

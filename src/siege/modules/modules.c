@@ -26,7 +26,7 @@
 #include <string.h>
 #include <dirent.h>
 
-char* SG_EXPORT _sgModuleGetFile(char* module)
+char* SG_EXPORT _sgModuleGetFile(const char* module)
 {
     DIR* dir;
     struct dirent* ent;
@@ -78,7 +78,7 @@ SGbool SG_EXPORT _sgModuleDeinit(void)
     return SG_TRUE;
 }
 
-SGModule* SG_EXPORT sgModuleLoad(char* name)
+SGModule* SG_EXPORT sgModuleLoad(const char* name)
 {
     char* fname = _sgModuleGetFile(name);
     if(fname == NULL)

@@ -45,11 +45,11 @@ typedef struct SGModule
     SGuint SG_EXPORT (*sgmModuleMatch)(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
 } SGModule;
 
-char* SG_EXPORT _sgModuleGetFile(char* module);
+char* SG_EXPORT _sgModuleGetFile(const char* module);
 SGbool SG_EXPORT _sgModuleInit(void);
 SGbool SG_EXPORT _sgModuleDeinit(void);
 
-SGModule* SG_EXPORT sgModuleLoad(char* name);
+SGModule* SG_EXPORT sgModuleLoad(const char* name);
 void SG_EXPORT sgModuleUnload(SGModule* module);
 
 #ifdef __cplusplus

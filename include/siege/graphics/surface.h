@@ -34,7 +34,7 @@ void* _sg_surfTarget;
 SGbool SG_EXPORT _sgSurfaceInit();
 SGbool SG_EXPORT _sgSurfaceDeinit();
 
-SGSurface* SG_EXPORT sgSurfaceCreateFile(char* fname);
+SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname);
 SGSurface* SG_EXPORT sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data);
 SGSurface* SG_EXPORT sgSurfaceCreate(SGuint width, SGuint height, SGenum bpp);
 void SG_EXPORT sgSurfaceDestroy(SGSurface* surface);

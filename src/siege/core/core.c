@@ -60,7 +60,7 @@ SGuint SG_EXPORT sgLoadModules(int n, ...)
     va_end(args);
     return ret;
 }
-SGbool SG_EXPORT sgLoadModule(char* name)
+SGbool SG_EXPORT sgLoadModule(const char* name)
 {
     if(_sg_firstModule)
     {
