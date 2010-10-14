@@ -44,7 +44,7 @@ void SG_EXPORT sgAStarDestroy(SGAStar* search)
 }
 
 // returns TRUE if found, FALSE if not found, -1 on error
-int SG_EXPORT sgAStarStep(SGAStar* search)
+SGint SG_EXPORT sgAStarStep(SGAStar* search)
 {
     if(!sgLinkedListLength(search->set.open))
         return -1; // FAILURE
@@ -70,28 +70,28 @@ int SG_EXPORT sgAStarStep(SGAStar* search)
     if(search->cb.isgoal != NULL)
     {
         if(search->cb.isgoal(min, search->goal))
-            return 1; // SUCCESS
+            return SG_TRUE; // SUCCESS
     }
     else if(min == search->goal) // fallback
-        return 1;
+        return SG_TRUE;
 
     sgLinkedListRemoveNode(search->set.open, finode);
     sgLinkedListAppend(search->set.closed, min);
 
-    char inside;
+    SGbool inside;
     float teng;
-    char tenbetter;
+    SGbool tenbetter;
     SGLinkedNode* open;
     SGLinkedNode* closed;
     for(node = min->links->first; node != NULL; node = node->next)
     {
         anode = node->item;
 
-        inside = 0;
+        inside = SG_FALSE;
         for(closed = search->set.closed->first; closed != NULL; closed = closed->next)
             if(anode == closed->item)
             {
-                inside = 1;
+                inside = SG_TRUE;
                 break;
             }
         if(inside)
@@ -106,18 +106,18 @@ int SG_EXPORT sgAStarStep(SGAStar* search)
         for(open = search->set.open->first; open != NULL; open = open->next)
             if(anode == open->item)
             {
-                inside = 1;
+                inside = SG_TRUE;
                 break;
             }
         if(!inside)
         {
             sgLinkedListAppend(search->set.open, anode);
-            tenbetter = 1;
+            tenbetter = SG_TRUE;
         }
         else if(teng < anode->score.g)
-            tenbetter = 1;
+            tenbetter = SG_TRUE;
         else
-            tenbetter = 0;
+            tenbetter = SG_FALSE;
         if(tenbetter)
         {
             anode->from = min;
@@ -130,7 +130,7 @@ int SG_EXPORT sgAStarStep(SGAStar* search)
         }
     }
 
-    return 0; // CONTINUE - didn't find the finish, we have to continue
+    return SG_FALSE; // CONTINUE - didn't find the finish, we have to continue
 }
 SGLinkedList* SG_EXPORT sgAStarPath(SGAStar* search, SGuint* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
 {

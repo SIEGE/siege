@@ -40,9 +40,9 @@ SGbool SG_EXPORT _sgPathGridGoal(SGAStarNode* from, SGAStarNode* to)
     return from == to;
 }
 
-SGPathGrid* SG_EXPORT sgPathGridCreate(size_t width, size_t height, char diag, char wdiag)
+SGPathGrid* SG_EXPORT sgPathGridCreate(SGuint width, SGuint height, SGbool diag, SGbool wdiag)
 {
-    size_t x, y;
+    SGuint x, y;
     SGPathGridData* data;
     SGPathGrid* grid = malloc(sizeof(SGPathGrid));
     grid->search = NULL;
@@ -130,20 +130,20 @@ void SG_EXPORT sgPathGridDestroy(SGPathGrid* grid)
         free(grid->grid[x]);
     }
 }
-SGAStarNode* SG_EXPORT sgPathGridGetNode(SGPathGrid* grid, size_t x, size_t y)
+SGAStarNode* SG_EXPORT sgPathGridGetNode(SGPathGrid* grid, SGuint x, SGuint y)
 {
     if(x >= grid->width || y >= grid->height)
         return NULL;
     return grid->grid[x+1][y+1];
 }
-SGPathGridData* SG_EXPORT sgPathGridGetData(SGPathGrid* grid, size_t x, size_t y)
+SGPathGridData* SG_EXPORT sgPathGridGetData(SGPathGrid* grid, SGuint x, SGuint y)
 {
     SGAStarNode* node = sgPathGridGetNode(grid, x, y);
     if(node == NULL)
         return NULL;
     return node->data;
 }
-void SG_EXPORT sgPathGridAddClear(SGPathGrid* grid, size_t x, size_t y)
+void SG_EXPORT sgPathGridAddClear(SGPathGrid* grid, SGuint x, SGuint y)
 {
     SGAStarNode* node = sgPathGridGetNode(grid, x, y);
     if(node != NULL)
@@ -195,7 +195,7 @@ void SG_EXPORT sgPathGridAddClear(SGPathGrid* grid, size_t x, size_t y)
         }
     }
 }
-void SG_EXPORT sgPathGridAddWall(SGPathGrid* grid, size_t x, size_t y)
+void SG_EXPORT sgPathGridAddWall(SGPathGrid* grid, SGuint x, SGuint y)
 {
     SGAStarNode* node = sgPathGridGetNode(grid, x, y);
     if(node != NULL)
@@ -227,7 +227,7 @@ void SG_EXPORT sgPathGridAddWall(SGPathGrid* grid, size_t x, size_t y)
         }
     }
 }
-void SG_EXPORT sgPathGridAddStart(SGPathGrid* grid, size_t x, size_t y)
+void SG_EXPORT sgPathGridAddStart(SGPathGrid* grid, SGuint x, SGuint y)
 {
     SGAStarNode* node = sgPathGridGetNode(grid, x, y);
     if(node != NULL)
@@ -236,7 +236,7 @@ void SG_EXPORT sgPathGridAddStart(SGPathGrid* grid, size_t x, size_t y)
         grid->start = node;
     }
 }
-void SG_EXPORT sgPathGridAddGoal(SGPathGrid* grid, size_t x, size_t y)
+void SG_EXPORT sgPathGridAddGoal(SGPathGrid* grid, SGuint x, SGuint y)
 {
     SGAStarNode* node = sgPathGridGetNode(grid, x, y);
     if(node != NULL)
@@ -249,7 +249,7 @@ void SG_EXPORT sgPathGridSearchCreate(SGPathGrid* grid)
 {
     grid->search = sgAStarCreate(grid->start, grid->goal, _sgPathGridG, _sgPathGridH, _sgPathGridGoal);
 }
-int SG_EXPORT sgPathGridSearchStep(SGPathGrid* grid)
+SGint SG_EXPORT sgPathGridSearchStep(SGPathGrid* grid)
 {
     int s = sgAStarStep(grid->search);
     if(s != 0)

@@ -60,7 +60,7 @@ typedef struct SGAStar
 
 SGAStar* SG_EXPORT sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);
 void SG_EXPORT sgAStarDestroy(SGAStar* search);
-int SG_EXPORT sgAStarStep(SGAStar* search);
+SGint SG_EXPORT sgAStarStep(SGAStar* search);
 SGLinkedList* SG_EXPORT sgAStarPath(SGAStar* search, SGuint* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
 
 SGAStarNode* SG_EXPORT sgAStarNodeCreate(void* data);
