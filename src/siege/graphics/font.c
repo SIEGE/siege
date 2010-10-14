@@ -247,7 +247,7 @@ void SG_EXPORT sgFontPrint(SGFont* font, float x, float y, const char* format, .
 void SG_EXPORT sgFontPrintV(SGFont* font, float x, float y, const char* format, va_list args)
 {
     char* text = sgPrintfv(format, args);
-    sgFontPrintT(font, x, y, (const char*)text);
+    sgFontPrintT(font, x, y, text);
     free(text);
 }
 void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, const char* text)
