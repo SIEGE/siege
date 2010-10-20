@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #include "main.h"
 #include "load.h"
@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmGraphicsLoadFile(char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data)
+SGuint SG_EXPORT sgmGraphicsLoadFile(const char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data)
 {
     if(strcmp(fname, "") == 0)
     {
@@ -65,3 +65,4 @@ SGuint sgmGraphicsLoadFreeData(void* data)
     free(data);
     return SG_OK;
 }
+
