@@ -12,8 +12,8 @@
     Tim Chas <darkuranium@gmail.com>.
 */
 
-#ifndef __SIEGE_UTIL_LINKEDLIST_H__
-#define __SIEGE_UTIL_LINKEDLIST_H__
+#ifndef __SIEGE_UTIL_LIST_H__
+#define __SIEGE_UTIL_LIST_H__
 
 #include "../common.h"
 
@@ -72,4 +72,4 @@ void* SG_EXPORT sgLinkedListPopLast(SGLinkedList* list);
 }
 #endif // __cplusplus
 
-#endif // __SIEGE_UTIL_LINKEDLIST_H__
+#endif // __SIEGE_UTIL_LIST_H__

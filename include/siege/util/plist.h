@@ -12,8 +12,8 @@
     Tim Chas <darkuranium@gmail.com>.
 */
 
-#ifndef __SIEGE_UTIL_PLINKEDLIST_H__
-#define __SIEGE_UTIL_PLINKEDLIST_H__
+#ifndef __SIEGE_UTIL_PLIST_H__
+#define __SIEGE_UTIL_PLIST_H__
 
 #include "../common.h"
 #include "list.h"
@@ -48,4 +48,4 @@ SGPLinkedNode* SG_EXPORT sgPLinkedListInsertPriority(SGPLinkedList* list, float 
 }
 #endif // __cplusplus
 
-#endif // __SIEGE_UTIL_PLINKEDLIST_H__
+#endif // __SIEGE_UTIL_PLIST_H__
