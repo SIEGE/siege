@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #include "main.h"
 #include "window.h"
@@ -196,7 +196,7 @@ SGuint SG_EXPORT sgmCoreWindowClose(void* window)
     return SG_OK;
 }
 //SGuint SG_EXPORT sgmCoreWindowIsClosed(void* window, SGbool* closed);
-SGuint SG_EXPORT sgmCoreWindowSetTitle(void* window, char* title)
+SGuint SG_EXPORT sgmCoreWindowSetTitle(void* window, const char* title)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
