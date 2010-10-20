@@ -26,7 +26,7 @@
 #include <string.h>
 #include <dirent.h>
 
-char* SG_EXPORT _sgModuleGetFile(char* module)
+char* SG_EXPORT _sgModuleGetFile(const char* module)
 {
     DIR* dir;
     struct dirent* ent;
@@ -64,21 +64,21 @@ char* SG_EXPORT _sgModuleGetFile(char* module)
 SGbool SG_EXPORT _sgModuleInit(void)
 {
     _sg_modFirst = SG_TRUE;
-    _sg_modList = sgLinkedListCreate();
+    _sg_modList = sgListCreate();
     if(_sg_modList == NULL)
         return SG_FALSE;
     return SG_TRUE;
 }
 SGbool SG_EXPORT _sgModuleDeinit(void)
 {
-    SGLinkedNode* node;
+    SGListNode* node;
     for(node = _sg_modList->first; node != NULL; node = node->next)
         sgModuleUnload(node->item);
-    sgLinkedListDestroy(_sg_modList);
+    sgListDestroy(_sg_modList);
     return SG_TRUE;
 }
 
-SGModule* SG_EXPORT sgModuleLoad(char* name)
+SGModule* SG_EXPORT sgModuleLoad(const char* name)
 {
     char* fname = _sgModuleGetFile(name);
     if(fname == NULL)
@@ -110,7 +110,7 @@ SGModule* SG_EXPORT sgModuleLoad(char* name)
 
     if(module->sgmModuleInit != NULL)
         module->sgmModuleInit(&module->minfo);
-    module->node = sgLinkedListAppend(_sg_modList, module);
+    module->node = sgListAppend(_sg_modList, module);
     return module;
 }
 
@@ -124,6 +124,6 @@ void SG_EXPORT sgModuleUnload(SGModule* module)
 
     free(module->name);
     sgLibraryUnload(module->lib);
-    sgLinkedListRemoveNode(_sg_modList, module->node);
+    sgListRemoveNode(_sg_modList, module->node);
     free(module);
 }

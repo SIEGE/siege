@@ -29,7 +29,7 @@ extern "C"
         (str.name) = fptr;
 
 #ifdef SG_BUILD_LIBRARY
-SGLinkedList* _sg_modList;
+SGList* _sg_modList;
 SGbool _sg_modFirst;
 #endif // SG_BUILD_LIBRARY
 
@@ -38,18 +38,18 @@ typedef struct SGModule
     char* name;
     SGLibrary* lib;
     SGModuleInfo* minfo;
-    SGLinkedNode* node;
+    SGListNode* node;
 
     SGuint SG_EXPORT (*sgmModuleInit)(SGModuleInfo** minfo);
     SGuint SG_EXPORT (*sgmModuleExit)(SGModuleInfo* minfo);
     SGuint SG_EXPORT (*sgmModuleMatch)(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
 } SGModule;
 
-char* SG_EXPORT _sgModuleGetFile(char* module);
+char* SG_EXPORT _sgModuleGetFile(const char* module);
 SGbool SG_EXPORT _sgModuleInit(void);
 SGbool SG_EXPORT _sgModuleDeinit(void);
 
-SGModule* SG_EXPORT sgModuleLoad(char* name);
+SGModule* SG_EXPORT sgModuleLoad(const char* name);
 void SG_EXPORT sgModuleUnload(SGModule* module);
 
 #ifdef __cplusplus

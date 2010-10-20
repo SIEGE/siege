@@ -12,8 +12,8 @@
     Tim Chas <darkuranium@gmail.com>.
 */
 
-#ifndef __SIEGE_UTIL_PLINKEDLIST_H__
-#define __SIEGE_UTIL_PLINKEDLIST_H__
+#ifndef __SIEGE_UTIL_PLIST_H__
+#define __SIEGE_UTIL_PLIST_H__
 
 #include "../common.h"
 #include "list.h"
@@ -37,15 +37,15 @@ extern "C"
 #define SG_PLIST_LFN SG_PLIST_GEQ
 #define SG_PLIST_LFO SG_PLIST_GT
 
-typedef struct SGLinkedNode SGPLinkedNode;
-typedef struct SGLinkedList SGPLinkedList;
+typedef struct SGListNode SGPListNode;
+typedef struct SGList SGPList;
 
-SGPLinkedList* SG_EXPORT sgPLinkedListCreate(SGenum flags);
+SGPList* SG_EXPORT sgPListCreate(SGenum flags);
 
-SGPLinkedNode* SG_EXPORT sgPLinkedListInsertPriority(SGPLinkedList* list, float priority, void* item);
+SGPListNode* SG_EXPORT sgPListInsertPriority(SGPList* list, float priority, void* item);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // __SIEGE_UTIL_PLINKEDLIST_H__
+#endif // __SIEGE_UTIL_PLIST_H__

@@ -82,7 +82,7 @@ typedef struct SGModuleGraphics
     //SGuint SG_EXPORT (*sgmGraphicsDrawPolygonGetStipple)(void* context*, SGubyte** pattern);
 
     /// Graphics Load
-    SGuint SG_EXPORT (*sgmGraphicsLoadFile)(char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data);
+    SGuint SG_EXPORT (*sgmGraphicsLoadFile)(const char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data);
     //SGuint SG_EXPORT (*sgmGraphicsLoadStream)(void* stream, SGuint* width, SGuint* height, SGuint* bpp, void** data);
     SGuint SG_EXPORT (*sgmGraphicsLoadFreeData)(void* data);
 } SGModuleGraphics;

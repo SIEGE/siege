@@ -49,7 +49,7 @@ SGbool SG_EXPORT _sgAudioBufferDeinit(void);
     \param fname Filename of the audio file to load
     \return The newly created buffer if successful, NULL otherwise.
 */
-SGAudioBuffer* SG_EXPORT sgAudioBufferCreate(char* fname);
+SGAudioBuffer* SG_EXPORT sgAudioBufferCreate(const char* fname);
 /**
     \memberof SGAudioBuffer
     \brief Destroy an audio buffer

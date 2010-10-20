@@ -44,15 +44,23 @@ SGint _sg_exitVal = 0;
 SGbool _sg_hasInited = SG_FALSE;
 SGulong _sg_curTick = 0;
 
-SGuint SG_EXPORT sgLoadModules(char** modules)
+SGuint SG_EXPORT sgLoadModulesv(int n, va_list args)
 {
     SGuint loaded = 0;
     size_t i;
-    for(i = 0; modules[i] != NULL; i++)
-        loaded += sgLoadModule(modules[i]);
+    for(i = 0; i < n; i++)
+        loaded += sgLoadModule(va_arg(args, char*));
     return loaded;
 }
-SGbool SG_EXPORT sgLoadModule(char* name)
+SGuint SG_EXPORT sgLoadModules(int n, ...)
+{
+    va_list args;
+    va_start(args, n);
+    SGuint ret = sgLoadModulesv(n, args);
+    va_end(args);
+    return ret;
+}
+SGbool SG_EXPORT sgLoadModule(const char* name)
 {
     if(_sg_firstModule)
     {
@@ -75,8 +83,8 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
     _sgEntityInit();
 
     size_t i;
-    size_t nmodules = sgLinkedListLength(_sg_modList);
-    SGLinkedNode* node;
+    size_t nmodules = sgListLength(_sg_modList);
+    SGListNode* node;
     SGModuleInfo** infos = malloc(nmodules * sizeof(SGModuleInfo*));
     SGModule* module;
     for(i = 0, node = _sg_modList->first; node != NULL; node = node->next, i++)

@@ -27,7 +27,7 @@ extern "C"
 typedef struct SGModuleFonts
 {
     /// Fonts
-    SGuint SG_EXPORT (*sgmFontsFaceCreate)(void** face, char* fname);
+    SGuint SG_EXPORT (*sgmFontsFaceCreate)(void** face, const char* fname);
     SGuint SG_EXPORT (*sgmFontsFaceDestroy)(void* face);
     SGuint SG_EXPORT (*sgmFontsFaceSetHeight)(void* face, float height);
     //SGuint SG_EXPORT (*sgmFontsFaceGetHeight)(void* face, float* height);

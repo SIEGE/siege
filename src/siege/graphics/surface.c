@@ -31,7 +31,7 @@ SGbool SG_EXPORT _sgSurfaceDeinit()
     return SG_TRUE;
 }
 
-SGSurface* SG_EXPORT sgSurfaceCreateFile(char* fname)
+SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname)
 {
     SGuint width;
     SGuint height;
