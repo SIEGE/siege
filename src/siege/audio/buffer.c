@@ -27,7 +27,7 @@ SGbool SG_EXPORT _sgAudioBufferDeinit(void)
     return SG_TRUE;
 }
 
-SGAudioBuffer* SG_EXPORT sgAudioBufferCreate(char* fname)
+SGAudioBuffer* SG_EXPORT sgAudioBufferCreate(const char* fname)
 {
     SGAudioBuffer* buffer = malloc(sizeof(SGAudioBuffer));
 

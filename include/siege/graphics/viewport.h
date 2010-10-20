@@ -37,7 +37,7 @@ typedef struct SGViewport
 } SGViewport;
 
 #ifdef SG_BUILD_LIBRARY
-SGLinkedList* _sg_viewList;
+SGList* _sg_viewList;
 SGViewport* sgMainViewport;
 #endif // SG_BUILD_LIBRARY
 

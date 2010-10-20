@@ -18,9 +18,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGPLinkedList* SG_EXPORT sgPLinkedListCreate(SGenum flags)
+SGPList* SG_EXPORT sgPListCreate(SGenum flags)
 {
-    SGPLinkedList* list = sgLinkedListCreate();
+    SGPList* list = sgListCreate();
     if(list == NULL)
         return NULL;
 
@@ -31,7 +31,7 @@ SGPLinkedList* SG_EXPORT sgPLinkedListCreate(SGenum flags)
     return list;
 }
 
-SGPLinkedNode* SG_EXPORT sgPLinkedListInsertPriority(SGPLinkedList* list, float priority, void* item)
+SGPListNode* SG_EXPORT sgPListInsertPriority(SGPList* list, float priority, void* item)
 {
     float* lpriority = malloc(sizeof(float));
     *lpriority = priority;
@@ -40,7 +40,7 @@ SGPLinkedNode* SG_EXPORT sgPLinkedListInsertPriority(SGPLinkedList* list, float 
 
     SGbool op;
     float npriority;
-    SGPLinkedNode* node;
+    SGPListNode* node;
     for(node = list->first; node != NULL; node = node->next)
     {
         npriority = *(float*)node->internal;
@@ -58,14 +58,14 @@ SGPLinkedNode* SG_EXPORT sgPLinkedListInsertPriority(SGPLinkedList* list, float 
          //     > to reverse
         if(op)
         {
-            node = sgLinkedListInsertNode(list, node, item);
+            node = sgListInsertNode(list, node, item);
             node->internal = lpriority;
             return node;
         }
     }
 
     //if(i == list->numitems) // the return handles this
-    node = sgLinkedListAppend(list, item);
+    node = sgListAppend(list, item);
     node->internal = lpriority;
     return node;
 }

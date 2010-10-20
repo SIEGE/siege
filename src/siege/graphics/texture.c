@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <math.h>
 
-SGTexture* SG_EXPORT sgTextureCreateFile(char* fname)
+SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname)
 {
     SGuint width;
     SGuint height;

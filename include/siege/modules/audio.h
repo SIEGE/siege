@@ -68,11 +68,11 @@ typedef struct SGModuleAudio
     SGuint SG_EXPORT (*sgmAudioSourceGetLooping)(void* source, SGbool* looping);
 
     /// Audio Load
-    SGuint SG_EXPORT (*sgmAudioLoadFile)(char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
+    SGuint SG_EXPORT (*sgmAudioLoadFile)(const char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
     //SGuint SG_EXPORT (*sgmAudioLoadStream)(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
     SGuint SG_EXPORT (*sgmAudioLoadFreeData)(void* data);
 
-    SGuint SG_EXPORT (*sgmAudioFileCreate)(void** file, char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
+    SGuint SG_EXPORT (*sgmAudioFileCreate)(void** file, const char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
     SGuint SG_EXPORT (*sgmAudioFileDestroy)(void* file);
     SGuint SG_EXPORT (*sgmAudioFileNumSamples)(void* file, SGuint* samples);
     SGuint SG_EXPORT (*sgmAudioFileRead)(void* file, void* data, SGuint* datalen);

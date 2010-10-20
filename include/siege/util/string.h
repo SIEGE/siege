@@ -31,18 +31,18 @@ SGbool SG_EXPORT _sgStringDeinit(void);
 #define _SG_PRINTF SG_HINT_PRINTF(1, 2)
 #define _SG_VPRINTF SG_HINT_PRINTF(1, 0)
 
-char* SG_EXPORT _SG_PRINTF sgPrintf(char* format, ...);
-char* SG_EXPORT _SG_VPRINTF sgPrintfv(char* format, va_list args);
+char* SG_EXPORT _SG_PRINTF sgPrintf(const char* format, ...);
+char* SG_EXPORT _SG_VPRINTF sgPrintfv(const char* format, va_list args);
 
 #undef _SG_PRINTF
 #undef _SG_VPRINTF
 
-char* SG_EXPORT sgLineEnd(char* text);
-SGuint SG_EXPORT sgLineLength(char* text);
-char* SG_EXPORT sgNextLine(char* text);
-SGuint SG_EXPORT sgNumLines(char* text);
+const char* SG_EXPORT sgLineEnd(const char* text);
+SGuint SG_EXPORT sgLineLength(const char* text);
+const char* SG_EXPORT sgNextLine(const char* text);
+SGuint SG_EXPORT sgNumLines(const char* text);
 
 /// \todo TODO
-void SG_EXPORT sgCharToUTF32(char* text, SGuint textlen, SGdchar* str);
+void SG_EXPORT sgCharToUTF32(const char* text, SGuint textlen, SGdchar* str);
 
 #endif // __SIEGE_UTIL_STRING_H__

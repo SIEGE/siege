@@ -31,7 +31,7 @@ SGbool SG_EXPORT _sgStringDeinit(void)
     return SG_TRUE;
 }
 
-char* SG_EXPORT sgPrintf(char* format, ...)
+char* SG_EXPORT sgPrintf(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -39,7 +39,7 @@ char* SG_EXPORT sgPrintf(char* format, ...)
     va_end(args);
     return str;
 }
-char* SG_EXPORT sgPrintfv(char* format, va_list args)
+char* SG_EXPORT sgPrintfv(const char* format, va_list args)
 {
     int ret = 0;
     _sg_strBufLen = 0;
@@ -58,13 +58,13 @@ char* SG_EXPORT sgPrintfv(char* format, va_list args)
     return _sg_strBuf;
 }
 
-char* SG_EXPORT sgLineEnd(char* text)
+const char* SG_EXPORT sgLineEnd(const char* text)
 {
     if(text == NULL)
         return NULL;
 
-    char* cr = strchr(text, '\r');
-    char* lf = strchr(text, '\n');
+    const char* cr = strchr(text, '\r');
+    const char* lf = strchr(text, '\n');
     if(cr == NULL)
     {
         if(lf == NULL)
@@ -77,13 +77,13 @@ char* SG_EXPORT sgLineEnd(char* text)
     else
         return (lf > cr) ? lf : cr;
 }
-SGuint SG_EXPORT sgLineLength(char* text)
+SGuint SG_EXPORT sgLineLength(const char* text)
 {
     return sgLineEnd(text) - text;
 }
-char* SG_EXPORT sgNextLine(char* text)
+const char* SG_EXPORT sgNextLine(const char* text)
 {
-    char* ptr = text;
+    const char* ptr = text;
 
     if(ptr != NULL)
     {
@@ -102,11 +102,11 @@ char* SG_EXPORT sgNextLine(char* text)
     }
     return NULL;
 }
-SGuint SG_EXPORT sgNumLines(char* text)
+SGuint SG_EXPORT sgNumLines(const char* text)
 {
     SGuint numlines = 0;
 
-    char* ptr = text;
+    const char* ptr = text;
     while(ptr != NULL)
     {
         ptr = sgNextLine(ptr);
@@ -115,7 +115,7 @@ SGuint SG_EXPORT sgNumLines(char* text)
     return numlines;
 }
 /// \todo TODO
-void SG_EXPORT sgCharToUTF32(char* text, SGuint textlen, SGdchar* str)
+void SG_EXPORT sgCharToUTF32(const char* text, SGuint textlen, SGdchar* str)
 {
     size_t i;
     for(i = 0; i < textlen; i++)
