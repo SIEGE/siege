@@ -20,13 +20,16 @@
 
 SGuint SG_EXPORT sgmAudioBufferCreate(void** buffer)
 {
-    alGenBuffers(1, (ALuint*)buffer);
+    *buffer = malloc(sizeof(ALuint));
+
+    alGenBuffers(1, *buffer);
     return SG_OK;
 }
 
 SGuint SG_EXPORT sgmAudioBufferDestroy(void* buffer)
 {
-    alDeleteBuffers(1, (ALuint*)&buffer);
+    alDeleteBuffers(1, buffer);
+    free(buffer);
     return SG_OK;
 }
 
@@ -226,7 +229,7 @@ SGuint SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint for
             break;
     }
     data = toStereo(channels, data, &datalen, &alformat);
-    alBufferData(*(ALuint*)&buffer, alformat, data, datalen, frequency);
+    alBufferData(*(ALuint*)buffer, alformat, data, datalen, frequency);
     return SG_OK;
 }
 //SGuint SG_EXPORT sgmAudioBufferGetData(void* buffer, SGuint* channels, SGuint* format, SGuint* frequency, SGPointer* data, SGuint* datalen);
@@ -235,5 +238,5 @@ SGuint SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint for
     SGuint ret = sgmAudioBufferCreate(buffer);
     if(ret != SG_OK)
         return ret;
-    return sgmAudioBufferData(*info, channels, type, frequency, data, datalen);
+    return sgmAudioBufferData(*buffer, channels, type, frequency, data, datalen);
 }*/
