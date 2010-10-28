@@ -152,7 +152,6 @@ typedef double SGdouble;
     \name Floating point constants
 */
 // @{
-<<<<<<< HEAD
 #ifndef NAN
 #	ifdef __GNUC__
 #		define SG_NAN __builtin_nanf()
@@ -188,18 +187,11 @@ typedef double SGdouble;
 #	else
 #		define SG_INF 1e1000f
 #else
-=======
 /**
-    Used by some functions to indicate "invalid value" when returning.
-*/
-#define SG_NAN 0.0f/0.0f
->>>>>>> parent of 15e7bed... Changed the definitions of SG_INF and SG_NAN
-/**
-    Currently used with physics, to indicate infinite mass (or moment of inertia).
-*/
-#define SG_INF 1.0f/0.0f
-//#define SG_NAN strtod("NAN", NULL)
-//#define SG_INF strtod("INF", NULL)
+ * Currently used with physics, to indicate infinite mass (or moment of inertia).
+ */
+#	define SG_INF INFINITY
+#endif // INFINITY
 // @}
 
 /**
