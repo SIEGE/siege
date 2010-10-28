@@ -1,4 +1,4 @@
 .directory
-build
-doc
+/build
+/doc
 
