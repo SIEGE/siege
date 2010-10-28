@@ -152,16 +152,46 @@ typedef double SGdouble;
     \name Floating point constants
 */
 // @{
+#ifndef NAN
+#	ifdef __GNUC__
+#		define SG_NAN __builtin_inf()
+#	elif defined(_MSC_VER)
+		union _SG_MSVC_NAN_HACK
+		{
+			unsigned uint8_t bytes[4];
+			float value;
+		} ;
+		/// \todo Get this to the proper value and test
+		static union _SG_MSVC_NAN_HACK _sg_msvc_nanHack = {{0x01 , 0x00, 0xC0, 0x7F}};
+#		define SG_NAN (_sg_msvc_nanHack.value)
+#	else
+#		define SG_NAN 0.0/0.0
+#else
 /**
-    Used by some functions to indicate "invalid value" when returning.
-*/
-#define SG_NAN 0.0f/0.0f
+ * Used by some functions to indicate "invalid value" when returning.
+ */
+#	define SG_NAN NAN
+#endif // NAN
+
+#ifndef INFINITY
+#	ifdef __GNUC__
+#		define SG_INF __builtin_inf()
+#	elif defined(_MSC_VER)
+		union _SG_MSVC_INF_HACK
+		{
+			unsigned uint8_t bytes[4];
+			float value;
+		} ;
+		static union _SG_MSVC_INF_HACK _sg_msvc_infHack = {{0x00, 0x00, 0x80, 0x7F}};
+#		define SG_INF (_sg_msvc_infHack.value)
+#	else
+#		define SG_INF 1e1000
+#else
 /**
-    Currently used with physics, to indicate infinite mass (or moment of inertia).
-*/
-#define SG_INF 1.0f/0.0f
-//#define SG_NAN strtod("NAN", NULL)
-//#define SG_INF strtod("INF", NULL)
+ * Currently used with physics, to indicate infinite mass (or moment of inertia).
+ */
+#	define SG_INF INFINITY
+#endif // INFINITY
 // @}
 
 /**
