@@ -152,9 +152,10 @@ typedef double SGdouble;
     \name Floating point constants
 */
 // @{
+<<<<<<< HEAD
 #ifndef NAN
 #	ifdef __GNUC__
-#		define SG_NAN __builtin_inf()
+#		define SG_NAN __builtin_nanf()
 #	elif defined(_MSC_VER)
 		union _SG_MSVC_NAN_HACK
 		{
@@ -165,7 +166,7 @@ typedef double SGdouble;
 		static union _SG_MSVC_NAN_HACK _sg_msvc_nanHack = {{0x01 , 0x00, 0xC0, 0x7F}};
 #		define SG_NAN (_sg_msvc_nanHack.value)
 #	else
-#		define SG_NAN 0.0/0.0
+#		define SG_NAN 0.0f/0.0f
 #else
 /**
  * Used by some functions to indicate "invalid value" when returning.
@@ -175,7 +176,7 @@ typedef double SGdouble;
 
 #ifndef INFINITY
 #	ifdef __GNUC__
-#		define SG_INF __builtin_inf()
+#		define SG_INF __builtin_inff()
 #	elif defined(_MSC_VER)
 		union _SG_MSVC_INF_HACK
 		{
@@ -185,13 +186,20 @@ typedef double SGdouble;
 		static union _SG_MSVC_INF_HACK _sg_msvc_infHack = {{0x00, 0x00, 0x80, 0x7F}};
 #		define SG_INF (_sg_msvc_infHack.value)
 #	else
-#		define SG_INF 1e1000
+#		define SG_INF 1e1000f
 #else
+=======
 /**
- * Currently used with physics, to indicate infinite mass (or moment of inertia).
- */
-#	define SG_INF INFINITY
-#endif // INFINITY
+    Used by some functions to indicate "invalid value" when returning.
+*/
+#define SG_NAN 0.0f/0.0f
+>>>>>>> parent of 15e7bed... Changed the definitions of SG_INF and SG_NAN
+/**
+    Currently used with physics, to indicate infinite mass (or moment of inertia).
+*/
+#define SG_INF 1.0f/0.0f
+//#define SG_NAN strtod("NAN", NULL)
+//#define SG_INF strtod("INF", NULL)
 // @}
 
 /**
