@@ -1,2 +1,5 @@
 .directory
-build
+/build
+/doc
+*~
+
