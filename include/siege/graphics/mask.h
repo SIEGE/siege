@@ -34,8 +34,8 @@ typedef struct SGMask
 {
     SGEntity* entity;		// REMOVE if not animated
 
-	SGuint width;
-	SGuint height;
+    SGuint width;
+    SGuint height;
 
     SGint xoffset;
     SGint yoffset;
@@ -43,7 +43,7 @@ typedef struct SGMask
     SGuint numimages;		// REMOVE if not animated
     SGbool*** subimages;	// CHANGE to SGbool** if not animated
     float image;			// REMOVE if not animated
-	float speed;			// REMOVE if not animated
+    float speed;			// REMOVE if not animated
 } SGMask;
 
 void SG_EXPORT _sgMaskEvTick(SGEntity* client); // REMOVE if not animated
