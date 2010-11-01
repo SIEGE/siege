@@ -27,8 +27,8 @@ extern "C"
 #endif // __cplusplus
 
 /**
- * \todo Should this support animation (as in, have multiple frames/subimages)?
- * \todo Get the pixel info from the texture [requires backend support].
+ * \todo Should this support animation (as in, have multiple frames/subimages)? <em>R: NO</em>
+ * \todo Get the pixel info from the texture [requires backend support <em>-> DONE</em>].
  * \todo Add a bounding box.
  */
 typedef struct SGMask
@@ -69,7 +69,6 @@ void SG_EXPORT sgMaskDestroy(SGMask* mask);
  * \return SG_TRUE if the masks collide, SG_FALSE otherwise.
  *
  * \todo Get this working.
- * \todo Should the order of arguments be <em>m1,x1,y1,m2,x2,y2</em> or <em>m1,m2,x1,y1,x2,y2</em>?
  */
 SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
 
