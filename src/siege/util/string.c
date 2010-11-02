@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #define SG_BUILD_LIBRARY
 #include <siege/util/string.h>
@@ -58,49 +58,28 @@ char* SG_EXPORT sgPrintfv(const char* format, va_list args)
     return _sg_strBuf;
 }
 
-const char* SG_EXPORT sgLineEnd(const char* text)
+char* SG_EXPORT sgLineEnd(const char* text)
 {
     if(text == NULL)
         return NULL;
 
-    const char* cr = strchr(text, '\r');
-    const char* lf = strchr(text, '\n');
-    if(cr == NULL)
-    {
-        if(lf == NULL)
-            return text + strlen(text);
-        else
-            return lf;
-    }
-    else if(lf == NULL) // cr != NULL
-        return cr;
-    else
-        return (lf > cr) ? lf : cr;
+    return strpbrk(text, "\r\n");
 }
 SGuint SG_EXPORT sgLineLength(const char* text)
 {
     return sgLineEnd(text) - text;
 }
-const char* SG_EXPORT sgNextLine(const char* text)
+char* SG_EXPORT sgNextLine(const char* text)
 {
-    const char* ptr = text;
+    if(text == NULL)
+        return NULL;
 
-    if(ptr != NULL)
-    {
-        char* crlf = strstr(ptr, "\r\n");
-        char* cr = strchr(ptr, '\r');
-        char* lf = strchr(ptr, '\n');
-        if((crlf != NULL) && (crlf == cr) && (crlf == lf - 1)) // found a CRLF, and it was the first newline
-            ptr = crlf + 2;
-        else if((cr != NULL) && ((cr < lf) || (lf == NULL))) // found a CR, and it was the first newline
-            ptr = cr + 1;
-        else if(lf != NULL) // found a LF, and it was the first newline
-            ptr = lf + 1;
-        else // found nothing
-            ptr = NULL;
-        return ptr;
-    }
-    return NULL;
+    char* brk = strpbrk(text, "\r\n");
+    if(brk == NULL)
+        return NULL;
+    if((brk[0] == '\r') && (brk[1] == '\n'))
+        return brk + 2;
+    return brk + 1;
 }
 SGuint SG_EXPORT sgNumLines(const char* text)
 {
