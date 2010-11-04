@@ -154,7 +154,7 @@ typedef double SGdouble;
 // @{
 #ifndef NAN
 #	ifdef __GNUC__
-#		define SG_NAN __builtin_nanf()
+#		define SG_NAN __builtin_nanf("0")
 #	elif defined(_MSC_VER)
 		union _SG_MSVC_NAN_HACK
 		{
@@ -166,6 +166,7 @@ typedef double SGdouble;
 #		define SG_NAN (_sg_msvc_nanHack.value)
 #	else
 #		define SG_NAN 0.0f/0.0f
+#	endif // __GNUC__ / _MSC_VER / other
 #else
 /**
  * Used by some functions to indicate "invalid value" when returning.
@@ -186,6 +187,7 @@ typedef double SGdouble;
 #		define SG_INF (_sg_msvc_infHack.value)
 #	else
 #		define SG_INF 1e1000f
+#	endif // __GNUC__ / _MSC_VER / other
 #else
 /**
  * Currently used with physics, to indicate infinite mass (or moment of inertia).
