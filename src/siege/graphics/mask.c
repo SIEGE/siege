@@ -14,24 +14,15 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/mask.h>
+#include <siege/modules/graphics.h>
 // for DrawDBG
 #include <siege/graphics/draw.h>
 
 #include <stdlib.h>
 #include <math.h>
 
-void SG_EXPORT _sgMaskEvTick(SGEntity* client)
-{
-	SGMask* mask = client->data;
-	mask->image += mask->speed;
-
-	while((SGuint)mask->image >= mask->numimages)
-		mask->image -= mask->numimages;
-}
-
 SGMask* SG_EXPORT sgMaskCreateSprite(SGSprite* sprite)
 {
-	/// \todo Use all subimages (REMOVE if not animated)
 	return sgMaskCreateTexture2i(sprite->subimages[0], sprite->xoffset, sprite->yoffset);
 }
 SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint yoffset)
@@ -40,28 +31,27 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 	if(mask == NULL)
 		return NULL;
 
-	SGuint i;
-
-	mask->entity = sgEntityCreate(0.0, SG_EVT_CORE);
-	mask->entity->data = mask;
-	mask->entity->evTick = _sgMaskEvTick;
+	SGuint i, j;
 
 	mask->width = sgTextureGetWidth(texture);
 	mask->height = sgTextureGetHeight(texture);
 
-	mask->precise = SG_TRUE;
-
-	mask->numimages = 1;
-	mask->subimages = malloc(sizeof(SGbool**));
-	mask->subimages[0] = malloc(mask->width * sizeof(SGbool*));
-	for(i = 0; i < mask->width; i++)
-		mask->subimages[0][i] = calloc(mask->height, sizeof(SGbool));
-
 	mask->xoffset = xoffset;
 	mask->yoffset = yoffset;
 
-	mask->image = 0.0;
-	mask->speed = 1.0;
+	mask->precise = SG_TRUE;
+
+	mask->field = malloc(mask->width * sizeof(SGbool*));
+	for(i = 0; i < mask->width; i++)
+		mask->field[i] = calloc(mask->height, sizeof(SGbool));
+
+	for(i = 0; i < mask->width; i++)
+	{
+		for(j = 0; j < mask->height; j++)
+		{
+			/// \todo Get texture data here
+		}
+	}
 
 	return mask;
 }
@@ -79,12 +69,10 @@ SGMask* SG_EXPORT sgMaskCreateFile2i(const char* fname, SGint xoffset, SGint yof
 	SGTexture* texture = sgTextureCreateFile(fname);
 	if(texture == NULL)
 		return NULL;
+
 	SGMask* mask = sgMaskCreateTexture2i(texture, xoffset, yoffset);
-	if(mask == NULL)
-	{
-		sgTextureDestroy(texture);
-		return NULL;
-	}
+	sgTextureDestroy(texture);
+
 	return mask;
 }
 SGMask* SG_EXPORT sgMaskCreateFile(const char* fname)
@@ -101,22 +89,18 @@ void SG_EXPORT sgMaskDestroy(SGMask* mask)
 	if(mask == NULL)
 		return;
 
-	sgEntityDestroy(mask->entity);
-
-	SGuint i, j;
-	for(i = 0; i < mask->numimages; i++)
-	{
-		for(j = 0; j < mask->width; j++)
-			free(mask->subimages[i][j]);
-		free(mask->subimages[i]);
-	}
-	free(mask->subimages);
+	SGuint i;
+	for(i = 0; i < mask->width; i++)
+		free(mask->field[i]);
+	free(mask->field);
 	free(mask);
 }
 
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
 SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
 {
-	// TODO
+	ptrdiff_t i, j;
+	/// \todo TODO
 	return SG_FALSE;
 }
 
@@ -154,7 +138,7 @@ void SG_EXPORT sgMaskDrawDBG(SGMask* mask, float x, float y)
 		{
 			for(j = 0; j < mask->height; j++)
 			{
-				sgDrawColor1f(mask->subimages[(SGuint)mask->image][i][j] ? 1.0 : 0.0);
+				sgDrawColor1f(mask->field[i][j] ? 1.0f : 0.0f);
 				sgDrawVertex2f(x, y);
 			}
 		}

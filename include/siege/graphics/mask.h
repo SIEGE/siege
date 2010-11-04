@@ -16,8 +16,6 @@
 #define __SIEGE_GRAPHICS_MASK_H__
 
 #include "../common.h"
-// REMOVE if not animated
-#include "../core/entity.h"
 #include "sprite.h"
 #include "texture.h"
 
@@ -27,14 +25,11 @@ extern "C"
 #endif // __cplusplus
 
 /**
- * \todo Should this support animation (as in, have multiple frames/subimages)? <em>R: NO</em>
  * \todo Get the pixel info from the texture [requires backend support <em>-> DONE</em>].
  * \todo Add a bounding box.
  */
 typedef struct SGMask
 {
-	SGEntity* entity;		// REMOVE if not animated
-
 	SGuint width;
 	SGuint height;
 
@@ -42,14 +37,8 @@ typedef struct SGMask
 	SGint yoffset;
 
 	SGbool precise;
-
-	SGuint numimages;		// REMOVE if not animated
-	SGbool*** subimages;	// CHANGE to SGbool** if not animated
-	float image;			// REMOVE if not animated
-	float speed;			// REMOVE if not animated
+	SGbool** field;
 } SGMask;
-
-void SG_EXPORT _sgMaskEvTick(SGEntity* client); // REMOVE if not animated
 
 SGMask* SG_EXPORT sgMaskCreateSprite(SGSprite* sprite);
 SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint yoffset);
