@@ -25,7 +25,6 @@ extern "C"
 #endif // __cplusplus
 
 /**
- * \todo Get the pixel info from the texture [requires backend support <em>-> DONE</em>].
  * \todo Add a bounding box.
  */
 typedef struct SGMask
@@ -69,7 +68,7 @@ SGuint SG_EXPORT sgMaskGetHeight(SGMask* mask);
  * \brief A function used for debugging the mask
  * \warning This draws the mask pixel-for-pixel and is <em>slow</em>!
  * \warning This function may be removed in the future!
- * \todo sgSpriteCreateMask(SGMask* mask)
+ * \todo sg[Sprite|Texture|Surface]CreateMask(SGMask* mask)
  */
 void SG_EXPORT sgMaskDrawDBG(SGMask* mask, float x, float y);
 

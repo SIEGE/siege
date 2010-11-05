@@ -15,11 +15,13 @@
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/mask.h>
 #include <siege/modules/graphics.h>
-// for DrawDBG
+// for DrawDBG && _sg_drawCurColor
 #include <siege/graphics/draw.h>
 
 #include <stdlib.h>
 #include <math.h>
+// for fprintf
+#include <stdio.h>
 
 SGMask* SG_EXPORT sgMaskCreateSprite(SGSprite* sprite)
 {
@@ -45,13 +47,92 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 	for(i = 0; i < mask->width; i++)
 		mask->field[i] = calloc(mask->height, sizeof(SGbool));
 
+	SGuint awidth;
+	SGuint aheight;
+	SGuint bpp;
+	char* data;
+	_sg_modGraphics.sgmGraphicsTextureGetData(texture, &awidth, &aheight, &bpp, (void**)&data);
+
+	SGubyte bypp = 0;
+	SGubyte r, g, b, a;
+	SGubyte rbits = 0;
+	SGubyte gbits = 0;
+	SGubyte bbits = 0;
+	SGubyte abits = 0;
+
+	switch(bpp)
+	{
+		case 32:
+			rbits = 8;
+			gbits = 8;
+			bbits = 8;
+			abits = 8;
+			bypp = 4;
+			break;
+		case 24:
+			rbits = 8;
+			gbits = 8;
+			bbits = 8;
+			bypp = 3;
+			break;
+		case 16:
+			rbits = 5;
+			gbits = 6;
+			bbits = 5;
+			bypp = 2;
+			break;
+		case 15:
+			rbits = 5;
+			gbits = 5;
+			bbits = 5;
+			abits = 1; // ?
+			bypp = 2;
+			break;
+		case 8:
+			abits = 8;
+			bypp = 1;
+			break;
+
+		default:
+			fprintf(stderr, "Unsupported BPP '%d'\n", bpp);
+	}
+
+	r = (SGubyte)(_sg_drawCurColor[0] * ((1 << rbits) - 1));
+	g = (SGubyte)(_sg_drawCurColor[1] * ((1 << gbits) - 1));
+	b = (SGubyte)(_sg_drawCurColor[2] * ((1 << bbits) - 1));
+	a = (SGubyte)(_sg_drawCurColor[3] * ((1 << abits) - 1));
+
+	SGuint ui = a
+			|	(b << abits)
+			|	(g << (abits + bbits))
+			|	(r << (abits + bbits + gbits));
+
 	for(i = 0; i < mask->width; i++)
 	{
 		for(j = 0; j < mask->height; j++)
 		{
-			/// \todo Get texture data here
+			switch(bpp)
+			{
+				case 32:
+					mask->field[i][j] = data[(j * awidth + i) * 4 + 3] ? SG_TRUE : SG_FALSE;
+					break;
+				case 24:
+					mask->field[i][j] = (data[(j * awidth + i) * 3 + 0] == r)
+									&&	(data[(j * awidth + i) * 3 + 1] == g)
+									&&	(data[(j * awidth + i) * 3 + 2] == b);
+					break;
+				case 16:
+				case 15:
+					mask->field[i][j] = *(SGshort*)&data[(j * awidth + i) * 2] == ui;
+					break;
+				case 8:
+					mask->field[i][j] = data[(j * awidth + i)] == a;
+					break;
+			}
 		}
 	}
+
+	_sg_modGraphics.sgmGraphicsTextureFreeData(data);
 
 	return mask;
 }
