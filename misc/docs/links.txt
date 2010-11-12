@@ -1,6 +1,7 @@
-GameCraft:
+SIEGE:
 http://libsiege.org
-http://sourceforge.net/projects/gamecraft/
+http://sourceforge.net/projects/siege/
+http://gitorious.org/siege
 
 D Info:
 http://digitalmars.com/d/1.0/
