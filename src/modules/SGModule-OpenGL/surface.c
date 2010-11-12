@@ -1,16 +1,16 @@
 /*
- * Copyright (c) 2007 SIEGE Development Team
- * All rights reserved.
- *
- * This file is part of libSIEGE.
- *
- * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
- * details.
- *
- * If you did not recieve the file with this program, please email
- * Tim Chas <darkuranium@gmail.com>.
- */
+    Copyright (c) 2007 SIEGE Development Team
+    All rights reserved.
+
+    This file is part of libSIEGE.
+
+    This software is copyrighted work licensed under the terms of the
+    2-clause BSD license. Please consult the file "license.txt" for
+    details.
+
+    If you did not recieve the file with this program, please email
+    Tim Chas <darkuranium@gmail.com>.
+*/
 
 #include "main.h"
 #include "surface.h"
@@ -87,22 +87,12 @@ SGuint SG_EXPORT sgmGraphicsSurfaceSetData(void* surface, SGuint width, SGuint h
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    SurfaceData* sdata = surface;
+    SurfaceData* sdata = (SurfaceData*)surface;
 
     return sgmGraphicsTextureSetData(sdata->texture, width, height, bpp, data);
 }
-SGuint SG_EXPORT sgmGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data)
-{
-	if(surface == NULL)
-		return SG_OK; // SG_INVALID_VALUE
-	SurfaceData* sdata = surface;
-
-	return sgmGraphicsTextureGetData(sdata->texture, width, height, bpp, data);
-}
-SGuint SG_EXPORT sgmGraphicsSurfaceFreeData(void* data)
-{
-	return sgmGraphicsTextureFreeData(data);
-}
+//SGuint SG_EXPORT sgmGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data)
+//SGuint SG_EXPORT sgmGraphicsSurfaceFreeData(void* surface, void* data)
 SGuint SG_EXPORT sgmGraphicsSurfaceGetSize(void* surface, SGuint* width, SGuint* height)
 {
     if(surface == NULL)
