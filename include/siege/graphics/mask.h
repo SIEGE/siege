@@ -56,7 +56,9 @@ void SG_EXPORT sgMaskDestroy(SGMask* mask);
  * \param y2 Second mask's y position
  * \return SG_TRUE if the masks collide, SG_FALSE otherwise.
  *
- * \todo Get this working.
+ * \todo Test whether this works or not
+ * \todo Use the \c precise field
+ * \todo Use bounding box info once BB's are added
  */
 SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
 

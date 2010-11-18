@@ -180,8 +180,19 @@ void SG_EXPORT sgMaskDestroy(SGMask* mask)
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
 {
+	x1 -= m1->xoffset;
+	y1 -= m1->yoffset;
+	x2 -= m2->xoffset;
+	y2 -= m2->yoffset;
+
 	ptrdiff_t i, j;
-	/// \todo TODO
+	for(i = 0; i < MIN(m1->width, m2->width); i++)
+		if((0 < i - x1) && (i - x1 < m1->width)
+		&& (0 < i - x2) && (i - x2 < m2->width))
+			for(j = 0; j < MIN(m1->height, m2->height); j++)
+				if((0 < j - y1) && (j - y1 < m1->height) && (!m1->precise || m1->field[i - x1][j - y1])
+				&& (0 < j - y2) && (j - y2 < m2->height) && (!m2->precise || m2->field[i - x2][j - y2]))
+					return SG_TRUE;
 	return SG_FALSE;
 }
 
