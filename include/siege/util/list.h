@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #ifndef __SIEGE_UTIL_LIST_H__
 #define __SIEGE_UTIL_LIST_H__
@@ -26,22 +26,22 @@ extern "C"
 
 typedef struct SGListNode
 {
-    struct SGList* list;
-    struct SGListNode* prev;
-    struct SGListNode* next;
-    void* item;
+	struct SGList* list;
+	struct SGListNode* prev;
+	struct SGListNode* next;
+	void* item;
 
-    void* internal;
-    void (*internalFree)(void*);
+	void* internal;
+	void (*internalFree)(void*);
 } SGListNode;
 
 typedef struct SGList
 {
-    struct SGListNode* first;
-    struct SGListNode* last;
+	struct SGListNode* first;
+	struct SGListNode* last;
 
-    void* internal;
-    void (*internalFree)(void*);
+	void* internal;
+	void (*internalFree)(void*);
 } SGList;
 
 SGList* SG_EXPORT sgListCreate(void);

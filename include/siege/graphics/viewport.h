@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #ifndef __SIEGE_GRAPHICS_VIEWPORT_H__
 #define __SIEGE_GRAPHICS_VIEWPORT_H__
@@ -24,21 +24,21 @@ extern "C"
 
 typedef struct SGViewport
 {
-    void* handle;
+	void* handle;
 
-    SGuint wposx;
-    SGuint wposy;
-    SGuint wsizex;
-    SGuint wsizey;
-    float posx;
-    float posy;
-    float sizex;
-    float sizey;
+	SGuint wposx;
+	SGuint wposy;
+	SGuint wsizex;
+	SGuint wsizey;
+	float posx;
+	float posy;
+	float sizex;
+	float sizey;
 } SGViewport;
 
 #ifdef SG_BUILD_LIBRARY
 SGList* _sg_viewList;
-SGViewport* sgMainViewport;
+SGViewport* _sg_viewMain;
 #endif // SG_BUILD_LIBRARY
 
 SGbool SG_EXPORT _sgViewportInit(void);
