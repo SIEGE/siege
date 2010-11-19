@@ -177,26 +177,6 @@ void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fi
 
 void SG_EXPORT sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill)
 {
-    /*float ra = (rx + ry) / 2.0;
-    SGuint numsides = (SGuint)(ra * 1.4);
-    SGuint i;
-
-    if(fill)
-    {
-        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
-        sgDrawVertex2f(x, y);
-    }
-    else
-        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
-
-    for(i = 0; i < numsides + (fill ? 1 : 0); i++)
-    {
-        float a = 2.0 * M_PI * i / (float)numsides;
-        sgDrawVertex2f(x + cos(a) * rx, y + sin(a) * ry);
-    }
-
-    sgDrawEnd();*/
-
 	sgDrawEArcRads(x, y, rx, ry, 0, 2 * M_PI, SG_FALSE, fill);
 }
 
