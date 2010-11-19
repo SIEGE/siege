@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/draw.h>
@@ -177,7 +177,7 @@ void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fi
 
 void SG_EXPORT sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill)
 {
-    float ra = (rx + ry) / 2.0;
+    /*float ra = (rx + ry) / 2.0;
     SGuint numsides = (SGuint)(ra * 1.4);
     SGuint i;
 
@@ -195,10 +195,55 @@ void SG_EXPORT sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill
         sgDrawVertex2f(x + cos(a) * rx, y + sin(a) * ry);
     }
 
-    sgDrawEnd();
+    sgDrawEnd();*/
+
+	sgDrawEArcRads(x, y, rx, ry, 0, 2 * M_PI, SG_TRUE, fill);
 }
 
 void SG_EXPORT sgDrawCircle(float x, float y, float radius, SGbool fill)
 {
     sgDrawEllipse2R(x, y, radius, radius, fill);
+}
+
+void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
+{
+	float adiff = a2 - a1;
+	while(adiff < 0)
+		adiff += 2 * M_PI;
+	while(adiff > 2 * M_PI)
+		adiff -= 2 * M_PI;
+
+	float ra = (rx + ry) / 2.0;
+	SGuint numsides = (SGuint)(ra * 1.4);
+	adiff /= numsides;
+	SGuint i;
+
+	if(fill)
+	{
+		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
+		sgDrawVertex2f(x, y);
+	}
+	else
+		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
+
+	for(i = 0; i < numsides + (fill ? 1 : 0); i++)
+	{
+		float a = ccw ? (a1 + i * adiff) : (a1 - i * adiff);
+		sgDrawVertex2f(x + cos(a) * rx, y + sin(a) * ry);
+	}
+
+	sgDrawEnd();
+}
+void sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
+{
+	sgDrawEArcRads(x, y, rx, ry, a1 * M_PI / 180.0, a2 * M_PI / 180.0, ccw, fill);
+}
+
+void sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
+{
+	sgDrawEArcRads(x, y, r, r, a1, a2, ccw, fill);
+}
+void sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
+{
+	sgDrawEArcDegs(x, y, r, r, a1, a2, ccw, fill);
 }
