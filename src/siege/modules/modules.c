@@ -1,16 +1,15 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #define SG_BUILD_LIBRARY
 #include <siege/modules/modules.h>
@@ -28,102 +27,106 @@
 
 char* SG_EXPORT _sgModuleGetFile(const char* module)
 {
-    DIR* dir;
-    struct dirent* ent;
+	DIR* dir;
+	struct dirent* ent;
 
-    char* buf = malloc(strlen("modules/libSGModule-") + strlen(module) + strlen(".debug.") + 25);
+	char* buf = malloc(strlen("modules/libSGModule-") + strlen(module) + strlen(".debug.") + 25);
 
-    dir = opendir("modules");
-    if(dir != NULL)
-    {
-        while((ent = readdir(dir)))
-        {
-            strcpy(buf, "libSGModule-");
-            strcat(buf, module);
-            strcat(buf, ".");
-            if(strstr(ent->d_name, buf + 3) == ent->d_name) // prefer without "lib"
-            {
-                strcpy(buf, "modules/");
-                strcat(buf, ent->d_name);
-                return buf;
-            }
-            if(strstr(ent->d_name, buf) == ent->d_name)
-            {
-                strcpy(buf, "modules/");
-                strcat(buf, ent->d_name);
-                return buf;
-            }
-        }
-        closedir(dir);
-    }
+	dir = opendir("modules");
+	if(dir != NULL)
+	{
+		while((ent = readdir(dir)))
+		{
+			strcpy(buf, "libSGModule-");
+			strcat(buf, module);
+			strcat(buf, ".");
+			if(strstr(ent->d_name, buf + 3) == ent->d_name) // prefer without "lib"
+			{
+				strcpy(buf, "modules/");
+				strcat(buf, ent->d_name);
+				return buf;
+			}
+			if(strstr(ent->d_name, buf) == ent->d_name)
+			{
+				strcpy(buf, "modules/");
+				strcat(buf, ent->d_name);
+				return buf;
+			}
+		}
+		closedir(dir);
+	}
 
-    free(buf);
-    return NULL;
+	free(buf);
+	return NULL;
 }
 
 SGbool SG_EXPORT _sgModuleInit(void)
 {
-    _sg_modFirst = SG_TRUE;
-    _sg_modList = sgListCreate();
-    if(_sg_modList == NULL)
-        return SG_FALSE;
-    return SG_TRUE;
+	_sg_modFirst = SG_TRUE;
+	_sg_modList = sgListCreate();
+	if(_sg_modList == NULL)
+		return SG_FALSE;
+	return SG_TRUE;
 }
 SGbool SG_EXPORT _sgModuleDeinit(void)
 {
-    SGListNode* node;
-    for(node = _sg_modList->first; node != NULL; node = node->next)
-        sgModuleUnload(node->item);
-    sgListDestroy(_sg_modList);
-    return SG_TRUE;
+	SGListNode* node;
+	SGListNode* next;
+	for(node = _sg_modList->first; node != NULL; node = next)
+	{
+		next = node->next;
+		sgModuleUnload(node->item);
+	}
+	sgListDestroy(_sg_modList);
+	return SG_TRUE;
 }
 
 SGModule* SG_EXPORT sgModuleLoad(const char* name)
 {
-    char* fname = _sgModuleGetFile(name);
-    if(fname == NULL)
-    {
-        fprintf(stderr, "Warning: Unable to load module %s: Not found\n", name);
-        return NULL;
-    }
+	char* fname = _sgModuleGetFile(name);
+	if(fname == NULL)
+	{
+		fprintf(stderr, "Warning: Unable to load module %s: Not found\n", name);
+		return NULL;
+	}
 
-    SGModule* module = malloc(sizeof(SGModule));
-    module->name = malloc(strlen(name) + 1);
-    strcpy(module->name, name);
-    module->lib = sgLibraryLoad(fname);
-    if(module->lib == NULL)
-        fprintf(stderr, "Warning: Unable to load module %s: Unknown error\n", name);
-    free(fname);
+	SGModule* module = malloc(sizeof(SGModule));
+	module->name = malloc(strlen(name) + 1);
+	strcpy(module->name, name);
+	module->lib = sgLibraryLoad(fname);
+	if(module->lib == NULL)
+		fprintf(stderr, "Warning: Unable to load module %s: Unknown error\n", name);
+	free(fname);
 
-    module->sgmModuleInit = sgGetProcAddress(module->lib, "sgmModuleInit");
-    module->sgmModuleExit = sgGetProcAddress(module->lib, "sgmModuleExit");
-    module->sgmModuleMatch = sgGetProcAddress(module->lib, "sgmModuleMatch");
+	module->sgmModuleInit = sgGetProcAddress(module->lib, "sgmModuleInit");
+	module->sgmModuleExit = sgGetProcAddress(module->lib, "sgmModuleExit");
+	module->sgmModuleMatch = sgGetProcAddress(module->lib, "sgmModuleMatch");
 
-    _sgModuleLoadAudio(module->lib);
-    _sgModuleLoadWindow(module->lib);
-    _sgModuleLoadGraphics(module->lib);
-    _sgModuleLoadInput(module->lib);
-    _sgModuleLoadPhysics(module->lib);
-    _sgModuleLoadFonts(module->lib);
+	_sgModuleLoadAudio(module->lib);
+	_sgModuleLoadWindow(module->lib);
+	_sgModuleLoadGraphics(module->lib);
+	_sgModuleLoadInput(module->lib);
+	_sgModuleLoadPhysics(module->lib);
+	_sgModuleLoadFonts(module->lib);
 
-    _sg_modFirst = SG_FALSE;
+	_sg_modFirst = SG_FALSE;
 
-    if(module->sgmModuleInit != NULL)
-        module->sgmModuleInit(&module->minfo);
-    module->node = sgListAppend(_sg_modList, module);
-    return module;
+	if(module->sgmModuleInit != NULL)
+		module->sgmModuleInit(&module->minfo);
+	module->node = sgListAppend(_sg_modList, module);
+	return module;
 }
 
 void SG_EXPORT sgModuleUnload(SGModule* module)
 {
-    if(module == NULL)
-        return;
+	if(module == NULL)
+		return;
 
-    if(module->sgmModuleExit != NULL)
-        module->sgmModuleExit(module->minfo);
+	if(module->sgmModuleExit != NULL)
+		module->sgmModuleExit(module->minfo);
 
-    free(module->name);
-    sgLibraryUnload(module->lib);
-    sgListRemoveNode(_sg_modList, module->node);
-    free(module);
+	free(module->name);
+	sgLibraryUnload(module->lib);
+	sgListRemoveNode(_sg_modList, module->node);
+	free(module);
 }
