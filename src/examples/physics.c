@@ -21,7 +21,6 @@ void destroyBox(SGEntity* box)
 
     sgPhysicsShapeDestroy(box->data);
     sgPhysicsBodyDestroy(box->body);
-    sgEntityDestroy(box);
 }
 
 SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density, SGbool stat)
