@@ -47,11 +47,12 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 	for(i = 0; i < mask->width; i++)
 		mask->field[i] = calloc(mask->height, sizeof(SGbool));
 
-	SGuint awidth;
-	SGuint aheight;
-	SGuint bpp;
-	char* data;
-	_sg_modGraphics.sgmGraphicsTextureGetData(texture, &awidth, &aheight, &bpp, (void**)&data);
+	SGuint awidth = 0;
+	SGuint aheight = 0;
+	SGuint bpp = 0;
+	char* data = NULL;
+	if(_sg_modGraphics.sgmGraphicsTextureGetData != NULL)
+		_sg_modGraphics.sgmGraphicsTextureGetData(texture->handle, &awidth, &aheight, &bpp, (void**)&data);
 
 	SGubyte bypp = 0;
 	SGubyte r, g, b, a;
@@ -178,6 +179,8 @@ void SG_EXPORT sgMaskDestroy(SGMask* mask)
 }
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define ABS(x) (((x) < 0) ? -(x) : (x))
 SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
 {
 	x1 -= m1->xoffset;
@@ -185,14 +188,34 @@ SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2
 	x2 -= m2->xoffset;
 	y2 -= m2->yoffset;
 
+	SGint xd = x2 - x1;
+	SGint yd = y2 - y1;
+
+	printf("%d,%d\n", xd, yd);
 	ptrdiff_t i, j;
-	for(i = 0; i < MIN(m1->width, m2->width); i++)
-		if((0 < i - x1) && (i - x1 < m1->width)
-		&& (0 < i - x2) && (i - x2 < m2->width))
-			for(j = 0; j < MIN(m1->height, m2->height); j++)
-				if((0 < j - y1) && (j - y1 < m1->height) && (!m1->precise || m1->field[i - x1][j - y1])
-				&& (0 < j - y2) && (j - y2 < m2->height) && (!m2->precise || m2->field[i - x2][j - y2]))
-					return SG_TRUE;
+	for(i = 0; i < MAX(m1->width, m2->width); i++)
+	{
+		if((0 <= i - xd) && (i - xd < m1->width)
+		&& (0 <= i - xd) && (i - xd < m2->width))
+		{
+			printf("XCHK %d\n", i);
+			for(j = 0; j < MAX(m1->height, m2->height); j++)
+			{
+				if((0 <= j - yd) && (j - yd < m1->height)
+				&& (0 <= j - yd) && (j - yd < m2->height))
+				{
+					printf("YCHK %d %d,%d\n", i, i - xd, j - yd);
+					printf("     %d %d\n", m1->field[i - xd][j - yd]
+										 , m2->field[i - xd][j - yd]);
+					if((!m1->precise || m1->field[i - xd][j - yd])
+					&& (!m2->precise || m2->field[i - xd][j - yd]))
+					{
+						return SG_TRUE;
+					}
+				}
+			}
+		}
+	}
 	return SG_FALSE;
 }
 
@@ -219,7 +242,7 @@ SGuint SG_EXPORT sgMaskGetHeight(SGMask* mask)
 	return mask->height;
 }
 
-void SG_EXPORT sgMaskDrawDBG(SGMask* mask, float x, float y)
+void SG_EXPORT sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent)
 {
 	if(mask == NULL)
 		return;
@@ -230,8 +253,10 @@ void SG_EXPORT sgMaskDrawDBG(SGMask* mask, float x, float y)
 		{
 			for(j = 0; j < mask->height; j++)
 			{
-				sgDrawColor1f(mask->field[i][j] ? 1.0f : 0.0f);
-				sgDrawVertex2f(x, y);
+				if(!transparent)
+					sgDrawColor1f(mask->field[i][j] ? 1.0 : 0.0);
+				if(mask->field[i][j] || !transparent)
+					sgDrawVertex2f(x - mask->xoffset + i, y - mask->yoffset + j);
 			}
 		}
 	sgDrawEnd();

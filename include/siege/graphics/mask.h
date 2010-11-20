@@ -72,7 +72,7 @@ SGuint SG_EXPORT sgMaskGetHeight(SGMask* mask);
  * \warning This function may be removed in the future!
  * \todo sg[Sprite|Texture|Surface]CreateMask(SGMask* mask)
  */
-void SG_EXPORT sgMaskDrawDBG(SGMask* mask, float x, float y);
+void SG_EXPORT sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent);
 
 #ifdef __cplusplus
 }
