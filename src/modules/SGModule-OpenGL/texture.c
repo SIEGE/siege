@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #include "main.h"
 #include "texture.h"
@@ -56,7 +56,7 @@ SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    TextureData* tdata = (TextureData*)texture;
+    TextureData* tdata = texture;
     glBindTexture(GL_TEXTURE_2D, tdata->texid);
     tdata->width = width;
     tdata->height = height;
@@ -66,45 +66,65 @@ SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
     tdata->hratio = tdata->height / (float)tdata->aheight;
     tdata->bpp = bpp;
 
-    GLuint glformat;
     SGubyte bypp;
     switch(bpp)
     {
         case 8:
             tdata->glbpp = GL_R3_G3_B2;
-            glformat = GL_RGB;
+            tdata->glformat = GL_RGB;
             bypp = 1;
             break;
         case 15:
             tdata->glbpp = GL_RGB5_A1;
-            glformat = GL_RGBA;
+            tdata->glformat = GL_RGBA;
             bypp = 2;
             break;
         case 16:
             tdata->glbpp = GL_RGB16;
-            glformat = GL_RGB;
+            tdata->glformat = GL_RGB;
             bypp = 2;
             break;
         case 24:
             tdata->glbpp = GL_RGB;
-            glformat = GL_RGB;
+            tdata->glformat = GL_RGB;
             bypp = 3;
             break;
         case 32:
             tdata->glbpp = GL_RGBA;
-            glformat = GL_RGBA;
+            tdata->glformat = GL_RGBA;
             bypp = 4;
             break;
         default:
             return SG_INVALID_VALUE;
     }
 
-    glTexImage2D(GL_TEXTURE_2D, 0, tdata->glbpp, tdata->awidth, tdata->aheight, 0, glformat, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, tdata->glbpp, tdata->awidth, tdata->aheight, 0, tdata->glformat, GL_UNSIGNED_BYTE, data);
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGubyte* bpp, void** data)
-//SGuint SG_EXPORT sgmGraphicsTextureFreeData(void* data)
+SGuint SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data)
+{
+	if(texture == NULL)
+		return SG_OK; // SG_INVALID_VALUE
+	TextureData* tdata = texture;
+
+	glBindTexture(GL_TEXTURE_2D, tdata->texid);
+
+	*width = tdata->awidth;
+	*height = tdata->aheight;
+	*bpp = tdata->bpp;
+
+	*data = malloc(tdata->width * tdata->height * (tdata->bpp == 15 ? 2 : (tdata->bpp / 8)));
+	glGetTexImage(GL_TEXTURE_2D, 0, tdata->glformat, tdata->glbpp, *data);
+
+	return SG_OK;
+}
+SGuint SG_EXPORT sgmGraphicsTextureFreeData(void* data)
+{
+	free(data);
+
+	return SG_OK;
+}
 SGuint SG_EXPORT sgmGraphicsTextureGetSize(void* texture, SGuint* width, SGuint* height)
 {
     if(texture == NULL)
@@ -116,7 +136,6 @@ SGuint SG_EXPORT sgmGraphicsTextureGetSize(void* texture, SGuint* width, SGuint*
     return SG_OK;
 }
 
-// TODO: make this work
 SGuint SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     if(texture == NULL)
