@@ -197,6 +197,17 @@ typedef double SGdouble;
 /// @}
 
 /**
+ * \name Some commonly used macros
+ * \warning
+ *	These are macros - this means that their arguments may be evaluated more than once!
+ */
+/// @{
+#define SG_MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define SG_MIN(x, y) (((x) < (y)) ? (x) : (y))
+#define SG_ABS(x) (((x) < 0) ? -(x) : (x))
+/// @}
+
+/**
  * \name Module error values
  *
  * These values are to be returned from backend modules, to indicate roughly if (and which) error has occured.
