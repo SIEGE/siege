@@ -30,11 +30,11 @@ int main()
 		if(sgMaskCheckCollision(supportm, 320, 240,
 								pacmanm, mx, my))
 			sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-		sgMaskDrawDBG(supportm, 320, 240, SG_TRUE);
-		sgMaskDrawDBG(pacmanm, mx, my, SG_TRUE);
+		//sgMaskDrawDBG(supportm, 320, 240, SG_TRUE);
+		//sgMaskDrawDBG(pacmanm, mx, my, SG_TRUE);
 
-		//sgSpriteDraw2f(support, 320, 240);
-		//sgSpriteDraw2f(pacman, mx, my);
+		sgSpriteDraw2f(support, 320, 240);
+		sgSpriteDraw2f(pacman, mx, my);
 
 		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 		sgMaskDrawDBG(supportm, 480, 360, SG_TRUE);

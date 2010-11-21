@@ -188,34 +188,37 @@ SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2
 	x2 -= m2->xoffset;
 	y2 -= m2->yoffset;
 
-	SGint xd = x2 - x1;
-	SGint yd = y2 - y1;
+	if(x2 > x1)
+	{
+		x2 -= x1;
+		x1 = 0;
+	}
+	else
+	{
+		x1 -= x2;
+		x2 = 0;
+	}
+	if(y2 > y1)
+	{
+		y2 -= y1;
+		y1 = 0;
+	}
+	else
+	{
+		y1 -= y2;
+		y2 = 0;
+	}
 
-	printf("%d,%d\n", xd, yd);
 	ptrdiff_t i, j;
 	for(i = 0; i < MAX(m1->width, m2->width); i++)
-	{
-		if((0 <= i - xd) && (i - xd < m1->width)
-		&& (0 <= i - xd) && (i - xd < m2->width))
-		{
-			printf("XCHK %d\n", i);
+		if((0 <= i - x1) && (i - x1 < m1->width)
+		&& (0 <= i - x2) && (i - x2 < m2->width))
 			for(j = 0; j < MAX(m1->height, m2->height); j++)
-			{
-				if((0 <= j - yd) && (j - yd < m1->height)
-				&& (0 <= j - yd) && (j - yd < m2->height))
-				{
-					printf("YCHK %d %d,%d\n", i, i - xd, j - yd);
-					printf("     %d %d\n", m1->field[i - xd][j - yd]
-										 , m2->field[i - xd][j - yd]);
-					if((!m1->precise || m1->field[i - xd][j - yd])
-					&& (!m2->precise || m2->field[i - xd][j - yd]))
-					{
+				if((0 <= j - y1) && (j - y1 < m1->height)
+				&& (0 <= j - y2) && (j - y2 < m2->height))
+					if((!m1->precise || m1->field[i - x1][j - y1])
+					&& (!m2->precise || m2->field[i - x2][j - y2]))
 						return SG_TRUE;
-					}
-				}
-			}
-		}
-	}
 	return SG_FALSE;
 }
 
