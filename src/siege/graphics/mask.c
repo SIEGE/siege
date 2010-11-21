@@ -178,9 +178,6 @@ void SG_EXPORT sgMaskDestroy(SGMask* mask)
 	free(mask);
 }
 
-#define MIN(a, b) (((a) < (b)) ? (a) : (b))
-#define MAX(a, b) (((a) > (b)) ? (a) : (b))
-#define ABS(x) (((x) < 0) ? -(x) : (x))
 SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
 {
 	x1 -= m1->xoffset;
@@ -210,10 +207,10 @@ SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2
 	}
 
 	ptrdiff_t i, j;
-	for(i = 0; i < MAX(m1->width, m2->width); i++)
+	for(i = 0; i < SG_MAX(m1->width, m2->width); i++)
 		if((0 <= i - x1) && (i - x1 < m1->width)
 		&& (0 <= i - x2) && (i - x2 < m2->width))
-			for(j = 0; j < MAX(m1->height, m2->height); j++)
+			for(j = 0; j < SG_MAX(m1->height, m2->height); j++)
 				if((0 <= j - y1) && (j - y1 < m1->height)
 				&& (0 <= j - y2) && (j - y2 < m2->height))
 					if((!m1->precise || m1->field[i - x1][j - y1])
