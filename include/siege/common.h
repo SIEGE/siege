@@ -129,7 +129,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 1
-#define SG_VERSION_PATCH 7
+#define SG_VERSION_PATCH 8
 /**
  * \brief Version string
  *
@@ -194,6 +194,17 @@ typedef double SGdouble;
  */
 #	define SG_INF INFINITY
 #endif // INFINITY
+/// @}
+
+/**
+ * \name Some commonly used macros
+ * \warning
+ *	These are macros - this means that their arguments may be evaluated more than once!
+ */
+/// @{
+#define SG_MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define SG_MIN(x, y) (((x) < (y)) ? (x) : (y))
+#define SG_ABS(x) (((x) < 0) ? -(x) : (x))
 /// @}
 
 /**

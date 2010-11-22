@@ -70,35 +70,40 @@ SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
     switch(bpp)
     {
         case 8:
-            tdata->glbpp = GL_R3_G3_B2;
-            tdata->glformat = GL_RGB;
-            bypp = 1;
+			tdata->gliformat = GL_R3_G3_B2;
+			tdata->glformat = GL_RGB;
+			tdata->gltype = GL_UNSIGNED_BYTE_3_3_2;
+			bypp = 1;
             break;
         case 15:
-            tdata->glbpp = GL_RGB5_A1;
-            tdata->glformat = GL_RGBA;
+			tdata->gliformat = GL_RGB5; // GL_RGB5_A1
+			tdata->glformat = GL_RGB;
+			tdata->gltype = GL_UNSIGNED_SHORT_5_5_5_1;
             bypp = 2;
             break;
         case 16:
-            tdata->glbpp = GL_RGB16;
+            tdata->gliformat = GL_RGB5;
             tdata->glformat = GL_RGB;
+			tdata->gltype = GL_UNSIGNED_SHORT_5_6_5;
             bypp = 2;
             break;
         case 24:
-            tdata->glbpp = GL_RGB;
+            tdata->gliformat = GL_RGB8;
             tdata->glformat = GL_RGB;
+			tdata->gltype = GL_UNSIGNED_BYTE;
             bypp = 3;
             break;
         case 32:
-            tdata->glbpp = GL_RGBA;
+            tdata->gliformat = GL_RGBA8;
             tdata->glformat = GL_RGBA;
+			tdata->gltype = GL_UNSIGNED_BYTE;
             bypp = 4;
             break;
         default:
             return SG_INVALID_VALUE;
     }
 
-    glTexImage2D(GL_TEXTURE_2D, 0, tdata->glbpp, tdata->awidth, tdata->aheight, 0, tdata->glformat, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, tdata->gliformat, tdata->awidth, tdata->aheight, 0, tdata->glformat, tdata->gltype, data);
 
     return SG_OK;
 }
@@ -114,8 +119,8 @@ SGuint SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint*
 	*height = tdata->aheight;
 	*bpp = tdata->bpp;
 
-	*data = malloc(tdata->width * tdata->height * (tdata->bpp == 15 ? 2 : (tdata->bpp / 8)));
-	glGetTexImage(GL_TEXTURE_2D, 0, tdata->glformat, tdata->glbpp, *data);
+	*data = malloc(tdata->awidth * tdata->aheight * (tdata->bpp == 15 ? 2 : (tdata->bpp / 8)));
+	glGetTexImage(GL_TEXTURE_2D, 0, tdata->glformat, tdata->gltype, *data);
 
 	return SG_OK;
 }
@@ -146,7 +151,7 @@ SGuint SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z
     glPushMatrix();
     glTranslatef(x, y, 0.0);
     glRotatef(angle * 180.0 / M_PI, 0.0, 0.0, 1.0);
-    glScalef(xscale, yscale, 1.0);
+    glScalef(xscale, -yscale, 1.0);
     glTranslatef(-x - xoffset, -y - yoffset, 0.0);
 
     glEnable(GL_TEXTURE_2D);

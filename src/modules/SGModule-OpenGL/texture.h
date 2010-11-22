@@ -25,8 +25,9 @@ typedef struct TextureData
     SGuint awidth, aheight;
     float wratio, hratio;
     SGubyte bpp;
-    GLuint glbpp;
-	SGenum glformat;
+    GLint gliformat;
+	GLenum glformat;
+	GLenum gltype;
 } TextureData;
 
 #endif // __TEXTURE_H__
