@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #ifndef __SIEGE_AI_ASTAR_H__
 #define __SIEGE_AI_ASTAR_H__
@@ -27,35 +27,35 @@ typedef SGbool SG_EXPORT (*SGAStarIsGoal)(struct SGAStarNode*, struct SGAStarNod
 
 typedef struct SGAStarNode
 {
-    struct SGAStarNode* from;
-    SGLinkedList* links;
-    void* data; // userdata
+	struct SGAStarNode* from;
+	SGLinkedList* links;
+	void* data; // userdata
 
-    struct
-    {
-        float g;
-        float h;
-        float f;
-    } score;
+	struct
+	{
+		float g;
+		float h;
+		float f;
+	} score;
 } SGAStarNode;
 
 typedef struct SGAStar
 {
-    struct
-    {
-        SGLinkedList* open;
-        SGLinkedList* closed;
-    } set;
-    SGLinkedList* path;
-    struct SGAStarNode* current;
-    struct SGAStarNode* goal;
+	struct
+	{
+		SGLinkedList* open;
+		SGLinkedList* closed;
+	} set;
+	SGLinkedList* path;
+	struct SGAStarNode* current;
+	struct SGAStarNode* goal;
 
-    struct
-    {
-        SGAStarScore g;
-        SGAStarScore h;
-        SGAStarIsGoal isgoal;
-    } cb;
+	struct
+	{
+		SGAStarScore g;
+		SGAStarScore h;
+		SGAStarIsGoal isgoal;
+	} cb;
 } SGAStar;
 
 SGAStar* SG_EXPORT sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);
