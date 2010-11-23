@@ -1,4 +1,13 @@
 /**
+ * \defgroup Audio
+ * \defgroup Backend
+ * \defgroup Core
+ * \defgroup Graphics
+ * \defgroup Input
+ * \defgroup Modules
+ * \defgroup Physics
+ * \defgroup Util
+ *
  * \mainpage
  * Welcome to the SIEGE documentation!
  *

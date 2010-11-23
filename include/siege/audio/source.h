@@ -25,6 +25,7 @@ extern "C"
 #endif // __cplusplus
 
 /**
+ * \ingroup Audio
  * \private
  * \brief Audio source usage handle
  *
@@ -48,6 +49,7 @@ typedef struct SGAudioSourceDispatch
 } SGAudioSourceDispatch;
 
 /**
+ * \ingroup Audio
  * \brief Audio source
  *
  * This is the actual "class" responsible for positioning and playing a sound.

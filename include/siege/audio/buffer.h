@@ -23,6 +23,7 @@ extern "C"
 #endif // __cplusplus
 
 /**
+ * \ingroup Audio
  * \brief Audio buffer
  *
  * The buffer holds the audio data for the \ref SGAudioSource "sources" to play. Please note that a single buffer can be used in multiple sources.
