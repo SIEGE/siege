@@ -20,10 +20,10 @@
 
 #include <stdlib.h>
 
-#define SG_PATH_GRID_CLEAR 0
-#define SG_PATH_GRID_WALL  1
-#define SG_PATH_GRID_START 2
-#define SG_PATH_GRID_GOAL  3
+#define SG_AGRID_CLEAR 0
+#define SG_AGRID_WALL  1
+#define SG_AGRID_START 2
+#define SG_AGRID_GOAL  3
 
 typedef struct SGAGridData
 {
