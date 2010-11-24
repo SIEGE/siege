@@ -17,6 +17,8 @@
 
 #include "common.h"
 
+#include "ai/astar.h"
+#include "ai/grid.h"
 #include "audio/buffer.h"
 #include "audio/source.h"
 #include "core/console.h"
