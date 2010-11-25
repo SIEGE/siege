@@ -11,6 +11,12 @@
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
+/**
+ * \file graphics/draw.h
+ * \brief Drawing-related functions
+ *
+ * \ingroup Graphics
+ */
 
 #ifndef __SIEGE_GRAPHICS_DRAW_H__
 #define __SIEGE_GRAPHICS_DRAW_H__

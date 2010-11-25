@@ -11,6 +11,10 @@
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
+/**
+ * \file graphics/mask.h
+ * Collision masks
+ */
 
 #ifndef __SIEGE_GRAPHICS_MASK_H__
 #define __SIEGE_GRAPHICS_MASK_H__

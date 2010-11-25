@@ -11,6 +11,10 @@
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
+/**
+ * \file siege.h
+ * \brief Main siege file, acting as sort of a glue for the rest.
+ */
 
 #ifndef __SIEGE_H__
 #define __SIEGE_H__

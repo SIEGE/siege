@@ -11,6 +11,10 @@
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
+/**
+ * \file common.h
+ * \brief Defines and macros used throughout SIEGE.
+ */
 
 #ifndef __SIEGE_COMMON_H__
 #define __SIEGE_COMMON_H__

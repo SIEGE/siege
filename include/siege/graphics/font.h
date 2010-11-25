@@ -11,6 +11,12 @@
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
+/**
+ * \file graphics/font.h
+ * \brief Fonts
+ *
+ * \ingroup Graphics
+ */
 
 #ifndef __SIEGE_GRAPHICS_FONT_H__
 #define __SIEGE_GRAPHICS_FONT_H__
@@ -26,7 +32,6 @@ extern "C"
 #endif // __cplusplus
 
 /**
- * \ingroup Graphics
  * \brief Character info
  * \private
  *
@@ -85,7 +90,6 @@ typedef struct SGCharInfo
 } SGCharInfo;
 
 /**
- * \ingroup Graphics
  * \brief Font info
  *
  * This buffer holds the info of a font, along
