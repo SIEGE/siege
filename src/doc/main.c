@@ -11,7 +11,8 @@
  * \mainpage
  * Welcome to the SIEGE documentation!
  *
- * If you're new to SIEGE, then the \ref tutorials "tutorials" might be a good place to start.
+ * If you're new to SIEGE, then the \ref tutorials "tutorials" might be a good
+ * place to start.
  *
  * <hr>
  *

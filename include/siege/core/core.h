@@ -24,56 +24,68 @@ extern "C"
 #endif // __cplusplus
 
 /**
- * \ingroup Core
  * \brief Load a number of modules
+ * \ingroup Core
+ *
  * \param n The number of modules to load
  * \param args The list of modules to load
+ *
  * \return The number of successfully loaded modules.
- * \warning
- *	This function should be called \b before \ref sgInit "sgInit"!
+ *
+ * \warning This function should be called \em before sgInit()!
  *
  * The "Modules" folder is used to look for the modules.
- * For example, if the module "Foo" is requested, SIEGE will look for it in this order (replace ".so" with whatever the dynamic library ending of the OS is)
+ *
+ * For example, if the module "Foo" is requested, SIEGE will look for it
+ * in this order (replace ".so" with whatever the dynamic library ending
+ * of the OS is):
  * - Modules/SGModule-Foo.so
  * - Modules/libSGModule-Foo.so
  * - Modules/SGModule-Foo.debug.so
  * - Modules/libSGModule-Foo.debug.so
+ *
  * In debug builds, SIEGE tries to find the ".debug." versions first.
  *
- * \sa
- *	sgLoadModules
- *	sgLoadModule
+ * \see sgLoadModules
+ * \see sgLoadModule
  */
 SGuint SG_EXPORT sgLoadModulesv(int n, va_list args);
 /**
- * \ingroup Core
  * \brief Load a number of modules
+ * \ingroup Core
+ *
  * \param n The number of modules to load
- * \param ... The list of modules to load
+ * \param args The list of modules to load
+ *
  * \return The number of successfully loaded modules.
- * \warning
- *	This function should be called \b before \ref sgInit "sgInit"!
+ *
+ * \warning This function should be called \em before sgInit()!
  *
  * The "Modules" folder is used to look for the modules.
- * For example, if the module "Foo" is requested, SIEGE will look for it in this order (replace ".so" with whatever the dynamic library ending of the OS is)
+ *
+ * For example, if the module "Foo" is requested, SIEGE will look for it
+ * in this order (replace ".so" with whatever the dynamic library ending
+ * of the OS is):
  * - Modules/SGModule-Foo.so
  * - Modules/libSGModule-Foo.so
  * - Modules/SGModule-Foo.debug.so
  * - Modules/libSGModule-Foo.debug.so
+ *
  * In debug builds, SIEGE tries to find the ".debug." versions first.
  *
- * \sa
- *  sgLoadModulesv
- *  sgLoadModule
+ * \see sgLoadModulesv
+ * \see sgLoadModule
  */
 SGuint SG_EXPORT sgLoadModules(int n, ...);
 /**
- * \ingroup Core
  * \brief Load a single module
+ * \ingroup Core
+ *
  * \param name Name of the module to load
+ *
  * \return SG_TRUE if successful, SG_FALSE otherwise.
- * \warning
- *	This function should be called \b before \ref sgInit "sgInit"!
+ *
+ * \warning This function should be called \em before sgInit()!
  *
  * The "Modules" folder is used to look for the modules.
  * For example, if the module "Foo" is requested, SIEGE will look for it in this order (replace ".so" with whatever the dynamic library ending of the OS is)
@@ -83,31 +95,35 @@ SGuint SG_EXPORT sgLoadModules(int n, ...);
  * - Modules/libSGModule-Foo.debug.so
  * In debug builds, SIEGE tries to find the ".debug." versions first.
  *
- * \sa
- *	sgLoadModules
+ * \see sgLoadModules
  */
 SGbool SG_EXPORT sgLoadModule(const char* name);
 /**
- * \ingroup Core
  * \brief Initialize SIEGE
+ * \ingroup Core
+ *
  * \param width Window width
  * \param height Window height
  * \param bpp Window bits (not bytes!) per pixel
  * \param flags Window open flags
+ *
  * \return SG_TRUE on success, SG_FALSE otherwise.
- * \warning
- *	This function should be called \b after \ref sgLoadModule "sgLoadModule" or \ref sgLoadModules "sgLoadModules"!
+ *
+ * \warning This function should be called \em after sgLoadModule()
+ * or sgLoadModules()!
  *
  * \sa
  *	sgDeinit
  */
 SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags);
 /**
- * \ingroup Core
  * \brief Cleanup and deinit SIEGE
- * \return SG_TRUE on success, SG_FALSE otherwise (which would leave the app in a messy state).
- * \warning
- *	This should \b always be the last SIEGE function you call!
+ * \ingroup Core
+ *
+ * \return SG_TRUE on success, SG_FALSE otherwise
+ * (which would leave the app in a messy state).
+ *
+ * \warning This should \em always be the last SIEGE function you call!
  *
  * \sa
  *	sgInit
@@ -115,20 +131,24 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags);
 SGbool SG_EXPORT sgDeinit(void);
 
 /**
- * \ingroup Core
  * \brief Start the SIEGE main loop
- * \return The return code which can be passed to the "return" from main function.
+ * \ingroup Core
  *
- * \sa
- *	sgLoop
- *	sgStop
+ * \return The return code which can then be returned from the main() function.
+ *
+ * \see sgLoop
+ * \see sgStop
  */
 SGint SG_EXPORT sgRun(void);
 /**
- * \ingroup Core
  * \brief Run a single SIEGE iteration
+ * \ingroup Core
+ *
  * \param[out] code The return code, which can be passed to the "return" from main() function
- * \return SG_TRUE if the program is to continue running, SG_FALSE if an exit has been requested (either via \ref sgStop "sgStop" or the window closed)
+ *
+ * \return SG_TRUE if the program is to continue running,
+ * SG_FALSE if an exit has been requested
+ * (either via sgStop() or the window closed)
  *
  * Example:
  * \code
@@ -148,26 +168,28 @@ SGint SG_EXPORT sgRun(void);
  *	}
  * \endcode
  *
- * \sa
- *	sgRun
- *	sgStop
+ * \see sgRun
+ * \see sgStop
  */
 SGbool SG_EXPORT sgLoop(SGint* code);
 /**
- * \ingroup Core
  * \brief Stop the program main loop
- * \param ret The value to ultimately return from the main() function
- * \warning
- * The loop SIEGE is currently in will currently run to the end before quitting!
+ * \ingroup Core
  *
- * \sa
- *	sgRun
- *	sgLoop
+ * \param ret The value to ultimately return from the main() function
+ *
+ * \warning The loop SIEGE is currently in will
+ * (until the implementation is changed otherwise)
+ * run to the end before quitting!
+ *
+ * \see sgRun
+ * \see sgLoop
  */
 void SG_EXPORT sgStop(SGint ret);
 /**
- * \ingroup Core
  * \brief Get the current tick (number of loops passed)
+ * \ingroup Core
+ *
  * \return The number of loops SIEGE has ran for since the start
  */
 SGulong SG_EXPORT sgGetTick(void);

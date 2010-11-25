@@ -48,12 +48,14 @@ void SG_EXPORT sgMaskDestroy(SGMask* mask);
 
 /**
  * \brief Check the collision between two masks
+ *
  * \param m1 The first mask to test
  * \param x1 First mask's x position
  * \param y1 First mask's y position
  * \param m2 The second mask to test
  * \param x2 Second mask's x position
  * \param y2 Second mask's y position
+ *
  * \return SG_TRUE if the masks collide, SG_FALSE otherwise.
  *
  * \todo Test whether this works or not
@@ -68,8 +70,10 @@ SGuint SG_EXPORT sgMaskGetHeight(SGMask* mask);
 
 /**
  * \brief A function used for debugging the mask
+ *
  * \warning This draws the mask pixel-for-pixel and is <em>slow</em>!
  * \warning This function may be removed in the future!
+ *
  * \todo sg[Sprite|Texture|Surface]CreateMask(SGMask* mask)
  */
 void SG_EXPORT sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent);

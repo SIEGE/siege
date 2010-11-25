@@ -16,8 +16,3 @@ int main()
 	return ret;
 }
 
-/**
- * \example hello/main_step2.c
- * The minimal running program.
- */
-

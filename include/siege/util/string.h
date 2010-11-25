@@ -27,22 +27,15 @@ char* _sg_strBuf;
 SGbool SG_EXPORT _sgStringInit(void);
 SGbool SG_EXPORT _sgStringDeinit(void);
 
-// has to be done to avoid a doxygen bug
-#define _SG_PRINTF SG_HINT_PRINTF(1, 2)
-#define _SG_VPRINTF SG_HINT_PRINTF(1, 0)
-
-char* SG_EXPORT _SG_PRINTF sgPrintf(const char* format, ...);
-char* SG_EXPORT _SG_VPRINTF sgPrintfv(const char* format, va_list args);
-
-#undef _SG_PRINTF
-#undef _SG_VPRINTF
+char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...);
+char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args);
 
 char* SG_EXPORT sgLineEnd(const char* text);
 SGuint SG_EXPORT sgLineLength(const char* text);
 char* SG_EXPORT sgNextLine(const char* text);
 SGuint SG_EXPORT sgNumLines(const char* text);
 
-/// \todo TODO
+/// \todo To be done
 void SG_EXPORT sgCharToUTF32(const char* text, SGuint textlen, SGdchar* str);
 
 #endif // __SIEGE_UTIL_STRING_H__

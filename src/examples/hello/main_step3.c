@@ -21,8 +21,3 @@ int main()
 	return ret;
 }
 
-/**
- * \example hello/main_step3.c
- * A "hello, world" program
- */
-

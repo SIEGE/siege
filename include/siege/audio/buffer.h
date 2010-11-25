@@ -30,14 +30,14 @@ extern "C"
  */
 typedef struct SGAudioBuffer
 {
-    /**
-	 * \private
+	/**
 	 * \brief Internal handle
+	 * \private
 	 *
 	 * \warning
 	 *	For internal use only.
-     */
-    void* handle;
+	 */
+	void* handle;
 } SGAudioBuffer;
 
 SGbool SG_EXPORT _sgAudioBufferInit(void);
@@ -47,14 +47,18 @@ SGbool SG_EXPORT _sgAudioBufferDeinit(void);
 /**
  * \memberof SGAudioBuffer
  * \brief Create an audio buffer
+ *
  * \param fname Filename of the audio file to load
+ *
  * \return The newly created buffer if successful, NULL otherwise.
  */
 SGAudioBuffer* SG_EXPORT sgAudioBufferCreate(const char* fname);
 /**
  * \memberof SGAudioBuffer
  * \brief Destroy an audio buffer
- * \param buffer The buffer to destroy. It should not be used anymore after this call.
+ *
+ * \param buffer The buffer to destroy.
+ * It should not be used anymore after this call.
  */
 void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer);
 /// @}

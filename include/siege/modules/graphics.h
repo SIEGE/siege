@@ -24,7 +24,6 @@ extern "C"
 
 typedef struct SGModuleGraphics
 {
-	/// Graphics
 	SGuint SG_EXPORT (*sgmGraphicsContextCreate)(void** context, SGuint width, SGuint height, SGuint bpp);
 	SGuint SG_EXPORT (*sgmGraphicsContextDestroy)(void* context);
 	SGuint SG_EXPORT (*sgmGraphicsContextResize)(void* context, SGuint width, SGuint height);
@@ -77,10 +76,14 @@ typedef struct SGModuleGraphics
 	//SGuint SG_EXPORT (*sgmGraphicsDrawPolygonSetStipple)(void* context, SGubyte* pattern);
 	//SGuint SG_EXPORT (*sgmGraphicsDrawPolygonGetStipple)(void* context*, SGubyte** pattern);
 
-	/// Graphics Load
+	/**
+	 * \name Graphics Load
+	 */
+	/// @{
 	SGuint SG_EXPORT (*sgmGraphicsLoadFile)(const char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data);
 	//SGuint SG_EXPORT (*sgmGraphicsLoadStream)(void* stream, SGuint* width, SGuint* height, SGuint* bpp, void** data);
 	SGuint SG_EXPORT (*sgmGraphicsLoadFreeData)(void* data);
+	/// @}
 } SGModuleGraphics;
 
 #ifdef SG_BUILD_LIBRARY

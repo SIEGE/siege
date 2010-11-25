@@ -19,6 +19,9 @@
 #include "../util/plist.h"
 #include "texture.h"
 
+/**
+ * \todo Remove these, replacing with "normal" functions.
+ */
 #define _SG_COLOR_OVERLOADS_FUNC(func)                                      \
     void SG_EXPORT func##3f(float r, float g, float b)                      \
     {                                                                       \
@@ -84,12 +87,14 @@ SGbool SG_EXPORT _sgDrawDeinit(void);
 /// @{
 /**
  * \brief Begin drawing a textured primitive
+ *
  * \param type Type of the primitive to draw
  * \param texture The texture to use for the primitive
  */
 void SG_EXPORT sgDrawBeginT(SGenum type, SGTexture* texture);
 /**
  * \brief Begin drawing an untextured primitive
+ *
  * \param type Type of the primitive to draw
  */
 void SG_EXPORT sgDrawBegin(SGenum type);
@@ -99,6 +104,7 @@ void SG_EXPORT sgDrawBegin(SGenum type);
 void SG_EXPORT sgDrawEnd(void);
 /**
  * \brief Set the draw color
+ *
  * \param r Red
  * \param g Green
  * \param b Blue
@@ -108,14 +114,19 @@ void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a);
 _SG_COLOR_OVERLOADS_DECL(sgDrawColor);
 /**
  * \brief Set the texture coordinate of the following vertex
+ *
  * \param s Horizontal (x) coordinate
  * \param t Vertical (y) coordinate
+ *
  * \note
- *	Texture coordinates generally span from 0.0 to 1.0 - values outside this range can sometimes (depending on the texture clipping mode) indicate flipping or tiling.
+ *	Texture coordinates generally span from 0.0 to 1.0 - values
+ *	outside this range can sometimes (depending on the texture
+ *	clipping mode) indicate flipping or tiling.
  */
 void SG_EXPORT sgDrawTexCoord2f(float s, float t);
 /**
  * \brief Place a vertex at a specific depth
+ *
  * \param x X coordinate
  * \param y Y coordinate
  * \param z Z coordinate (the depth)
@@ -123,6 +134,7 @@ void SG_EXPORT sgDrawTexCoord2f(float s, float t);
 void SG_EXPORT sgDrawVertex3f(float x, float y, float z);
 /**
  * \brief Place a vertex at depth 0
+ *
  * \param x X coordinate
  * \param y Y coordinate
  *
@@ -137,6 +149,7 @@ void SG_EXPORT sgDrawVertex2f(float x, float y);
 /// @{
 /**
  * \brief Clear the drawable
+ *
  * \param r Red
  * \param g Green
  * \param b Blue
@@ -156,12 +169,14 @@ void SG_EXPORT sgDrawClear(void);
 /// @{
 /**
  * \brief Draw a point
+ *
  * \param x X coordinate
  * \param y Y coordinate
  */
 void SG_EXPORT sgDrawPoint(float x, float y);
 /**
  * \brief Set the point size
+ *
  * \param size New point size
  */
 void SG_EXPORT sgDrawPointSetSize(float size);
@@ -174,6 +189,7 @@ void SG_EXPORT sgDrawPointSetSize(float size);
 /// @{
 /**
  * \brief Draw a line
+ *
  * \param x1 Start x coordinate
  * \param y1 Start y coordinate
  * \param x2 End x coordinate
@@ -182,6 +198,7 @@ void SG_EXPORT sgDrawPointSetSize(float size);
 void SG_EXPORT sgDrawLine(float x1, float y1, float x2, float y2);
 /**
  * \brief Set the line width
+ *
  * \param width New line width
  */
 void SG_EXPORT sgDrawLineSetWidth(float width);

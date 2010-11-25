@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #ifndef __SIEGE_MODULES_AUDIO_H__
 #define __SIEGE_MODULES_AUDIO_H__
@@ -25,57 +25,60 @@ extern "C"
 #endif // __cplusplus
 typedef struct SGModuleAudio
 {
-    /// Audio
-    SGuint SG_EXPORT (*sgmAudioSourceMaxSources)(SGuint* max);
+	SGuint SG_EXPORT (*sgmAudioSourceMaxSources)(SGuint* max);
 
-    SGuint SG_EXPORT (*sgmAudioBufferCreate)(void** buffer);
-    //SGuint SG_EXPORT (*sgmAudioBufferCreateData)(void** buffer, SGuint channels, SGuint type, SGuint frequency, void* data, SGuint datalen);
-    SGuint SG_EXPORT (*sgmAudioBufferSetData)(void* buffer, SGuint channels, SGuint type, SGuint frequency, void* data, SGuint datalen);
-    //SGuint SG_EXPORT (*sgmAudioBufferGetData)(void* buffer, SGuint* channels, SGuint* type, SGuint* frequency, void** data, SGuint* datalen);
-    //SGuint SG_EXPORT (*sgmAudioBufferFreeData)(void* data);
-    SGuint SG_EXPORT (*sgmAudioBufferDestroy)(void* buffer);
+	SGuint SG_EXPORT (*sgmAudioBufferCreate)(void** buffer);
+	//SGuint SG_EXPORT (*sgmAudioBufferCreateData)(void** buffer, SGuint channels, SGuint type, SGuint frequency, void* data, SGuint datalen);
+	SGuint SG_EXPORT (*sgmAudioBufferSetData)(void* buffer, SGuint channels, SGuint type, SGuint frequency, void* data, SGuint datalen);
+	//SGuint SG_EXPORT (*sgmAudioBufferGetData)(void* buffer, SGuint* channels, SGuint* type, SGuint* frequency, void** data, SGuint* datalen);
+	//SGuint SG_EXPORT (*sgmAudioBufferFreeData)(void* data);
+	SGuint SG_EXPORT (*sgmAudioBufferDestroy)(void* buffer);
 
-    SGuint SG_EXPORT (*sgmAudioSourceCreate)(void** source);
-    //SGuint SG_EXPORT (*sgmAudioSourceCreateData)(void** source, void* buffer, float pitch, float gain, SGbool looping);
-    SGuint SG_EXPORT (*sgmAudioSourceDestroy)(void* source);
-    SGuint SG_EXPORT (*sgmAudioSourcePlay)(void* source);
-    SGuint SG_EXPORT (*sgmAudioSourceIsPlaying)(void* source, SGbool* playing);
-    SGuint SG_EXPORT (*sgmAudioSourcePause)(void* source);
-    SGuint SG_EXPORT (*sgmAudioSourceIsPaused)(void* source, SGbool* paused);
-    SGuint SG_EXPORT (*sgmAudioSourceRewind)(void* source);
-    //SGuint SG_EXPORT (*sgmAudioSourceIsRewinded)(void* source, SGbool* rewinded);
-    SGuint SG_EXPORT (*sgmAudioSourceStop)(void* source);
-    SGuint SG_EXPORT (*sgmAudioSourceIsStopped)(void* source, SGbool* stopped);
-    SGuint SG_EXPORT (*sgmAudioSourceSetBuffer)(void* source, void* buffer);
-    //SGuint SG_EXPORT (*sgmAudioSourceGetBuffer)(void* source, void** buffer);
+	SGuint SG_EXPORT (*sgmAudioSourceCreate)(void** source);
+	//SGuint SG_EXPORT (*sgmAudioSourceCreateData)(void** source, void* buffer, float pitch, float gain, SGbool looping);
+	SGuint SG_EXPORT (*sgmAudioSourceDestroy)(void* source);
+	SGuint SG_EXPORT (*sgmAudioSourcePlay)(void* source);
+	SGuint SG_EXPORT (*sgmAudioSourceIsPlaying)(void* source, SGbool* playing);
+	SGuint SG_EXPORT (*sgmAudioSourcePause)(void* source);
+	SGuint SG_EXPORT (*sgmAudioSourceIsPaused)(void* source, SGbool* paused);
+	SGuint SG_EXPORT (*sgmAudioSourceRewind)(void* source);
+	//SGuint SG_EXPORT (*sgmAudioSourceIsRewinded)(void* source, SGbool* rewinded);
+	SGuint SG_EXPORT (*sgmAudioSourceStop)(void* source);
+	SGuint SG_EXPORT (*sgmAudioSourceIsStopped)(void* source, SGbool* stopped);
+	SGuint SG_EXPORT (*sgmAudioSourceSetBuffer)(void* source, void* buffer);
+	//SGuint SG_EXPORT (*sgmAudioSourceGetBuffer)(void* source, void** buffer);
 
-    SGuint SG_EXPORT (*sgmAudioSourceQueueBuffers)(void* source, void** buffers, SGuint numbuffers);
-    SGuint SG_EXPORT (*sgmAudioSourceUnqueueBuffers)(void* source, SGuint numbuffers);
+	SGuint SG_EXPORT (*sgmAudioSourceQueueBuffers)(void* source, void** buffers, SGuint numbuffers);
+	SGuint SG_EXPORT (*sgmAudioSourceUnqueueBuffers)(void* source, SGuint numbuffers);
 /// \warning Will most likely change very soon
-    SGuint SG_EXPORT (*sgmAudioSourceGetNumProcessedBuffers)(void* source, SGuint* processed);
-    SGuint SG_EXPORT (*sgmAudioSourceGetNumQueuedBuffers)(void* source, SGuint* queued);
-    SGuint SG_EXPORT (*sgmAudioSourceSetPosition)(void* source, float x, float y, float z);
-    SGuint SG_EXPORT (*sgmAudioSourceGetPosition)(void* source, float* x, float* y, float* z);
-    SGuint SG_EXPORT (*sgmAudioSourceSetVelocity)(void* source, float x, float y, float z);
-    SGuint SG_EXPORT (*sgmAudioSourceGetVelocity)(void* source, float* x, float* y, float* z);
-    //SGuint SG_EXPORT (*sgmAudioSourceSetFalloff)(void* source, float falloff);
-    //SGuint SG_EXPORT (*sgmAudioSourceGetFalloff)(void* source, float* falloff);
-    SGuint SG_EXPORT (*sgmAudioSourceSetPitch)(void* source, float pitch);
-    SGuint SG_EXPORT (*sgmAudioSourceGetPitch)(void* source, float* pitch);
-    SGuint SG_EXPORT (*sgmAudioSourceSetVolume)(void* source, float volume);
-    SGuint SG_EXPORT (*sgmAudioSourceGetVolume)(void* source, float* volume);
-    SGuint SG_EXPORT (*sgmAudioSourceSetLooping)(void* source, SGbool looping);
-    SGuint SG_EXPORT (*sgmAudioSourceGetLooping)(void* source, SGbool* looping);
+	SGuint SG_EXPORT (*sgmAudioSourceGetNumProcessedBuffers)(void* source, SGuint* processed);
+	SGuint SG_EXPORT (*sgmAudioSourceGetNumQueuedBuffers)(void* source, SGuint* queued);
+	SGuint SG_EXPORT (*sgmAudioSourceSetPosition)(void* source, float x, float y, float z);
+	SGuint SG_EXPORT (*sgmAudioSourceGetPosition)(void* source, float* x, float* y, float* z);
+	SGuint SG_EXPORT (*sgmAudioSourceSetVelocity)(void* source, float x, float y, float z);
+	SGuint SG_EXPORT (*sgmAudioSourceGetVelocity)(void* source, float* x, float* y, float* z);
+	//SGuint SG_EXPORT (*sgmAudioSourceSetFalloff)(void* source, float falloff);
+	//SGuint SG_EXPORT (*sgmAudioSourceGetFalloff)(void* source, float* falloff);
+	SGuint SG_EXPORT (*sgmAudioSourceSetPitch)(void* source, float pitch);
+	SGuint SG_EXPORT (*sgmAudioSourceGetPitch)(void* source, float* pitch);
+	SGuint SG_EXPORT (*sgmAudioSourceSetVolume)(void* source, float volume);
+	SGuint SG_EXPORT (*sgmAudioSourceGetVolume)(void* source, float* volume);
+	SGuint SG_EXPORT (*sgmAudioSourceSetLooping)(void* source, SGbool looping);
+	SGuint SG_EXPORT (*sgmAudioSourceGetLooping)(void* source, SGbool* looping);
 
-    /// Audio Load
-    SGuint SG_EXPORT (*sgmAudioLoadFile)(const char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    //SGuint SG_EXPORT (*sgmAudioLoadStream)(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    SGuint SG_EXPORT (*sgmAudioLoadFreeData)(void* data);
+	/**
+	 * \name Audio Load
+	 */
+	/// @{
+	SGuint SG_EXPORT (*sgmAudioLoadFile)(const char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
+	//SGuint SG_EXPORT (*sgmAudioLoadStream)(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
+	SGuint SG_EXPORT (*sgmAudioLoadFreeData)(void* data);
 
-    SGuint SG_EXPORT (*sgmAudioFileCreate)(void** file, const char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
-    SGuint SG_EXPORT (*sgmAudioFileDestroy)(void* file);
-    SGuint SG_EXPORT (*sgmAudioFileNumSamples)(void* file, SGuint* samples);
-    SGuint SG_EXPORT (*sgmAudioFileRead)(void* file, void* data, SGuint* datalen);
+	SGuint SG_EXPORT (*sgmAudioFileCreate)(void** file, const char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
+	SGuint SG_EXPORT (*sgmAudioFileDestroy)(void* file);
+	SGuint SG_EXPORT (*sgmAudioFileNumSamples)(void* file, SGuint* samples);
+	SGuint SG_EXPORT (*sgmAudioFileRead)(void* file, void* data, SGuint* datalen);
+	/// @}
 } SGModuleAudio;
 
 #ifdef SG_BUILD_LIBRARY
