@@ -98,7 +98,7 @@ SGAudioSourceDispatch* SG_EXPORT _sgAudioSourceGetFreeDispatch(SGAudioSource* so
     return NULL;
 }
 
-SGAudioSource* SG_EXPORT sgAudioSourceCreate(SGAudioBuffer* buffer, float priority, float volume, float pitch, SGbool looping)
+SGAudioSource* SG_EXPORT sgAudioSourceCreate(float priority, float volume, float pitch, SGbool looping)
 {
     SGAudioSource* source = malloc(sizeof(SGAudioSource));
     source->priority = priority;
@@ -110,11 +110,6 @@ SGAudioSource* SG_EXPORT sgAudioSourceCreate(SGAudioBuffer* buffer, float priori
         free(source);
         return NULL;
     }
-
-    //if(_sg_modAudio.sgmAudioSourceSetBuffer != NULL)
-    //    _sg_modAudio.sgmAudioSourceSetBuffer(source->dispatch->handle, buffer->handle);
-    if(_sg_modAudio.sgmAudioSourceQueueBuffers != NULL)
-        _sg_modAudio.sgmAudioSourceQueueBuffers(source->dispatch->handle, &buffer->handle, 1);
 
     return source;
 }

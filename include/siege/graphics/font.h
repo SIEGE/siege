@@ -13,8 +13,7 @@
  */
 /**
  * \file graphics/font.h
- * \brief Fonts
- *
+ * \brief Font handling.
  * \ingroup Graphics
  */
 
@@ -32,18 +31,16 @@ extern "C"
 #endif // __cplusplus
 
 /**
- * \brief Character info
+ * \brief Character info.
  * \private
  *
- * This is the character info which holds data such as datafield width, height, character width, height, etc...
- *
- * \warning
- *	For internal use only
+ * This is the character info which holds data such as datafield
+ * width, height, character width, height, etc...
  */
 typedef struct SGCharInfo
 {
 	/**
-	 * \brief Character's texture
+	 * \brief Character's texture.
 	 *
 	 * \todo
 	 *	Should multiple characters be put into a single texture?
@@ -101,12 +98,9 @@ typedef struct SGFont
 	/**
 	 * \brief Internal handle
 	 * \private
-	 *
-	 * \warning
-	 *	For internal use only.
 	 */
 	void* handle;
-	char* fname;	/// < The font's filename used on load
+	char* fname;	/// < Filename used to load the font
 	float height;	/// < Height of the font
 	/// @}
 
@@ -137,7 +131,6 @@ void SG_EXPORT _sgFontCenterOffsetT(SGFont* font, float* x, float* y, const char
 
 /// @{
 /**
- * \memberof SGFont
  * \brief Load a font
  *
  * \param fname Filename of the font to load
@@ -148,7 +141,6 @@ void SG_EXPORT _sgFontCenterOffsetT(SGFont* font, float* x, float* y, const char
  */
 SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload);
 /**
- * \memberof SGFont
  * \brief Destroy a font info
  *
  * \param font The font info to destroy.
@@ -162,7 +154,6 @@ void SG_EXPORT sgFontDestroy(SGFont* font);
  */
 /// @{
 /**
- * \memberof SGFont
  * \brief Resize the font, force duplication.
  *
  * \param font The font to resize
@@ -178,13 +169,11 @@ void SG_EXPORT sgFontDestroy(SGFont* font);
  *	sgFontCreate(font->fname, font->height, font->preload);
  * \endcode
  *
- * \sa
- *	sgFontResize
+ * \see sgFontResize
  */
 
 SGFont* SG_EXPORT sgFontResizeCopy(SGFont* font, float height);
 /**
- * \memberof SGFont
  * \brief Resize the font, duplicating only if necessarry.
  *
  * \param font The font to resize
@@ -196,8 +185,7 @@ SGFont* SG_EXPORT sgFontResizeCopy(SGFont* font, float height);
  * This function is similar to sgFontResizeCopy(), only it
  * does not allocate a new font if it doesn't have to.
  *
- * \sa
- *	sgFontResizeCopy
+ * \see	sgFontResizeCopy
  */
 SGFont* SG_EXPORT sgFontResize(SGFont* font, float height);
 /// @}
@@ -216,17 +204,14 @@ SGFont* SG_EXPORT sgFontResize(SGFont* font, float height);
 /// @{
 /**
  * \brief printf-style print
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrint(SGFont* font, float x, float y, const char* format, ...);
 /**
  * \brief vprintf-style print
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintV(SGFont* font, float x, float y, const char* format, va_list args);
 /**
  * \brief Text-based print
- * \memberof SGFont
  */
 void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, const char* text);
 /// @}
@@ -244,17 +229,14 @@ void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, const char* text);
 /// @{
 /**
  * \brief printf-style print
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintCentered(SGFont* font, float x, float y, const char* format, ...);
 /**
  * \brief vprintf-style print
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintCenteredV(SGFont* font, float x, float y, const char* format, va_list args);
 /**
  * \brief Text-based print
- * \memberof SGFont
  */
 void SG_EXPORT sgFontPrintCenteredT(SGFont* font, float x, float y, const char* text);
 /// @}
@@ -273,17 +255,14 @@ void SG_EXPORT sgFontPrintCenteredT(SGFont* font, float x, float y, const char* 
 /// @{
 /**
  * \brief printf-style print
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintXCentered(SGFont* font, float x, float y, const char* format, ...);
 /**
  * \brief vprintf-style print
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintXCenteredV(SGFont* font, float x, float y, const char* format, va_list args);
 /**
  * \brief text-based print
- * \memberof SGFont
  */
 void SG_EXPORT sgFontPrintXCenteredT(SGFont* font, float x, float y, const char* text);
 /// @}
@@ -302,17 +281,14 @@ void SG_EXPORT sgFontPrintXCenteredT(SGFont* font, float x, float y, const char*
 /// @{
 /**
  * \brief printf-style print
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintYCentered(SGFont* font, float x, float y, const char* format, ...);
 /**
  * \brief vprintf-style print
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintYCenteredV(SGFont* font, float x, float y, const char* format, va_list args);
 /**
  * \brief text-based print
- * \memberof SGFont
  */
 void SG_EXPORT sgFontPrintYCenteredT(SGFont* font, float x, float y, const char* text);
 /// @}
@@ -331,17 +307,14 @@ void SG_EXPORT sgFontPrintYCenteredT(SGFont* font, float x, float y, const char*
 /// @{
 /**
  * \brief printf-style text
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontStrSize(SGFont* font, float* x, float* y, const char* format, ...);
 /**
  * \brief vprintf-style text
- * \memberof SGFont
  */
 void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontStrSizeV(SGFont* font, float* x, float* y, const char* format, va_list args);
 /**
  * \brief plain text
- * \memberof SGFont
  */
 void SG_EXPORT sgFontStrSizeT(SGFont* font, float* x, float* y, const char* text);
 /// @}
