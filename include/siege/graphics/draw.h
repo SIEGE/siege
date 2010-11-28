@@ -12,7 +12,7 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 /**
- * \file graphics/draw.h
+ * \file siege/graphics/draw.h
  * \brief Drawing-related functions
  *
  * \ingroup Graphics

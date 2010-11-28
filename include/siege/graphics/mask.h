@@ -12,8 +12,8 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 /**
- * \file graphics/mask.h
- * Collision masks
+ * \file siege/graphics/mask.h
+ * \brief Collision masks
  */
 
 #ifndef __SIEGE_GRAPHICS_MASK_H__

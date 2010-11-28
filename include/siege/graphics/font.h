@@ -12,7 +12,7 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 /**
- * \file graphics/font.h
+ * \file siege/graphics/font.h
  * \brief Fonts
  *
  * \ingroup Graphics
