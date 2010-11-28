@@ -3,7 +3,7 @@ Misc:
 -- ai/boids
 -- ai/ann
 -- ai/genalos
--- ai/pathfinding (A*, motion planning)
+-- ai/pathfinding (motion planning)
 -- ai/fuzzy
 - core/console
 - physics/constraint (need backend API)
