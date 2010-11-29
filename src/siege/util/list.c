@@ -96,6 +96,9 @@ SGListNode* SG_EXPORT sgListInsertNode(SGList* list, SGListNode* after, void* it
 		if(list->first)
 			list->first->prev = node;
 		list->first = node;
+
+		if(!list->last)
+			list->last = node;
 	}
 	else // not first item
 	{
