@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <math.h>
 
+SGFont* sizes[12];
+const size_t numsizes = sizeof(sizes) / sizeof(SGFont*);
+const char* text = "A Quick Brown Fox Jumps Over The Lazy Dog 0123456789";
+
 SGFont* font;
 int main()
 {
@@ -12,24 +16,40 @@ int main()
 	sgInit(640, 480, 32, 0);
 	sgWindowSetTitle("SIEGE Text Demo");
 
-	font = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 10, 256);
+	SGuint i;
+	for(i = 0; i < numsizes; i++)
+		sizes[i] = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 7 + i, 127);
+
+	font = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 10, 127);
 
 	SGuint width = sgWindowGetWidth();
 	SGuint height = sgWindowGetHeight();
 
+	float dx, dy;
+	float y;
+
 	while(sgLoop(NULL))
 	{
+		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
+		y = 0.0;
+		for(i = 0; i < numsizes; i++)
+		{
+			sgFontStrSize(sizes[i], &dx, &dy, text);
+			y += dy;
+			sgFontPrint(sizes[i], 0, floor(y), text);
+		}
+
 		sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
 
-		sgFontPrint(font, width / 2, height - 64.0, "Mouse angle: %f", atan2(-sgMouseGetPosY() + (float)height / 2, sgMouseGetPosX() - (float)width / 2) * 180.0 / M_PI);
+		sgFontPrint(font, width / 2, height - 64, "Mouse center angle: %f", atan2(sgMouseGetPosY() - (float)height / 2, sgMouseGetPosX() - (float)width / 2) * 180.0 / M_PI);
 
 		sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
-		sgFontPrint(font, width / 2, height - 92.0, "Mouse: %d,%d %d", sgMouseGetPosX(), sgMouseGetPosY(), sgMouseGetWheel());
+		sgFontPrint(font, width / 2, height - 92, "Mouse: %d,%d %d", sgMouseGetPosX(), sgMouseGetPosY(), sgMouseGetWheel());
 
-		sgFontPrint(font, 128.0, height - 128.0, "AAA\nBBB\nCCC\nDDD\n\nEEE");
+		sgFontPrint(font, 128, height - 128, "AAA\nBBB\nCCC\nDDD\n\nEEE");
 
 		sgDrawColor4f(0.0, 0.5, 0.75, 0.75);
-		sgFontPrint(font, width / 4, height / 3, "Well, this is some more text...\nUseful for UI, consoles, etc...");
+		sgFontPrint(font, width / 4, height - height / 3, "Well, this is some more text...\nUseful for UI, consoles, etc...");
 
 		sgDrawColor4f(1.0, 1.0, 0.0, 0.75);
 		sgDrawLine(width / 2, height / 2, sgMouseGetPosX(), sgMouseGetPosY());
@@ -39,9 +59,34 @@ int main()
 		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 		sgFontPrint(font, 2, 256, "Testing: ABC abc 012");
 
+		sgFontStrSize(font, &dx, &dy, "Some test text");
+		sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
+		sgDrawLine(640 - 160, 480 - 120, 640 - 160 + dx, 480 - 120);
+		sgDrawRectangle(640 / 2 - dx / 2, 480 - 120 - dy / 2,
+						640 / 2 + dx / 2, 480 - 120 + dy / 2,
+						SG_TRUE);
+		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
+		sgFontPrint(font, 640 - 160, 480 - 120, "Some test text");
+
+		sgDrawColor4f(0.0, 0.0, 1.0, 1.0);
+		sgDrawRectangle(640 / 2 - dx / 2, 480 - 120 - dy / 2,
+						640 / 2 + dx / 2, 480 - 120 + dy / 2,
+						SG_TRUE);
+		sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
+		sgDrawRectangle(640 / 2 - dx / 2, 480 - 120 - dy / 2,
+						640 / 2 + dx / 2, 480 - 120 + dy / 2,
+						SG_FALSE);
+		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
+		sgFontPrintCentered(font, 640 / 2, 480 - 120, "Some test text");
+
 		sgWindowSwapBuffers();
 		sgDrawClear();
 	}
+
+	sgFontDestroy(font);
+
+	for(i = 0; i < numsizes; i++)
+		sgFontDestroy(sizes[i]);
 
 	sgDeinit();
 

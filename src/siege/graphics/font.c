@@ -154,7 +154,7 @@ void SG_EXPORT _sgFontCenterOffsetT(SGFont* font, float* x, float* y, const char
 	float cy;
 	sgFontStrSizeT(font, &cx, &cy, text);
 	*x = -cx / 2.0f;
-	*y = cy / 2.0f;
+	*y = -1 / 0.63 + cy / 2.0f;
 }
 
 SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
@@ -300,9 +300,7 @@ void SG_EXPORT sgFontPrintCentered(SGFont* font, float x, float y, const char* f
 }
 void SG_EXPORT sgFontPrintCenteredV(SGFont* font, float x, float y, const char* format, va_list args)
 {
-	char* text = sgPrintfv(format, args);
-	sgFontPrintCenteredT(font, x, y, text);
-	free(text);
+	sgFontPrintCenteredT(font, x, y, sgPrintfv(format, args));
 }
 void SG_EXPORT sgFontPrintCenteredT(SGFont* font, float x, float y, const char* text)
 {
@@ -322,9 +320,7 @@ void SG_EXPORT sgFontPrintXCentered(SGFont* font, float x, float y, const char* 
 }
 void SG_EXPORT sgFontPrintXCenteredV(SGFont* font, float x, float y, const char* format, va_list args)
 {
-	char* text = sgPrintfv(format, args);
-	sgFontPrintXCenteredT(font, x, y, text);
-	free(text);
+	sgFontPrintXCenteredT(font, x, y, sgPrintfv(format, args));
 }
 void SG_EXPORT sgFontPrintXCenteredT(SGFont* font, float x, float y, const char* text)
 {
@@ -344,9 +340,7 @@ void SG_EXPORT sgFontPrintYCentered(SGFont* font, float x, float y, const char* 
 }
 void SG_EXPORT sgFontPrintYCenteredV(SGFont* font, float x, float y, const char* format, va_list args)
 {
-	char* text = sgPrintfv(format, args);
-	sgFontPrintYCenteredT(font, x, y, text);
-	free(text);
+	sgFontPrintYCenteredT(font, x, y, sgPrintfv(format, args));
 }
 void SG_EXPORT sgFontPrintYCenteredT(SGFont* font, float x, float y, const char* text)
 {
@@ -365,9 +359,7 @@ void SG_EXPORT sgFontStrSize(SGFont* font, float* x, float* y, const char* forma
 }
 void SG_EXPORT sgFontStrSizeV(SGFont* font, float* x, float* y, const char* format, va_list args)
 {
-	char* text = sgPrintfv(format, args);
-	sgFontStrSizeT(font, x, y, text);
-	free(text);
+	sgFontStrSizeT(font, x, y, sgPrintfv(format, args));
 }
 void SG_EXPORT sgFontStrSizeT(SGFont* font, float* x, float* y, const char* text)
 {
@@ -400,7 +392,7 @@ void SG_EXPORT sgFontStrSizeT(SGFont* font, float* x, float* y, const char* text
 		*x = (*x > w) ? *x : w;
 		if(line < numlines - 1)
 			*y += font->height / 0.63 - font->height;
-		*y += font->height;
+		*y += font->height / 0.63;
 		line++;
 		start = sgNextLine(start);
 	}
