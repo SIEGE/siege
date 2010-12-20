@@ -24,6 +24,7 @@ extern "C"
 #endif // __cplusplus
 
 struct SGSprite;
+struct SGMask;
 struct SGPhysicsBody;
 struct SGAudioSource;
 
@@ -104,7 +105,7 @@ typedef struct SGEntity
 	 * \warning
 	 *	For internal use only.
 	 */
-	struct SGSprite* mask;
+	struct SGMask* mask;
 	/**
 	 * \private
 	 * \brief The attached physics body
@@ -484,16 +485,17 @@ struct SGSprite* SG_EXPORT sgEntityGetSprite(SGEntity* entity);
  * \param entity The entity of which the mask we want to attach
  * \param mask The mask (sprite) which should be attached or NULL to detach
  *
- * The mask is a simple sprite which tells SIEGE which pixels are solid (as in, which collide). If mask is NULL, then the sprite itself becomes a mask.
+ * The mask is a simple bitmask which tells SIEGE which pixels are solid (as in,
+ * which collide) and which not.
  */
-void SG_EXPORT sgEntitySetMask(SGEntity* entity, struct SGSprite* mask);
+void SG_EXPORT sgEntitySetMask(SGEntity* entity, struct SGMask* mask);
 /**
  * \memberof SGEntity
  * \brief Get the currently attached mask
  * \param entity The entity of which the mask we want to get
  * \return The mask if one was attached, NULL otherwise
  */
-struct SGSprite* SG_EXPORT sgEntityGetMask(SGEntity* entity);
+struct SGMask* SG_EXPORT sgEntityGetMask(SGEntity* entity);
 /// @}
 
 /**

@@ -16,6 +16,7 @@
 #include <siege/core/entity.h>
 #include <siege/audio/source.h>
 #include <siege/graphics/sprite.h>
+#include <siege/graphics/mask.h>
 #include <siege/physics/body.h>
 
 #include <stdlib.h>
@@ -379,14 +380,14 @@ SGSprite* SG_EXPORT sgEntityGetSprite(SGEntity* entity)
 	return entity->sprite;
 }
 
-void SG_EXPORT sgEntitySetMask(SGEntity* entity, SGSprite* mask)
+void SG_EXPORT sgEntitySetMask(SGEntity* entity, SGMask* mask)
 {
 	if(entity == NULL)
 		return;
 
 	entity->mask = mask;
 }
-SGSprite* SG_EXPORT sgEntityGetMask(SGEntity* entity)
+SGMask* SG_EXPORT sgEntityGetMask(SGEntity* entity)
 {
 	if(entity == NULL)
 		return NULL;
