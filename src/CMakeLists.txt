@@ -6,6 +6,20 @@ INCLUDE_DIRECTORIES("${CMAKE_SOURCE_DIR}/include")
 SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 SET(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 
+MACRO(SHARED_STATIC name dir ext)
+    PROJECT(${name})
+
+    FILE(GLOB_RECURSE ${name}_SOURCES ${dir}/*.${ext})
+    ADD_LIBRARY(${name} SHARED ${${name}_SOURCES})
+    ADD_LIBRARY(${name}.static STATIC ${${name}_SOURCES})
+
+    INSTALL(TARGETS ${name} DESTINATION lib)
+    INSTALL(TARGETS ${name}.static DESTINATION lib)
+ENDMACRO(SHARED_STATIC)
+
+OPTION(BUILD_MONOLITHIC "Build the monolithic SIEGE build" ON)
+OPTION(BUILD_SPLIT "Build the separated SIEGE build" ON)
+
 ADD_SUBDIRECTORY(siege)
 ADD_SUBDIRECTORY(examples)
 ADD_SUBDIRECTORY(bindings)
