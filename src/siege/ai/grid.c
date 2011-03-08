@@ -246,6 +246,8 @@ void SG_EXPORT sgNavGridAddGoal(SGNavGrid* grid, SGuint x, SGuint y)
 }
 void SG_EXPORT sgNavGridSearchCreate(SGNavGrid* grid)
 {
+    if(grid->search != NULL)
+        sgAStarDestroy(grid->search);
 	grid->search = sgAStarCreate(grid->start, grid->goal, _sgNavGridG, _sgNavGridH, _sgNavGridGoal);
 }
 SGbool SG_EXPORT sgNavGridSearchStep(SGNavGrid* grid)
