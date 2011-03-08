@@ -16,6 +16,7 @@
 #include <siege/core/entity.h>
 #include <siege/audio/source.h>
 #include <siege/graphics/sprite.h>
+#include <siege/graphics/mask.h>
 #include <siege/physics/body.h>
 
 #include <stdlib.h>
@@ -345,6 +346,8 @@ SGEntity* SG_EXPORT sgEntityCreate(float priority, SGenum type)
 	entity->depth = 0.0;
 	entity->angle = 0.0;
 
+	entity->minside = SG_FALSE;
+
 	entity->evDraw = _sg_evDraw;
 
 	sgPListInsertPriority(_sg_cList, priority, entity);
@@ -355,8 +358,8 @@ void SG_EXPORT sgEntityDestroy(SGEntity* entity)
 	if(entity == NULL)
 		return;
 
-	if(entity->evDestroy != NULL)
-		entity->evDestroy(entity);
+	if(entity->lcDestroy != NULL)
+		entity->lcDestroy(entity);
 
 	sgListRemoveItem(_sg_cList, entity);
 	sgEventDestroy(entity->event);
@@ -379,14 +382,14 @@ SGSprite* SG_EXPORT sgEntityGetSprite(SGEntity* entity)
 	return entity->sprite;
 }
 
-void SG_EXPORT sgEntitySetMask(SGEntity* entity, SGSprite* mask)
+void SG_EXPORT sgEntitySetMask(SGEntity* entity, SGMask* mask)
 {
 	if(entity == NULL)
 		return;
 
 	entity->mask = mask;
 }
-SGSprite* SG_EXPORT sgEntityGetMask(SGEntity* entity)
+SGMask* SG_EXPORT sgEntityGetMask(SGEntity* entity)
 {
 	if(entity == NULL)
 		return NULL;

@@ -24,6 +24,7 @@ extern "C"
 #endif // __cplusplus
 
 struct SGSprite;
+struct SGMask;
 struct SGPhysicsBody;
 struct SGAudioSource;
 
@@ -104,7 +105,7 @@ typedef struct SGEntity
 	 * \warning
 	 *	For internal use only.
 	 */
-	struct SGSprite* mask;
+	struct SGMask* mask;
 	/**
 	 * \private
 	 * \brief The attached physics body
@@ -163,12 +164,47 @@ typedef struct SGEntity
 	 */
 	float angle;
 
+	/// Is the mouse currently inside?
+	SGbool minside;
+
 	/**
 	 * \name Entity-related events
+	 * \todo Should two entities with the same
+	 * depth both get this called if applicable?
 	 */
 	/// @{
+	/// \brief Return SG_TRUE if the point is inside, SG_FALSE otherwise
+	/// \todo Rename to cbPointInside, cbIsInside...?
+	SGbool SG_EXPORT (*cbInside)(struct SGEntity* entity, float x, float y);
+
 	/// \brief Called when the entity is about to be destroyed
-	SGvoid SG_EXPORT (*evDestroy)(struct SGEntity* entity);
+	SGvoid SG_EXPORT (*lcDestroy)(struct SGEntity* entity);
+
+	/// \brief Mouse has entered/exited the entity's area
+	/// \todo Should this do the tests for depth?
+	SGvoid SG_EXPORT (*lcMouseEnter)(struct SGEntity* entity);
+	SGvoid SG_EXPORT (*lcMouseExit)(struct SGEntity* entity);
+
+	SGvoid SG_EXPORT (*lcMouseButton)(struct SGEntity* entity, SGuint button);
+	SGvoid SG_EXPORT (*lcMouseButtonPress)(struct SGEntity* entity, SGuint button);
+	SGvoid SG_EXPORT (*lcMouseButtonRelease)(struct SGEntity* entity, SGuint button);
+
+	SGvoid SG_EXPORT (*lcMouseButtonLeft)(struct SGEntity* entity);
+	SGvoid SG_EXPORT (*lcMouseButtonLeftPress)(struct SGEntity* entity);
+	SGvoid SG_EXPORT (*lcMouseButtonLeftRelease)(struct SGEntity* entity);
+
+	SGvoid SG_EXPORT (*lcMouseButtonRight)(struct SGEntity* entity);
+	SGvoid SG_EXPORT (*lcMouseButtonRightPress)(struct SGEntity* entity);
+	SGvoid SG_EXPORT (*lcMouseButtonRightRelease)(struct SGEntity* entity);
+
+	SGvoid SG_EXPORT (*lcMouseButtonMiddle)(struct SGEntity* entity);
+	SGvoid SG_EXPORT (*lcMouseButtonMiddlePress)(struct SGEntity* entity);
+	SGvoid SG_EXPORT (*lcMouseButtonMiddleRelease)(struct SGEntity* entity);
+
+	SGvoid SG_EXPORT (*lcMouseMove)(struct SGEntity* entity, SGint x, SGint y);
+	SGvoid SG_EXPORT (*lcMouseWheel)(struct SGEntity* entity, SGint wheel);
+	/// @}
+
 	/// @}
 
 	/**
@@ -484,16 +520,17 @@ struct SGSprite* SG_EXPORT sgEntityGetSprite(SGEntity* entity);
  * \param entity The entity of which the mask we want to attach
  * \param mask The mask (sprite) which should be attached or NULL to detach
  *
- * The mask is a simple sprite which tells SIEGE which pixels are solid (as in, which collide). If mask is NULL, then the sprite itself becomes a mask.
+ * The mask is a simple bitmask which tells SIEGE which pixels are solid (as in,
+ * which collide) and which not.
  */
-void SG_EXPORT sgEntitySetMask(SGEntity* entity, struct SGSprite* mask);
+void SG_EXPORT sgEntitySetMask(SGEntity* entity, struct SGMask* mask);
 /**
  * \memberof SGEntity
  * \brief Get the currently attached mask
  * \param entity The entity of which the mask we want to get
  * \return The mask if one was attached, NULL otherwise
  */
-struct SGSprite* SG_EXPORT sgEntityGetMask(SGEntity* entity);
+struct SGMask* SG_EXPORT sgEntityGetMask(SGEntity* entity);
 /// @}
 
 /**
