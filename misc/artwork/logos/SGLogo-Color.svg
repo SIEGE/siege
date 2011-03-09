@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 14.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1" baseProfile="tiny"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="360px" height="144px" viewBox="114.5 391.818 360 144" xml:space="preserve">
+<defs>
+</defs>
+<rect x="106.643" y="384.153" display="none" fill="none" width="379.87" height="162.354"/>
+<rect x="2.5" y="2.5" fill="none" stroke="#000000" stroke-width="5" width="1106.455" height="711.124"/>
+<path fill="#C46321" d="M257.976,454.194v48.75h-48.75v-16.25h32.5v-16.25h-32.5v-48.75h48.75v16.25h-32.5v16.25H257.976z"/>
+<path fill="#C46321" d="M269.676,421.694h16.25v81.25h-16.25V421.694z"/>
+<path fill="#C46321" d="M297.626,421.694h48.75v16.25h-32.5v16.25h16.25v16.25h-16.25v16.25h32.5v16.25h-48.75V421.694z"/>
+<path fill="#C46321" d="M388.626,486.694v-32.5h16.25v48.75h-48.75v-81.25h48.75v16.25h-32.5v48.75H388.626z"/>
+<path fill="#C46321" d="M414.626,421.694h48.75v16.25h-32.5v16.25h16.25v16.25h-16.25v16.25h32.5v16.25h-48.75V421.694z"/>
+<rect x="129.266" y="465.186" fill="#0F76A3" width="36" height="36"/>
+<path fill="#EAEAEA" d="M154.016,480.936v13.5h-13.5v-4.5h9v-4.5h-9v-13.5h13.5v4.5h-9v4.5H154.016z"/>
+<rect x="161.605" y="470.467" fill="#EAEAEA" stroke="#0F76A3" width="31.883" height="31.881"/>
+<rect x="161.605" y="470.467" fill="#EAEAEA" stroke="#0F76A3" stroke-miterlimit="1" width="31.883" height="31.881"/>
+<path fill="#0F76A3" d="M179.676,492.799v-8.521h4.26v12.781h-12.783v-21.303h12.783v4.262h-8.521v12.781H179.676z"/>
+<path fill="#C46321" d="M130.229,421.689h7.875v39.375h-7.875V421.689z"/>
+<path fill="#C46321" d="M159.738,429.564h-7.875v-7.875h7.875V429.564z M151.863,437.439h7.875v23.625h-7.875V437.439z"/>
+<path fill="#C46321" d="M193.52,461.064h-23.625v-39.375h7.875v7.875h15.75V461.064z M185.645,453.189v-15.75h-7.875v15.75H185.645z
+	"/>
+</svg>
