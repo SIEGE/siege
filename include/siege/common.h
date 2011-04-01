@@ -346,20 +346,6 @@ typedef double SGdouble;
 #define SG_GRAPHICS_PRIMITIVE_INTERSECTING_POLYGON	0x30
 /// @}
 
-/**
- * \name Graphics info flags
- * \deprecated
- *	These may be removed in the future.
- */
-/// @{
-/**
- * \brief Cannot use NPOT textures
- *
- * This flag indicates that the backend does not support power-of-two textures, and that conversion to such sizes may be necessarry by the frontend.
- */
-#define SG_GRAPHICS_TEXTURE_NPOT	0x01
-/// @}
-
 #define SG_GRAPHICS_FUNC_ZERO                   0x00
 #define SG_GRAPHICS_FUNC_ONE                    0x01
 #define SG_GRAPHICS_FUNC_SRC_COLOR              0x02

@@ -97,8 +97,6 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib);
 
 SGModuleGraphics* SG_EXPORT sgModuleGetGraphics(void);
 
-SGubyte* SG_EXPORT _sgGraphicsToCanvasSize(SGuint width, SGuint height, SGuint bpp, SGubyte* data);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

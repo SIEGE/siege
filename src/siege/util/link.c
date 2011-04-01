@@ -35,11 +35,11 @@ SGLibrary* SG_EXPORT sgLibraryLoad(char* fname)
 {
 #ifdef __WIN32__
     HMODULE handle = LoadLibrary(fname);
-    if(!handle)
+    /*if(!handle)
     {
         int err = GetLastError();
         printf("Error loading %s: %d\n", fname, err);
-    }
+    }*/
 #else
     void* handle = dlopen(fname, RTLD_LAZY | RTLD_LOCAL);
 #endif

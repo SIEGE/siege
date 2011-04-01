@@ -45,16 +45,11 @@ SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp
     if(texture == NULL)
         return NULL;
 
-    if(data != NULL)
-        data = _sgGraphicsToCanvasSize(width, height, bpp, data);
-
     if(_sg_modGraphics.sgmGraphicsTextureCreate != NULL)
         _sg_modGraphics.sgmGraphicsTextureCreate(&texture->handle, _sg_gfxHandle);
     if(_sg_modGraphics.sgmGraphicsTextureSetData != NULL)
         _sg_modGraphics.sgmGraphicsTextureSetData(texture->handle, width, height, bpp, data);
 
-    // as allocated by _sgGraphicsToCanvasSize (or else it's null, and we don't care)
-    free(data);
     return texture;
 }
 SGTexture* SG_EXPORT sgTextureCreate(SGuint width, SGuint height, SGenum bpp)

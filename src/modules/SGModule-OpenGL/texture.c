@@ -109,7 +109,7 @@ SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
     {
         size_t i;
         for(i = 0; i < tdata->height; i++)
-            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, tdata->height - i - 1, tdata->width, 1, tdata->glformat, tdata->gltype, ((char*)data) + (i * tdata->awidth) * bypp);
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, tdata->height - i - 1, tdata->width, 1, tdata->glformat, tdata->gltype, ((char*)data) + (i * tdata->width) * bypp);
     }
 
     return SG_OK;
