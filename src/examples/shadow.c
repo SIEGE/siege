@@ -195,7 +195,7 @@ int main()
     sgInit(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Shadows Demo");
 
-    SGSprite* tile = sgSpriteCreateFile("data/sprites/FloorMetalPlate.png");
+    SGSprite* tile = sgSpriteCreateFile2f("data/sprites/FloorMetalPlate.png", 0.0, 0.0);
     SGSurface* tileset = sgSurfaceCreate(640, 480, 32);
 
     size_t i, j;

@@ -94,6 +94,7 @@ SGModule* SG_EXPORT sgModuleLoad(const char* name)
 	module->name = malloc(strlen(name) + 1);
 	strcpy(module->name, name);
 	module->lib = sgLibraryLoad(fname);
+	//fprintf(stderr, "Loading %s: %s\n", name, fname);
 	if(module->lib == NULL)
 		fprintf(stderr, "Warning: Unable to load module %s: Unknown error\n", name);
 	free(fname);

@@ -91,7 +91,7 @@ SGuint SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, 
 		data[i] = malloc(bitmap.width * bitmap.rows);
 		//data[i] = memcpy(data[i], bitmap.buffer, bitmap.width * bitmap.rows);
 		for(j = 0; j < bitmap.rows; j++)
-			memcpy(data[i] + j * bitmap.width, bitmap.buffer + (bitmap.rows - j - 1) * bitmap.width, bitmap.width);
+			memcpy(data[i] + j * bitmap.width, bitmap.buffer + j * bitmap.width, bitmap.width);
 
 		prex[i] = bitmap_glyph->left;
 		//prey[i] = -bitmap_glyph->top + bitmap.rows;

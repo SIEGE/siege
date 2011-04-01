@@ -280,7 +280,7 @@ void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, const char* text)
 		yoffset = y + h * line;
 		for(chr = start; chr < end; chr++)
 		{
-			sgTextureDrawRads3f2f2f1f(info[chr - start].texture, xoffset + info[chr - start].xpre, yoffset + info[chr - start].ypre, 0.0, 1.0, -1.0, 0.0, 0.0, 0.0);
+			sgTextureDrawRads3f2f2f1f(info[chr - start].texture, xoffset + info[chr - start].xpre, ((int)yoffset) + info[chr - start].ypre, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
 			xoffset += info[chr - start].xpost;
 			yoffset += info[chr - start].ypost;
 		}

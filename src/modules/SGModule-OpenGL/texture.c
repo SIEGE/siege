@@ -103,11 +103,14 @@ SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
             return SG_INVALID_VALUE;
     }
 
-    glTexImage2D(GL_TEXTURE_2D, 0, tdata->gliformat, tdata->awidth, tdata->aheight, 0, tdata->glformat, tdata->gltype, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, tdata->gliformat, tdata->awidth, tdata->aheight, 0, tdata->glformat, tdata->gltype, NULL);
 
-    //size_t i;
-    //for(i = 0; i < height; i++)
-    //    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, height - i - 1, width, 1, tdata->glformat, tdata->gltype, ((char*)data) + (i * width) * bypp);
+    if(data != NULL)
+    {
+        size_t i;
+        for(i = 0; i < tdata->height; i++)
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, tdata->height - i - 1, tdata->width, 1, tdata->glformat, tdata->gltype, ((char*)data) + (i * tdata->awidth) * bypp);
+    }
 
     return SG_OK;
 }
