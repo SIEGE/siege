@@ -158,6 +158,7 @@ SGuint SG_EXPORT sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum d
 
     return SG_OK;
 }
+// todo
 SGuint SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
 {
     static GLenum table[] = {GL_FUNC_ADD, GL_FUNC_SUBTRACT, GL_FUNC_REVERSE_SUBTRACT, GL_MIN, GL_MAX};
@@ -165,7 +166,8 @@ SGuint SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
     if(equation >= sizeof(table) / sizeof(GLenum))
         return SG_OK; // SG_INVALID_ENUM
 
-    glBlendEquation(table[equation]);
+    return SG_UNKNOWN_ERROR;
+    //glBlendEquation(table[equation]);
 
     return SG_OK;
 }

@@ -220,9 +220,9 @@ int main()
                                      (SGVec2){500, 100},
                                      (SGVec2){450, 200}}, 3);
 
-    lights[0] = createLight((SGVec2){60, 60}, (SGColor){0.5, 1.0, 1.0, 1.0}, 128);
-    lights[1] = createLight((SGVec2){500, 300}, (SGColor){0.75, 1.0, 0.0, 0.5}, 192);
-    lights[2] = createLight((SGVec2){200, 400}, (SGColor){1.0, 0.5, 0.0, 1.0}, 64);
+    lights[0] = createLight((SGVec2){60, 60}, (SGColor){0.5, 1.0, 1.0, 1.0}, 192);
+    lights[1] = createLight((SGVec2){500, 300}, (SGColor){0.75, 1.0, 0.0, 0.5}, 256);
+    lights[2] = createLight((SGVec2){200, 400}, (SGColor){1.0, 0.5, 0.0, 1.0}, 128);
 
     SGSurface* buffer = sgSurfaceCreate(640, 480, 32);
 
