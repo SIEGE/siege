@@ -13,6 +13,7 @@
 */
 
 #include "main.h"
+#include "texture.h"
 #include "draw.h"
 
 #include <stdio.h>
@@ -20,8 +21,16 @@
 
 SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGuint type, SGuint numverts, float* vertices, float* texcoords, float* colors)
 {
+    TextureData* tdata = texture;
+
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertices);
+
+    if(tdata)
+    {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, tdata->texid);
+    }
 
     if(texcoords != NULL)
     {
@@ -107,6 +116,12 @@ SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGuint t
         glDisableClientState(GL_COLOR_ARRAY);
 
     glDisableClientState(GL_VERTEX_ARRAY);
+
+    if(tdata)
+    {
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 
     return SG_OK;
 }
