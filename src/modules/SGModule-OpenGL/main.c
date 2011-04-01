@@ -58,7 +58,7 @@ void* getProcAddress(const char* name)
     return wglGetProcAddress(name);
 #else
     // a rather ugly hack with the casting... but it works
-    return (void*)(size_t)glXGetProcAddress((const GLubyte*)name);
+    return (void*)glXGetProcAddress((const GLubyte*)name);
 #endif
 }
 

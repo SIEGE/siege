@@ -71,6 +71,9 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
 	//bindFunc(sgmGraphicsDrawPolygonSetStipple)("sgmGraphicsDrawPolygonSetStipple", lib);
 	//bindFunc(sgmGraphicsDrawPolygonGetStipple)("sgmGraphicsDrawPolygonGetStipple", lib);
 
+    _SG_BINDS(_sg_modGraphics, sgmGraphicsDrawSetBlendFunc);
+    _SG_BINDS(_sg_modGraphics, sgmGraphicsDrawSetBlendEquation);
+
 	/// Graphics Load
 	_SG_BINDS(_sg_modGraphics, sgmGraphicsLoadFile);
 	//_SG_BINDS(_sg_modGraphics, sgmGraphicsLoadStream);

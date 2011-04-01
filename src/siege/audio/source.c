@@ -228,14 +228,14 @@ SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source)
 
     return processed != queued;
 }
-void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, SGuint numbuffers)
+void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, size_t numbuffers)
 {
     if(source == NULL)
         return;
     if(source->dispatch == NULL)
         return;
 
-    SGuint i;
+    size_t i;
     for(i = 0; i < numbuffers; i++)
         sgAudioSourceQueueBuffer(source, buffers[i]);
 }

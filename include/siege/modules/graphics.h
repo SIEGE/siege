@@ -76,6 +76,9 @@ typedef struct SGModuleGraphics
 	//SGuint SG_EXPORT (*sgmGraphicsDrawPolygonSetStipple)(void* context, SGubyte* pattern);
 	//SGuint SG_EXPORT (*sgmGraphicsDrawPolygonGetStipple)(void* context*, SGubyte** pattern);
 
+    SGuint SG_EXPORT (*sgmGraphicsDrawSetBlendFunc)(void* context, SGenum src, SGenum dst);
+    SGuint SG_EXPORT (*sgmGraphicsDrawSetBlendEquation)(void* context, SGenum equation);
+
 	/**
 	 * \name Graphics Load
 	 */

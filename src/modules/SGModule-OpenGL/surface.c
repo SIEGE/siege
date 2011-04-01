@@ -36,7 +36,7 @@ SGuint SG_EXPORT sgmGraphicsSurfaceCreate(void** surface, void* context)
     if(cdata->fbo.hasFBO)
     {
         cdata->fbo.glGenFramebuffersEXT(1, &(*sdata)->fboid);
-        sgmGraphicsSurfaceSetTexture(*sdata, (*sdata)->texture);
+        //sgmGraphicsSurfaceSetTexture(*sdata, (*sdata)->texture);
     }
 
     return SG_OK;
@@ -56,6 +56,7 @@ SGuint SG_EXPORT sgmGraphicsSurfaceDestroy(void* surface)
 }
 SGuint SG_EXPORT sgmGraphicsSurfaceSetTexture(void* surface, void* texture) // TODO: handle no FBOs available
 {
+    int err;
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
     SurfaceData* sdata = (SurfaceData*)surface;
@@ -63,6 +64,7 @@ SGuint SG_EXPORT sgmGraphicsSurfaceSetTexture(void* surface, void* texture) // T
 
     cdata->fbo.glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, sdata->fboid);
     cdata->fbo.glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, sdata->texture->texid, 0);
+
     int status = cdata->fbo.glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
     if(status != GL_FRAMEBUFFER_COMPLETE_EXT)
     {
@@ -88,8 +90,12 @@ SGuint SG_EXPORT sgmGraphicsSurfaceSetData(void* surface, SGuint width, SGuint h
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
     SurfaceData* sdata = surface;
+    ContextData* cdata = (ContextData*)sdata->context;
 
-    return sgmGraphicsTextureSetData(sdata->texture, width, height, bpp, data);
+    SGuint ret = sgmGraphicsTextureSetData(sdata->texture, width, height, bpp, data);
+    if(cdata->fbo.hasFBO)
+        sgmGraphicsSurfaceSetTexture(sdata, sdata->texture);
+    return ret;
 }
 SGuint SG_EXPORT sgmGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data)
 {
@@ -137,7 +143,12 @@ SGuint SG_EXPORT sgmGraphicsSurfaceSetTarget(void* surface)
 // I HAS A HAX NO MOAR
 
     if(sdata->isFBO)
+    {
+        //printf("GLE1 %X\n", glGetError());
+        //printf("GLE2 %X\n", glGetError());
         cdata->fbo.glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, sdata->fboid);
+        //printf("GLE3 %X\n", glGetError());
+    }
     else
     {
         ContextData* context = (ContextData*)sdata->texture->context;

@@ -105,6 +105,10 @@ SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
 
     glTexImage2D(GL_TEXTURE_2D, 0, tdata->gliformat, tdata->awidth, tdata->aheight, 0, tdata->glformat, tdata->gltype, data);
 
+    //size_t i;
+    //for(i = 0; i < height; i++)
+    //    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, height - i - 1, width, 1, tdata->glformat, tdata->gltype, ((char*)data) + (i * width) * bypp);
+
     return SG_OK;
 }
 SGuint SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data)
@@ -151,7 +155,7 @@ SGuint SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z
     glPushMatrix();
     glTranslatef(x, y, 0.0);
     glRotatef(angle * 180.0 / M_PI, 0.0, 0.0, 1.0);
-    glScalef(xscale, -yscale, 1.0);
+    glScalef(xscale, yscale, 1.0);
     glTranslatef(-x - xoffset, -y - yoffset, 0.0);
 
     glEnable(GL_TEXTURE_2D);

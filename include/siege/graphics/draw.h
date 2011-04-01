@@ -169,6 +169,9 @@ _SG_COLOR_OVERLOADS_DECL(sgDrawClear);
 void SG_EXPORT sgDrawClear(void);
 /// @}
 
+void SG_EXPORT sgDrawSetBlendFunc(SGenum src, SGenum dst);
+void SG_EXPORT sgDrawSetBlendEquation(SGenum equation);
+
 /**
  * \name Points
  */
