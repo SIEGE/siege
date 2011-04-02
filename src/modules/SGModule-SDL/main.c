@@ -27,10 +27,10 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     (*minfo)->vminor = SG_VERSION_MINOR;
     (*minfo)->vpatch = SG_VERSION_PATCH;
 
-    SDL_version ver = *SDL_Linked_Version();
-    (*minfo)->mmajor = ver.major;
-    (*minfo)->mminor = ver.minor;
-    (*minfo)->mpatch = ver.patch;
+    const SDL_version* ver = SDL_Linked_Version();
+    (*minfo)->mmajor = ver->major;
+    (*minfo)->mminor = ver->minor;
+    (*minfo)->mpatch = ver->patch;
     (*minfo)->type = SG_MODULE_WINDOW | SG_MODULE_INPUT;
     (*minfo)->name = "SDL";
 
