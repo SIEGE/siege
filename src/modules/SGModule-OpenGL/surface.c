@@ -36,6 +36,8 @@ SGuint SG_EXPORT sgmGraphicsSurfaceCreate(void** surface, void* context)
     if(cdata->fbo.hasFBO)
     {
         cdata->fbo.glGenFramebuffersEXT(1, &(*sdata)->fboid);
+        cdata->fbo.glGenRenderbuffersEXT(1, &(*sdata)->rbid);
+
         //sgmGraphicsSurfaceSetTexture(*sdata, (*sdata)->texture);
     }
 
@@ -51,20 +53,27 @@ SGuint SG_EXPORT sgmGraphicsSurfaceDestroy(void* surface)
     SurfaceData* sdata = (SurfaceData*)surface;
     ContextData* cdata = (ContextData*)sdata->context;
     cdata->fbo.glDeleteFramebuffersEXT(1, &sdata->fboid);
+    cdata->fbo.glDeleteRenderbuffersEXT(1, &sdata->rbid);
+
+    free(surface);
 
     return SG_OK;
 }
 SGuint SG_EXPORT sgmGraphicsSurfaceSetTexture(void* surface, void* texture) // TODO: handle no FBOs available
 {
-    int err;
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
     SurfaceData* sdata = (SurfaceData*)surface;
     ContextData* cdata = (ContextData*)sdata->context;
+    sdata->texture = texture;
 
     cdata->fbo.glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, sdata->fboid);
     cdata->fbo.glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, sdata->texture->texid, 0);
 
+    cdata->fbo.glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, sdata->rbid);
+    cdata->fbo.glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, sdata->texture->awidth, sdata->texture->aheight);
+    cdata->fbo.glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, sdata->rbid);
+    cdata->fbo.glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
     int status = cdata->fbo.glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
     if(status != GL_FRAMEBUFFER_COMPLETE_EXT)
     {

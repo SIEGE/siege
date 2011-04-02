@@ -6,6 +6,7 @@
 #include <math.h>
 
 #define NLIGHTS 4
+#define OP >=
 
 typedef struct Polygon
 {
@@ -255,7 +256,7 @@ void drawLight(Light* light)
             tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
             tnext = sgVec2Add(tnext, sgVec2f(x, y));
 
-            if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) <= 0)
+            if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
             {
                 tmpc = sgVec2Add(tcurr, sgVec2SetLength(sgVec2Sub(tcurr, light->pos), 640 + 480));
                 tmpn = sgVec2Add(tnext, sgVec2SetLength(sgVec2Sub(tnext, light->pos), 640 + 480));
@@ -349,7 +350,7 @@ void drawLightDBG(Light* light)
             tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
             tnext = sgVec2Add(tnext, sgVec2f(x, y));
 
-            if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) <= 0)
+            if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
             {
                 sgDrawVertex2f(tcurr.x, tcurr.y);
                 sgDrawVertex2f(tnext.x, tnext.y);
@@ -379,7 +380,7 @@ void drawLightDBG(Light* light)
             tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
             tnext = sgVec2Add(tnext, sgVec2f(x, y));
 
-            if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) <= 0)
+            if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
             {
                 tmpc = sgVec2Add(tcurr, sgVec2SetLength(sgVec2Sub(tcurr, light->pos), 640 + 480));
                 tmpn = sgVec2Add(tnext, sgVec2SetLength(sgVec2Sub(tnext, light->pos), 640 + 480));
@@ -405,7 +406,7 @@ int main()
     sgLoadModule("DevIL");
     sgLoadModule("Chipmunk");
     sgInit(640, 480, 32, 0);
-    sgWindowSetTitleF("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
+    sgWindowSetTitleF("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
 
     SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
     handler->evMouseButtonPress = evMouseButtonPress;

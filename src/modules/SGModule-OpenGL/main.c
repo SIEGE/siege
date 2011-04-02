@@ -33,10 +33,10 @@ void checkFBO(FBOFunctions* fbo)
         FBO->hasFBO = 0;
 
     //GLboolean (*glIsRenderbufferEXT) (GLuint);
-    //void (*glBindRenderbufferEXT) (GLenum, GLuint);
-    //void (*glDeleteRenderbuffersEXT) (GLsizei, const GLuint *);
-    //void (*glGenRenderbuffersEXT) (GLsizei, GLuint *);
-    //void (*glRenderbufferStorageEXT) (GLenum, GLenum, GLsizei, GLsizei);
+    CHECK(fbo, glBindRenderbufferEXT);
+    CHECK(fbo, glDeleteRenderbuffersEXT);
+    CHECK(fbo, glGenRenderbuffersEXT);
+    CHECK(fbo, glRenderbufferStorageEXT);
     //void (*glGetRenderbufferParameterivEXT) (GLenum, GLenum, GLint *);
     //GLboolean (*glIsFramebufferEXT) (GLuint);
     CHECK(fbo, glIsFramebufferEXT);
@@ -47,7 +47,7 @@ void checkFBO(FBOFunctions* fbo)
     //void (*glFramebufferTexture1DEXT) (GLenum, GLenum, GLenum, GLuint, GLint);
     CHECK(fbo, glFramebufferTexture2DEXT);
     //void (*glFramebufferTexture3DEXT) (GLenum, GLenum, GLenum, GLuint, GLint, GLint);
-    //void (*glFramebufferRenderbufferEXT) (GLenum, GLenum, GLenum, GLuint);
+    CHECK(fbo, glFramebufferRenderbufferEXT);
     //void (*glGetFramebufferAttachmentParameterivEXT) (GLenum, GLenum, GLenum, GLint *);
     //void (*glGenerateMipmapEXT) (GLenum);
 #undef CHECK

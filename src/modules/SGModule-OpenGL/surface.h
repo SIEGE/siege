@@ -25,6 +25,7 @@ typedef struct SurfaceData
 
     int isFBO;
     GLuint fboid;
+    GLuint rbid;
 } SurfaceData;
 
 #endif // __SURFACE_H__
