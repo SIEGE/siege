@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmCoreJoystickGetNumJoysticks(void* window, SGuint* numjoys)
+SGuint SG_EXPORT sgmCoreJoystickGetNumJoysticks(void* window, size_t* numjoys)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -70,7 +70,7 @@ SGuint SG_EXPORT sgmCoreJoystickGetID(void* joystick, SGuint* id)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgmCoreJoystickGetNumButtons(void* joystick, SGuint* numbuttons)
+SGuint SG_EXPORT sgmCoreJoystickGetNumButtons(void* joystick, size_t* numbuttons)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -91,7 +91,7 @@ SGuint SG_EXPORT sgmCoreJoystickButtonGetState(void* joystick, SGbool* state)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgmCoreJoystickGetNumAxis(void* joystick, SGuint* numaxis)
+SGuint SG_EXPORT sgmCoreJoystickGetNumAxis(void* joystick, size_t* numaxis)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE

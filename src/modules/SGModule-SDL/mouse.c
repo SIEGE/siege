@@ -77,7 +77,7 @@ SGuint SG_EXPORT sgmCoreMouseHide(void* mouse)
 }
 //SGuint SG_EXPORT sgmCoreMouseIsShown(void* mouse, SGbool* shown);
 //SGuint SG_EXPORT sgmCoreMouseIsHidden(void* mouse, SGbool* hidden);
-SGuint SG_EXPORT sgmCoreMouseGetNumButtons(void* mouse, SGuint* numbuttons)
+SGuint SG_EXPORT sgmCoreMouseGetNumButtons(void* mouse, size_t* numbuttons)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE

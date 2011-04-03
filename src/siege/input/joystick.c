@@ -55,14 +55,14 @@ void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
     if(_sg_modInput.sgmCoreJoystickGetID != NULL)
         _sg_modInput.sgmCoreJoystickGetID(joystick, &joy);
 
-    SGuint numaxis = 0;
+    size_t numaxis = 0;
     if(_sg_modInput.sgmCoreJoystickGetNumAxis != NULL)
         _sg_modInput.sgmCoreJoystickGetNumAxis(joystick, &numaxis);
 
-    char* buf = malloc(sizeof(SGuint) + sizeof(float*) + sizeof(SGuint));
+    char* buf = malloc(sizeof(SGuint) + sizeof(float*) + sizeof(size_t));
     memcpy(buf, &joy, sizeof(SGuint));
     memcpy(buf + sizeof(SGuint), &axis, sizeof(float*));
-    memcpy(buf + sizeof(SGuint) + sizeof(float*), &numaxis, sizeof(SGuint));
+    memcpy(buf + sizeof(SGuint) + sizeof(float*), &numaxis, sizeof(size_t));
 
     _SGEntityCall call;
     call = (_SGEntityCall){2, (SGenum[]){SG_EVF_JOYSTICKMOVE}, (void*[]){buf, buf}};

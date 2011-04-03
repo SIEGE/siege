@@ -28,11 +28,11 @@ typedef struct _SGJoystick
     SGuint id;
     void* handle;
 
-    SGuint numbuttons;
+    size_t numbuttons;
     SGbool* bprev;
     SGbool* bcurr;
 
-    SGuint numaxis;
+    size_t numaxis;
     float* aprev;
     float* acurr;
     float* adelt;
