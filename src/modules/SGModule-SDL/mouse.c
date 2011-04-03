@@ -92,9 +92,9 @@ SGuint SG_EXPORT sgmCoreMouseButtonGetState(void* mouse, SGbool* state)
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    SGuint numbuttons;
+    size_t numbuttons;
     sgmCoreMouseGetNumButtons(mouse, &numbuttons);
-    SGuint i;
+    size_t i;
     for(i = 0; i < numbuttons; i++)
         state[i] = mouseState & SDL_BUTTON(i);
 
