@@ -21,6 +21,7 @@
 #define __SIEGE_GRAPHICS_FONT_H__
 
 #include "../common.h"
+#include "../util/conv.h"
 #include "texture.h"
 
 #include <stdarg.h>
@@ -103,6 +104,9 @@ typedef struct SGFont
 	char* fname;	/// < Filename used to load the font
 	float height;	/// < Height of the font
 	/// @}
+
+	// char, wchar_t, utf8, utf16
+	SGConv* conv[4];
 
 	/**
 	 * \name Preloaded characters
@@ -213,6 +217,10 @@ void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintV(SGFont* font, float x, float y,
 /**
  * \brief Text-based print
  */
+void SG_EXPORT sgFontPrintU32(SGFont* font, float x, float y, const SGdchar* text);
+void SG_EXPORT sgFontPrintU16(SGFont* font, float x, float y, const SGwchar* text);
+void SG_EXPORT sgFontPrintU8(SGFont* font, float x, float y, const SGchar* text);
+void SG_EXPORT sgFontPrintW(SGFont* font, float x, float y, const wchar_t* text);
 void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, const char* text);
 /// @}
 
@@ -316,6 +324,10 @@ void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontStrSizeV(SGFont* font, float* x, float
 /**
  * \brief plain text
  */
+void SG_EXPORT sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar* text);
+void SG_EXPORT sgFontStrSizeU16(SGFont* font, float* x, float* y, const SGwchar* text);
+void SG_EXPORT sgFontStrSizeU8(SGFont* font, float* x, float* y, const SGchar* text);
+void SG_EXPORT sgFontStrSizeW(SGFont* font, float* x, float* y, const wchar_t* text);
 void SG_EXPORT sgFontStrSizeT(SGFont* font, float* x, float* y, const char* text);
 /// @}
 

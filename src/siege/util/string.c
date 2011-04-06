@@ -96,10 +96,50 @@ SGuint SG_EXPORT sgNumLines(const char* text)
 	}
 	return numlines;
 }
-/// \todo TODO
-void SG_EXPORT sgCharToUTF32(const char* text, SGuint textlen, SGdchar* str)
+
+size_t SG_EXPORT sgStrlen32(const SGdchar* text)
 {
-	size_t i;
-	for(i = 0; i < textlen; i++)
-		str[i] = text[i];
+	const SGdchar* ptr = text;
+	while(*ptr)
+		ptr++;
+	return ptr - text;
+}
+SGdchar* SG_EXPORT sgLineEnd32(const SGdchar* text)
+{
+	if(text == NULL)
+		return NULL;
+
+	while(*text != '\r' && *text != '\n' && *text != '\0')
+		text++;
+
+	return (SGdchar*)text;
+}
+SGuint SG_EXPORT sgLineLength32(const SGdchar* text)
+{
+	return sgLineEnd32(text) - text;
+}
+SGdchar* SG_EXPORT sgNextLine32(const SGdchar* text)
+{
+	if(text == NULL)
+		return NULL;
+
+	SGdchar* end = sgLineEnd32(text);
+	if(end[0] == 0)
+		return NULL;
+
+	if(end[0] == '\r' && end[1] == '\n')
+		return end + 2;
+	return end + 1;
+}
+SGuint SG_EXPORT sgNumLines32(const SGdchar* text)
+{
+	SGuint numlines = 0;
+
+	const SGdchar* ptr = text;
+	while(ptr != NULL)
+	{
+		ptr = sgNextLine32(ptr);
+		numlines++;
+	}
+	return numlines;
 }

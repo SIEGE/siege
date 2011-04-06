@@ -13,6 +13,7 @@ int main()
 	sgLoadModule("SDL");
 	sgLoadModule("OpenGL");
 	sgLoadModule("Freetype");
+	sgLoadModule("IConv");
 	sgInit(640, 480, 32, 0);
 	sgWindowSetTitle("SIEGE Text Demo");
 
@@ -20,7 +21,7 @@ int main()
 	for(i = 0; i < numsizes; i++)
 		sizes[i] = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 7 + i, 127);
 
-	font = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 10, 127);
+	font = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 127);
 
 	SGuint width = sgWindowGetWidth();
 	SGuint height = sgWindowGetHeight();
@@ -57,7 +58,9 @@ int main()
 		sgDrawLine(width / 2, height / 2, width / 2, sgMouseGetPosY());
 
 		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
-		sgFontPrint(font, 2, 256, "Testing: ABC abc 012");
+
+		// thanks to Wikipedia for these!
+		sgFontPrintW(font, 2, 256, L"Testing: ABC abc 012\nčšž\nSome cyrillic: Съешь ещё этих мягких французских булок да выпей же чаю\nAnd now for greek: Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός");
 
 		sgFontStrSize(font, &dx, &dy, "Some test text");
 		sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
