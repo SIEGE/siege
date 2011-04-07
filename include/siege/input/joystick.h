@@ -39,7 +39,7 @@ typedef struct _SGJoystick
 } _SGJoystick;
 
 #ifdef SG_BUILD_LIBRARY
-SGuint _sg_joyNum;
+size_t _sg_joyNum;
 _SGJoystick** _sg_joyJoys;
 SGCoreJoystickCallbacks _sg_joyCallbacks;
 #endif // SG_BUILD_LIBRARY
