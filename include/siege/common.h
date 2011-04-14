@@ -36,7 +36,7 @@ typedef uint32_t SGenum;
 
 /// \name Characters
 /// @{
-typedef uint8_t  SGchar;
+typedef char     SGchar;
 typedef uint16_t SGwchar;
 typedef uint32_t SGdchar;
 /// @}
