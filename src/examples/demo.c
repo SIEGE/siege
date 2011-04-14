@@ -453,7 +453,7 @@ int main()
     SGSurface* buffer = sgSurfaceCreate(640, 480, 32);
 
     // SG_TRUE if they should be mulplicative, SG_FALSE for additive!
-    SGbool multLights = SG_FALSE;
+    SGbool multLights = SG_TRUE;
     SGbool sqrmult = SG_TRUE;
     SGColor ambience = {0.125, 0.0625, 0.0, 1.0};
 
