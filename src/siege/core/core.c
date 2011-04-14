@@ -20,6 +20,7 @@
 #include <siege/core/event.h>
 #include <siege/core/entity.h>
 #include <siege/core/window.h>
+#include <siege/graphics/light.h>
 #include <siege/graphics/surface.h>
 #include <siege/graphics/draw.h>
 #include <siege/graphics/turtle.h>
@@ -134,6 +135,7 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 
 	_sgRandInit();
 	_sgPhysicsSpaceInit();
+    _sgLightInit();
 
 	sgWindowOpen(width, height, bpp, flags);
 
@@ -147,6 +149,7 @@ SGbool SG_EXPORT sgDeinit(void)
 	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_DEINIT}, (void*[]){NULL}};
 	sgEventCall(SG_EV_INTERNAL, &call);
 
+    _sgLightDeinit();
 	_sgPhysicsSpaceDeinit();
 	_sgRandDeinit();
 

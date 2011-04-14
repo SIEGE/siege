@@ -32,6 +32,7 @@
 #include "core/window.h"
 #include "graphics/draw.h"
 #include "graphics/font.h"
+#include "graphics/light.h"
 #include "graphics/mask.h"
 #include "graphics/sprite.h"
 #include "graphics/surface.h"

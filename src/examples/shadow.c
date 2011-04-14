@@ -5,307 +5,47 @@
 #include <stdio.h>
 #include <math.h>
 
-#define NPOLYS 3
+#define NSHAPES 3
 #define NLIGHTS 4
 
-typedef struct Polygon
-{
-    SGEntity* entity;
-    SGVec2* points;
-    size_t nump;
-    SGTexture* texture;
-    SGVec2 min;
-    SGVec2 max;
-} Polygon;
-Polygon* polys[NPOLYS];
+SGShadowShape* shapes[NSHAPES];
 
-void destroyPoly(Polygon* poly)
-{
-    poly->entity->lcDestroy = NULL;
-    sgEntityDestroy(poly->entity);
-    free(poly->points);
-    free(poly);
-}
-
-void destroyPolyEntity(SGEntity* ent)
-{
-    destroyPoly(ent->data);
-}
-
-void drawPoly(Polygon* poly)
+void drawPoly(SGShadowShape* shape)
 {
     size_t i;
 
-    if(poly->texture == NULL)
-        sgDrawColor4f(0.0, 0.5, 0.75, 1.0);
-    else
-        sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
-    sgDrawBeginT(SG_GRAPHICS_PRIMITIVE_CONVEX_POLYGON, poly->texture);
-        for(i = 0; i < poly->nump; i++)
-        {
-            sgDrawTexCoord2f((poly->points[i].x - poly->min.x) / (poly->max.x - poly->min.x)
-                            ,(poly->points[i].y - poly->min.y) / (poly->max.y - poly->min.y));
-            sgDrawVertex2f(poly->points[i].x, poly->points[i].y);
-        }
+    sgDrawColor4f(0.0, 0.5, 0.75, 1.0);
+    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_CONVEX_POLYGON);
+        for(i = 0; i < shape->numverts; i++)
+            sgDrawVertex2f(shape->verts[i].x, shape->verts[i].y);
     sgDrawEnd();
 
-    if(poly->texture == NULL)
-        sgDrawColor4f(0.0, 1.0, 0.75, 1.0);
-    else
-        sgDrawColor4f(0.75, 0.75, 0.75, 1.0);
-    sgDrawBeginT(SG_GRAPHICS_PRIMITIVE_LINE_LOOP, poly->texture);
-        for(i = 0; i < poly->nump; i++)
-        {
-            sgDrawTexCoord2f((poly->points[i].x - poly->min.x) / (poly->max.x - poly->min.x)
-                            ,(poly->points[i].y - poly->min.y) / (poly->max.y - poly->min.y));
-            sgDrawVertex2f(poly->points[i].x, poly->points[i].y);
-        }
-    sgDrawEnd();
-}
-
-void drawPolyEntity(SGEntity* ent)
-{
-    drawPoly(ent->data);
-}
-
-Polygon* createPoly(SGVec2* points, size_t nump, SGTexture* texture)
-{
-    Polygon* poly = malloc(sizeof(Polygon));
-    poly->points = malloc(nump * sizeof(SGVec2));
-    memcpy(poly->points, points, nump * sizeof(SGVec2));
-    poly->nump = nump;
-
-    poly->entity = sgEntityCreate(0.0, SG_EVT_ALL);
-    poly->entity->data = poly;
-    poly->entity->lcDestroy = destroyPolyEntity;
-    poly->entity->evDraw = drawPolyEntity;
-
-    poly->texture = texture;
-
-    poly->min = (SGVec2){0, 0};
-    poly->max = (SGVec2){0, 0};
-
-    if(nump == 0)
-        return poly;
-
-    poly->min.x = points[0].x;
-    poly->min.y = points[0].y;
-    poly->max.x = points[0].x;
-    poly->max.y = points[0].y;
-
-    size_t i;
-    for(i = 1; i < nump; i++)
-    {
-        if(points[i].x < poly->min.x)
-            poly->min.x = points[i].x;
-        if(points[i].y < poly->min.y)
-            poly->min.y = points[i].y;
-
-        if(points[i].x > poly->max.x)
-            poly->max.x = points[i].x;
-        if(points[i].y > poly->max.y)
-            poly->max.y = points[i].y;
-    }
-
-    return poly;
-}
-
-typedef struct Light
-{
-    SGEntity* entity;
-    SGSurface* surface;
-    SGVec2 pos;
-    SGColor color;
-    float radius;
-    float angle;
-    float arc;
-    SGbool enabled;
-} Light;
-Light* lights[NLIGHTS];
-
-void destroyLight(Light* light)
-{
-    light->entity->lcDestroy = NULL;
-    sgEntityDestroy(light->entity);
-    sgSurfaceDestroy(light->surface);
-    free(light);
-}
-
-void destroyLightEntity(SGEntity* ent)
-{
-    destroyLight(ent->data);
-}
-
-void drawLight(Light* light)
-{
-    sgSurfaceClear4f(light->surface, 0.0, 0.0, 0.0, 0.0);
-    if(!light->enabled)
-        return;
-    sgSurfaceTarget(light->surface);
-
-    sgDrawColor4f(light->color.r, light->color.g, light->color.b, light->color.a);
-
-    SGVec2* curr;
-    SGVec2* next;
-    Polygon* poly;
-    SGVec2 tmpc, tmpn;
-    size_t p, i;
-
-    int sides = SG_MAX(3, (int)(light->radius * 0.5));
-    float f = 2 * M_PI / sides;
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
-        sgDrawColor4f(light->color.r, light->color.g, light->color.b, light->color.a);
-        sgDrawVertex2f(light->pos.x, light->pos.y);
-        sgDrawColor4f(light->color.r, light->color.g, light->color.b, 0.0);
-        for(i = 0; i <= sides; i++)
-        {
-            sgDrawVertex2f(light->pos.x + cos(f * i) * light->radius,
-                           light->pos.y + sin(f * i) * light->radius);
-        }
-    sgDrawEnd();
-    //sgDrawCircle(light->pos.x, light->pos.y, light->radius, SG_TRUE);
-
-    /*sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINES);
-    sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-    for(p = 0; p < NPOLYS; p++)
-    {
-        poly = polys[p];
-        for(i = 0; i < poly->nump; i++)
-        {
-            curr = &poly->points[i];
-            next = &poly->points[(i + 1) % poly->nump];
-            if(sgVec2Cross(sgVec2Sub(*next, *curr), sgVec2Sub(*next, light->pos)) <= 0)
-            {
-                sgDrawVertex2f(curr->x, curr->y);
-                sgDrawVertex2f(next->x, next->y);
-            }
-        }
-    }
-    sgDrawEnd();*/
-
-    sgDrawColor4f(0.0, 0.0, 0.0, 1.0);
-    for(p = 0; p < NPOLYS; p++)
-    {
-        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLES);
-        poly = polys[p];
-        for(i = 0; i < poly->nump; i++)
-        {
-            curr = &poly->points[i];
-            next = &poly->points[(i + 1) % poly->nump];
-            if(sgVec2Cross(sgVec2Sub(*next, *curr), sgVec2Sub(*next, light->pos)) <= 0)
-            {
-                tmpc = sgVec2Add(*curr, sgVec2SetLength(sgVec2Sub(*curr, light->pos), 640 + 480));
-                tmpn = sgVec2Add(*next, sgVec2SetLength(sgVec2Sub(*next, light->pos), 640 + 480));
-
-                sgDrawVertex2f(curr->x, curr->y);
-                sgDrawVertex2f(next->x, next->y);
-                sgDrawVertex2f(tmpc.x, tmpc.y);
-
-                sgDrawVertex2f(tmpc.x, tmpc.y);
-                sgDrawVertex2f(tmpn.x, tmpn.y);
-                sgDrawVertex2f(next->x, next->y);
-            }
-        }
-        sgDrawEnd();
-    }
-
-    sgSurfaceUntarget(light->surface);
-}
-
-void drawLightEntity(SGEntity* ent)
-{
-    drawLight(ent->data);
-}
-
-Light* createLight(SGVec2 pos, SGColor color, float radius, float angle, float arc)
-{
-    Light* light = malloc(sizeof(Light));
-    light->pos = pos;
-    light->color = color;
-    light->radius = radius;
-    light->angle = angle * M_PI / 180.0;
-    light->arc = arc * M_PI / 180.0;
-
-    light->entity = sgEntityCreate(0.0, SG_EVT_ALL);
-    light->entity->data = light;
-    light->entity->lcDestroy = destroyLightEntity;
-    light->entity->evDraw = drawLightEntity;
-
-    light->surface = sgSurfaceCreate(640, 480, 32);
-
-    light->enabled = SG_TRUE;
-
-    return light;
-}
-
-void drawPolyDBG(Polygon* poly)
-{
-    size_t i;
-    sgDrawColor4f(0.0, 1.0, 1.0, 1.0);
+    sgDrawColor4f(0.0, 1.0, 0.75, 1.0);
     sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
-        for(i = 0; i < poly->nump; i++)
-            sgDrawVertex2f(poly->points[i].x, poly->points[i].y);
+        for(i = 0; i < shape->numverts; i++)
+            sgDrawVertex2f(shape->verts[i].x, shape->verts[i].y);
     sgDrawEnd();
 }
 
-void drawLightDBG(Light* light)
+SGLight* lights[NLIGHTS];
+SGSurface* lightBuf;
+
+void drawLight(SGLight* light)
 {
-    if(!light->enabled)
-        return;
+    sgSurfaceClear4f(lightBuf, 0.0, 0.0, 0.0, 1.0);
+    sgSurfaceTarget(lightBuf);
+    sgLightDraw(light);
+    sgLightDrawShadows(light);
+    sgSurfaceUntarget(lightBuf);
+}
 
-    SGVec2* curr;
-    SGVec2* next;
-    Polygon* poly;
-    SGVec2 tmpc, tmpn;
-    size_t p, i;
-
-    sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
-    sgDrawCircle(light->pos.x, light->pos.y, light->radius, SG_FALSE);
-
-    sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINES);
-    for(p = 0; p < NPOLYS; p++)
-    {
-        poly = polys[p];
-        for(i = 0; i < poly->nump; i++)
-        {
-            curr = &poly->points[i];
-            next = &poly->points[(i + 1) % poly->nump];
-            if(sgVec2Cross(sgVec2Sub(*next, *curr), sgVec2Sub(*next, light->pos)) <= 0)
-            {
-                sgDrawVertex2f(curr->x, curr->y);
-                sgDrawVertex2f(next->x, next->y);
-            }
-        }
-    }
-    sgDrawEnd();
-
-    sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-    for(p = 0; p < NPOLYS; p++)
-    {
-        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINES);
-        poly = polys[p];
-        for(i = 0; i < poly->nump; i++)
-        {
-            curr = &poly->points[i];
-            next = &poly->points[(i + 1) % poly->nump];
-            if(sgVec2Cross(sgVec2Sub(*next, *curr), sgVec2Sub(*next, light->pos)) <= 0)
-            {
-                tmpc = sgVec2Add(*curr, sgVec2SetLength(sgVec2Sub(*curr, light->pos), 640 + 480));
-                tmpn = sgVec2Add(*next, sgVec2SetLength(sgVec2Sub(*next, light->pos), 640 + 480));
-
-                sgDrawVertex2f(curr->x, curr->y);
-                sgDrawVertex2f(tmpc.x, tmpc.y);
-                //sgDrawVertex2f(next->x, next->y);
-
-
-                //sgDrawVertex2f(tmpc.x, tmpc.y);
-                sgDrawVertex2f(tmpn.x, tmpn.y);
-                sgDrawVertex2f(next->x, next->y);
-            }
-        }
-        sgDrawEnd();
-    }
+SGLight* createLight(SGVec2 pos, SGColor color, float radius, float angle, float arc)
+{
+    SGLight* light = sgLightCreate(pos.x, pos.y, radius);
+    sgLightSetColor4f(light, color.r, color.g, color.b, color.a);
+    sgLightSetAngleDegs(light, angle);
+    sgLightSetConeDegs(light, arc);
+    return light;
 }
 
 SGbool overlayDBG = SG_FALSE;
@@ -322,7 +62,7 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
             if('1' <= key && key <= '9')
             {
                 if(key - '1' < NLIGHTS)
-                    lights[key - '1']->enabled = !lights[key - '1']->enabled;
+                    sgLightSetActive(lights[key - '1'], !sgLightGetActive(lights[key - '1']));
             }
             break;
     }
@@ -342,7 +82,7 @@ int main()
     SGSprite* tile = sgSpriteCreateFile2f("data/sprites/FloorMetalPlate.png", 0.0, 0.0);
     SGSurface* tileset = sgSurfaceCreate(640, 480, 32);
 
-    SGTexture* ptexture = sgTextureCreateFile("data/sprites/Concrete.png");
+    lightBuf = sgSurfaceCreate(640, 480, 32);
 
     size_t i, j;
 
@@ -354,17 +94,20 @@ int main()
                 sgSpriteDraw2f(tile, i * sgSpriteGetWidth(tile), j * sgSpriteGetHeight(tile));
     sgSurfaceUntarget(tileset);
 
-    polys[0] = createPoly((SGVec2[]){(SGVec2){200, 250},
-                                     (SGVec2){400, 250},
-                                     (SGVec2){375, 350},
-                                     (SGVec2){225, 350}}, 4, ptexture);
-    polys[1] = createPoly((SGVec2[]){(SGVec2){100,  50},
-                                     (SGVec2){200,  50},
-                                     (SGVec2){200, 150},
-                                     (SGVec2){100, 150}}, 4, ptexture);
-    polys[2] = createPoly((SGVec2[]){(SGVec2){400, 100},
-                                     (SGVec2){500, 100},
-                                     (SGVec2){450, 200}}, 3, ptexture);
+    shapes[0] = sgShadowShapeCreatePoly(0, 0,
+                                       (float[]){200, 250
+                                                ,400, 250
+                                                ,375, 350
+                                                ,225, 350}, 4);
+    shapes[1] = sgShadowShapeCreatePoly(0, 0,
+                                       (float[]){100,  50
+                                                ,200,  50
+                                                ,200, 150
+                                                ,100, 150}, 4);
+    shapes[2] = sgShadowShapeCreatePoly(0, 0,
+                                       (float[]){400, 100
+                                                ,500, 100
+                                                ,450, 200}, 3);
 
     lights[0] = createLight((SGVec2){60 , 60 }, (SGColor){0.5 , 1.0, 1.0, 1.0}, 192, 0, 360);
     lights[1] = createLight((SGVec2){500, 300}, (SGColor){0.75, 1.0, 0.0, 0.5}, 256, 0, 360);
@@ -380,18 +123,24 @@ int main()
 
     while(sgLoop(NULL))
     {
-        sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
-
         sgSurfaceClear4f(buffer, ambience.r, ambience.g, ambience.b, ambience.a);
-        sgSurfaceTarget(buffer);
-        sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_ONE, SG_GRAPHICS_FUNC_ONE);
+
         for(i = 0; i < NLIGHTS; i++)
         {
-            if(lights[i]->enabled)
-                sgSurfaceDraw(lights[i]->surface);
+            if(!sgLightGetActive(lights[i]))
+                continue;
+
+            sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_ONE, SG_GRAPHICS_FUNC_ZERO);
+            drawLight(lights[i]);
+
+            sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE);
+            sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
+            sgSurfaceTarget(buffer);
+            sgSurfaceDraw(lightBuf);
+            sgSurfaceUntarget(buffer);
+            //sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
         }
         sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
-        sgSurfaceUntarget(buffer);
 
         if(multLights)
         {
@@ -401,7 +150,7 @@ int main()
                 sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_DST_COLOR, SG_GRAPHICS_FUNC_ZERO);
         }
         else
-            sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_COLOR, SG_GRAPHICS_FUNC_ONE);
+            sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE);
         sgSurfaceDraw(buffer);
 
         sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
@@ -411,13 +160,16 @@ int main()
 
         if(overlayDBG)
         {
-            for(i = 0; i < NPOLYS; i++)
+            for(i = 0; i < NSHAPES; i++)
             {
-                drawPolyDBG(polys[i]);
+                sgShadowShapeDrawDBG(shapes[i]);
             }
             for(i = 0; i < NLIGHTS; i++)
             {
-                drawLightDBG(lights[i]);
+                if(!sgLightGetActive(lights[i]))
+                    continue;
+                sgLightDrawDBG(lights[i]);
+                sgLightDrawShadowsDBG(lights[i]);
             }
         }
 
@@ -426,9 +178,17 @@ int main()
 
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
         sgSurfaceDraw(tileset);
+
+        for(i = 0; i < NSHAPES; i++)
+            drawPoly(shapes[i]);
     }
 
-    sgTextureDestroy(ptexture);
+    for(i = 0; i < NSHAPES; i++)
+        sgShadowShapeDestroy(shapes[i]);
+    for(i = 0; i < NLIGHTS; i++)
+        sgLightDestroy(lights[i]);
+
+    sgSurfaceDestroy(lightBuf);
 
     sgSurfaceDestroy(buffer);
     sgSurfaceDestroy(tileset);
