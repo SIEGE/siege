@@ -18,6 +18,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <wchar.h>
+
+int vswprintf(wchar_t *wcs, size_t maxlen, const wchar_t *format, va_list args);
 
 SGbool SG_EXPORT _sgStringInit(void)
 {
@@ -29,6 +32,33 @@ SGbool SG_EXPORT _sgStringDeinit(void)
 {
 	free(_sg_strBuf);
 	return SG_TRUE;
+}
+
+wchar_t* SG_EXPORT sgPrintfW(const wchar_t* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    wchar_t* str = sgPrintfvW(format, args);
+    va_end(args);
+    return str;
+}
+wchar_t* SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args)
+{
+    int ret = 0;
+    _sg_strBufLen = 0;
+
+    do
+    {
+        _sg_strBufLen += 256;
+        _sg_strBuf = realloc(_sg_strBuf, _sg_strBufLen * sizeof(wchar_t));
+        ret = vswprintf((wchar_t*)_sg_strBuf, _sg_strBufLen, format, args);
+    }
+    while(ret >= _sg_strBufLen);
+
+    if(ret < 0)
+        return NULL;
+
+    return (wchar_t*)_sg_strBuf;
 }
 
 char* SG_EXPORT sgPrintf(const char* format, ...)

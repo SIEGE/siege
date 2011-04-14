@@ -3,6 +3,17 @@
 #include <stdlib.h>
 #include <math.h>
 
+/*
+    TODO for extended fonts:
+    - fallback if no conv module is loaded
+    - consistency!
+      - fonts use sgFontFoofW for wide
+              but sgFontFoo for normal (no f!)
+      - fonts use sgFontFooU32 for UTF-32
+              but util/string uses sgLineFoo32 (note lack of U)
+    ...
+*/
+
 SGFont* sizes[12];
 const size_t numsizes = sizeof(sizes) / sizeof(SGFont*);
 const char* text = "A Quick Brown Fox Jumps Over The Lazy Dog 0123456789";
@@ -61,6 +72,7 @@ int main()
 
 		// thanks to Wikipedia for these!
 		sgFontPrintW(font, 2, 256, L"Testing: ABC abc 012\nčšž\nSome cyrillic: Съешь ещё этих мягких французских булок да выпей же чаю\nAnd now for greek: Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός");
+        sgFontPrintfW(font, 2, 328, L"sgFontPrintfW: %ls", L"čšž");
 
 		sgFontStrSize(font, &dx, &dy, "Some test text");
 		sgDrawColor4f(1.0, 1.0, 0.0, 1.0);

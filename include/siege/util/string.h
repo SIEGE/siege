@@ -27,6 +27,9 @@ char* _sg_strBuf;
 SGbool SG_EXPORT _sgStringInit(void);
 SGbool SG_EXPORT _sgStringDeinit(void);
 
+wchar_t* SG_EXPORT sgPrintfW(const wchar_t* format, ...);
+wchar_t* SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args);
+
 char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...);
 char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args);
 
