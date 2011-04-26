@@ -28,22 +28,16 @@
 
 void SG_EXPORT _sg_cbWindowOpen(void* window)
 {
-	_SGEntityCall call;
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_WINOPEN}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINOPEN);
 }
 void SG_EXPORT _sg_cbWindowClose(void* window)
 {
-	_SGEntityCall call;
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_WINCLOSE}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINCLOSE);
 	sgStop(0);
 }
 void SG_EXPORT _sg_cbWindowResize(void* window, SGuint width, SGuint height)
 {
-	_SGEntityCall call;
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_WINRESIZE}, (void*[]){(SGuint[]){width, height}}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINRESIZE, width, height);
 }
 
 SGbool SG_EXPORT _sgWindowInit(void)

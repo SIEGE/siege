@@ -28,14 +28,6 @@ struct SGMask;
 struct SGPhysicsBody;
 struct SGAudioSource;
 
-// employs an EventClient wrapper over the "generalized" events above
-typedef struct _SGEntityCall
-{
-	SGuint num;
-	SGenum* types;
-	void** args;
-} _SGEntityCall;
-
 /**
  * \ingroup Core
  * \brief Entity, the main game "class"
@@ -469,7 +461,7 @@ typedef struct SGEntity
 	/// @}
 } SGEntity;
 
-SGbool SG_EXPORT _sg_evCall(SGEntity* entity, _SGEntityCall* call);
+SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args);
 SGvoid SG_EXPORT _sg_evDraw(SGEntity* entity);
 
 SGbool SG_EXPORT _sgEntityInit(void);

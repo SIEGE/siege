@@ -110,9 +110,7 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 	if(!ok)
 		return SG_FALSE;
 
-	_SGEntityCall call;
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_INIT}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_INIT);
 	_sg_hasInited = SG_TRUE;
 
 	_sgColorInit();
@@ -142,10 +140,8 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 
 SGbool SG_EXPORT sgDeinit(void)
 {
-	_SGEntityCall call;
 	_sg_hasInited = SG_FALSE;
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_DEINIT}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DEINIT);
 
 	_sgPhysicsSpaceDeinit();
 	_sgRandDeinit();
@@ -195,35 +191,26 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 {
 	_sg_curTick++;
 
-	_SGEntityCall call;
-
 	if(_sg_firstLoop)
 	{
-		call = (_SGEntityCall){1, (SGenum[]){SG_EVF_START}, (void*[]){NULL}};
-		sgEventCall(SG_EV_INTERNAL, &call);
+		sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_START);
 		_sg_firstLoop = SG_FALSE;
 	}
 
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_TICKB}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICKB);
 
 	sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
 
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_TICK}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICK);
+    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICKE);
 
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_TICKE}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
-
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_DRAW}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DRAW);
 
 	if(code != NULL)
 		*code = _sg_exitVal;
 	if(_sg_exitNow)
 	{
-		call = (_SGEntityCall){1, (SGenum[]){SG_EVF_EXIT}, (void*[]){NULL}};
-		sgEventCall(SG_EV_INTERNAL, &call);
+		sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_EXIT);
 		_sg_exitNow = SG_FALSE;
 
 		return SG_FALSE;

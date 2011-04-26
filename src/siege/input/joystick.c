@@ -39,15 +39,7 @@ void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
     else if(!down)
         events[1] = SG_EVF_JOYSTICKBUTR;
 
-    char* buf = malloc(sizeof(SGuint) + sizeof(SGbool));
-    memcpy(buf, &joy, sizeof(SGuint));
-    memcpy(buf + sizeof(SGuint), &button, sizeof(SGbool));
-
-    _SGEntityCall call;
-    call = (_SGEntityCall){2, events, (void*[]){buf, buf}};
-    sgEventCall(SG_EV_INTERNAL, &call);
-
-    free(buf);
+    sgEventCall(SG_EV_INTERNAL, (SGuint)2, events[0], joy, button, events[1], joy, button);
 }
 void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
 {
@@ -59,16 +51,7 @@ void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
     if(_sg_modInput.sgmCoreJoystickGetNumAxis != NULL)
         _sg_modInput.sgmCoreJoystickGetNumAxis(joystick, &numaxis);
 
-    char* buf = malloc(sizeof(SGuint) + sizeof(float*) + sizeof(size_t));
-    memcpy(buf, &joy, sizeof(SGuint));
-    memcpy(buf + sizeof(SGuint), &axis, sizeof(float*));
-    memcpy(buf + sizeof(SGuint) + sizeof(float*), &numaxis, sizeof(size_t));
-
-    _SGEntityCall call;
-    call = (_SGEntityCall){2, (SGenum[]){SG_EVF_JOYSTICKMOVE}, (void*[]){buf, buf}};
-    sgEventCall(SG_EV_INTERNAL, &call);
-
-    free(buf);
+    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, axis, numaxis);
 }
 
 SGbool SG_EXPORT _sgJoystickInit(void)
