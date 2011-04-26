@@ -77,7 +77,7 @@ SGuint SG_EXPORT sgmCoreMouseHide(void* mouse)
 }
 //SGuint SG_EXPORT sgmCoreMouseIsShown(void* mouse, SGbool* shown);
 //SGuint SG_EXPORT sgmCoreMouseIsHidden(void* mouse, SGbool* hidden);
-SGuint SG_EXPORT sgmCoreMouseGetNumButtons(void* mouse, SGuint* numbuttons)
+SGuint SG_EXPORT sgmCoreMouseGetNumButtons(void* mouse, size_t* numbuttons)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -92,9 +92,9 @@ SGuint SG_EXPORT sgmCoreMouseButtonGetState(void* mouse, SGbool* state)
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    SGuint numbuttons;
+    size_t numbuttons;
     sgmCoreMouseGetNumButtons(mouse, &numbuttons);
-    SGuint i;
+    size_t i;
     for(i = 0; i < numbuttons; i++)
         state[i] = mouseState & SDL_BUTTON(i);
 

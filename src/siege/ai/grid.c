@@ -46,7 +46,7 @@ SGNavGrid* SG_EXPORT sgNavGridCreate(SGuint width, SGuint height, SGbool diag, S
 	SGNavGridData* data;
 	SGNavGrid* grid = malloc(sizeof(SGNavGrid));
 	grid->search = NULL;
-	grid->grid = malloc(width * sizeof(SGAStarNode**));
+	grid->grid = malloc((width + 2) * sizeof(SGAStarNode**));
 	grid->width = width;
 	grid->height = height;
 	grid->path = sgListCreate();
@@ -58,7 +58,7 @@ SGNavGrid* SG_EXPORT sgNavGridCreate(SGuint width, SGuint height, SGbool diag, S
 
 	for(x = 0; x < width + 2; x++)
 	{
-		grid->grid[x] = malloc(height * sizeof(SGAStarNode*));
+		grid->grid[x] = malloc((height + 2) * sizeof(SGAStarNode*));
 		for(y = 0; y < height + 2; y++)
 		{
 			data = malloc(sizeof(SGNavGridData));
@@ -115,19 +115,21 @@ SGNavGrid* SG_EXPORT sgNavGridCreate(SGuint width, SGuint height, SGbool diag, S
 }
 void SG_EXPORT sgNavGridDestroy(SGNavGrid* grid)
 {
-	if(grid->search != NULL)
-		sgAStarDestroy(grid->search);
 	sgListDestroy(grid->path);
 	size_t x, y;
-	for(x = 0; x < grid->width + 1; x++)
+	for(x = 0; x < grid->width + 2; x++)
 	{
-		for(y = 0; y < grid->height + 1; y++)
+		for(y = 0; y < grid->height + 2; y++)
 		{
 			free(grid->grid[x][y]->data);
 			sgAStarNodeDestroy(grid->grid[x][y]);
 		}
 		free(grid->grid[x]);
 	}
+	free(grid->grid);
+	if(grid->search != NULL)
+		sgAStarDestroy(grid->search);
+	free(grid);
 }
 SGAStarNode* SG_EXPORT sgNavGridGetNode(SGNavGrid* grid, SGuint x, SGuint y)
 {
@@ -246,6 +248,8 @@ void SG_EXPORT sgNavGridAddGoal(SGNavGrid* grid, SGuint x, SGuint y)
 }
 void SG_EXPORT sgNavGridSearchCreate(SGNavGrid* grid)
 {
+    if(grid->search != NULL)
+        sgAStarDestroy(grid->search);
 	grid->search = sgAStarCreate(grid->start, grid->goal, _sgNavGridG, _sgNavGridH, _sgNavGridGoal);
 }
 SGbool SG_EXPORT sgNavGridSearchStep(SGNavGrid* grid)

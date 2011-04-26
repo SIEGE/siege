@@ -116,6 +116,17 @@ void SG_EXPORT sgDrawClear(void)
 	sgDrawClear4f(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
+void SG_EXPORT sgDrawSetBlendFunc(SGenum src, SGenum dst)
+{
+    if(_sg_modGraphics.sgmGraphicsDrawSetBlendFunc != NULL)
+        _sg_modGraphics.sgmGraphicsDrawSetBlendFunc(_sg_gfxHandle, src, dst);
+}
+void SG_EXPORT sgDrawSetBlendEquation(SGenum equation)
+{
+    if(_sg_modGraphics.sgmGraphicsDrawSetBlendEquation != NULL)
+        _sg_modGraphics.sgmGraphicsDrawSetBlendEquation(_sg_gfxHandle, equation);
+}
+
 void SG_EXPORT sgDrawPoint(float x, float y)
 {
 	sgDrawBegin(SG_GRAPHICS_PRIMITIVE_POINTS);

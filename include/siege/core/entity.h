@@ -372,7 +372,7 @@ typedef struct SGEntity
 	 * \param axis The axis positions
 	 * \param numaxus The number of axis
 	 */
-	SGvoid SG_EXPORT (*evJoystickMove)(struct SGEntity* entity, SGuint joy, SGfloat* axis, SGuint numaxis);
+	SGvoid SG_EXPORT (*evJoystickMove)(struct SGEntity* entity, SGuint joy, SGfloat* axis, size_t numaxis);
 	/// @}
 
 	// networking goes here

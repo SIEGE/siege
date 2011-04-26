@@ -36,7 +36,7 @@ typedef uint32_t SGenum;
 
 /// \name Characters
 /// @{
-typedef uint8_t  SGchar;
+typedef char     SGchar;
 typedef uint16_t SGwchar;
 typedef uint32_t SGdchar;
 /// @}
@@ -133,7 +133,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 1
-#define SG_VERSION_PATCH 9
+#define SG_VERSION_PATCH 11
 /**
  * \brief Version string
  *
@@ -346,19 +346,22 @@ typedef double SGdouble;
 #define SG_GRAPHICS_PRIMITIVE_INTERSECTING_POLYGON	0x30
 /// @}
 
-/**
- * \name Graphics info flags
- * \deprecated
- *	These may be removed in the future.
- */
-/// @{
-/**
- * \brief Cannot use NPOT textures
- *
- * This flag indicates that the backend does not support power-of-two textures, and that conversion to such sizes may be necessarry by the frontend.
- */
-#define SG_GRAPHICS_TEXTURE_NPOT	0x01
-/// @}
+#define SG_GRAPHICS_FUNC_ZERO                   0x00
+#define SG_GRAPHICS_FUNC_ONE                    0x01
+#define SG_GRAPHICS_FUNC_SRC_COLOR              0x02
+#define SG_GRAPHICS_FUNC_ONE_MINUS_SRC_COLOR    0x03
+#define SG_GRAPHICS_FUNC_DST_COLOR              0x04
+#define SG_GRAPHICS_FUNC_ONE_MINUS_DST_COLOR    0x05
+#define SG_GRAPHICS_FUNC_SRC_ALPHA              0x06
+#define SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA    0x07
+#define SG_GRAPHICS_FUNC_DST_ALPHA              0x08
+#define SG_GRAPHICS_FUNC_ONE_MINUS_DST_ALPHA    0x09
+
+#define SG_GRAPHICS_EQUATION_ADD                0x00
+#define SG_GRAPHICS_EQUATION_SUBTRACT           0x01
+#define SG_GRAPHICS_EQUATION_REVERSE_SUBTRACT   0x02
+#define SG_GRAPHICS_EQUATION_MIN                0x03
+#define SG_GRAPHICS_EQUATION_MAX                0x04
 
 /**
  * \name Physics shapes

@@ -55,16 +55,11 @@ SGSurface* SG_EXPORT sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp
     if(surface == NULL)
         return NULL;
 
-    if(data != NULL)
-        data = _sgGraphicsToCanvasSize(width, height, bpp, data);
-
     if(_sg_modGraphics.sgmGraphicsSurfaceCreate != NULL)
         _sg_modGraphics.sgmGraphicsSurfaceCreate(&surface->handle, _sg_gfxHandle);
     if(_sg_modGraphics.sgmGraphicsSurfaceSetData != NULL)
         _sg_modGraphics.sgmGraphicsSurfaceSetData(surface->handle, width, height, bpp, data);
 
-    // as allocated by _sgGraphicsToCanvasSize (or else it's null, and we don't care)
-    free(data);
     return surface;
 }
 SGSurface* SG_EXPORT sgSurfaceCreate(SGuint width, SGuint height, SGenum bpp)

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 14.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="360px" height="144px" viewBox="560.1855469 172.6240234 360 144"
+	 enable-background="new 560.1855469 172.6240234 360 144" xml:space="preserve">
+<defs>
+</defs>
+<rect x="554.5" y="166.5078125" display="none" width="372" height="160"/>
+<path fill="#606060" d="M703.6621094,235v48.75h-48.7519531V267.5h32.5v-16.25h-32.5V202.5h48.7519531v16.25h-32.5019531V235
+	H703.6621094z"/>
+<path fill="#606060" d="M715.3613281,202.5h16.25v81.25h-16.25V202.5z"/>
+<path fill="#606060" d="M743.3125,202.5h48.75v16.25h-32.5V235h16.25v16.25h-16.25v16.25h32.5v16.25h-48.75V202.5z"/>
+<path fill="#606060" d="M834.3125,267.5V235h16.25v48.75h-48.75V202.5h48.75v16.25h-32.5v48.75H834.3125z"/>
+<path fill="#606060" d="M860.3125,202.5h48.75v16.25h-32.5V235h16.25v16.25h-16.25v16.25h32.5v16.25h-48.75V202.5z"/>
+<rect x="574.9511719" y="245.9257812" fill="#999999" width="36" height="36"/>
+<path d="M599.7011719,261.6689453v13.5h-13.5v-4.5h9v-4.5h-9v-13.5h13.5v4.5h-9v4.5H599.7011719z"/>
+<rect x="607.2910156" y="251.2724609" stroke="#999999" width="31.8828125" height="31.8808594"/>
+<rect x="607.2910156" y="251.2724609" stroke="#999999" stroke-miterlimit="1" width="31.8828125" height="31.8808594"/>
+<path fill="#999999" d="M625.3613281,273.6044922v-8.5214844h4.2597656v12.78125h-12.7832031v-21.3027344h12.7832031v4.2617188
+	h-8.5214844v12.78125H625.3613281z"/>
+<path fill="#606060" d="M575.9150391,202.4951172h7.875v39.375h-7.875V202.4951172z"/>
+<path fill="#606060" d="M605.4238281,210.3701172h-7.875v-7.875h7.875V210.3701172z M597.5488281,218.2451172h7.875v23.625h-7.875
+	V218.2451172z"/>
+<path fill="#606060" d="M639.2050781,241.8701172h-23.625v-39.375h7.875v7.875h15.75V241.8701172z M631.3300781,233.9951172v-15.75
+	h-7.875v15.75H631.3300781z"/>
+<rect x="2.5" y="2.5" fill="none" stroke="#000000" stroke-width="5" width="1106.4550781" height="711.1240234"/>
+</svg>

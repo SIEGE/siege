@@ -28,18 +28,18 @@ typedef struct _SGJoystick
     SGuint id;
     void* handle;
 
-    SGuint numbuttons;
+    size_t numbuttons;
     SGbool* bprev;
     SGbool* bcurr;
 
-    SGuint numaxis;
+    size_t numaxis;
     float* aprev;
     float* acurr;
     float* adelt;
 } _SGJoystick;
 
 #ifdef SG_BUILD_LIBRARY
-SGuint _sg_joyNum;
+size_t _sg_joyNum;
 _SGJoystick** _sg_joyJoys;
 SGCoreJoystickCallbacks _sg_joyCallbacks;
 #endif // SG_BUILD_LIBRARY

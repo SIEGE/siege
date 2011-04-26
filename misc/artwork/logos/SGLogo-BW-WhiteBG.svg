@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 14.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1" baseProfile="tiny"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="360px" height="144px" viewBox="114.5 172.624023 360 144" xml:space="preserve">
+<defs>
+</defs>
+<path fill="#666666" d="M257.975586,235v48.75h-48.75V267.5h32.5v-16.25h-32.5V202.5h48.75v16.25h-32.5V235H257.975586z"/>
+<path fill="#666666" d="M269.675781,202.5h16.25v81.25h-16.25V202.5z"/>
+<path fill="#666666" d="M297.625977,202.5h48.75v16.25h-32.5V235h16.25v16.25h-16.25v16.25h32.5v16.25h-48.75V202.5z"/>
+<path fill="#666666" d="M388.625977,267.5V235h16.25v48.75h-48.75V202.5h48.75v16.25h-32.5v48.75H388.625977z"/>
+<path fill="#666666" d="M414.625977,202.5h48.75v16.25h-32.5V235h16.25v16.25h-16.25v16.25h32.5v16.25h-48.75V202.5z"/>
+<rect x="129.265625" y="245.853516" fill="#323232" width="36" height="36"/>
+<path fill="#EAEAEA" d="M154.015625,261.603516v13.5h-13.5v-4.5h9v-4.5h-9v-13.5h13.5v4.5h-9v4.5H154.015625z"/>
+<rect x="161.605469" y="251.272461" fill="#EAEAEA" stroke="#323232" width="31.882812" height="31.880859"/>
+<rect x="161.605469" y="251.272461" fill="#EAEAEA" stroke="#323232" stroke-miterlimit="1" width="31.882812" height="31.880859"/>
+<path fill="#323232" d="M179.675781,273.604492v-8.521484h4.259766v12.78125h-12.783203v-21.302734h12.783203v4.261719h-8.521484
+	v12.78125H179.675781z"/>
+<path fill="#666666" d="M130.229492,202.495117h7.875v39.375h-7.875V202.495117z"/>
+<path fill="#666666" d="M159.738281,210.370117h-7.875v-7.875h7.875V210.370117z M151.863281,218.245117h7.875v23.625h-7.875
+	V218.245117z"/>
+<path fill="#666666" d="M193.519531,241.870117h-23.625v-39.375h7.875v7.875h15.75V241.870117z M185.644531,233.995117v-15.75
+	h-7.875v15.75H185.644531z"/>
+<rect x="2.5" y="2.5" fill="none" stroke="#000000" stroke-width="5" width="1106.455078" height="711.124023"/>
+</svg>

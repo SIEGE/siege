@@ -68,7 +68,7 @@ SGuint SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint he
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glOrtho(0, width, height, 0, -128, 127);
+    glOrtho(0, width, height, 0, 127, -128);
 
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();

@@ -48,14 +48,14 @@ typedef struct SGModuleInput
 	 * \name Joystick
 	 */
 	/// @{
-	SGuint SG_EXPORT (*sgmCoreJoystickGetNumJoysticks)(void* window, SGuint* numjoys);
+	SGuint SG_EXPORT (*sgmCoreJoystickGetNumJoysticks)(void* window, size_t* numjoys);
 	SGuint SG_EXPORT (*sgmCoreJoystickCreate)(void** joystick, void* window, SGuint id);
 	SGuint SG_EXPORT (*sgmCoreJoystickDestroy)(void* joystick);
 	SGuint SG_EXPORT (*sgmCoreJoystickGetID)(void* joystick, SGuint* id);
-	SGuint SG_EXPORT (*sgmCoreJoystickGetNumButtons)(void* joystick, SGuint* numbuttons);
+	SGuint SG_EXPORT (*sgmCoreJoystickGetNumButtons)(void* joystick, size_t* numbuttons);
 	//SGuint SG_EXPORT (*sgmCoreJoystickSetButtons)(void* joystick, SGbool* state);
 	SGuint SG_EXPORT (*sgmCoreJoystickGetButtons)(void* joystick, SGbool* state);
-	SGuint SG_EXPORT (*sgmCoreJoystickGetNumAxis)(void* joystick, SGuint* numaxis);
+	SGuint SG_EXPORT (*sgmCoreJoystickGetNumAxis)(void* joystick, size_t* numaxis);
 	//SGuint SG_EXPORT (*sgmCoreJoystickSetAxis)(void* joystick, float* position);
 	SGuint SG_EXPORT (*sgmCoreJoystickGetAxis)(void* joystick, float* position);
 

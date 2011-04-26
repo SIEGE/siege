@@ -186,7 +186,7 @@ SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source);
  *
  * \see sgAudioSourceQueueBuffer
  */
-void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, SGuint numbuffers);
+void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, size_t numbuffers);
 /**
  * \brief Queue a single buffer into a source
  *

@@ -13,6 +13,7 @@
 */
 
 #include "main.h"
+#include "texture.h"
 #include "draw.h"
 
 #include <stdio.h>
@@ -20,8 +21,16 @@
 
 SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGuint type, SGuint numverts, float* vertices, float* texcoords, float* colors)
 {
+    TextureData* tdata = texture;
+
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertices);
+
+    if(tdata)
+    {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, tdata->texid);
+    }
 
     if(texcoords != NULL)
     {
@@ -108,6 +117,12 @@ SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGuint t
 
     glDisableClientState(GL_VERTEX_ARRAY);
 
+    if(tdata)
+    {
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
     return SG_OK;
 }
 SGuint SG_EXPORT sgmGraphicsDrawSetColor(void* context, float* color)
@@ -123,5 +138,51 @@ SGuint SG_EXPORT sgmGraphicsDrawPointSetSize(void* context, float size)
 SGuint SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
 {
     glLineWidth(size);
+    return SG_OK;
+}
+
+#define SG_GRAPHICS_FUNC_ZERO                   0x00
+#define SG_GRAPHICS_FUNC_ONE                    0x01
+#define SG_GRAPHICS_FUNC_SRC_COLOR              0x02
+#define SG_GRAPHICS_FUNC_ONE_MINUS_SRC_COLOR    0x03
+#define SG_GRAPHICS_FUNC_DST_COLOR              0x04
+#define SG_GRAPHICS_FUNC_ONE_MINUS_DST_COLOR    0x05
+#define SG_GRAPHICS_FUNC_SRC_ALPHA              0x06
+#define SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA    0x07
+#define SG_GRAPHICS_FUNC_DST_ALPHA              0x08
+#define SG_GRAPHICS_FUNC_ONE_MINUS_DST_ALPHA    0x09
+
+#define SG_GRAPHICS_EQUATION_ADD                0x00
+#define SG_GRAPHICS_EQUATION_SUBTRACT           0x01
+#define SG_GRAPHICS_EQUATION_REVERSE_SUBTRACT   0x02
+#define SG_GRAPHICS_EQUATION_MIN                0x03
+#define SG_GRAPHICS_EQUATION_MAX                0x04
+SGuint SG_EXPORT sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum dst)
+{
+    static GLenum table[] = {GL_ZERO, GL_ONE,
+                             GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR,
+                             GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR,
+                             GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
+                             GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA,};
+
+    if(src >= sizeof(table) / sizeof(GLenum)
+    || dst >= sizeof(table) / sizeof(GLenum))
+        return SG_OK; // SG_INVALID_ENUM
+
+    glBlendFunc(table[src], table[dst]);
+
+    return SG_OK;
+}
+// todo
+SGuint SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
+{
+    static GLenum table[] = {GL_FUNC_ADD, GL_FUNC_SUBTRACT, GL_FUNC_REVERSE_SUBTRACT, GL_MIN, GL_MAX};
+
+    if(equation >= sizeof(table) / sizeof(GLenum))
+        return SG_OK; // SG_INVALID_ENUM
+
+    return SG_UNKNOWN_ERROR;
+    //glBlendEquation(table[equation]);
+
     return SG_OK;
 }

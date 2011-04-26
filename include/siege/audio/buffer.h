@@ -52,7 +52,7 @@ SGbool SG_EXPORT _sgAudioBufferDeinit(void);
  *
  * \return The newly created buffer if successful, NULL otherwise.
  */
-SGAudioBuffer* SG_EXPORT sgAudioBufferCreate(const char* fname);
+SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname);
 /**
  * \memberof SGAudioBuffer
  * \brief Destroy an audio buffer
@@ -74,7 +74,7 @@ void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer);
  * \param data Audio data to pass to the buffer
  * \param datalen Length of the audio data in bytes
  */
-void SG_EXPORT sgAudioBufferSetData(SGAudioBuffer* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen);
+void SG_EXPORT sgAudioBufferSetData(SGAudioBuffer* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, size_t datalen);
 /// @}
 
 #ifdef __cplusplus

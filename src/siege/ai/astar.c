@@ -44,7 +44,7 @@ void SG_EXPORT sgAStarDestroy(SGAStar* search)
 	free(search);
 }
 
-// returns TRUE if found, FALSE if not found, -1 on error
+// returns TRUE if done, FALSE if not done
 SGbool SG_EXPORT sgAStarStep(SGAStar* search)
 {
 	// if the goal was already found, do nothing
