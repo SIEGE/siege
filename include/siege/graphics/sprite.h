@@ -34,7 +34,6 @@ typedef struct SGSprite
 	SGTexture** subimages;
 	float image;
 	float speed;
-
 } SGSprite;
 
 void SG_EXPORT _sgSpriteEvTick(SGEntity* client);
