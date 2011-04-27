@@ -135,9 +135,10 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 
 	_sgRandInit();
 	_sgPhysicsSpaceInit();
-    _sgLightInit();
 
 	sgWindowOpen(width, height, bpp, flags);
+
+    _sgLightInit();
 
 	return SG_TRUE;
 }

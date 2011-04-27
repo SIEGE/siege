@@ -33,8 +33,24 @@ extern "C"
 #define SG_SHADOW_SHAPE_POLYGON SG_PHYSICS_SHAPE_POLYGON
 #define SG_SHADOW_SHAPE_CIRCLE  SG_PHYSICS_SHAPE_CIRCLE
 
+#define SG_SHADOW_DRAW_ADD 0x00
+#define SG_SHADOW_DRAW_MUL 0x01
+#define SG_SHADOW_DRAW_SQR 0x02
+
+typedef struct SGLightSpace
+{
+    SGSurface* buffer;
+    SGSurface* lbuffer;
+    SGList* lights;
+    SGList* shapes;
+    SGColor ambience;
+} SGLightSpace;
+
 typedef struct SGLight
 {
+    SGLightSpace* space;
+    SGListNode* node;
+
     SGVec2 pos;
     float radius;
     SGColor color;
@@ -54,12 +70,18 @@ typedef struct SGLight
 
 typedef struct SGShadowShape
 {
+    SGLightSpace* space;
     SGListNode* node;
 
     SGenum type;
     SGVec2 pos;
 
     float depth;
+
+    SGbool active;
+    SGbool stat;
+    SGbool _r1;
+    SGbool _r2;
 
     float angle;
 
@@ -68,13 +90,30 @@ typedef struct SGShadowShape
 } SGShadowShape;
 
 #ifdef SG_BUILD_LIBRARY
-SGList* _sg_shadowShapes;
+SGLightSpace* _sg_lightSpaceMain;
 #endif // SG_BUILD_LIBRARY
 
 SGbool SG_EXPORT _sgLightInit(void);
 SGbool SG_EXPORT _sgLightDeinit(void);
 
-SGLight* SG_EXPORT sgLightCreate(float x, float y, float radius);
+void SG_EXPORT _sgLightSpaceAddLight(SGLightSpace* space, SGLight* light);
+void SG_EXPORT _sgLightSpaceAddShadowShape(SGLightSpace* space, SGShadowShape* shape);
+void SG_EXPORT _sgLightSpaceRemoveLight(SGLightSpace* space, SGLight* light);
+void SG_EXPORT _sgLightSpaceRemoveShadowShape(SGLightSpace* space, SGShadowShape* shape);
+
+
+SGLightSpace* SG_EXPORT sgLightSpaceCreate(void);
+void SG_EXPORT sgLightSpaceDestroy(SGLightSpace* space);
+
+void SG_EXPORT sgLightSpaceSetAmbience4f(SGLightSpace* space, float r, float g, float b, float a);
+
+SGSurface* SG_EXPORT sgLightSpaceGetBuffer(SGLightSpace* space);
+
+void SG_EXPORT sgLightSpaceUpdate(SGLightSpace* space);
+void SG_EXPORT sgLightSpaceDraw(SGLightSpace* space, SGenum flags);
+void SG_EXPORT sgLightSpaceDrawDBG(SGLightSpace* space, SGenum flags);
+
+SGLight* SG_EXPORT sgLightCreate(SGLightSpace* space, float x, float y, float radius);
 void SG_EXPORT sgLightDestroy(SGLight* light);
 
 void SG_EXPORT sgLightSetPos(SGLight* light, float x, float y);
@@ -126,23 +165,27 @@ void SG_EXPORT sgLightSetConeDegs(SGLight* light, float degs);
 float SG_EXPORT sgLightGetConeDegs(SGLight* light);
 
 void SG_EXPORT sgLightDraw(SGLight* light);
-void SG_EXPORT sgLightDrawShadows(SGLight* light);
 
 void SG_EXPORT sgLightDrawDBG(SGLight* light);
-void SG_EXPORT sgLightDrawShadowsDBG(SGLight* light);
 
-SGShadowShape* SG_EXPORT sgShadowShapeCreate(SGenum type);
-SGShadowShape* SG_EXPORT sgShadowShapeCreateSegment(float x1, float y1, float x2, float y2);
-SGShadowShape* SG_EXPORT sgShadowShapeCreatePoly(float x, float y, float* verts, size_t numverts);
-SGShadowShape* SG_EXPORT sgShadowShapeCreateCircle(float x, float y, float radius);
+SGShadowShape* SG_EXPORT sgShadowShapeCreate(SGLightSpace* space, SGenum type);
+SGShadowShape* SG_EXPORT sgShadowShapeCreateSegment(SGLightSpace* space, float x1, float y1, float x2, float y2);
+SGShadowShape* SG_EXPORT sgShadowShapeCreatePoly(SGLightSpace* space, float x, float y, float* verts, size_t numverts);
+SGShadowShape* SG_EXPORT sgShadowShapeCreateCircle(SGLightSpace* space, float x, float y, float radius);
 void SG_EXPORT sgShadowShapeDestroy(SGShadowShape* shape);
 
 void SG_EXPORT sgShadowShapeSetDepth(SGShadowShape* shape, float depth);
 float SG_EXPORT sgShadowShapeGetDepth(SGShadowShape* shape);
 
-void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light);
+void SG_EXPORT sgShadowShapeSetActive(SGShadowShape* shape, SGbool active);
+SGbool SG_EXPORT sgShadowShapeGetActive(SGShadowShape* shape);
 
-void SG_EXPORT sgShadowShapeDrawDBG(SGShadowShape* shape);
+void SG_EXPORT sgShadowShapeSetStatic(SGShadowShape* shape, SGbool stat);
+SGbool SG_EXPORT sgShadowShapeGetStatic(SGShadowShape* shape);
+
+void SG_EXPORT sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill);
+
+void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light);
 void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light);
 
 #ifdef __cplusplus
