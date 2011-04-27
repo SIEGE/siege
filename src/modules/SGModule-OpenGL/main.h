@@ -27,6 +27,10 @@
 #include <GL/glu.h>
 #include <GL/glext.h>
 
+#ifndef GLAPIENTRY
+#define GLAPIENTRY APIENTRY
+#endif // GLAPIENTRY
+
 typedef struct FBOFunctions
 {
     int hasFBO;

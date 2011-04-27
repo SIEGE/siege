@@ -18,7 +18,7 @@ MACRO(SHARED_STATIC name dir ext)
 ENDMACRO(SHARED_STATIC)
 
 OPTION(BUILD_MONOLITHIC "Build the monolithic SIEGE build" ON)
-OPTION(BUILD_SPLIT "Build the separated SIEGE build" ON)
+OPTION(BUILD_SPLIT "Build the separated SIEGE build" OFF)
 
 ADD_SUBDIRECTORY(siege)
 ADD_SUBDIRECTORY(examples)
