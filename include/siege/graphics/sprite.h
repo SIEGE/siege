@@ -16,7 +16,6 @@
 #define __SIEGE_GRAPHICS_SPRITE_H__
 
 #include "../common.h"
-#include "../core/entity.h"
 #include "texture.h"
 
 #ifdef __cplusplus
@@ -25,7 +24,7 @@ extern "C"
 #endif // __cplusplus
 typedef struct SGSprite
 {
-	SGEntity* client;
+	SGulong tick;
 
 	float xoffset;
 	float yoffset;
@@ -36,7 +35,7 @@ typedef struct SGSprite
 	float speed;
 } SGSprite;
 
-void SG_EXPORT _sgSpriteEvTick(SGEntity* client);
+void SG_EXPORT _sgSpriteUpdateTick(SGSprite* sprite);
 
 SGSprite* SG_EXPORT sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, float yoffset);
 SGSprite* SG_EXPORT sgSpriteCreateTexture(SGTexture* texture);
