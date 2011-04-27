@@ -261,6 +261,59 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
         sgDrawVertex2f(l, b);
     sgDrawEnd();
 
+    sgDrawColor4f(0.0, 0.5, 0.75, 0.75);
+    {
+        float angle = sgPhysicsBodyGetAngleRads(shape->body);
+        float x, y;
+        sgPhysicsBodyGetPos(shape->body, &x, &y);
+        float ta;
+        float tl;
+        float tx[2];
+        float ty[2];
+        if(shape->type == SG_PHYSICS_SHAPE_SEGMENT)
+        {
+            ta = atan2(shape->y + shape->verts[1], shape->x + shape->verts[0]);
+            tl = hypot(shape->y + shape->verts[1], shape->x + shape->verts[0]);
+            tx[0] = cos(ta + angle) * tl;
+            ty[0] = sin(ta + angle) * tl;
+            ta = atan2(shape->y + shape->verts[3], shape->x + shape->verts[2]);
+            tl = hypot(shape->y + shape->verts[3], shape->x + shape->verts[2]);
+            tx[1] = cos(ta + angle) * tl;
+            ty[1] = sin(ta + angle) * tl;
+
+            sgDrawLineSetWidth(shape->verts[4]);
+            sgDrawLine(x + tx[0], y + ty[0], x + tx[1], y + ty[1]);
+            sgDrawLineSetWidth(1.0);
+            return;
+        }
+        else if(shape->type == SG_PHYSICS_SHAPE_CIRCLE)
+        {
+            //sgDrawLineSetWidth(fabs(shape->verts[1] - shape->verts[0])*2.0);
+            //sgDrawCircle(x, y, (shape->verts[0] + shape->verts[1]) / 2.0, SG_FALSE);
+            //sgDrawLineSetWidth(1.0);
+
+            ta = atan2(shape->y, shape->x);
+            tl = hypot(shape->y, shape->x);
+            tx[0] = cos(ta + angle) * tl;
+            ty[0] = sin(ta + angle) * tl;
+            sgDrawCircle(x + tx[0], y + ty[0], shape->verts[0], SG_FALSE);
+            sgDrawCircle(x + tx[0], y + ty[0], shape->verts[1], SG_FALSE);
+
+            x += tx[0];
+            y += ty[0];
+
+            //ta = atan2(ty[0], tx[0]);
+            //tl = hypot(ty[0], tx[0]);
+            tx[0] = cos(angle) * shape->verts[0];
+            ty[0] = sin(angle) * shape->verts[0];
+            tx[1] = cos(angle) * shape->verts[1];
+            ty[1] = sin(angle) * shape->verts[1];
+            sgDrawLine(x + tx[0], y + ty[0], x + tx[1], y + ty[1]);
+            sgDrawLine(x - tx[0], y - ty[0], x, y);
+            return;
+        }
+    }
+
     // draw shape
     SGuint pnum;
     float* points;
@@ -273,7 +326,6 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
     for(i = 0; i < pnum; i++)
         _sg_modPhysics.sgmPhysicsBodyLocalToWorld_TEST(shape->body->handle, &points[2*i], &points[2*i+1]);
 
-    sgDrawColor4f(0.0, 0.5, 0.75, 0.75);
     sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
         for(i = 0; i < pnum; i++)
             sgDrawVertex2f(points[2*i], points[2*i+1]);
