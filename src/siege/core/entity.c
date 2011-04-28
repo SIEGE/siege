@@ -246,77 +246,77 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
 				case SG_EVF_PHYSCOLH:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
-					if(entity->evCollision != NULL)
-						entity->evCollision(entity, ptr[0], ptr[1]);
+					if(entity->lcCollision != NULL)
+						entity->lcCollision(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOL1:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
-					if(entity->evCollisionOne != NULL)
-						entity->evCollisionOne(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionOne != NULL)
+						entity->lcCollisionOne(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOL2:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
-					if(entity->evCollisionTwo != NULL)
-						entity->evCollisionTwo(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionTwo != NULL)
+						entity->lcCollisionTwo(entity, ptr[0], ptr[1]);
 					break;
 
 				case SG_EVF_PHYSCOLBH:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
-					if(entity->evCollisionBegin != NULL)
-						entity->evCollisionBegin(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionBegin != NULL)
+						entity->lcCollisionBegin(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLB1:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
-					if(entity->evCollisionOneBegin != NULL)
-						entity->evCollisionOneBegin(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionOneBegin != NULL)
+						entity->lcCollisionOneBegin(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLB2:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
-					if(entity->evCollisionTwoBegin != NULL)
-						entity->evCollisionTwoBegin(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionTwoBegin != NULL)
+						entity->lcCollisionTwoBegin(entity, ptr[0], ptr[1]);
 					break;
 
 				case SG_EVF_PHYSCOLEH:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
-					if(entity->evCollisionEnd != NULL)
-						entity->evCollisionEnd(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionEnd != NULL)
+						entity->lcCollisionEnd(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLE1:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
-					if(entity->evCollisionOneEnd != NULL)
-						entity->evCollisionOneEnd(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionOneEnd != NULL)
+						entity->lcCollisionOneEnd(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLE2:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
-					if(entity->evCollisionTwoEnd != NULL)
-						entity->evCollisionTwoEnd(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionTwoEnd != NULL)
+						entity->lcCollisionTwoEnd(entity, ptr[0], ptr[1]);
 					break;
 
 				case SG_EVF_PHYSCOLRH:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionResult*);
-					if(entity->evCollisionResult != NULL)
-						entity->evCollisionResult(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionResult != NULL)
+						entity->lcCollisionResult(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLR1:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionResult*);
-					if(entity->evCollisionOneResult != NULL)
-						entity->evCollisionOneResult(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionOneResult != NULL)
+						entity->lcCollisionOneResult(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLR2:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionResult*);
-					if(entity->evCollisionTwoResult != NULL)
-						entity->evCollisionTwoResult(entity, ptr[0], ptr[1]);
+					if(entity->lcCollisionTwoResult != NULL)
+						entity->lcCollisionTwoResult(entity, ptr[0], ptr[1]);
 					break;
 
 				case SG_EVF_LVLSTART:
