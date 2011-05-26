@@ -37,8 +37,13 @@ typedef uint32_t SGenum;
 /// \name Characters
 /// @{
 typedef char     SGchar;
+#if 0 // TODO: replace with __STDC_VERSION__ for C1x
+typedef char16_t SGwchar;
+typedef char32_t SGdchar;
+#else // C1x
 typedef uint16_t SGwchar;
 typedef uint32_t SGdchar;
+#endif // C1x
 /// @}
 
 /**
