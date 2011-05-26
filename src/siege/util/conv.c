@@ -18,18 +18,46 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <wchar.h>
+
+SGint SG_EXPORT _sgStrICmp(const char* a, const char* b)
+{
+	while(*a && *b)
+	{
+		if(tolower(*a) != tolower(*b))
+			return tolower(*a) - tolower(*b);
+		a++;
+		b++;
+	}
+	return *a - *b;
+}
+SGenum SG_EXPORT _sgConvType(const char* type)
+{
+	if(_sgStrICmp("char", type) == 0)
+		return SG_CONV_TYPE_CHAR;
+	if(_sgStrICmp("wchar_t", type) == 0)
+		return SG_CONV_TYPE_WCHAR_T;
+	if(_sgStrICmp("UTF-8", type) == 0)
+		return SG_CONV_TYPE_UTF8;
+	if(_sgStrICmp("UTF-16", type) == 0)
+		return SG_CONV_TYPE_UTF16;
+	if(_sgStrICmp("UTF-32", type) == 0)
+		return SG_CONV_TYPE_UTF32;
+	return SG_CONV_TYPE_UNKNOWN;
+}
 
 SGConv* SG_EXPORT sgConvCreate(const char* from, const char* to)
 {
-	SGConv* conv;
+	SGConv* conv = malloc(sizeof(SGConv));
+	if(conv == NULL)
+		return NULL;
+	conv->handle = NULL;
+	conv->from = _sgConvType(from);
+	conv->to = _sgConvType(to);
 	if(_sg_modFonts.sgmFontsConvCreate != NULL)
-	{
-		conv = malloc(sizeof(SGConv));
-		conv->handle = NULL;
 		_sg_modFonts.sgmFontsConvCreate(&conv->handle, from, to);
-		return conv;
-	}
-	return NULL;
+	return conv;
 }
 void SG_EXPORT sgConvDestroy(SGConv* conv)
 {
@@ -41,7 +69,7 @@ void SG_EXPORT sgConvDestroy(SGConv* conv)
 	free(conv);
 }
 
-// todo: copy and use own free!
+// todo: fallback conversion should be done by font.c and similar, not sgConv!
 void* SG_EXPORT sgConv(SGConv* conv, size_t* outlen, const void* str, size_t len)
 {
 	if(conv == NULL)
@@ -54,12 +82,62 @@ void* SG_EXPORT sgConv(SGConv* conv, size_t* outlen, const void* str, size_t len
 	void* buf = NULL;
 	void* outbuf;
 	if(_sg_modFonts.sgmFontsConv != NULL)
+	{
 		_sg_modFonts.sgmFontsConv(conv->handle, &buf, outlen, (void*)str, len);
-	outbuf = malloc(*outlen + 4);
-	memcpy(outbuf, buf, *outlen);
-	memset(outbuf + *outlen, 0, 4);
-	if(_sg_modFonts.sgmFontsConvFreeData != NULL)
-		_sg_modFonts.sgmFontsConvFreeData(buf);
+		outbuf = malloc(*outlen + 4);
+		memcpy(outbuf, buf, *outlen);
+		memset(outbuf + *outlen, 0, 4);
+		if(_sg_modFonts.sgmFontsConvFreeData != NULL)
+			_sg_modFonts.sgmFontsConvFreeData(buf);
+	}
+	else
+	{
+		size_t i;
+		const char* cstr = str;
+		const wchar_t* wcstr = str;
+		const SGwchar* wstr = str;
+		const SGdchar* dstr = str;
+		SGdchar* doutbuf = NULL;
+		switch(conv->from)
+		{
+			case SG_CONV_TYPE_CHAR:
+				doutbuf = malloc(4 * (len + 1));
+				for(i = 0; i < len; i++)
+					doutbuf[i] = cstr[i];
+				doutbuf[len] = 0;
+				*outlen = len * 4;
+				break;
+			case SG_CONV_TYPE_WCHAR_T:
+				len /= sizeof(wchar_t);
+				doutbuf = malloc(4 * (len + 1));
+				for(i = 0; i < len; i++)
+					doutbuf[i] = wcstr[i];
+				doutbuf[len] = 0;
+				*outlen = len * 4;
+				break;
+			case SG_CONV_TYPE_UTF8:
+				doutbuf = malloc(4 * (len + 1));
+				for(i = 0; i < len; i++)
+					doutbuf[i] = cstr[i];
+				doutbuf[len] = 0;
+				break;
+			case SG_CONV_TYPE_UTF16:
+				len /= sizeof(SGwchar);
+				doutbuf = malloc(4 * (len + 1));
+				for(i = 0; i < len; i++)
+					doutbuf[i] = wstr[i];
+				doutbuf[len] = 0;
+				*outlen = len * 4;
+				break;
+			case SG_CONV_TYPE_UTF32:
+				len /= sizeof(SGdchar);
+				doutbuf = malloc(4 * (len + 1));
+				memcpy(doutbuf, dstr, 4 * (len + 1));
+				*outlen = len * 4;
+				break;
+		}
+		outbuf = doutbuf;
+	}
 	return outbuf;
 }
 

@@ -20,10 +20,22 @@
 #ifdef SG_BUILD_LIBRARY
 #endif // SG_BUILD_LIBRARY
 
+#define SG_CONV_TYPE_UNKNOWN 0
+#define SG_CONV_TYPE_CHAR    1
+#define SG_CONV_TYPE_WCHAR_T 2
+#define SG_CONV_TYPE_UTF8    3
+#define SG_CONV_TYPE_UTF16   4
+#define SG_CONV_TYPE_UTF32   5
+
 typedef struct SGConv
 {
 	void* handle;
+	SGenum from;
+	SGenum to;
 } SGConv;
+
+SGint SG_EXPORT _sgStringICmp(const char* a, const char* b);
+SGenum SG_EXPORT _sgConvType(const char* type);
 
 SGConv* SG_EXPORT sgConvCreate(const char* from, const char* to);
 void SG_EXPORT sgConvDestroy(SGConv* conv);
