@@ -38,8 +38,8 @@ SGuint SG_EXPORT sgLineLength(const char* text);
 char* SG_EXPORT sgNextLine(const char* text);
 SGuint SG_EXPORT sgNumLines(const char* text);
 
-SGdchar* SG_EXPORT sgLineEnd32(const SGdchar* text);
-SGuint SG_EXPORT sgLineLength32(const SGdchar* text);
-SGdchar* SG_EXPORT sgNextLine32(const SGdchar* text);
-SGuint SG_EXPORT sgNumLines32(const SGdchar* text);
+SGdchar* SG_EXPORT sgLineEndU32(const SGdchar* text);
+SGuint SG_EXPORT sgLineLengthU32(const SGdchar* text);
+SGdchar* SG_EXPORT sgNextLineU32(const SGdchar* text);
+SGuint SG_EXPORT sgNumLinesU32(const SGdchar* text);
 #endif // __SIEGE_UTIL_STRING_H__

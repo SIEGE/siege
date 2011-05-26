@@ -53,15 +53,15 @@ int main()
 
 		sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
 
-		sgFontPrint(font, width / 2, height - 64, "Mouse center angle: %f", atan2(sgMouseGetPosY() - (float)height / 2, sgMouseGetPosX() - (float)width / 2) * 180.0 / M_PI);
+		sgFontPrintf(font, width / 2, height - 64, "Mouse center angle: %f", atan2(sgMouseGetPosY() - (float)height / 2, sgMouseGetPosX() - (float)width / 2) * 180.0 / M_PI);
 
 		sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
-		sgFontPrint(font, width / 2, height - 92, "Mouse: %d,%d %d", sgMouseGetPosX(), sgMouseGetPosY(), sgMouseGetWheel());
+		sgFontPrintf(font, width / 2, height - 92, "Mouse: %d,%d %d", sgMouseGetPosX(), sgMouseGetPosY(), sgMouseGetWheel());
 
-		sgFontPrint(font, 128, height - 128, "AAA\nBBB\nCCC\nDDD\n\nEEE");
+		sgFontPrintf(font, 128, height - 128, "AAA\nBBB\nCCC\nDDD\n\nEEE");
 
 		sgDrawColor4f(0.0, 0.5, 0.75, 0.75);
-		sgFontPrint(font, width / 4, height - height / 3, "Well, this is some more text...\nUseful for UI, consoles, etc...");
+		sgFontPrintf(font, width / 4, height - height / 3, "Well, this is some more text...\nUseful for UI, consoles, etc...");
 
 		sgDrawColor4f(1.0, 1.0, 0.0, 0.75);
 		sgDrawLine(width / 2, height / 2, sgMouseGetPosX(), sgMouseGetPosY());
@@ -74,7 +74,7 @@ int main()
 		sgFontPrintW(font, 2, 256, L"Testing: ABC abc 012\nčšž\nSome cyrillic: Съешь ещё этих мягких французских булок да выпей же чаю\nAnd now for greek: Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός");
         sgFontPrintfW(font, 2, 328, L"sgFontPrintfW: %ls", L"čšž");
 
-		sgFontStrSize(font, &dx, &dy, "Some test text");
+		sgFontStrSizef(font, &dx, &dy, "Some test text");
 		sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
 		sgDrawLine(640 - 160, 480 - 120, 640 - 160 + dx, 480 - 120);
 		sgDrawRectangle(640 / 2 - dx / 2, 480 - 120 - dy / 2,

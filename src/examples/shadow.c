@@ -334,7 +334,7 @@ int main()
     sgLoadModule("OpenGL");
     sgLoadModule("DevIL");
     sgInit(640, 480, 32, 0);
-    sgWindowSetTitleF("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
+    sgWindowSetTitlef("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
 
     SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
     handler->evKeyboardKeyPress = evKeyboardKeyPress;

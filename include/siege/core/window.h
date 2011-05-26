@@ -75,20 +75,20 @@ void SG_EXPORT sgWindowClose(void);
  * \ingroup Window
  * \brief Set the window title with printf-like formatting
  */
-void SG_EXPORT sgWindowSetTitleF(char* format, ...);
+void SG_EXPORT sgWindowSetTitlef(char* format, ...);
 /**
  * \ingroup Window
  * \brief Set the window title with vprintf-like formatting
  * \param format The format, equivalent to format in vprintf
  * \param args The va_list of arguments, equivalent to the arguments in vprintf
  */
-void SG_EXPORT sgWindowSetTitleFV(char* format, va_list args);
+void SG_EXPORT sgWindowSetTitlefv(char* format, va_list args);
 /**
  * \ingroup Window
  * \brief Set the window title
  * \param[in] title The new title
  *
- * This function takes a normal string and sets it as the title. It is called by the \ref sgWindowSetTitleF "F" and \ref sgWindowSetTitleFV "FV" functions.
+ * This function takes a normal string and sets it as the title. It is called by the \ref sgWindowSetTitlef "f" and \ref sgWindowSetTitlefv "fv" functions.
  */
 void SG_EXPORT sgWindowSetTitle(char* title);
 /**

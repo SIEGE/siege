@@ -127,14 +127,7 @@ SGuint SG_EXPORT sgNumLines(const char* text)
 	return numlines;
 }
 
-size_t SG_EXPORT sgStrlen32(const SGdchar* text)
-{
-	const SGdchar* ptr = text;
-	while(*ptr)
-		ptr++;
-	return ptr - text;
-}
-SGdchar* SG_EXPORT sgLineEnd32(const SGdchar* text)
+SGdchar* SG_EXPORT sgLineEndU32(const SGdchar* text)
 {
 	if(text == NULL)
 		return NULL;
@@ -144,16 +137,16 @@ SGdchar* SG_EXPORT sgLineEnd32(const SGdchar* text)
 
 	return (SGdchar*)text;
 }
-SGuint SG_EXPORT sgLineLength32(const SGdchar* text)
+SGuint SG_EXPORT sgLineLengthU32(const SGdchar* text)
 {
-	return sgLineEnd32(text) - text;
+	return sgLineEndU32(text) - text;
 }
-SGdchar* SG_EXPORT sgNextLine32(const SGdchar* text)
+SGdchar* SG_EXPORT sgNextLineU32(const SGdchar* text)
 {
 	if(text == NULL)
 		return NULL;
 
-	SGdchar* end = sgLineEnd32(text);
+	SGdchar* end = sgLineEndU32(text);
 	if(end[0] == 0)
 		return NULL;
 
@@ -161,14 +154,14 @@ SGdchar* SG_EXPORT sgNextLine32(const SGdchar* text)
 		return end + 2;
 	return end + 1;
 }
-SGuint SG_EXPORT sgNumLines32(const SGdchar* text)
+SGuint SG_EXPORT sgNumLinesU32(const SGdchar* text)
 {
 	SGuint numlines = 0;
 
 	const SGdchar* ptr = text;
 	while(ptr != NULL)
 	{
-		ptr = sgNextLine32(ptr);
+		ptr = sgNextLineU32(ptr);
 		numlines++;
 	}
 	return numlines;
