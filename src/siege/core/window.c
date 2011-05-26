@@ -105,20 +105,20 @@ void SG_EXPORT sgWindowClose(void)
 	if(_sg_modWindow.sgmCoreWindowClose != NULL)
 		_sg_modWindow.sgmCoreWindowClose(_sg_winHandle);
 }
-void SG_EXPORT sgWindowSetTitlef(char* format, ...)
+void SG_EXPORT sgWindowSetTitlef(const char* format, ...)
 {
 	va_list args;
 	va_start(args, format);
 	sgWindowSetTitlefv(format, args);
 	va_end(args);
 }
-void SG_EXPORT sgWindowSetTitlefv(char* format, va_list args)
+void SG_EXPORT sgWindowSetTitlefv(const char* format, va_list args)
 {
 	char* title = sgPrintfv(format, args);
 	sgWindowSetTitle(title);
 	free(title);
 }
-void SG_EXPORT sgWindowSetTitle(char* title)
+void SG_EXPORT sgWindowSetTitle(const char* title)
 {
 	int len = strlen(title) + 1;
 	_sg_winTitle = realloc(_sg_winTitle, len);
