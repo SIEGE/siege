@@ -406,7 +406,7 @@ int main()
     sgLoadModule("DevIL");
     sgLoadModule("Chipmunk");
     sgInit(640, 480, 32, 0);
-    sgWindowSetTitleF("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
+    sgWindowSetTitlef("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
 
     SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
     handler->evMouseButtonPress = evMouseButtonPress;

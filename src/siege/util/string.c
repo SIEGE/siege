@@ -18,6 +18,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <wchar.h>
+
+int vswprintf(wchar_t *wcs, size_t maxlen, const wchar_t *format, va_list args);
 
 SGbool SG_EXPORT _sgStringInit(void)
 {
@@ -29,6 +32,33 @@ SGbool SG_EXPORT _sgStringDeinit(void)
 {
 	free(_sg_strBuf);
 	return SG_TRUE;
+}
+
+wchar_t* SG_EXPORT sgPrintfW(const wchar_t* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    wchar_t* str = sgPrintfvW(format, args);
+    va_end(args);
+    return str;
+}
+wchar_t* SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args)
+{
+    int ret = 0;
+    _sg_strBufLen = 0;
+
+    do
+    {
+        _sg_strBufLen += 256;
+        _sg_strBuf = realloc(_sg_strBuf, _sg_strBufLen * sizeof(wchar_t));
+        ret = vswprintf((wchar_t*)_sg_strBuf, _sg_strBufLen, format, args);
+    }
+    while(ret >= _sg_strBufLen);
+
+    if(ret < 0)
+        return NULL;
+
+    return (wchar_t*)_sg_strBuf;
 }
 
 char* SG_EXPORT sgPrintf(const char* format, ...)
@@ -96,10 +126,43 @@ SGuint SG_EXPORT sgNumLines(const char* text)
 	}
 	return numlines;
 }
-/// \todo TODO
-void SG_EXPORT sgCharToUTF32(const char* text, SGuint textlen, SGdchar* str)
+
+SGdchar* SG_EXPORT sgLineEndU32(const SGdchar* text)
 {
-	size_t i;
-	for(i = 0; i < textlen; i++)
-		str[i] = text[i];
+	if(text == NULL)
+		return NULL;
+
+	while(*text != '\r' && *text != '\n' && *text != '\0')
+		text++;
+
+	return (SGdchar*)text;
+}
+SGuint SG_EXPORT sgLineLengthU32(const SGdchar* text)
+{
+	return sgLineEndU32(text) - text;
+}
+SGdchar* SG_EXPORT sgNextLineU32(const SGdchar* text)
+{
+	if(text == NULL)
+		return NULL;
+
+	SGdchar* end = sgLineEndU32(text);
+	if(end[0] == 0)
+		return NULL;
+
+	if(end[0] == '\r' && end[1] == '\n')
+		return end + 2;
+	return end + 1;
+}
+SGuint SG_EXPORT sgNumLinesU32(const SGdchar* text)
+{
+	SGuint numlines = 0;
+
+	const SGdchar* ptr = text;
+	while(ptr != NULL)
+	{
+		ptr = sgNextLineU32(ptr);
+		numlines++;
+	}
+	return numlines;
 }

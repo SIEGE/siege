@@ -105,14 +105,14 @@ void SG_EXPORT sgWindowClose(void)
 	if(_sg_modWindow.sgmCoreWindowClose != NULL)
 		_sg_modWindow.sgmCoreWindowClose(_sg_winHandle);
 }
-void SG_EXPORT sgWindowSetTitleF(char* format, ...)
+void SG_EXPORT sgWindowSetTitlef(char* format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	sgWindowSetTitleFV(format, args);
+	sgWindowSetTitlefv(format, args);
 	va_end(args);
 }
-void SG_EXPORT sgWindowSetTitleFV(char* format, va_list args)
+void SG_EXPORT sgWindowSetTitlefv(char* format, va_list args)
 {
 	char* title = sgPrintfv(format, args);
 	sgWindowSetTitle(title);
