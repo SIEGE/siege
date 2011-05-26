@@ -152,11 +152,11 @@ float SG_EXPORT sgPhysicsBodyGetAngleRads(SGPhysicsBody* body)
 }
 void SG_EXPORT sgPhysicsBodySetAngleDegs(SGPhysicsBody* body, float degs)
 {
-    sgPhysicsBodySetAngleRads(body, degs * M_PI / 180.0);
+    sgPhysicsBodySetAngleRads(body, degs * SG_PI / 180.0);
 }
 float SG_EXPORT sgPhysicsBodyGetAngleDegs(SGPhysicsBody* body)
 {
-    return sgPhysicsBodyGetAngleRads(body) * 180.0 / M_PI;
+    return sgPhysicsBodyGetAngleRads(body) * 180.0 / SG_PI;
 }
 
 void SG_EXPORT sgPhysicsBodySetVel(SGPhysicsBody* body, float x, float y)
@@ -239,11 +239,11 @@ float SG_EXPORT sgPhysicsBodyGetAngVelRads(SGPhysicsBody* body)
 }
 void SG_EXPORT sgPhysicsBodySetAngVelDegs(SGPhysicsBody* body, float degs)
 {
-    sgPhysicsBodySetAngVelRads(body, degs * M_PI / 180.0);
+    sgPhysicsBodySetAngVelRads(body, degs * SG_PI / 180.0);
 }
 float SG_EXPORT sgPhysicsBodyGetAngVelDegs(SGPhysicsBody* body)
 {
-    return sgPhysicsBodyGetAngVelRads(body) * 180.0 / M_PI;
+    return sgPhysicsBodyGetAngVelRads(body) * 180.0 / SG_PI;
 }
 
 void SG_EXPORT sgPhysicsBodySetMass(SGPhysicsBody* body, float mass)

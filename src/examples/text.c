@@ -53,7 +53,7 @@ int main()
 
 		sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
 
-		sgFontPrintf(font, width / 2, height - 64, "Mouse center angle: %f", atan2(sgMouseGetPosY() - (float)height / 2, sgMouseGetPosX() - (float)width / 2) * 180.0 / M_PI);
+		sgFontPrintf(font, width / 2, height - 64, "Mouse center angle: %f", atan2(sgMouseGetPosY() - (float)height / 2, sgMouseGetPosX() - (float)width / 2) * 180.0 / SG_PI);
 
 		sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
 		sgFontPrintf(font, width / 2, height - 92, "Mouse: %d,%d %d", sgMouseGetPosX(), sgMouseGetPosY(), sgMouseGetWheel());

@@ -158,7 +158,7 @@ float SG_EXPORT sgPhysicsShapeGetAreaS(SGPhysicsShape* shape)
             return area / 2.0;
 
         case SG_PHYSICS_SHAPE_CIRCLE:
-            return M_PI * (shape->verts[1] * shape->verts[1] - shape->verts[0] * shape->verts[0]);
+            return SG_PI * (shape->verts[1] * shape->verts[1] - shape->verts[0] * shape->verts[0]);
     }
     return SG_NAN;
 }

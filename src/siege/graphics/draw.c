@@ -188,7 +188,7 @@ void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fi
 
 void SG_EXPORT sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill)
 {
-	sgDrawEArcRads(x, y, rx, ry, 0, 2 * M_PI, SG_FALSE, fill);
+	sgDrawEArcRads(x, y, rx, ry, 0, 2 * SG_PI, SG_FALSE, fill);
 }
 
 void SG_EXPORT sgDrawCircle(float x, float y, float radius, SGbool fill)
@@ -202,12 +202,12 @@ void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, fl
 	float adiff = a2 - a1;
 
 	if(!ccw && adiff < 0)
-		adiff = adiff + 2 * M_PI;
+		adiff = adiff + 2 * SG_PI;
 	else if(ccw && adiff > 0)
-		adiff = adiff - 2 * M_PI;
+		adiff = adiff - 2 * SG_PI;
 
 	float ra = (rx + ry) / 2.0;
-	SGuint numsides = (SGuint)(ra * ABS(adiff) / 2 / M_PI * 4);
+	SGuint numsides = (SGuint)(ra * ABS(adiff) / 2 / SG_PI * 4);
 	adiff /= numsides;
 	SGuint i;
 
@@ -229,7 +229,7 @@ void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, fl
 }
 void sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
 {
-	sgDrawEArcRads(x, y, rx, ry, a1 * M_PI / 180.0, a2 * M_PI / 180.0, ccw, fill);
+	sgDrawEArcRads(x, y, rx, ry, a1 * SG_PI / 180.0, a2 * SG_PI / 180.0, ccw, fill);
 }
 
 void sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)

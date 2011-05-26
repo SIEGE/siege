@@ -34,7 +34,7 @@ SGVec2 SG_EXPORT sgVec2PolarRads(float rads, float len)
 }
 SGVec2 SG_EXPORT sgVec2PolarDegs(float degs, float len)
 {
-    return sgVec2PolarRads(degs * M_PI / 180.0, len);
+    return sgVec2PolarRads(degs * SG_PI / 180.0, len);
 }
 SGVec2 SG_EXPORT sgVec2Nan(void)
 {
@@ -77,7 +77,7 @@ SGVec2 SG_EXPORT sgVec2SetAngleDegs(SGVec2 vec, float degs)
 }
 float SG_EXPORT sgVec2GetAngleDegs(SGVec2 vec)
 {
-    return atan2(vec.y, vec.x) * 180.0 / M_PI;
+    return atan2(vec.y, vec.x) * 180.0 / SG_PI;
 }
 
 SGbool SG_EXPORT sgVec2IsNan(SGVec2 vec)

@@ -529,11 +529,11 @@ float SG_EXPORT sgEntityGetAngleRads(SGEntity* entity)
 }
 void SG_EXPORT sgEntitySetAngleDegs(SGEntity* entity, float degs)
 {
-	sgEntitySetAngleRads(entity, degs * M_PI / 180.0);
+	sgEntitySetAngleRads(entity, degs * SG_PI / 180.0);
 }
 float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity)
 {
-	return sgEntityGetAngleRads(entity) * 180.0 / M_PI;
+	return sgEntityGetAngleRads(entity) * 180.0 / SG_PI;
 }
 
 void SG_EXPORT sgEntityDraw(SGEntity* entity)

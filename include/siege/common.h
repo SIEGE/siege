@@ -200,6 +200,16 @@ typedef double SGdouble;
 #endif // INFINITY
 /// @}
 
+#ifndef M_PI
+#	ifndef PI
+#		define SG_PI 3.14159265358979323846
+#	else // PI
+#		define SG_PI M_PI
+#	endif // PI
+#else // M_PI
+#	define SG_PI M_PI
+#endif // M_PI
+
 /**
  * \name Some commonly used macros
  * \warning
