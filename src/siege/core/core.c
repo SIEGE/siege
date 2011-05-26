@@ -44,7 +44,7 @@ SGint _sg_exitVal = 0;
 SGbool _sg_hasInited = SG_FALSE;
 SGulong _sg_curTick = 0;
 
-SGuint SG_EXPORT sgLoadModulesv(int n, va_list args)
+SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args)
 {
 	SGuint loaded = 0;
 	size_t i;
@@ -52,7 +52,7 @@ SGuint SG_EXPORT sgLoadModulesv(int n, va_list args)
 		loaded += sgLoadModule(va_arg(args, char*));
 	return loaded;
 }
-SGuint SG_EXPORT sgLoadModules(int n, ...)
+SGuint SG_EXPORT sgLoadModules(size_t n, ...)
 {
 	va_list args;
 	va_start(args, n);

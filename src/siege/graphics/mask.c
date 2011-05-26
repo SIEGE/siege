@@ -124,7 +124,7 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 					break;
 				case 16:
 				case 15:
-					mask->field[i][j] = *(SGshort*)&data[(j * awidth + i) * 2] == ui;
+					mask->field[i][j] = *(SGushort*)&data[(j * awidth + i) * 2] == ui;
 					break;
 				case 8:
 					mask->field[i][j] = data[(j * awidth + i)] == a;
