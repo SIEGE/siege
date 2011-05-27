@@ -32,9 +32,8 @@ SGbool SG_EXPORT _sgEntityInit(void)
 }
 SGbool SG_EXPORT _sgEntityDeinit(void)
 {
-	//SGPListNode* node;
-	//for(node = _sg_cList->first; node != NULL; node = node->next)
-	//	  free(node);
+	while(_sg_cList->first)
+		sgEntityDestroy(_sg_cList->first->item);
 	sgListDestroy(_sg_cList);
 	return SG_TRUE;
 }
