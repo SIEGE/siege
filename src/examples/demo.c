@@ -223,7 +223,7 @@ void drawLight(Light* light)
     float x, y;
 
     int sides = SG_MAX(3, (int)(light->radius * 0.5));
-    float f = 2 * M_PI / sides;
+    float f = 2 * SG_PI / sides;
     sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
         sgDrawColor4f(light->color.r, light->color.g, light->color.b, light->color.a);
         sgDrawVertex2f(light->pos.x, light->pos.y);
@@ -288,8 +288,8 @@ Light* createLight(SGVec2 pos, SGColor color, float radius, float angle, float a
     light->pos = pos;
     light->color = color;
     light->radius = radius;
-    light->angle = angle * M_PI / 180.0;
-    light->arc = arc * M_PI / 180.0;
+    light->angle = angle * SG_PI / 180.0;
+    light->arc = arc * SG_PI / 180.0;
 
     light->entity = sgEntityCreate(0.0, SG_EVT_ALL);
     light->entity->data = light;
@@ -406,7 +406,7 @@ int main()
     sgLoadModule("DevIL");
     sgLoadModule("Chipmunk");
     sgInit(640, 480, 32, 0);
-    sgWindowSetTitleF("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
+    sgWindowSetTitlef("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
 
     SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
     handler->evMouseButtonPress = evMouseButtonPress;

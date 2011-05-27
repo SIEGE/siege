@@ -39,16 +39,24 @@ SGbool SG_EXPORT _sgEntityDeinit(void)
 	return SG_TRUE;
 }
 
-SGbool SG_EXPORT _sg_evCall(SGEntity* entity, _SGEntityCall* call)
+SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
 {
 	if(!entity->active)
 		return SG_TRUE;
 
+    SGuint num = va_arg(args, SGuint);
+    SGenum type;
+
+    size_t siz[2];
+    SGuint val[2];
+    void* ptr[2];
+
 	SGuint i;
-	for(i = 0; i < call->num; i++)
+	for(i = 0; i < num; i++)
 	{
-		if(entity->type & (call->types[i] & SG_EVT_ALL))
-			switch(call->types[i])
+        type = va_arg(args, SGenum);
+		if(entity->type & (type & SG_EVT_ALL))
+			switch(type)
 			{
 				case SG_EVF_INIT:
 					if(entity->evInit != NULL)
@@ -93,26 +101,26 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, _SGEntityCall* call)
 						entity->evWindowClose(entity);
 					break;
 				case SG_EVF_WINRESIZE:
+                    val[0] = va_arg(args, SGuint);
+                    val[1] = va_arg(args, SGuint);
 					if(entity->evWindowResize != NULL)
-						entity->evWindowResize(entity,
-											   *(SGuint*)call->args[i],
-											   *(SGuint*)(call->args[i] + sizeof(SGuint)));
+						entity->evWindowResize(entity, val[0], val[1]);
 					break;
 
 				case SG_EVF_MOUSEBUTH:
+                    val[0] = va_arg(args, SGuint);
 					if(entity->evMouseButton != NULL)
-						entity->evMouseButton(entity,
-											  *(SGuint*)call->args[i]);
+						entity->evMouseButton(entity, val[0]);
 					break;
 				case SG_EVF_MOUSEBUTP:
+                    val[0] = va_arg(args, SGuint);
 					if(entity->evMouseButtonPress != NULL)
-						entity->evMouseButtonPress(entity,
-												   *(SGuint*)call->args[i]);
+						entity->evMouseButtonPress(entity, val[0]);
 					break;
 				case SG_EVF_MOUSEBUTR:
+                    val[0] = va_arg(args, SGuint);
 					if(entity->evMouseButtonRelease != NULL)
-						entity->evMouseButtonRelease(entity,
-													 *(SGuint*)call->args[i]);
+						entity->evMouseButtonRelease(entity, val[0]);
 					break;
 
 				case SG_EVF_MOUSEBUTLH:
@@ -155,161 +163,160 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, _SGEntityCall* call)
 					break;
 
 				case SG_EVF_MOUSEMOVE:
+                    val[0] = va_arg(args, SGuint);
+                    val[1] = va_arg(args, SGuint);
 					if(entity->evMouseMove != NULL)
-						entity->evMouseMove(entity,
-											*(SGint*)call->args[i],
-											*(SGint*)(call->args[i] + sizeof(SGint)));
+						entity->evMouseMove(entity, val[0], val[1]);
 					break;
 				case SG_EVF_MOUSEWHEEL:
+                    val[0] = va_arg(args, SGuint);
 					if(entity->evMouseWheel != NULL)
-						entity->evMouseWheel(entity,
-											*(SGint*)call->args[i]);
+						entity->evMouseWheel(entity, val[0]);
 					break;
 
 				case SG_EVF_KEYKEYH:
+                    val[0] = va_arg(args, SGuint);
 					if(entity->evKeyboardKey != NULL)
-						entity->evKeyboardKey(entity,
-											  *(SGuint*)call->args[i]);
+						entity->evKeyboardKey(entity, val[0]);
 					break;
 				case SG_EVF_KEYKEYP:
+                    val[0] = va_arg(args, SGuint);
 					if(entity->evKeyboardKeyPress != NULL)
-						entity->evKeyboardKeyPress(entity,
-												   *(SGuint*)call->args[i]);
+						entity->evKeyboardKeyPress(entity, val[0]);
 					break;
 				case SG_EVF_KEYKEYR:
+				    val[0] = va_arg(args, SGuint);
 					if(entity->evKeyboardKeyRelease != NULL)
-						entity->evKeyboardKeyRelease(entity,
-													 *(SGuint*)call->args[i]);
+						entity->evKeyboardKeyRelease(entity, val[0]);
 					break;
 				case SG_EVF_KEYKEYA:
+				    val[0] = va_arg(args, SGuint);
 					if(entity->evKeyboardKeyRepeat != NULL)
-						entity->evKeyboardKeyRepeat(entity,
-													*(SGuint*)call->args[i]);
+						entity->evKeyboardKeyRepeat(entity, val[0]);
 					break;
 
 				/*case SG_EVF_KEYCHARH:
+				    val[0] = va_arg(args, SGuint);
 					if(entity->evKeyboardChar != NULL)
-						entity->evKeyboardChar(entity,
-											  *(SGdchar*)call->args[i]);
+						entity->evKeyboardChar(entity, val[0]);
 					break;*/
 				case SG_EVF_KEYCHARP:
 					if(entity->evKeyboardCharPress != NULL)
-						entity->evKeyboardCharPress(entity,
-												   *(SGdchar*)call->args[i]);
+						entity->evKeyboardCharPress(entity, val[0]);
 					break;
 				/*case SG_EVF_KEYCHARR:
+				    val[0] = va_arg(args, SGuint);
 					if(entity->evKeyboardCharRelease != NULL)
-						entity->evKeyboardCharRelease(entity,
-													 *(SGdchar*)call->args[i]);
+						entity->evKeyboardCharRelease(entity, val[0]);
 					break;*/
 				case SG_EVF_KEYCHARA:
+				    val[0] = va_arg(args, SGuint);
 					if(entity->evKeyboardCharRepeat != NULL)
-						entity->evKeyboardCharRepeat(entity,
-													*(SGdchar*)call->args[i]);
+						entity->evKeyboardCharRepeat(entity, val[0]);
 					break;
 
 				case SG_EVF_JOYSTICKBUTH:
+				    val[0] = va_arg(args, SGuint);
+                    val[1] = va_arg(args, SGuint);
 					if(entity->evJoystickButton != NULL)
-						entity->evJoystickButton(entity,
-												 *(SGuint*)call->args[i],
-												 *(SGuint*)(call->args[i] + sizeof(SGuint)));
+						entity->evJoystickButton(entity, val[0], val[1]);
 					break;
 				case SG_EVF_JOYSTICKBUTP:
+				    val[0] = va_arg(args, SGuint);
+                    val[1] = va_arg(args, SGuint);
 					if(entity->evJoystickButtonPress != NULL)
-						entity->evJoystickButtonPress(entity,
-													  *(SGuint*)call->args[i],
-													  *(SGuint*)(call->args[i] + sizeof(SGuint)));
+						entity->evJoystickButtonPress(entity, val[0], val[1]);
 					break;
 				case SG_EVF_JOYSTICKBUTR:
+				    val[0] = va_arg(args, SGuint);
+                    val[1] = va_arg(args, SGuint);
 					if(entity->evJoystickButtonRelease != NULL)
-						entity->evJoystickButtonRelease(entity,
-														*(SGuint*)call->args[i],
-														*(SGuint*)(call->args[i] + sizeof(SGuint)));
+						entity->evJoystickButtonRelease(entity, val[0], val[1]);
 					break;
 				case SG_EVF_JOYSTICKMOVE:
+                    val[0] = va_arg(args, SGuint);
+                    ptr[0] = va_arg(args, float*);
+                    siz[0] = va_arg(args, size_t);
 					if(entity->evJoystickMove != NULL)
-						entity->evJoystickMove(entity,
-											   *(SGuint*)call->args[i],
-											   *(SGfloat**)(call->args[i] + sizeof(SGuint)),
-											   *(SGuint*)(call->args[i] + sizeof(SGuint) + sizeof(float*)));
+						entity->evJoystickMove(entity, val[0], ptr[0], siz[0]);
 					break;
 
 				// networking goes here (SG_EVF_NET)
 
 				case SG_EVF_PHYSCOLH:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollision != NULL)
-						entity->evCollision(entity,
-											*(SGEntity**)call->args[i],
-											*(SGCollisionPoint**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollision(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOL1:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollisionOne != NULL)
-						entity->evCollisionOne(entity,
-											   *(SGEntity**)call->args[i],
-											   *(SGCollisionPoint**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionOne(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOL2:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollisionTwo != NULL)
-						entity->evCollisionTwo(entity,
-											   *(SGEntity**)call->args[i],
-											   *(SGCollisionPoint**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionTwo(entity, ptr[0], ptr[1]);
 					break;
 
 				case SG_EVF_PHYSCOLBH:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollisionBegin != NULL)
-						entity->evCollisionBegin(entity,
-												*(SGEntity**)call->args[i],
-												*(SGCollisionPoint**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionBegin(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLB1:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollisionOneBegin != NULL)
-						entity->evCollisionOneBegin(entity,
-												   *(SGEntity**)call->args[i],
-												   *(SGCollisionPoint**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionOneBegin(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLB2:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollisionTwoBegin != NULL)
-						entity->evCollisionTwoBegin(entity,
-												   *(SGEntity**)call->args[i],
-												   *(SGCollisionPoint**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionTwoBegin(entity, ptr[0], ptr[1]);
 					break;
 
 				case SG_EVF_PHYSCOLEH:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollisionEnd != NULL)
-						entity->evCollisionEnd(entity,
-											   *(SGEntity**)call->args[i],
-											   *(SGCollisionPoint**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionEnd(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLE1:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollisionOneEnd != NULL)
-						entity->evCollisionOneEnd(entity,
-												  *(SGEntity**)call->args[i],
-												  *(SGCollisionPoint**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionOneEnd(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLE2:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollisionTwoEnd != NULL)
-						entity->evCollisionTwoEnd(entity,
-												  *(SGEntity**)call->args[i],
-												  *(SGCollisionPoint**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionTwoEnd(entity, ptr[0], ptr[1]);
 					break;
 
 				case SG_EVF_PHYSCOLRH:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionResult*);
 					if(entity->evCollisionResult != NULL)
-						entity->evCollisionResult(entity,
-												  *(SGEntity**)call->args[i],
-												  *(SGCollisionResult**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionResult(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLR1:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionResult*);
 					if(entity->evCollisionOneResult != NULL)
-						entity->evCollisionOneResult(entity,
-													 *(SGEntity**)call->args[i],
-													 *(SGCollisionResult**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionOneResult(entity, ptr[0], ptr[1]);
 					break;
 				case SG_EVF_PHYSCOLR2:
+                    ptr[0] = va_arg(args, SGEntity*);
+                    ptr[1] = va_arg(args, SGCollisionResult*);
 					if(entity->evCollisionTwoResult != NULL)
-						entity->evCollisionTwoResult(entity,
-													 *(SGEntity**)call->args[i],
-													 *(SGCollisionResult**)(call->args[i] + sizeof(SGEntity*)));
+						entity->evCollisionTwoResult(entity, ptr[0], ptr[1]);
 					break;
 
 				case SG_EVF_LVLSTART:
@@ -338,7 +345,7 @@ SGEntity* SG_EXPORT sgEntityCreate(float priority, SGenum type)
 	entity->type = type;
 	entity->active = SG_TRUE;
 	entity->pausable = SG_TRUE;
-	entity->event = sgEventCreate(priority, SG_EV_INTERNAL, entity, (SGEventCall)_sg_evCall);
+	entity->event = sgEventCreate(priority, SG_EV_INTERNAL, entity, (SGEventCall*)_sg_evCall);
 
 	entity->visible = SG_TRUE;
 	entity->x = 0.0;
@@ -522,11 +529,11 @@ float SG_EXPORT sgEntityGetAngleRads(SGEntity* entity)
 }
 void SG_EXPORT sgEntitySetAngleDegs(SGEntity* entity, float degs)
 {
-	sgEntitySetAngleRads(entity, degs * M_PI / 180.0);
+	sgEntitySetAngleRads(entity, degs * SG_PI / 180.0);
 }
 float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity)
 {
-	return sgEntityGetAngleRads(entity) * 180.0 / M_PI;
+	return sgEntityGetAngleRads(entity) * 180.0 / SG_PI;
 }
 
 void SG_EXPORT sgEntityDraw(SGEntity* entity)

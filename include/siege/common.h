@@ -37,8 +37,13 @@ typedef uint32_t SGenum;
 /// \name Characters
 /// @{
 typedef char     SGchar;
+#if 0 // TODO: replace with __STDC_VERSION__ for C1x
+typedef char16_t SGwchar;
+typedef char32_t SGdchar;
+#else // C1x
 typedef uint16_t SGwchar;
 typedef uint32_t SGdchar;
+#endif // C1x
 /// @}
 
 /**
@@ -133,7 +138,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 1
-#define SG_VERSION_PATCH 11
+#define SG_VERSION_PATCH 12
 /**
  * \brief Version string
  *
@@ -200,6 +205,16 @@ typedef double SGdouble;
 #endif // INFINITY
 /// @}
 
+#ifndef M_PI
+#	ifndef PI
+#		define SG_PI 3.14159265358979323846
+#	else // PI
+#		define SG_PI M_PI
+#	endif // PI
+#else // M_PI
+#	define SG_PI M_PI
+#endif // M_PI
+
 /**
  * \name Some commonly used macros
  * \warning
@@ -231,15 +246,16 @@ typedef double SGdouble;
  * Used in modules, to indicate which interface groups they implement. These are \b not used in SIEGE frontend - they are merely used in other modules, for checking module compatibility.
  */
 /// @{
-#define SG_MODULE_WINDOW	   0x01
-#define SG_MODULE_INPUT		   0x02
+#define SG_MODULE_WINDOW	   0x0001
+#define SG_MODULE_INPUT		   0x0002
 #define SG_MODULE_CORE		   (SG_MODULE_WINDOW | SG_MODULE_INPUT)
-#define SG_MODULE_GRAPHICS	   0x04
-#define SG_MODULE_GRAPHICSLOAD 0x08
-#define SG_MODULE_AUDIO		   0x10
-#define SG_MODULE_AUDIOLOAD    0x20
-#define SG_MODULE_FONTLOAD	   0x40
-#define SG_MODULE_PHYSICS	   0x80
+#define SG_MODULE_GRAPHICS	   0x0004
+#define SG_MODULE_GRAPHICSLOAD 0x0008
+#define SG_MODULE_AUDIO		   0x0010
+#define SG_MODULE_AUDIOLOAD    0x0020
+#define SG_MODULE_FONTLOAD	   0x0040
+#define SG_MODULE_FONTCONV	   0x0080
+#define SG_MODULE_PHYSICS	   0x0100
 /// @}
 
 /**

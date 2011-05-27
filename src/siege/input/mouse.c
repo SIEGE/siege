@@ -64,9 +64,7 @@ void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
             break;
     }
 
-    _SGEntityCall call;
-    call = (_SGEntityCall){4, events, (void*[]){&button, &button, NULL, NULL}};
-    sgEventCall(SG_EV_INTERNAL, &call);
+    sgEventCall(SG_EV_INTERNAL, (SGuint)4, events[0], button, events[1], button, events[2], events[3]);
 }
 void SG_EXPORT _sg_cbMouseMove(void* mouse, SGint x, SGint y)
 {
@@ -75,18 +73,14 @@ void SG_EXPORT _sg_cbMouseMove(void* mouse, SGint x, SGint y)
     _sg_mouseX = x;
     _sg_mouseY = y;
 
-    _SGEntityCall call;
-    call = (_SGEntityCall){1, (SGenum[]){SG_EVF_MOUSEMOVE}, (void*[]){(SGint[]){x, y}}};
-    sgEventCall(SG_EV_INTERNAL, &call);
+    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_MOUSEMOVE, x, y);
 }
 void SG_EXPORT _sg_cbMouseWheel(void* mouse, SGint w)
 {
     _sg_mouseWheelPrev = _sg_mouseWheel;
     _sg_mouseWheel = w;
 
-    _SGEntityCall call;
-    call = (_SGEntityCall){1, (SGenum[]){SG_EVF_MOUSEWHEEL}, (void*[]){&w}};
-    sgEventCall(SG_EV_INTERNAL, &call);
+    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_MOUSEWHEEL, w);
 }
 
 SGbool SG_EXPORT _sgMouseInit(void)

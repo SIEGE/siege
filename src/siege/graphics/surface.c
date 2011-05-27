@@ -80,7 +80,7 @@ void SG_EXPORT sgSurfaceDrawRads3f2f2f1f(SGSurface* surface, float x, float y, f
 }
 void SG_EXPORT sgSurfaceDrawDegs3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
-    sgSurfaceDrawRads3f2f2f1f(surface, x, y, z, xscale, yscale, xoffset, yoffset, angle * M_PI / 180.0);
+    sgSurfaceDrawRads3f2f2f1f(surface, x, y, z, xscale, yscale, xoffset, yoffset, angle * SG_PI / 180.0);
 }
 void SG_EXPORT sgSurfaceDrawRads2f2f2f1f(SGSurface* surface, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {

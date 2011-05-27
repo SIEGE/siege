@@ -28,22 +28,16 @@
 
 void SG_EXPORT _sg_cbWindowOpen(void* window)
 {
-	_SGEntityCall call;
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_WINOPEN}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINOPEN);
 }
 void SG_EXPORT _sg_cbWindowClose(void* window)
 {
-	_SGEntityCall call;
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_WINCLOSE}, (void*[]){NULL}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINCLOSE);
 	sgStop(0);
 }
 void SG_EXPORT _sg_cbWindowResize(void* window, SGuint width, SGuint height)
 {
-	_SGEntityCall call;
-	call = (_SGEntityCall){1, (SGenum[]){SG_EVF_WINRESIZE}, (void*[]){(SGuint[]){width, height}}};
-	sgEventCall(SG_EV_INTERNAL, &call);
+	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINRESIZE, width, height);
 }
 
 SGbool SG_EXPORT _sgWindowInit(void)
@@ -111,20 +105,20 @@ void SG_EXPORT sgWindowClose(void)
 	if(_sg_modWindow.sgmCoreWindowClose != NULL)
 		_sg_modWindow.sgmCoreWindowClose(_sg_winHandle);
 }
-void SG_EXPORT sgWindowSetTitleF(char* format, ...)
+void SG_EXPORT sgWindowSetTitlef(const char* format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	sgWindowSetTitleFV(format, args);
+	sgWindowSetTitlefv(format, args);
 	va_end(args);
 }
-void SG_EXPORT sgWindowSetTitleFV(char* format, va_list args)
+void SG_EXPORT sgWindowSetTitlefv(const char* format, va_list args)
 {
 	char* title = sgPrintfv(format, args);
 	sgWindowSetTitle(title);
 	free(title);
 }
-void SG_EXPORT sgWindowSetTitle(char* title)
+void SG_EXPORT sgWindowSetTitle(const char* title)
 {
 	int len = strlen(title) + 1;
 	_sg_winTitle = realloc(_sg_winTitle, len);

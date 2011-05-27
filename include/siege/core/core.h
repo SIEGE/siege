@@ -49,7 +49,7 @@ extern "C"
  * \see sgLoadModules
  * \see sgLoadModule
  */
-SGuint SG_EXPORT sgLoadModulesv(int n, va_list args);
+SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args);
 /**
  * \brief Load a number of modules
  * \ingroup Core
@@ -76,7 +76,7 @@ SGuint SG_EXPORT sgLoadModulesv(int n, va_list args);
  * \see sgLoadModulesv
  * \see sgLoadModule
  */
-SGuint SG_EXPORT sgLoadModules(int n, ...);
+SGuint SG_EXPORT sgLoadModules(size_t n, ...);
 /**
  * \brief Load a single module
  * \ingroup Core

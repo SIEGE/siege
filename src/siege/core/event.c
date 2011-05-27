@@ -34,7 +34,7 @@ SGbool SG_EXPORT _sgEventDeinit(void)
 	sgListDestroy(_sg_evList);
 	return SG_TRUE;
 }
-SGEvent* SG_EXPORT sgEventCreate(float priority, SGenum type, void* data, SGEventCall func)
+SGEvent* SG_EXPORT sgEventCreate(float priority, SGenum type, void* data, SGEventCall* func)
 {
 	SGEvent* event = malloc(sizeof(SGEvent));
 	event->priority = priority;
@@ -48,20 +48,32 @@ void SG_EXPORT sgEventDestroy(SGEvent* event)
 {
 	sgListRemoveItem(_sg_evList, event);
 }
-void SG_EXPORT sgEventCall(SGenum type, void* args)
+void SG_EXPORT sgEventCallv(SGenum type, va_list args)
 {
 	_sg_evStop = SG_FALSE;
 	SGbool cont = SG_TRUE;
 	SGEvent* event;
 	SGPListNode* node;
+	va_list curarg;
 	for(node = _sg_evList->first; (node != NULL) && cont; node = node->next)
 	{
 		if(_sg_evStop)
 			break;
 		event = node->item;
 		if(type == event->type)
+		{
+		    va_copy(curarg, args);
 			cont = event->func(event->data, args);
+			va_end(curarg);
+		}
 	}
+}
+void SG_EXPORT sgEventCall(SGenum type, ...)
+{
+    va_list args;
+    va_start(args, type);
+    sgEventCallv(type, args);
+    va_end(args);
 }
 void SG_EXPORT sgEventStop(void)
 {

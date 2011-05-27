@@ -3,6 +3,17 @@
 #include <stdlib.h>
 #include <math.h>
 
+/*
+    TODO for extended fonts:
+    - fallback if no conv module is loaded
+    - consistency!
+      - fonts use sgFontFoofW for wide
+              but sgFontFoo for normal (no f!)
+      - fonts use sgFontFooU32 for UTF-32
+              but util/string uses sgLineFoo32 (note lack of U)
+    ...
+*/
+
 SGFont* sizes[12];
 const size_t numsizes = sizeof(sizes) / sizeof(SGFont*);
 const char* text = "A Quick Brown Fox Jumps Over The Lazy Dog 0123456789";
@@ -13,6 +24,7 @@ int main()
 	sgLoadModule("SDL");
 	sgLoadModule("OpenGL");
 	sgLoadModule("Freetype");
+	sgLoadModule("IConv");
 	sgInit(640, 480, 32, 0);
 	sgWindowSetTitle("SIEGE Text Demo");
 
@@ -20,7 +32,7 @@ int main()
 	for(i = 0; i < numsizes; i++)
 		sizes[i] = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 7 + i, 127);
 
-	font = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 10, 127);
+	font = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 127);
 
 	SGuint width = sgWindowGetWidth();
 	SGuint height = sgWindowGetHeight();
@@ -41,15 +53,15 @@ int main()
 
 		sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
 
-		sgFontPrint(font, width / 2, height - 64, "Mouse center angle: %f", atan2(sgMouseGetPosY() - (float)height / 2, sgMouseGetPosX() - (float)width / 2) * 180.0 / M_PI);
+		sgFontPrintf(font, width / 2, height - 64, "Mouse center angle: %f", atan2(sgMouseGetPosY() - (float)height / 2, sgMouseGetPosX() - (float)width / 2) * 180.0 / SG_PI);
 
 		sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
-		sgFontPrint(font, width / 2, height - 92, "Mouse: %d,%d %d", sgMouseGetPosX(), sgMouseGetPosY(), sgMouseGetWheel());
+		sgFontPrintf(font, width / 2, height - 92, "Mouse: %d,%d %d", sgMouseGetPosX(), sgMouseGetPosY(), sgMouseGetWheel());
 
-		sgFontPrint(font, 128, height - 128, "AAA\nBBB\nCCC\nDDD\n\nEEE");
+		sgFontPrintf(font, 128, height - 128, "AAA\nBBB\nCCC\nDDD\n\nEEE");
 
 		sgDrawColor4f(0.0, 0.5, 0.75, 0.75);
-		sgFontPrint(font, width / 4, height - height / 3, "Well, this is some more text...\nUseful for UI, consoles, etc...");
+		sgFontPrintf(font, width / 4, height - height / 3, "Well, this is some more text...\nUseful for UI, consoles, etc...");
 
 		sgDrawColor4f(1.0, 1.0, 0.0, 0.75);
 		sgDrawLine(width / 2, height / 2, sgMouseGetPosX(), sgMouseGetPosY());
@@ -57,9 +69,12 @@ int main()
 		sgDrawLine(width / 2, height / 2, width / 2, sgMouseGetPosY());
 
 		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
-		sgFontPrint(font, 2, 256, "Testing: ABC abc 012");
 
-		sgFontStrSize(font, &dx, &dy, "Some test text");
+		// thanks to Wikipedia for these!
+		sgFontPrintW(font, 2, 256, L"Testing: ABC abc 012\nčšž\nSome cyrillic: Съешь ещё этих мягких французских булок да выпей же чаю\nAnd now for greek: Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός");
+        sgFontPrintfW(font, 2, 328, L"sgFontPrintfW: %ls", L"čšž");
+
+		sgFontStrSizef(font, &dx, &dy, "Some test text");
 		sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
 		sgDrawLine(640 - 160, 480 - 120, 640 - 160 + dx, 480 - 120);
 		sgDrawRectangle(640 / 2 - dx / 2, 480 - 120 - dy / 2,

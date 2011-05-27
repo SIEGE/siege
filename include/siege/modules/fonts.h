@@ -30,6 +30,7 @@ typedef struct SGModuleFonts
 	SGuint SG_EXPORT (*sgmFontsFaceDestroy)(void* face);
 	SGuint SG_EXPORT (*sgmFontsFaceSetHeight)(void* face, float height);
 	//SGuint SG_EXPORT (*sgmFontsFaceGetHeight)(void* face, float* height);
+
 	SGuint SG_EXPORT (*sgmFontsCharsCreate)(void* face,
 				SGdchar* chars, SGuint charnum,
 				float* width, float* height,
@@ -37,6 +38,11 @@ typedef struct SGModuleFonts
 				float* postx, float* posty,
 				SGuint* datawidth, SGuint* dataheight, void** data);
 	SGuint SG_EXPORT (*sgmFontsCharsFreeData)(void* data);
+
+	SGenum SG_EXPORT (*sgmFontsConvCreate)(void** conv, const char* from, const char* to);
+	SGenum SG_EXPORT (*sgmFontsConvDestroy)(void* conv);
+	SGenum SG_EXPORT (*sgmFontsConv)(void* conv, void** outbuf, size_t* outlen, void* inbuf, size_t inlen);
+	SGenum SG_EXPORT (*sgmFontsConvFreeData)(void* ptr);
 } SGModuleFonts;
 
 #ifdef SG_BUILD_LIBRARY

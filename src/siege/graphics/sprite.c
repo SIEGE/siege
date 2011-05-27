@@ -14,14 +14,16 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/sprite.h>
+#include <siege/core/core.h>
 
 #include <stdlib.h>
 #include <math.h>
 
-void SG_EXPORT _sgSpriteEvTick(SGEntity* client)
+void SG_EXPORT _sgSpriteUpdateTick(SGSprite* sprite)
 {
-    SGSprite* sprite = client->data;
-    sprite->image += sprite->speed;
+    SGulong tick = sgGetTick();
+    sprite->image += sprite->speed * (tick - sprite->tick);
+    sprite->tick = tick;
 
     while((SGuint)sprite->image >= sprite->numimages)
         sprite->image -= sprite->numimages;
@@ -33,9 +35,7 @@ SGSprite* SG_EXPORT sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, f
     if(sprite == NULL)
         return NULL;
 
-    sprite->client = sgEntityCreate(0.0, SG_EVT_CORE);
-    sprite->client->data = sprite;
-    sprite->client->evTick = _sgSpriteEvTick;
+    sprite->tick = sgGetTick();
 
     sprite->extimages = SG_TRUE;
     sprite->numimages = 1;
@@ -82,7 +82,7 @@ void SG_EXPORT sgSpriteDestroy(SGSprite* sprite)
         return;
 
     SGuint i;
-    if(sprite->extimages)
+    if(!sprite->extimages)
     {
         for(i = 0; i < sprite->numimages; i++)
             sgTextureDestroy(sprite->subimages[i]);
@@ -95,6 +95,8 @@ void SG_EXPORT sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float 
 {
     if(sprite == NULL)
         return;
+
+    _sgSpriteUpdateTick(sprite);
 
     sgTextureDrawRads3f2f2f1f(sprite->subimages[(SGuint)sprite->image], x, y, z, xscale, yscale, sprite->xoffset, sprite->yoffset, angle);
 }
@@ -113,19 +115,19 @@ void SG_EXPORT sgSpriteDrawRads2f1f(SGSprite* sprite, float x, float y, float an
 
 void SG_EXPORT sgSpriteDrawDegs3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle)
 {
-    sgSpriteDrawRads3f2f1f(sprite, x, y, z, xscale, yscale, angle * M_PI / 180.0);
+    sgSpriteDrawRads3f2f1f(sprite, x, y, z, xscale, yscale, angle * SG_PI / 180.0);
 }
 void SG_EXPORT sgSpriteDrawDegs2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle)
 {
-    sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, xscale, yscale, angle * M_PI / 180.0);
+    sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, xscale, yscale, angle * SG_PI / 180.0);
 }
 void SG_EXPORT sgSpriteDrawDegs3f1f(SGSprite* sprite, float x, float y, float z, float angle)
 {
-    sgSpriteDrawRads3f2f1f(sprite, x, y, z, 1.0, 1.0, angle * M_PI / 180.0);
+    sgSpriteDrawRads3f2f1f(sprite, x, y, z, 1.0, 1.0, angle * SG_PI / 180.0);
 }
 void SG_EXPORT sgSpriteDrawDegs2f1f(SGSprite* sprite, float x, float y, float angle)
 {
-    sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, 1.0, 1.0, angle * M_PI / 180.0);
+    sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, 1.0, 1.0, angle * SG_PI / 180.0);
 }
 
 void SG_EXPORT sgSpriteDraw3f2f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale)

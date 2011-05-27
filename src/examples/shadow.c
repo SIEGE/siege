@@ -49,7 +49,7 @@ int main()
     sgLoadModule("OpenGL");
     sgLoadModule("DevIL");
     sgInit(640, 480, 32, 0);
-    sgWindowSetTitleF("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
+    sgWindowSetTitlef("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
 
     space = sgLightSpaceCreate();
     sgLightSpaceSetAmbience4f(space, 0.125, 0.0625, 0.0, 1.0);

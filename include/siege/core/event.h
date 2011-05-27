@@ -19,6 +19,8 @@
 #include "../util/plist.h"
 #include "../common.h"
 
+#include <stdarg.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -130,7 +132,7 @@ extern "C"
  * \param args Event arguments (depends on the type of event)
  * \return SG_TRUE to continue with the next event, SG_FALSE to stop
  */
-typedef SGbool SG_EXPORT (*SGEventCall)(void* data, void* args);
+typedef SGbool SG_EXPORT (SGEventCall)(void* data, va_list args);
 
 #ifdef SG_BUILD_LIBRARY
 SGPList* _sg_evList;
@@ -163,7 +165,7 @@ typedef struct SGEvent
 	 *
 	 * This function is called when the event is triggered.
 	 */
-	SGEventCall func;
+    SGEventCall* func;
 } SGEvent;
 
 SGbool SG_EXPORT _sgEventInit(void);
@@ -179,7 +181,7 @@ SGbool SG_EXPORT _sgEventDeinit(void);
  * \param func Function to call when the event is triggered
  * \return The newly created event handler if successful, NULL otherwise.
  */
-SGEvent* SG_EXPORT sgEventCreate(float priority, SGenum type, void* data, SGEventCall func);
+SGEvent* SG_EXPORT sgEventCreate(float priority, SGenum type, void* data, SGEventCall* func);
 /**
  * \memberof SGEvent
  * \brief Destroy an event handler
@@ -197,7 +199,8 @@ void SG_EXPORT sgEventDestroy(SGEvent* event);
  *
  * This function triggers an event, and in turn, every event handler of the correct type (unless previously stopped).
  */
-void SG_EXPORT sgEventCall(SGenum type, void* args);
+void SG_EXPORT sgEventCallv(SGenum type, va_list args);
+void SG_EXPORT sgEventCall(SGenum type, ...);
 /**
  * \memberof SGEvent
  * \brief Stop an event
