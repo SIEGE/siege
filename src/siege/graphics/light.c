@@ -213,7 +213,7 @@ SGLight* SG_EXPORT sgLightCreate(SGLightSpace* space, float x, float y, float ra
     light->shadow = SG_TRUE;
 
     light->angle = 0.0;
-    light->cone = 2 * M_PI;
+    light->cone = 2 * SG_PI;
     light->sprite = NULL;
 
     return light;
@@ -358,11 +358,11 @@ float SG_EXPORT sgLightGetAngleRads(SGLight* light)
 
 void SG_EXPORT sgLightSetAngleDegs(SGLight* light, float degs)
 {
-    light->angle = degs * M_PI / 180.0;
+    light->angle = degs * SG_PI / 180.0;
 }
 float SG_EXPORT sgLightGetAngleDegs(SGLight* light)
 {
-    return light->angle * 180.0 / M_PI;
+    return light->angle * 180.0 / SG_PI;
 }
 
 void SG_EXPORT sgLightSetConeRads(SGLight* light, float rads)
@@ -376,11 +376,11 @@ float SG_EXPORT sgLightGetConeRads(SGLight* light)
 
 void SG_EXPORT sgLightSetConeDegs(SGLight* light, float degs)
 {
-    light->cone = degs * M_PI / 180.0;
+    light->cone = degs * SG_PI / 180.0;
 }
 float SG_EXPORT sgLightGetConeDegs(SGLight* light)
 {
-    return light->cone * 180.0 / M_PI;
+    return light->cone * 180.0 / SG_PI;
 }
 
 void SG_EXPORT sgLightDraw(SGLight* light)
@@ -394,7 +394,7 @@ void SG_EXPORT sgLightDraw(SGLight* light)
     {
         size_t i;
         int sides = SG_MAX(3, (int)(light->radius * 0.5));
-        float f = 2 * M_PI / sides;
+        float f = 2 * SG_PI / sides;
         sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
             sgDrawVertex2f(light->pos.x, light->pos.y);
             sgDrawColor4f(light->color.r, light->color.g, light->color.b, 0.0);
