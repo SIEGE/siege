@@ -10,7 +10,7 @@ SGSprite* sprPacman;
 SGSprite* sprStrongboxSmall;
 SGSprite* sprSupportBar;
 
-int main()
+int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");

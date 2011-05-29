@@ -19,7 +19,7 @@ const size_t numsizes = sizeof(sizes) / sizeof(SGFont*);
 const char* text = "A Quick Brown Fox Jumps Over The Lazy Dog 0123456789";
 
 SGFont* font;
-int main()
+int main(void)
 {
 	sgLoadModule("SDL");
 	sgLoadModule("OpenGL");

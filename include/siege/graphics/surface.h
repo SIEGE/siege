@@ -31,8 +31,8 @@ typedef struct SGSurface
 void* _sg_surfTarget;
 #endif // SGC_BUILD_LIBRARY
 
-SGbool SG_EXPORT _sgSurfaceInit();
-SGbool SG_EXPORT _sgSurfaceDeinit();
+SGbool SG_EXPORT _sgSurfaceInit(void);
+SGbool SG_EXPORT _sgSurfaceDeinit(void);
 
 SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname);
 SGSurface* SG_EXPORT sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data);

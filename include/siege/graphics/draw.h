@@ -117,7 +117,7 @@ void SG_EXPORT sgDrawEnd(void);
  * \param a Alpha
  */
 void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a);
-_SG_COLOR_OVERLOADS_DECL(sgDrawColor);
+_SG_COLOR_OVERLOADS_DECL(sgDrawColor)
 /**
  * \brief Set the texture coordinate of the following vertex
  *
@@ -162,7 +162,7 @@ void SG_EXPORT sgDrawVertex2f(float x, float y);
  * \param a Alpha
  */
 void SG_EXPORT sgDrawClear4f(float r, float g, float b, float a);
-_SG_COLOR_OVERLOADS_DECL(sgDrawClear);
+_SG_COLOR_OVERLOADS_DECL(sgDrawClear)
 /**
  * \brief Clear the drawable with black color
  */

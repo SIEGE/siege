@@ -399,7 +399,7 @@ void drawLightDBG(Light* light)
     }
 }
 
-int main()
+int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");
