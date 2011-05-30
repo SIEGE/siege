@@ -37,21 +37,19 @@
 #define GET_PROC_ADDRESS(x) ((void*)glXGetProcAddress((const GLchar*)(x)))
 #endif
 
-/*
- * #if defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
- * #include <OpenGL/gl.h>
- * #include <OpenGL/glu.h>
- * #include <OpenGL/glext.h>
- * #else // not apple
- * #include <GL/gl.h>
- * #include <GL/glu.h>
- * #include <GL/glext.h>
- * #endif // apple
- */
+#if defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <OpenGL/glext.h>
+#else // not apple
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glext.h>
+#endif // apple
 
-#include <gl.h>
+/*#include <gl.h>
 #include <glu.h>
-#include <glext.h>
+#include <glext.h>*/
 
 #ifndef GLAPIENTRY
 #	ifndef APIENTRY
