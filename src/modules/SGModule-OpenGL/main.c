@@ -52,6 +52,9 @@ void checkFBO(FBOFunctions* fbo)
     //void (*glGenerateMipmapEXT) (GLenum);
 #undef CHECK
 }
+#if defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
+void* _glhandle;
+#endif // APPLE
 void* getProcAddress(const char* name)
 {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
@@ -84,6 +87,10 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     (*minfo)->type = SG_MODULE_GRAPHICS;
     (*minfo)->name = "OpenGL";
 
+    #if defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
+	_glhandle = dlopen("OpenGL.dylib", RTLD_LAZY | RTLD_LOCAL);
+	#endif // APPLE
+
     return SG_OK;
 }
 
@@ -91,6 +98,10 @@ SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
 {
     if(minfo == NULL)
         return SG_OK; // SG_INVALID_VALUE
+
+    #if defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
+	dlclose(_glhandle);
+	#endif // APPLE
 
     free(minfo);
     return SG_OK;

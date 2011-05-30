@@ -19,16 +19,35 @@
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 #include <windows.h>
-#else
-#include <GL/glx.h>
+#elif defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
+#include <dlfcn.h>
+#define glXGetProcAddress(x) dlsym(_glhandle, (x))
+#else // not win32 and not apple
+#include <glx.h>
 #endif
 
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
+/*
+ * #if defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
+ * #include <OpenGL/gl.h>
+ * #include <OpenGL/glu.h>
+ * #include <OpenGL/glext.h>
+ * #else // not apple
+ * #include <GL/gl.h>
+ * #include <GL/glu.h>
+ * #include <GL/glext.h>
+ * #endif // apple
+ */
+
+#include <gl.h>
+#include <glu.h>
+#include <glext.h>
 
 #ifndef GLAPIENTRY
-#define GLAPIENTRY APIENTRY
+#	ifndef APIENTRY
+#		define GLAPIENTRY
+#	else // APIENTRY
+#		define GLAPIENTRY APIENTRY
+#	endif // APIENTRY
 #endif // GLAPIENTRY
 
 typedef struct FBOFunctions
