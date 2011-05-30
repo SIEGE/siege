@@ -30,11 +30,11 @@
 #define DEINIT_HANDLE() do { dlclose(_glhandle); } while(0)
 #define GET_PROC_ADDRESS(x) dlsym(_glhandle, (x))
 #else // not win32 and not apple
-#include <glx.h>
+#include <GL/glx.h>
 #define PROC_HANDLE void* _glhandle
 #define INIT_HANDLE() do { (void)_glhandle; } while(0)
 #define DEINIT_HANDLE() do { (void)_glhandle; } while(0)
-#define GET_PROC_ADDRESS(x) ((void*)glXGetProcAddress((const GLchar*)(x)))
+#define GET_PROC_ADDRESS(x) ((void*)glXGetProcAddress((const GLubyte*)(x)))
 #endif
 
 #if defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
