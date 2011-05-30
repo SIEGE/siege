@@ -19,11 +19,22 @@
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 #include <windows.h>
+#define PROC_HANDLE void* _glhandle
+#define INIT_HANDLE() do { (void)_glhandle; } while(0)
+#define DEINIT_HANDLE() do { (void)_glhandle; } while(0)
+#define GET_PROC_ADDRESS(x) wglGetProcAddress((x))
 #elif defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
 #include <dlfcn.h>
-#define glXGetProcAddress(x) dlsym(_glhandle, (x))
+#define PROC_HANDLE void* _glhandle
+#define INIT_HANDLE() do { _glhandle = dlopen("OpenGL.dylib", RTLD_LAZY | RTLD_LOCAL); } while(0)
+#define DEINIT_HANDLE() do { dlclose(_glhandle); } while(0)
+#define GET_PROC_ADDRESS(x) dlsym(_glhandle, (x))
 #else // not win32 and not apple
 #include <glx.h>
+#define PROC_HANDLE void* _glhandle
+#define INIT_HANDLE() do { (void)_glhandle; } while(0)
+#define DEINIT_HANDLE() do { (void)_glhandle; } while(0)
+#define GET_PROC_ADDRESS(x) ((void*)glXGetProcAddress((const GLchar*)(x)))
 #endif
 
 /*
@@ -75,7 +86,6 @@ typedef struct FBOFunctions
 } FBOFunctions;
 
 void checkFBO(FBOFunctions* fbo);
-void* getProcAddress(const char* name);
 SGuint higherPower(SGuint num);
 
 #endif // __MAIN_H__
