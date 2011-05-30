@@ -33,6 +33,10 @@ SGList* _sg_modList;
 SGbool _sg_modFirst;
 #endif // SG_BUILD_LIBRARY
 
+typedef SGuint SG_EXPORT SGMModuleInitFunction(SGModuleInfo** minfo);
+typedef SGuint SG_EXPORT SGMModuleExitFunction(SGModuleInfo* minfo);
+typedef SGuint SG_EXPORT SGMModuleMatchFunction(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
+
 typedef struct SGModule
 {
 	char* name;
@@ -40,9 +44,9 @@ typedef struct SGModule
 	SGModuleInfo* minfo;
 	SGListNode* node;
 
-	SGuint SG_EXPORT (*sgmModuleInit)(SGModuleInfo** minfo);
-	SGuint SG_EXPORT (*sgmModuleExit)(SGModuleInfo* minfo);
-	SGuint SG_EXPORT (*sgmModuleMatch)(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
+    SGMModuleInitFunction* sgmModuleInit;
+    SGMModuleExitFunction* sgmModuleExit;
+    SGMModuleMatchFunction* sgmModuleMatch;
 } SGModule;
 
 char* SG_EXPORT _sgModuleGetFile(const char* module);
