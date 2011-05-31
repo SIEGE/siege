@@ -21,15 +21,15 @@ Polygon* polys[NPOLYS];
 
 void destroyPoly(Polygon* poly)
 {
-    poly->entity->lcDestroy = NULL;
     sgEntityDestroy(poly->entity);
-    free(poly->points);
-    free(poly);
 }
 
 void destroyPolyEntity(SGEntity* ent)
 {
-    destroyPoly(ent->data);
+	Polygon* poly = ent->data;
+
+    free(poly->points);
+    free(poly);
 }
 
 void drawPoly(Polygon* poly)
@@ -125,15 +125,15 @@ Light* lights[NLIGHTS];
 
 void destroyLight(Light* light)
 {
-    light->entity->lcDestroy = NULL;
     sgEntityDestroy(light->entity);
-    sgSurfaceDestroy(light->surface);
-    free(light);
 }
 
 void destroyLightEntity(SGEntity* ent)
 {
-    destroyLight(ent->data);
+    Light* light = ent->data;
+
+    sgSurfaceDestroy(light->surface);
+    free(light);
 }
 
 void drawLight(Light* light)
