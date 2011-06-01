@@ -31,8 +31,8 @@ typedef struct SGRand
 SGuint _sg_randSeed;
 #endif // SG_BUILD_LIBRARY
 
-SGbool SG_EXPORT _sgRandInit();
-SGbool SG_EXPORT _sgRandDeinit();
+SGbool SG_EXPORT _sgRandInit(void);
+SGbool SG_EXPORT _sgRandDeinit(void);
 
 SGRand* SG_EXPORT sgRandCreate32(SGenum type, SGuint seed, SGuint index);
 void SG_EXPORT sgRandDestroy(SGRand* rand);

@@ -95,7 +95,7 @@ void evMouseButtonRightPress(SGEntity* entity)
     createWoodenBox(sgMouseGetPosX(), sgMouseGetPosY(), 0.0);
 }
 
-int main()
+int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");

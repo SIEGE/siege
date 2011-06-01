@@ -21,12 +21,12 @@
 #include <stdio.h>
 #include <math.h>
 
-SGbool SG_EXPORT _sgSurfaceInit()
+SGbool SG_EXPORT _sgSurfaceInit(void)
 {
     _sg_surfTarget = NULL;
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgSurfaceDeinit()
+SGbool SG_EXPORT _sgSurfaceDeinit(void)
 {
     return SG_TRUE;
 }

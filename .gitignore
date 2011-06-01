@@ -1,6 +1,6 @@
 .directory
 .*.swp
+*~
 /build
 /doc
-*~
-
+siege.kdev4

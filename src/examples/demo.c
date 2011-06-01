@@ -83,17 +83,17 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
 
 void destroyPoly(Polygon* poly)
 {
-    poly->entity->lcDestroy = NULL;
     sgEntityDestroy(poly->entity);
-    free(poly->points);
-    sgPhysicsShapeDestroy(poly->shape);
-    sgPhysicsBodyDestroy(poly->body);
-    free(poly);
 }
 
 void destroyPolyEntity(SGEntity* ent)
 {
-    destroyPoly(ent->data);
+	Polygon* poly = ent->data;
+
+    free(poly->points);
+    sgPhysicsShapeDestroy(poly->shape);
+    sgPhysicsBodyDestroy(poly->body);
+    free(poly);
 }
 
 void drawPoly(Polygon* poly)
@@ -194,15 +194,15 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
 
 void destroyLight(Light* light)
 {
-    light->entity->lcDestroy = NULL;
     sgEntityDestroy(light->entity);
-    sgSurfaceDestroy(light->surface);
-    free(light);
 }
 
 void destroyLightEntity(SGEntity* ent)
 {
-    destroyLight(ent->data);
+	Light* light = ent->data;
+
+    sgSurfaceDestroy(light->surface);
+    free(light);
 }
 
 void drawLight(Light* light)
@@ -399,7 +399,7 @@ void drawLightDBG(Light* light)
     }
 }
 
-int main()
+int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");

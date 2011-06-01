@@ -28,12 +28,15 @@ typedef struct SGLibrary
     void* handle;
 } SGLibrary;
 
+typedef void (SGLibraryFunction)(void);
+
 SGbool SG_EXPORT _sgLibraryInit(void);
 SGbool SG_EXPORT _sgLibraryDeinit(void);
 
 SGLibrary* SG_EXPORT sgLibraryLoad(char* fname);
 void SG_EXPORT sgLibraryUnload(SGLibrary* lib);
-void* SG_EXPORT sgGetProcAddress(SGLibrary* lib, char* proc);
+SGLibraryFunction* SG_EXPORT sgGetProcAddress(SGLibrary* lib, const char* proc);
+void* SG_EXPORT sgGetVarAddress(SGLibrary* lib, const char* var);
 
 #ifdef __cplusplus
 }

@@ -30,7 +30,8 @@ SGbool SG_EXPORT _sgStringInit(void)
 }
 SGbool SG_EXPORT _sgStringDeinit(void)
 {
-	free(_sg_strBuf);
+	if(_sg_strBuf)
+		free(_sg_strBuf);
 	return SG_TRUE;
 }
 

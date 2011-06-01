@@ -18,12 +18,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-SGbool SG_EXPORT _sgRandInit()
+SGbool SG_EXPORT _sgRandInit(void)
 {
     _sg_randSeed = time(NULL);
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgRandDeinit()
+SGbool SG_EXPORT _sgRandDeinit(void)
 {
     return SG_TRUE;
 }

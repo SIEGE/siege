@@ -25,11 +25,13 @@
 #define GL_FRAMEBUFFER_COMPLETE_EXT 0
 #endif
 
+PROC_HANDLE;
+
 void checkFBO(FBOFunctions* fbo)
 {
-#define CHECK(FBO, NAME)                \
-    FBO->NAME = getProcAddress(#NAME);  \
-    if(FBO->NAME == NULL)               \
+#define CHECK(FBO, NAME)                	\
+    FBO->NAME = GET_PROC_ADDRESS(#NAME);	\
+    if(FBO->NAME == NULL)               	\
         FBO->hasFBO = 0;
 
     //GLboolean (*glIsRenderbufferEXT) (GLuint);
@@ -51,15 +53,6 @@ void checkFBO(FBOFunctions* fbo)
     //void (*glGetFramebufferAttachmentParameterivEXT) (GLenum, GLenum, GLenum, GLint *);
     //void (*glGenerateMipmapEXT) (GLenum);
 #undef CHECK
-}
-void* getProcAddress(const char* name)
-{
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-    return wglGetProcAddress(name);
-#else
-    // a rather ugly hack with the casting... but it works
-    return (void*)glXGetProcAddress((const GLubyte*)name);
-#endif
 }
 
 SGuint higherPower(SGuint num)
@@ -84,6 +77,8 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     (*minfo)->type = SG_MODULE_GRAPHICS;
     (*minfo)->name = "OpenGL";
 
+	INIT_HANDLE();
+
     return SG_OK;
 }
 
@@ -91,6 +86,8 @@ SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
 {
     if(minfo == NULL)
         return SG_OK; // SG_INVALID_VALUE
+
+	DEINIT_HANDLE();
 
     free(minfo);
     return SG_OK;

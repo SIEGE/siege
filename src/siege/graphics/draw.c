@@ -76,7 +76,7 @@ void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
 	if(_sg_modGraphics.sgmGraphicsDrawSetColor != NULL)
 		_sg_modGraphics.sgmGraphicsDrawSetColor(_sg_gfxHandle, _sg_drawCurColor);
 }
-_SG_COLOR_OVERLOADS_FUNC(sgDrawColor);
+_SG_COLOR_OVERLOADS_FUNC(sgDrawColor)
 void SG_EXPORT sgDrawTexCoord2f(float s, float t)
 {
 	_sg_drawCurTexCoord[0] = s;
@@ -110,7 +110,7 @@ void SG_EXPORT sgDrawClear4f(float r, float g, float b, float a)
 	if(_sg_modGraphics.sgmGraphicsContextClear != NULL)
 		_sg_modGraphics.sgmGraphicsContextClear(_sg_gfxHandle, col);
 }
-_SG_COLOR_OVERLOADS_FUNC(sgDrawClear);
+_SG_COLOR_OVERLOADS_FUNC(sgDrawClear)
 void SG_EXPORT sgDrawClear(void)
 {
 	sgDrawClear4f(0.0f, 0.0f, 0.0f, 0.0f);
@@ -196,7 +196,6 @@ void SG_EXPORT sgDrawCircle(float x, float y, float radius, SGbool fill)
 	sgDrawEllipse2R(x, y, radius, radius, fill);
 }
 
-#define ABS(x) (((x) < 0) ? -(x) : (x))
 void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	float adiff = a2 - a1;
@@ -207,7 +206,7 @@ void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, fl
 		adiff = adiff - 2 * SG_PI;
 
 	float ra = (rx + ry) / 2.0;
-	SGuint numsides = (SGuint)(ra * ABS(adiff) / 2 / SG_PI * 4);
+	SGuint numsides = (SGuint)(ra * SG_ABS(adiff) / 2 / SG_PI * 4);
 	adiff /= numsides;
 	SGuint i;
 

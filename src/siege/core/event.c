@@ -63,7 +63,7 @@ void SG_EXPORT sgEventCallv(SGenum type, va_list args)
 		if(type == event->type)
 		{
 		    va_copy(curarg, args);
-			cont = event->func(event->data, args);
+			cont = event->func(event->data, curarg);
 			va_end(curarg);
 		}
 	}

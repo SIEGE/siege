@@ -43,7 +43,7 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
     }
 }
 
-int main()
+int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");

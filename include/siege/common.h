@@ -138,7 +138,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 1
-#define SG_VERSION_PATCH 12
+#define SG_VERSION_PATCH 13
 /**
  * \brief Version string
  *
@@ -205,15 +205,13 @@ typedef double SGdouble;
 #endif // INFINITY
 /// @}
 
-#ifndef M_PI
-#	ifndef PI
-#		define SG_PI 3.14159265358979323846
-#	else // PI
-#		define SG_PI M_PI
-#	endif // PI
-#else // M_PI
-#	define SG_PI M_PI
-#endif // M_PI
+#if defined(M_PI)
+#   define SG_PI M_PI
+#elif defined(PI)
+#   define SG_PI PI
+#else // we don't have a PI defined
+#   define SG_PI 3.14159265358979323846
+#endif // PI defind
 
 /**
  * \name Some commonly used macros

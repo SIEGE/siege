@@ -56,7 +56,10 @@ SGenum SG_EXPORT sgmFontsConv(void* conv, void** outbuf, size_t* outlen, void* i
 	size_t iinlen = inlen;
 	size_t ioutlen = inlen * 4;
 
-	iconv(*cconv, (char**)&iinbuf, &iinlen, (char**)&ioutbuf, &ioutlen);
+	// Linux uses char** for 2nd argument
+	// BSD uses something else...
+	// ... which is why we just cast to void* and let the compiler worry about that.
+	iconv(*cconv, (void*)&iinbuf, &iinlen, (void*)&ioutbuf, &ioutlen);
 	*outlen = inlen * 4 - ioutlen;
 
 	return SG_OK;
