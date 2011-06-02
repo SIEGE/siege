@@ -27,6 +27,8 @@ extern "C"
     SGuint SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen);
     //SGuint SG_EXPORT sgmAudioBufferGetData(void* buffer, SGuint* channels, SGuint* format, SGuint* frequency, void* data, SGuint* datalen);
     //SGuint SG_EXPORT sgmAudioBufferFreeData(void* data);
+
+    SGuint SG_EXPORT sgmAudioBufferSetHandle(void* buffer, void* handle);
 #ifdef __cplusplus
 }
 #endif

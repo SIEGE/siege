@@ -25,10 +25,11 @@ void SG_EXPORT _sgModuleLoadAudio(SGLibrary* lib)
 
     _SG_BINDS(_sg_modAudio, sgmAudioBufferCreate);
     //_SG_BINDS(_sg_modAudio, sgmAudioBufferCreateData);
+    _SG_BINDS(_sg_modAudio, sgmAudioBufferDestroy);
     _SG_BINDS(_sg_modAudio, sgmAudioBufferSetData);
     //_SG_BINDS(_sg_modAudio, sgmAudioBufferGetData);
     //_SG_BINDS(_sg_modAudio, sgmAudioBufferFreeData);
-    _SG_BINDS(_sg_modAudio, sgmAudioBufferDestroy);
+    _SG_BINDS(_sg_modAudio, sgmAudioBufferSetHandle);
 
     _SG_BINDS(_sg_modAudio, sgmAudioSourceCreate);
     //_SG_BINDS(_sg_modAudio, sgmAudioSourceCreateData);
@@ -69,6 +70,8 @@ void SG_EXPORT _sgModuleLoadAudio(SGLibrary* lib)
     _SG_BINDS(_sg_modAudio, sgmAudioFileDestroy);
     _SG_BINDS(_sg_modAudio, sgmAudioFileNumSamples);
     _SG_BINDS(_sg_modAudio, sgmAudioFileRead);
+
+    _SG_BINDS(_sg_modAudio, sgmAudioFileGetHandle);
 }
 
 SGModuleAudio* SG_EXPORT sgModuleGetAudio(void)

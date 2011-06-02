@@ -39,12 +39,67 @@ SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname)
     SGuint frequency = 0;
     void* data = NULL;
     SGuint datalen = 0;
-    if(_sg_modAudio.sgmAudioLoadFile != NULL)
-        _sg_modAudio.sgmAudioLoadFile(fname, &channels, &format, &frequency, &data, &datalen);
-    if(_sg_modAudio.sgmAudioBufferSetData != NULL)
-        _sg_modAudio.sgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
-    if(_sg_modAudio.sgmAudioLoadFreeData != NULL)
-        _sg_modAudio.sgmAudioLoadFreeData(data);
+    SGuint nsamples = 0;
+    void* file = NULL;
+    void* handle = NULL;
+    if(_sg_modAudio.sgmAudioFileCreate)
+		_sg_modAudio.sgmAudioFileCreate(&file, fname, &channels, &format, &frequency);
+
+	if(_sg_modAudio.sgmAudioFileGetHandle
+	&& _sg_modAudio.sgmAudioFileGetHandle(file, &handle) == SG_OK
+	&& _sg_modAudio.sgmAudioBufferSetHandle(buffer->handle, handle) == SG_OK)
+	{
+	}
+	else
+	{
+		if(_sg_modAudio.sgmAudioFileNumSamples)
+			_sg_modAudio.sgmAudioFileNumSamples(file, &nsamples);
+		switch(format)
+		{
+			case SG_AUDIO_FORMAT_S8:
+			case SG_AUDIO_FORMAT_U8:
+				datalen = nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_S16:
+			case SG_AUDIO_FORMAT_U16:
+				datalen = 2 * nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_S24:
+			case SG_AUDIO_FORMAT_U24:
+				datalen = 3 * nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_S32:
+			case SG_AUDIO_FORMAT_U32:
+				datalen = 4 * nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_F:
+				datalen = 4 * nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_D:
+				datalen = 8 * nsamples * channels;
+				break;
+		}
+		data = malloc(datalen);
+		if(_sg_modAudio.sgmAudioFileRead)
+			_sg_modAudio.sgmAudioFileRead(file, data, &datalen);
+		if(_sg_modAudio.sgmAudioBufferSetData != NULL)
+			_sg_modAudio.sgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
+		free(data);
+	}
+
+	if(_sg_modAudio.sgmAudioFileDestroy)
+		_sg_modAudio.sgmAudioFileDestroy(file);
+
+	/// TODO: This is deprecated, remove when appropriate!
+	if(!_sg_modAudio.sgmAudioFileCreate)
+	{
+		if(_sg_modAudio.sgmAudioLoadFile != NULL)
+			_sg_modAudio.sgmAudioLoadFile(fname, &channels, &format, &frequency, &data, &datalen);
+		if(_sg_modAudio.sgmAudioBufferSetData != NULL)
+			_sg_modAudio.sgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
+		if(_sg_modAudio.sgmAudioLoadFreeData != NULL)
+			_sg_modAudio.sgmAudioLoadFreeData(data);
+	}
 
     return buffer;
 }

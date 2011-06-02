@@ -29,10 +29,11 @@ typedef struct SGModuleAudio
 
 	SGuint SG_EXPORT (*sgmAudioBufferCreate)(void** buffer);
 	//SGuint SG_EXPORT (*sgmAudioBufferCreateData)(void** buffer, SGuint channels, SGuint type, SGuint frequency, void* data, SGuint datalen);
+	SGuint SG_EXPORT (*sgmAudioBufferDestroy)(void* buffer);
 	SGuint SG_EXPORT (*sgmAudioBufferSetData)(void* buffer, SGuint channels, SGuint type, SGuint frequency, void* data, SGuint datalen);
 	//SGuint SG_EXPORT (*sgmAudioBufferGetData)(void* buffer, SGuint* channels, SGuint* type, SGuint* frequency, void** data, SGuint* datalen);
 	//SGuint SG_EXPORT (*sgmAudioBufferFreeData)(void* data);
-	SGuint SG_EXPORT (*sgmAudioBufferDestroy)(void* buffer);
+	SGuint SG_EXPORT (*sgmAudioBufferSetHandle)(void* buffer, void* handle);
 
 	SGuint SG_EXPORT (*sgmAudioSourceCreate)(void** source);
 	//SGuint SG_EXPORT (*sgmAudioSourceCreateData)(void** source, void* buffer, float pitch, float gain, SGbool looping);
@@ -78,6 +79,8 @@ typedef struct SGModuleAudio
 	SGuint SG_EXPORT (*sgmAudioFileDestroy)(void* file);
 	SGuint SG_EXPORT (*sgmAudioFileNumSamples)(void* file, SGuint* samples);
 	SGuint SG_EXPORT (*sgmAudioFileRead)(void* file, void* data, SGuint* datalen);
+
+	SGuint SG_EXPORT (*sgmAudioFileGetHandle)(void* file, void** handle);
 	/// @}
 } SGModuleAudio;
 
