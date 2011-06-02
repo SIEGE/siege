@@ -203,6 +203,15 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 
 	sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
 
+	SGListNode* node;
+	SGModule* module;
+	for(node = _sg_modList->first; node != NULL; node = node->next)
+	{
+		module = node->item;
+		if(module->sgmModuleTick)
+			module->sgmModuleTick(_sg_curTick);
+	}
+
     sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICK);
     sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICKE);
 

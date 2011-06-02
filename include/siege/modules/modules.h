@@ -35,6 +35,7 @@ SGbool _sg_modFirst;
 
 typedef SGuint SG_EXPORT SGMModuleInitFunction(SGModuleInfo** minfo);
 typedef SGuint SG_EXPORT SGMModuleExitFunction(SGModuleInfo* minfo);
+typedef SGuint SG_EXPORT SGMModuleTickFunction(SGulong tick);
 typedef SGuint SG_EXPORT SGMModuleMatchFunction(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
 
 typedef struct SGModule
@@ -46,6 +47,7 @@ typedef struct SGModule
 
     SGMModuleInitFunction* sgmModuleInit;
     SGMModuleExitFunction* sgmModuleExit;
+    SGMModuleTickFunction* sgmModuleTick;
     SGMModuleMatchFunction* sgmModuleMatch;
 } SGModule;
 
