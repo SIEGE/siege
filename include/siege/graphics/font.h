@@ -133,10 +133,11 @@ SGbool SG_EXPORT _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbo
 SGubyte* SG_EXPORT _sgFontToRGBA(SGFont* font, SGubyte* data, SGuint datalen);
 
 void SG_EXPORT _sgFontCenterOffsetU32(SGFont* font, float* x, float* y, const SGdchar* text);
-void SG_EXPORT _sgFontCenterOffsetU16(SGFont* font, float* x, float* y, const SGwchar* text);
-void SG_EXPORT _sgFontCenterOffsetU8(SGFont* font, float* x, float* y, const SGchar* text);
-void SG_EXPORT _sgFontCenterOffsetW(SGFont* font, float* x, float* y, const wchar_t* text);
-void SG_EXPORT _sgFontCenterOffset(SGFont* font, float* x, float* y, const char* text);
+
+SGdchar* SG_EXPORT _sgFontU16ToU32(SGFont* font, const SGwchar* text);
+SGdchar* SG_EXPORT _sgFontU8ToU32(SGFont* font, const SGchar* text);
+SGdchar* SG_EXPORT _sgFontWToU32(SGFont* font, const wchar_t* text);
+SGdchar* SG_EXPORT _sgFontToU32(SGFont* font, const char* text);
 
 /// @{
 /**

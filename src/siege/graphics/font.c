@@ -157,37 +157,33 @@ void SG_EXPORT _sgFontCenterOffsetU32(SGFont* font, float* x, float* y, const SG
     *x = -cx / 2.0f;
     *y = -1 / 0.63 + cy / 2.0f;
 }
-void SG_EXPORT _sgFontCenterOffsetU16(SGFont* font, float* x, float* y, const SGwchar* text)
+
+SGdchar* SG_EXPORT _sgFontU16ToU32(SGFont* font, const SGwchar* text)
 {
-    //SGuint numlines = sgNumLines(text);
-    float cx, cy;
-    sgFontStrSizeU16(font, &cx, &cy, text);
-    *x = -cx / 2.0f;
-    *y = -1 / 0.63 + cy / 2.0f;
+	size_t len;
+	for(len = 0; text[len]; len++)
+	{
+	}
+
+	return sgConv(font->conv[3], NULL, text, len * sizeof(SGwchar));
 }
-void SG_EXPORT _sgFontCenterOffsetU8(SGFont* font, float* x, float* y, const SGchar* text)
+SGdchar* SG_EXPORT _sgFontU8ToU32(SGFont* font, const SGchar* text)
 {
-    //SGuint numlines = sgNumLines(text);
-    float cx, cy;
-    sgFontStrSizeU8(font, &cx, &cy, text);
-    *x = -cx / 2.0f;
-    *y = -1 / 0.63 + cy / 2.0f;
+	size_t len = strlen(text);
+
+	return sgConv(font->conv[2], NULL, text, len * sizeof(SGchar));
 }
-void SG_EXPORT _sgFontCenterOffsetW(SGFont* font, float* x, float* y, const wchar_t* text)
+SGdchar* SG_EXPORT _sgFontWToU32(SGFont* font, const wchar_t* text)
 {
-    //SGuint numlines = sgNumLines(text);
-    float cx, cy;
-    sgFontStrSizeW(font, &cx, &cy, text);
-    *x = -cx / 2.0f;
-    *y = -1 / 0.63 + cy / 2.0f;
+	size_t len = wcslen(text);
+
+	return sgConv(font->conv[1], NULL, text, len * sizeof(wchar_t));
 }
-void SG_EXPORT _sgFontCenterOffset(SGFont* font, float* x, float* y, const char* text)
+SGdchar* SG_EXPORT _sgFontToU32(SGFont* font, const char* text)
 {
-	//SGuint numlines = sgNumLines(text);
-	float cx, cy;
-	sgFontStrSize(font, &cx, &cy, text);
-	*x = -cx / 2.0f;
-	*y = -1 / 0.63 + cy / 2.0f;
+	size_t len = strlen(text);
+
+	return sgConv(font->conv[0], NULL, text, len);
 }
 
 SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
@@ -343,36 +339,25 @@ void SG_EXPORT sgFontPrintU32(SGFont* font, float x, float y, const SGdchar* tex
 }
 void SG_EXPORT sgFontPrintU16(SGFont* font, float x, float y, const SGwchar* text)
 {
-	size_t len;
-	for(len = 0; text[len]; len++)
-	{
-	}
-
-	SGdchar* dtext = sgConv(font->conv[3], NULL, text, len * sizeof(SGwchar));
+	SGdchar* dtext = _sgFontU16ToU32(font, text);
 	sgFontPrintU32(font, x, y, dtext);
 	free(dtext);
 }
 void SG_EXPORT sgFontPrintU8(SGFont* font, float x, float y, const SGchar* text)
 {
-	size_t len = strlen((const char*)text);
-
-	SGdchar* dtext = sgConv(font->conv[2], NULL, text, len * sizeof(SGchar));
+	SGdchar* dtext = _sgFontU8ToU32(font, text);
 	sgFontPrintU32(font, x, y, dtext);
 	free(dtext);
 }
 void SG_EXPORT sgFontPrintW(SGFont* font, float x, float y, const wchar_t* text)
 {
-	size_t len = wcslen(text);
-
-	SGdchar* dtext = sgConv(font->conv[1], NULL, text, len * sizeof(wchar_t));
+	SGdchar* dtext = _sgFontWToU32(font, text);
 	sgFontPrintU32(font, x, y, dtext);
 	free(dtext);
 }
 void SG_EXPORT sgFontPrint(SGFont* font, float x, float y, const char* text)
 {
-	size_t len = strlen(text);
-
-	SGdchar* dtext = sgConv(font->conv[0], NULL, text, len);
+	SGdchar* dtext = _sgFontToU32(font, text);
 	sgFontPrintU32(font, x, y, dtext);
 	free(dtext);
 }
@@ -410,26 +395,34 @@ void SG_EXPORT sgFontPrintCenteredU32(SGFont* font, float x, float y, const SGdc
 void SG_EXPORT sgFontPrintCenteredU16(SGFont* font, float x, float y, const SGwchar* text)
 {
     float ox, oy;
-    _sgFontCenterOffsetU16(font, &ox, &oy, text);
-    sgFontPrintU16(font, x + ox, y + oy, text);
+	SGdchar* dtext = _sgFontU16ToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x + ox, y + oy, dtext);
+	free(dtext);
 }
 void SG_EXPORT sgFontPrintCenteredU8(SGFont* font, float x, float y, const SGchar* text)
 {
     float ox, oy;
-    _sgFontCenterOffsetU8(font, &ox, &oy, text);
-    sgFontPrintU8(font, x + ox, y + oy, text);
+	SGdchar* dtext = _sgFontU8ToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x + ox, y + oy, dtext);
+	free(dtext);
 }
 void SG_EXPORT sgFontPrintCenteredW(SGFont* font, float x, float y, const wchar_t* text)
 {
     float ox, oy;
-    _sgFontCenterOffsetW(font, &ox, &oy, text);
-    sgFontPrintW(font, x + ox, y + oy, text);
+	SGdchar* dtext = _sgFontWToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x + ox, y + oy, dtext);
+	free(dtext);
 }
 void SG_EXPORT sgFontPrintCentered(SGFont* font, float x, float y, const char* text)
 {
 	float ox, oy;
-	_sgFontCenterOffset(font, &ox, &oy, text);
-	sgFontPrint(font, x + ox, y + oy, text);
+	SGdchar* dtext = _sgFontToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x + ox, y + oy, dtext);
+	free(dtext);
 }
 
 // prints centered on X, but not on Y
@@ -466,26 +459,34 @@ void SG_EXPORT sgFontPrintXCenteredU32(SGFont* font, float x, float y, const SGd
 void SG_EXPORT sgFontPrintXCenteredU16(SGFont* font, float x, float y, const SGwchar* text)
 {
     float ox, oy;
-    _sgFontCenterOffsetU16(font, &ox, &oy, text);
-    sgFontPrintU16(font, x + ox, y, text);
+	SGdchar* dtext = _sgFontU16ToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x + ox, y, dtext);
+	free(dtext);
 }
 void SG_EXPORT sgFontPrintXCenteredU8(SGFont* font, float x, float y, const SGchar* text)
 {
     float ox, oy;
-    _sgFontCenterOffsetU8(font, &ox, &oy, text);
-    sgFontPrintU8(font, x + ox, y, text);
+	SGdchar* dtext = _sgFontU8ToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x + ox, y, dtext);
+	free(dtext);
 }
 void SG_EXPORT sgFontPrintXCenteredW(SGFont* font, float x, float y, const wchar_t* text)
 {
     float ox, oy;
-    _sgFontCenterOffsetW(font, &ox, &oy, text);
-    sgFontPrintW(font, x + ox, y, text);
+	SGdchar* dtext = _sgFontWToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x + ox, y, dtext);
+	free(dtext);
 }
 void SG_EXPORT sgFontPrintXCentered(SGFont* font, float x, float y, const char* text)
 {
 	float ox, oy;
-	_sgFontCenterOffset(font, &ox, &oy, text);
-	sgFontPrint(font, x + ox, y, text);
+	SGdchar* dtext = _sgFontToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x + ox, y, dtext);
+	free(dtext);
 }
 
 // prints centered on Y, but not on X
@@ -521,27 +522,35 @@ void SG_EXPORT sgFontPrintYCenteredU32(SGFont* font, float x, float y, const SGd
 }
 void SG_EXPORT sgFontPrintYCenteredU16(SGFont* font, float x, float y, const SGwchar* text)
 {
-    float ox, oy;
-    _sgFontCenterOffsetU16(font, &ox, &oy, text);
-    sgFontPrintU16(font, x, y + oy, text);
+	float ox, oy;
+	SGdchar* dtext = _sgFontU16ToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x, y + oy, dtext);
+	free(dtext);
 }
 void SG_EXPORT sgFontPrintYCenteredU8(SGFont* font, float x, float y, const SGchar* text)
 {
     float ox, oy;
-    _sgFontCenterOffsetU8(font, &ox, &oy, text);
-    sgFontPrintU8(font, x, y + oy, text);
+	SGdchar* dtext = _sgFontU8ToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x, y + oy, dtext);
+	free(dtext);
 }
 void SG_EXPORT sgFontPrintYCenteredW(SGFont* font, float x, float y, const wchar_t* text)
 {
     float ox, oy;
-    _sgFontCenterOffsetW(font, &ox, &oy, text);
-    sgFontPrintW(font, x, y + oy, text);
+	SGdchar* dtext = _sgFontWToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x, y + oy, dtext);
+	free(dtext);
 }
 void SG_EXPORT sgFontPrintYCentered(SGFont* font, float x, float y, const char* text)
 {
 	float ox, oy;
-	_sgFontCenterOffset(font, &ox, &oy, text);
-	sgFontPrint(font, x, y + oy, text);
+	SGdchar* dtext = _sgFontToU32(font, text);
+	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
+	sgFontPrintU32(font, x, y + oy, dtext);
+	free(dtext);
 }
 
 void SG_EXPORT sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...)
@@ -607,36 +616,25 @@ void SG_EXPORT sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar*
 }
 void SG_EXPORT sgFontStrSizeU16(SGFont* font, float* x, float* y, const SGwchar* text)
 {
-	size_t len;
-	for(len = 0; text[len]; len++)
-	{
-	}
-
-	SGdchar* dtext = sgConv(font->conv[3], NULL, text, len * sizeof(SGwchar));
+	SGdchar* dtext = _sgFontU16ToU32(font, text);
 	sgFontStrSizeU32(font, x, y, dtext);
 	free(dtext);
 }
 void SG_EXPORT sgFontStrSizeU8(SGFont* font, float* x, float* y, const SGchar* text)
 {
-	size_t len = strlen((char*)text);
-
-	SGdchar* dtext = sgConv(font->conv[2], NULL, text, len * sizeof(SGchar));
+	SGdchar* dtext = _sgFontU8ToU32(font, text);
 	sgFontStrSizeU32(font, x, y, dtext);
 	free(dtext);
 }
 void SG_EXPORT sgFontStrSizeW(SGFont* font, float* x, float* y, const wchar_t* text)
 {
-	size_t len = wcslen(text);
-
-	SGdchar* dtext = sgConv(font->conv[1], NULL, text, len * sizeof(wchar_t));
+	SGdchar* dtext = _sgFontWToU32(font, text);
 	sgFontStrSizeU32(font, x, y, dtext);
 	free(dtext);
 }
 void SG_EXPORT sgFontStrSize(SGFont* font, float* x, float* y, const char* text)
 {
-	size_t len = strlen(text);
-
-	SGdchar* dtext = sgConv(font->conv[0], NULL, text, len);
+	SGdchar* dtext = _sgFontToU32(font, text);
 	sgFontStrSizeU32(font, x, y, dtext);
 	free(dtext);
 }
