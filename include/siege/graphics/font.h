@@ -232,6 +232,24 @@ void SG_EXPORT sgFontPrintW(SGFont* font, float x, float y, const wchar_t* text)
 void SG_EXPORT sgFontPrint(SGFont* font, float x, float y, const char* text);
 /// @}
 
+/// TODO
+//#define SG_XALIGN_LEFT 		0x01
+//#define SG_XALIGN_CENTER 		0x02
+//#define SG_XALIGN_RIGHT 		0x04
+//#define SG_YALIGN_BASELINE	0x08
+//#define SG_YALIGN_TOP 		0x10
+//#define SG_YALIGN_CENTER 		0x20
+//#define SG_YALIGN_BOTTOM 		0x40
+//void SG_EXPORT sgFontPrintAlignedfW(SGFont* font, float x, float y, SGenum align, const wchar_t* format, ...);
+//void SG_EXPORT sgFontPrintAlignedfvW(SGFont* font, float x, float y, SGenum align, const wchar_t* format, va_list args);
+//void SG_EXPORT SG_HINT_PRINTF(5, 6) sgFontPrintAlignedf(SGFont* font, float x, float y, SGenum align, const char* format, ...);
+//void SG_EXPORT SG_HINT_PRINTF(5, 0) sgFontPrintAlignedfv(SGFont* font, float x, float y, SGenum align, const char* format, va_list args);
+//void SG_EXPORT sgFontPrintAlignedU32(SGFont* font, float x, float y, SGenum align, const SGdchar* text);
+//void SG_EXPORT sgFontPrintAlignedU16(SGFont* font, float x, float y, SGenum align, const SGwchar* text);
+//void SG_EXPORT sgFontPrintAlignedU8(SGFont* font, float x, float y, SGenum align, const SGchar* text);
+//void SG_EXPORT sgFontPrintAlignedW(SGFont* font, float x, float y, SGenum align, const wchar_t* text);
+//void SG_EXPORT sgFontPrintAligned(SGFont* font, float x, float y, SGenum align, const char* text);
+
 /**
  * \name Print centered
  *
@@ -358,6 +376,31 @@ void SG_EXPORT sgFontStrSizeU8(SGFont* font, float* x, float* y, const SGchar* t
 void SG_EXPORT sgFontStrSizeW(SGFont* font, float* x, float* y, const wchar_t* text);
 void SG_EXPORT sgFontStrSize(SGFont* font, float* x, float* y, const char* text);
 /// @}
+
+// need a better name for FindIndex and GetPos...
+size_t SG_EXPORT sgFontFindIndexfW(SGFont* font, float x, float y, const wchar_t* format, ...);
+size_t SG_EXPORT sgFontFindIndexfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args);
+
+size_t SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontFindIndexf(SGFont* font, float x, float y, const char* format, ...);
+size_t SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontFindIndexfv(SGFont* font, float x, float y, const char* format, va_list args);
+
+size_t SG_EXPORT sgFontFindIndexU32(SGFont* font, float x, float y, const SGdchar* text);
+size_t SG_EXPORT sgFontFindIndexU16(SGFont* font, float x, float y, const SGwchar* text);
+size_t SG_EXPORT sgFontFindIndexU8(SGFont* font, float x, float y, const SGchar* text);
+size_t SG_EXPORT sgFontFindIndexW(SGFont* font, float x, float y, const wchar_t* text);
+size_t SG_EXPORT sgFontFindIndex(SGFont* font, float x, float y, const char* text);
+
+void SG_EXPORT sgFontGetPosfW(SGFont* font, float* x, float* y, size_t index, const wchar_t* format, ...);
+void SG_EXPORT sgFontGetPosfvW(SGFont* font, float* x, float* y, size_t index, const wchar_t* format, va_list args);
+
+void SG_EXPORT SG_HINT_PRINTF(5, 6) sgFontGetPosf(SGFont* font, float* x, float* y, size_t index, const char* format, ...);
+void SG_EXPORT SG_HINT_PRINTF(5, 0) sgFontGetPosfv(SGFont* font, float* x, float* y, size_t index, const char* format, va_list args);
+
+void SG_EXPORT sgFontGetPosU32(SGFont* font, float* x, float* y, size_t index, const SGdchar* text);
+void SG_EXPORT sgFontGetPosU16(SGFont* font, float* x, float* y, size_t index, const SGwchar* text);
+void SG_EXPORT sgFontGetPosU8(SGFont* font, float* x, float* y, size_t index, const SGchar* text);
+void SG_EXPORT sgFontGetPosW(SGFont* font, float* x, float* y, size_t index, const wchar_t* text);
+void SG_EXPORT sgFontGetPos(SGFont* font, float* x, float* y, size_t index, const char* text);
 
 #ifdef __cplusplus
 }

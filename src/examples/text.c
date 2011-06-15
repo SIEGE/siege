@@ -1,5 +1,6 @@
 #include <siege/siege.h>
 
+#include <string.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -26,11 +27,19 @@ int main(void)
 	SGuint width = sgWindowGetWidth();
 	SGuint height = sgWindowGetHeight();
 
+	//float wx, wy;
+	//sgFontStrSize(font, &wx, &wy, "W");
+
 	float dx, dy;
 	float y;
 
+	SGint mx, my;
+	size_t pos;
+
 	while(sgLoop(NULL))
 	{
+		sgMouseGetPos(&mx, &my);
+
 		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 		y = 0.0;
 		for(i = 0; i < numsizes; i++)
@@ -42,20 +51,22 @@ int main(void)
 
 		sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
 
-		sgFontPrintf(font, width / 2, height - 64, "Mouse center angle: %f", atan2(sgMouseGetPosY() - (float)height / 2, sgMouseGetPosX() - (float)width / 2) * 180.0 / SG_PI);
+		sgFontPrintf(font, width / 2, height - 64, "Mouse center angle: %f", atan2(my - (float)height / 2, mx - (float)width / 2) * 180.0 / SG_PI);
 
 		sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
-		sgFontPrintf(font, width / 2, height - 92, "Mouse: %d,%d %d", sgMouseGetPosX(), sgMouseGetPosY(), sgMouseGetWheel());
+		sgFontPrintf(font, width / 2, height - 92, "Mouse: %d,%d %d", mx, my, sgMouseGetWheel());
 
 		sgFontPrintf(font, 128, height - 128, "AAA\nBBB\nCCC\nDDD\n\nEEE");
 
 		sgDrawColor4f(0.0, 0.5, 0.75, 0.75);
 		sgFontPrintf(font, width / 4, height - height / 3, "Well, this is some more text...\nUseful for UI, consoles, etc...");
 
-		sgDrawColor4f(1.0, 1.0, 0.0, 0.75);
-		sgDrawLine(width / 2, height / 2, sgMouseGetPosX(), sgMouseGetPosY());
-		sgDrawLine(width / 2, height / 2, sgMouseGetPosX(), height / 2);
-		sgDrawLine(width / 2, height / 2, width / 2, sgMouseGetPosY());
+		pos = sgFontFindIndexf(font, mx - (SGint)(width / 4), my - (SGint)(height - height / 3), "Well, this is some more text...\nUseful for UI, consoles, etc...");
+		sgFontGetPos(font, &dx, &dy, pos, "Well, this is some more text...\nUseful for UI, consoles, etc...");
+		dx += width / 4;
+		dy += height - height / 3;
+		sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
+		sgDrawLine(dx, dy, dx, dy - 10);
 
 		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 
