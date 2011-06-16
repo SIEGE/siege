@@ -47,13 +47,7 @@ typedef struct SGVec4
     \return A new 2D vector.
 */
 SGVec2 SG_EXPORT sgVec2f(float x, float y);
-/**
-    \memberof SGVec2
-    \brief Create a 2D vector from a coordinate pointer
-    \param f A pointer to 2 float coordinates
-    \return A new 2D vector.
-*/
-SGVec2 SG_EXPORT sgVec2fv(float* f);
+SGVec2 SG_EXPORT sgVec2fv(float* xy);
 /**
     \memberof SGVec2
     \brief Create a 2D vector from polar coordinates in radians
@@ -62,13 +56,6 @@ SGVec2 SG_EXPORT sgVec2fv(float* f);
     \return A new 2D vector.
 */
 SGVec2 SG_EXPORT sgVec2PolarRads(float rads, float len);
-/**
-    \memberof SGVec2
-    \brief Create a 2D vector from polar coordinates in degrees
-    \param degs Vector's angle in degrees
-    \param len Vector's length
-    \return A new 2D vector.
-*/
 SGVec2 SG_EXPORT sgVec2PolarDegs(float degs, float len);
 /**
     \memberof SGVec2
@@ -131,7 +118,7 @@ float SG_EXPORT sgVec2Cross(SGVec2 a, SGVec2 b);
 
 
 SGVec3 SG_EXPORT sgVec3f(float x, float y, float z);
-SGVec3 SG_EXPORT sgVec3fv(float* f);
+SGVec3 SG_EXPORT sgVec3fv(float* xyz);
 SGVec3 SG_EXPORT sgVec3CylindricalRads(float rads, float radius, float z);
 SGVec3 SG_EXPORT sgVec3CylindricalDegs(float degs, float radius, float z);
 SGVec3 SG_EXPORT sgVec3SphericalRads(float azimuth, float zenith, float radius);
@@ -163,7 +150,7 @@ SGVec3 SG_EXPORT sgVec3Cross(SGVec3 a, SGVec3 b);
 
 
 SGVec4 SG_EXPORT sgVec4f(float x, float y, float z, float w);
-SGVec4 SG_EXPORT sgVec4fv(float* f);
+SGVec4 SG_EXPORT sgVec4fv(float* xyzw);
 //SGVec4 sgVec4PolarRads(float rads, float len);
 //SGVec4 sgVec4PolarDegs(float degs, float len);
 SGVec4 SG_EXPORT sgVec4Nan(void);

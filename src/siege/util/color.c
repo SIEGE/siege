@@ -746,21 +746,21 @@ SGColor SG_EXPORT sgColor1f(float g)
 {
     return sgColor4f(g, g, g, 1.0);
 }
-SGColor SG_EXPORT sgColor4fv(float* f)
+SGColor SG_EXPORT sgColor4fv(float* rgba)
 {
-    return sgColor4f(f[0], f[1], f[2], f[3]);
+    return sgColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-SGColor SG_EXPORT sgColor3fv(float* f)
+SGColor SG_EXPORT sgColor3fv(float* rgb)
 {
-    return sgColor4f(f[0], f[1], f[2], 1.0);
+    return sgColor3f(rgb[0], rgb[1], rgb[2]);
 }
-SGColor SG_EXPORT sgColor2fv(float* f)
+SGColor SG_EXPORT sgColor2fv(float* ga)
 {
-    return sgColor4f(f[0], f[0], f[0], f[1]);
+    return sgColor2f(ga[0], ga[1]);
 }
-SGColor SG_EXPORT sgColor1fv(float* f)
+SGColor SG_EXPORT sgColor1fv(float* g)
 {
-    return sgColor4f(f[0], f[0], f[0], 1.0);
+    return sgColor1f(g[0]);
 }
 SGColor SG_EXPORT sgColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
 {
@@ -778,21 +778,21 @@ SGColor SG_EXPORT sgColor1ub(SGubyte g)
 {
     return sgColor4ub(g, g, g, 255);
 }
-SGColor SG_EXPORT sgColor4ubv(SGubyte* ub)
+SGColor SG_EXPORT sgColor4ubv(SGubyte* rgba)
 {
-    return sgColor4ub(ub[0], ub[1], ub[2], ub[3]);
+    return sgColor4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-SGColor SG_EXPORT sgColor3ubv(SGubyte* ub)
+SGColor SG_EXPORT sgColor3ubv(SGubyte* rgb)
 {
-    return sgColor4ub(ub[0], ub[1], ub[2], 255);
+    return sgColor3ub(rgb[0], rgb[1], rgb[2]);
 }
-SGColor SG_EXPORT sgColor2ubv(SGubyte* ub)
+SGColor SG_EXPORT sgColor2ubv(SGubyte* ga)
 {
-    return sgColor4ub(ub[0], ub[0], ub[0], ub[1]);
+    return sgColor2ub(ga[0], ga[1]);
 }
-SGColor SG_EXPORT sgColor1ubv(SGubyte* ub)
+SGColor SG_EXPORT sgColor1ubv(SGubyte* g)
 {
-    return sgColor4ub(ub[0], ub[0], ub[0], 255);
+    return sgColor1ub(g[0]);
 }
 SGColor SG_EXPORT sgColorRGBA(SGuint color)
 {

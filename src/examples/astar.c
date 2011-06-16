@@ -27,14 +27,14 @@ void drawGrid(SGNavGrid* grid, SGenum type, SGColor color, SGbool fill)
 {
 	size_t i, j;
 	SGNavGridData* data;
-	sgDrawColor4f(color.r, color.g, color.b, color.a);
+	sgDrawColor4fv(&color.r);
 	for(i = 0; i < grid->width; i++)
 	{
 		for(j = 0; j < grid->height; j++)
 		{
 			data = sgNavGridGetNode(grid, i, j)->data;
 			if(data->type == type)
-				sgDrawRectangle(i * cellw, j * cellh, i * cellw + cellw, j * cellh + cellh, fill);
+				sgDrawRectangleWH(i * cellw, j * cellh, cellw, cellh, fill);
 		}
 	}
 }
@@ -48,14 +48,14 @@ void drawPath(SGList* path, SGColor color, SGbool lines, SGbool fill)
 	SGNavGridData* data;
 	if(lines)
 		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_STRIP);
-	sgDrawColor4f(color.r, color.g, color.b, color.a);
+	sgDrawColor4fv(&color.r);
 	for(node = path->first; node; node = node->next)
 	{
 		data = node->item;
 		if(lines)
 			sgDrawVertex2f(data->x * cellw + cellw/2, data->y * cellh + cellh/2);
 		else
-			sgDrawRectangle(data->x * cellw, data->y * cellh, data->x * cellw + cellw, data->y * cellh + cellh, fill);
+			sgDrawRectangleWH(data->x * cellw, data->y * cellh, cellw, cellh, fill);
 	}
 	if(lines)
 		sgDrawEnd();
@@ -77,7 +77,7 @@ void drawScore(SGNavGrid* grid, SGFont* font, SGchar score, SGColor color)
 	if(!score)
 		return;
 
-	sgDrawColor4f(color.r, color.g, color.b, color.a);
+	sgDrawColor4fv(&color.r);
 
 	SGAStarNode* node;
 	float nscore;
@@ -228,18 +228,18 @@ void drawInstructions(SGFont* headf, SGFont* textf, SGColor fill, SGColor line, 
 	"past, resulting in odd (to our eye) behaviour."
 	;
 
-	sgDrawColor4f(fill.r, fill.g, fill.b, fill.a);
+	sgDrawColor4fv(&fill.r);
 	sgDrawRectangle(border.x, border.y, WIDTH - border.x, HEIGHT - border.y, SG_TRUE);
 
-	sgDrawColor4f(head.r, head.g, head.b, head.a);
+	sgDrawColor4fv(&head.r);
 	sgFontPrint(headf, border.x + margin.x, border.y + margin.y, headt);
 	sgFontStrSize(headf, &csize.x, &csize.y, headt);
 
-	sgDrawColor4f(line.r, line.g, line.b, line.a);
+	sgDrawColor4fv(&line.r);
 	sgDrawRectangle(border.x, border.y, WIDTH - border.x, HEIGHT - border.y, SG_FALSE);
 	sgDrawLine(border.x, border.y + margin.y + csize.y / 2, WIDTH - border.x, border.y + margin.y + csize.y / 2);
 
-	sgDrawColor4f(text.r, text.g, text.b, text.a);
+	sgDrawColor4fv(&text.r);
 	sgFontPrint(textf, border.x + margin.x, border.y + margin.y + csize.y, textt);
 }
 
