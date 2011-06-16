@@ -25,62 +25,58 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
 {
 	void* fptr;
 	/// Graphics
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsContextCreate);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsContextDestroy);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsContextResize);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsContextClear);
+	_SG_BIND(sgmGraphicsContextCreate);
+	_SG_BIND(sgmGraphicsContextDestroy);
+	_SG_BIND(sgmGraphicsContextResize);
+	_SG_BIND(sgmGraphicsContextClear);
 
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsViewportCreate);
-	//_SG_BINDS(_sg_modGraphics, sgmGraphicsViewportCreateView);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsViewportDestroy);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsViewportSetView);
-	//_SG_BINDS(_sg_modGraphics, sgmGraphicsViewportGetView);
+	_SG_BIND(sgmGraphicsViewportCreate);
+	//_SG_BIND(sgmGraphicsViewportCreateView);
+	_SG_BIND(sgmGraphicsViewportDestroy);
+	_SG_BIND(sgmGraphicsViewportSetView);
+	//_SG_BIND(sgmGraphicsViewportGetView);
 
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceCreate);
-	//_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceCreateTexture);
-	//_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceCreateData);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceDestroy);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceSetTexture);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceGetTexture);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceSetData);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceGetData);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceFreeData);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceGetSize);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceDraw);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceSetTarget);
-	//_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceGetTarget);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsSurfaceResetTarget);
+	_SG_BIND(sgmGraphicsSurfaceCreate);
+	//_SG_BIND(sgmGraphicsSurfaceCreateTexture);
+	//_SG_BIND(sgmGraphicsSurfaceCreateData);
+	_SG_BIND(sgmGraphicsSurfaceDestroy);
+	_SG_BIND(sgmGraphicsSurfaceSetTexture);
+	_SG_BIND(sgmGraphicsSurfaceGetTexture);
+	_SG_BIND(sgmGraphicsSurfaceSetData);
+	_SG_BIND(sgmGraphicsSurfaceGetData);
+	_SG_BIND(sgmGraphicsSurfaceFreeData);
+	_SG_BIND(sgmGraphicsSurfaceGetSize);
+	_SG_BIND(sgmGraphicsSurfaceDraw);
+	_SG_BIND(sgmGraphicsSurfaceSetTarget);
+	//_SG_BIND(sgmGraphicsSurfaceGetTarget);
+	_SG_BIND(sgmGraphicsSurfaceResetTarget);
 
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsTextureCreate);
-	//_SG_BINDS(_sg_modGraphics, sgmGraphicsTextureCreateData);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsTextureDestroy);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsTextureSetData);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsTextureGetData);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsTextureFreeData);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsTextureGetSize);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsTextureDraw);
+	_SG_BIND(sgmGraphicsTextureCreate);
+	//_SG_BIND(sgmGraphicsTextureCreateData);
+	_SG_BIND(sgmGraphicsTextureDestroy);
+	_SG_BIND(sgmGraphicsTextureSetData);
+	_SG_BIND(sgmGraphicsTextureGetData);
+	_SG_BIND(sgmGraphicsTextureFreeData);
+	_SG_BIND(sgmGraphicsTextureGetSize);
+	_SG_BIND(sgmGraphicsTextureDraw);
 
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsDrawPrimitive);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsDrawSetColor);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsDrawPointSetSize);
+	_SG_BIND(sgmGraphicsDrawPrimitive);
+	_SG_BIND(sgmGraphicsDrawSetColor);
+	_SG_BIND(sgmGraphicsDrawPointSetSize);
 	//bindFunc(sgmGraphicsDrawPointGetSize)("sgmGraphicsDrawPointGetSize", lib);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsDrawLineSetWidth);
+	_SG_BIND(sgmGraphicsDrawLineSetWidth);
 	//bindFunc(sgmGraphicsDrawLineGetWidth)("sgmGraphicsDrawLineGetWidth", lib);
 	//bindFunc(sgmGraphicsDrawLineSetStipple)("sgmGraphicsDrawLineSetStipple", lib);
 	//bindFunc(sgmGraphicsDrawLineGetStipple)("sgmGraphicsDrawLineGetStipple", lib);
 	//bindFunc(sgmGraphicsDrawPolygonSetStipple)("sgmGraphicsDrawPolygonSetStipple", lib);
 	//bindFunc(sgmGraphicsDrawPolygonGetStipple)("sgmGraphicsDrawPolygonGetStipple", lib);
 
-    _SG_BINDS(_sg_modGraphics, sgmGraphicsDrawSetBlendFunc);
-    _SG_BINDS(_sg_modGraphics, sgmGraphicsDrawSetBlendEquation);
+    _SG_BIND(sgmGraphicsDrawSetBlendFunc);
+    _SG_BIND(sgmGraphicsDrawSetBlendEquation);
 
 	/// Graphics Load
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsLoadFile);
-	//_SG_BINDS(_sg_modGraphics, sgmGraphicsLoadStream);
-	_SG_BINDS(_sg_modGraphics, sgmGraphicsLoadFreeData);
+	_SG_BIND(sgmGraphicsLoadFile);
+	//_SG_BIND(sgmGraphicsLoadStream);
+	_SG_BIND(sgmGraphicsLoadFreeData);
 }
 
-SGModuleGraphics* SG_EXPORT sgModuleGetGraphics(void)
-{
-	return &_sg_modGraphics;
-}

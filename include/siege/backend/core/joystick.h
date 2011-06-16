@@ -17,6 +17,10 @@
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -32,22 +36,22 @@ extern "C"
     /**
         WARNING: Subject to change
     */
-    SGuint SG_EXPORT sgmCoreJoystickGetFlags(SGenum** flags);
-    SGuint SG_EXPORT sgmCoreJoystickFreeFlags(SGenum* flags);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickGetFlags)(SGenum** flags);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickFreeFlags)(SGenum* flags);
 
-    SGuint SG_EXPORT sgmCoreJoystickGetNumJoysticks(void* window, size_t* numjoys);
-    SGuint SG_EXPORT sgmCoreJoystickCreate(void** joystick, void* window, SGuint id);
-    SGuint SG_EXPORT sgmCoreJoystickDestroy(void* joystick);
-    SGuint SG_EXPORT sgmCoreJoystickGetID(void* joystick, SGuint* id);
-    SGuint SG_EXPORT sgmCoreJoystickGetNumButtons(void* joystick, size_t* numbuttons);
-    //SGuint SG_EXPORT sgmCoreJoystickSetButtons(void* joystick, SGbool* state);
-    SGuint SG_EXPORT sgmCoreJoystickGetButtons(void* joystick, SGbool* state);
-    SGuint SG_EXPORT sgmCoreJoystickGetNumAxis(void* joystick, size_t* numaxis);
-    //SGuint SG_EXPORT sgmCoreJoystickSetAxis(void* joystick, float* position);
-    SGuint SG_EXPORT sgmCoreJoystickGetAxis(void* joystick, float* position);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickGetNumJoysticks)(void* window, size_t* numjoys);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickCreate)(void** joystick, void* window, SGuint id);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickDestroy)(void* joystick);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickGetID)(void* joystick, SGuint* id);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickGetNumButtons)(void* joystick, size_t* numbuttons);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickSetButtons)(void* joystick, SGbool* state);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickGetButtons)(void* joystick, SGbool* state);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickGetNumAxis)(void* joystick, size_t* numaxis);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickSetAxis)(void* joystick, float* position);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickGetAxis)(void* joystick, float* position);
 
-    SGuint SG_EXPORT sgmCoreJoystickSetCallbacks(void* joystick, SGCoreJoystickCallbacks* callbacks);
-    //SGuint SG_EXPORT sgmCoreJoystickGetCallbacks(void* joystick, SGCoreJoystickCallbacks** callbacks);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickSetCallbacks)(void* joystick, SGCoreJoystickCallbacks* callbacks);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreJoystickGetCallbacks)(void* joystick, SGCoreJoystickCallbacks** callbacks);
 #ifdef __cplusplus
 }
 #endif

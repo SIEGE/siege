@@ -17,14 +17,18 @@
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-	SGenum SG_EXPORT sgmFontsConvCreate(void** conv, const char* from, const char* to);
-	SGenum SG_EXPORT sgmFontsConvDestroy(void* conv);
-	SGenum SG_EXPORT sgmFontsConv(void* conv, void** outbuf, size_t* outlen, void* inbuf, size_t inlen);
-	SGenum SG_EXPORT sgmFontsConvFreeData(void* ptr);
+	SGenum SG_EXPORT SG_FPTR(sgmFontsConvCreate)(void** conv, const char* from, const char* to);
+	SGenum SG_EXPORT SG_FPTR(sgmFontsConvDestroy)(void* conv);
+	SGenum SG_EXPORT SG_FPTR(sgmFontsConv)(void* conv, void** outbuf, size_t* outlen, void* inbuf, size_t inlen);
+	SGenum SG_EXPORT SG_FPTR(sgmFontsConvFreeData)(void* ptr);
 #ifdef __cplusplus
 }
 #endif

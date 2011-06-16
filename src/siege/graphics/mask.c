@@ -51,8 +51,8 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 	SGuint aheight = 0;
 	SGuint bpp = 0;
 	char* data = NULL;
-	if(_sg_modGraphics.sgmGraphicsTextureGetData != NULL)
-		_sg_modGraphics.sgmGraphicsTextureGetData(texture->handle, &awidth, &aheight, &bpp, (void**)&data);
+	if(sgmGraphicsTextureGetData != NULL)
+		sgmGraphicsTextureGetData(texture->handle, &awidth, &aheight, &bpp, (void**)&data);
 
 	SGubyte bypp = 0;
 	SGubyte r, g, b, a;
@@ -133,7 +133,7 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 		}
 	}
 
-	_sg_modGraphics.sgmGraphicsTextureFreeData(data);
+	sgmGraphicsTextureFreeData(data);
 
 	return mask;
 }

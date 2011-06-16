@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmAudioLoadFile(char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen)
+SGuint SG_EXPORT sgmAudioLoadFile(const char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen)
 {
     SGuint ret;
     LFile* lfile;

@@ -17,15 +17,19 @@
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgmGraphicsViewportCreate(void** viewport, void* context);
-    //SGuint SG_EXPORT sgmGraphicsViewportCreateView(void** viewport, void* context, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height);
-    SGuint SG_EXPORT sgmGraphicsViewportDestroy(void* viewport);
-    SGuint SG_EXPORT sgmGraphicsViewportSetView(void* viewport, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height);
-    //SGuint SG_EXPORT sgmGraphicsViewportGetView(void* viewport, SGuint* wx, SGuint* wy, SGuint* wwidth, SGuint* wheight, float* x, float* y, float* width, float* height);
+    SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportCreate)(void** viewport, void* context);
+    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportCreateView)(void** viewport, void* context, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height);
+    SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportDestroy)(void* viewport);
+    SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportSetView)(void* viewport, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height);
+    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportGetView)(void* viewport, SGuint* wx, SGuint* wy, SGuint* wwidth, SGuint* wheight, float* x, float* y, float* width, float* height);
 #ifdef __cplusplus
 }
 #endif

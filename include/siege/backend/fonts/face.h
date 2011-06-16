@@ -17,13 +17,17 @@
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgmFontsFaceCreate(void** face, const char* fname);
-    SGuint SG_EXPORT sgmFontsFaceDestroy(void* face);
-    SGuint SG_EXPORT sgmFontsFaceSetHeight(void* face, float height);
+    SGuint SG_EXPORT SG_FPTR(sgmFontsFaceCreate)(void** face, const char* fname);
+    SGuint SG_EXPORT SG_FPTR(sgmFontsFaceDestroy)(void* face);
+    SGuint SG_EXPORT SG_FPTR(sgmFontsFaceSetHeight)(void* face, float height);
     //SGuint SG_EXPORT sgmFontsFaceGetHeight(void* face, float* height);
 #ifdef __cplusplus
 }

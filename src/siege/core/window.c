@@ -47,19 +47,19 @@ SGbool SG_EXPORT _sgWindowInit(void)
 	_sg_winCallbacks.close = _sg_cbWindowClose;
 	_sg_winCallbacks.resize = NULL;//_sg_cbWindowResize;
 
-	if(_sg_modWindow.sgmCoreWindowCreate != NULL)
-		_sg_modWindow.sgmCoreWindowCreate(&_sg_winHandle);
+	if(sgmCoreWindowCreate != NULL)
+		sgmCoreWindowCreate(&_sg_winHandle);
 
-	if(_sg_modWindow.sgmCoreWindowSetCallbacks != NULL)
-		_sg_modWindow.sgmCoreWindowSetCallbacks(_sg_winHandle, &_sg_winCallbacks);
+	if(sgmCoreWindowSetCallbacks != NULL)
+		sgmCoreWindowSetCallbacks(_sg_winHandle, &_sg_winCallbacks);
 
 	return SG_TRUE;
 }
 
 SGbool SG_EXPORT _sgWindowDeinit(void)
 {
-	if(_sg_modWindow.sgmCoreWindowDestroy != NULL)
-		_sg_modWindow.sgmCoreWindowDestroy(_sg_winHandle);
+	if(sgmCoreWindowDestroy != NULL)
+		sgmCoreWindowDestroy(_sg_winHandle);
 	free(_sg_winTitle);
 	return SG_TRUE;
 }
@@ -76,14 +76,14 @@ SGbool SG_EXPORT sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum fl
 	if(sgWindowIsOpened())
 		sgWindowClose();
 
-	if(_sg_modWindow.sgmCoreWindowOpen != NULL)
-		_sg_modWindow.sgmCoreWindowOpen(_sg_winHandle, width, height, bpp, flags);
+	if(sgmCoreWindowOpen != NULL)
+		sgmCoreWindowOpen(_sg_winHandle, width, height, bpp, flags);
 
 	sgWindowSetTitle("SIEGE Window");
 
 	sgWindowGetSize(&width, &height);
-	if(_sg_modGraphics.sgmGraphicsContextCreate != NULL)
-		_sg_modGraphics.sgmGraphicsContextCreate(&_sg_gfxHandle, width, height, bpp);
+	if(sgmGraphicsContextCreate != NULL)
+		sgmGraphicsContextCreate(&_sg_gfxHandle, width, height, bpp);
 
 	_sg_viewMain = sgViewportCreate4i(0, 0, width, height);
 
@@ -94,16 +94,16 @@ SGbool SG_EXPORT sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum fl
 SGbool SG_EXPORT sgWindowIsOpened(void)
 {
 	SGbool opened = SG_FALSE;
-	if(_sg_modWindow.sgmCoreWindowIsOpened != NULL)
-		_sg_modWindow.sgmCoreWindowIsOpened(_sg_winHandle, &opened);
+	if(sgmCoreWindowIsOpened != NULL)
+		sgmCoreWindowIsOpened(_sg_winHandle, &opened);
 	return opened;
 }
 void SG_EXPORT sgWindowClose(void)
 {
-	if(_sg_modGraphics.sgmGraphicsContextDestroy != NULL)
-		_sg_modGraphics.sgmGraphicsContextDestroy(_sg_gfxHandle);
-	if(_sg_modWindow.sgmCoreWindowClose != NULL)
-		_sg_modWindow.sgmCoreWindowClose(_sg_winHandle);
+	if(sgmGraphicsContextDestroy != NULL)
+		sgmGraphicsContextDestroy(_sg_gfxHandle);
+	if(sgmCoreWindowClose != NULL)
+		sgmCoreWindowClose(_sg_winHandle);
 }
 void SG_EXPORT sgWindowSetTitlef(const char* format, ...)
 {
@@ -123,8 +123,8 @@ void SG_EXPORT sgWindowSetTitle(const char* title)
 	int len = strlen(title) + 1;
 	_sg_winTitle = realloc(_sg_winTitle, len);
 	strcpy(_sg_winTitle, title);
-	if(_sg_modWindow.sgmCoreWindowSetTitle != NULL)
-		_sg_modWindow.sgmCoreWindowSetTitle(_sg_winHandle, _sg_winTitle);
+	if(sgmCoreWindowSetTitle != NULL)
+		sgmCoreWindowSetTitle(_sg_winHandle, _sg_winTitle);
 }
 char* SG_EXPORT sgWindowGetTitle(void)
 {
@@ -132,16 +132,16 @@ char* SG_EXPORT sgWindowGetTitle(void)
 }
 void SG_EXPORT sgWindowSetSize(SGuint width, SGuint height)
 {
-	if(_sg_modWindow.sgmCoreWindowSetSize != NULL)
-		_sg_modWindow.sgmCoreWindowSetSize(_sg_winHandle, width, height);
-	if(_sg_modGraphics.sgmGraphicsContextResize != NULL)
-		_sg_modGraphics.sgmGraphicsContextResize(_sg_gfxHandle, width, height);
+	if(sgmCoreWindowSetSize != NULL)
+		sgmCoreWindowSetSize(_sg_winHandle, width, height);
+	if(sgmGraphicsContextResize != NULL)
+		sgmGraphicsContextResize(_sg_gfxHandle, width, height);
 }
 void SG_EXPORT sgWindowGetSize(SGuint* width, SGuint* height)
 {
 	SGuint w, h;
-	if(_sg_modWindow.sgmCoreWindowGetSize != NULL)
-		_sg_modWindow.sgmCoreWindowGetSize(_sg_winHandle, &w, &h);
+	if(sgmCoreWindowGetSize != NULL)
+		sgmCoreWindowGetSize(_sg_winHandle, &w, &h);
 	if(width != NULL)
 		*width = w;
 	if(height != NULL)
@@ -173,6 +173,6 @@ SGuint SG_EXPORT sgWindowGetHeight(void)
 }
 void SG_EXPORT sgWindowSwapBuffers(void)
 {
-	if(_sg_modWindow.sgmCoreWindowSwapBuffers != NULL)
-		_sg_modWindow.sgmCoreWindowSwapBuffers(_sg_winHandle);
+	if(sgmCoreWindowSwapBuffers != NULL)
+		sgmCoreWindowSwapBuffers(_sg_winHandle);
 }
