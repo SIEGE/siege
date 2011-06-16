@@ -73,10 +73,10 @@ SGbool SG_EXPORT _sgKeyboardInit(void)
     _sg_keyCallbacks.key = _sg_cbKeyboardKey;
     _sg_keyCallbacks.chr = _sg_cbKeyboardChar;
 
-    if(_sg_modInput.sgmCoreKeyboardCreate != NULL)
-        _sg_modInput.sgmCoreKeyboardCreate(&_sg_keyHandle, _sg_winHandle);
-    if(_sg_modInput.sgmCoreKeyboardSetCallbacks != NULL)
-        _sg_modInput.sgmCoreKeyboardSetCallbacks(_sg_keyHandle, &_sg_keyCallbacks);
+    if(sgmCoreKeyboardCreate != NULL)
+        sgmCoreKeyboardCreate(&_sg_keyHandle, _sg_winHandle);
+    if(sgmCoreKeyboardSetCallbacks != NULL)
+        sgmCoreKeyboardSetCallbacks(_sg_keyHandle, &_sg_keyCallbacks);
     return SG_TRUE;
 }
 SGbool SG_EXPORT _sgKeyboardDeinit(void)
@@ -90,8 +90,8 @@ SGbool SG_EXPORT _sgKeyboardDeinit(void)
     free(_sg_charStatusDownCurr);
     _sg_charStatusLength = 0;
 
-    if(_sg_modInput.sgmCoreKeyboardDestroy != NULL)
-        _sg_modInput.sgmCoreKeyboardDestroy(_sg_keyHandle);
+    if(sgmCoreKeyboardDestroy != NULL)
+        sgmCoreKeyboardDestroy(_sg_keyHandle);
     return SG_TRUE;
 }
 

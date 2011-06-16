@@ -10,20 +10,24 @@
  *
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
-*/
+ */
 
 #ifndef __SIEGE_BACKEND_GRAPHICS_LOAD_H__
 #define __SIEGE_BACKEND_GRAPHICS_LOAD_H__
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgmGraphicsLoadFile(const char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data);
-    //SGuint SG_EXPORT sgmGraphicsLoadStream(void* stream, SGuint* width, SGuint* height, SGuint* bpp, void** data);
-    SGuint SG_EXPORT sgmGraphicsLoadFreeData(void* data);
+    SGuint SG_EXPORT SG_FPTR(sgmGraphicsLoadFile)(const char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data);
+    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsLoadStream)(void* stream, SGuint* width, SGuint* height, SGuint* bpp, void** data);
+    SGuint SG_EXPORT SG_FPTR(sgmGraphicsLoadFreeData)(void* data);
 #ifdef __cplusplus
 }
 #endif

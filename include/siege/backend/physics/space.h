@@ -17,24 +17,28 @@
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgmPhysicsSpaceCreate(void** space);
-    SGuint SG_EXPORT sgmPhysicsSpaceDestroy(void* space);
-    SGuint SG_EXPORT sgmPhysicsSpaceStep(void* space, float time);
-    SGuint SG_EXPORT sgmPhysicsSpaceSetGravity(void* space, float x, float y);
-    //SGuint SG_EXPORT sgmPhysicsSpaceGetGravity(void* space, float* x, float* y);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceCreate)(void** space);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceDestroy)(void* space);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceStep)(void* space, float time);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceSetGravity)(void* space, float x, float y);
+    //SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceGetGravity)(void* space, float* x, float* y);
 
-    SGuint SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape);
-    SGuint SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape);
-    //SGuint SG_EXPORT sgmPhysicsSpaceAddStaticShape(void* space, void* shape);
-    //SGuint SG_EXPORT sgmPhysicsSpaceRemoveStaticShape(void* space, void* shape);
-    SGuint SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body);
-    SGuint SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body);
-    SGuint SG_EXPORT sgmPhysicsSpaceAddConstraint(void* space, void* constraint);
-    SGuint SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddShape)(void* space, void* shape);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveShape)(void* space, void* shape);
+    //SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddStaticShape)(void* space, void* shape);
+    //SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveStaticShape)(void* space, void* shape);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddBody)(void* space, void* body);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveBody)(void* space, void* body);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddConstraint)(void* space, void* constraint);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveConstraint)(void* space, void* constraint);
 #ifdef __cplusplus
 }
 #endif

@@ -23,10 +23,10 @@ extern "C"
 {
 #endif // __cplusplus
 
-#define _SG_BINDS(str, name) \
+#define _SG_BIND(name) \
 	fptr = sgGetProcAddress(lib, #name);   \
 	if((fptr != NULL) || _sg_modFirst)	   \
-		(str.name) = fptr; // not completely valid C99, but blame POSIX for that
+		(name) = fptr; // not completely valid C99, but blame POSIX for that
 
 #ifdef SG_BUILD_LIBRARY
 SGList* _sg_modList;
@@ -35,6 +35,7 @@ SGbool _sg_modFirst;
 
 typedef SGuint SG_EXPORT SGMModuleInitFunction(SGModuleInfo** minfo);
 typedef SGuint SG_EXPORT SGMModuleExitFunction(SGModuleInfo* minfo);
+typedef SGuint SG_EXPORT SGMModuleTickFunction(SGulong tick);
 typedef SGuint SG_EXPORT SGMModuleMatchFunction(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
 
 typedef struct SGModule
@@ -46,6 +47,7 @@ typedef struct SGModule
 
     SGMModuleInitFunction* sgmModuleInit;
     SGMModuleExitFunction* sgmModuleExit;
+    SGMModuleTickFunction* sgmModuleTick;
     SGMModuleMatchFunction* sgmModuleMatch;
 } SGModule;
 

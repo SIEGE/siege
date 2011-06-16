@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 int keysSDL[] = {
          SDLK_SPACE    , SDLK_ESCAPE
@@ -62,6 +63,8 @@ SGuint keySDLtoSIEGE(int key)
             sgkey = keysSIEGE[i];
             break;
         }
+    if(keysSDL[i] == 0) // if we didn't find a key
+		sgkey = toupper(sgkey);
     return sgkey;
 }
 int keySIEGEtoSDL(SGuint key)
@@ -74,6 +77,8 @@ int keySIEGEtoSDL(SGuint key)
             sdlkey = keysSDL[i];
             break;
         }
+    if(keysSIEGE[i] == 0) // if we didn't find a key
+		sdlkey = tolower(sdlkey);
     return sdlkey;
 }
 

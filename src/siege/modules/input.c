@@ -19,53 +19,49 @@
 void SG_EXPORT _sgModuleLoadInput(SGLibrary* lib)
 {
     void* fptr;
-    /// Input - Joystick
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickGetNumJoysticks);
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickCreate);
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickDestroy);
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickGetID);
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickGetNumButtons);
-    //_SG_BINDS(_sg_modInput, sgmCoreJoystickSetButtons);
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickGetButtons);
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickGetNumAxis);
-    //_SG_BINDS(_sg_modInput, sgmCoreJoystickSetAxis);
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickGetAxis);
 
-    _SG_BINDS(_sg_modInput, sgmCoreJoystickSetCallbacks);
-    //_SG_BINDS(_sg_modInput, sgmCoreJoystickGetCallbacks);
+    /// Input - Joystick
+    _SG_BIND(sgmCoreJoystickGetNumJoysticks);
+    _SG_BIND(sgmCoreJoystickCreate);
+    _SG_BIND(sgmCoreJoystickDestroy);
+    _SG_BIND(sgmCoreJoystickGetID);
+    _SG_BIND(sgmCoreJoystickGetNumButtons);
+    //_SG_BIND(sgmCoreJoystickSetButtons);
+    _SG_BIND(sgmCoreJoystickGetButtons);
+    _SG_BIND(sgmCoreJoystickGetNumAxis);
+    //_SG_BIND(sgmCoreJoystickSetAxis);
+    _SG_BIND(sgmCoreJoystickGetAxis);
+
+    _SG_BIND(sgmCoreJoystickSetCallbacks);
+    //_SG_BIND(sgmCoreJoystickGetCallbacks);
 
     /// Input - Keyboard
-    _SG_BINDS(_sg_modInput, sgmCoreKeyboardCreate);
-    _SG_BINDS(_sg_modInput, sgmCoreKeyboardDestroy);
-    //_SG_BINDS(_sg_modInput, sgmCoreKeyboardSetKey);
-    _SG_BINDS(_sg_modInput, sgmCoreKeyboardGetKey);
-    //_SG_BINDS(_sg_modInput, sgmCoreKeyboardSetChr);
-    //_SG_BINDS(_sg_modInput, sgmCoreKeyboardGetChr);
+    _SG_BIND(sgmCoreKeyboardCreate);
+    _SG_BIND(sgmCoreKeyboardDestroy);
+    //_SG_BIND(sgmCoreKeyboardSetKey);
+    _SG_BIND(sgmCoreKeyboardGetKey);
+    //_SG_BIND(sgmCoreKeyboardSetChr);
+    //_SG_BIND(sgmCoreKeyboardGetChr);
 
-    _SG_BINDS(_sg_modInput, sgmCoreKeyboardSetCallbacks);
-    //_SG_BINDS(_sg_modInput, sgmCoreKeyboardGetCallbacks);
+    _SG_BIND(sgmCoreKeyboardSetCallbacks);
+    //_SG_BIND(sgmCoreKeyboardGetCallbacks);
 
     /// Input - Mouse
-    _SG_BINDS(_sg_modInput, sgmCoreMouseCreate);
-    _SG_BINDS(_sg_modInput, sgmCoreMouseDestroy);
+    _SG_BIND(sgmCoreMouseCreate);
+    _SG_BIND(sgmCoreMouseDestroy);
     // should these two [sgmCoreMouseShow,sgmCoreMouseHide] be put into a single function?
-    _SG_BINDS(_sg_modInput, sgmCoreMouseShow);
-    _SG_BINDS(_sg_modInput, sgmCoreMouseHide);
-    //_SG_BINDS(_sg_modInput, sgmCoreMouseIsShown);
-    //_SG_BINDS(_sg_modInput, sgmCoreMouseIsHidden);
-    _SG_BINDS(_sg_modInput, sgmCoreMouseGetNumButtons);
-    //_SG_BINDS(_sg_modInput, sgmCoreMouseSetButtons);
-    _SG_BINDS(_sg_modInput, sgmCoreMouseGetButtons);
-    _SG_BINDS(_sg_modInput, sgmCoreMouseSetPosition);
-    _SG_BINDS(_sg_modInput, sgmCoreMouseGetPosition);
-    //_SG_BINDS(_sg_modInput, sgmCoreMouseSetWheel);
-    _SG_BINDS(_sg_modInput, sgmCoreMouseGetWheel);
+    _SG_BIND(sgmCoreMouseShow);
+    _SG_BIND(sgmCoreMouseHide);
+    //_SG_BIND(sgmCoreMouseIsShown);
+    //_SG_BIND(sgmCoreMouseIsHidden);
+    _SG_BIND(sgmCoreMouseGetNumButtons);
+    //_SG_BIND(sgmCoreMouseSetButtons);
+    _SG_BIND(sgmCoreMouseGetButtons);
+    _SG_BIND(sgmCoreMouseSetPosition);
+    _SG_BIND(sgmCoreMouseGetPosition);
+    //_SG_BIND(sgmCoreMouseSetWheel);
+    _SG_BIND(sgmCoreMouseGetWheel);
 
-    _SG_BINDS(_sg_modInput, sgmCoreMouseSetCallbacks);
-    //_SG_BINDS(_sg_modInput, sgmCoreMouseGetCallbacks);
-}
-
-SGModuleInput* SG_EXPORT sgModuleGetInput(void)
-{
-    return &_sg_modInput;
+    _SG_BIND(sgmCoreMouseSetCallbacks);
+    //_SG_BIND(sgmCoreMouseGetCallbacks);
 }

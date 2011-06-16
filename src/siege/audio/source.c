@@ -22,16 +22,16 @@
 SGbool SG_EXPORT _sgAudioSourceInit(void)
 {
     _sg_srcDisLength = 16;
-    if(_sg_modAudio.sgmAudioSourceMaxSources != NULL)
-        _sg_modAudio.sgmAudioSourceMaxSources(&_sg_srcDisLength);
+    if(sgmAudioSourceMaxSources != NULL)
+        sgmAudioSourceMaxSources(&_sg_srcDisLength);
     _sg_srcDisList = malloc(_sg_srcDisLength * sizeof(SGAudioSourceDispatch));
 
     SGuint i;
     for(i = 0; i < _sg_srcDisLength; i++)
     {
         _sg_srcDisList[i].source = NULL;
-        if(_sg_modAudio.sgmAudioSourceCreate != NULL)
-            _sg_modAudio.sgmAudioSourceCreate(&_sg_srcDisList[i].handle);
+        if(sgmAudioSourceCreate != NULL)
+            sgmAudioSourceCreate(&_sg_srcDisList[i].handle);
     }
 
     return SG_TRUE;
@@ -41,8 +41,8 @@ SGbool SG_EXPORT _sgAudioSourceDeinit(void)
     SGuint i;
     for(i = 0; i <_sg_srcDisLength; i++)
     {
-        if(_sg_modAudio.sgmAudioSourceDestroy != NULL)
-            _sg_modAudio.sgmAudioSourceDestroy(_sg_srcDisList[i].handle);
+        if(sgmAudioSourceDestroy != NULL)
+            sgmAudioSourceDestroy(_sg_srcDisList[i].handle);
     }
 
     free(_sg_srcDisList);
@@ -67,10 +67,10 @@ SGAudioSourceDispatch* SG_EXPORT _sgAudioSourceGetFreeDispatch(SGAudioSource* so
             _sg_srcDisList[i].source = source;
             return &_sg_srcDisList[i];
         }
-        if((_sg_modAudio.sgmAudioSourceGetNumProcessedBuffers != NULL) && (_sg_modAudio.sgmAudioSourceGetNumQueuedBuffers != NULL))
+        if((sgmAudioSourceGetNumProcessedBuffers != NULL) && (sgmAudioSourceGetNumQueuedBuffers != NULL))
         {
-            _sg_modAudio.sgmAudioSourceGetNumProcessedBuffers(_sg_srcDisList[i].handle, &processed);
-            _sg_modAudio.sgmAudioSourceGetNumQueuedBuffers(_sg_srcDisList[i].handle, &queued);
+            sgmAudioSourceGetNumProcessedBuffers(_sg_srcDisList[i].handle, &processed);
+            sgmAudioSourceGetNumQueuedBuffers(_sg_srcDisList[i].handle, &queued);
             if(processed == queued)
                 blanki = i;
         }
@@ -135,8 +135,8 @@ void SG_EXPORT sgAudioSourcePlay(SGAudioSource* source)
     if(source->dispatch == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioSourcePlay != NULL)
-        _sg_modAudio.sgmAudioSourcePlay(source->dispatch->handle);
+    if(sgmAudioSourcePlay != NULL)
+        sgmAudioSourcePlay(source->dispatch->handle);
 }
 SGbool SG_EXPORT sgAudioSourceIsPlaying(SGAudioSource* source)
 {
@@ -146,8 +146,8 @@ SGbool SG_EXPORT sgAudioSourceIsPlaying(SGAudioSource* source)
         return SG_FALSE;
 
     SGbool playing = SG_FALSE;
-    if(_sg_modAudio.sgmAudioSourceIsPlaying != NULL)
-        _sg_modAudio.sgmAudioSourceIsPlaying(source->dispatch->handle, &playing);
+    if(sgmAudioSourceIsPlaying != NULL)
+        sgmAudioSourceIsPlaying(source->dispatch->handle, &playing);
     return playing;
 }
 void SG_EXPORT sgAudioSourcePause(SGAudioSource* source)
@@ -157,8 +157,8 @@ void SG_EXPORT sgAudioSourcePause(SGAudioSource* source)
     if(source->dispatch == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioSourcePause != NULL)
-        _sg_modAudio.sgmAudioSourcePause(source->dispatch->handle);
+    if(sgmAudioSourcePause != NULL)
+        sgmAudioSourcePause(source->dispatch->handle);
 }
 SGbool SG_EXPORT sgAudioSourceIsPaused(SGAudioSource* source)
 {
@@ -168,8 +168,8 @@ SGbool SG_EXPORT sgAudioSourceIsPaused(SGAudioSource* source)
         return SG_FALSE;
 
     SGbool paused = SG_FALSE;
-    if(_sg_modAudio.sgmAudioSourceIsPaused != NULL)
-        _sg_modAudio.sgmAudioSourceIsPaused(source->dispatch->handle, &paused);
+    if(sgmAudioSourceIsPaused != NULL)
+        sgmAudioSourceIsPaused(source->dispatch->handle, &paused);
     return paused;
 }
 void SG_EXPORT sgAudioSourceRewind(SGAudioSource* source)
@@ -179,8 +179,8 @@ void SG_EXPORT sgAudioSourceRewind(SGAudioSource* source)
     if(source->dispatch == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioSourceRewind != NULL)
-        _sg_modAudio.sgmAudioSourceRewind(source->dispatch->handle);
+    if(sgmAudioSourceRewind != NULL)
+        sgmAudioSourceRewind(source->dispatch->handle);
 }
 /*SGbool SG_EXPORT sgAudioSourceIsRewinded(SGAudioSource* source)
 {
@@ -190,8 +190,8 @@ void SG_EXPORT sgAudioSourceRewind(SGAudioSource* source)
         return SG_FALSE;
 
     SGbool rewinded = SG_FALSE;
-    if(_sg_modAudio.sgmAudioSourceIsRewinded != NULL)
-        _sg_modAudio.sgmAudioSourceIsRewinded(source->dispatch->handle, &rewinded);
+    if(sgmAudioSourceIsRewinded != NULL)
+        sgmAudioSourceIsRewinded(source->dispatch->handle, &rewinded);
     return rewinded;
 }*/
 void SG_EXPORT sgAudioSourceStop(SGAudioSource* source)
@@ -201,8 +201,8 @@ void SG_EXPORT sgAudioSourceStop(SGAudioSource* source)
     if(source->dispatch == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioSourceStop != NULL)
-        _sg_modAudio.sgmAudioSourceStop(source->dispatch->handle);
+    if(sgmAudioSourceStop != NULL)
+        sgmAudioSourceStop(source->dispatch->handle);
 }
 SGbool SG_EXPORT sgAudioSourceIsStopped(SGAudioSource* source)
 {
@@ -212,8 +212,8 @@ SGbool SG_EXPORT sgAudioSourceIsStopped(SGAudioSource* source)
         return SG_FALSE;
 
     SGbool stopped = SG_FALSE;
-    if(_sg_modAudio.sgmAudioSourceIsStopped != NULL)
-        _sg_modAudio.sgmAudioSourceIsStopped(source->dispatch->handle, &stopped);
+    if(sgmAudioSourceIsStopped != NULL)
+        sgmAudioSourceIsStopped(source->dispatch->handle, &stopped);
     return stopped;
 }
 SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source)
@@ -225,10 +225,10 @@ SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source)
 
     SGuint processed = 0;
     SGuint queued = 0;
-    if(_sg_modAudio.sgmAudioSourceGetNumProcessedBuffers != NULL)
-        _sg_modAudio.sgmAudioSourceGetNumProcessedBuffers(source->dispatch->handle, &processed);
-    if(_sg_modAudio.sgmAudioSourceGetNumQueuedBuffers != NULL)
-        _sg_modAudio.sgmAudioSourceGetNumQueuedBuffers(source->dispatch->handle, &queued);
+    if(sgmAudioSourceGetNumProcessedBuffers != NULL)
+        sgmAudioSourceGetNumProcessedBuffers(source->dispatch->handle, &processed);
+    if(sgmAudioSourceGetNumQueuedBuffers != NULL)
+        sgmAudioSourceGetNumQueuedBuffers(source->dispatch->handle, &queued);
 
     return processed != queued;
 }
@@ -250,10 +250,10 @@ void SG_EXPORT sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* bu
     if(source->dispatch == NULL)
         return;
 
-    //if(_sg_modAudio.sgmAudioSourceSetBuffer != NULL)
-    //    _sg_modAudio.sgmAudioSourceSetBuffer(source->dispatch->handle, buffer->handle);
-    if(_sg_modAudio.sgmAudioSourceQueueBuffers != NULL)
-        _sg_modAudio.sgmAudioSourceQueueBuffers(source->dispatch->handle, &buffer->handle, 1);
+    //if(sgmAudioSourceSetBuffer != NULL)
+    //    sgmAudioSourceSetBuffer(source->dispatch->handle, buffer->handle);
+    if(sgmAudioSourceQueueBuffers != NULL)
+        sgmAudioSourceQueueBuffers(source->dispatch->handle, &buffer->handle, 1);
 }
 
 void SG_EXPORT sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y, float z)
@@ -263,8 +263,8 @@ void SG_EXPORT sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float 
     if(source->dispatch == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioSourceSetPosition != NULL)
-        _sg_modAudio.sgmAudioSourceSetPosition(source->dispatch->handle, x, y, z);
+    if(sgmAudioSourceSetPosition != NULL)
+        sgmAudioSourceSetPosition(source->dispatch->handle, x, y, z);
 }
 void SG_EXPORT sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float y)
 {
@@ -285,8 +285,8 @@ void SG_EXPORT sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float
     if(z == NULL)
         z = &buf;
 
-    if(_sg_modAudio.sgmAudioSourceGetPosition != NULL)
-        _sg_modAudio.sgmAudioSourceGetPosition(source->dispatch->handle, x, y, z);
+    if(sgmAudioSourceGetPosition != NULL)
+        sgmAudioSourceGetPosition(source->dispatch->handle, x, y, z);
 }
 void SG_EXPORT sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float* y)
 {
@@ -300,8 +300,8 @@ void SG_EXPORT sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float 
     if(source->dispatch == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioSourceSetVelocity != NULL)
-        _sg_modAudio.sgmAudioSourceSetVelocity(source->dispatch->handle, x, y, z);
+    if(sgmAudioSourceSetVelocity != NULL)
+        sgmAudioSourceSetVelocity(source->dispatch->handle, x, y, z);
 }
 void SG_EXPORT sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float y)
 {
@@ -322,8 +322,8 @@ void SG_EXPORT sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float
     if(z == NULL)
         z = &buf;
 
-    if(_sg_modAudio.sgmAudioSourceGetVelocity != NULL)
-        _sg_modAudio.sgmAudioSourceGetVelocity(source->dispatch->handle, x, y, z);
+    if(sgmAudioSourceGetVelocity != NULL)
+        sgmAudioSourceGetVelocity(source->dispatch->handle, x, y, z);
 }
 void SG_EXPORT sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float* y)
 {
@@ -340,8 +340,8 @@ void SG_EXPORT sgAudioSourceSetPitch(SGAudioSource* source, float pitch)
     if(source->dispatch == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioSourceSetPitch != NULL)
-        _sg_modAudio.sgmAudioSourceSetPitch(source->dispatch->handle, pitch);
+    if(sgmAudioSourceSetPitch != NULL)
+        sgmAudioSourceSetPitch(source->dispatch->handle, pitch);
 }
 float SG_EXPORT sgAudioSourceGetPitch(SGAudioSource* source)
 {
@@ -351,8 +351,8 @@ float SG_EXPORT sgAudioSourceGetPitch(SGAudioSource* source)
         return SG_NAN;
 
     float pitch = 1.0f;
-    if(_sg_modAudio.sgmAudioSourceGetPitch != NULL)
-        _sg_modAudio.sgmAudioSourceGetPitch(source->dispatch->handle, &pitch);
+    if(sgmAudioSourceGetPitch != NULL)
+        sgmAudioSourceGetPitch(source->dispatch->handle, &pitch);
     return pitch;
 }
 
@@ -363,8 +363,8 @@ void SG_EXPORT sgAudioSourceSetVolume(SGAudioSource* source, float volume)
     if(source->dispatch == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioSourceSetVolume != NULL)
-        _sg_modAudio.sgmAudioSourceSetVolume(source->dispatch->handle, volume);
+    if(sgmAudioSourceSetVolume != NULL)
+        sgmAudioSourceSetVolume(source->dispatch->handle, volume);
 }
 float SG_EXPORT sgAudioSourceGetVolume(SGAudioSource* source)
 {
@@ -374,8 +374,8 @@ float SG_EXPORT sgAudioSourceGetVolume(SGAudioSource* source)
         return SG_NAN;
 
     float volume = 1.0f;
-    if(_sg_modAudio.sgmAudioSourceGetVolume != NULL)
-        _sg_modAudio.sgmAudioSourceGetVolume(source->dispatch->handle, &volume);
+    if(sgmAudioSourceGetVolume != NULL)
+        sgmAudioSourceGetVolume(source->dispatch->handle, &volume);
     return volume;
 }
 
@@ -386,8 +386,8 @@ void SG_EXPORT sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping)
     if(source->dispatch == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioSourceSetLooping != NULL)
-        _sg_modAudio.sgmAudioSourceSetLooping(source->dispatch->handle, looping);
+    if(sgmAudioSourceSetLooping != NULL)
+        sgmAudioSourceSetLooping(source->dispatch->handle, looping);
 }
 SGbool SG_EXPORT sgAudioSourceGetLooping(SGAudioSource* source)
 {
@@ -397,7 +397,7 @@ SGbool SG_EXPORT sgAudioSourceGetLooping(SGAudioSource* source)
         return SG_FALSE;
 
     SGbool looping = SG_FALSE;
-    if(_sg_modAudio.sgmAudioSourceGetLooping != NULL)
-        _sg_modAudio.sgmAudioSourceGetLooping(source->dispatch->handle, &looping);
+    if(sgmAudioSourceGetLooping != NULL)
+        sgmAudioSourceGetLooping(source->dispatch->handle, &looping);
     return looping;
 }

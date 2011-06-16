@@ -63,8 +63,8 @@ void SG_EXPORT sgDrawEnd(void)
 	if(_sg_drawTexture != NULL)
 		texture = _sg_drawTexture->handle;
 
-	if(_sg_modGraphics.sgmGraphicsDrawPrimitive != NULL)
-		_sg_modGraphics.sgmGraphicsDrawPrimitive(_sg_gfxHandle, texture, _sg_drawType, _sg_drawNumPoints, _sg_drawPoints, _sg_drawTexCoords, _sg_drawColors);
+	if(sgmGraphicsDrawPrimitive != NULL)
+		sgmGraphicsDrawPrimitive(_sg_gfxHandle, texture, _sg_drawType, _sg_drawNumPoints, _sg_drawPoints, _sg_drawTexCoords, _sg_drawColors);
 	_sg_drawNumPoints = 0;
 }
 void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
@@ -73,14 +73,77 @@ void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
 	_sg_drawCurColor[1] = g;
 	_sg_drawCurColor[2] = b;
 	_sg_drawCurColor[3] = a;
-	if(_sg_modGraphics.sgmGraphicsDrawSetColor != NULL)
-		_sg_modGraphics.sgmGraphicsDrawSetColor(_sg_gfxHandle, _sg_drawCurColor);
+	if(sgmGraphicsDrawSetColor != NULL)
+		sgmGraphicsDrawSetColor(_sg_gfxHandle, _sg_drawCurColor);
 }
-_SG_COLOR_OVERLOADS_FUNC(sgDrawColor)
+void SG_EXPORT sgDrawColor3f(float r, float g, float b)
+{
+	sgDrawColor4f(r, g, b, 1.0);
+}
+void SG_EXPORT sgDrawColor2f(float g, float a)
+{
+	sgDrawColor4f(g, g, g, a);
+}
+void SG_EXPORT sgDrawColor1f(float g)
+{
+	sgDrawColor4f(g, g, g, 1.0);
+}
+void SG_EXPORT sgDrawColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
+{
+	sgDrawColor4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+}
+void SG_EXPORT sgDrawColor3ub(SGubyte r, SGubyte g, SGubyte b)
+{
+	sgDrawColor4ub(r, g, b, 255);
+}
+void SG_EXPORT sgDrawColor2ub(SGubyte g, SGubyte a)
+{
+	sgDrawColor4ub(g, g, g, a);
+}
+void SG_EXPORT sgDrawColor1ub(SGubyte g)
+{
+	sgDrawColor4ub(g, g, g, 255);
+}
+void SG_EXPORT sgDrawColor4fv(float* rgba)
+{
+	sgDrawColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+}
+void SG_EXPORT sgDrawColor3fv(float* rgb)
+{
+	sgDrawColor3f(rgb[0], rgb[1], rgb[2]);
+}
+void SG_EXPORT sgDrawColor2fv(float* ga)
+{
+	sgDrawColor2f(ga[0], ga[1]);
+}
+void SG_EXPORT sgDrawColor1fv(float* g)
+{
+	sgDrawColor1f(g[0]);
+}
+void SG_EXPORT sgDrawColor4ubv(SGubyte* rgba)
+{
+	sgDrawColor4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
+}
+void SG_EXPORT sgDrawColor3ubv(SGubyte* rgb)
+{
+	sgDrawColor3ub(rgb[0], rgb[1], rgb[2]);
+}
+void SG_EXPORT sgDrawColor2ubv(SGubyte* ga)
+{
+	sgDrawColor2ub(ga[0], ga[1]);
+}
+void SG_EXPORT sgDrawColor1ubv(SGubyte* g)
+{
+	sgDrawColor1ub(g[0]);
+}
 void SG_EXPORT sgDrawTexCoord2f(float s, float t)
 {
 	_sg_drawCurTexCoord[0] = s;
 	_sg_drawCurTexCoord[1] = t;
+}
+void SG_EXPORT sgDrawTexCoord2fv(float* st)
+{
+	sgDrawTexCoord2f(st[0], st[1]);
 }
 void SG_EXPORT sgDrawVertex3f(float x, float y, float z)
 {
@@ -100,6 +163,14 @@ void SG_EXPORT sgDrawVertex2f(float x, float y)
 {
 	sgDrawVertex3f(x, y, 0.0f);
 }
+void SG_EXPORT sgDrawVertex3fv(float* xyz)
+{
+	sgDrawVertex3f(xyz[0], xyz[1], xyz[2]);
+}
+void SG_EXPORT sgDrawVertex2fv(float* xy)
+{
+	sgDrawVertex2f(xy[0], xy[1]);
+}
 void SG_EXPORT sgDrawClear4f(float r, float g, float b, float a)
 {
 	float col[4];
@@ -107,10 +178,69 @@ void SG_EXPORT sgDrawClear4f(float r, float g, float b, float a)
 	col[1] = g;
 	col[2] = b;
 	col[3] = a;
-	if(_sg_modGraphics.sgmGraphicsContextClear != NULL)
-		_sg_modGraphics.sgmGraphicsContextClear(_sg_gfxHandle, col);
+	if(sgmGraphicsContextClear != NULL)
+		sgmGraphicsContextClear(_sg_gfxHandle, col);
 }
-_SG_COLOR_OVERLOADS_FUNC(sgDrawClear)
+void SG_EXPORT sgDrawClear3f(float r, float g, float b)
+{
+	sgDrawClear4f(r, g, b, 1.0);
+}
+void SG_EXPORT sgDrawClear2f(float g, float a)
+{
+	sgDrawClear4f(g, g, g, a);
+}
+void SG_EXPORT sgDrawClear1f(float g)
+{
+	sgDrawClear4f(g, g, g, 1.0);
+}
+void SG_EXPORT sgDrawClear4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
+{
+	sgDrawClear4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+}
+void SG_EXPORT sgDrawClear3ub(SGubyte r, SGubyte g, SGubyte b)
+{
+	sgDrawClear4ub(r, g, b, 255);
+}
+void SG_EXPORT sgDrawClear2ub(SGubyte g, SGubyte a)
+{
+	sgDrawClear4ub(g, g, g, a);
+}
+void SG_EXPORT sgDrawClear1ub(SGubyte g)
+{
+	sgDrawClear4ub(g, g, g, 255);
+}
+void SG_EXPORT sgDrawClear4fv(float* rgba)
+{
+	sgDrawClear4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+}
+void SG_EXPORT sgDrawClear3fv(float* rgb)
+{
+	sgDrawClear3f(rgb[0], rgb[1], rgb[2]);
+}
+void SG_EXPORT sgDrawClear2fv(float* ga)
+{
+	sgDrawClear2f(ga[0], ga[1]);
+}
+void SG_EXPORT sgDrawClear1fv(float* g)
+{
+	sgDrawClear1f(g[0]);
+}
+void SG_EXPORT sgDrawClear4ubv(SGubyte* rgba)
+{
+	sgDrawClear4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
+}
+void SG_EXPORT sgDrawClear3ubv(SGubyte* rgb)
+{
+	sgDrawClear3ub(rgb[0], rgb[1], rgb[2]);
+}
+void SG_EXPORT sgDrawClear2ubv(SGubyte* ga)
+{
+	sgDrawClear2ub(ga[0], ga[1]);
+}
+void SG_EXPORT sgDrawClear1ubv(SGubyte* g)
+{
+	sgDrawClear1ub(g[0]);
+}
 void SG_EXPORT sgDrawClear(void)
 {
 	sgDrawClear4f(0.0f, 0.0f, 0.0f, 0.0f);
@@ -118,13 +248,13 @@ void SG_EXPORT sgDrawClear(void)
 
 void SG_EXPORT sgDrawSetBlendFunc(SGenum src, SGenum dst)
 {
-    if(_sg_modGraphics.sgmGraphicsDrawSetBlendFunc != NULL)
-        _sg_modGraphics.sgmGraphicsDrawSetBlendFunc(_sg_gfxHandle, src, dst);
+    if(sgmGraphicsDrawSetBlendFunc != NULL)
+        sgmGraphicsDrawSetBlendFunc(_sg_gfxHandle, src, dst);
 }
 void SG_EXPORT sgDrawSetBlendEquation(SGenum equation)
 {
-    if(_sg_modGraphics.sgmGraphicsDrawSetBlendEquation != NULL)
-        _sg_modGraphics.sgmGraphicsDrawSetBlendEquation(_sg_gfxHandle, equation);
+    if(sgmGraphicsDrawSetBlendEquation != NULL)
+        sgmGraphicsDrawSetBlendEquation(_sg_gfxHandle, equation);
 }
 
 void SG_EXPORT sgDrawPoint(float x, float y)
@@ -135,8 +265,8 @@ void SG_EXPORT sgDrawPoint(float x, float y)
 }
 void SG_EXPORT sgDrawPointSetSize(float size)
 {
-	if(_sg_modGraphics.sgmGraphicsDrawPointSetSize != NULL)
-		_sg_modGraphics.sgmGraphicsDrawPointSetSize(_sg_gfxHandle, size);
+	if(sgmGraphicsDrawPointSetSize != NULL)
+		sgmGraphicsDrawPointSetSize(_sg_gfxHandle, size);
 }
 //float SG_EXPORT sgDrawPointGetSize(void);
 
@@ -149,8 +279,8 @@ void SG_EXPORT sgDrawLine(float x1, float y1, float x2, float y2)
 }
 void SG_EXPORT sgDrawLineSetWidth(float width)
 {
-	if(_sg_modGraphics.sgmGraphicsDrawLineSetWidth != NULL)
-		_sg_modGraphics.sgmGraphicsDrawLineSetWidth(_sg_gfxHandle, width);
+	if(sgmGraphicsDrawLineSetWidth != NULL)
+		sgmGraphicsDrawLineSetWidth(_sg_gfxHandle, width);
 }
 //float SG_EXPORT sgDrawLineGetWidth(void);
 
@@ -184,6 +314,10 @@ void SG_EXPORT sgDrawQuad(float x1, float y1, float x2, float y2, float x3, floa
 void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fill)
 {
 	sgDrawQuad(x1, y1, x2, y1, x2, y2, x1, y2, fill);
+}
+void SG_EXPORT sgDrawRectangleWH(float x, float y, float w, float h, SGbool fill)
+{
+	sgDrawRectangle(x, y, x + w, y + h, fill);
 }
 
 void SG_EXPORT sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill)
@@ -226,16 +360,16 @@ void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, fl
 
 	sgDrawEnd();
 }
-void sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_EXPORT sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	sgDrawEArcRads(x, y, rx, ry, a1 * SG_PI / 180.0, a2 * SG_PI / 180.0, ccw, fill);
 }
 
-void sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_EXPORT sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	sgDrawEArcRads(x, y, r, r, a1, a2, ccw, fill);
 }
-void sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_EXPORT sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	sgDrawEArcDegs(x, y, r, r, a1, a2, ccw, fill);
 }

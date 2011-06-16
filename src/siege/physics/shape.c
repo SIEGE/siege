@@ -59,10 +59,10 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float
     shape->verts[3] = y2;
     shape->verts[4] = width;
 
-    if(_sg_modPhysics.sgmPhysicsShapeCreate != NULL)
-        _sg_modPhysics.sgmPhysicsShapeCreate(&shape->handle, body->handle, 0, 0, shape->type, shape->numverts, shape->verts);
-    if(_sg_modPhysics.sgmPhysicsSpaceAddShape != NULL)
-        _sg_modPhysics.sgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
+    if(sgmPhysicsShapeCreate != NULL)
+        sgmPhysicsShapeCreate(&shape->handle, body->handle, 0, 0, shape->type, shape->numverts, shape->verts);
+    if(sgmPhysicsSpaceAddShape != NULL)
+        sgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
 
     return shape;
 }
@@ -79,10 +79,10 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x,
     shape->verts = malloc(2 * numverts * sizeof(float));
     memcpy(shape->verts, verts, 2 * numverts * sizeof(float));
 
-    if(_sg_modPhysics.sgmPhysicsShapeCreate != NULL)
-        _sg_modPhysics.sgmPhysicsShapeCreate(&shape->handle, body->handle, x, y, shape->type, shape->numverts, shape->verts);
-    if(_sg_modPhysics.sgmPhysicsSpaceAddShape != NULL)
-        _sg_modPhysics.sgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
+    if(sgmPhysicsShapeCreate != NULL)
+        sgmPhysicsShapeCreate(&shape->handle, body->handle, x, y, shape->type, shape->numverts, shape->verts);
+    if(sgmPhysicsSpaceAddShape != NULL)
+        sgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
 
     return shape;
 }
@@ -107,10 +107,10 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float 
     shape->verts[0] = r1;
     shape->verts[1] = r2;
 
-    if(_sg_modPhysics.sgmPhysicsShapeCreate != NULL)
-        _sg_modPhysics.sgmPhysicsShapeCreate(&shape->handle, body->handle, x, y, shape->type, shape->numverts, &shape->verts[1]);
-    if(_sg_modPhysics.sgmPhysicsSpaceAddShape != NULL)
-        _sg_modPhysics.sgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
+    if(sgmPhysicsShapeCreate != NULL)
+        sgmPhysicsShapeCreate(&shape->handle, body->handle, x, y, shape->type, shape->numverts, &shape->verts[1]);
+    if(sgmPhysicsSpaceAddShape != NULL)
+        sgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
 
     return shape;
 }
@@ -119,10 +119,10 @@ void SG_EXPORT sgPhysicsShapeDestroy(SGPhysicsShape* shape)
     if(shape == NULL)
         return;
 
-    if(_sg_modPhysics.sgmPhysicsSpaceRemoveShape != NULL)
-        _sg_modPhysics.sgmPhysicsSpaceRemoveShape(shape->body->space->handle, shape->handle);
-    if(_sg_modPhysics.sgmPhysicsShapeDestroy != NULL)
-        _sg_modPhysics.sgmPhysicsShapeDestroy(shape->handle);
+    if(sgmPhysicsSpaceRemoveShape != NULL)
+        sgmPhysicsSpaceRemoveShape(shape->body->space->handle, shape->handle);
+    if(sgmPhysicsShapeDestroy != NULL)
+        sgmPhysicsShapeDestroy(shape->handle);
 
     free(shape->verts);
 
@@ -250,8 +250,8 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
 
     // draw BB
     float t, l, b, r;
-    if(_sg_modPhysics.sgmPhysicsShapeGetBB_TEST != NULL)
-        _sg_modPhysics.sgmPhysicsShapeGetBB_TEST(shape->handle, &t, &l, &b, &r);
+    if(sgmPhysicsShapeGetBB_TEST != NULL)
+        sgmPhysicsShapeGetBB_TEST(shape->handle, &t, &l, &b, &r);
 
     sgDrawColor4f(0.5, 0.5, 0.5, 0.5);
     sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
@@ -317,14 +317,14 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
     // draw shape
     SGuint pnum;
     float* points;
-    if(_sg_modPhysics.sgmPhysicsBodyLocalToWorld_TEST == NULL)
+    if(sgmPhysicsBodyLocalToWorld_TEST == NULL)
         return;
-    if(_sg_modPhysics.sgmPhysicsShapeGetPoints_TEST != NULL)
-        _sg_modPhysics.sgmPhysicsShapeGetPoints_TEST(shape->handle, &pnum, &points);
+    if(sgmPhysicsShapeGetPoints_TEST != NULL)
+        sgmPhysicsShapeGetPoints_TEST(shape->handle, &pnum, &points);
 
     SGuint i;
     for(i = 0; i < pnum; i++)
-        _sg_modPhysics.sgmPhysicsBodyLocalToWorld_TEST(shape->body->handle, &points[2*i], &points[2*i+1]);
+        sgmPhysicsBodyLocalToWorld_TEST(shape->body->handle, &points[2*i], &points[2*i+1]);
 
     sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
         for(i = 0; i < pnum; i++)
@@ -332,6 +332,6 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
     sgDrawEnd();
     sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 
-    if(_sg_modPhysics.sgmPhysicsShapeFreePoints_TEST != NULL)
-        _sg_modPhysics.sgmPhysicsShapeFreePoints_TEST(points);
+    if(sgmPhysicsShapeFreePoints_TEST != NULL)
+        sgmPhysicsShapeFreePoints_TEST(points);
 }

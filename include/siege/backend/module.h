@@ -25,6 +25,8 @@ extern "C"
     SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo);
     //SGuint SG_EXPORT sgmModuleFree(void* data);
 
+    SGuint SG_EXPORT sgmModuleTick(SGulong tick);
+
     SGuint SG_EXPORT sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
 #ifdef __cplusplus
 }

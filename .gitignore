@@ -1,5 +1,6 @@
 .directory
 .*.swp
+.*.kate-swp
 *~
 /build
 /doc

@@ -31,20 +31,75 @@ SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname)
 {
     SGAudioBuffer* buffer = malloc(sizeof(SGAudioBuffer));
 
-    if(_sg_modAudio.sgmAudioBufferCreate != NULL)
-        _sg_modAudio.sgmAudioBufferCreate(&buffer->handle);
+    if(sgmAudioBufferCreate != NULL)
+        sgmAudioBufferCreate(&buffer->handle);
 
     SGuint channels = 0;
     SGuint format = 0;
     SGuint frequency = 0;
     void* data = NULL;
     SGuint datalen = 0;
-    if(_sg_modAudio.sgmAudioLoadFile != NULL)
-        _sg_modAudio.sgmAudioLoadFile(fname, &channels, &format, &frequency, &data, &datalen);
-    if(_sg_modAudio.sgmAudioBufferSetData != NULL)
-        _sg_modAudio.sgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
-    if(_sg_modAudio.sgmAudioLoadFreeData != NULL)
-        _sg_modAudio.sgmAudioLoadFreeData(data);
+    SGuint nsamples = 0;
+    void* file = NULL;
+    void* handle = NULL;
+    if(sgmAudioFileCreate)
+		sgmAudioFileCreate(&file, fname, &channels, &format, &frequency);
+
+	if(sgmAudioFileGetHandle
+	&& sgmAudioFileGetHandle(file, &handle) == SG_OK
+	&& sgmAudioBufferSetHandle(buffer->handle, handle) == SG_OK)
+	{
+	}
+	else
+	{
+		if(sgmAudioFileNumSamples)
+			sgmAudioFileNumSamples(file, &nsamples);
+		switch(format)
+		{
+			case SG_AUDIO_FORMAT_S8:
+			case SG_AUDIO_FORMAT_U8:
+				datalen = nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_S16:
+			case SG_AUDIO_FORMAT_U16:
+				datalen = 2 * nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_S24:
+			case SG_AUDIO_FORMAT_U24:
+				datalen = 3 * nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_S32:
+			case SG_AUDIO_FORMAT_U32:
+				datalen = 4 * nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_F:
+				datalen = 4 * nsamples * channels;
+				break;
+			case SG_AUDIO_FORMAT_D:
+				datalen = 8 * nsamples * channels;
+				break;
+		}
+		data = malloc(datalen);
+		if(sgmAudioFileRead)
+			sgmAudioFileRead(file, data, &datalen);
+		if(sgmAudioBufferSetData != NULL)
+			sgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
+		free(data);
+	}
+
+	if(sgmAudioFileDestroy)
+		sgmAudioFileDestroy(file);
+
+	/// TODO: This is deprecated, remove when appropriate!
+	if(!sgmAudioFileCreate)
+	{
+		if(sgmAudioLoadFile != NULL)
+			sgmAudioLoadFile(fname, &channels, &format, &frequency, &data, &datalen);
+		if(sgmAudioBufferSetData != NULL)
+			sgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
+		if(sgmAudioLoadFreeData != NULL)
+			sgmAudioLoadFreeData(data);
+	}
 
     return buffer;
 }
@@ -53,8 +108,8 @@ void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer)
     if(buffer == NULL)
         return;
 
-    if(_sg_modAudio.sgmAudioBufferDestroy != NULL)
-        _sg_modAudio.sgmAudioBufferDestroy(buffer->handle);
+    if(sgmAudioBufferDestroy != NULL)
+        sgmAudioBufferDestroy(buffer->handle);
     free(buffer);
 }
 
@@ -62,6 +117,6 @@ void SG_EXPORT sgAudioBufferSetData(SGAudioBuffer* buffer, SGuint channels, SGui
 {
     if(buffer == NULL)
         return;
-    if(_sg_modAudio.sgmAudioBufferSetData != NULL)
-        _sg_modAudio.sgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
+    if(sgmAudioBufferSetData != NULL)
+        sgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
 }
