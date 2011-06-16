@@ -15,6 +15,8 @@
 #define SG_BUILD_LIBRARY
 #include <siege/ai/astar.h>
 
+#include <stdlib.h>
+
 SGAStar* SG_EXPORT sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal)
 {
 	SGAStar* search = malloc(sizeof(SGAStar));
@@ -153,7 +155,7 @@ SGbool SG_EXPORT sgAStarGoalFound(SGAStar* search)
 {
 	return search->gfound;
 }
-SGList* SG_EXPORT sgAStarPath(SGAStar* search, SGuint* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
+SGList* SG_EXPORT sgAStarPath(SGAStar* search, size_t* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
 {
 	// sgListClear(search->path);
 	sgListDestroy(search->path);

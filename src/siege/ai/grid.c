@@ -15,6 +15,7 @@
 #define SG_BUILD_LIBRARY
 #include <siege/ai/grid.h>
 
+#include <stdlib.h>
 #include <math.h>
 
 float SG_EXPORT _sgNavGridG(SGAStarNode* from, SGAStarNode* to)
@@ -171,27 +172,35 @@ void SG_EXPORT sgNavGridAddClear(SGNavGrid* grid, SGuint x, SGuint y)
 						   &&  (((SGNavGridData*)grid->grid[x+1][y  ]->data)->type != SG_NAVGRID_WALL)))
 				sgAStarNodeLink(grid->grid[x+1][y+1], grid->grid[x][y]);
 		}
-		if(grid->wdiag)
+		if(!grid->wdiag)
 		{
 			if(((SGNavGridData*)grid->grid[x  ][y+1]->data)->type != SG_NAVGRID_WALL)
 			{
-				sgAStarNodeLink(grid->grid[x-1][y  ], grid->grid[x	][y+1]);
-				sgAStarNodeLink(grid->grid[x+1][y  ], grid->grid[x	][y+1]);
+				if(((SGNavGridData*)grid->grid[x-1][y+1]->data)->type != SG_NAVGRID_WALL)
+					sgAStarNodeLink(grid->grid[x-1][y  ], grid->grid[x	][y+1]);
+				if(((SGNavGridData*)grid->grid[x+1][y+1]->data)->type != SG_NAVGRID_WALL)
+					sgAStarNodeLink(grid->grid[x+1][y  ], grid->grid[x	][y+1]);
 			}
 			if(((SGNavGridData*)grid->grid[x-1][y	]->data)->type != SG_NAVGRID_WALL)
 			{
-				sgAStarNodeLink(grid->grid[x  ][y+1], grid->grid[x-1][y  ]);
-				sgAStarNodeLink(grid->grid[x  ][y-1], grid->grid[x-1][y  ]);
+				if(((SGNavGridData*)grid->grid[x-1][y+1]->data)->type != SG_NAVGRID_WALL)
+					sgAStarNodeLink(grid->grid[x  ][y+1], grid->grid[x-1][y  ]);
+				if(((SGNavGridData*)grid->grid[x-1][y-1]->data)->type != SG_NAVGRID_WALL)
+					sgAStarNodeLink(grid->grid[x  ][y-1], grid->grid[x-1][y  ]);
 			}
 			if(((SGNavGridData*)grid->grid[x  ][y-1]->data)->type != SG_NAVGRID_WALL)
 			{
-				sgAStarNodeLink(grid->grid[x-1][y  ], grid->grid[x	][y-1]);
-				sgAStarNodeLink(grid->grid[x+1][y  ], grid->grid[x	][y-1]);
+				if(((SGNavGridData*)grid->grid[x-1][y-1]->data)->type != SG_NAVGRID_WALL)
+					sgAStarNodeLink(grid->grid[x-1][y  ], grid->grid[x	][y-1]);
+				if(((SGNavGridData*)grid->grid[x+1][y-1]->data)->type != SG_NAVGRID_WALL)
+					sgAStarNodeLink(grid->grid[x+1][y  ], grid->grid[x	][y-1]);
 			}
 			if(((SGNavGridData*)grid->grid[x+1][y	]->data)->type != SG_NAVGRID_WALL)
 			{
-				sgAStarNodeLink(grid->grid[x  ][y+1], grid->grid[x+1][y  ]);
-				sgAStarNodeLink(grid->grid[x  ][y-1], grid->grid[x+1][y  ]);
+				if(((SGNavGridData*)grid->grid[x+1][y+1]->data)->type != SG_NAVGRID_WALL)
+					sgAStarNodeLink(grid->grid[x  ][y+1], grid->grid[x+1][y  ]);
+				if(((SGNavGridData*)grid->grid[x+1][y-1]->data)->type != SG_NAVGRID_WALL)
+					sgAStarNodeLink(grid->grid[x  ][y-1], grid->grid[x+1][y  ]);
 			}
 		}
 	}
@@ -250,6 +259,10 @@ void SG_EXPORT sgNavGridSearchCreate(SGNavGrid* grid)
 {
     if(grid->search != NULL)
         sgAStarDestroy(grid->search);
+	size_t x, y;
+	for(x = 0; x < grid->width + 2; x++)
+		for(y = 0; y < grid->height + 2; y++)
+			grid->grid[x][y]->from = NULL;
 	grid->search = sgAStarCreate(grid->start, grid->goal, _sgNavGridG, _sgNavGridH, _sgNavGridGoal);
 }
 SGbool SG_EXPORT sgNavGridSearchStep(SGNavGrid* grid)
@@ -260,7 +273,7 @@ SGbool SG_EXPORT sgNavGridGoalFound(SGNavGrid* grid)
 {
 	return sgAStarGoalFound(grid->search);
 }
-SGList* SG_EXPORT sgNavGridSearchPath(SGNavGrid* grid, SGuint* pathlen)
+SGList* SG_EXPORT sgNavGridSearchPath(SGNavGrid* grid, size_t* pathlen)
 {
 	sgListDestroy(grid->path);
 	grid->path = sgListCreate();

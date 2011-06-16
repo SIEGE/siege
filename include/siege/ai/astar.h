@@ -18,8 +18,6 @@
 #include "../common.h"
 #include "../util/list.h"
 
-#include <stdlib.h>
-
 struct SGAStarNode;
 
 typedef float  SG_EXPORT (*SGAStarScore)(struct SGAStarNode*, struct SGAStarNode*);
@@ -63,7 +61,7 @@ SGAStar* SG_EXPORT sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarS
 void SG_EXPORT sgAStarDestroy(SGAStar* search);
 SGbool SG_EXPORT sgAStarStep(SGAStar* search);
 SGbool SG_EXPORT sgAStarGoalFound(SGAStar* search);
-SGList* SG_EXPORT sgAStarPath(SGAStar* search, SGuint* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
+SGList* SG_EXPORT sgAStarPath(SGAStar* search, size_t* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
 
 SGAStarNode* SG_EXPORT sgAStarNodeCreate(void* data);
 void SG_EXPORT sgAStarNodeDestroy(SGAStarNode* node);
