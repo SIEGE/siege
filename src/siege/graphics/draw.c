@@ -226,16 +226,16 @@ void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, fl
 
 	sgDrawEnd();
 }
-void sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_EXPORT sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	sgDrawEArcRads(x, y, rx, ry, a1 * SG_PI / 180.0, a2 * SG_PI / 180.0, ccw, fill);
 }
 
-void sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_EXPORT sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	sgDrawEArcRads(x, y, r, r, a1, a2, ccw, fill);
 }
-void sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_EXPORT sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	sgDrawEArcDegs(x, y, r, r, a1, a2, ccw, fill);
 }
