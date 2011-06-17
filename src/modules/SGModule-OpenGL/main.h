@@ -22,7 +22,7 @@
 #   define PROC_HANDLE void* _glhandle
 #   define INIT_HANDLE() do { (void)_glhandle; } while(0)
 #   define DEINIT_HANDLE() do { (void)_glhandle; } while(0)
-#   define GET_PROC_ADDRESS(x) wglGetProcAddress((x))
+#   define GET_PROC_ADDRESS(x) ((void*)wglGetProcAddress((x)))
 #elif defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
 #   include <dlfcn.h>
 #   define PROC_HANDLE void* _glhandle

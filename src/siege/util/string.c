@@ -16,8 +16,11 @@
 #include <siege/util/string.h>
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
+
+// MinGW thinks it's smart and uses its own variant of vswprintf...
+#define __STRICT_ANSI__
+#include <stdio.h>
 #include <wchar.h>
 
 int vswprintf(wchar_t *wcs, size_t maxlen, const wchar_t *format, va_list args);
