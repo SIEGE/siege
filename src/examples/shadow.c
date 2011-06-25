@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 #define NSHAPES 3
 #define NLIGHTS 4
@@ -43,24 +44,32 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
     }
 }
 
+void sleep(clock_t ms)
+{
+    volatile clock_t end = clock() + ms * 1000 / CLOCKS_PER_SEC;
+    while(clock() < end)
+    {
+    }
+}
+
 int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");
     sgLoadModule("DevIL");
     sgInit(640, 480, 32, 0);
-    sgWindowSetTitlef("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
+    sgWindowSetTitlef("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%u to toggle lights", NLIGHTS);
 
-    space = sgLightSpaceCreate();
+    /*space = sgLightSpaceCreate();
     sgLightSpaceSetAmbience4f(space, 0.125, 0.0625, 0.0, 1.0);
 
     SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
     handler->evKeyboardKeyPress = evKeyboardKeyPress;
 
     SGSprite* tile = sgSpriteCreateFile2f("data/sprites/FloorMetalPlate.png", 0.0, 0.0);
-    SGSurface* tileset = sgSurfaceCreate(640, 480, 32);
+    SGSurface* tileset = sgSurfaceCreate(640, 480, 32);*/
 
-    size_t i, j;
+    /*size_t i, j;
 
     sgSurfaceClear(tileset);
     sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
@@ -94,9 +103,12 @@ int main(void)
     SGbool multLights = SG_TRUE;
     SGbool sqrmult = SG_TRUE;
 
+    clock_t prev = clock();
+    clock_t curr;*/
+
     while(sgLoop(NULL))
     {
-        sgLightSpaceUpdate(space);
+        /*sgLightSpaceUpdate(space);
         sgLightSpaceDraw(space, (multLights ? SG_SHADOW_DRAW_MUL : 0) | (sqrmult ? SG_SHADOW_DRAW_SQR : 0));
 
         //sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
@@ -105,10 +117,15 @@ int main(void)
         lights[0]->pos.y = sgMouseGetPosY();
 
         if(overlayDBG)
-            sgLightSpaceDrawDBG(space, 0);
+            sgLightSpaceDrawDBG(space, 0);*/
 
         sgWindowSwapBuffers();
         sgDrawClear();
+
+        /*curr = clock();
+        if(curr - prev >= 1000/60)
+            sleep(curr - prev - 1000/60);
+        prev = curr;
 
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
         sgSurfaceDraw(tileset);
@@ -116,13 +133,13 @@ int main(void)
         for(i = 0; i < NSHAPES; i++)
             sgShadowShapeDrawDBG(shapes[i], SG_TRUE);
         for(i = 0; i < NSHAPES; i++)
-            sgShadowShapeDrawDBG(shapes[i], SG_FALSE);
+            sgShadowShapeDrawDBG(shapes[i], SG_FALSE);*/
     }
 
-    sgSurfaceDestroy(tileset);
+    /*sgSurfaceDestroy(tileset);
     sgSpriteDestroy(tile);
 
-    sgLightSpaceDestroy(space);
+    sgLightSpaceDestroy(space);*/
 
     sgDeinit();
 
