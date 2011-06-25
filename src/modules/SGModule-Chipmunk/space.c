@@ -14,6 +14,7 @@
 
 #include "main.h"
 #include "space.h"
+#include "collision.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +26,9 @@ SGuint SG_EXPORT sgmPhysicsSpaceCreate(void** space)
     (*cspace)->iterations = 10; // TEST
     (*cspace)->elasticIterations = 10;
     (*cspace)->damping = 0.75;
+
+    cpSpaceAddCollisionHandler(*cspace, 0, 0, cbCollisionBegin, cbCollisionPreSolve, cbCollisionPostSolve, cbCollisionSeparate, NULL);
+
     return SG_OK;
 }
 

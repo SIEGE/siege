@@ -61,6 +61,8 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float
 
     if(sgmPhysicsShapeCreate != NULL)
         sgmPhysicsShapeCreate(&shape->handle, body->handle, 0, 0, shape->type, shape->numverts, shape->verts);
+    if(sgmPhysicsShapeSetData != NULL)
+        sgmPhysicsShapeSetData(shape->handle, shape);
     if(sgmPhysicsSpaceAddShape != NULL)
         sgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
 
@@ -81,6 +83,8 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x,
 
     if(sgmPhysicsShapeCreate != NULL)
         sgmPhysicsShapeCreate(&shape->handle, body->handle, x, y, shape->type, shape->numverts, shape->verts);
+    if(sgmPhysicsShapeSetData != NULL)
+        sgmPhysicsShapeSetData(shape->handle, shape);
     if(sgmPhysicsSpaceAddShape != NULL)
         sgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
 
@@ -109,6 +113,8 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float 
 
     if(sgmPhysicsShapeCreate != NULL)
         sgmPhysicsShapeCreate(&shape->handle, body->handle, x, y, shape->type, shape->numverts, &shape->verts[1]);
+    if(sgmPhysicsShapeSetData != NULL)
+        sgmPhysicsShapeSetData(shape->handle, shape);
     if(sgmPhysicsSpaceAddShape != NULL)
         sgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
 
@@ -127,6 +133,39 @@ void SG_EXPORT sgPhysicsShapeDestroy(SGPhysicsShape* shape)
     free(shape->verts);
 
     free(shape);
+}
+
+void SG_EXPORT sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction)
+{
+    if(sgmPhysicsShapeSetFriction != NULL)
+        sgmPhysicsShapeSetFriction(shape->handle, friction);
+}
+float SG_EXPORT sgPhysicsShapeGetFriction(SGPhysicsShape* shape)
+{
+    float friction = SG_NAN;
+    if(sgmPhysicsShapeGetFriction != NULL)
+        sgmPhysicsShapeGetFriction(shape->handle, &friction);
+    return friction;
+}
+void SG_EXPORT sgPhysicsShapeSetRestitution(SGPhysicsShape* shape, float restitution)
+{
+    if(sgmPhysicsShapeSetRestitution != NULL)
+        sgmPhysicsShapeSetRestitution(shape->handle, restitution);
+}
+float SG_EXPORT sgPhysicsShapeGetRestitution(SGPhysicsShape* shape)
+{
+    float restitution = SG_NAN;
+    if(sgmPhysicsShapeGetRestitution != NULL)
+        sgmPhysicsShapeGetRestitution(shape->handle, &restitution);
+    return restitution;
+}
+void SG_EXPORT sgPhysicsShapeSetData(SGPhysicsShape* shape, void* data)
+{
+    shape->data = data;
+}
+void* SG_EXPORT sgPhysicsShapeGetData(SGPhysicsShape* shape)
+{
+    return shape->data;
 }
 
 float SG_EXPORT sgPhysicsShapeGetAreaS(SGPhysicsShape* shape)

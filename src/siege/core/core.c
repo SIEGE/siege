@@ -33,6 +33,7 @@
 #include <siege/util/rand.h>
 #include <siege/util/string.h>
 #include <siege/physics/space.h>
+#include <siege/physics/collision.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -131,6 +132,7 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 
 	_sgRandInit();
 	_sgPhysicsSpaceInit();
+    _sgPhysicsCollisionInit();
 
 	_sgEntityInit();
 
@@ -146,6 +148,7 @@ SGbool SG_EXPORT sgDeinit(void)
 
 	_sgEntityDeinit();
 
+    _sgPhysicsCollisionDeinit();
 	_sgPhysicsSpaceDeinit();
 	_sgRandDeinit();
 

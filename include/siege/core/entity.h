@@ -27,6 +27,7 @@ struct SGSprite;
 struct SGMask;
 struct SGPhysicsBody;
 struct SGAudioSource;
+struct SGPhysicsCollision;
 
 /**
  * \ingroup Core
@@ -197,7 +198,68 @@ typedef struct SGEntity
 	SGvoid SG_EXPORT (*lcMouseWheel)(struct SGEntity* entity, SGint wheel);
 	/// @}
 
-	/// @}
+        /**
+         * \name Collision events
+         */
+        /// @{
+        /**
+         * \brief Two objects are in collision with one another
+         * \param other The other object
+         * \param point Collision point info
+         */
+        SGvoid SG_EXPORT (*lcCollision)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+        /**
+         * \brief Collision event for the first of two objects
+         * \param other The other object
+         * \param point Collision point info
+         */
+        SGvoid SG_EXPORT (*lcCollisionOne)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+        /**
+         * \brief Collision event for the second of two objects
+         * \param other The other object
+         * \param point Collision point info
+         */
+        SGvoid SG_EXPORT (*lcCollisionTwo)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+
+        /**
+         * \brief Two objects have just come in collision with one another
+         * \param other The other object
+         * \param point Collision point info
+         */
+        SGvoid SG_EXPORT (*lcCollisionBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+        /**
+         * \brief Collision start event for the first of two objects
+         * \param other The other object
+         * \param point Collision point info
+         */
+        SGvoid SG_EXPORT (*lcCollisionOneBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+        /**
+         * \brief Collision start event for the second of two objects
+         * \param other The other object
+         * \param point Collision point info
+         */
+        SGvoid SG_EXPORT (*lcCollisionTwoBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+
+        /**
+         * \brief Two objects are no longer in collision with one another
+         * \param other The other object
+         * \param point Collision point info
+         */
+        SGvoid SG_EXPORT (*lcCollisionEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+        /**
+         * \brief Collision end event for the first of two objects
+         * \param other The other object
+         * \param point Collision point info
+         */
+        SGvoid SG_EXPORT (*lcCollisionOneEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+        /**
+         * \brief Collision end event for the second of two objects
+         * \param other The other object
+         * \param point Collision point info
+         */
+        SGvoid SG_EXPORT (*lcCollisionTwoEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+
+        /// @}
 
 	/**
 	 * \name Module-related events
@@ -368,87 +430,6 @@ typedef struct SGEntity
 	/// @}
 
 	// networking goes here
-
-	/**
-	 * \name Collision events
-	 */
-	/// @{
-	/**
-	 * \brief Two objects are in collision with one another
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollision)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
-	/**
-	 * \brief Collision event for the first of two objects
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionOne)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
-	/**
-	 * \brief Collision event for the second of two objects
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionTwo)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
-
-	/**
-	 * \brief Two objects have just come in collision with one another
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
-	/**
-	 * \brief Collision start event for the first of two objects
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionOneBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
-	/**
-	 * \brief Collision start event for the second of two objects
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionTwoBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
-
-	/**
-	 * \brief Two objects are no longer in collision with one another
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
-	/**
-	 * \brief Collision end event for the first of two objects
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionOneEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
-	/**
-	 * \brief Collision end event for the second of two objects
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionTwoEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionPoint* point);
-
-	/**
-	 * \brief The result of the collision has been computed
-	 * \param other The other object
-	 * \param point Collision result info
-	 */
-	SGvoid SG_EXPORT (*evCollisionResult)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionResult* result);
-	/**
-	 * \brief Collision result event for the first of two objects
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionOneResult)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionResult* result);
-	/**
-	 * \brief Collision result event for the second of two objects
-	 * \param other The other object
-	 * \param point Collision point info
-	 */
-	SGvoid SG_EXPORT (*evCollisionTwoResult)(struct SGEntity* entity, struct SGEntity* other, struct SGCollisionResult* result);
-	/// @}
 
 	/**
 	 * \name Level events

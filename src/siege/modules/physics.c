@@ -44,10 +44,25 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsBodySetData);
     _SG_BIND(sgmPhysicsBodyGetData);
 
+    _SG_BIND(sgmPhysicsCollisionIgnore);
+    _SG_BIND(sgmPhysicsCollisionGetNumContacts);
+    _SG_BIND(sgmPhysicsCollisionGetPoint);
+    _SG_BIND(sgmPhysicsCollisionGetNormal);
+    _SG_BIND(sgmPhysicsCollisionGetDistance);
+    _SG_BIND(sgmPhysicsCollisionGetImpulse);
+    _SG_BIND(sgmPhysicsCollisionSetCallbacks);
+
     // constraint
 
     _SG_BIND(sgmPhysicsShapeCreate);
     _SG_BIND(sgmPhysicsShapeDestroy);
+
+    _SG_BIND(sgmPhysicsShapeSetFriction);
+    _SG_BIND(sgmPhysicsShapeGetFriction);
+    _SG_BIND(sgmPhysicsShapeSetRestitution);
+    _SG_BIND(sgmPhysicsShapeGetRestitution);
+    _SG_BIND(sgmPhysicsShapeSetData);
+    _SG_BIND(sgmPhysicsShapeGetData);
 
     _SG_BIND(sgmPhysicsSpaceCreate);
     _SG_BIND(sgmPhysicsSpaceDestroy);
