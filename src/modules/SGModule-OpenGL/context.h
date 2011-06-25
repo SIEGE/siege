@@ -15,6 +15,7 @@
 #ifndef __CONTEXT_H__
 #define __CONTEXT_H__
 
+#include <siege/backend.h>
 #include "texture.h"
 #include "surface.h"
 
