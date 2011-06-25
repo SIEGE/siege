@@ -26,7 +26,7 @@ SGuint SG_EXPORT sgmGraphicsSurfaceCreate(void** surface, void* context)
     SurfaceData** sdata = (SurfaceData**)surface;
     ContextData* cdata = (ContextData*)context;
 
-    *surface = malloc(sizeof(SurfaceData));
+    *sdata = malloc(sizeof(SurfaceData));
 
     (*sdata)->context = context;
     (*sdata)->isFBO = cdata->fbo.hasFBO;
@@ -38,7 +38,7 @@ SGuint SG_EXPORT sgmGraphicsSurfaceCreate(void** surface, void* context)
         cdata->fbo.glGenFramebuffersEXT(1, &(*sdata)->fboid);
         cdata->fbo.glGenRenderbuffersEXT(1, &(*sdata)->rbid);
 
-        //sgmGraphicsSurfaceSetTexture(*sdata, (*sdata)->texture);
+        sgmGraphicsSurfaceSetTexture(*sdata, (*sdata)->texture);
     }
 
     return SG_OK;
