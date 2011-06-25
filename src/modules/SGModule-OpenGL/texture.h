@@ -15,6 +15,8 @@
 #ifndef __TEXTURE_H__
 #define __TEXTURE_H__
 
+#include <siege/backend.h>
+
 typedef struct TextureData
 {
     void* context;

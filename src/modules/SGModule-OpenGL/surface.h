@@ -15,6 +15,7 @@
 #ifndef __SURFACE_H__
 #define __SURFACE_H__
 
+#include <siege/backend.h>
 #include "texture.h"
 
 typedef struct SurfaceData
