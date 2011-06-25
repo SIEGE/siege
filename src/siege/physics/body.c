@@ -29,8 +29,11 @@ SGPhysicsBody* SG_EXPORT sgPhysicsBodyCreate(SGPhysicsSpace* space, SGenum type)
         space = _sg_physSpaceMain;
 
     body->space = space;
-    body->type = type;
     body->data = NULL;
+
+    body->type = type;
+
+    body->entity = NULL;
 
     if(sgmPhysicsBodyCreate != NULL)
         sgmPhysicsBodyCreate(&body->handle, body->type);

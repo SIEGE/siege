@@ -14,13 +14,60 @@ size_t numboxes = 0;
 SGEntity** boxes = NULL;
 SGbool overlay = SG_FALSE;
 
-void destroyBox(SGEntity* box)
+#define MAXCOLLS 32
+#define MAXCONTS 64
+
+typedef struct Box
 {
-    if(box == NULL)
+    SGPhysicsShape* shape;
+    size_t numcoll;
+
+    size_t numcontacts[MAXCOLLS];
+    SGVec2 points[MAXCOLLS][MAXCONTS];
+    SGVec2 normals[MAXCOLLS][MAXCONTS];
+    //SGVec2 impulse[MAXCOLLS][MAXCONTS];
+} Box;
+
+void boxCollisionBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollision* collision)
+{
+    Box* box = entity->data;
+
+    float dist;
+    if(box->numcoll < MAXCOLLS)
+    {
+        box->numcontacts[box->numcoll] = sgPhysicsCollisionGetNumContacts(collision) % MAXCONTS;
+        size_t i;
+        for(i = 0; i < box->numcontacts[box->numcoll]; i++)
+        {
+            sgPhysicsCollisionGetPoint(collision, i, &box->points[box->numcoll][i].x, &box->points[box->numcoll][i].y);
+            sgPhysicsCollisionGetNormal(collision, i, &box->normals[box->numcoll][i].x, &box->normals[box->numcoll][i].y);
+            //sgPhysicsCollisionGetImpulse(collision, &box->impulse[box->numcoll][i].x, &box->impulse[box->numcoll][i].y, SG_TRUE);
+            dist = sgPhysicsCollisionGetDistance(collision, i);
+
+            box->normals[box->numcoll][i] = sgVec2SetLength(box->normals[box->numcoll][i], dist);
+        }
+    }
+
+    box->numcoll++;
+}
+void boxCollisionEnd(SGEntity* entity, SGEntity* other, SGPhysicsCollision* collision)
+{
+    Box* box = entity->data;
+    if(box->numcoll)
+        box->numcoll--;
+}
+
+void destroyBox(SGEntity* entity)
+{
+    if(entity == NULL)
         return;
 
-    sgPhysicsShapeDestroy(box->data);
-    sgPhysicsBodyDestroy(box->body);
+    sgPhysicsBodyDestroy(entity->body);
+
+    Box* box = entity->data;
+    sgPhysicsShapeDestroy(box->shape);
+
+    free(box);
 }
 
 SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density, SGbool stat)
@@ -39,23 +86,28 @@ SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density,
                        w / 2.0,  h / 2.0,
                        w / 2.0, -h / 2.0};
 
-    SGEntity* box = sgEntityCreate(0.0, SG_EVT_ALL);
+    SGEntity* entity = sgEntityCreate(0.0, SG_EVT_ALL);
 
-    sgEntitySetPhysicsBody(box, body);
-    sgEntitySetSprite(box, spr);
-    sgEntitySetPos(box, x, y);
-    sgEntitySetAngleDegs(box, angle);
+    Box* box = calloc(1, sizeof(Box));
+    entity->data = box;
 
-    box->data = sgPhysicsShapeCreatePoly(body, 0.0, 0.0, verts, 4);
-    sgPhysicsBodySetMass(body, sgPhysicsShapeGetMass(box->data, density));
-    sgPhysicsBodySetMoment(body, sgPhysicsShapeGetMomentDensity(box->data, density));
+    sgEntitySetPhysicsBody(entity, body);
+    sgEntitySetSprite(entity, spr);
+    sgEntitySetPos(entity, x, y);
+    sgEntitySetAngleDegs(entity, angle);
 
-    box->evExit = destroyBox;
+    box->shape = sgPhysicsShapeCreatePoly(body, 0.0, 0.0, verts, 4);
+    sgPhysicsBodySetMass(body, sgPhysicsShapeGetMass(box->shape, density));
+    sgPhysicsBodySetMoment(body, sgPhysicsShapeGetMomentDensity(box->shape, density));
+
+    entity->lcCollisionBegin = boxCollisionBegin;
+    entity->lcCollisionEnd = boxCollisionEnd;
+    entity->evExit = destroyBox;
 
     numboxes++;
     boxes = realloc(boxes, numboxes * sizeof(SGEntity*));
-    boxes[numboxes - 1] = box;
-    return box;
+    boxes[numboxes - 1] = entity;
+    return entity;
 }
 SGEntity* createWoodenBox(float x, float y, float angle)
 {
@@ -69,12 +121,50 @@ SGEntity* createFloor(SGSprite* sprite, float x, float y)
 {
     return createBox(sprite, x, y, 0.0, SG_INF, SG_TRUE);
 }
-void boxDrawDBG(SGEntity* box)
+void boxDrawDBG(SGEntity* entity)
 {
-    if(box == NULL)
+    if(entity == NULL)
         return;
 
-    sgPhysicsShapeDrawDBG(box->data);
+    Box* box = entity->data;
+
+    if(box->numcoll)
+    {
+        sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
+        sgEntityDraw(entity);
+    }
+    else
+    {
+        sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
+        sgEntityDraw(entity);
+    }
+
+    //sgDrawLineSetWidth(2.0);
+    sgDrawPointSetSize(2.0);
+
+    /*SGVec2 pos;
+    sgEntityGetPos(entity, &pos.x, &pos.y);*/
+
+    size_t i, j;
+    for(i = 0; i < SG_MIN(box->numcoll, MAXCOLLS); i++)
+    {
+        for(j = 0; j < box->numcontacts[i]; j++)
+        {
+            sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
+            sgDrawPoint(box->points[i][j].x, box->points[i][j].y);
+
+            sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
+            sgDrawLine(box->points[i][j].x, box->points[i][j].y, box->points[i][j].x + box->normals[i][j].x, box->points[i][j].y + box->normals[i][j].y);
+
+            //sgDrawColor4f(0.0, 0.0, 1.0, 1.0);
+            //sgDrawLine(pos.x, pos.y, pos.x + box->impulse[i][j].x, pos.y + box->impulse[i][j].y);
+        }
+    }
+
+    //sgDrawLineSetWidth(1.0);
+    sgDrawPointSetSize(1.0);
+
+    sgPhysicsShapeDrawDBG(box->shape);
 }
 
 void evKeyboardKeyPress(SGEntity* entity, SGenum key)

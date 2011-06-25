@@ -242,7 +242,7 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
 
 				// networking goes here (SG_EVF_NET)
 
-				case SG_EVF_PHYSCOLH:
+				/*case SG_EVF_PHYSCOLH:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->evCollision != NULL)
@@ -316,7 +316,7 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
                     ptr[1] = va_arg(args, SGCollisionResult*);
 					if(entity->evCollisionTwoResult != NULL)
 						entity->evCollisionTwoResult(entity, ptr[0], ptr[1]);
-					break;
+					break;*/
 
 				case SG_EVF_LVLSTART:
 					if(entity->evLevelStart != NULL)
@@ -407,7 +407,10 @@ void SG_EXPORT sgEntitySetPhysicsBody(SGEntity* entity, SGPhysicsBody* body)
 {
 	if(entity == NULL)
 		return;
-
+    if(entity->body)
+        entity->body->entity = NULL;
+    if(body)
+        body->entity = entity;
 	entity->body = body;
 }
 SGPhysicsBody* SG_EXPORT sgEntityGetPhysicsBody(SGEntity* entity)

@@ -26,6 +26,7 @@ extern "C"
 
 #define SG_FPTR(name) (*name)
 #include "../backend/physics/body.h"
+#include "../backend/physics/collision.h"
 #include "../backend/physics/constraint.h"
 #include "../backend/physics/shape.h"
 #include "../backend/physics/space.h"

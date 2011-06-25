@@ -24,7 +24,7 @@ SGuint SG_EXPORT sgmPhysicsShapeCreate(void** shape, void* body, float xoffset, 
         return SG_OK; // SG_INVALID_VALUE
     cpShape** cshape = (cpShape**)shape;
 
-    cpVect offset = (cpVect) {xoffset, yoffset};
+    cpVect offset = {xoffset, yoffset};
     cpVect a;
     cpVect b;
 
@@ -64,5 +64,54 @@ SGuint SG_EXPORT sgmPhysicsShapeDestroy(void* shape)
     if(shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpShapeFree(shape);
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmPhysicsShapeSetFriction(void* shape, float friction)
+{
+    if(shape == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    cpShape* cshape = shape;
+    cshape->u = friction;
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmPhysicsShapeGetFriction(void* shape, float* friction)
+{
+    if(shape == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    cpShape* cshape = shape;
+    *friction = cshape->u;
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmPhysicsShapeSetRestitution(void* shape, float restitution)
+{
+    if(shape == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    cpShape* cshape = shape;
+    cshape->e = restitution;
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmPhysicsShapeGetRestitution(void* shape, float* restitution)
+{
+    if(shape == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    cpShape* cshape = shape;
+    *restitution = cshape->e;
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmPhysicsShapeSetData(void* shape, void* data)
+{
+    if(shape == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    cpShape* cshape = shape;
+    cshape->data = data;
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmPhysicsShapeGetData(void* shape, void** data)
+{
+    if(shape == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    cpShape* cshape = shape;
+    *data = cshape->data;
     return SG_OK;
 }

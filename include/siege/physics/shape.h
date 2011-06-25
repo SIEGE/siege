@@ -18,8 +18,6 @@
 #include "../common.h"
 #include "body.h"
 
-#include <stddef.h>
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -29,6 +27,7 @@ typedef struct SGPhysicsShape
 {
     void* handle;
     SGPhysicsBody* body;
+    void* data;
 
     SGenum type;
 
@@ -43,6 +42,13 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float
 SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x, float y, float* verts, size_t numverts);
 SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float x, float y, float r1, float r2);
 void SG_EXPORT sgPhysicsShapeDestroy(SGPhysicsShape* shape);
+
+void SG_EXPORT sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction);
+float SG_EXPORT sgPhysicsShapeGetFriction(SGPhysicsShape* shape);
+void SG_EXPORT sgPhysicsShapeSetRestitution(SGPhysicsShape* shape, float restitution);
+float SG_EXPORT sgPhysicsShapeGetRestitution(SGPhysicsShape* shape);
+void SG_EXPORT sgPhysicsShapeSetData(SGPhysicsShape* shape, void* data);
+void* SG_EXPORT sgPhysicsShapeGetData(SGPhysicsShape* shape);
 
 float SG_EXPORT sgPhysicsShapeGetAreaS(SGPhysicsShape* shape);
 float SG_EXPORT sgPhysicsShapeGetAreaU(SGPhysicsShape* shape);

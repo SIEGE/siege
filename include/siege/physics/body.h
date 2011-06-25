@@ -17,21 +17,23 @@
 
 #include "../common.h"
 #include "space.h"
-#include "../core/entity.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif // __cplusplus
 
+struct SGEntity;
+
 typedef struct SGPhysicsBody
 {
     void* handle;
-
     SGPhysicsSpace* space;
+    void* data;
 
     SGenum type;
-    void* data;
+
+    struct SGEntity* entity;
 } SGPhysicsBody;
 
 SGPhysicsBody* SG_EXPORT sgPhysicsBodyCreate(SGPhysicsSpace* space, SGenum type);
