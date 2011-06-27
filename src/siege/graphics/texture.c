@@ -29,14 +29,14 @@ SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname)
     void* data;
 
     SGuint ret;
-    if(sgmGraphicsLoadFile != NULL)
-        ret = sgmGraphicsLoadFile(fname, &width, &height, &bpp, &data);
-    if((sgmGraphicsLoadFile == NULL) || (ret != SG_OK))
+    if(psgmGraphicsLoadFile != NULL)
+        ret = psgmGraphicsLoadFile(fname, &width, &height, &bpp, &data);
+    if((psgmGraphicsLoadFile == NULL) || (ret != SG_OK))
         fprintf(stderr, "Could not load image %s\n", fname);
 
     SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
-    if(sgmGraphicsLoadFreeData != NULL)
-        sgmGraphicsLoadFreeData(data);
+    if(psgmGraphicsLoadFreeData != NULL)
+        psgmGraphicsLoadFreeData(data);
     return texture;
 }
 SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data)
@@ -45,10 +45,10 @@ SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp
     if(texture == NULL)
         return NULL;
 
-    if(sgmGraphicsTextureCreate != NULL)
-        sgmGraphicsTextureCreate(&texture->handle, _sg_gfxHandle);
-    if(sgmGraphicsTextureSetData != NULL)
-        sgmGraphicsTextureSetData(texture->handle, width, height, bpp, data);
+    if(psgmGraphicsTextureCreate != NULL)
+        psgmGraphicsTextureCreate(&texture->handle, _sg_gfxHandle);
+    if(psgmGraphicsTextureSetData != NULL)
+        psgmGraphicsTextureSetData(texture->handle, width, height, bpp, data);
 
     return texture;
 }
@@ -58,15 +58,15 @@ SGTexture* SG_EXPORT sgTextureCreate(SGuint width, SGuint height, SGenum bpp)
 }
 void SG_EXPORT sgTextureDestroy(SGTexture* texture)
 {
-    if(sgmGraphicsTextureDestroy != NULL)
-        sgmGraphicsTextureDestroy(texture->handle);
+    if(psgmGraphicsTextureDestroy != NULL)
+        psgmGraphicsTextureDestroy(texture->handle);
     free(texture);
 }
 
 void SG_EXPORT sgTextureDrawRads3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
-    if(sgmGraphicsTextureDraw != NULL)
-        sgmGraphicsTextureDraw(texture->handle, x, y, z, xscale, yscale, xoffset, yoffset, angle);
+    if(psgmGraphicsTextureDraw != NULL)
+        psgmGraphicsTextureDraw(texture->handle, x, y, z, xscale, yscale, xoffset, yoffset, angle);
 }
 void SG_EXPORT sgTextureDrawDegs3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
@@ -153,22 +153,22 @@ void SG_EXPORT sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* heigh
     if(height == NULL)
         height = &buf;
 
-    if(sgmGraphicsTextureGetSize != NULL)
-        sgmGraphicsTextureGetSize(texture->handle, width, height);
+    if(psgmGraphicsTextureGetSize != NULL)
+        psgmGraphicsTextureGetSize(texture->handle, width, height);
 }
 SGuint SG_EXPORT sgTextureGetWidth(SGTexture* texture)
 {
     SGuint width;
     SGuint height;
-    if(sgmGraphicsTextureGetSize != NULL)
-        sgmGraphicsTextureGetSize(texture->handle, &width, &height);
+    if(psgmGraphicsTextureGetSize != NULL)
+        psgmGraphicsTextureGetSize(texture->handle, &width, &height);
     return width;
 }
 SGuint SG_EXPORT sgTextureGetHeight(SGTexture* texture)
 {
     SGuint width;
     SGuint height;
-    if(sgmGraphicsTextureGetSize != NULL)
-        sgmGraphicsTextureGetSize(texture->handle, &width, &height);
+    if(psgmGraphicsTextureGetSize != NULL)
+        psgmGraphicsTextureGetSize(texture->handle, &width, &height);
     return height;
 }

@@ -33,8 +33,8 @@ SGbool SG_EXPORT _sgPhysicsSpaceDeinit(void)
 SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceCreate(void)
 {
     SGPhysicsSpace* space = malloc(sizeof(SGPhysicsSpace));
-    if(sgmPhysicsSpaceCreate != NULL)
-        sgmPhysicsSpaceCreate(&space->handle);
+    if(psgmPhysicsSpaceCreate != NULL)
+        psgmPhysicsSpaceCreate(&space->handle);
 
     sgPhysicsSpaceSetGravity(space, 0.0, 0.0);
 
@@ -45,8 +45,8 @@ void SG_EXPORT sgPhysicsSpaceDestroy(SGPhysicsSpace* space)
     if(space == NULL)
         return;
 
-    if(sgmPhysicsSpaceDestroy != NULL)
-        sgmPhysicsSpaceDestroy(space->handle);
+    if(psgmPhysicsSpaceDestroy != NULL)
+        psgmPhysicsSpaceDestroy(space->handle);
 
     free(space);
 }
@@ -56,15 +56,15 @@ void SG_EXPORT sgPhysicsSpaceStep(SGPhysicsSpace* space, float time)
     if(space == NULL)
         return;
 
-    if(sgmPhysicsSpaceStep != NULL)
-        sgmPhysicsSpaceStep(space->handle, time);
+    if(psgmPhysicsSpaceStep != NULL)
+        psgmPhysicsSpaceStep(space->handle, time);
 }
 void SG_EXPORT sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y)
 {
     if(space == NULL)
         return;
 
-    if(sgmPhysicsSpaceSetGravity != NULL)
-        sgmPhysicsSpaceSetGravity(space->handle, x, y);
+    if(psgmPhysicsSpaceSetGravity != NULL)
+        psgmPhysicsSpaceSetGravity(space->handle, x, y);
 }
 //void SG_EXPORT sgPhysicsSpaceGetGravity(SGPhysicsSpace* space, float* x, float* y);

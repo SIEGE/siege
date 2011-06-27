@@ -63,8 +63,8 @@ void SG_EXPORT sgDrawEnd(void)
 	if(_sg_drawTexture != NULL)
 		texture = _sg_drawTexture->handle;
 
-	if(sgmGraphicsDrawPrimitive != NULL)
-		sgmGraphicsDrawPrimitive(_sg_gfxHandle, texture, _sg_drawType, _sg_drawNumPoints, _sg_drawPoints, _sg_drawTexCoords, _sg_drawColors);
+	if(psgmGraphicsDrawPrimitive != NULL)
+		psgmGraphicsDrawPrimitive(_sg_gfxHandle, texture, _sg_drawType, _sg_drawNumPoints, _sg_drawPoints, _sg_drawTexCoords, _sg_drawColors);
 	_sg_drawNumPoints = 0;
 }
 void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
@@ -73,8 +73,8 @@ void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
 	_sg_drawCurColor[1] = g;
 	_sg_drawCurColor[2] = b;
 	_sg_drawCurColor[3] = a;
-	if(sgmGraphicsDrawSetColor != NULL)
-		sgmGraphicsDrawSetColor(_sg_gfxHandle, _sg_drawCurColor);
+	if(psgmGraphicsDrawSetColor != NULL)
+		psgmGraphicsDrawSetColor(_sg_gfxHandle, _sg_drawCurColor);
 }
 void SG_EXPORT sgDrawColor3f(float r, float g, float b)
 {
@@ -178,8 +178,8 @@ void SG_EXPORT sgDrawClear4f(float r, float g, float b, float a)
 	col[1] = g;
 	col[2] = b;
 	col[3] = a;
-	if(sgmGraphicsContextClear != NULL)
-		sgmGraphicsContextClear(_sg_gfxHandle, col);
+	if(psgmGraphicsContextClear != NULL)
+		psgmGraphicsContextClear(_sg_gfxHandle, col);
 }
 void SG_EXPORT sgDrawClear3f(float r, float g, float b)
 {
@@ -248,13 +248,13 @@ void SG_EXPORT sgDrawClear(void)
 
 void SG_EXPORT sgDrawSetBlendFunc(SGenum src, SGenum dst)
 {
-    if(sgmGraphicsDrawSetBlendFunc != NULL)
-        sgmGraphicsDrawSetBlendFunc(_sg_gfxHandle, src, dst);
+    if(psgmGraphicsDrawSetBlendFunc != NULL)
+        psgmGraphicsDrawSetBlendFunc(_sg_gfxHandle, src, dst);
 }
 void SG_EXPORT sgDrawSetBlendEquation(SGenum equation)
 {
-    if(sgmGraphicsDrawSetBlendEquation != NULL)
-        sgmGraphicsDrawSetBlendEquation(_sg_gfxHandle, equation);
+    if(psgmGraphicsDrawSetBlendEquation != NULL)
+        psgmGraphicsDrawSetBlendEquation(_sg_gfxHandle, equation);
 }
 
 void SG_EXPORT sgDrawPoint(float x, float y)
@@ -265,8 +265,8 @@ void SG_EXPORT sgDrawPoint(float x, float y)
 }
 void SG_EXPORT sgDrawPointSetSize(float size)
 {
-	if(sgmGraphicsDrawPointSetSize != NULL)
-		sgmGraphicsDrawPointSetSize(_sg_gfxHandle, size);
+	if(psgmGraphicsDrawPointSetSize != NULL)
+		psgmGraphicsDrawPointSetSize(_sg_gfxHandle, size);
 }
 //float SG_EXPORT sgDrawPointGetSize(void);
 
@@ -279,8 +279,8 @@ void SG_EXPORT sgDrawLine(float x1, float y1, float x2, float y2)
 }
 void SG_EXPORT sgDrawLineSetWidth(float width)
 {
-	if(sgmGraphicsDrawLineSetWidth != NULL)
-		sgmGraphicsDrawLineSetWidth(_sg_gfxHandle, width);
+	if(psgmGraphicsDrawLineSetWidth != NULL)
+		psgmGraphicsDrawLineSetWidth(_sg_gfxHandle, width);
 }
 //float SG_EXPORT sgDrawLineGetWidth(void);
 

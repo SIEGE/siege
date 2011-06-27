@@ -24,7 +24,7 @@ extern "C"
 
 #ifdef SG_BUILD_LIBRARY
 
-#define SG_FPTR(name) (*name)
+#define SG_FPTR(name) (*p##name)
 #include "../backend/core/joystick.h"
 #include "../backend/core/keyboard.h"
 #include "../backend/core/mouse.h"

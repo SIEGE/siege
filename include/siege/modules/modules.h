@@ -26,7 +26,7 @@ extern "C"
 #define _SG_BIND(name) \
 	fptr = sgGetProcAddress(lib, #name);   \
 	if((fptr != NULL) || _sg_modFirst)	   \
-		(name) = fptr; // not completely valid C99, but blame POSIX for that
+		(p##name) = fptr; // not completely valid C99, but blame POSIX for that
 
 #ifdef SG_BUILD_LIBRARY
 SGList* _sg_modList;

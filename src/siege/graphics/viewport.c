@@ -60,8 +60,8 @@ SGViewport* SG_EXPORT sgViewportCreate(void)
 	if(viewport == NULL)
 		return NULL;
 
-	if(sgmGraphicsViewportCreate != NULL)
-		sgmGraphicsViewportCreate(viewport->handle, _sg_gfxHandle);
+	if(psgmGraphicsViewportCreate != NULL)
+		psgmGraphicsViewportCreate(viewport->handle, _sg_gfxHandle);
 	sgListAppend(_sg_viewList, viewport);
 	return viewport;
 }
@@ -70,8 +70,8 @@ void SG_EXPORT sgViewportDestroy(SGViewport* viewport)
 	if(viewport == NULL)
 		return;
 
-	if(sgmGraphicsViewportDestroy != NULL)
-		sgmGraphicsViewportDestroy(viewport->handle);
+	if(psgmGraphicsViewportDestroy != NULL)
+		psgmGraphicsViewportDestroy(viewport->handle);
 	sgListRemoveItem(_sg_viewList, viewport);
 	free(viewport);
 }
@@ -98,6 +98,6 @@ void SG_EXPORT sgViewportReset(SGViewport* viewport)
 {
 	if(viewport == NULL)
 		return;
-	if(sgmGraphicsViewportSetView != NULL)
-		sgmGraphicsViewportSetView(viewport->handle, viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey, viewport->posx, viewport->posy, viewport->sizex, viewport->sizey);
+	if(psgmGraphicsViewportSetView != NULL)
+		psgmGraphicsViewportSetView(viewport->handle, viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey, viewport->posx, viewport->posy, viewport->sizex, viewport->sizey);
 }

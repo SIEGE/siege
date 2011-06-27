@@ -47,19 +47,19 @@ SGbool SG_EXPORT _sgWindowInit(void)
 	_sg_winCallbacks.close = _sg_cbWindowClose;
 	_sg_winCallbacks.resize = NULL;//_sg_cbWindowResize;
 
-	if(sgmCoreWindowCreate != NULL)
-		sgmCoreWindowCreate(&_sg_winHandle);
+	if(psgmCoreWindowCreate != NULL)
+		psgmCoreWindowCreate(&_sg_winHandle);
 
-	if(sgmCoreWindowSetCallbacks != NULL)
-		sgmCoreWindowSetCallbacks(_sg_winHandle, &_sg_winCallbacks);
+	if(psgmCoreWindowSetCallbacks != NULL)
+		psgmCoreWindowSetCallbacks(_sg_winHandle, &_sg_winCallbacks);
 
 	return SG_TRUE;
 }
 
 SGbool SG_EXPORT _sgWindowDeinit(void)
 {
-	if(sgmCoreWindowDestroy != NULL)
-		sgmCoreWindowDestroy(_sg_winHandle);
+	if(psgmCoreWindowDestroy != NULL)
+		psgmCoreWindowDestroy(_sg_winHandle);
 	free(_sg_winTitle);
 	return SG_TRUE;
 }
@@ -76,14 +76,14 @@ SGbool SG_EXPORT sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum fl
 	if(sgWindowIsOpened())
 		sgWindowClose();
 
-	if(sgmCoreWindowOpen != NULL)
-		sgmCoreWindowOpen(_sg_winHandle, width, height, bpp, flags);
+	if(psgmCoreWindowOpen != NULL)
+		psgmCoreWindowOpen(_sg_winHandle, width, height, bpp, flags);
 
 	sgWindowSetTitle("SIEGE Window");
 
 	sgWindowGetSize(&width, &height);
-	if(sgmGraphicsContextCreate != NULL)
-		sgmGraphicsContextCreate(&_sg_gfxHandle, width, height, bpp);
+	if(psgmGraphicsContextCreate != NULL)
+		psgmGraphicsContextCreate(&_sg_gfxHandle, width, height, bpp);
 
 	_sg_viewMain = sgViewportCreate4i(0, 0, width, height);
 
@@ -94,16 +94,16 @@ SGbool SG_EXPORT sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum fl
 SGbool SG_EXPORT sgWindowIsOpened(void)
 {
 	SGbool opened = SG_FALSE;
-	if(sgmCoreWindowIsOpened != NULL)
-		sgmCoreWindowIsOpened(_sg_winHandle, &opened);
+	if(psgmCoreWindowIsOpened != NULL)
+		psgmCoreWindowIsOpened(_sg_winHandle, &opened);
 	return opened;
 }
 void SG_EXPORT sgWindowClose(void)
 {
-	if(sgmGraphicsContextDestroy != NULL)
-		sgmGraphicsContextDestroy(_sg_gfxHandle);
-	if(sgmCoreWindowClose != NULL)
-		sgmCoreWindowClose(_sg_winHandle);
+	if(psgmGraphicsContextDestroy != NULL)
+		psgmGraphicsContextDestroy(_sg_gfxHandle);
+	if(psgmCoreWindowClose != NULL)
+		psgmCoreWindowClose(_sg_winHandle);
 }
 void SG_EXPORT sgWindowSetTitlef(const char* format, ...)
 {
@@ -123,8 +123,8 @@ void SG_EXPORT sgWindowSetTitle(const char* title)
 	int len = strlen(title) + 1;
 	_sg_winTitle = realloc(_sg_winTitle, len);
 	strcpy(_sg_winTitle, title);
-	if(sgmCoreWindowSetTitle != NULL)
-		sgmCoreWindowSetTitle(_sg_winHandle, _sg_winTitle);
+	if(psgmCoreWindowSetTitle != NULL)
+		psgmCoreWindowSetTitle(_sg_winHandle, _sg_winTitle);
 }
 char* SG_EXPORT sgWindowGetTitle(void)
 {
@@ -132,16 +132,16 @@ char* SG_EXPORT sgWindowGetTitle(void)
 }
 void SG_EXPORT sgWindowSetSize(SGuint width, SGuint height)
 {
-	if(sgmCoreWindowSetSize != NULL)
-		sgmCoreWindowSetSize(_sg_winHandle, width, height);
-	if(sgmGraphicsContextResize != NULL)
-		sgmGraphicsContextResize(_sg_gfxHandle, width, height);
+	if(psgmCoreWindowSetSize != NULL)
+		psgmCoreWindowSetSize(_sg_winHandle, width, height);
+	if(psgmGraphicsContextResize != NULL)
+		psgmGraphicsContextResize(_sg_gfxHandle, width, height);
 }
 void SG_EXPORT sgWindowGetSize(SGuint* width, SGuint* height)
 {
 	SGuint w, h;
-	if(sgmCoreWindowGetSize != NULL)
-		sgmCoreWindowGetSize(_sg_winHandle, &w, &h);
+	if(psgmCoreWindowGetSize != NULL)
+		psgmCoreWindowGetSize(_sg_winHandle, &w, &h);
 	if(width != NULL)
 		*width = w;
 	if(height != NULL)
@@ -173,6 +173,6 @@ SGuint SG_EXPORT sgWindowGetHeight(void)
 }
 void SG_EXPORT sgWindowSwapBuffers(void)
 {
-	if(sgmCoreWindowSwapBuffers != NULL)
-		sgmCoreWindowSwapBuffers(_sg_winHandle);
+	if(psgmCoreWindowSwapBuffers != NULL)
+		psgmCoreWindowSwapBuffers(_sg_winHandle);
 }
