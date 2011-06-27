@@ -52,6 +52,8 @@ void SG_EXPORT sgTextureDraw3f(SGTexture* texture, float x, float y, float z);
 void SG_EXPORT sgTextureDraw2f(SGTexture* texture, float x, float y);
 void SG_EXPORT sgTextureDraw(SGTexture* texture);
 
+void SG_EXPORT sgTextureSetWrap(SGTexture* texture, SGenum swrap, SGenum twrap);
+
 void SG_EXPORT sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height);
 SGuint SG_EXPORT sgTextureGetWidth(SGTexture* texture);
 SGuint SG_EXPORT sgTextureGetHeight(SGTexture* texture);

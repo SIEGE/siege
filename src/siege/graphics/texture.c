@@ -58,6 +58,9 @@ SGTexture* SG_EXPORT sgTextureCreate(SGuint width, SGuint height, SGenum bpp)
 }
 void SG_EXPORT sgTextureDestroy(SGTexture* texture)
 {
+    if(!texture)
+        return;
+
     if(psgmGraphicsTextureDestroy != NULL)
         psgmGraphicsTextureDestroy(texture->handle);
     free(texture);
@@ -141,17 +144,23 @@ void SG_EXPORT sgTextureDraw(SGTexture* texture)
     sgTextureDrawRads3f2f2f1f(texture, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
 }
 
+void SG_EXPORT sgTextureSetWrap(SGTexture* texture, SGenum swrap, SGenum twrap)
+{
+    if(psgmGraphicsTextureSetWrap)
+        psgmGraphicsTextureSetWrap(texture->handle, swrap, twrap);
+}
+
 void SG_EXPORT sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height)
 {
     if((width == NULL) && (height == NULL))
         return;
-    SGuint buf;
+    SGuint tmp;
 
     // make sure we don't pass any nulls
     if(width == NULL)
-        width = &buf;
+        width = &tmp;
     if(height == NULL)
-        height = &buf;
+        height = &tmp;
 
     if(psgmGraphicsTextureGetSize != NULL)
         psgmGraphicsTextureGetSize(texture->handle, width, height);

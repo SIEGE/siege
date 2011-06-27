@@ -33,6 +33,8 @@ extern "C"
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureFreeData)(void* data);
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureGetSize)(void* texture, SGuint* width, SGuint* height);
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureDraw)(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
+
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsTextureSetWrap)(void* texture, SGenum swrap, SGenum twrap);
 #ifdef __cplusplus
 }
 #endif

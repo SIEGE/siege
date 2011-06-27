@@ -29,13 +29,13 @@ SGuint SG_EXPORT sgmGraphicsTextureCreate(void** texture, void* context)
     glGenTextures(1, &(*tdata)->texid);
     glBindTexture(GL_TEXTURE_2D, (*tdata)->texid);
 
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    /*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);*/
 
     return SG_OK;
 }
@@ -152,8 +152,7 @@ SGuint SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
-
-    TextureData* tdata = (TextureData*)texture;
+    TextureData* tdata = texture;
 
     glPushMatrix();
     glTranslatef(x, y, 0.0);
@@ -179,6 +178,44 @@ SGuint SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z
     glDisable(GL_TEXTURE_2D);
 
     glPopMatrix();
+
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmGraphicsTextureSetWrap(void* texture, SGenum swrap, SGenum twrap)
+{
+    if(texture == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    TextureData* tdata = texture;
+
+    glBindTexture(GL_TEXTURE_2D, tdata->texid);
+
+    GLenum glwrap = 0;
+    switch(swrap)
+    {
+        case SG_GRAPHICS_WRAP_CURRENT:                                          break;
+        case SG_GRAPHICS_WRAP_CLAMP:            glwrap = GL_CLAMP;              break;
+        case SG_GRAPHICS_WRAP_CLAMP_TO_EDGE:    glwrap = GL_CLAMP_TO_EDGE;      break;
+        case SG_GRAPHICS_WRAP_MIRRORED_REPEAT:  glwrap = GL_MIRRORED_REPEAT;    break;
+        case SG_GRAPHICS_WRAP_REPEAT:           glwrap = GL_REPEAT;             break;
+        default: swrap = SG_GRAPHICS_WRAP_CURRENT;
+    }
+    if(swrap != SG_GRAPHICS_WRAP_CURRENT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, glwrap);
+
+    switch(twrap)
+    {
+        case SG_GRAPHICS_WRAP_CURRENT:                                          break;
+        case SG_GRAPHICS_WRAP_CLAMP:            glwrap = GL_CLAMP;              break;
+        case SG_GRAPHICS_WRAP_CLAMP_TO_EDGE:    glwrap = GL_CLAMP_TO_EDGE;      break;
+        case SG_GRAPHICS_WRAP_MIRRORED_REPEAT:  glwrap = GL_MIRRORED_REPEAT;    break;
+        case SG_GRAPHICS_WRAP_REPEAT:           glwrap = GL_REPEAT;             break;
+        default: twrap = SG_GRAPHICS_WRAP_CURRENT;
+    }
+    if(twrap != SG_GRAPHICS_WRAP_CURRENT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, glwrap);
+
+    //glBindTexture(GL_TEXTURE_2D, 0);
 
     return SG_OK;
 }

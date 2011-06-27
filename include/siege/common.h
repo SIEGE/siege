@@ -138,7 +138,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 1
-#define SG_VERSION_PATCH 14
+#define SG_VERSION_PATCH 15
 /**
  * \brief Version string
  *
@@ -359,6 +359,12 @@ typedef double SGdouble;
  */
 #define SG_GRAPHICS_PRIMITIVE_INTERSECTING_POLYGON	0x30
 /// @}
+
+#define SG_GRAPHICS_WRAP_CURRENT            0x00
+#define SG_GRAPHICS_WRAP_CLAMP              0x01
+#define SG_GRAPHICS_WRAP_CLAMP_TO_EDGE      0x02
+#define SG_GRAPHICS_WRAP_MIRRORED_REPEAT    0x03
+#define SG_GRAPHICS_WRAP_REPEAT             0x04
 
 #define SG_GRAPHICS_FUNC_ZERO                   0x00
 #define SG_GRAPHICS_FUNC_ONE                    0x01
