@@ -21,6 +21,7 @@
 #define __SIEGE_GRAPHICS_FONT_H__
 
 #include "../common.h"
+#include "../util/conv.h"
 #include "texture.h"
 
 #include <stdarg.h>
@@ -104,6 +105,9 @@ typedef struct SGFont
 	float height;	/// < Height of the font
 	/// @}
 
+	// char, wchar_t, utf8, utf16
+	SGConv* conv[4];
+
 	/**
 	 * \name Preloaded characters
 	 */
@@ -127,7 +131,13 @@ SGbool SG_EXPORT _sgFontGetChars(SGFont* font, SGdchar* str, SGuint strlen, SGCh
 void SG_EXPORT _sgFontToLoad(SGFont* font, SGdchar* input, SGuint inlen, SGdchar* output, SGuint* outlen);
 SGbool SG_EXPORT _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbool force);
 SGubyte* SG_EXPORT _sgFontToRGBA(SGFont* font, SGubyte* data, SGuint datalen);
-void SG_EXPORT _sgFontCenterOffsetT(SGFont* font, float* x, float* y, const char* text);
+
+void SG_EXPORT _sgFontCenterOffsetU32(SGFont* font, float* x, float* y, const SGdchar* text);
+
+SGdchar* SG_EXPORT _sgFontU16ToU32(SGFont* font, const SGwchar* text);
+SGdchar* SG_EXPORT _sgFontU8ToU32(SGFont* font, const SGchar* text);
+SGdchar* SG_EXPORT _sgFontWToU32(SGFont* font, const wchar_t* text);
+SGdchar* SG_EXPORT _sgFontToU32(SGFont* font, const char* text);
 
 /// @{
 /**
@@ -202,19 +212,43 @@ SGFont* SG_EXPORT sgFontResize(SGFont* font, float height);
  * and \a y is the baseline.
  */
 /// @{
+void SG_EXPORT sgFontPrintfW(SGFont* font, float x, float y, const wchar_t* format, ...);
+void SG_EXPORT sgFontPrintfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args);
 /**
  * \brief printf-style print
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrint(SGFont* font, float x, float y, const char* format, ...);
+void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintf(SGFont* font, float x, float y, const char* format, ...);
 /**
  * \brief vprintf-style print
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintV(SGFont* font, float x, float y, const char* format, va_list args);
+void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintfv(SGFont* font, float x, float y, const char* format, va_list args);
 /**
  * \brief Text-based print
  */
-void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, const char* text);
+void SG_EXPORT sgFontPrintU32(SGFont* font, float x, float y, const SGdchar* text);
+void SG_EXPORT sgFontPrintU16(SGFont* font, float x, float y, const SGwchar* text);
+void SG_EXPORT sgFontPrintU8(SGFont* font, float x, float y, const SGchar* text);
+void SG_EXPORT sgFontPrintW(SGFont* font, float x, float y, const wchar_t* text);
+void SG_EXPORT sgFontPrint(SGFont* font, float x, float y, const char* text);
 /// @}
+
+/// TODO
+//#define SG_XALIGN_LEFT 		0x01
+//#define SG_XALIGN_CENTER 		0x02
+//#define SG_XALIGN_RIGHT 		0x04
+//#define SG_YALIGN_BASELINE	0x08
+//#define SG_YALIGN_TOP 		0x10
+//#define SG_YALIGN_CENTER 		0x20
+//#define SG_YALIGN_BOTTOM 		0x40
+//void SG_EXPORT sgFontPrintAlignedfW(SGFont* font, float x, float y, SGenum align, const wchar_t* format, ...);
+//void SG_EXPORT sgFontPrintAlignedfvW(SGFont* font, float x, float y, SGenum align, const wchar_t* format, va_list args);
+//void SG_EXPORT SG_HINT_PRINTF(5, 6) sgFontPrintAlignedf(SGFont* font, float x, float y, SGenum align, const char* format, ...);
+//void SG_EXPORT SG_HINT_PRINTF(5, 0) sgFontPrintAlignedfv(SGFont* font, float x, float y, SGenum align, const char* format, va_list args);
+//void SG_EXPORT sgFontPrintAlignedU32(SGFont* font, float x, float y, SGenum align, const SGdchar* text);
+//void SG_EXPORT sgFontPrintAlignedU16(SGFont* font, float x, float y, SGenum align, const SGwchar* text);
+//void SG_EXPORT sgFontPrintAlignedU8(SGFont* font, float x, float y, SGenum align, const SGchar* text);
+//void SG_EXPORT sgFontPrintAlignedW(SGFont* font, float x, float y, SGenum align, const wchar_t* text);
+//void SG_EXPORT sgFontPrintAligned(SGFont* font, float x, float y, SGenum align, const char* text);
 
 /**
  * \name Print centered
@@ -227,18 +261,24 @@ void SG_EXPORT sgFontPrintT(SGFont* font, float x, float y, const char* text);
  * where both \a x and \a y specify the center of the text.
  */
 /// @{
+void SG_EXPORT sgFontPrintCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...);
+void SG_EXPORT sgFontPrintCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args);
 /**
  * \brief printf-style print
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintCentered(SGFont* font, float x, float y, const char* format, ...);
+void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintCenteredf(SGFont* font, float x, float y, const char* format, ...);
 /**
  * \brief vprintf-style print
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintCenteredV(SGFont* font, float x, float y, const char* format, va_list args);
+void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintCenteredfv(SGFont* font, float x, float y, const char* format, va_list args);
 /**
  * \brief Text-based print
  */
-void SG_EXPORT sgFontPrintCenteredT(SGFont* font, float x, float y, const char* text);
+void SG_EXPORT sgFontPrintCenteredU32(SGFont* font, float x, float y, const SGdchar* text);
+void SG_EXPORT sgFontPrintCenteredU16(SGFont* font, float x, float y, const SGwchar* text);
+void SG_EXPORT sgFontPrintCenteredU8(SGFont* font, float x, float y, const SGchar* text);
+void SG_EXPORT sgFontPrintCenteredW(SGFont* font, float x, float y, const wchar_t* text);
+void SG_EXPORT sgFontPrintCentered(SGFont* font, float x, float y, const char* text);
 /// @}
 
 /**
@@ -253,18 +293,24 @@ void SG_EXPORT sgFontPrintCenteredT(SGFont* font, float x, float y, const char* 
  * and \a y specifies the baseline.
  */
 /// @{
+void SG_EXPORT sgFontPrintXCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...);
+void SG_EXPORT sgFontPrintXCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args);
 /**
  * \brief printf-style print
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintXCentered(SGFont* font, float x, float y, const char* format, ...);
+void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintXCenteredf(SGFont* font, float x, float y, const char* format, ...);
 /**
  * \brief vprintf-style print
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintXCenteredV(SGFont* font, float x, float y, const char* format, va_list args);
+void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintXCenteredfv(SGFont* font, float x, float y, const char* format, va_list args);
 /**
  * \brief text-based print
  */
-void SG_EXPORT sgFontPrintXCenteredT(SGFont* font, float x, float y, const char* text);
+void SG_EXPORT sgFontPrintXCenteredU32(SGFont* font, float x, float y, const SGdchar* text);
+void SG_EXPORT sgFontPrintXCenteredU16(SGFont* font, float x, float y, const SGwchar* text);
+void SG_EXPORT sgFontPrintXCenteredU8(SGFont* font, float x, float y, const SGchar* text);
+void SG_EXPORT sgFontPrintXCenteredW(SGFont* font, float x, float y, const wchar_t* text);
+void SG_EXPORT sgFontPrintXCentered(SGFont* font, float x, float y, const char* text);
 /// @}
 
 /**
@@ -279,18 +325,24 @@ void SG_EXPORT sgFontPrintXCenteredT(SGFont* font, float x, float y, const char*
  * and \a y specifies the center.
  */
 /// @{
+void SG_EXPORT sgFontPrintYCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...);
+void SG_EXPORT sgFontPrintYCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args);
 /**
  * \brief printf-style print
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintYCentered(SGFont* font, float x, float y, const char* format, ...);
+void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontPrintYCenteredf(SGFont* font, float x, float y, const char* format, ...);
 /**
  * \brief vprintf-style print
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintYCenteredV(SGFont* font, float x, float y, const char* format, va_list args);
+void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontPrintYCenteredfv(SGFont* font, float x, float y, const char* format, va_list args);
 /**
  * \brief text-based print
  */
-void SG_EXPORT sgFontPrintYCenteredT(SGFont* font, float x, float y, const char* text);
+void SG_EXPORT sgFontPrintYCenteredU32(SGFont* font, float x, float y, const SGdchar* text);
+void SG_EXPORT sgFontPrintYCenteredU16(SGFont* font, float x, float y, const SGwchar* text);
+void SG_EXPORT sgFontPrintYCenteredU8(SGFont* font, float x, float y, const SGchar* text);
+void SG_EXPORT sgFontPrintYCenteredW(SGFont* font, float x, float y, const wchar_t* text);
+void SG_EXPORT sgFontPrintYCentered(SGFont* font, float x, float y, const char* text);
 /// @}
 
 /**
@@ -305,19 +357,50 @@ void SG_EXPORT sgFontPrintYCenteredT(SGFont* font, float x, float y, const char*
  * latter height.
  */
 /// @{
+void SG_EXPORT sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...);
+void SG_EXPORT sgFontStrSizefvW(SGFont* font, float* x, float* y, const wchar_t* format, va_list args);
 /**
  * \brief printf-style text
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontStrSize(SGFont* font, float* x, float* y, const char* format, ...);
+void SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontStrSizef(SGFont* font, float* x, float* y, const char* format, ...);
 /**
  * \brief vprintf-style text
  */
-void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontStrSizeV(SGFont* font, float* x, float* y, const char* format, va_list args);
+void SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontStrSizefv(SGFont* font, float* x, float* y, const char* format, va_list args);
 /**
  * \brief plain text
  */
-void SG_EXPORT sgFontStrSizeT(SGFont* font, float* x, float* y, const char* text);
+void SG_EXPORT sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar* text);
+void SG_EXPORT sgFontStrSizeU16(SGFont* font, float* x, float* y, const SGwchar* text);
+void SG_EXPORT sgFontStrSizeU8(SGFont* font, float* x, float* y, const SGchar* text);
+void SG_EXPORT sgFontStrSizeW(SGFont* font, float* x, float* y, const wchar_t* text);
+void SG_EXPORT sgFontStrSize(SGFont* font, float* x, float* y, const char* text);
 /// @}
+
+// need a better name for FindIndex and GetPos...
+size_t SG_EXPORT sgFontFindIndexfW(SGFont* font, float x, float y, const wchar_t* format, ...);
+size_t SG_EXPORT sgFontFindIndexfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args);
+
+size_t SG_EXPORT SG_HINT_PRINTF(4, 5) sgFontFindIndexf(SGFont* font, float x, float y, const char* format, ...);
+size_t SG_EXPORT SG_HINT_PRINTF(4, 0) sgFontFindIndexfv(SGFont* font, float x, float y, const char* format, va_list args);
+
+size_t SG_EXPORT sgFontFindIndexU32(SGFont* font, float x, float y, const SGdchar* text);
+size_t SG_EXPORT sgFontFindIndexU16(SGFont* font, float x, float y, const SGwchar* text);
+size_t SG_EXPORT sgFontFindIndexU8(SGFont* font, float x, float y, const SGchar* text);
+size_t SG_EXPORT sgFontFindIndexW(SGFont* font, float x, float y, const wchar_t* text);
+size_t SG_EXPORT sgFontFindIndex(SGFont* font, float x, float y, const char* text);
+
+void SG_EXPORT sgFontGetPosfW(SGFont* font, float* x, float* y, size_t index, const wchar_t* format, ...);
+void SG_EXPORT sgFontGetPosfvW(SGFont* font, float* x, float* y, size_t index, const wchar_t* format, va_list args);
+
+void SG_EXPORT SG_HINT_PRINTF(5, 6) sgFontGetPosf(SGFont* font, float* x, float* y, size_t index, const char* format, ...);
+void SG_EXPORT SG_HINT_PRINTF(5, 0) sgFontGetPosfv(SGFont* font, float* x, float* y, size_t index, const char* format, va_list args);
+
+void SG_EXPORT sgFontGetPosU32(SGFont* font, float* x, float* y, size_t index, const SGdchar* text);
+void SG_EXPORT sgFontGetPosU16(SGFont* font, float* x, float* y, size_t index, const SGwchar* text);
+void SG_EXPORT sgFontGetPosU8(SGFont* font, float* x, float* y, size_t index, const SGchar* text);
+void SG_EXPORT sgFontGetPosW(SGFont* font, float* x, float* y, size_t index, const wchar_t* text);
+void SG_EXPORT sgFontGetPos(SGFont* font, float* x, float* y, size_t index, const char* text);
 
 #ifdef __cplusplus
 }

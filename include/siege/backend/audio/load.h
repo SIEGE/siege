@@ -17,18 +17,24 @@
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_HINT_DEPRECATED sgmAudioLoadFile(char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    //SGuint SG_EXPORT SG_HINT_DEPRECATED sgmAudioLoadStream(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    SGuint SG_EXPORT SG_HINT_DEPRECATED sgmAudioLoadFreeData(void* data);
+    SGuint SG_EXPORT SG_HINT_DEPRECATED SG_FPTR(sgmAudioLoadFile)(const char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
+    //SGuint SG_EXPORT SG_HINT_DEPRECATED SG_FPTR(sgmAudioLoadStream)(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
+    SGuint SG_EXPORT SG_HINT_DEPRECATED SG_FPTR(sgmAudioLoadFreeData)(void* data);
 
-    SGuint SG_EXPORT sgmAudioFileCreate(void** file, const char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
-    SGuint SG_EXPORT sgmAudioFileDestroy(void* file);
-    SGuint SG_EXPORT sgmAudioFileNumSamples(void* file, SGuint* samples);
-    SGuint SG_EXPORT sgmAudioFileRead(void* file, void* data, SGuint* datalen);
+    SGuint SG_EXPORT SG_FPTR(sgmAudioFileCreate)(void** file, const char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
+    SGuint SG_EXPORT SG_FPTR(sgmAudioFileDestroy)(void* file);
+    SGuint SG_EXPORT SG_FPTR(sgmAudioFileNumSamples)(void* file, SGuint* samples);
+    SGuint SG_EXPORT SG_FPTR(sgmAudioFileRead)(void* file, void* data, SGuint* datalen);
+
+    SGuint SG_EXPORT SG_FPTR(sgmAudioFileGetHandle)(void* file, void** handle);
 #ifdef __cplusplus
 }
 #endif

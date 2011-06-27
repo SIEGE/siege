@@ -22,15 +22,17 @@ void SG_EXPORT _sgModuleLoadFonts(SGLibrary* lib)
     void* fptr;
 
     /// Fonts
-    _SG_BINDS(_sg_modFonts, sgmFontsFaceCreate);
-    _SG_BINDS(_sg_modFonts, sgmFontsFaceDestroy);
-    _SG_BINDS(_sg_modFonts, sgmFontsFaceSetHeight);
-    //_SG_BINDS(_sg_modFonts, sgmFontsFaceGetHeight);
-    _SG_BINDS(_sg_modFonts, sgmFontsCharsCreate);
-    _SG_BINDS(_sg_modFonts, sgmFontsCharsFreeData);
+    _SG_BIND(sgmFontsFaceCreate);
+    _SG_BIND(sgmFontsFaceDestroy);
+    _SG_BIND(sgmFontsFaceSetHeight);
+    //_SG_BIND(sgmFontsFaceGetHeight);
+
+	_SG_BIND(sgmFontsCharsCreate);
+    _SG_BIND(sgmFontsCharsFreeData);
+
+	_SG_BIND(sgmFontsConvCreate);
+	_SG_BIND(sgmFontsConvDestroy);
+	_SG_BIND(sgmFontsConv);
+	_SG_BIND(sgmFontsConvFreeData);
 }
 
-SGModuleFonts* SG_EXPORT sgModuleGetFonts(void)
-{
-    return &_sg_modFonts;
-}

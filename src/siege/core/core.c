@@ -33,6 +33,7 @@
 #include <siege/util/rand.h>
 #include <siege/util/string.h>
 #include <siege/physics/space.h>
+#include <siege/physics/collision.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -44,7 +45,7 @@ SGint _sg_exitVal = 0;
 SGbool _sg_hasInited = SG_FALSE;
 SGulong _sg_curTick = 0;
 
-SGuint SG_EXPORT sgLoadModulesv(int n, va_list args)
+SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args)
 {
 	SGuint loaded = 0;
 	size_t i;
@@ -52,7 +53,7 @@ SGuint SG_EXPORT sgLoadModulesv(int n, va_list args)
 		loaded += sgLoadModule(va_arg(args, char*));
 	return loaded;
 }
-SGuint SG_EXPORT sgLoadModules(int n, ...)
+SGuint SG_EXPORT sgLoadModules(size_t n, ...)
 {
 	va_list args;
 	va_start(args, n);
@@ -80,7 +81,6 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 	_sgStringInit();
 
 	_sgEventInit();
-	_sgEntityInit();
 
 	size_t i;
 	size_t nmodules = sgListLength(_sg_modList);
@@ -132,6 +132,9 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 
 	_sgRandInit();
 	_sgPhysicsSpaceInit();
+    _sgPhysicsCollisionInit();
+
+	_sgEntityInit();
 
 	sgWindowOpen(width, height, bpp, flags);
 
@@ -143,6 +146,9 @@ SGbool SG_EXPORT sgDeinit(void)
 	_sg_hasInited = SG_FALSE;
 	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DEINIT);
 
+	_sgEntityDeinit();
+
+    _sgPhysicsCollisionDeinit();
 	_sgPhysicsSpaceDeinit();
 	_sgRandDeinit();
 
@@ -163,7 +169,6 @@ SGbool SG_EXPORT sgDeinit(void)
 	_sgWindowDeinit();
 	_sgColorDeinit();
 
-	_sgEntityDeinit();
 	_sgEventDeinit();
 
 	_sgStringDeinit();
@@ -200,6 +205,15 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICKB);
 
 	sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
+
+	SGListNode* node;
+	SGModule* module;
+	for(node = _sg_modList->first; node != NULL; node = node->next)
+	{
+		module = node->item;
+		if(module->sgmModuleTick)
+			module->sgmModuleTick(_sg_curTick);
+	}
 
     sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICK);
     sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICKE);

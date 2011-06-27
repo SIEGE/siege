@@ -17,6 +17,10 @@
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -28,22 +32,22 @@ extern "C"
         void SG_EXPORT (*resize)(void* window, SGuint width, SGuint height);
     } SGCoreWindowCallbacks;
 
-    SGuint SG_EXPORT sgmCoreWindowCreate(void** window);
-    SGuint SG_EXPORT sgmCoreWindowDestroy(void* window);
-    SGuint SG_EXPORT sgmCoreWindowOpen(void* window, SGuint width, SGuint height, SGubyte bpp, SGenum flags);
-    SGuint SG_EXPORT sgmCoreWindowIsOpened(void* window, SGbool* opened);
-    SGuint SG_EXPORT sgmCoreWindowClose(void* window);
-    //SGuint SG_EXPORT sgmCoreWindowIsClosed(void* window, SGbool* closed);
-    SGuint SG_EXPORT sgmCoreWindowSetTitle(void* window, const char* title);
-    //SGuint SG_EXPORT sgmCoreWindowGetTitle(void* window, char** title);
-    //SGuint SG_EXPORT sgmCoreWindowFreeTitle(char* title);
-    SGuint SG_EXPORT sgmCoreWindowSetSize(void* window, SGuint width, SGuint height);
-    SGuint SG_EXPORT sgmCoreWindowGetSize(void* window, SGuint* width, SGuint* height);
-    //SGuint SG_EXPORT sgmCoreWindowPollEvents(void* window);
-    SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowCreate)(void** window);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowDestroy)(void* window);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowOpen)(void* window, SGuint width, SGuint height, SGubyte bpp, SGenum flags);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowIsOpened)(void* window, SGbool* opened);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowClose)(void* window);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreWindowIsClosed)(void* window, SGbool* closed);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowSetTitle)(void* window, const char* title);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreWindowGetTitle)(void* window, char** title);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreWindowFreeTitle)(char* title);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowSetSize)(void* window, SGuint width, SGuint height);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowGetSize)(void* window, SGuint* width, SGuint* height);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreWindowPollEvents)(void* window);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowSwapBuffers)(void* window);
 
-    SGuint SG_EXPORT sgmCoreWindowSetCallbacks(void* window, SGCoreWindowCallbacks* callbacks);
-    //SGuint SG_EXPORT sgmCoreWindowGetCallbacks(void* window, SGCoreWindowCallbacks** callbacks);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreWindowSetCallbacks)(void* window, SGCoreWindowCallbacks* callbacks);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreWindowGetCallbacks)(void* window, SGCoreWindowCallbacks** callbacks);
 #ifdef __cplusplus
 }
 #endif

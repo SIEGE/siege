@@ -99,9 +99,10 @@ SGModule* SG_EXPORT sgModuleLoad(const char* name)
 		fprintf(stderr, "Warning: Unable to load module %s: Unknown error\n", name);
 	free(fname);
 
-	module->sgmModuleInit = sgGetProcAddress(module->lib, "sgmModuleInit");
-	module->sgmModuleExit = sgGetProcAddress(module->lib, "sgmModuleExit");
-	module->sgmModuleMatch = sgGetProcAddress(module->lib, "sgmModuleMatch");
+	module->sgmModuleInit = (SGMModuleInitFunction*)sgGetProcAddress(module->lib, "sgmModuleInit");
+	module->sgmModuleExit = (SGMModuleExitFunction*)sgGetProcAddress(module->lib, "sgmModuleExit");
+	module->sgmModuleTick = (SGMModuleTickFunction*)sgGetProcAddress(module->lib, "sgmModuleTick");
+	module->sgmModuleMatch = (SGMModuleMatchFunction*)sgGetProcAddress(module->lib, "sgmModuleMatch");
 
 	_sgModuleLoadAudio(module->lib);
 	_sgModuleLoadWindow(module->lib);

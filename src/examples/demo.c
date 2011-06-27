@@ -83,17 +83,17 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
 
 void destroyPoly(Polygon* poly)
 {
-    poly->entity->lcDestroy = NULL;
     sgEntityDestroy(poly->entity);
-    free(poly->points);
-    sgPhysicsShapeDestroy(poly->shape);
-    sgPhysicsBodyDestroy(poly->body);
-    free(poly);
 }
 
 void destroyPolyEntity(SGEntity* ent)
 {
-    destroyPoly(ent->data);
+	Polygon* poly = ent->data;
+
+    free(poly->points);
+    sgPhysicsShapeDestroy(poly->shape);
+    sgPhysicsBodyDestroy(poly->body);
+    free(poly);
 }
 
 void drawPoly(Polygon* poly)
@@ -194,15 +194,15 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
 
 void destroyLight(Light* light)
 {
-    light->entity->lcDestroy = NULL;
     sgEntityDestroy(light->entity);
-    sgSurfaceDestroy(light->surface);
-    free(light);
 }
 
 void destroyLightEntity(SGEntity* ent)
 {
-    destroyLight(ent->data);
+	Light* light = ent->data;
+
+    sgSurfaceDestroy(light->surface);
+    free(light);
 }
 
 void drawLight(Light* light)
@@ -223,7 +223,7 @@ void drawLight(Light* light)
     float x, y;
 
     int sides = SG_MAX(3, (int)(light->radius * 0.5));
-    float f = 2 * M_PI / sides;
+    float f = 2 * SG_PI / sides;
     sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
         sgDrawColor4f(light->color.r, light->color.g, light->color.b, light->color.a);
         sgDrawVertex2f(light->pos.x, light->pos.y);
@@ -288,8 +288,8 @@ Light* createLight(SGVec2 pos, SGColor color, float radius, float angle, float a
     light->pos = pos;
     light->color = color;
     light->radius = radius;
-    light->angle = angle * M_PI / 180.0;
-    light->arc = arc * M_PI / 180.0;
+    light->angle = angle * SG_PI / 180.0;
+    light->arc = arc * SG_PI / 180.0;
 
     light->entity = sgEntityCreate(0.0, SG_EVT_ALL);
     light->entity->data = light;
@@ -399,14 +399,14 @@ void drawLightDBG(Light* light)
     }
 }
 
-int main()
+int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");
     sgLoadModule("DevIL");
     sgLoadModule("Chipmunk");
     sgInit(640, 480, 32, 0);
-    sgWindowSetTitleF("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
+    sgWindowSetTitlef("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
 
     SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
     handler->evMouseButtonPress = evMouseButtonPress;

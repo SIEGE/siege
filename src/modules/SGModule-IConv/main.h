@@ -15,9 +15,8 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
-#include <siege/siege.h>
+#include <siege/backend.h>
 
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
+#include <iconv.h>
 
 #endif // __MAIN_H__

@@ -16,28 +16,47 @@
 #define __SIEGE_PHYSICS_COLLISION_H__
 
 #include "../common.h"
+#include "../util/list.h"
+#include "shape.h"
+#include "../modules/physics.h"
 
-typedef struct SGCollisionPoint
+#ifdef __cplusplus
+extern "C"
 {
-    float xpos;
-    float ypos;
-    float xvel;
-    float yvel;
-    float xnorm;
-    float ynorm;
-    float separation;
-    float friction;
-    float restitution;
-} SGCollisionPoint;
+#endif // __cplusplus
 
-typedef struct SGCollisionResult
+typedef struct SGPhysicsCollision
 {
-    float xpos;
-    float ypos;
-    float xvel;
-    float yvel;
-    float xnorm;
-    float ynorm;
-} SGCollisionResult;
+    void* shandle1;
+    void* shandle2;
+    void* handle;
+    SGPhysicsShape* shape1;
+    SGPhysicsShape* shape2;
+} SGPhysicsCollision;
+
+#ifdef SG_BUILD_LIBRARY
+SGPhysicsCollisionCallbacks _sg_colCallbacks;
+#endif // SG_BUILD_LIBRARY
+
+SGbool SG_EXPORT _sgPhysicsCollisionInit(void);
+SGbool SG_EXPORT _sgPhysicsCollisionDeinit(void);
+
+void SG_EXPORT _sg_cbPhysicsCollisionBegin(void* shandle1, void* shandle2, void* handle);
+void SG_EXPORT _sg_cbPhysicsCollision(void* shandle1, void* shandle2, void* handle);
+void SG_EXPORT _sg_cbPhysicsCollisionPost(void* shandle1, void* shandle2, void* handle);
+void SG_EXPORT _sg_cbPhysicsCollisionEnd(void* shandle1, void* shandle2, void* handle);
+
+void SG_EXPORT sgPhysicsCollisionIgnore(SGPhysicsCollision* coll);
+size_t SG_EXPORT sgPhysicsCollisionGetNumContacts(SGPhysicsCollision* coll);
+void SG_EXPORT sgPhysicsCollisionGetPoint(SGPhysicsCollision* coll, size_t index, float* x, float* y);
+void SG_EXPORT sgPhysicsCollisionGetNormal(SGPhysicsCollision* coll, size_t index, float* x, float* y);
+float SG_EXPORT sgPhysicsCollisionGetDistance(SGPhysicsCollision* coll, size_t index);
+void SG_EXPORT sgPhysicsCollisionGetImpulse(SGPhysicsCollision* coll, float* x, float* y, SGbool friction);
+SGPhysicsShape* SG_EXPORT sgPhysicsCollisionGetShapeOne(SGPhysicsCollision* coll);
+SGPhysicsShape* SG_EXPORT sgPhysicsCollisionGetShapeTwo(SGPhysicsCollision* coll);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // __SIEGE_PHYSICS_COLLISION_H__

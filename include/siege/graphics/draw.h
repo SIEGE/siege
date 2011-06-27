@@ -25,47 +25,6 @@
 #include "../util/plist.h"
 #include "texture.h"
 
-/**
- * \todo Remove these, replacing with "normal" functions.
- */
-#define _SG_COLOR_OVERLOADS_FUNC(func)                                      \
-    void SG_EXPORT func##3f(float r, float g, float b)                      \
-    {                                                                       \
-        func##4f(r, g, b, 1.0f);                                            \
-    }                                                                       \
-    void SG_EXPORT func##2f(float g, float a)                               \
-    {                                                                       \
-        func##4f(g, g, g, a);                                               \
-    }                                                                       \
-    void SG_EXPORT func##1f(float g)                                        \
-    {                                                                       \
-        func##4f(g, g, g, 1.0f);                                            \
-    }                                                                       \
-    void SG_EXPORT func##4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)    \
-    {                                                                       \
-        func##4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);           \
-    }                                                                       \
-    void SG_EXPORT func##3ub(SGubyte r, SGubyte g, SGubyte b)               \
-    {                                                                       \
-        func##4f(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);                 \
-    }                                                                       \
-    void SG_EXPORT func##2ub(SGubyte g, SGubyte a)                          \
-    {                                                                       \
-        func##4f(g / 255.0f, g / 255.0f, g / 255.0f, a / 255.0f);           \
-    }                                                                       \
-    void SG_EXPORT func##1ub(SGubyte g)                                     \
-    {                                                                       \
-        func##4f(g / 255.0f, g / 255.0f, g / 255.0f, 1.0f);                 \
-    }
-#define _SG_COLOR_OVERLOADS_DECL(func)                                    \
-    void SG_EXPORT func##3f(float r, float g, float b);                   \
-    void SG_EXPORT func##2f(float g, float a);                            \
-    void SG_EXPORT func##1f(float g);                                     \
-    void SG_EXPORT func##4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a); \
-    void SG_EXPORT func##3ub(SGubyte r, SGubyte g, SGubyte b);            \
-    void SG_EXPORT func##2ub(SGubyte g, SGubyte a);                       \
-    void SG_EXPORT func##1ub(SGubyte g);
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -117,7 +76,21 @@ void SG_EXPORT sgDrawEnd(void);
  * \param a Alpha
  */
 void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a);
-_SG_COLOR_OVERLOADS_DECL(sgDrawColor);
+void SG_EXPORT sgDrawColor3f(float r, float g, float b);
+void SG_EXPORT sgDrawColor2f(float g, float a);
+void SG_EXPORT sgDrawColor1f(float g);
+void SG_EXPORT sgDrawColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a);
+void SG_EXPORT sgDrawColor3ub(SGubyte r, SGubyte g, SGubyte b);
+void SG_EXPORT sgDrawColor2ub(SGubyte g, SGubyte a);
+void SG_EXPORT sgDrawColor1ub(SGubyte g);
+void SG_EXPORT sgDrawColor4fv(float* rgba);
+void SG_EXPORT sgDrawColor3fv(float* rgb);
+void SG_EXPORT sgDrawColor2fv(float* ga);
+void SG_EXPORT sgDrawColor1fv(float* g);
+void SG_EXPORT sgDrawColor4ubv(SGubyte* rgba);
+void SG_EXPORT sgDrawColor3ubv(SGubyte* rgb);
+void SG_EXPORT sgDrawColor2ubv(SGubyte* ga);
+void SG_EXPORT sgDrawColor1ubv(SGubyte* g);
 /**
  * \brief Set the texture coordinate of the following vertex
  *
@@ -130,6 +103,7 @@ _SG_COLOR_OVERLOADS_DECL(sgDrawColor);
  *	clipping mode) indicate flipping or tiling.
  */
 void SG_EXPORT sgDrawTexCoord2f(float s, float t);
+void SG_EXPORT sgDrawTexCoord2fv(float* st);
 /**
  * \brief Place a vertex at a specific depth
  *
@@ -138,15 +112,9 @@ void SG_EXPORT sgDrawTexCoord2f(float s, float t);
  * \param z Z coordinate (the depth)
  */
 void SG_EXPORT sgDrawVertex3f(float x, float y, float z);
-/**
- * \brief Place a vertex at depth 0
- *
- * \param x X coordinate
- * \param y Y coordinate
- *
- * This function places a vertex at the coordinates and at depth 0.
- */
 void SG_EXPORT sgDrawVertex2f(float x, float y);
+void SG_EXPORT sgDrawVertex3fv(float* xyz);
+void SG_EXPORT sgDrawVertex2fv(float* xy);
 /// @}
 
 /**
@@ -162,7 +130,21 @@ void SG_EXPORT sgDrawVertex2f(float x, float y);
  * \param a Alpha
  */
 void SG_EXPORT sgDrawClear4f(float r, float g, float b, float a);
-_SG_COLOR_OVERLOADS_DECL(sgDrawClear);
+void SG_EXPORT sgDrawClear3f(float r, float g, float b);
+void SG_EXPORT sgDrawClear2f(float g, float a);
+void SG_EXPORT sgDrawClear1f(float g);
+void SG_EXPORT sgDrawClear4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a);
+void SG_EXPORT sgDrawClear3ub(SGubyte r, SGubyte g, SGubyte b);
+void SG_EXPORT sgDrawClear2ub(SGubyte g, SGubyte a);
+void SG_EXPORT sgDrawClear1ub(SGubyte g);
+void SG_EXPORT sgDrawClear4fv(float* rgba);
+void SG_EXPORT sgDrawClear3fv(float* rgb);
+void SG_EXPORT sgDrawClear2fv(float* ga);
+void SG_EXPORT sgDrawClear1fv(float* g);
+void SG_EXPORT sgDrawClear4ubv(SGubyte* rgba);
+void SG_EXPORT sgDrawClear3ubv(SGubyte* rgb);
+void SG_EXPORT sgDrawClear2ubv(SGubyte* ga);
+void SG_EXPORT sgDrawClear1ubv(SGubyte* g);
 /**
  * \brief Clear the drawable with black color
  */
@@ -233,6 +215,7 @@ void SG_EXPORT sgDrawQuad(float x1, float y1, float x2, float y2, float x3, floa
  */
 /// @{
 void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fill);
+void SG_EXPORT sgDrawRectangleWH(float x, float y, float w, float h, SGbool fill);
 /// @}
 
 /**

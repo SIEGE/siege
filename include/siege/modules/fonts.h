@@ -16,36 +16,23 @@
 #define __SIEGE_MODULES_FONTS_H__
 #include "../common.h"
 #include "../util/link.h"
-#include <stddef.h>
-
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif // __cplusplus
 
-typedef struct SGModuleFonts
-{
-	SGuint SG_EXPORT (*sgmFontsFaceCreate)(void** face, const char* fname);
-	SGuint SG_EXPORT (*sgmFontsFaceDestroy)(void* face);
-	SGuint SG_EXPORT (*sgmFontsFaceSetHeight)(void* face, float height);
-	//SGuint SG_EXPORT (*sgmFontsFaceGetHeight)(void* face, float* height);
-	SGuint SG_EXPORT (*sgmFontsCharsCreate)(void* face,
-				SGdchar* chars, SGuint charnum,
-				float* width, float* height,
-				float* prex, float* prey,
-				float* postx, float* posty,
-				SGuint* datawidth, SGuint* dataheight, void** data);
-	SGuint SG_EXPORT (*sgmFontsCharsFreeData)(void* data);
-} SGModuleFonts;
-
 #ifdef SG_BUILD_LIBRARY
-SGModuleFonts _sg_modFonts;
+
+#define SG_FPTR(name) (*p##name)
+#include "../backend/fonts/chars.h"
+#include "../backend/fonts/face.h"
+#include "../backend/fonts/conv.h"
+#undef SG_FPTR
+
 #endif // SG_BUILD_LIBRARY
 
 void SG_EXPORT _sgModuleLoadFonts(SGLibrary* lib);
-
-SGModuleFonts* SG_EXPORT sgModuleGetFonts(void);
 
 #ifdef __cplusplus
 }

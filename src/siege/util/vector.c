@@ -23,9 +23,9 @@ SGVec2 SG_EXPORT sgVec2f(float x, float y)
     SGVec2 vec = {x, y};
     return vec;
 }
-SGVec2 SG_EXPORT sgVec2fv(float* f)
+SGVec2 SG_EXPORT sgVec2fv(float* xy)
 {
-    return sgVec2f(f[0], f[1]);
+    return sgVec2f(xy[0], xy[1]);
 }
 SGVec2 SG_EXPORT sgVec2PolarRads(float rads, float len)
 {
@@ -34,7 +34,7 @@ SGVec2 SG_EXPORT sgVec2PolarRads(float rads, float len)
 }
 SGVec2 SG_EXPORT sgVec2PolarDegs(float degs, float len)
 {
-    return sgVec2PolarRads(degs * M_PI / 180.0, len);
+    return sgVec2PolarRads(degs * SG_PI / 180.0, len);
 }
 SGVec2 SG_EXPORT sgVec2Nan(void)
 {
@@ -77,7 +77,7 @@ SGVec2 SG_EXPORT sgVec2SetAngleDegs(SGVec2 vec, float degs)
 }
 float SG_EXPORT sgVec2GetAngleDegs(SGVec2 vec)
 {
-    return atan2(vec.y, vec.x) * 180.0 / M_PI;
+    return atan2(vec.y, vec.x) * 180.0 / SG_PI;
 }
 
 SGbool SG_EXPORT sgVec2IsNan(SGVec2 vec)
@@ -122,12 +122,32 @@ SGVec3 SG_EXPORT sgVec3f(float x, float y, float z)
     SGVec3 vec = {x, y, z};
     return vec;
 }
-SGVec3 SG_EXPORT sgVec3fv(float* f)
+SGVec3 SG_EXPORT sgVec3fv(float* xyz)
 {
-    return sgVec3f(f[0], f[1], f[2]);
+    return sgVec3f(xyz[0], xyz[1], xyz[2]);
 }
-/*SGVec3 SG_EXPORT sgVec3PolarRads(float rads, float len);
-SGVec3 SG_EXPORT sgVec3PolarDegs(float degs, float len);*/
+SGVec3 SG_EXPORT sgVec3CylindricalRads(float rads, float radius, float z)
+{
+	SGVec3 vec = {cos(rads) * radius, sin(rads) * radius, z};
+	return vec;
+}
+SGVec3 SG_EXPORT sgVec3CylindricalDegs(float degs, float radius, float z)
+{
+	return sgVec3CylindricalRads(degs * SG_PI / 180.0, radius, z);
+}
+SGVec3 SG_EXPORT sgVec3SphericalRads(float azimuth, float zenith, float radius)
+{
+	float ca = cos(azimuth);
+	float sa = sin(azimuth);
+	float cz = cos(zenith);
+	float sz = sin(zenith);
+	SGVec3 vec = {radius * ca * sz, radius * sa * sz, radius * cz};
+	return vec;
+}
+SGVec3 SG_EXPORT sgVec3SphericalDegs(float azimuth, float zenith, float radius)
+{
+	return sgVec3SphericalRads(azimuth * SG_PI / 180.0, zenith * SG_PI / 180.0, radius);
+}
 SGVec3 SG_EXPORT sgVec3Nan(void)
 {
     return sgVec3f(SG_NAN, SG_NAN, SG_NAN);
@@ -200,9 +220,9 @@ SGVec4 SG_EXPORT sgVec4f(float x, float y, float z, float w)
     SGVec4 vec = {x, y, z, w};
     return vec;
 }
-SGVec4 SG_EXPORT sgVec4fv(float* f)
+SGVec4 SG_EXPORT sgVec4fv(float* xyzw)
 {
-    return sgVec4f(f[0], f[1], f[2], f[3]);
+    return sgVec4f(xyzw[0], xyzw[1], xyzw[2], xyzw[3]);
 }
 /*SGVec4 SG_EXPORT sgVec4PolarRads(float rads, float len);
 SGVec4 SG_EXPORT sgVec4PolarDegs(float degs, float len);*/

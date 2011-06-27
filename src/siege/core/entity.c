@@ -32,9 +32,8 @@ SGbool SG_EXPORT _sgEntityInit(void)
 }
 SGbool SG_EXPORT _sgEntityDeinit(void)
 {
-	//SGPListNode* node;
-	//for(node = _sg_cList->first; node != NULL; node = node->next)
-	//	  free(node);
+	while(_sg_cList->first)
+		sgEntityDestroy(_sg_cList->first->item);
 	sgListDestroy(_sg_cList);
 	return SG_TRUE;
 }
@@ -243,7 +242,7 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
 
 				// networking goes here (SG_EVF_NET)
 
-				case SG_EVF_PHYSCOLH:
+				/*case SG_EVF_PHYSCOLH:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionPoint*);
 					if(entity->lcCollision != NULL)
@@ -315,9 +314,9 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
 				case SG_EVF_PHYSCOLR2:
                     ptr[0] = va_arg(args, SGEntity*);
                     ptr[1] = va_arg(args, SGCollisionResult*);
-					if(entity->lcCollisionTwoResult != NULL)
-						entity->lcCollisionTwoResult(entity, ptr[0], ptr[1]);
-					break;
+					if(entity->evCollisionTwoResult != NULL)
+						entity->evCollisionTwoResult(entity, ptr[0], ptr[1]);
+					break;*/
 
 				case SG_EVF_LVLSTART:
 					if(entity->evLevelStart != NULL)
@@ -408,7 +407,10 @@ void SG_EXPORT sgEntitySetPhysicsBody(SGEntity* entity, SGPhysicsBody* body)
 {
 	if(entity == NULL)
 		return;
-
+    if(entity->body)
+        entity->body->entity = NULL;
+    if(body)
+        body->entity = entity;
 	entity->body = body;
 }
 SGPhysicsBody* SG_EXPORT sgEntityGetPhysicsBody(SGEntity* entity)
@@ -529,11 +531,11 @@ float SG_EXPORT sgEntityGetAngleRads(SGEntity* entity)
 }
 void SG_EXPORT sgEntitySetAngleDegs(SGEntity* entity, float degs)
 {
-	sgEntitySetAngleRads(entity, degs * M_PI / 180.0);
+	sgEntitySetAngleRads(entity, degs * SG_PI / 180.0);
 }
 float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity)
 {
-	return sgEntityGetAngleRads(entity) * 180.0 / M_PI;
+	return sgEntityGetAngleRads(entity) * 180.0 / SG_PI;
 }
 
 void SG_EXPORT sgEntityDraw(SGEntity* entity)

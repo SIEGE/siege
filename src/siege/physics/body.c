@@ -29,16 +29,19 @@ SGPhysicsBody* SG_EXPORT sgPhysicsBodyCreate(SGPhysicsSpace* space, SGenum type)
         space = _sg_physSpaceMain;
 
     body->space = space;
-    body->type = type;
     body->data = NULL;
 
-    if(_sg_modPhysics.sgmPhysicsBodyCreate != NULL)
-        _sg_modPhysics.sgmPhysicsBodyCreate(&body->handle, body->type);
-    if(_sg_modPhysics.sgmPhysicsBodySetData != NULL)
-        _sg_modPhysics.sgmPhysicsBodySetData(body->handle, body);
+    body->type = type;
 
-    if(_sg_modPhysics.sgmPhysicsSpaceAddBody != NULL)
-        _sg_modPhysics.sgmPhysicsSpaceAddBody(space->handle, body->handle);
+    body->entity = NULL;
+
+    if(psgmPhysicsBodyCreate != NULL)
+        psgmPhysicsBodyCreate(&body->handle, body->type);
+    if(psgmPhysicsBodySetData != NULL)
+        psgmPhysicsBodySetData(body->handle, body);
+
+    if(psgmPhysicsSpaceAddBody != NULL)
+        psgmPhysicsSpaceAddBody(space->handle, body->handle);
 
     return body;
 }
@@ -49,12 +52,12 @@ void SG_EXPORT sgPhysicsBodyDestroy(SGPhysicsBody* body)
 
     /*if(body->space != NULL)
     {
-        if(_sg_modPhysics.sgmPhysicsSpaceRemoveBody != NULL)
-            _sg_modPhysics.sgmPhysicsSpaceRemoveBody(body->space->handle, body->handle);
+        if(psgmPhysicsSpaceRemoveBody != NULL)
+            psgmPhysicsSpaceRemoveBody(body->space->handle, body->handle);
     }*/
 
-    if(_sg_modPhysics.sgmPhysicsBodyDestroy != NULL)
-        _sg_modPhysics.sgmPhysicsBodyDestroy(body->handle);
+    if(psgmPhysicsBodyDestroy != NULL)
+        psgmPhysicsBodyDestroy(body->handle);
 }
 
 void SG_EXPORT sgPhysicsBodySetData(SGPhysicsBody* body, void* data)
@@ -77,8 +80,8 @@ void SG_EXPORT sgPhysicsBodySetPos(SGPhysicsBody* body, float x, float y)
     if(body == NULL)
         return;
 
-    if(_sg_modPhysics.sgmPhysicsBodySetPosition != NULL)
-        _sg_modPhysics.sgmPhysicsBodySetPosition(body->handle, x, y);
+    if(psgmPhysicsBodySetPosition != NULL)
+        psgmPhysicsBodySetPosition(body->handle, x, y);
 }
 void SG_EXPORT sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y)
 {
@@ -93,8 +96,8 @@ void SG_EXPORT sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y)
     else if(y == NULL)
         y = &t;
 
-    if(_sg_modPhysics.sgmPhysicsBodyGetPosition != NULL)
-        _sg_modPhysics.sgmPhysicsBodyGetPosition(body->handle, x, y);
+    if(psgmPhysicsBodyGetPosition != NULL)
+        psgmPhysicsBodyGetPosition(body->handle, x, y);
 }
 
 void SG_EXPORT sgPhysicsBodySetPosX(SGPhysicsBody* body, float x)
@@ -137,8 +140,8 @@ void SG_EXPORT sgPhysicsBodySetAngleRads(SGPhysicsBody* body, float rads)
     if(body == NULL)
         return;
 
-    if(_sg_modPhysics.sgmPhysicsBodySetAngle != NULL)
-        _sg_modPhysics.sgmPhysicsBodySetAngle(body->handle, rads);
+    if(psgmPhysicsBodySetAngle != NULL)
+        psgmPhysicsBodySetAngle(body->handle, rads);
 }
 float SG_EXPORT sgPhysicsBodyGetAngleRads(SGPhysicsBody* body)
 {
@@ -146,17 +149,17 @@ float SG_EXPORT sgPhysicsBodyGetAngleRads(SGPhysicsBody* body)
         return SG_NAN;
 
     float rads;
-    if(_sg_modPhysics.sgmPhysicsBodyGetAngle != NULL)
-        _sg_modPhysics.sgmPhysicsBodyGetAngle(body->handle, &rads);
+    if(psgmPhysicsBodyGetAngle != NULL)
+        psgmPhysicsBodyGetAngle(body->handle, &rads);
     return rads;
 }
 void SG_EXPORT sgPhysicsBodySetAngleDegs(SGPhysicsBody* body, float degs)
 {
-    sgPhysicsBodySetAngleRads(body, degs * M_PI / 180.0);
+    sgPhysicsBodySetAngleRads(body, degs * SG_PI / 180.0);
 }
 float SG_EXPORT sgPhysicsBodyGetAngleDegs(SGPhysicsBody* body)
 {
-    return sgPhysicsBodyGetAngleRads(body) * 180.0 / M_PI;
+    return sgPhysicsBodyGetAngleRads(body) * 180.0 / SG_PI;
 }
 
 void SG_EXPORT sgPhysicsBodySetVel(SGPhysicsBody* body, float x, float y)
@@ -164,8 +167,8 @@ void SG_EXPORT sgPhysicsBodySetVel(SGPhysicsBody* body, float x, float y)
     if(body == NULL)
         return;
 
-    if(_sg_modPhysics.sgmPhysicsBodySetVelocity != NULL)
-        _sg_modPhysics.sgmPhysicsBodySetVelocity(body->handle, x, y);
+    if(psgmPhysicsBodySetVelocity != NULL)
+        psgmPhysicsBodySetVelocity(body->handle, x, y);
 }
 void SG_EXPORT sgPhysicsBodyGetVel(SGPhysicsBody* body, float* x, float* y)
 {
@@ -180,8 +183,8 @@ void SG_EXPORT sgPhysicsBodyGetVel(SGPhysicsBody* body, float* x, float* y)
     else if(y == NULL)
         y = &t;
 
-    if(_sg_modPhysics.sgmPhysicsBodyGetVelocity != NULL)
-        _sg_modPhysics.sgmPhysicsBodyGetVelocity(body->handle, x, y);
+    if(psgmPhysicsBodyGetVelocity != NULL)
+        psgmPhysicsBodyGetVelocity(body->handle, x, y);
 }
 
 void SG_EXPORT sgPhysicsBodySetVelX(SGPhysicsBody* body, float x)
@@ -224,8 +227,8 @@ void SG_EXPORT sgPhysicsBodySetAngVelRads(SGPhysicsBody* body, float rads)
     if(body == NULL)
         return;
 
-    if(_sg_modPhysics.sgmPhysicsBodySetAngularVelocity != NULL)
-        _sg_modPhysics.sgmPhysicsBodySetAngularVelocity(body->handle, rads);
+    if(psgmPhysicsBodySetAngularVelocity != NULL)
+        psgmPhysicsBodySetAngularVelocity(body->handle, rads);
 }
 float SG_EXPORT sgPhysicsBodyGetAngVelRads(SGPhysicsBody* body)
 {
@@ -233,17 +236,17 @@ float SG_EXPORT sgPhysicsBodyGetAngVelRads(SGPhysicsBody* body)
         return SG_NAN;
 
     float rads;
-    if(_sg_modPhysics.sgmPhysicsBodyGetAngularVelocity != NULL)
-        _sg_modPhysics.sgmPhysicsBodyGetAngularVelocity(body->handle, &rads);
+    if(psgmPhysicsBodyGetAngularVelocity != NULL)
+        psgmPhysicsBodyGetAngularVelocity(body->handle, &rads);
     return rads;
 }
 void SG_EXPORT sgPhysicsBodySetAngVelDegs(SGPhysicsBody* body, float degs)
 {
-    sgPhysicsBodySetAngVelRads(body, degs * M_PI / 180.0);
+    sgPhysicsBodySetAngVelRads(body, degs * SG_PI / 180.0);
 }
 float SG_EXPORT sgPhysicsBodyGetAngVelDegs(SGPhysicsBody* body)
 {
-    return sgPhysicsBodyGetAngVelRads(body) * 180.0 / M_PI;
+    return sgPhysicsBodyGetAngVelRads(body) * 180.0 / SG_PI;
 }
 
 void SG_EXPORT sgPhysicsBodySetMass(SGPhysicsBody* body, float mass)
@@ -251,8 +254,8 @@ void SG_EXPORT sgPhysicsBodySetMass(SGPhysicsBody* body, float mass)
     if(body == NULL)
         return;
 
-    if(_sg_modPhysics.sgmPhysicsBodySetMass != NULL)
-        _sg_modPhysics.sgmPhysicsBodySetMass(body->handle, mass);
+    if(psgmPhysicsBodySetMass != NULL)
+        psgmPhysicsBodySetMass(body->handle, mass);
 }
 float SG_EXPORT sgPhysicsBodyGetMass(SGPhysicsBody* body)
 {
@@ -260,8 +263,8 @@ float SG_EXPORT sgPhysicsBodyGetMass(SGPhysicsBody* body)
         return SG_NAN;
 
     float mass;
-    if(_sg_modPhysics.sgmPhysicsBodyGetMass != NULL)
-        _sg_modPhysics.sgmPhysicsBodyGetMass(body->handle, &mass);
+    if(psgmPhysicsBodyGetMass != NULL)
+        psgmPhysicsBodyGetMass(body->handle, &mass);
     return mass;
 }
 
@@ -270,8 +273,8 @@ void SG_EXPORT sgPhysicsBodySetMoment(SGPhysicsBody* body, float moment)
     if(body == NULL)
         return;
 
-    if(_sg_modPhysics.sgmPhysicsBodySetMoment != NULL)
-        _sg_modPhysics.sgmPhysicsBodySetMoment(body->handle, moment);
+    if(psgmPhysicsBodySetMoment != NULL)
+        psgmPhysicsBodySetMoment(body->handle, moment);
 }
 float SG_EXPORT sgPhysicsBodyGetMoment(SGPhysicsBody* body)
 {
@@ -279,8 +282,8 @@ float SG_EXPORT sgPhysicsBodyGetMoment(SGPhysicsBody* body)
         return SG_NAN;
 
     float moment;
-    if(_sg_modPhysics.sgmPhysicsBodyGetMoment != NULL)
-        _sg_modPhysics.sgmPhysicsBodyGetMoment(body->handle, &moment);
+    if(psgmPhysicsBodyGetMoment != NULL)
+        psgmPhysicsBodyGetMoment(body->handle, &moment);
     return moment;
 }
 

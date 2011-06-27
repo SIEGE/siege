@@ -21,58 +21,55 @@ void SG_EXPORT _sgModuleLoadAudio(SGLibrary* lib)
 {
     void* fptr;
     /// Audio
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceMaxSources);
+    _SG_BIND(sgmAudioBufferCreate);
+    //_SG_BIND(sgmAudioBufferCreateData);
+    _SG_BIND(sgmAudioBufferDestroy);
+    _SG_BIND(sgmAudioBufferSetData);
+    //_SG_BIND(sgmAudioBufferGetData);
+    //_SG_BIND(sgmAudioBufferFreeData);
+    _SG_BIND(sgmAudioBufferSetHandle);
 
-    _SG_BINDS(_sg_modAudio, sgmAudioBufferCreate);
-    //_SG_BINDS(_sg_modAudio, sgmAudioBufferCreateData);
-    _SG_BINDS(_sg_modAudio, sgmAudioBufferSetData);
-    //_SG_BINDS(_sg_modAudio, sgmAudioBufferGetData);
-    //_SG_BINDS(_sg_modAudio, sgmAudioBufferFreeData);
-    _SG_BINDS(_sg_modAudio, sgmAudioBufferDestroy);
+	_SG_BIND(sgmAudioSourceMaxSources);
 
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceCreate);
-    //_SG_BINDS(_sg_modAudio, sgmAudioSourceCreateData);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceDestroy);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourcePlay);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceIsPlaying);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourcePause);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceIsPaused);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceRewind);
-    //_SG_BINDS(_sg_modAudio, sgmAudioSourceIsRewinded);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceStop);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceIsStopped);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceSetBuffer);
-    //_SG_BINDS(_sg_modAudio, sgmAudioSourceGetBuffer);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceQueueBuffers);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceUnqueueBuffers);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceGetNumProcessedBuffers);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceGetNumQueuedBuffers);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceSetPosition);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceGetPosition);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceSetVelocity);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceGetVelocity);
-    //_SG_BINDS(_sg_modAudio, sgmAudioSourceSetFalloff);
-    //_SG_BINDS(_sg_modAudio, sgmAudioSourceGetFalloff);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceSetPitch);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceGetPitch);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceSetVolume);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceGetVolume);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceSetLooping);
-    _SG_BINDS(_sg_modAudio, sgmAudioSourceGetLooping);
+    _SG_BIND(sgmAudioSourceCreate);
+    //_SG_BIND(sgmAudioSourceCreateData);
+    _SG_BIND(sgmAudioSourceDestroy);
+    _SG_BIND(sgmAudioSourcePlay);
+    _SG_BIND(sgmAudioSourceIsPlaying);
+    _SG_BIND(sgmAudioSourcePause);
+    _SG_BIND(sgmAudioSourceIsPaused);
+    _SG_BIND(sgmAudioSourceRewind);
+    //_SG_BIND(sgmAudioSourceIsRewinded);
+    _SG_BIND(sgmAudioSourceStop);
+    _SG_BIND(sgmAudioSourceIsStopped);
+    _SG_BIND(sgmAudioSourceSetBuffer);
+    //_SG_BIND(sgmAudioSourceGetBuffer);
+    _SG_BIND(sgmAudioSourceQueueBuffers);
+    _SG_BIND(sgmAudioSourceUnqueueBuffers);
+    _SG_BIND(sgmAudioSourceGetNumProcessedBuffers);
+    _SG_BIND(sgmAudioSourceGetNumQueuedBuffers);
+    _SG_BIND(sgmAudioSourceSetPosition);
+    _SG_BIND(sgmAudioSourceGetPosition);
+    _SG_BIND(sgmAudioSourceSetVelocity);
+    _SG_BIND(sgmAudioSourceGetVelocity);
+    //_SG_BIND(sgmAudioSourceSetFalloff);
+    //_SG_BIND(sgmAudioSourceGetFalloff);
+    _SG_BIND(sgmAudioSourceSetPitch);
+    _SG_BIND(sgmAudioSourceGetPitch);
+    _SG_BIND(sgmAudioSourceSetVolume);
+    _SG_BIND(sgmAudioSourceGetVolume);
+    _SG_BIND(sgmAudioSourceSetLooping);
+    _SG_BIND(sgmAudioSourceGetLooping);
 
     /// Audio Load
-    _SG_BINDS(_sg_modAudio, sgmAudioLoadFile);
-    //_SG_BINDS(_sg_modAudio, sgmAudioLoadStream);
-    _SG_BINDS(_sg_modAudio, sgmAudioLoadFreeData);
+    _SG_BIND(sgmAudioLoadFile);
+    //_SG_BIND(sgmAudioLoadStream);
+    _SG_BIND(sgmAudioLoadFreeData);
 
-    _SG_BINDS(_sg_modAudio, sgmAudioFileCreate);
-    _SG_BINDS(_sg_modAudio, sgmAudioFileDestroy);
-    _SG_BINDS(_sg_modAudio, sgmAudioFileNumSamples);
-    _SG_BINDS(_sg_modAudio, sgmAudioFileRead);
+    _SG_BIND(sgmAudioFileCreate);
+    _SG_BIND(sgmAudioFileDestroy);
+    _SG_BIND(sgmAudioFileNumSamples);
+    _SG_BIND(sgmAudioFileRead);
+
+    _SG_BIND(sgmAudioFileGetHandle);
 }
-
-SGModuleAudio* SG_EXPORT sgModuleGetAudio(void)
-{
-    return &_sg_modAudio;
-}
-

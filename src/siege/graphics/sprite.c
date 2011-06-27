@@ -115,19 +115,19 @@ void SG_EXPORT sgSpriteDrawRads2f1f(SGSprite* sprite, float x, float y, float an
 
 void SG_EXPORT sgSpriteDrawDegs3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle)
 {
-    sgSpriteDrawRads3f2f1f(sprite, x, y, z, xscale, yscale, angle * M_PI / 180.0);
+    sgSpriteDrawRads3f2f1f(sprite, x, y, z, xscale, yscale, angle * SG_PI / 180.0);
 }
 void SG_EXPORT sgSpriteDrawDegs2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle)
 {
-    sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, xscale, yscale, angle * M_PI / 180.0);
+    sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, xscale, yscale, angle * SG_PI / 180.0);
 }
 void SG_EXPORT sgSpriteDrawDegs3f1f(SGSprite* sprite, float x, float y, float z, float angle)
 {
-    sgSpriteDrawRads3f2f1f(sprite, x, y, z, 1.0, 1.0, angle * M_PI / 180.0);
+    sgSpriteDrawRads3f2f1f(sprite, x, y, z, 1.0, 1.0, angle * SG_PI / 180.0);
 }
 void SG_EXPORT sgSpriteDrawDegs2f1f(SGSprite* sprite, float x, float y, float angle)
 {
-    sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, 1.0, 1.0, angle * M_PI / 180.0);
+    sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, 1.0, 1.0, angle * SG_PI / 180.0);
 }
 
 void SG_EXPORT sgSpriteDraw3f2f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale)

@@ -17,12 +17,23 @@
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT sgmPhysicsShapeCreate(void** shape, void* body, float xoffset, float yoffset, SGenum type, SGuint numverts, float* vertices);
-    SGuint SG_EXPORT sgmPhysicsShapeDestroy(void* shape);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsShapeCreate)(void** shape, void* body, float xoffset, float yoffset, SGenum type, SGuint numverts, float* vertices);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsShapeDestroy)(void* shape);
+
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeSetFriction)(void* shape, float friction);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeGetFriction)(void* shape, float* friction);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeSetRestitution)(void* shape, float restitution);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeGetRestitution)(void* shape, float* restitution);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeSetData)(void* shape, void* data);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeGetData)(void* shape, void** data);
 #ifdef __cplusplus
 }
 #endif

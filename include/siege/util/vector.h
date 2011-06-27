@@ -47,13 +47,7 @@ typedef struct SGVec4
     \return A new 2D vector.
 */
 SGVec2 SG_EXPORT sgVec2f(float x, float y);
-/**
-    \memberof SGVec2
-    \brief Create a 2D vector from a coordinate pointer
-    \param f A pointer to 2 float coordinates
-    \return A new 2D vector.
-*/
-SGVec2 SG_EXPORT sgVec2fv(float* f);
+SGVec2 SG_EXPORT sgVec2fv(float* xy);
 /**
     \memberof SGVec2
     \brief Create a 2D vector from polar coordinates in radians
@@ -62,13 +56,6 @@ SGVec2 SG_EXPORT sgVec2fv(float* f);
     \return A new 2D vector.
 */
 SGVec2 SG_EXPORT sgVec2PolarRads(float rads, float len);
-/**
-    \memberof SGVec2
-    \brief Create a 2D vector from polar coordinates in degrees
-    \param degs Vector's angle in degrees
-    \param len Vector's length
-    \return A new 2D vector.
-*/
 SGVec2 SG_EXPORT sgVec2PolarDegs(float degs, float len);
 /**
     \memberof SGVec2
@@ -130,63 +117,65 @@ float SG_EXPORT sgVec2Cross(SGVec2 a, SGVec2 b);
 
 
 
-SGVec3 sgVec3f(float x, float y, float z);
-SGVec3 sgVec3fv(float* f);
-//SGVec3 sgVec3PolarRads(float rads, float len);
-//SGVec3 sgVec3PolarDegs(float degs, float len);
-SGVec3 sgVec3Nan(void);
+SGVec3 SG_EXPORT sgVec3f(float x, float y, float z);
+SGVec3 SG_EXPORT sgVec3fv(float* xyz);
+SGVec3 SG_EXPORT sgVec3CylindricalRads(float rads, float radius, float z);
+SGVec3 SG_EXPORT sgVec3CylindricalDegs(float degs, float radius, float z);
+SGVec3 SG_EXPORT sgVec3SphericalRads(float azimuth, float zenith, float radius);
+SGVec3 SG_EXPORT sgVec3SphericalDegs(float azimuth, float zenith, float radius);
+SGVec3 SG_EXPORT sgVec3Nan(void);
 
-SGVec3 sgVec3Normalize(SGVec3 vec);
+SGVec3 SG_EXPORT sgVec3Normalize(SGVec3 vec);
 
-SGVec3 sgVec3SetLength(SGVec3 vec, float length);
-float sgVec3GetLength(SGVec3 vec);
-float sgVec3GetLength2(SGVec3 vec);
+SGVec3 SG_EXPORT sgVec3SetLength(SGVec3 vec, float length);
+float SG_EXPORT sgVec3GetLength(SGVec3 vec);
+float SG_EXPORT sgVec3GetLength2(SGVec3 vec);
 
 //SGVec3 sgVec3SetAngleRads(SGVec3 vec, float rads);
 //float sgVec3GetAngleRads(SGVec3 vec);
 //SGVec3 sgVec3SetAngleDegs(SGVec3 vec, float degs);
 //float sgVec3GetAngleDegs(SGVec3 vec);
 
-SGbool sgVec3IsNan(SGVec3 vec);
+SGbool SG_EXPORT sgVec3IsNan(SGVec3 vec);
 
-SGVec3 sgVec3Neg(SGVec3 a);
-SGVec3 sgVec3Add(SGVec3 a, SGVec3 b);
-SGVec3 sgVec3Sub(SGVec3 a, SGVec3 b);
-SGVec3 sgVec3Mul(SGVec3 a, SGVec3 b);
-SGVec3 sgVec3Div(SGVec3 a, SGVec3 b);
+SGVec3 SG_EXPORT sgVec3Neg(SGVec3 a);
+SGVec3 SG_EXPORT sgVec3Add(SGVec3 a, SGVec3 b);
+SGVec3 SG_EXPORT sgVec3Sub(SGVec3 a, SGVec3 b);
+SGVec3 SG_EXPORT sgVec3Mul(SGVec3 a, SGVec3 b);
+SGVec3 SG_EXPORT sgVec3Div(SGVec3 a, SGVec3 b);
 
-float sgVec3Dot(SGVec3 a, SGVec3 b);
-SGVec3 sgVec3Cross(SGVec3 a, SGVec3 b);
+float SG_EXPORT sgVec3Dot(SGVec3 a, SGVec3 b);
+SGVec3 SG_EXPORT sgVec3Cross(SGVec3 a, SGVec3 b);
 
 
 
-SGVec4 sgVec4f(float x, float y, float z, float w);
-SGVec4 sgVec4fv(float* f);
+SGVec4 SG_EXPORT sgVec4f(float x, float y, float z, float w);
+SGVec4 SG_EXPORT sgVec4fv(float* xyzw);
 //SGVec4 sgVec4PolarRads(float rads, float len);
 //SGVec4 sgVec4PolarDegs(float degs, float len);
-SGVec4 sgVec4Nan(void);
+SGVec4 SG_EXPORT sgVec4Nan(void);
 
-SGVec4 sgVec4Normalize(SGVec4 vec);
+SGVec4 SG_EXPORT sgVec4Normalize(SGVec4 vec);
 
-SGVec4 sgVec4SetLength(SGVec4 vec, float length);
-float sgVec4GetLength(SGVec4 vec);
-float sgVec4GetLength2(SGVec4 vec);
+SGVec4 SG_EXPORT sgVec4SetLength(SGVec4 vec, float length);
+float SG_EXPORT sgVec4GetLength(SGVec4 vec);
+float SG_EXPORT sgVec4GetLength2(SGVec4 vec);
 
 //SGVec4 sgVec4SetAngleRads(SGVec4 vec, float rads);
 //float sgVec4GetAngleRads(SGVec4 vec);
 //SGVec4 sgVec4SetAngleDegs(SGVec4 vec, float degs);
 //float sgVec4GetAngleDegs(SGVec4 vec);
 
-SGbool sgVec4IsNan(SGVec4 vec);
+SGbool SG_EXPORT sgVec4IsNan(SGVec4 vec);
 
-SGVec4 sgVec4Neg(SGVec4 a);
-SGVec4 sgVec4Add(SGVec4 a, SGVec4 b);
-SGVec4 sgVec4Sub(SGVec4 a, SGVec4 b);
-SGVec4 sgVec4Mul(SGVec4 a, SGVec4 b);
-SGVec4 sgVec4Div(SGVec4 a, SGVec4 b);
+SGVec4 SG_EXPORT sgVec4Neg(SGVec4 a);
+SGVec4 SG_EXPORT sgVec4Add(SGVec4 a, SGVec4 b);
+SGVec4 SG_EXPORT sgVec4Sub(SGVec4 a, SGVec4 b);
+SGVec4 SG_EXPORT sgVec4Mul(SGVec4 a, SGVec4 b);
+SGVec4 SG_EXPORT sgVec4Div(SGVec4 a, SGVec4 b);
 
-float sgVec4Dot(SGVec4 a, SGVec4 b);
-//SGVec4 sgVec4Cross(SGVec4 a, SGVec4 b);
+float SG_EXPORT sgVec4Dot(SGVec4 a, SGVec4 b);
+//SGVec4 sgVec4Cross(SGVec4 a, SGVec4 b, SGVec4 c);
 
 #ifdef __cplusplus
 }

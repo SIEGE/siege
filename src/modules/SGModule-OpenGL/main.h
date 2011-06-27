@@ -18,18 +18,46 @@
 #include <siege/backend.h>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-#include <windows.h>
-#else
-#include <GL/glx.h>
+#   include <windows.h>
+#   define PROC_HANDLE void* _glhandle
+#   define INIT_HANDLE() do { (void)_glhandle; } while(0)
+#   define DEINIT_HANDLE() do { (void)_glhandle; } while(0)
+#   define GET_PROC_ADDRESS(x) ((void*)wglGetProcAddress((x)))
+#elif defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
+#   include <dlfcn.h>
+#   define PROC_HANDLE void* _glhandle
+#   define INIT_HANDLE() do { _glhandle = dlopen("OpenGL.dylib", RTLD_LAZY | RTLD_LOCAL); } while(0)
+#   define DEINIT_HANDLE() do { dlclose(_glhandle); } while(0)
+#   define GET_PROC_ADDRESS(x) dlsym(_glhandle, (x))
+#else // not win32 and not apple
+#   include <GL/glx.h>
+#   define PROC_HANDLE void* _glhandle
+#   define INIT_HANDLE() do { (void)_glhandle; } while(0)
+#   define DEINIT_HANDLE() do { (void)_glhandle; } while(0)
+#   define GET_PROC_ADDRESS(x) ((void*)glXGetProcAddress((const GLubyte*)(x)))
 #endif
 
+#if defined(APPLE) || defined(_APPLE) || defined(__APPLE__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <OpenGL/glext.h>
+#else // not apple
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glext.h>
+#endif // apple
 
-#ifndef GLAPIENTRY
-#define GLAPIENTRY APIENTRY
-#endif // GLAPIENTRY
+/*#include <gl.h>
+#include <glu.h>
+#include <glext.h>*/
+
+#if defined(GLAPIENTRY)
+// do nothing
+#elif defined(APIENTRY)
+#   define GLAPIENTRY APIENTRY
+#else // we don't have *APIENTRY
+#   define GLAPIENTRY
+#endif // *APIENTRY
 
 typedef struct FBOFunctions
 {
@@ -56,7 +84,6 @@ typedef struct FBOFunctions
 } FBOFunctions;
 
 void checkFBO(FBOFunctions* fbo);
-void* getProcAddress(const char* name);
 SGuint higherPower(SGuint num);
 
 #endif // __MAIN_H__

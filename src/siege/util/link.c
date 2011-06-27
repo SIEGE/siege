@@ -63,13 +63,29 @@ void SG_EXPORT sgLibraryUnload(SGLibrary* lib)
     free(lib->fname);
     free(lib);
 }
-void* SG_EXPORT sgGetProcAddress(SGLibrary* lib, char* proc)
+SGLibraryFunction* SG_EXPORT sgGetProcAddress(SGLibrary* lib, const char* proc)
 {
     if(lib == NULL)
         return NULL;
 #ifdef __WIN32__
-    return GetProcAddress(lib->handle, proc);
+    return (SGLibraryFunction*)GetProcAddress(lib->handle, proc);
 #else
-    return dlsym(lib->handle, proc);
+    union
+    {
+        SGLibraryFunction* fptr;
+        void* ptr;
+    } tmp;
+    tmp.ptr = dlsym(lib->handle, proc);
+    return tmp.fptr;
+#endif
+}
+void* SG_EXPORT sgGetVarAddress(SGLibrary* lib, const char* var)
+{
+    if(lib == NULL)
+        return NULL;
+#ifdef __WIN32__
+    return GetProcAddress(lib->handle, var);
+#else
+    return dlsym(lib->handle, var);
 #endif
 }

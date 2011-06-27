@@ -27,6 +27,9 @@ char* _sg_strBuf;
 SGbool SG_EXPORT _sgStringInit(void);
 SGbool SG_EXPORT _sgStringDeinit(void);
 
+wchar_t* SG_EXPORT sgPrintfW(const wchar_t* format, ...);
+wchar_t* SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args);
+
 char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...);
 char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args);
 
@@ -35,7 +38,8 @@ SGuint SG_EXPORT sgLineLength(const char* text);
 char* SG_EXPORT sgNextLine(const char* text);
 SGuint SG_EXPORT sgNumLines(const char* text);
 
-/// \todo To be done
-void SG_EXPORT sgCharToUTF32(const char* text, SGuint textlen, SGdchar* str);
-
+SGdchar* SG_EXPORT sgLineEndU32(const SGdchar* text);
+SGuint SG_EXPORT sgLineLengthU32(const SGdchar* text);
+SGdchar* SG_EXPORT sgNextLineU32(const SGdchar* text);
+SGuint SG_EXPORT sgNumLinesU32(const SGdchar* text);
 #endif // __SIEGE_UTIL_STRING_H__

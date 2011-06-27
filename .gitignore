@@ -1,6 +1,7 @@
 .directory
 .*.swp
+.*.kate-swp
+*~
 /build
 /doc
-*~
-
+siege.kdev4

@@ -17,6 +17,10 @@
 
 #include "../../common.h"
 
+#ifndef SG_FPTR
+#define SG_FPTR(name)	name
+#endif // SG_FPTR
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -27,15 +31,15 @@ extern "C"
         void SG_EXPORT (*chr)(void* keyboard, SGuint chr, SGbool down);
     } SGCoreKeyboardCallbacks;
 
-    SGuint SG_EXPORT sgmCoreKeyboardCreate(void** keyboard, void* window);
-    SGuint SG_EXPORT sgmCoreKeyboardDestroy(void* keyboard);
-    //SGuint SG_EXPORT sgmCoreKeyboardSetKey(void* keyboard, SGuint key, SGbool down);
-    SGuint SG_EXPORT sgmCoreKeyboardGetKey(void* keyboard, SGuint key, SGbool* down);
-    //SGuint SG_EXPORT sgmCoreKeyboardSetChr(void* keyboard, SGuint chr, SGbool down);
-    //SGuint SG_EXPORT sgmCoreKeyboardGetChr(void* keyboard, SGuint chr, SGbool* down);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardCreate)(void** keyboard, void* window);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardDestroy)(void* keyboard);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardSetKey)(void* keyboard, SGuint key, SGbool down);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardGetKey)(void* keyboard, SGuint key, SGbool* down);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardSetChr)(void* keyboard, SGuint chr, SGbool down);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardGetChr)(void* keyboard, SGuint chr, SGbool* down);
 
-    SGuint SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallbacks* callbacks);
-    //SGuint SG_EXPORT sgmCoreKeyboardGetCallbacks(void* keyboard, SGCoreKeyboardCallbacks** callbacks);
+    SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardSetCallbacks)(void* keyboard, SGCoreKeyboardCallbacks* callbacks);
+    //SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardGetCallbacks)(void* keyboard, SGCoreKeyboardCallbacks** callbacks);
 #ifdef __cplusplus
 }
 #endif

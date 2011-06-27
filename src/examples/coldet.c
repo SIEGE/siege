@@ -4,7 +4,7 @@
 #include <math.h>
 
 SGFont* font;
-int main()
+int main(void)
 {
 	sgLoadModule("SDL");
 	sgLoadModule("OpenGL");

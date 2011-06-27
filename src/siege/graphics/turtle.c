@@ -44,7 +44,7 @@ SGTurtle* SG_EXPORT sgTurtleCreateRads(float x, float y, float rads, SGbool draw
 }
 SGTurtle* SG_EXPORT sgTurtleCreateDegs(float x, float y, float degs, SGbool draw)
 {
-    return sgTurtleCreateRads(x, y, degs * M_PI / 180.0, draw);
+    return sgTurtleCreateRads(x, y, degs * SG_PI / 180.0, draw);
 }
 void SG_EXPORT sgTurtleDestroy(SGTurtle* turtle)
 {
@@ -194,7 +194,7 @@ void SG_EXPORT sgTurtleTurnLeftRads(SGTurtle* turtle, float rads)
 }
 void SG_EXPORT sgTurtleTurnLeftDegs(SGTurtle* turtle, float degs)
 {
-    sgTurtleTurnLeftRads(turtle, degs * M_PI / 180.0);
+    sgTurtleTurnLeftRads(turtle, degs * SG_PI / 180.0);
 }
 void SG_EXPORT sgTurtleTurnRightRads(SGTurtle* turtle, float rads)
 {
@@ -205,7 +205,7 @@ void SG_EXPORT sgTurtleTurnRightRads(SGTurtle* turtle, float rads)
 }
 void SG_EXPORT sgTurtleTurnRightDegs(SGTurtle* turtle, float degs)
 {
-    sgTurtleTurnRightRads(turtle, degs * M_PI / 180.0);
+    sgTurtleTurnRightRads(turtle, degs * SG_PI / 180.0);
 }
 
 void SG_EXPORT sgTurtleSetAngleRads(SGTurtle* turtle, float rads)
@@ -226,9 +226,9 @@ float SG_EXPORT sgTurtleGetAngleRads(SGTurtle* turtle)
 
 void SG_EXPORT sgTurtleSetAngleDegs(SGTurtle* turtle, float degs)
 {
-    sgTurtleSetAngleRads(turtle, degs * M_PI / 180.0);
+    sgTurtleSetAngleRads(turtle, degs * SG_PI / 180.0);
 }
 float SG_EXPORT sgTurtleGetAngleDegs(SGTurtle* turtle)
 {
-    return sgTurtleGetAngleRads(turtle) * 180.0 / M_PI;
+    return sgTurtleGetAngleRads(turtle) * 180.0 / SG_PI;
 }
