@@ -3,7 +3,6 @@ OPTION(BUILD_MOD_GLFW "Build the GLFW module" OFF)
 
 IF(BUILD_MOD_GLFW)
     PROJECT(GLFW)
-    MESSAGE(WARNING "GLFW module does not work properly in some Linux distributions and thus may be removed in the future.")
     ADD_DEPENDENCIES(modules ${PROJECT_NAME})
 
     FIND_PACKAGE(GLFW REQUIRED)
