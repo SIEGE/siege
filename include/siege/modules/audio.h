@@ -24,7 +24,7 @@ extern "C"
 
 #ifdef SG_BUILD_LIBRARY
 
-#define SG_FPTR(name) (*name)
+#define SG_FPTR(name) (*p##name)
 #include "../backend/audio/buffer.h"
 #include "../backend/audio/source.h"
 #include "../backend/audio/load.h"

@@ -55,8 +55,8 @@ SGConv* SG_EXPORT sgConvCreate(const char* from, const char* to)
 	conv->handle = NULL;
 	conv->from = _sgConvType(from);
 	conv->to = _sgConvType(to);
-	if(sgmFontsConvCreate != NULL)
-		sgmFontsConvCreate(&conv->handle, from, to);
+	if(psgmFontsConvCreate != NULL)
+		psgmFontsConvCreate(&conv->handle, from, to);
 	return conv;
 }
 void SG_EXPORT sgConvDestroy(SGConv* conv)
@@ -64,8 +64,8 @@ void SG_EXPORT sgConvDestroy(SGConv* conv)
 	if(conv == NULL)
 		return;
 
-	if(sgmFontsConvDestroy != NULL)
-		sgmFontsConvDestroy(conv->handle);
+	if(psgmFontsConvDestroy != NULL)
+		psgmFontsConvDestroy(conv->handle);
 	free(conv);
 }
 
@@ -81,14 +81,14 @@ void* SG_EXPORT sgConv(SGConv* conv, size_t* outlen, const void* str, size_t len
 
 	void* buf = NULL;
 	void* outbuf;
-	if(sgmFontsConv != NULL)
+	if(psgmFontsConv != NULL)
 	{
-		sgmFontsConv(conv->handle, &buf, outlen, (void*)str, len);
+		psgmFontsConv(conv->handle, &buf, outlen, (void*)str, len);
 		outbuf = malloc(*outlen + 4);
 		memcpy(outbuf, buf, *outlen);
 		memset(outbuf + *outlen, 0, 4);
-		if(sgmFontsConvFreeData != NULL)
-			sgmFontsConvFreeData(buf);
+		if(psgmFontsConvFreeData != NULL)
+			psgmFontsConvFreeData(buf);
 	}
 	else
 	{

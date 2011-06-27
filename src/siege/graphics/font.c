@@ -81,7 +81,7 @@ SGbool SG_EXPORT _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbo
 		return SG_TRUE;
 	}
 
-	if(sgmFontsCharsCreate == NULL)
+	if(psgmFontsCharsCreate == NULL)
 	{
 		free(achars);
 		return SG_FALSE;
@@ -95,7 +95,7 @@ SGbool SG_EXPORT _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbo
 	SGCharInfo* cache;
 	for(i = 0; i < alen; i++)
 	{
-		ret |= sgmFontsCharsCreate(font->handle, &achars[i], 1, &ci.width, &ci.height, &ci.xpre, &ci.ypre, &ci.xpost, &ci.ypost, &ci.dwidth, &ci.dheight, &data);
+		ret |= psgmFontsCharsCreate(font->handle, &achars[i], 1, &ci.width, &ci.height, &ci.xpre, &ci.ypre, &ci.xpost, &ci.ypost, &ci.dwidth, &ci.dheight, &data);
 		if(ret != SG_OK)
 		{
 			free(achars);
@@ -103,8 +103,8 @@ SGbool SG_EXPORT _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbo
 		}
 
 		rgba = _sgFontToRGBA(font, data, ci.dwidth * ci.dheight);
-		if(sgmFontsCharsFreeData != NULL)
-			sgmFontsCharsFreeData(data);
+		if(psgmFontsCharsFreeData != NULL)
+			psgmFontsCharsFreeData(data);
 
 		SGTexture* texture = sgTextureCreateData(ci.dwidth, ci.dheight, 32, rgba);
 		free(rgba);
@@ -193,8 +193,8 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
 		return NULL;
 
 	SGuint ret = SG_OK;
-	if(sgmFontsFaceCreate != NULL)
-		ret = sgmFontsFaceCreate(&font->handle, fname);
+	if(psgmFontsFaceCreate != NULL)
+		ret = psgmFontsFaceCreate(&font->handle, fname);
 	if(ret != SG_OK)
 	{
 		fprintf(stderr, "Warning: Cannot create font %s\n", fname);
@@ -202,8 +202,8 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
 		return NULL;
 	}
 
-	if(sgmFontsFaceSetHeight != NULL)
-		sgmFontsFaceSetHeight(font->handle, height);
+	if(psgmFontsFaceSetHeight != NULL)
+		psgmFontsFaceSetHeight(font->handle, height);
 
 	SGuint len = strlen(fname) + 1;
 	font->fname = malloc(len);
@@ -242,8 +242,8 @@ void SG_EXPORT sgFontDestroy(SGFont* font)
 	for(i = 0; i < font->numcache; i++)
 		sgTextureDestroy(font->cache[i].texture);
 
-	if(sgmFontsFaceDestroy != NULL)
-		sgmFontsFaceDestroy(font->handle);
+	if(psgmFontsFaceDestroy != NULL)
+		psgmFontsFaceDestroy(font->handle);
 
 	for(i = 0; i < 4; i++)
 		sgConvDestroy(font->conv[i]);

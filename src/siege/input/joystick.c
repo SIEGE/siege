@@ -23,8 +23,8 @@
 void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
 {
     SGuint joy = 0;
-    if(sgmCoreJoystickGetID != NULL)
-        sgmCoreJoystickGetID(joystick, &joy);
+    if(psgmCoreJoystickGetID != NULL)
+        psgmCoreJoystickGetID(joystick, &joy);
 
     SGbool pressed = _sg_joyJoys[joy]->bcurr[button] && !_sg_joyJoys[joy]->bprev[button];
 
@@ -44,12 +44,12 @@ void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
 void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
 {
     SGuint joy = 0;
-    if(sgmCoreJoystickGetID != NULL)
-        sgmCoreJoystickGetID(joystick, &joy);
+    if(psgmCoreJoystickGetID != NULL)
+        psgmCoreJoystickGetID(joystick, &joy);
 
     size_t numaxis = 0;
-    if(sgmCoreJoystickGetNumAxis != NULL)
-        sgmCoreJoystickGetNumAxis(joystick, &numaxis);
+    if(psgmCoreJoystickGetNumAxis != NULL)
+        psgmCoreJoystickGetNumAxis(joystick, &numaxis);
 
     sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, axis, numaxis);
 }
@@ -59,8 +59,8 @@ SGbool SG_EXPORT _sgJoystickInit(void)
     SGuint i;
     _sg_joyNum = 0;
 
-    if(sgmCoreJoystickGetNumJoysticks != NULL)
-        sgmCoreJoystickGetNumJoysticks(_sg_winHandle, &_sg_joyNum);
+    if(psgmCoreJoystickGetNumJoysticks != NULL)
+        psgmCoreJoystickGetNumJoysticks(_sg_winHandle, &_sg_joyNum);
 
     _sg_joyJoys = malloc(_sg_joyNum * sizeof(_SGJoystick*));
     for(i = 0; i < _sg_joyNum; i++)
@@ -92,18 +92,18 @@ _SGJoystick* SG_EXPORT _sgJoystickCreate(SGuint id)
     joy->numbuttons = 0;
     joy->numaxis = 0;
 
-    if(sgmCoreJoystickCreate != NULL)
-        sgmCoreJoystickCreate(&joy->handle, _sg_winHandle, id);
-    if(sgmCoreJoystickSetCallbacks != NULL)
-        sgmCoreJoystickSetCallbacks(joy->handle, &_sg_joyCallbacks);
+    if(psgmCoreJoystickCreate != NULL)
+        psgmCoreJoystickCreate(&joy->handle, _sg_winHandle, id);
+    if(psgmCoreJoystickSetCallbacks != NULL)
+        psgmCoreJoystickSetCallbacks(joy->handle, &_sg_joyCallbacks);
 
-    if(sgmCoreJoystickGetNumButtons != NULL)
-        sgmCoreJoystickGetNumButtons(joy->handle, &joy->numbuttons);
+    if(psgmCoreJoystickGetNumButtons != NULL)
+        psgmCoreJoystickGetNumButtons(joy->handle, &joy->numbuttons);
     joy->bprev = malloc(joy->numbuttons * sizeof(SGbool));
     joy->bcurr = malloc(joy->numbuttons * sizeof(SGbool));
 
-    if(sgmCoreJoystickGetNumAxis != NULL)
-        sgmCoreJoystickGetNumAxis(joy->handle, &joy->numaxis);
+    if(psgmCoreJoystickGetNumAxis != NULL)
+        psgmCoreJoystickGetNumAxis(joy->handle, &joy->numaxis);
     joy->aprev = malloc(joy->numaxis * sizeof(SGbool));
     joy->acurr = malloc(joy->numaxis * sizeof(SGbool));
     joy->adelt = malloc(joy->numaxis * sizeof(SGbool));
@@ -121,8 +121,8 @@ void SG_EXPORT _sgJoystickDestroy(_SGJoystick* joy)
     free(joy->bprev);
     free(joy->bcurr);
 
-    if(sgmCoreJoystickDestroy != NULL)
-        sgmCoreJoystickDestroy(joy->handle);
+    if(psgmCoreJoystickDestroy != NULL)
+        psgmCoreJoystickDestroy(joy->handle);
 
     free(joy);
 }

@@ -89,15 +89,15 @@ SGbool SG_EXPORT _sgMouseInit(void)
     _sg_mouseCallbacks.move = _sg_cbMouseMove;
     _sg_mouseCallbacks.wheel = _sg_cbMouseWheel;
 
-    if(sgmCoreMouseCreate != NULL)
-        sgmCoreMouseCreate(&_sg_mouseHandle, _sg_winHandle);
+    if(psgmCoreMouseCreate != NULL)
+        psgmCoreMouseCreate(&_sg_mouseHandle, _sg_winHandle);
 
-    if(sgmCoreMouseSetCallbacks != NULL)
-        sgmCoreMouseSetCallbacks(_sg_mouseHandle, &_sg_mouseCallbacks);
+    if(psgmCoreMouseSetCallbacks != NULL)
+        psgmCoreMouseSetCallbacks(_sg_mouseHandle, &_sg_mouseCallbacks);
 
     _sg_mouseButtonNum = 3;
-    if(sgmCoreMouseGetNumButtons != NULL)
-        sgmCoreMouseGetNumButtons(_sg_mouseHandle, &_sg_mouseButtonNum);
+    if(psgmCoreMouseGetNumButtons != NULL)
+        psgmCoreMouseGetNumButtons(_sg_mouseHandle, &_sg_mouseButtonNum);
     _sg_mouseButtonPrev = malloc(_sg_mouseButtonNum * sizeof(SGbool));
     memset(_sg_mouseButtonPrev, 0, _sg_mouseButtonNum * sizeof(SGbool));
     _sg_mouseButtonCurr = malloc(_sg_mouseButtonNum * sizeof(SGbool));
@@ -118,8 +118,8 @@ SGbool SG_EXPORT _sgMouseDeinit(void)
     free(_sg_mouseButtonCurr);
     _sg_mouseButtonNum = 0;
 
-    if(sgmCoreMouseDestroy != NULL)
-        sgmCoreMouseDestroy(_sg_mouseHandle);
+    if(psgmCoreMouseDestroy != NULL)
+        psgmCoreMouseDestroy(_sg_mouseHandle);
 
     return SG_TRUE;
 }

@@ -35,13 +35,13 @@ SGPhysicsBody* SG_EXPORT sgPhysicsBodyCreate(SGPhysicsSpace* space, SGenum type)
 
     body->entity = NULL;
 
-    if(sgmPhysicsBodyCreate != NULL)
-        sgmPhysicsBodyCreate(&body->handle, body->type);
-    if(sgmPhysicsBodySetData != NULL)
-        sgmPhysicsBodySetData(body->handle, body);
+    if(psgmPhysicsBodyCreate != NULL)
+        psgmPhysicsBodyCreate(&body->handle, body->type);
+    if(psgmPhysicsBodySetData != NULL)
+        psgmPhysicsBodySetData(body->handle, body);
 
-    if(sgmPhysicsSpaceAddBody != NULL)
-        sgmPhysicsSpaceAddBody(space->handle, body->handle);
+    if(psgmPhysicsSpaceAddBody != NULL)
+        psgmPhysicsSpaceAddBody(space->handle, body->handle);
 
     return body;
 }
@@ -52,12 +52,12 @@ void SG_EXPORT sgPhysicsBodyDestroy(SGPhysicsBody* body)
 
     /*if(body->space != NULL)
     {
-        if(sgmPhysicsSpaceRemoveBody != NULL)
-            sgmPhysicsSpaceRemoveBody(body->space->handle, body->handle);
+        if(psgmPhysicsSpaceRemoveBody != NULL)
+            psgmPhysicsSpaceRemoveBody(body->space->handle, body->handle);
     }*/
 
-    if(sgmPhysicsBodyDestroy != NULL)
-        sgmPhysicsBodyDestroy(body->handle);
+    if(psgmPhysicsBodyDestroy != NULL)
+        psgmPhysicsBodyDestroy(body->handle);
 }
 
 void SG_EXPORT sgPhysicsBodySetData(SGPhysicsBody* body, void* data)
@@ -80,8 +80,8 @@ void SG_EXPORT sgPhysicsBodySetPos(SGPhysicsBody* body, float x, float y)
     if(body == NULL)
         return;
 
-    if(sgmPhysicsBodySetPosition != NULL)
-        sgmPhysicsBodySetPosition(body->handle, x, y);
+    if(psgmPhysicsBodySetPosition != NULL)
+        psgmPhysicsBodySetPosition(body->handle, x, y);
 }
 void SG_EXPORT sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y)
 {
@@ -96,8 +96,8 @@ void SG_EXPORT sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y)
     else if(y == NULL)
         y = &t;
 
-    if(sgmPhysicsBodyGetPosition != NULL)
-        sgmPhysicsBodyGetPosition(body->handle, x, y);
+    if(psgmPhysicsBodyGetPosition != NULL)
+        psgmPhysicsBodyGetPosition(body->handle, x, y);
 }
 
 void SG_EXPORT sgPhysicsBodySetPosX(SGPhysicsBody* body, float x)
@@ -140,8 +140,8 @@ void SG_EXPORT sgPhysicsBodySetAngleRads(SGPhysicsBody* body, float rads)
     if(body == NULL)
         return;
 
-    if(sgmPhysicsBodySetAngle != NULL)
-        sgmPhysicsBodySetAngle(body->handle, rads);
+    if(psgmPhysicsBodySetAngle != NULL)
+        psgmPhysicsBodySetAngle(body->handle, rads);
 }
 float SG_EXPORT sgPhysicsBodyGetAngleRads(SGPhysicsBody* body)
 {
@@ -149,8 +149,8 @@ float SG_EXPORT sgPhysicsBodyGetAngleRads(SGPhysicsBody* body)
         return SG_NAN;
 
     float rads;
-    if(sgmPhysicsBodyGetAngle != NULL)
-        sgmPhysicsBodyGetAngle(body->handle, &rads);
+    if(psgmPhysicsBodyGetAngle != NULL)
+        psgmPhysicsBodyGetAngle(body->handle, &rads);
     return rads;
 }
 void SG_EXPORT sgPhysicsBodySetAngleDegs(SGPhysicsBody* body, float degs)
@@ -167,8 +167,8 @@ void SG_EXPORT sgPhysicsBodySetVel(SGPhysicsBody* body, float x, float y)
     if(body == NULL)
         return;
 
-    if(sgmPhysicsBodySetVelocity != NULL)
-        sgmPhysicsBodySetVelocity(body->handle, x, y);
+    if(psgmPhysicsBodySetVelocity != NULL)
+        psgmPhysicsBodySetVelocity(body->handle, x, y);
 }
 void SG_EXPORT sgPhysicsBodyGetVel(SGPhysicsBody* body, float* x, float* y)
 {
@@ -183,8 +183,8 @@ void SG_EXPORT sgPhysicsBodyGetVel(SGPhysicsBody* body, float* x, float* y)
     else if(y == NULL)
         y = &t;
 
-    if(sgmPhysicsBodyGetVelocity != NULL)
-        sgmPhysicsBodyGetVelocity(body->handle, x, y);
+    if(psgmPhysicsBodyGetVelocity != NULL)
+        psgmPhysicsBodyGetVelocity(body->handle, x, y);
 }
 
 void SG_EXPORT sgPhysicsBodySetVelX(SGPhysicsBody* body, float x)
@@ -227,8 +227,8 @@ void SG_EXPORT sgPhysicsBodySetAngVelRads(SGPhysicsBody* body, float rads)
     if(body == NULL)
         return;
 
-    if(sgmPhysicsBodySetAngularVelocity != NULL)
-        sgmPhysicsBodySetAngularVelocity(body->handle, rads);
+    if(psgmPhysicsBodySetAngularVelocity != NULL)
+        psgmPhysicsBodySetAngularVelocity(body->handle, rads);
 }
 float SG_EXPORT sgPhysicsBodyGetAngVelRads(SGPhysicsBody* body)
 {
@@ -236,8 +236,8 @@ float SG_EXPORT sgPhysicsBodyGetAngVelRads(SGPhysicsBody* body)
         return SG_NAN;
 
     float rads;
-    if(sgmPhysicsBodyGetAngularVelocity != NULL)
-        sgmPhysicsBodyGetAngularVelocity(body->handle, &rads);
+    if(psgmPhysicsBodyGetAngularVelocity != NULL)
+        psgmPhysicsBodyGetAngularVelocity(body->handle, &rads);
     return rads;
 }
 void SG_EXPORT sgPhysicsBodySetAngVelDegs(SGPhysicsBody* body, float degs)
@@ -254,8 +254,8 @@ void SG_EXPORT sgPhysicsBodySetMass(SGPhysicsBody* body, float mass)
     if(body == NULL)
         return;
 
-    if(sgmPhysicsBodySetMass != NULL)
-        sgmPhysicsBodySetMass(body->handle, mass);
+    if(psgmPhysicsBodySetMass != NULL)
+        psgmPhysicsBodySetMass(body->handle, mass);
 }
 float SG_EXPORT sgPhysicsBodyGetMass(SGPhysicsBody* body)
 {
@@ -263,8 +263,8 @@ float SG_EXPORT sgPhysicsBodyGetMass(SGPhysicsBody* body)
         return SG_NAN;
 
     float mass;
-    if(sgmPhysicsBodyGetMass != NULL)
-        sgmPhysicsBodyGetMass(body->handle, &mass);
+    if(psgmPhysicsBodyGetMass != NULL)
+        psgmPhysicsBodyGetMass(body->handle, &mass);
     return mass;
 }
 
@@ -273,8 +273,8 @@ void SG_EXPORT sgPhysicsBodySetMoment(SGPhysicsBody* body, float moment)
     if(body == NULL)
         return;
 
-    if(sgmPhysicsBodySetMoment != NULL)
-        sgmPhysicsBodySetMoment(body->handle, moment);
+    if(psgmPhysicsBodySetMoment != NULL)
+        psgmPhysicsBodySetMoment(body->handle, moment);
 }
 float SG_EXPORT sgPhysicsBodyGetMoment(SGPhysicsBody* body)
 {
@@ -282,8 +282,8 @@ float SG_EXPORT sgPhysicsBodyGetMoment(SGPhysicsBody* body)
         return SG_NAN;
 
     float moment;
-    if(sgmPhysicsBodyGetMoment != NULL)
-        sgmPhysicsBodyGetMoment(body->handle, &moment);
+    if(psgmPhysicsBodyGetMoment != NULL)
+        psgmPhysicsBodyGetMoment(body->handle, &moment);
     return moment;
 }
 
