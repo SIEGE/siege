@@ -135,6 +135,18 @@ void SG_EXPORT sgPhysicsShapeDestroy(SGPhysicsShape* shape)
     free(shape);
 }
 
+void SG_EXPORT sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group)
+{
+	if(psgmPhysicsShapeSetGroup)
+		psgmPhysicsShapeSetGroup(shape->handle, group);
+}
+SGuint SG_EXPORT sgPhysicsShapeGetGroup(SGPhysicsShape* shape)
+{
+	SGuint group = 0;
+	if(psgmPhysicsShapeGetGroup)
+		psgmPhysicsShapeGetGroup(shape->handle, &group);
+	return group;
+}
 void SG_EXPORT sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction)
 {
     if(psgmPhysicsShapeSetFriction != NULL)

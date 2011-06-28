@@ -28,8 +28,12 @@ extern "C"
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceCreate)(void** space);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceDestroy)(void* space);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceStep)(void* space, float time);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceSetIterations)(void* space, SGuint iterations, SGuint eiterations);
+    //SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceGetIterations)(void* space, SGuint* iterations, SGuint* eiterations);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceSetGravity)(void* space, float x, float y);
     //SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceGetGravity)(void* space, float* x, float* y);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceSetDamping)(void* space, float damping);
+    //SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceGetDamping)(void* space, float* damping);
 
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddShape)(void* space, void* shape);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveShape)(void* space, void* shape);

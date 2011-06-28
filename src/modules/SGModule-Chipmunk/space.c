@@ -51,16 +51,37 @@ SGuint SG_EXPORT sgmPhysicsSpaceStep(void* space, float time)
     return SG_OK;
 }
 
+SGenum SG_EXPORT sgmPhysicsSpaceSetIterations(void* space, SGuint iterations, SGuint eiterations)
+{
+	if(!space)
+		return SG_OK; // SG_INVALID_VALUE
+	cpSpace* cspace = space;
+	cspace->iterations = iterations;
+	cspace->elasticIterations = eiterations;
+	return SG_OK;
+}
+//SGenum SG_EXPORT sgmPhysicsSpaceGetIterations(void* space, SGuint* iterations, SGuint* eiterations);
+
 SGuint SG_EXPORT sgmPhysicsSpaceSetGravity(void* space, float x, float y)
 {
-    if(space == NULL)
+    if(!space)
         return SG_OK; // SG_INVALID_VALUE
-    cpSpace* cspace = (cpSpace*)space;
+    cpSpace* cspace = space;
     cspace->gravity.x = x;
     cspace->gravity.y = y;
     return SG_OK;
 }
 //SGuint SG_EXPORT sgmPhysicsSpaceGetGravity(void* space, float* x, float* y);
+
+SGenum SG_EXPORT sgmPhysicsSpaceSetDamping(void* space, float damping)
+{
+	if(!space)
+		return SG_OK; // SG_INVALID_VALUE
+	cpSpace* cspace = space;
+	cspace->damping = damping;
+	return SG_OK;
+}
+//SGenum SG_EXPORT sgmPhysicsSpaceGetDamping(void* space, float* damping);
 
 SGuint SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape)
 {

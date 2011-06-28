@@ -67,6 +67,22 @@ SGuint SG_EXPORT sgmPhysicsShapeDestroy(void* shape)
     return SG_OK;
 }
 
+SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeSetGroup)(void* shape, SGuint group)
+{
+	if(!shape)
+		return SG_OK; // SG_INVALID_VALUE
+	cpShape* cshape = shape;
+	cshape->group = group;
+	return SG_OK;
+}
+SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeGetGroup)(void* shape, SGuint* group)
+{
+	if(!shape)
+		return SG_OK; // SG_INVALID_VALUE
+	cpShape* cshape = shape;
+	*group = cshape->group;
+	return SG_OK;
+}
 SGenum SG_EXPORT sgmPhysicsShapeSetFriction(void* shape, float friction)
 {
     if(shape == NULL)

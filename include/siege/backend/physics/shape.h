@@ -28,6 +28,8 @@ extern "C"
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsShapeCreate)(void** shape, void* body, float xoffset, float yoffset, SGenum type, SGuint numverts, float* vertices);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsShapeDestroy)(void* shape);
 
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeSetGroup)(void* shape, SGuint group);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeGetGroup)(void* shape, SGuint* group);
     SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeSetFriction)(void* shape, float friction);
     SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeGetFriction)(void* shape, float* friction);
     SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeSetRestitution)(void* shape, float restitution);

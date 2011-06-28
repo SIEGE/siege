@@ -42,7 +42,7 @@ SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceCreate(void)
 }
 void SG_EXPORT sgPhysicsSpaceDestroy(SGPhysicsSpace* space)
 {
-    if(space == NULL)
+    if(!space)
         return;
 
     if(psgmPhysicsSpaceDestroy != NULL)
@@ -59,6 +59,15 @@ void SG_EXPORT sgPhysicsSpaceStep(SGPhysicsSpace* space, float time)
     if(psgmPhysicsSpaceStep != NULL)
         psgmPhysicsSpaceStep(space->handle, time);
 }
+
+void SG_EXPORT sgPhysicsSpaceSetIterations(SGPhysicsSpace* space, SGuint iterations, SGuint eiterations)
+{
+	if(!space)
+		return;
+
+	if(psgmPhysicsSpaceSetIterations)
+		psgmPhysicsSpaceSetIterations(space->handle, iterations, eiterations);
+}
 void SG_EXPORT sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y)
 {
     if(space == NULL)
@@ -68,3 +77,12 @@ void SG_EXPORT sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y)
         psgmPhysicsSpaceSetGravity(space->handle, x, y);
 }
 //void SG_EXPORT sgPhysicsSpaceGetGravity(SGPhysicsSpace* space, float* x, float* y);
+void SG_EXPORT sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping)
+{
+	if(!space)
+		return;
+
+	if(psgmPhysicsSpaceSetDamping)
+		psgmPhysicsSpaceSetDamping(space->handle, damping);
+}
+//float SG_EXPORT sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);

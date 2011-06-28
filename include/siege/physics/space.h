@@ -38,8 +38,12 @@ SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceCreate(void);
 void SG_EXPORT sgPhysicsSpaceDestroy(SGPhysicsSpace* space);
 
 void SG_EXPORT sgPhysicsSpaceStep(SGPhysicsSpace* space, float time);
+
+void SG_EXPORT sgPhysicsSpaceSetIterations(SGPhysicsSpace* space, SGuint iterations, SGuint eiterations);
 void SG_EXPORT sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y);
 //void SG_EXPORT sgPhysicsSpaceGetGravity(SGPhysicsSpace* space, float* x, float* y);
+void SG_EXPORT sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping);
+//float SG_EXPORT sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
 
 #ifdef __cplusplus
 }

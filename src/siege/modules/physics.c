@@ -57,6 +57,8 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsShapeCreate);
     _SG_BIND(sgmPhysicsShapeDestroy);
 
+    _SG_BIND(sgmPhysicsShapeSetGroup);
+    _SG_BIND(sgmPhysicsShapeGetGroup);
     _SG_BIND(sgmPhysicsShapeSetFriction);
     _SG_BIND(sgmPhysicsShapeGetFriction);
     _SG_BIND(sgmPhysicsShapeSetRestitution);
@@ -67,7 +69,11 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsSpaceCreate);
     _SG_BIND(sgmPhysicsSpaceDestroy);
     _SG_BIND(sgmPhysicsSpaceStep);
+    _SG_BIND(sgmPhysicsSpaceSetIterations);
     _SG_BIND(sgmPhysicsSpaceSetGravity);
+    //_SG_BIND(sgmPhysicsSpaceGetGravity);
+    _SG_BIND(sgmPhysicsSpaceSetDamping);
+    //_SG_BIND(sgmPhysicsSpaceGetDamping);
 
     _SG_BIND(sgmPhysicsSpaceAddShape);
     _SG_BIND(sgmPhysicsSpaceRemoveShape);
