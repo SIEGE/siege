@@ -166,9 +166,10 @@ SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
     {
         switch(event.type)
         {
-            case SDL_ACTIVEEVENT:
-                SDL_PollEvent(&event); // next one is SDL_KEYUP
-                break;
+			// commented out to fix a bug with the mouse!
+            /*case SDL_ACTIVEEVENT:
+                //SDL_PollEvent(&event); // next one is SDL_KEYUP
+                break;*/
             case SDL_VIDEORESIZE:
                 sgmCoreWindowSetSize(window, event.resize.w, event.resize.h);
                 break;

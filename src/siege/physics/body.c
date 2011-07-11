@@ -287,3 +287,21 @@ float SG_EXPORT sgPhysicsBodyGetMoment(SGPhysicsBody* body)
     return moment;
 }
 
+void SG_EXPORT sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry)
+{
+	if(!body)
+		return;
+
+	if(psgmPhysicsBodyApplyImpulse)
+		psgmPhysicsBodyApplyImpulse(body->handle, jx, jy, rx, ry);
+}
+void SG_EXPORT sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry)
+{
+{
+	if(!body)
+		return;
+
+	if(psgmPhysicsBodyApplyForce)
+		psgmPhysicsBodyApplyForce(body->handle, jx, jy, rx, ry);
+}
+}

@@ -17,6 +17,9 @@
 #include <siege/core/entity.h>
 #include <siege/core/window.h>
 #include <siege/graphics/viewport.h>
+#include <siege/input/joystick.h>
+#include <siege/input/keyboard.h>
+#include <siege/input/mouse.h>
 #include <siege/modules/graphics.h>
 #include <siege/modules/window.h>
 #include <siege/util/string.h>
@@ -175,4 +178,6 @@ void SG_EXPORT sgWindowSwapBuffers(void)
 {
 	if(psgmCoreWindowSwapBuffers != NULL)
 		psgmCoreWindowSwapBuffers(_sg_winHandle);
+	_sgMouseUpdate();
+	_sgKeyboardUpdate();
 }

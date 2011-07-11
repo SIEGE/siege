@@ -46,6 +46,9 @@ extern "C"
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetTorque)(void* body, float* torque);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetData)(void* body, void* data);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetData)(void* body, void** data);
+
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodyApplyImpulse)(void* body, float jx, float jy, float rx, float ry);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodyApplyForce)(void* body, float jx, float jy, float rx, float ry);
 #ifdef __cplusplus
 }
 #endif

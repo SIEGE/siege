@@ -44,6 +44,9 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsBodySetData);
     _SG_BIND(sgmPhysicsBodyGetData);
 
+    _SG_BIND(sgmPhysicsBodyApplyImpulse);
+    _SG_BIND(sgmPhysicsBodyApplyForce);
+
     _SG_BIND(sgmPhysicsCollisionIgnore);
     _SG_BIND(sgmPhysicsCollisionGetNumContacts);
     _SG_BIND(sgmPhysicsCollisionGetPoint);
@@ -52,7 +55,28 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsCollisionGetImpulse);
     _SG_BIND(sgmPhysicsCollisionSetCallbacks);
 
-    // constraint
+    _SG_BIND(sgmPhysicsConstraintCreate);
+    _SG_BIND(sgmPhysicsConstraintDestroy);
+
+    _SG_BIND(sgmPhysicsConstraintSetAnchorOne);
+    _SG_BIND(sgmPhysicsConstraintSetAnchorTwo);
+    _SG_BIND(sgmPhysicsConstraintSetMin);
+    _SG_BIND(sgmPhysicsConstraintSetMax);
+    _SG_BIND(sgmPhysicsConstraintSetLength);
+    _SG_BIND(sgmPhysicsConstraintSetAngle);
+    _SG_BIND(sgmPhysicsConstraintSetStiffness);
+    _SG_BIND(sgmPhysicsConstraintSetDamping);
+    _SG_BIND(sgmPhysicsConstraintSetPhase);
+    _SG_BIND(sgmPhysicsConstraintSetRatchet);
+    _SG_BIND(sgmPhysicsConstraintSetRatio);
+    _SG_BIND(sgmPhysicsConstraintSetRate);
+
+    _SG_BIND(sgmPhysicsConstraintSetMaxForce);
+	_SG_BIND(sgmPhysicsConstraintSetBiasCoeficient);
+	_SG_BIND(sgmPhysicsConstraintSetMaxBias);
+
+    _SG_BIND(sgmPhysicsConstraintSetData);
+    _SG_BIND(sgmPhysicsConstraintGetData);
 
     _SG_BIND(sgmPhysicsShapeCreate);
     _SG_BIND(sgmPhysicsShapeDestroy);
@@ -83,6 +107,8 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsSpaceRemoveBody);
     _SG_BIND(sgmPhysicsSpaceAddConstraint);
     _SG_BIND(sgmPhysicsSpaceRemoveConstraint);
+
+    _SG_BIND(sgmPhysicsSpaceGetStaticBody);
 
     _SG_BIND(sgmPhysicsBodyWorldToLocal_TEST);
     _SG_BIND(sgmPhysicsBodyLocalToWorld_TEST);

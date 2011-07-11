@@ -174,3 +174,18 @@ SGuint SG_EXPORT sgmPhysicsBodyGetData(void* body, void** data)
     *data = ((DataExt*)cbody->data)->data;
     return SG_OK;
 }
+
+SGenum SG_EXPORT sgmPhysicsBodyApplyImpulse(void* body, float jx, float jy, float rx, float ry)
+{
+    if(body == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+	cpBodyApplyImpulse(body, cpv(jx, jy), cpv(rx, ry));
+	return SG_OK;
+}
+SGenum SG_EXPORT sgmPhysicsBodyApplyForce(void* body, float jx, float jy, float rx, float ry)
+{
+    if(body == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    cpBodyApplyForce(body, cpv(jx, jy), cpv(rx, ry));
+    return SG_OK;
+}

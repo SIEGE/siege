@@ -162,8 +162,8 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
 					break;
 
 				case SG_EVF_MOUSEMOVE:
-                    val[0] = va_arg(args, SGuint);
-                    val[1] = va_arg(args, SGuint);
+                    val[0] = va_arg(args, SGint);
+                    val[1] = va_arg(args, SGint);
 					if(entity->evMouseMove != NULL)
 						entity->evMouseMove(entity, val[0], val[1]);
 					break;

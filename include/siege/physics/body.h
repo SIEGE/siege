@@ -74,6 +74,9 @@ float SG_EXPORT sgPhysicsBodyGetMass(SGPhysicsBody* body);
 void SG_EXPORT sgPhysicsBodySetMoment(SGPhysicsBody* body, float moment);
 float SG_EXPORT sgPhysicsBodyGetMoment(SGPhysicsBody* body);
 
+void SG_EXPORT sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
+void SG_EXPORT sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -14,6 +14,7 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/physics/space.h>
+#include <siege/physics/body.h>
 #include <siege/modules/physics.h>
 
 #include <stdlib.h>
@@ -33,8 +34,23 @@ SGbool SG_EXPORT _sgPhysicsSpaceDeinit(void)
 SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceCreate(void)
 {
     SGPhysicsSpace* space = malloc(sizeof(SGPhysicsSpace));
+    if(!space)
+		return NULL;
+	space->handle = NULL;
+
     if(psgmPhysicsSpaceCreate != NULL)
         psgmPhysicsSpaceCreate(&space->handle);
+
+	space->sbody = malloc(sizeof(SGPhysicsBody));
+	space->sbody->handle = NULL;
+	space->sbody->space = space;
+	space->sbody->data = NULL;
+	space->sbody->type = SG_PHYSICS_BODY_STATIC;
+	space->sbody->entity = NULL;
+	if(psgmPhysicsSpaceGetStaticBody)
+		psgmPhysicsSpaceGetStaticBody(space->handle, &space->sbody->handle);
+	if(psgmPhysicsBodySetData)
+		psgmPhysicsBodySetData(space->sbody->handle, space->sbody);
 
     sgPhysicsSpaceSetGravity(space, 0.0, 0.0);
 
@@ -44,6 +60,8 @@ void SG_EXPORT sgPhysicsSpaceDestroy(SGPhysicsSpace* space)
 {
     if(!space)
         return;
+
+	free(space->sbody);
 
     if(psgmPhysicsSpaceDestroy != NULL)
         psgmPhysicsSpaceDestroy(space->handle);
@@ -86,3 +104,8 @@ void SG_EXPORT sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping)
 		psgmPhysicsSpaceSetDamping(space->handle, damping);
 }
 //float SG_EXPORT sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
+
+SGPhysicsBody* sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space)
+{
+	return space->sbody;
+}

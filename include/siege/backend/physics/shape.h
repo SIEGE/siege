@@ -25,7 +25,7 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsShapeCreate)(void** shape, void* body, float xoffset, float yoffset, SGenum type, SGuint numverts, float* vertices);
+    SGuint SG_EXPORT SG_FPTR(sgmPhysicsShapeCreate)(void** shape, void* body, float xoffset, float yoffset, SGenum type, size_t numverts, float* verts);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsShapeDestroy)(void* shape);
 
     SGenum SG_EXPORT SG_FPTR(sgmPhysicsShapeSetGroup)(void* shape, SGuint group);
