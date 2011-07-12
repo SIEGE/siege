@@ -108,6 +108,7 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsSpaceAddConstraint);
     _SG_BIND(sgmPhysicsSpaceRemoveConstraint);
 
+    _SG_BIND(sgmPhysicsSpaceRehash);
     _SG_BIND(sgmPhysicsSpaceGetStaticBody);
 
     _SG_BIND(sgmPhysicsBodyWorldToLocal_TEST);

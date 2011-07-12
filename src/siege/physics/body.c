@@ -56,6 +56,8 @@ void SG_EXPORT sgPhysicsBodyDestroy(SGPhysicsBody* body)
             psgmPhysicsSpaceRemoveBody(body->space->handle, body->handle);
     }*/
 
+    if(psgmPhysicsSpaceRemoveBody)
+        psgmPhysicsSpaceRemoveBody(body->space->handle, body->handle);
     if(psgmPhysicsBodyDestroy != NULL)
         psgmPhysicsBodyDestroy(body->handle);
 }

@@ -69,19 +69,19 @@ SGenum SG_EXPORT sgmPhysicsConstraintSetMaxForce(void* constr, float max)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
-    cpConstraint* cconstr = constr;
+	cpConstraint* cconstr = constr;
 
 	cconstr->maxForce = max;
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsConstraintSetBiasCoeficient(void* constr, float bias)
+SGenum SG_EXPORT sgmPhysicsConstraintSetBiasCoeficient(void* constr, float coef)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
     cpConstraint* cconstr = constr;
 
-    cconstr->biasCoef = bias;
+    cconstr->biasCoef = coef;
 
     return SG_OK;
 }

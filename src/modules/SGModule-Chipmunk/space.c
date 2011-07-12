@@ -149,6 +149,14 @@ SGuint SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint)
     return SG_OK;
 }
 
+SGenum SG_EXPORT sgmPhysicsSpaceRehash(void* space)
+{
+	if(!space)
+		return SG_OK; // SG_INVALID_VALUE
+	cpSpaceRehashStatic(space);
+	return SG_OK;
+}
+
 SGenum SG_EXPORT sgmPhysicsSpaceGetStaticBody(void* space, void** body)
 {
 	if(!space || !body)

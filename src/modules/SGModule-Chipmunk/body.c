@@ -31,7 +31,7 @@ SGuint SG_EXPORT sgmPhysicsBodyDestroy(void* body)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpBody* cbody = (cpBody*)body;
+    cpBody* cbody = body;
     free(cbody->data);
     cpBodyFree(body);
     return SG_OK;

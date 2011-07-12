@@ -62,6 +62,10 @@ void SG_EXPORT sgPhysicsConstraintSetRatchet(SGPhysicsConstraint* constr, float 
 void SG_EXPORT sgPhysicsConstraintSetRatio(SGPhysicsConstraint* constr, float ratio);
 void SG_EXPORT sgPhysicsConstraintSetRate(SGPhysicsConstraint* constr, float rate);
 
+void SG_EXPORT sgPhysicsConstraintSetMaxForce(SGPhysicsConstraint* constr, float max);
+void SG_EXPORT sgPhysicsConstraintSetBiasCoef(SGPhysicsConstraint* constr, float coef);
+void SG_EXPORT sgPhysicsConstraintSetMaxBias(SGPhysicsConstraint* constr, float max);
+
 void SG_EXPORT sgPhysicsConstraintSetData(SGPhysicsConstraint* constr, void* data);
 void* SG_EXPORT sgPhysicsConstraintGetData(SGPhysicsConstraint* constr);
 

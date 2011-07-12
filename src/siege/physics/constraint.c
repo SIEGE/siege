@@ -175,6 +175,22 @@ void SG_EXPORT sgPhysicsConstraintSetRate(SGPhysicsConstraint* constr, float rat
         psgmPhysicsConstraintSetRate(constr->handle, rate);
 }
 
+void SG_EXPORT sgPhysicsConstraintSetMaxForce(SGPhysicsConstraint* constr, float max)
+{
+	if(psgmPhysicsConstraintSetMaxForce)
+		psgmPhysicsConstraintSetMaxForce(constr->handle, max);
+}
+void SG_EXPORT sgPhysicsConstraintSetBiasCoef(SGPhysicsConstraint* constr, float coef)
+{
+	if(psgmPhysicsConstraintSetBiasCoeficient)
+		psgmPhysicsConstraintSetBiasCoeficient(constr->handle, coef);
+}
+void SG_EXPORT sgPhysicsConstraintSetMaxBias(SGPhysicsConstraint* constr, float max)
+{
+	if(psgmPhysicsConstraintSetMaxBias)
+		psgmPhysicsConstraintSetMaxBias(constr->handle, max);
+}
+
 void SG_EXPORT sgPhysicsConstraintSetData(SGPhysicsConstraint* constr, void* data)
 {
     constr->data = data;

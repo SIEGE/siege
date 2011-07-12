@@ -105,7 +105,12 @@ void SG_EXPORT sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping)
 }
 //float SG_EXPORT sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
 
-SGPhysicsBody* sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space)
+void SG_EXPORT sgPhysicsSpaceRehash(SGPhysicsSpace* space)
+{
+	if(psgmPhysicsSpaceRehash)
+		psgmPhysicsSpaceRehash(space->handle);
+}
+SGPhysicsBody* SG_EXPORT sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space)
 {
 	return space->sbody;
 }

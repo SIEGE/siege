@@ -48,6 +48,7 @@ void SG_EXPORT sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y)
 void SG_EXPORT sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping);
 //float SG_EXPORT sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
 
+void SG_EXPORT sgPhysicsSpaceRehash(SGPhysicsSpace* space);
 struct SGPhysicsBody* SG_EXPORT sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space);
 
 #ifdef __cplusplus

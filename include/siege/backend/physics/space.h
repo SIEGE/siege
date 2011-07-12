@@ -44,6 +44,7 @@ extern "C"
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddConstraint)(void* space, void* constraint);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveConstraint)(void* space, void* constraint);
 
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceRehash)(void* space);
     SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceGetStaticBody)(void* space, void** body);
 #ifdef __cplusplus
 }

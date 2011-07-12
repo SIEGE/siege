@@ -35,7 +35,7 @@ typedef struct SGTrail
 	SGuint maxpoints;	/// < The maximum number of points in the trail
 } SGTrail;
 
-void SG_EXPORT _sgTrailPopPoint(SGTrail* trail);
+void SG_EXPORT sgTrailPopPoint(SGTrail* trail);
 
 /// @{
 /**
