@@ -252,10 +252,10 @@ int main(void)
 	sgInit(WIDTH, HEIGHT, 32, 0);
 	sgWindowSetTitle("SIEGE A-Star Demo - Hit 'F1' for instructions");
 
-	SGFont* head = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 16, 127);
-	SGFont* text = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 10, 127);
+	SGFont* head = sgFontCreate("data/fonts/DejaVuSans.ttf", 16, 127);
+	SGFont* text = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 127);
 
-	score = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", cellw / 4.0, 127);
+	score = sgFontCreate("data/fonts/DejaVuSans.ttf", cellw / 4.0, 127);
 
 	SGNavGridData* data;
 	SGList* path = NULL;

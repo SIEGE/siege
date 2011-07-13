@@ -20,7 +20,7 @@ int main(void)
 
 	SGuint i;
 	for(i = 0; i < numsizes; i++)
-		sizes[i] = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 7 + i, 127);
+		sizes[i] = sgFontCreate("data/fonts/DejaVuSans.ttf", 7 + i, 127);
 
 	font = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 127);
 
