@@ -2,6 +2,8 @@
 .*.swp
 .*.kate-swp
 *~
+*.o
+*.a
 /build
 /doc
 siege.kdev4
