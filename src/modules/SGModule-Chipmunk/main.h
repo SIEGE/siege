@@ -17,7 +17,10 @@
 
 #include <siege/backend.h>
 
+// kludge
+#define cpArbiteGetDepth cpArbiterGetDepth
 #include <chipmunk/chipmunk.h>
+#undef cpArbiteGetDepth
 
 typedef struct DataExt
 {

@@ -69,8 +69,7 @@ SGenum SG_EXPORT sgmPhysicsCollisionIgnore(void* handle)
 
 SGenum SG_EXPORT sgmPhysicsCollisionGetNumContacts(void* handle, size_t* numcontacts)
 {
-    cpArbiter* chandle = handle;
-    *numcontacts = chandle->numContacts;
+    *numcontacts = cpArbiterGetCount(handle);
     return SG_OK;
 }
 SGenum SG_EXPORT sgmPhysicsCollisionGetPoint(void* handle, size_t index, float* x, float* y)
@@ -89,8 +88,7 @@ SGenum SG_EXPORT sgmPhysicsCollisionGetNormal(void* handle, size_t index, float*
 }
 SGenum SG_EXPORT sgmPhysicsCollisionGetDistance(void* handle, size_t index, float* distance)
 {
-    cpArbiter* chandle = handle;
-    *distance = chandle->contacts[index].dist;
+    *distance = cpArbiterGetDepth(handle, index);
     return SG_OK;
 }
 SGenum SG_EXPORT sgmPhysicsCollisionGetImpulse(void* handle, float* x, float* y, SGbool friction)
