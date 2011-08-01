@@ -12,6 +12,12 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
+
+/* TODO:
+ * - add deflectors and attractors to interract with particles in a generator
+ *
+ * */
+
 #ifndef __SIEGE_GRAPHICS_PARTICLES_H__
 #define __SIEGE_GRAPHICS_PARTICLES_H__
 
@@ -26,14 +32,14 @@ extern "C"
 typedef struct SGParticle
 {
 	float x, y, angle, speed, age;
-} SGParticle ;
+} SGParticle;
 
 typedef struct SGEmitter
 {
 	float x, y, angle, delta_angle, initial_speed, duration, rate, friction;
 	SGTexture* texture;
 	SGParticle* particles[];
-} SGEmitter ;
+} SGEmitter;
 
 SGEmitter* sgEmitterCreate(
 		float x,              /* initial x of particles */
@@ -46,10 +52,15 @@ SGEmitter* sgEmitterCreate(
 		float friction,       /* environmental friction to particles */
 		SGTexture* texture);  /* texture used by particles */
 
-void sgEmitterUpdate(SGEmitter* generator, float time);
+void sgEmitterUpdate(SGEmitter* emitter, float time);
 
 SGParticle* _sgParticleCreate(float x, float y, float angle, float speed);
+
 void _sgParticleUpdate(SGParticle* particle, float time);
+
+void sgEmitterDraw(SGEmitter* emitter);
+
+void _sgParticleDraw(SGParticle* particle);
 
 #ifdef __cplusplus
 }
