@@ -48,6 +48,7 @@ SGEmitter* sgEmitterCreate(
 		int nb_particles,     /* size of particles pool */
 		SGTexture* texture)   /* texture used by particles */
 {
+	int i;
 	SGEmitter* emitter = (SGEmitter*) malloc(sizeof(SGEmitter));
 	emitter->x = x;
 	emitter->y = y;
@@ -61,7 +62,7 @@ SGEmitter* sgEmitterCreate(
 	emitter->texture = texture;
 	emitter->time_accumulator = 0.0;
 
-	for (int i=0; i<emitter->nb_particles; i++)
+	for (i=0; i<emitter->nb_particles; i++)
 		emitter->particles[i].age = emitter->duration;
 
 	return emitter;
@@ -78,12 +79,13 @@ void _sgParticleUpdate(SGParticle* particle, float time, float friction)
 
 void sgEmitterUpdate(SGEmitter* emitter, float time)
 {
+	int i;
 	emitter->time_accumulator += time;
-	for (int i=0; i<emitter->nb_particles; i++)
+	for (i=0; i<emitter->nb_particles; i++)
 	{
 		if (emitter->particles[i].age < emitter->duration)
 		{
-			_sgParticleUpdate(emitter->particles[i], time, emitter->friction);
+			_sgParticleUpdate(&(emitter->particles[i]), time, emitter->friction);
 		}
 	}
 	/* TODO add new particles depending on rate if array not full*/

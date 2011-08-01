@@ -37,6 +37,7 @@ typedef struct SGParticle
 typedef struct SGEmitter
 {
 	float x, y, angle, delta_angle, initial_speed, duration, rate, friction, time_accumulator;
+	int nb_particles;
 	SGTexture* texture;
 	SGParticle* particles;
 } SGEmitter;
@@ -57,7 +58,7 @@ void sgEmitterUpdate(SGEmitter* emitter, float time);
 
 SGParticle* _sgParticleCreate(float x, float y, float angle, float speed);
 
-void _sgParticleUpdate(SGParticle* particle, float time);
+void _sgParticleUpdate(SGParticle* particle, float time, float friction);
 
 void sgEmitterDraw(SGEmitter* emitter);
 
