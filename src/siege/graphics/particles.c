@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <malloc.h>
+#include <math.h>
 
 /*
  * TODO:
@@ -31,6 +32,7 @@ SGParticle* _sgParticleCreate(float x, float y, float angle, float speed)
 	particle->y = y;
 	particle->angle = angle;
 	particle->speed = speed;
+	particle->age = 0.0;
 	return particle;
 }
 
@@ -59,5 +61,13 @@ SGEmitter* sgEmitterCreate(
 	emitter->texture = texture;
 
 	return emitter;
+}
+
+void _sgParticleUpdate(SGParticle* particle, float time, float friction)
+{
+	particle->speed -= friction * time;
+	particle->x += cos(particle->angle) * particle->speed;
+	particle->y += sin(particle->angle) * particle->speed;
+	particle->age += time;
 }
 
