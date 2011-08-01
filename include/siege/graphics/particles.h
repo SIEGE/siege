@@ -28,14 +28,14 @@ typedef struct SGParticle
 	float x, y, angle, speed, age;
 } SGParticle ;
 
-typedef struct SGParticleGenerator
+typedef struct SGEmitter
 {
 	float x, y, angle, delta_angle, initial_speed, duration, rate, friction;
 	SGTexture* texture;
 	SGParticle* particles[];
-} SGParticleGenerator ;
+} SGEmitter ;
 
-SGParticleGenerator* SGParticleGeneratorCreate(
+SGEmitter* sgEmitterCreate(
 		float x,              /* initial x of particles */
 		float y,              /* initial y of particles */
 		float angle,          /* direction of particles */
@@ -46,10 +46,10 @@ SGParticleGenerator* SGParticleGeneratorCreate(
 		float friction,       /* environmental friction to particles */
 		SGTexture* texture);  /* texture used by particles */
 
-SGParticle* SGParticleCreate(float x, float y, float angle, float speed);
+void sgEmitterUpdate(SGEmitter* generator, float time);
 
-void SGParticleUpdate(SGParticle* particle, float time);
-void SGParticleGeneratorUpdate(SGParticleGenerator* generator, float time);
+SGParticle* _sgParticleCreate(float x, float y, float angle, float speed);
+void _sgParticleUpdate(SGParticle* particle, float time);
 
 #ifdef __cplusplus
 }
