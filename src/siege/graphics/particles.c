@@ -34,4 +34,30 @@ SGParticle* _sgParticleCreate(float x, float y, float angle, float speed)
 	return particle;
 }
 
+SGEmitter* sgEmitterCreate(
+		float x,              /* initial x of particles */
+		float y,              /* initial y of particles */
+		float angle,          /* direction of particles */
+		float delta_angle,    /* variation in direction */
+		float initial_speed,  /* initial speed of particles */
+		float duration,       /* lifetime of particles */
+		float rate,           /* production rate of particles */
+		float friction,       /* environmental friction to particles */
+		int nb_particles,     /* size of particles pool */
+		SGTexture* texture)   /* texture used by particles */
+{
+	SGEmitter* emitter = (SGEmitter*) malloc(sizeof(SGEmitter));
+	emitter->x = x;
+	emitter->y = y;
+	emitter->angle = angle;
+	emitter->delta_angle = delta_angle;
+	emitter->initial_speed = initial_speed;
+	emitter->duration = duration;
+	emitter->rate = rate;
+	emitter->friction = friction;
+	emitter->particles = (SGParticle*) malloc(nb_particles * sizeof(SGParticle));
+	emitter->texture = texture;
+
+	return emitter;
+}
 
