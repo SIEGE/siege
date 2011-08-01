@@ -50,6 +50,7 @@ SGEmitter* sgEmitterCreate(
 		float duration,       /* lifetime of particles */
 		float rate,           /* production rate of particles */
 		float friction,       /* environmental friction to particles */
+		int nb_particles,     /* size of particles pool */
 		SGTexture* texture);  /* texture used by particles */
 
 void sgEmitterUpdate(SGEmitter* emitter, float time);
