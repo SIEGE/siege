@@ -23,18 +23,33 @@ extern "C"
 {
 #endif // __cplusplus
 
-typedef SGParticle struct
+typedef struct SGParticle
 {
 	float x, y, angle, speed, age;
-};
+} SGParticle ;
 
-typedef SGParticleGenerator struct
+typedef struct SGParticleGenerator
 {
-	float x, y, angle, delta_angle, initial_speed, duration;
+	float x, y, angle, delta_angle, initial_speed, duration, rate, friction;
 	SGTexture* texture;
-	SGParticle[] particles;
-};
+	SGParticle* particles[];
+} SGParticleGenerator ;
 
+SGParticleGenerator* SGParticleGeneratorCreate(
+		float x,              /* initial x of particles */
+		float y,              /* initial y of particles */
+		float angle,          /* direction of particles */
+		float delta_angle,    /* variation in direction */
+		float initial_speed,  /* initial speed of particles */
+		float duration,       /* lifetime of particles */
+		float rate,           /* production rate of particles */
+		float friction,       /* environmental friction to particles */
+		SGTexture* texture);  /* texture used by particles */
+
+SGParticle* SGParticleCreate(float x, float y, float angle, float speed);
+
+void SGParticleUpdate(SGParticle* particle, float time);
+void SGParticleGeneratorUpdate(SGParticleGenerator* generator, float time);
 
 #ifdef __cplusplus
 }
