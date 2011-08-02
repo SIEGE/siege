@@ -19,20 +19,26 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <math.h>
+#include <stdbool.h>
 
 /*
  * TODO:
  * implement everything in particles.h!
  */
 
-SGParticle* _sgParticleCreate(float x, float y, float angle, float speed)
+void _sgParticleInit(SGParticle* particle, float x, float y, float angle, float speed)
 {
-	SGParticle* particle = (SGParticle*) malloc(sizeof(SGParticle));
 	particle->x = x;
 	particle->y = y;
 	particle->angle = angle;
 	particle->speed = speed;
 	particle->age = 0.0;
+}
+
+SGParticle* _sgParticleCreate(float x, float y, float angle, float speed)
+{
+	SGParticle* particle = (SGParticle*) malloc(sizeof(SGParticle));
+	_sgParticleInit(particle, x, y, angle, speed);
 	return particle;
 }
 
@@ -80,6 +86,8 @@ void _sgParticleUpdate(SGParticle* particle, float time, float friction)
 void sgEmitterUpdate(SGEmitter* emitter, float time)
 {
 	int i;
+	bool condition;
+	float frac = 1.0/emitter->rate;
 	emitter->time_accumulator += time;
 	for (i=0; i<emitter->nb_particles; i++)
 	{
@@ -90,5 +98,26 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 	}
 	/* TODO add new particles depending on rate if array not full*/
 
+	while (emitter->time_accumulator >= frac)
+	{
+		condition = false;
+		for (i=0; i<emitter->nb_particles; i++)
+		{
+			if (emitter->particles[i].age > emitter->duration)
+			{
+				_sgParticleInit(&(emitter->particles[i]),
+						emitter->x,
+						emitter->y,
+						emitter->angle,
+						emitter->initial_speed);
+				emitter->time_accumulator -= frac;
+				condition = true;
+				break;
+			}
+
+		}
+		if (condition == false)
+			printf( "warning, pool of particules emitter full, either reduce lifetime, or rate, or make pool biigger");
+	}
 }
 
