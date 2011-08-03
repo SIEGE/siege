@@ -24,6 +24,8 @@
 /*
  * TODO:
  * implement everything in particles.h!
+ * add scale in particle drawing
+ * add function pointer methods and registration to allow custom update of particles
  */
 
 void _sgParticleInit(SGParticle* particle, float x, float y, float angle, float speed)
@@ -100,6 +102,7 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 
 	while (emitter->time_accumulator >= frac)
 	{
+		/* use an index to start search from precedent find */
 		condition = false;
 		for (i=0; i<emitter->nb_particles; i++)
 		{
@@ -117,7 +120,20 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 
 		}
 		if (condition == false)
-			printf( "warning, pool of particules emitter full, either reduce lifetime, or rate, or make pool biigger");
+			printf("warning, pool of particules emitter full, either reduce lifetime, or rate, or make pool biigger");
 	}
 }
 
+void sgEmitterDraw(SGEmitter* emitter)
+{
+	int i;
+	for (i=0; i< emitter->nb_particles; i++)
+	{
+		sgDrawColor4f(1.0, 1.0, 1.0, emitter->particles[i].age/emitter->duration);
+		sgTextureDraw2f(
+				emitter->texture,
+				emitter->particles[i].x,
+				emitter->particles[i].y);
+	}
+	//sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
+}
