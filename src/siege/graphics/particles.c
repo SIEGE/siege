@@ -68,10 +68,11 @@ SGEmitter* sgEmitterCreate(
 	emitter->friction = friction;
 	emitter->particles = (SGParticle*) malloc(nb_particles * sizeof(SGParticle));
 	emitter->texture = texture;
+	emitter->nb_particles = nb_particles;
 	emitter->time_accumulator = 0.0;
 
 	for (i=0; i<emitter->nb_particles; i++)
-		emitter->particles[i].age = emitter->duration;
+		emitter->particles[i].age = emitter->duration + 1;
 
 	return emitter;
 }
@@ -104,14 +105,14 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 	{
 		/* use an index to start search from precedent find */
 		condition = false;
-		for (i=0; i<emitter->nb_particles; i++)
+		for (i=0; i < emitter->nb_particles; i++)
 		{
-			if (emitter->particles[i].age > emitter->duration)
+			if (emitter->particles[i].age >= emitter->duration)
 			{
 				_sgParticleInit(&(emitter->particles[i]),
 						emitter->x,
 						emitter->y,
-						emitter->angle,
+						emitter->angle + (random() - 0.5) * emitter->delta_angle,
 						emitter->initial_speed);
 				emitter->time_accumulator -= frac;
 				condition = true;
@@ -120,8 +121,13 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 
 		}
 		if (condition == false)
-			printf("warning, pool of particules emitter full, either reduce lifetime, or rate, or make pool biigger");
+		{
+			printf("warning, pool of particules emitter full, either reduce lifetime,");
+			printf(" or rate, or make pool bigger\n");
+			goto out;
+		}
 	}
+	out: NULL;
 }
 
 void sgEmitterDraw(SGEmitter* emitter)
@@ -129,7 +135,7 @@ void sgEmitterDraw(SGEmitter* emitter)
 	int i;
 	for (i=0; i< emitter->nb_particles; i++)
 	{
-		sgDrawColor4f(1.0, 1.0, 1.0, emitter->particles[i].age/emitter->duration);
+		//sgDrawColor4f(1.0, 1.0, 1.0, 0.2);
 		sgTextureDraw2f(
 				emitter->texture,
 				emitter->particles[i].x,
