@@ -135,11 +135,22 @@ void sgEmitterDraw(SGEmitter* emitter)
 	int i;
 	for (i=0; i< emitter->nb_particles; i++)
 	{
-		//sgDrawColor4f(1.0, 1.0, 1.0, 0.2);
+		//sgDrawBeginT(SG_GRAPHICS_PRIMITIVE_QUADS, emitter->texture);
+		////sgDrawColor4f(1.0, 1.0, 1.0, (1.0));// - emitter->particles[i].age/emitter->duration));
+		//	sgDrawTexCoord2f(0.0, 0.0);
+		//	sgDrawVertex2f(emitter->particles[i].x, emitter->particles[i].y);
+		//	sgDrawTexCoord2f(0.0, 1.0);
+		//	sgDrawVertex2f(emitter->particles[i].x, emitter->particles[i].y + 16);
+		//	sgDrawTexCoord2f(1.0, 1.0);
+		//	sgDrawVertex2f(emitter->particles[i].x + 16, emitter->particles[i].y + 16);
+		//	sgDrawTexCoord2f(1.0, 0.0);
+		//	sgDrawVertex2f(emitter->particles[i].x + 16, emitter->particles[i].y);
+		//sgDrawEnd();
 		sgTextureDraw2f(
 				emitter->texture,
 				emitter->particles[i].x,
 				emitter->particles[i].y);
+
 	}
 	//sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 }
