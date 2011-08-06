@@ -146,20 +146,23 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 void sgEmitterDraw(SGEmitter* emitter)
 {
 	int i;
+	SGParticle* particle;
 	for (i=0; i< emitter->nb_particles; i++)
 	{
-		if (emitter->particles[i].age < emitter->duration)
+
+		particle = &emitter->particles[i];
+		if (particle->age < emitter->duration)
 		{
 			sgDrawBeginT(SG_GRAPHICS_PRIMITIVE_QUADS, emitter->texture);
-			sgDrawColor4f(1.0, 1.0, 1.0, emitter->particles[i].alpha);
+			sgDrawColor4f(1.0, 1.0, 1.0, particle->alpha);
 			sgDrawTexCoord2f(0.0, 0.0);
-			sgDrawVertex2f(emitter->particles[i].x, emitter->particles[i].y);
+			sgDrawVertex2f(particle->x - particle->width / 2, particle->y - particle->height / 2);
 			sgDrawTexCoord2f(0.0, 1.0);
-			sgDrawVertex2f(emitter->particles[i].x, emitter->particles[i].y + emitter->particles[i].height);
+			sgDrawVertex2f(particle->x - particle->width / 2, particle->y + particle->height / 2);
 			sgDrawTexCoord2f(1.0, 1.0);
-			sgDrawVertex2f(emitter->particles[i].x + emitter->particles[i].width, emitter->particles[i].y + emitter->particles[i].height);
+			sgDrawVertex2f(particle->x + particle->width / 2, particle->y + particle->height / 2);
 			sgDrawTexCoord2f(1.0, 0.0);
-			sgDrawVertex2f(emitter->particles[i].x + emitter->particles[i].width, emitter->particles[i].y);
+			sgDrawVertex2f(particle->x + particle->width / 2, particle->y - particle->height / 2);
 			sgDrawEnd();
 		}
 
