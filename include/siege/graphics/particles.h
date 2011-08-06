@@ -31,7 +31,7 @@ extern "C"
 
 typedef struct SGParticle
 {
-	float x, y, angle, speed, age;
+	float x, y, angle, speed, age, width, height, rotation, alpha;
 } SGParticle;
 
 typedef struct SGEmitter
@@ -40,6 +40,7 @@ typedef struct SGEmitter
 	size_t nb_particles;
 	SGTexture* texture;
 	SGParticle* particles;
+	void (*update_fcn)(SGParticle* particle, float time, float friction);
 } SGEmitter;
 
 SGEmitter* sgEmitterCreate(
@@ -61,6 +62,8 @@ SGParticle* _sgParticleCreate(float x, float y, float angle, float speed);
 void _sgParticleUpdate(SGParticle* particle, float time, float friction);
 
 void sgEmitterDraw(SGEmitter* emitter);
+
+void sgEmitterSetUpdateFcn(SGEmitter* emitter, void (*update_fcn)(SGParticle*, float, float));
 
 #ifdef __cplusplus
 }

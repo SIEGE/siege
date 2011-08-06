@@ -4,6 +4,17 @@
 #include <stdlib.h>
 #include <math.h>
 
+void _myParticleUpdate(SGParticle* particle, float time, float friction)
+{
+	particle->speed -= friction * time;
+	if (particle->speed < 0)
+		particle->speed = 0;
+	particle->x += cos(particle->angle) * particle->speed;
+	particle->y += sin(particle->angle) * particle->speed;
+	particle->age += time;
+	particle->alpha = 1.0 - (particle->age/20);
+}
+
 int main(void)
 {
 	sgLoadModule("SDL");
@@ -19,11 +30,13 @@ int main(void)
 			0,  // angle
 			2 * 3.1471,  // delta_angle
 			1,  // speed
-			40,   // duration
+			20,   // duration
 			40,  // rate
-			0.01, // friction
+			0.05, // friction
 			2000,  // max nb_particles
 			my_texture);
+
+	sgEmitterSetUpdateFcn(my_particle_emitter, _myParticleUpdate);
 
 
 	while(sgLoop(NULL))
