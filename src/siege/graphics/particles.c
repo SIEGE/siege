@@ -13,13 +13,12 @@
 */
 
 
+#include <siege/siege.h>
 #include <siege/graphics/texture.h>
 #include <siege/graphics/particles.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <malloc.h>
 #include <math.h>
-#include <stdbool.h>
 
 /*
  * TODO:
@@ -39,7 +38,7 @@ void _sgParticleInit(SGParticle* particle, float x, float y, float angle, float 
 
 SGParticle* _sgParticleCreate(float x, float y, float angle, float speed)
 {
-	SGParticle* particle = (SGParticle*) malloc(sizeof(SGParticle));
+	SGParticle* particle = malloc(sizeof(SGParticle));
 	_sgParticleInit(particle, x, y, angle, speed);
 	return particle;
 }
@@ -53,11 +52,11 @@ SGEmitter* sgEmitterCreate(
 		float duration,       /* lifetime of particles */
 		float rate,           /* production rate of particles */
 		float friction,       /* environmental friction to particles */
-		int nb_particles,     /* size of particles pool */
+		size_t nb_particles,     /* size of particles pool */
 		SGTexture* texture)   /* texture used by particles */
 {
 	int i;
-	SGEmitter* emitter = (SGEmitter*) malloc(sizeof(SGEmitter));
+	SGEmitter* emitter = malloc(sizeof(SGEmitter));
 	emitter->x = x;
 	emitter->y = y;
 	emitter->angle = angle;
@@ -66,12 +65,12 @@ SGEmitter* sgEmitterCreate(
 	emitter->duration = duration;
 	emitter->rate = rate;
 	emitter->friction = friction;
-	emitter->particles = (SGParticle*) malloc(nb_particles * sizeof(SGParticle));
+	emitter->particles = malloc(nb_particles * sizeof(SGParticle));
 	emitter->texture = texture;
 	emitter->nb_particles = nb_particles;
 	emitter->time_accumulator = 0.0;
 
-	for (i=0; i<emitter->nb_particles; i++)
+	for (i=0; i < emitter->nb_particles; i++)
 		emitter->particles[i].age = emitter->duration + 1;
 
 	return emitter;
@@ -89,38 +88,38 @@ void _sgParticleUpdate(SGParticle* particle, float time, float friction)
 void sgEmitterUpdate(SGEmitter* emitter, float time)
 {
 	int i;
-	bool condition;
+	SGbool condition;
 	float frac = 1.0/emitter->rate;
 	emitter->time_accumulator += time;
+
 	for (i=0; i<emitter->nb_particles; i++)
 	{
 		if (emitter->particles[i].age < emitter->duration)
 		{
-			_sgParticleUpdate(&(emitter->particles[i]), time, emitter->friction);
+			_sgParticleUpdate(&emitter->particles[i], time, emitter->friction);
 		}
 	}
-	/* TODO add new particles depending on rate if array not full*/
 
 	while (emitter->time_accumulator >= frac)
 	{
 		/* use an index to start search from precedent find */
-		condition = false;
+		condition = SG_FALSE;
 		for (i=0; i < emitter->nb_particles; i++)
 		{
 			if (emitter->particles[i].age >= emitter->duration)
 			{
-				_sgParticleInit(&(emitter->particles[i]),
+				_sgParticleInit(&emitter->particles[i],
 						emitter->x,
 						emitter->y,
-						emitter->angle + (random() - 0.5) * emitter->delta_angle,
+						emitter->angle + (rand() - 0.5) * emitter->delta_angle,
 						emitter->initial_speed);
 				emitter->time_accumulator -= frac;
-				condition = true;
+				condition = SG_TRUE;
 				break;
 			}
 
 		}
-		if (condition == false)
+		if (condition == SG_FALSE)
 		{
 			printf("warning, pool of particules emitter full, either reduce lifetime,");
 			printf(" or rate, or make pool bigger\n");
@@ -135,22 +134,21 @@ void sgEmitterDraw(SGEmitter* emitter)
 	int i;
 	for (i=0; i< emitter->nb_particles; i++)
 	{
-		//sgDrawBeginT(SG_GRAPHICS_PRIMITIVE_QUADS, emitter->texture);
-		////sgDrawColor4f(1.0, 1.0, 1.0, (1.0));// - emitter->particles[i].age/emitter->duration));
-		//	sgDrawTexCoord2f(0.0, 0.0);
-		//	sgDrawVertex2f(emitter->particles[i].x, emitter->particles[i].y);
-		//	sgDrawTexCoord2f(0.0, 1.0);
-		//	sgDrawVertex2f(emitter->particles[i].x, emitter->particles[i].y + 16);
-		//	sgDrawTexCoord2f(1.0, 1.0);
-		//	sgDrawVertex2f(emitter->particles[i].x + 16, emitter->particles[i].y + 16);
-		//	sgDrawTexCoord2f(1.0, 0.0);
-		//	sgDrawVertex2f(emitter->particles[i].x + 16, emitter->particles[i].y);
-		//sgDrawEnd();
-		sgTextureDraw2f(
-				emitter->texture,
-				emitter->particles[i].x,
-				emitter->particles[i].y);
+		if (emitter->particles[i].age < emitter->duration)
+		{
+			sgDrawBeginT(SG_GRAPHICS_PRIMITIVE_QUADS, emitter->texture);
+			sgDrawColor4f(1.0, 1.0, 1.0, (1.0 - emitter->particles[i].age/emitter->duration));
+			sgDrawTexCoord2f(0.0, 0.0);
+			sgDrawVertex2f(emitter->particles[i].x, emitter->particles[i].y);
+			sgDrawTexCoord2f(0.0, 1.0);
+			sgDrawVertex2f(emitter->particles[i].x, emitter->particles[i].y + 16);
+			sgDrawTexCoord2f(1.0, 1.0);
+			sgDrawVertex2f(emitter->particles[i].x + 16, emitter->particles[i].y + 16);
+			sgDrawTexCoord2f(1.0, 0.0);
+			sgDrawVertex2f(emitter->particles[i].x + 16, emitter->particles[i].y);
+			sgDrawEnd();
+		}
 
 	}
-	//sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 }
+

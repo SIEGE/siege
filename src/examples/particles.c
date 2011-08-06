@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-SGFont* font;
 int main(void)
 {
 	sgLoadModule("SDL");
@@ -18,12 +17,12 @@ int main(void)
 			320, // x
 			240, // y
 			0,  // angle
-			2 * 3.14715926535897932,  // delta_angle
-			2,  // speed
-			4,   // duration
-			10,  // rate
-			0.001, // friction
-			50,  // max nb_particles
+			2 * 3.1471,  // delta_angle
+			1,  // speed
+			40,   // duration
+			40,  // rate
+			0.01, // friction
+			2000,  // max nb_particles
 			my_texture);
 
 
@@ -31,6 +30,7 @@ int main(void)
 	{
 		sgEmitterUpdate(my_particle_emitter, 0.1);
 		sgEmitterDraw(my_particle_emitter);
+
 		sgWindowSwapBuffers();
 		sgDrawClear();
 	}
