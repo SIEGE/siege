@@ -13,6 +13,7 @@ void _myParticleUpdate(SGParticle* particle, float time, float friction)
 	particle->y += sin(particle->angle) * particle->speed;
 	particle->age += time;
 	particle->alpha = 1.0 - (particle->age/20);
+	particle->rotation += time / 10;
 }
 
 int main(void)
