@@ -74,6 +74,7 @@ SGEmitter* sgEmitterCreate(
 	emitter->texture = texture;
 	emitter->nb_particles = nb_particles;
 	emitter->time_accumulator = 0.0;
+	emitter->silent = SG_FALSE;
 
 	for (i=0; i < emitter->nb_particles; i++)
 		emitter->particles[i].age = emitter->duration + 1;
@@ -92,7 +93,6 @@ void _sgParticleUpdate(SGParticle* particle, float time, float friction)
 	particle->y += sin(particle->angle) * particle->speed;
 	particle->age += time;
 }
-
 
 void sgEmitterUpdate(SGEmitter* emitter, float time)
 {
@@ -121,7 +121,7 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 				_sgParticleInit(&emitter->particles[i],
 						emitter->x,
 						emitter->y,
-						emitter->angle + (rand() - 0.5) * emitter->delta_angle,
+						emitter->angle + (rand() * 1.0 / RAND_MAX - 0.5) * emitter->delta_angle,
 						emitter->initial_speed,
 						1.0,
 						16,
@@ -133,10 +133,14 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 			}
 
 		}
-		if (condition == SG_FALSE)
+		if (condition == SG_FALSE )
 		{
-			printf("warning, pool of particules emitter full, either reduce lifetime,");
-			printf(" or rate, or make pool bigger\n");
+			if (!emitter->silent)
+			{
+				printf("warning, pool of particules emitter");
+				printf(" full, either reduce lifetime,");
+				printf(" or rate, or make pool bigger\n");
+			}
 			goto out;
 		}
 	}
