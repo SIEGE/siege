@@ -5,5 +5,5 @@
 *.o
 *.a
 /build
-/doc
+/doc/*/
 siege.kdev4
