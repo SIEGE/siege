@@ -58,6 +58,7 @@ float SG_EXPORT sgPhysicsShapeGetMass(SGPhysicsShape* shape, float density);
 float SG_EXPORT sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass);
 float SG_EXPORT sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float density);
 
+void SG_EXPORT sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, float* b, float* r);
 void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape);
 
 #ifdef __cplusplus

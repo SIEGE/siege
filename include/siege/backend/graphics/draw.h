@@ -25,7 +25,7 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPrimitive)(void* context, void* texture, SGuint type, SGuint numverts, float* vertices, float* texcoords, float* colors);
+    SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPrimitive)(void* context, void* texture, SGenum type, size_t numverts, float* vertices, float* texcoords, float* colors);
     SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawSetColor)(void* context, float* color);
     SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPointSetSize)(void* context, float size);
     //SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPointGetSize)(void* context, float* size);

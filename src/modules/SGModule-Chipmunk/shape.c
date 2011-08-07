@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgmPhysicsShapeCreate(void** shape, void* body, float xoffset, float yoffset, SGenum type, size_t numverts, float* verts)
+SGenum SG_EXPORT sgmPhysicsShapeCreate(void** shape, void* body, float xoffset, float yoffset, SGenum type, size_t numverts, float* verts)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -56,7 +56,7 @@ SGuint SG_EXPORT sgmPhysicsShapeCreate(void** shape, void* body, float xoffset, 
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsShapeDestroy(void* shape)
+SGenum SG_EXPORT sgmPhysicsShapeDestroy(void* shape)
 {
     if(shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -118,5 +118,16 @@ SGenum SG_EXPORT sgmPhysicsShapeGetData(void* shape, void** data)
     if(shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
     *data = cpShapeGetUserData(shape);
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmPhysicsShapeGetBBox(void* shape, float* t, float* l, float* b, float* r)
+{
+    if(shape == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    cpBB bb = cpShapeGetBB(shape);
+    *t = bb.t;
+    *l = bb.l;
+    *b = bb.b;
+    *r = bb.r;
     return SG_OK;
 }
