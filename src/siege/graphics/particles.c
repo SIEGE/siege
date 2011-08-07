@@ -183,3 +183,7 @@ void sgEmitterSetUpdateFcn(SGEmitter* emitter, void (*update_fcn)(SGParticle*, f
 {
 	emitter->update_fcn = update_fcn;
 }
+void sgEmitterSetSilent(SGEmitter* emitter, SGbool boolean)
+{
+	emitter->silent = boolean;
+}

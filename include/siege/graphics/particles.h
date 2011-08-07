@@ -40,6 +40,7 @@ typedef struct SGEmitter
 	size_t nb_particles;
 	SGTexture* texture;
 	SGParticle* particles;
+	SGbool silent;
 	void (*update_fcn)(SGParticle* particle, float time, float friction);
 } SGEmitter;
 
@@ -64,6 +65,8 @@ void _sgParticleUpdate(SGParticle* particle, float time, float friction);
 void sgEmitterDraw(SGEmitter* emitter);
 
 void sgEmitterSetUpdateFcn(SGEmitter* emitter, void (*update_fcn)(SGParticle*, float, float));
+
+void sgEmitterSetSilent(SGEmitter*, SGbool);
 
 #ifdef __cplusplus
 }
