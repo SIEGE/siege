@@ -63,7 +63,7 @@ void SG_EXPORT sgPhysicsConstraintSetRatio(SGPhysicsConstraint* constr, float ra
 void SG_EXPORT sgPhysicsConstraintSetRate(SGPhysicsConstraint* constr, float rate);
 
 void SG_EXPORT sgPhysicsConstraintSetMaxForce(SGPhysicsConstraint* constr, float max);
-void SG_EXPORT sgPhysicsConstraintSetBiasCoef(SGPhysicsConstraint* constr, float coef);
+void SG_EXPORT sgPhysicsConstraintSetErrorBias(SGPhysicsConstraint* constr, float bias);
 void SG_EXPORT sgPhysicsConstraintSetMaxBias(SGPhysicsConstraint* constr, float max);
 
 void SG_EXPORT sgPhysicsConstraintSetData(SGPhysicsConstraint* constr, void* data);

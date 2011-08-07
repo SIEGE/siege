@@ -43,7 +43,7 @@ extern "C"
     SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetRate)(void* constr, float rate);
 
     SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetMaxForce)(void* constr, float max);
-	SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetBiasCoeficient)(void* constr, float coef);
+	SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetErrorBias)(void* constr, float bias);
 	SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetMaxBias)(void* constr, float max);
 
     SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetData)(void* constr, void* data);
