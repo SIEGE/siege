@@ -36,22 +36,13 @@ SGuint SG_EXPORT sgmPhysicsBodyLocalToWorld_TEST(void* body, float* x, float* y)
     *y = vect.y;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsShapeGetBB_TEST(void* shape, float* t, float* l, float* b, float* r)
-{
-    if(shape == NULL)
-        return SG_OK; // SG_INVALID_VALUE
-    cpShape* cshape = (cpShape*)shape;
-    *t = cshape->bb.t;
-    *l = cshape->bb.l;
-    *b = cshape->bb.b;
-    *r = cshape->bb.r;
-    return SG_OK;
-}
 SGuint SG_EXPORT sgmPhysicsShapeGetPoints_TEST(void* shape, SGuint* pnum, float** points)
 {
     if(shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpShape* cshape = (cpShape*)shape;
+    *pnum = 0;
+    *points = NULL;
+    /*cpShape* cshape = (cpShape*)shape;
 
     SGuint i;
     cpVect vect;
@@ -92,7 +83,7 @@ SGuint SG_EXPORT sgmPhysicsShapeGetPoints_TEST(void* shape, SGuint* pnum, float*
 
         default:
             break;
-    }
+    }*/
     return SG_OK;
 }
 SGuint SG_EXPORT sgmPhysicsShapeFreePoints_TEST(float* points)

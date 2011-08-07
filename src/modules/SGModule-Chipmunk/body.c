@@ -20,19 +20,18 @@
 
 SGuint SG_EXPORT sgmPhysicsBodyCreate(void** body, SGenum type)
 {
-    cpBody** cbody = (cpBody**)body;
-    *cbody = cpBodyNew(1, 1);
-    (*cbody)->data = malloc(sizeof(DataExt));
-    ((DataExt*)(*cbody)->data)->type = type;
-    ((DataExt*)(*cbody)->data)->data = NULL;
+    *body = cpBodyNew(1, 1);
+    DataExt* data = malloc(sizeof(DataExt));
+    data->type = type;
+    data->data = NULL;
+    cpBodySetUserData(*body, data);
     return SG_OK;
 }
 SGuint SG_EXPORT sgmPhysicsBodyDestroy(void* body)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpBody* cbody = body;
-    free(cbody->data);
+    free(cpBodyGetUserData(body));
     cpBodyFree(body);
     return SG_OK;
 }
@@ -69,8 +68,7 @@ SGuint SG_EXPORT sgmPhysicsBodySetPosition(void* body, float x, float y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpVect pos = (cpVect) {x, y};
-    cpBodySetPos(body, pos);
+    cpBodySetPos(body, cpv(x, y));
     return SG_OK;
 }
 SGuint SG_EXPORT sgmPhysicsBodyGetPosition(void* body, float* x, float* y)
@@ -86,8 +84,7 @@ SGuint SG_EXPORT sgmPhysicsBodySetVelocity(void* body, float x, float y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpVect vel = (cpVect) {x, y};
-    cpBodySetVel(body, vel);
+    cpBodySetVel(body, cpv(x, y));
     return SG_OK;
 }
 SGuint SG_EXPORT sgmPhysicsBodyGetVelocity(void* body, float* x, float* y)
@@ -103,8 +100,7 @@ SGuint SG_EXPORT sgmPhysicsBodySetForce(void* body, float x, float y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpVect force = (cpVect) {x, y};
-    cpBodySetForce(body, force);
+    cpBodySetForce(body, cpv(x, y));
     return SG_OK;
 }
 SGuint SG_EXPORT sgmPhysicsBodyGetForce(void* body, float* x, float* y)
@@ -162,16 +158,14 @@ SGuint SG_EXPORT sgmPhysicsBodySetData(void* body, void* data)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpBody* cbody = (cpBody*)body;
-    ((DataExt*)cbody->data)->data = data;
+    ((DataExt*)cpBodyGetUserData(body))->data = data;
     return SG_OK;
 }
 SGuint SG_EXPORT sgmPhysicsBodyGetData(void* body, void** data)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpBody* cbody = (cpBody*)body;
-    *data = ((DataExt*)cbody->data)->data;
+    *data = ((DataExt*)cpBodyGetUserData(body))->data;
     return SG_OK;
 }
 

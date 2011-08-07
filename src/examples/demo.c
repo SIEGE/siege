@@ -8,6 +8,8 @@
 #define NLIGHTS 4
 #define OP >=
 
+SGPhysicsSpace* space;
+
 typedef struct Polygon
 {
     SGEntity* entity;
@@ -182,6 +184,8 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
     sgEntitySetPhysicsBody(poly->entity, poly->body);
     sgEntitySetPos(poly->entity, x, y);
     poly->shape = sgPhysicsShapeCreatePoly(poly->body, 0.0, 0.0, (float*)points, nump);
+    sgPhysicsShapeSetRestitution(poly->shape, 0.25);
+    sgPhysicsShapeSetFriction(poly->shape, 0.75);
     sgPhysicsBodySetMass(poly->body, sgPhysicsShapeGetMass(poly->shape, density));
     sgPhysicsBodySetMoment(poly->body, sgPhysicsShapeGetMomentDensity(poly->shape, density));
 
@@ -407,6 +411,10 @@ int main(void)
     sgLoadModule("Chipmunk");
     sgInit(640, 480, 32, 0);
     sgWindowSetTitlef("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
+
+    space = sgPhysicsSpaceGetDefault();
+	sgPhysicsSpaceSetIterations(space, 10);
+	sgPhysicsSpaceSetDamping(space, 0.75);
 
     SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
     handler->evMouseButtonPress = evMouseButtonPress;
