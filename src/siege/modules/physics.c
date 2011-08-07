@@ -72,7 +72,7 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsConstraintSetRate);
 
     _SG_BIND(sgmPhysicsConstraintSetMaxForce);
-	_SG_BIND(sgmPhysicsConstraintSetBiasCoeficient);
+	_SG_BIND(sgmPhysicsConstraintSetErrorBias);
 	_SG_BIND(sgmPhysicsConstraintSetMaxBias);
 
     _SG_BIND(sgmPhysicsConstraintSetData);
@@ -108,7 +108,6 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsSpaceAddConstraint);
     _SG_BIND(sgmPhysicsSpaceRemoveConstraint);
 
-    _SG_BIND(sgmPhysicsSpaceRehash);
     _SG_BIND(sgmPhysicsSpaceGetStaticBody);
 
     _SG_BIND(sgmPhysicsBodyWorldToLocal_TEST);

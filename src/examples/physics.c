@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+SGPhysicsSpace* space;
+
 SGSprite* sprCrateSmall;
 SGSprite* sprFloorMetalPlate;
 SGSprite* sprHazardWall;
@@ -97,6 +99,8 @@ SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density,
     sgEntitySetAngleDegs(entity, angle);
 
     box->shape = sgPhysicsShapeCreatePoly(body, 0.0, 0.0, verts, 4);
+    sgPhysicsShapeSetRestitution(box->shape, 0.25);
+    sgPhysicsShapeSetFriction(box->shape, 0.75);
     sgPhysicsBodySetMass(body, sgPhysicsShapeGetMass(box->shape, density));
     sgPhysicsBodySetMoment(body, sgPhysicsShapeGetMomentDensity(box->shape, density));
 
@@ -193,6 +197,10 @@ int main(void)
     sgLoadModule("Chipmunk");
     sgInit(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Physics Demo - Press F1 for debug overlay");
+
+	space = sgPhysicsSpaceGetDefault();
+	sgPhysicsSpaceSetIterations(space, 10);
+	sgPhysicsSpaceSetDamping(space, 0.75);
 
     sprCrateSmall = sgSpriteCreateFile("data/sprites/CrateSmall.png");
     sprFloorMetalPlate = sgSpriteCreateFile("data/sprites/FloorMetalPlate.png");

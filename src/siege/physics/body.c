@@ -299,11 +299,9 @@ void SG_EXPORT sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy
 }
 void SG_EXPORT sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry)
 {
-{
 	if(!body)
 		return;
 
 	if(psgmPhysicsBodyApplyForce)
 		psgmPhysicsBodyApplyForce(body->handle, jx, jy, rx, ry);
-}
 }
