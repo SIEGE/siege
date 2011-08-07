@@ -90,6 +90,8 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsShapeSetData);
     _SG_BIND(sgmPhysicsShapeGetData);
 
+    _SG_BIND(sgmPhysicsShapeGetBBox);
+
     _SG_BIND(sgmPhysicsSpaceCreate);
     _SG_BIND(sgmPhysicsSpaceDestroy);
     _SG_BIND(sgmPhysicsSpaceStep);
@@ -112,7 +114,6 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
 
     _SG_BIND(sgmPhysicsBodyWorldToLocal_TEST);
     _SG_BIND(sgmPhysicsBodyLocalToWorld_TEST);
-    _SG_BIND(sgmPhysicsShapeGetBB_TEST);
     _SG_BIND(sgmPhysicsShapeGetPoints_TEST);
     _SG_BIND(sgmPhysicsShapeFreePoints_TEST);
 }
