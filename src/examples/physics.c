@@ -88,7 +88,7 @@ SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density,
                        w / 2.0,  h / 2.0,
                        w / 2.0, -h / 2.0};
 
-    SGEntity* entity = sgEntityCreate(0.0, SG_EVT_ALL);
+    SGEntity* entity = sgEntityCreate(0.0);
 
     Box* box = calloc(1, sizeof(Box));
     entity->data = box;
@@ -217,7 +217,7 @@ int main(void)
     for(i = 224; i < 448; i += 64)
         createFloor(sprHazardWall, i, 320);
 
-    controller = sgEntityCreate(0.0, SG_EVT_ALL);
+    controller = sgEntityCreate(0.0);
     controller->evMouseButtonLeftPress = evMouseButtonLeftPress;
     controller->evMouseButtonRightPress = evMouseButtonRightPress;
     controller->evKeyboardKeyPress = evKeyboardKeyPress;

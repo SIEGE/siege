@@ -46,14 +46,6 @@ struct SGPhysicsCollision;
 typedef struct SGEntity
 {
 	/**
-	 * Variable: type
-	 *
-	 * Entity event type.
-	 *
-	 * This controls which events of the entity can be triggered.
-	 */
-	SGenum type;
-	/**
 	 * Variable: active
 	 *
 	 * Is the entity active?
@@ -500,12 +492,11 @@ SGbool SG_EXPORT _sgEntityDeinit(void);
  *
  * Parameters:
  * 	priority - The entity's priority - higher priority entities get their events called first
- *  type     - The entity's event subtype - these are used to filter which events should be called
  *
  * Returns:
  * 	The newly created entity if successful, NULL otherwise
  */
-SGEntity* SG_EXPORT sgEntityCreate(float priority, SGenum type);
+SGEntity* SG_EXPORT sgEntityCreate(float priority);
 /**
  * Function: sgEntityDestroy
  *
