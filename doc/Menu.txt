@@ -46,3 +46,17 @@ Format: 1.52
 # --------------------------------------------------------------------------
 
 
+File: Console  (core\console.h)
+File: Core  (core\core.h)
+File: Entity  (core\entity.h)
+File: Event  (core\event.h)
+File: Windowing  (core\window.h)
+
+Group: Index  {
+
+   Index: Everything
+   Class Index: Classes
+   Function Index: Functions
+   Variable Index: Variables
+   }  # Group: Index
+
