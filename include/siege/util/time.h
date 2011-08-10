@@ -14,6 +14,10 @@
 #ifndef __SIEGE_UTIL_TIME_H__
 #define __SIEGE_UTIL_TIME_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 #include <siege/common.h>
 
 /**
@@ -22,5 +26,9 @@
  * Returns: nanoseconds from a fixed, unspecified, origin.
  */
 SGlong SG_EXPORT sgGetTime(void);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // __SIEGE_UTIL_TIME_H__
