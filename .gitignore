@@ -6,4 +6,8 @@
 *.a
 /build
 /doc
+/Debug
+/Release
+*.vp*
+*.vtg
 siege.kdev4
