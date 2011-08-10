@@ -22,16 +22,13 @@
 SGuint SG_EXPORT sgmPhysicsSpaceCreate(void** space)
 {
     *space = cpSpaceNew();
-    cpSpace** cspace = (cpSpace**)space;
-    (*cspace)->iterations = 10; // TEST
-    (*cspace)->elasticIterations = 10;
-    (*cspace)->damping = 0.75;
 
-    (*cspace)->staticBody.data = malloc(sizeof(DataExt));
-    ((DataExt*)(*cspace)->staticBody.data)->type = SG_PHYSICS_BODY_STATIC;
-    ((DataExt*)(*cspace)->staticBody.data)->data = NULL;
+    DataExt* data = malloc(sizeof(DataExt));
+    data->type = SG_PHYSICS_BODY_STATIC;
+    data->data = NULL;
+    cpBodySetUserData(cpSpaceGetStaticBody(*space), data);
 
-    cpSpaceAddCollisionHandler(*cspace, 0, 0, cbCollisionBegin, cbCollisionPreSolve, cbCollisionPostSolve, cbCollisionSeparate, NULL);
+    cpSpaceAddCollisionHandler(*space, 0, 0, cbCollisionBegin, cbCollisionPreSolve, cbCollisionPostSolve, cbCollisionSeparate, NULL);
 
     return SG_OK;
 }
@@ -40,9 +37,8 @@ SGuint SG_EXPORT sgmPhysicsSpaceDestroy(void* space)
 {
     if(space == NULL)
         return SG_OK; // SG_INVALID_VALUE
-	cpSpace* cspace = space;
 
-	free(cspace->staticBody.data);
+	free(cpBodyGetUserData(cpSpaceGetStaticBody(space)));
 
     //cpSpaceFreeChildren(space);
     cpSpaceFree(space);
@@ -58,13 +54,11 @@ SGuint SG_EXPORT sgmPhysicsSpaceStep(void* space, float time)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsSpaceSetIterations(void* space, SGuint iterations, SGuint eiterations)
+SGenum SG_EXPORT sgmPhysicsSpaceSetIterations(void* space, SGuint iterations)
 {
 	if(!space)
 		return SG_OK; // SG_INVALID_VALUE
-	cpSpace* cspace = space;
-	cspace->iterations = iterations;
-	cspace->elasticIterations = eiterations;
+	cpSpaceSetIterations(space, iterations);
 	return SG_OK;
 }
 //SGenum SG_EXPORT sgmPhysicsSpaceGetIterations(void* space, SGuint* iterations, SGuint* eiterations);
@@ -73,9 +67,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceSetGravity(void* space, float x, float y)
 {
     if(!space)
         return SG_OK; // SG_INVALID_VALUE
-    cpSpace* cspace = space;
-    cspace->gravity.x = x;
-    cspace->gravity.y = y;
+    cpSpaceSetGravity(space, cpv(x, y));
     return SG_OK;
 }
 //SGuint SG_EXPORT sgmPhysicsSpaceGetGravity(void* space, float* x, float* y);
@@ -94,9 +86,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpShape* cshape = shape;
-    cpBody* cbody = cshape->body;
-    if(((DataExt*)cbody->data)->type != SG_PHYSICS_BODY_STATIC)
+    if(((DataExt*)cpBodyGetUserData(cpShapeGetBody(shape)))->type != SG_PHYSICS_BODY_STATIC)
         cpSpaceAddShape(space, shape);
     else
         cpSpaceAddStaticShape(space, shape);
@@ -106,9 +96,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpShape* cshape = shape;
-    cpBody* cbody = cshape->body;
-    if(((DataExt*)cbody->data)->type != SG_PHYSICS_BODY_STATIC)
+    if(((DataExt*)cpBodyGetUserData(cpShapeGetBody(shape)))->type != SG_PHYSICS_BODY_STATIC)
         cpSpaceRemoveShape(space, shape);
     else
         cpSpaceRemoveStaticShape(space, shape);
@@ -120,8 +108,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpBody* cbody = body;
-    if((((DataExt*)cbody->data)->type != SG_PHYSICS_BODY_STATIC) && (((DataExt*)cbody->data)->type != SG_PHYSICS_BODY_SEMISTATIC)) // we shouldn't put the body in, if it's static
+    if((((DataExt*)cpBodyGetUserData(body))->type != SG_PHYSICS_BODY_STATIC) && (((DataExt*)cpBodyGetUserData(body))->type != SG_PHYSICS_BODY_SEMISTATIC)) // we shouldn't put the body in, if it's static
         cpSpaceAddBody(space, body);
     return SG_OK;
 }
@@ -129,8 +116,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    cpBody* cbody = body;
-    if((((DataExt*)cbody->data)->type != SG_PHYSICS_BODY_STATIC) && (((DataExt*)cbody->data)->type != SG_PHYSICS_BODY_SEMISTATIC)) // we shouldn't put the body in, if it's static
+    if((((DataExt*)cpBodyGetUserData(body))->type != SG_PHYSICS_BODY_STATIC) && (((DataExt*)cpBodyGetUserData(body))->type != SG_PHYSICS_BODY_SEMISTATIC)) // we shouldn't put the body in, if it's static
         cpSpaceRemoveBody(space, body);
     return SG_OK;
 }
@@ -149,19 +135,10 @@ SGuint SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsSpaceRehash(void* space)
-{
-	if(!space)
-		return SG_OK; // SG_INVALID_VALUE
-	cpSpaceRehashStatic(space);
-	return SG_OK;
-}
-
 SGenum SG_EXPORT sgmPhysicsSpaceGetStaticBody(void* space, void** body)
 {
 	if(!space || !body)
 		return SG_OK; // SG_INVALID_VALUE
-	cpSpace* cspace = space;
-	*body = &cspace->staticBody;
+	*body = cpSpaceGetStaticBody(space);
 	return SG_OK;
 }

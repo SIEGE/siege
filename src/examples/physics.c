@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+SGPhysicsSpace* space;
+
 SGSprite* sprCrateSmall;
 SGSprite* sprFloorMetalPlate;
 SGSprite* sprHazardWall;
@@ -86,7 +88,7 @@ SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density,
                        w / 2.0,  h / 2.0,
                        w / 2.0, -h / 2.0};
 
-    SGEntity* entity = sgEntityCreate(0.0, SG_EVT_ALL);
+    SGEntity* entity = sgEntityCreate(0.0);
 
     Box* box = calloc(1, sizeof(Box));
     entity->data = box;
@@ -97,6 +99,8 @@ SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density,
     sgEntitySetAngleDegs(entity, angle);
 
     box->shape = sgPhysicsShapeCreatePoly(body, 0.0, 0.0, verts, 4);
+    sgPhysicsShapeSetRestitution(box->shape, 0.25);
+    sgPhysicsShapeSetFriction(box->shape, 0.75);
     sgPhysicsBodySetMass(body, sgPhysicsShapeGetMass(box->shape, density));
     sgPhysicsBodySetMoment(body, sgPhysicsShapeGetMomentDensity(box->shape, density));
 
@@ -194,6 +198,10 @@ int main(void)
     sgInit(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Physics Demo - Press F1 for debug overlay");
 
+	space = sgPhysicsSpaceGetDefault();
+	sgPhysicsSpaceSetIterations(space, 10);
+	sgPhysicsSpaceSetDamping(space, 0.75);
+
     sprCrateSmall = sgSpriteCreateFile("data/sprites/CrateSmall.png");
     sprFloorMetalPlate = sgSpriteCreateFile("data/sprites/FloorMetalPlate.png");
     sprHazardWall = sgSpriteCreateFile("data/sprites/HazardWall.png");
@@ -209,7 +217,7 @@ int main(void)
     for(i = 224; i < 448; i += 64)
         createFloor(sprHazardWall, i, 320);
 
-    controller = sgEntityCreate(0.0, SG_EVT_ALL);
+    controller = sgEntityCreate(0.0);
     controller->evMouseButtonLeftPress = evMouseButtonLeftPress;
     controller->evMouseButtonRightPress = evMouseButtonRightPress;
     controller->evKeyboardKeyPress = evKeyboardKeyPress;

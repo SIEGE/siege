@@ -72,7 +72,7 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsConstraintSetRate);
 
     _SG_BIND(sgmPhysicsConstraintSetMaxForce);
-	_SG_BIND(sgmPhysicsConstraintSetBiasCoeficient);
+	_SG_BIND(sgmPhysicsConstraintSetErrorBias);
 	_SG_BIND(sgmPhysicsConstraintSetMaxBias);
 
     _SG_BIND(sgmPhysicsConstraintSetData);
@@ -89,6 +89,8 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsShapeGetRestitution);
     _SG_BIND(sgmPhysicsShapeSetData);
     _SG_BIND(sgmPhysicsShapeGetData);
+
+    _SG_BIND(sgmPhysicsShapeGetBBox);
 
     _SG_BIND(sgmPhysicsSpaceCreate);
     _SG_BIND(sgmPhysicsSpaceDestroy);
@@ -108,12 +110,10 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsSpaceAddConstraint);
     _SG_BIND(sgmPhysicsSpaceRemoveConstraint);
 
-    _SG_BIND(sgmPhysicsSpaceRehash);
     _SG_BIND(sgmPhysicsSpaceGetStaticBody);
 
     _SG_BIND(sgmPhysicsBodyWorldToLocal_TEST);
     _SG_BIND(sgmPhysicsBodyLocalToWorld_TEST);
-    _SG_BIND(sgmPhysicsShapeGetBB_TEST);
     _SG_BIND(sgmPhysicsShapeGetPoints_TEST);
     _SG_BIND(sgmPhysicsShapeFreePoints_TEST);
 }

@@ -265,7 +265,7 @@ int main(void)
 
 	SGint mx, my;
 
-	SGEntity* handler = sgEntityCreate(1.0, SG_EVT_ALL);
+	SGEntity* handler = sgEntityCreate(1.0);
 	handler->evKeyboardKeyPress = evKeyboardKeyPress;
 	handler->evKeyboardKeyRepeat = evKeyboardKeyPress;
 

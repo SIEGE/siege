@@ -6,6 +6,7 @@
 *.a
 /build
 /doc
+/doc/*/
 /Debug
 /Release
 *.vp*

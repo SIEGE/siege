@@ -12,6 +12,10 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
+/**
+ * Title: Windowing
+ */
+
 #ifndef __SIEGE_CORE_WINDOW_H__
 #define __SIEGE_CORE_WINDOW_H__
 

@@ -180,10 +180,10 @@ void SG_EXPORT sgPhysicsConstraintSetMaxForce(SGPhysicsConstraint* constr, float
 	if(psgmPhysicsConstraintSetMaxForce)
 		psgmPhysicsConstraintSetMaxForce(constr->handle, max);
 }
-void SG_EXPORT sgPhysicsConstraintSetBiasCoef(SGPhysicsConstraint* constr, float coef)
+void SG_EXPORT sgPhysicsConstraintSetErrorBias(SGPhysicsConstraint* constr, float bias)
 {
-	if(psgmPhysicsConstraintSetBiasCoeficient)
-		psgmPhysicsConstraintSetBiasCoeficient(constr->handle, coef);
+	if(psgmPhysicsConstraintSetErrorBias)
+		psgmPhysicsConstraintSetErrorBias(constr->handle, bias);
 }
 void SG_EXPORT sgPhysicsConstraintSetMaxBias(SGPhysicsConstraint* constr, float max)
 {

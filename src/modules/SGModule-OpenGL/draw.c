@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGuint type, SGuint numverts, float* vertices, float* texcoords, float* colors)
+SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum type, size_t numverts, float* vertices, float* texcoords, float* colors)
 {
     TextureData* tdata = texture;
 
@@ -44,7 +44,7 @@ SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGuint t
     }
 
     GLuint* indices;
-    SGuint i;
+    size_t i;
     switch(type)
     {
         case SG_GRAPHICS_PRIMITIVE_POINTS:
@@ -141,7 +141,7 @@ SGuint SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
     return SG_OK;
 }
 
-#define SG_GRAPHICS_FUNC_ZERO                   0x00
+/*#define SG_GRAPHICS_FUNC_ZERO                   0x00
 #define SG_GRAPHICS_FUNC_ONE                    0x01
 #define SG_GRAPHICS_FUNC_SRC_COLOR              0x02
 #define SG_GRAPHICS_FUNC_ONE_MINUS_SRC_COLOR    0x03
@@ -156,7 +156,7 @@ SGuint SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
 #define SG_GRAPHICS_EQUATION_SUBTRACT           0x01
 #define SG_GRAPHICS_EQUATION_REVERSE_SUBTRACT   0x02
 #define SG_GRAPHICS_EQUATION_MIN                0x03
-#define SG_GRAPHICS_EQUATION_MAX                0x04
+#define SG_GRAPHICS_EQUATION_MAX                0x04*/
 SGuint SG_EXPORT sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum dst)
 {
     static GLenum table[] = {GL_ZERO, GL_ONE,

@@ -46,9 +46,7 @@ SGenum SG_EXPORT sgmPhysicsConstraintDestroy(void* constr)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
-
     cpConstraintFree(constr);
-
     return SG_OK;
 }
 
@@ -69,45 +67,36 @@ SGenum SG_EXPORT sgmPhysicsConstraintSetMaxForce(void* constr, float max)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
-	cpConstraint* cconstr = constr;
-
-	cconstr->maxForce = max;
-
+	cpConstraintSetMaxForce(constr, max);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsConstraintSetBiasCoeficient(void* constr, float coef)
+SGenum SG_EXPORT sgmPhysicsConstraintSetErrorBias(void* constr, float bias)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
-    cpConstraint* cconstr = constr;
-
-    cconstr->biasCoef = coef;
-
+	cpConstraintSetErrorBias(constr, bias);
     return SG_OK;
 }
 SGenum SG_EXPORT sgmPhysicsConstraintSetMaxBias(void* constr, float max)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
-    cpConstraint* cconstr = constr;
-
-    cconstr->maxBias = max;
-
+    cpConstraintSetMaxBias(constr, max);
     return SG_OK;
 }
 
 SGenum SG_EXPORT sgmPhysicsConstraintSetData(void* constr, void* data)
 {
-    cpConstraint* cconstr = constr;
-    cconstr->data = data;
-
+    if(!constr)
+		return SG_OK; // SG_INVALID_VALUE
+    cpConstraintSetUserData(constr, data);
     return SG_OK;
 }
 
 SGenum SG_EXPORT sgmPhysicsConstraintGetData(void* constr, void** data)
 {
-    cpConstraint* cconstr = constr;
-    *data = cconstr->data;
-
+    if(!constr)
+		return SG_OK; // SG_INVALID_VALUE
+    *data = cpConstraintGetUserData(constr);
     return SG_OK;
 }
