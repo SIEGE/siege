@@ -27,6 +27,13 @@ extern "C" {
  */
 SGlong SG_EXPORT sgGetTime(void);
 
+/**
+ * Function: sgSleep
+ *
+ * Sleep for the given amount of microseconds.
+ */
+void SG_EXPORT sgSleep(SGint);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

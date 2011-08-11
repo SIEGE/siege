@@ -23,6 +23,7 @@
 #include <siege/modules/graphics.h>
 #include <siege/modules/window.h>
 #include <siege/util/string.h>
+#include <siege/util/time.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -176,8 +177,18 @@ SGuint SG_EXPORT sgWindowGetHeight(void)
 }
 void SG_EXPORT sgWindowSwapBuffers(void)
 {
-	if(psgmCoreWindowSwapBuffers != NULL)
-		psgmCoreWindowSwapBuffers(_sg_winHandle);
+    if(psgmCoreWindowSwapBuffers != NULL)
+        psgmCoreWindowSwapBuffers(_sg_winHandle);
 	_sgMouseUpdate();
 	_sgKeyboardUpdate();
+}
+SGfloat SG_EXPORT sgGetFPSLimit(void)
+{
+    return _sg_FPS;
+}
+void SG_EXPORT sgSetFPSLimit(SGfloat limit)
+{
+    _sg_FPSOrigin = sgGetTime();
+    _sg_FPS = limit;
+    _sg_FPSInNanoseconds = _sg_FPS * 1000000000;
 }

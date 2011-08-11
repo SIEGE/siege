@@ -33,6 +33,9 @@ char* _sg_winTitle;
 void* _sg_winHandle;
 void* _sg_gfxHandle;
 SGCoreWindowCallbacks _sg_winCallbacks;
+SGfloat _sg_FPS = -1.0f;
+SGlong _sg_FPSOrigin = -1L;
+SGlong _sg_FPSInNanoseconds = -1L;
 #endif // SG_BUILD_LIBRARY
 
 void SG_EXPORT _sg_cbWindowOpen(void* window);
@@ -193,6 +196,9 @@ void SG_EXPORT sgWindowSetHeight(SGuint height);
  */
 SGuint SG_EXPORT sgWindowGetHeight(void);
 /// @}
+
+SGfloat SG_EXPORT sgGetFPSLimit(void);
+void SG_EXPORT sgSetFPSLimit(SGfloat limit);
 
 /// @{
 /**
