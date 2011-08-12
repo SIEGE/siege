@@ -197,10 +197,12 @@ int main(void)
     sgLoadModule("Chipmunk");
     sgInit(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Physics Demo - Press F1 for debug overlay");
+    sgSetFPSLimit(60.0f);
 
 	space = sgPhysicsSpaceGetDefault();
 	sgPhysicsSpaceSetIterations(space, 10);
 	sgPhysicsSpaceSetDamping(space, 0.75);
+    sgPhysicsSpaceSetGravity(space, 0.0, 25.0);
 
     sprCrateSmall = sgSpriteCreateFile("data/sprites/CrateSmall.png");
     sprFloorMetalPlate = sgSpriteCreateFile("data/sprites/FloorMetalPlate.png");

@@ -30,6 +30,9 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+SGfloat _sg_FPS = -1.0f;
+SGlong _sg_FrameLength = -1L;
+
 void SG_EXPORT _sg_cbWindowOpen(void* window)
 {
 	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINOPEN);
@@ -177,10 +180,20 @@ SGuint SG_EXPORT sgWindowGetHeight(void)
 }
 void SG_EXPORT sgWindowSwapBuffers(void)
 {
+    SGlong FPSOrigin = sgGetTime();
     if(psgmCoreWindowSwapBuffers != NULL)
         psgmCoreWindowSwapBuffers(_sg_winHandle);
 	_sgMouseUpdate();
 	_sgKeyboardUpdate();
+
+    if(_sg_FPS > 0.0f)
+    {
+        SGlong delta = sgGetTime() - FPSOrigin;
+        if(delta < _sg_FrameLength)
+        {
+            sgSleep((_sg_FrameLength - delta)/1000);
+        }
+    }
 }
 SGfloat SG_EXPORT sgGetFPSLimit(void)
 {
@@ -188,7 +201,7 @@ SGfloat SG_EXPORT sgGetFPSLimit(void)
 }
 void SG_EXPORT sgSetFPSLimit(SGfloat limit)
 {
-    _sg_FPSOrigin = sgGetTime();
     _sg_FPS = limit;
-    _sg_FPSInNanoseconds = _sg_FPS * 1000000000;
+    _sg_FrameLength = (1 / _sg_FPS) * 1000000000;
 }
+
