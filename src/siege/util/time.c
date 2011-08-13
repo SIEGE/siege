@@ -16,6 +16,7 @@
 #ifdef __WIN32__
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
+    #include <time.h>
 #else
     #include <unistd.h>
     #include <time.h>
@@ -24,8 +25,18 @@
 SGlong SG_EXPORT sgGetTime(void)
 {
 #ifdef __WIN32__
-    #warning "time.c unimplemented on this platform"
-    return 0L;
+    LARGE_INTEGER freq;
+    LARGE_INTEGER counter;
+    if(QueryPerformanceFrequency(&freq)) // should cache this oneday...
+    {
+        QueryPerformanceCounter(&counter);
+        return counter.QuadPart * SG_NANOSECONDS_IN_A_SECOND / freq.QuadPart;
+    }
+    // High-res counter not supported, so we fallback to clock().
+    // It's not exactly ideal, but it's better than nothing...
+    // TODO: Check the danger of the value overflowing here
+    // (we're multiplying by a really large value!).
+    return clock() * SG_NANOSECONDS_IN_A_SECOND / CLOCKS_PER_SEC;
 #else
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -36,7 +47,10 @@ SGlong SG_EXPORT sgGetTime(void)
 void SG_EXPORT sgSleep(SGlong nseconds)
 {
 #ifdef __WIN32__
-    #warning "time.c unimplemented on this platform"
+    // TODO: use select() for a bit more precise sleep (us instead of ms)
+    // That requires initializing sockets, however!
+    // Also, we have to make sure that the value doesn't happen to be INFINITE.
+    Sleep(nseconds * 10000000);
 #else
     struct timespec ts, tsr;
     ts.tv_sec = nseconds / SG_NANOSECONDS_IN_A_SECOND;
