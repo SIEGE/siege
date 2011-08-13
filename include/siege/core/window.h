@@ -194,8 +194,9 @@ void SG_EXPORT sgWindowSetHeight(SGuint height);
 SGuint SG_EXPORT sgWindowGetHeight(void);
 /// @}
 
-SGfloat SG_EXPORT sgGetFPSLimit(void);
-void SG_EXPORT sgSetFPSLimit(SGfloat limit);
+SGfloat SG_EXPORT sgWindowGetFPSLimit(void);
+void SG_EXPORT sgWindowSetFPSLimit(SGfloat limit);
+SGfloat SG_EXPORT sgWindowGetFPS(void);
 
 /// @{
 /**

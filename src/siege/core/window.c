@@ -32,6 +32,7 @@
 
 SGfloat _sg_FPS = -1.0f;
 SGlong _sg_FrameLength = -1L;
+SGfloat _sg_achievedFramerate = -1.0f;
 
 void SG_EXPORT _sg_cbWindowOpen(void* window)
 {
@@ -180,28 +181,38 @@ SGuint SG_EXPORT sgWindowGetHeight(void)
 }
 void SG_EXPORT sgWindowSwapBuffers(void)
 {
-    SGlong FPSOrigin = sgGetTime();
+    SGlong origin = sgGetTime();
+
     if(psgmCoreWindowSwapBuffers != NULL)
         psgmCoreWindowSwapBuffers(_sg_winHandle);
 	_sgMouseUpdate();
 	_sgKeyboardUpdate();
 
+    SGlong time = sgGetTime();
+    SGlong updateLength = time - origin;
+
     if(_sg_FPS > 0.0f)
     {
-        SGlong delta = sgGetTime() - FPSOrigin;
-        if(delta < _sg_FrameLength)
+        if(updateLength < _sg_FrameLength)
         {
-            sgSleep((_sg_FrameLength - delta)/1000);
+            sgSleep((_sg_FrameLength - updateLength)/1000);
         }
     }
+
+    SGlong frameLength = updateLength + (sgGetTime() - time);
+    _sg_achievedFramerate = (SGfloat) SG_NANOSECONDS_IN_A_SECOND / frameLength;
 }
-SGfloat SG_EXPORT sgGetFPSLimit(void)
+SGfloat SG_EXPORT sgWindowGetFPSLimit(void)
 {
     return _sg_FPS;
 }
-void SG_EXPORT sgSetFPSLimit(SGfloat limit)
+void SG_EXPORT sgWindowSetFPSLimit(SGfloat limit)
 {
     _sg_FPS = limit;
-    _sg_FrameLength = (1 / _sg_FPS) * 1000000000;
+    _sg_FrameLength = (1 / _sg_FPS) * SG_NANOSECONDS_IN_A_SECOND;
+}
+SGfloat SG_EXPORT sgWindowGetFPS(void)
+{
+    return _sg_achievedFramerate;
 }
 

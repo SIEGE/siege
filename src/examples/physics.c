@@ -1,6 +1,7 @@
 #include <siege/siege.h>
 
 #include <stdlib.h>
+#include <stdio.h>
 
 SGPhysicsSpace* space;
 
@@ -195,9 +196,10 @@ int main(void)
     sgLoadModule("OpenGL");
     sgLoadModule("DevIL");
     sgLoadModule("Chipmunk");
+    sgLoadModule("Freetype");
     sgInit(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Physics Demo - Press F1 for debug overlay");
-    sgSetFPSLimit(60.0f);
+    sgWindowSetFPSLimit(60.0f);
 
 	space = sgPhysicsSpaceGetDefault();
 	sgPhysicsSpaceSetIterations(space, 10);
@@ -210,6 +212,7 @@ int main(void)
     sprPacman = sgSpriteCreateFile("data/sprites/Pacman.png");
     sprStrongboxSmall = sgSpriteCreateFile("data/sprites/StrongboxSmall.png");
     sprSupportBar = sgSpriteCreateFile("data/sprites/SupportBar.png");
+    SGFont* font = sgFontCreate("data/fonts/DejaVuSans.ttf", 7.0, 127);
 
     SGuint i;
     for(i = 32; i < 640; i += 64)
@@ -230,6 +233,7 @@ int main(void)
         if(overlay)
             for(i = 0; i < numboxes; i++)
                 boxDrawDBG(boxes[i]);
+        sgFontPrintf(font, 1.0, 10.0, "FPS: %.2f", sgWindowGetFPS());
 
         sgWindowSwapBuffers();
         sgDrawClear();
@@ -241,6 +245,7 @@ int main(void)
     sgSpriteDestroy(sprPacman);
     sgSpriteDestroy(sprStrongboxSmall);
     sgSpriteDestroy(sprSupportBar);
+    sgFontDestroy(font);
 
     sgDeinit();
 

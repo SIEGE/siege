@@ -20,6 +20,8 @@ extern "C" {
 
 #include <siege/common.h>
 
+#define SG_NANOSECONDS_IN_A_SECOND 1000000000
+
 /**
  * Function: sgGetTime
  *
