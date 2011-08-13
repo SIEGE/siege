@@ -222,6 +222,8 @@ int main(void)
     sgInit(WIDTH, HEIGHT, 32, 0);
     sgWindowSetTitle("SIEGE Pyramid Demo - Press F1 for debug overlay");
 
+    sgDrawSetSmooth(SG_TRUE);
+
     space = sgPhysicsSpaceCreate();
 	//space = sgPhysicsSpaceGetDefault();
 	sgPhysicsSpaceSetIterations(space, 100);
