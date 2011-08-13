@@ -126,7 +126,7 @@ SGEntity* createBox(float x, float y, float angle, float length, float width, fl
     boxes[numboxes - 1] = entity;
 
     if(!(numboxes % 10000))
-        printf("NUM %u\n", numboxes);
+        printf("NUM %u\n", (unsigned int)numboxes);
 
     return entity;
 }
@@ -263,7 +263,7 @@ int main(void)
         tstart -= thspace * 0.5;
     }
 
-    printf("Number of shapes: %u\n", numboxes);
+    printf("Number of shapes: %u\n", (unsigned int)numboxes);
 
     while(sgLoop(NULL))
     {
