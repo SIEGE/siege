@@ -20,7 +20,7 @@ extern "C" {
 
 #include <siege/common.h>
 
-#define SG_NANOSECONDS_IN_A_SECOND 1000000000
+#define SG_NANOSECONDS_IN_A_SECOND 1000000000LL
 
 /**
  * Function: sgGetTime
@@ -32,9 +32,9 @@ SGlong SG_EXPORT sgGetTime(void);
 /**
  * Function: sgSleep
  *
- * Sleep for the given amount of microseconds.
+ * Sleep for the given amount of nanoseconds.
  */
-void SG_EXPORT sgSleep(SGint);
+void SG_EXPORT sgSleep(SGlong nseconds);
 
 #ifdef __cplusplus
 }

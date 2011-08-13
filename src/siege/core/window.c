@@ -195,7 +195,7 @@ void SG_EXPORT sgWindowSwapBuffers(void)
     {
         if(updateLength < _sg_FrameLength)
         {
-            sgSleep((_sg_FrameLength - updateLength)/1000);
+            sgSleep(_sg_FrameLength - updateLength);
         }
     }
 
@@ -215,4 +215,3 @@ SGfloat SG_EXPORT sgWindowGetFPS(void)
 {
     return _sg_achievedFramerate;
 }
-

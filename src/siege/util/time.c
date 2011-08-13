@@ -13,24 +13,40 @@
  */
 #include <siege/util/time.h>
 
-#ifdef linux
-#include <time.h>
+#ifdef __WIN32__
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+#else
+    #include <unistd.h>
+    #include <time.h>
+#endif
 
 SGlong SG_EXPORT sgGetTime(void)
 {
+#ifdef __WIN32__
+    #warning "time.c unimplemented on this platform"
+    return 0L;
+#else
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (ts.tv_sec * 1000000000L) + ts.tv_nsec;
+    return (ts.tv_sec * SG_NANOSECONDS_IN_A_SECOND) + ts.tv_nsec;
+#endif
 }
 
-void SG_EXPORT sgSleep(SGint useconds)
+void SG_EXPORT sgSleep(SGlong nseconds)
 {
-    usleep(useconds);
-}
+#ifdef __WIN32__
+    #warning "time.c unimplemented on this platform"
 #else
-#warning "time.c unimplemented on your platform."
-SGlong SG_EXPORT sgGetTime(void)
-{
-    return 0L;
-}
+    struct timespec ts, tsr;
+    ts.tv_sec = nseconds / SG_NANOSECONDS_IN_A_SECOND;
+    ts.tv_nsec = nseconds % SG_NANOSECONDS_IN_A_SECOND;
+    SGint ret = nanosleep(&ts, &tsr);
+    if(ret < 0) // nanosleep didn't go so well, so we fall back to sleep/usleep combination...
+    {
+        while(ts.tv_sec)
+            ts.tv_sec = sleep(ts.tv_sec); // first the seconds...
+        usleep(ts.tv_nsec / 1000);
+    }
 #endif
+}
