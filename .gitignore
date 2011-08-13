@@ -5,6 +5,8 @@
 *.o
 *.a
 /build
+/src/bindings/cython/build/
+/src/bindings/cython/siege/*/*.c
 /doc
 /doc/*/
 /Debug

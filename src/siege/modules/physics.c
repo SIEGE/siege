@@ -25,6 +25,8 @@ void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsBodyCreate);
     _SG_BIND(sgmPhysicsBodyDestroy);
 
+    _SG_BIND(sgmPhysicsBodySetSleeping);
+    _SG_BIND(sgmPhysicsBodyGetSleeping);
     _SG_BIND(sgmPhysicsBodySetMass);
     _SG_BIND(sgmPhysicsBodyGetMass);
     _SG_BIND(sgmPhysicsBodySetMoment);
