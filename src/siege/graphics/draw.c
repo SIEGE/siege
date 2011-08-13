@@ -257,6 +257,17 @@ void SG_EXPORT sgDrawSetBlendEquation(SGenum equation)
         psgmGraphicsDrawSetBlendEquation(_sg_gfxHandle, equation);
 }
 
+void SG_EXPORT sgDrawSetDepthTest(SGbool test)
+{
+    if(psgmGraphicsDrawSetDepthTest)
+        psgmGraphicsDrawSetDepthTest(_sg_gfxHandle, test);
+}
+void SG_EXPORT sgDrawSetSmooth(SGbool smooth)
+{
+    if(psgmGraphicsDrawSetSmooth)
+        psgmGraphicsDrawSetSmooth(_sg_gfxHandle, smooth);
+}
+
 void SG_EXPORT sgDrawPoint(float x, float y)
 {
 	sgDrawBegin(SG_GRAPHICS_PRIMITIVE_POINTS);

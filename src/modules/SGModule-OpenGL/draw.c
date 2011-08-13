@@ -186,3 +186,22 @@ SGuint SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
 
     return SG_OK;
 }
+
+SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthTest)(void* context, SGbool test)
+{
+    if(test)
+        glEnable(GL_DEPTH_TEST);
+    else
+        glDisable(GL_DEPTH_TEST);
+    return SG_OK;
+}
+
+SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetSmooth)(void* context, SGbool smooth)
+{
+    GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
+
+    glHint(GL_POINT_SMOOTH_HINT  , mode);
+    glHint(GL_LINE_SMOOTH_HINT   , mode);
+    glHint(GL_POLYGON_SMOOTH_HINT, mode);
+    return SG_OK;
+}
