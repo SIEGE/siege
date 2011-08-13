@@ -228,12 +228,21 @@ int main(void)
     controller->evKeyboardKeyPress = evKeyboardKeyPress;
     controller->evKeyboardKeyRepeat = evKeyboardKeyRepeat;
 
+    SGlong accum = SG_NANOSECONDS_IN_A_SECOND, origin = sgGetTime();
+    SGfloat fps;
     while(sgLoop(NULL))
     {
+        accum += sgGetTime() - origin;
         if(overlay)
             for(i = 0; i < numboxes; i++)
                 boxDrawDBG(boxes[i]);
-        sgFontPrintf(font, 1.0, 10.0, "FPS: %.2f", sgWindowGetFPS());
+        if(accum >= SG_NANOSECONDS_IN_A_SECOND)
+        {
+            accum = 0;
+            origin = sgGetTime();
+            fps = sgWindowGetFPS();
+        }
+        sgFontPrintf(font, 1.0, 10.0, "FPS: %.2f", fps);
 
         sgWindowSwapBuffers();
         sgDrawClear();
