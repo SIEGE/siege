@@ -15,7 +15,7 @@
 
 #include <siege/graphics/draw.h>
 #include <siege/graphics/texture.h>
-#include <siege/graphics/particles.h>
+#include <siege/graphics/emitter.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -28,7 +28,7 @@
  * add function pointer methods and registration to allow custom update of particles
  */
 
-void _sgParticleInit(SGParticle* particle, float x, float y, float angle, float speed, float alpha, float width, float height, float rotation)
+void SG_EXPORT _sgParticleInit(SGParticle* particle, float x, float y, float angle, float speed, float alpha, float width, float height, float rotation)
 {
 	particle->x = x;
 	particle->y = y;
@@ -41,14 +41,14 @@ void _sgParticleInit(SGParticle* particle, float x, float y, float angle, float 
 	particle->rotation = rotation;
 }
 
-SGParticle* _sgParticleCreate(float x, float y, float angle, float speed)
+SGParticle* SG_EXPORT _sgParticleCreate(float x, float y, float angle, float speed)
 {
 	SGParticle* particle = malloc(sizeof(SGParticle));
 	_sgParticleInit(particle, x, y, angle, speed, 1.0, 16, 16, 0);
 	return particle;
 }
 
-SGEmitter* sgEmitterCreate(
+SGEmitter* SG_EXPORT sgEmitterCreate(
 		float x,              /* initial x of particles */
 		float y,              /* initial y of particles */
 		float angle,          /* direction of particles */
@@ -60,8 +60,10 @@ SGEmitter* sgEmitterCreate(
 		size_t nb_particles,     /* size of particles pool */
 		SGTexture* texture)   /* texture used by particles */
 {
-	int i;
+	size_t i;
 	SGEmitter* emitter = malloc(sizeof(SGEmitter));
+    if(!emitter)
+        return NULL;
 	emitter->x = x;
 	emitter->y = y;
 	emitter->angle = angle;
@@ -76,15 +78,15 @@ SGEmitter* sgEmitterCreate(
 	emitter->time_accumulator = 0.0;
 	emitter->silent = SG_FALSE;
 
-	for (i=0; i < emitter->nb_particles; i++)
+	for(i = 0; i < emitter->nb_particles; i++)
 		emitter->particles[i].age = emitter->duration + 1;
 
-	sgEmitterSetUpdateFcn(emitter, _sgParticleUpdate);
+	sgEmitterSetUpdateFunc(emitter, _sgParticleUpdate);
 
 	return emitter;
 }
 
-void _sgParticleUpdate(SGParticle* particle, float time, float friction)
+void SG_EXPORT _sgParticleUpdate(SGParticle* particle, float time, float friction)
 {
 	particle->speed -= friction * time;
 	if (particle->speed < 0)
@@ -94,7 +96,7 @@ void _sgParticleUpdate(SGParticle* particle, float time, float friction)
 	particle->age += time;
 }
 
-void sgEmitterUpdate(SGEmitter* emitter, float time)
+void SG_EXPORT sgEmitterUpdate(SGEmitter* emitter, float time)
 {
 	int i;
 	SGbool condition;
@@ -105,7 +107,7 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 	{
 		if (emitter->particles[i].age < emitter->duration)
 		{
-			emitter->update_fcn(&emitter->particles[i], time, emitter->friction);
+			emitter->cbUpdate(&emitter->particles[i], time, emitter->friction);
 			//_sgParticleUpdate(&emitter->particles[i], time, emitter->friction);
 		}
 	}
@@ -147,7 +149,7 @@ void sgEmitterUpdate(SGEmitter* emitter, float time)
 	out: NULL;
 }
 
-void sgEmitterDraw(SGEmitter* emitter)
+void SG_EXPORT sgEmitterDraw(SGEmitter* emitter)
 {
 	int i;
 	float angle;
@@ -179,11 +181,11 @@ void sgEmitterDraw(SGEmitter* emitter)
 	sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
-void sgEmitterSetUpdateFcn(SGEmitter* emitter, void (*update_fcn)(SGParticle*, float, float))
+void SG_EXPORT sgEmitterSetUpdateFunc(SGEmitter* emitter, SGParticleUpdate* cbUpdate)
 {
-	emitter->update_fcn = update_fcn;
+	emitter->cbUpdate = cbUpdate;
 }
-void sgEmitterSetSilent(SGEmitter* emitter, SGbool boolean)
+void SG_EXPORT sgEmitterSetSilent(SGEmitter* emitter, SGbool boolean)
 {
 	emitter->silent = boolean;
 }

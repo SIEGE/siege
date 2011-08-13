@@ -31,6 +31,7 @@
 #include "core/event.h"
 #include "core/window.h"
 #include "graphics/draw.h"
+#include "graphics/emitter.h"
 #include "graphics/font.h"
 #include "graphics/mask.h"
 #include "graphics/sprite.h"

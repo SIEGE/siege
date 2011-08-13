@@ -18,8 +18,8 @@
  *
  * */
 
-#ifndef __SIEGE_GRAPHICS_PARTICLES_H__
-#define __SIEGE_GRAPHICS_PARTICLES_H__
+#ifndef __SIEGE_GRAPHICS_EMITTER_H__
+#define __SIEGE_GRAPHICS_EMITTER_H__
 
 #include "../common.h"
 #include "texture.h"
@@ -34,6 +34,8 @@ typedef struct SGParticle
 	float x, y, angle, speed, age, width, height, rotation, alpha;
 } SGParticle;
 
+typedef void SG_EXPORT (SGParticleUpdate)(SGParticle* particle, float time, float friction);
+
 typedef struct SGEmitter
 {
 	float x, y, angle, delta_angle, initial_speed, duration, rate, friction, time_accumulator;
@@ -41,10 +43,10 @@ typedef struct SGEmitter
 	SGTexture* texture;
 	SGParticle* particles;
 	SGbool silent;
-	void (*update_fcn)(SGParticle* particle, float time, float friction);
+	SGParticleUpdate* cbUpdate;
 } SGEmitter;
 
-SGEmitter* sgEmitterCreate(
+SGEmitter* SG_EXPORT sgEmitterCreate(
 		float x,              /* initial x of particles */
 		float y,              /* initial y of particles */
 		float angle,          /* direction of particles */
@@ -56,20 +58,20 @@ SGEmitter* sgEmitterCreate(
 		size_t nb_particles,  /* size of particles pool */
 		SGTexture* texture);  /* texture used by particles */
 
-void sgEmitterUpdate(SGEmitter* emitter, float time);
+void SG_EXPORT sgEmitterUpdate(SGEmitter* emitter, float time);
 
-SGParticle* _sgParticleCreate(float x, float y, float angle, float speed);
+SGParticle* SG_EXPORT _sgParticleCreate(float x, float y, float angle, float speed);
 
-void _sgParticleUpdate(SGParticle* particle, float time, float friction);
+void SG_EXPORT _sgParticleUpdate(SGParticle* particle, float time, float friction);
 
-void sgEmitterDraw(SGEmitter* emitter);
+void SG_EXPORT sgEmitterDraw(SGEmitter* emitter);
 
-void sgEmitterSetUpdateFcn(SGEmitter* emitter, void (*update_fcn)(SGParticle*, float, float));
+void SG_EXPORT sgEmitterSetUpdateFunc(SGEmitter* emitter, SGParticleUpdate* cbUpdate);
 
-void sgEmitterSetSilent(SGEmitter*, SGbool);
+void SG_EXPORT sgEmitterSetSilent(SGEmitter*, SGbool);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // __SIEGE_GRAPHICS_PARTICLES_H__
+#endif // __SIEGE_GRAPHICS_EMITTER_H__

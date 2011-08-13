@@ -1,5 +1,4 @@
 #include <siege/siege.h>
-#include <siege/graphics/particles.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -58,7 +57,7 @@ int main(void)
 	sgLoadModule("OpenGL");
 	sgLoadModule("DevIL");
 	sgInit(640, 480, 32, 0);
-	sgWindowSetTitle("SIEGE Particles Demo");
+	sgWindowSetTitle("SIEGE Emitter Demo");
 
 	/* create a texture for our particle generator */
 	SGTexture* my_texture = sgTextureCreateFile("data/sprites/CrateSmall.png");
@@ -81,7 +80,7 @@ int main(void)
 	/*
 	 * set our first update function
 	 */
-	sgEmitterSetUpdateFcn(my_particle_emitter, _myParticleUpdate1);
+	sgEmitterSetUpdateFunc(my_particle_emitter, _myParticleUpdate1);
 
 	/*
 	 * if there is not enough room in the particles queu, the particle manager
@@ -106,7 +105,7 @@ int main(void)
 				 * get updated nor displayed, please not you should not set the
 				 * nb_particles to a size superior than the initial size, or you'll crash
 				 */
-				sgEmitterSetUpdateFcn(my_particle_emitter, _myParticleUpdate2);
+				sgEmitterSetUpdateFunc(my_particle_emitter, _myParticleUpdate2);
 				my_particle_emitter->nb_particles = 500;
 				my_particle_emitter->duration = 40;
 			}
@@ -122,7 +121,7 @@ int main(void)
 			/*
 			 * restaure inirial update function and initial nb_particles
 			 */
-			sgEmitterSetUpdateFcn(my_particle_emitter, _myParticleUpdate1);
+			sgEmitterSetUpdateFunc(my_particle_emitter, _myParticleUpdate1);
 			my_particle_emitter->nb_particles = 2000;
 		}
 
