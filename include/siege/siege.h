@@ -62,6 +62,8 @@
 #include "util/plist.h"
 #include "util/rand.h"
 #include "util/string.h"
+#include "util/time.h"
+#include "util/tree.h"
 #include "util/vector.h"
 
 #endif // __SIEGE_H__

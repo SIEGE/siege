@@ -1,6 +1,7 @@
 #include <siege/siege.h>
 
 #include <stdlib.h>
+#include <stdio.h>
 
 SGPhysicsSpace* space;
 
@@ -88,7 +89,7 @@ SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density,
                        w / 2.0,  h / 2.0,
                        w / 2.0, -h / 2.0};
 
-    SGEntity* entity = sgEntityCreate(0.0, SG_EVT_ALL);
+    SGEntity* entity = sgEntityCreate(0.0);
 
     Box* box = calloc(1, sizeof(Box));
     entity->data = box;
@@ -195,12 +196,15 @@ int main(void)
     sgLoadModule("OpenGL");
     sgLoadModule("DevIL");
     sgLoadModule("Chipmunk");
+    sgLoadModule("Freetype");
     sgInit(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Physics Demo - Press F1 for debug overlay");
+    sgWindowSetFPSLimit(60.0f);
 
 	space = sgPhysicsSpaceGetDefault();
 	sgPhysicsSpaceSetIterations(space, 10);
 	sgPhysicsSpaceSetDamping(space, 0.75);
+    sgPhysicsSpaceSetGravity(space, 0.0, 25.0);
 
     sprCrateSmall = sgSpriteCreateFile("data/sprites/CrateSmall.png");
     sprFloorMetalPlate = sgSpriteCreateFile("data/sprites/FloorMetalPlate.png");
@@ -208,6 +212,7 @@ int main(void)
     sprPacman = sgSpriteCreateFile("data/sprites/Pacman.png");
     sprStrongboxSmall = sgSpriteCreateFile("data/sprites/StrongboxSmall.png");
     sprSupportBar = sgSpriteCreateFile("data/sprites/SupportBar.png");
+    SGFont* font = sgFontCreate("data/fonts/DejaVuSans.ttf", 7.0, 127);
 
     SGuint i;
     for(i = 32; i < 640; i += 64)
@@ -217,17 +222,27 @@ int main(void)
     for(i = 224; i < 448; i += 64)
         createFloor(sprHazardWall, i, 320);
 
-    controller = sgEntityCreate(0.0, SG_EVT_ALL);
+    controller = sgEntityCreate(0.0);
     controller->evMouseButtonLeftPress = evMouseButtonLeftPress;
     controller->evMouseButtonRightPress = evMouseButtonRightPress;
     controller->evKeyboardKeyPress = evKeyboardKeyPress;
     controller->evKeyboardKeyRepeat = evKeyboardKeyRepeat;
 
+    SGlong accum = SG_NANOSECONDS_IN_A_SECOND, origin = sgGetTime();
+    SGfloat fps;
     while(sgLoop(NULL))
     {
+        accum += sgGetTime() - origin;
         if(overlay)
             for(i = 0; i < numboxes; i++)
                 boxDrawDBG(boxes[i]);
+        if(accum >= SG_NANOSECONDS_IN_A_SECOND)
+        {
+            accum = 0;
+            origin = sgGetTime();
+            fps = sgWindowGetFPS();
+        }
+        sgFontPrintf(font, 1.0, 10.0, "FPS: %.2f", fps);
 
         sgWindowSwapBuffers();
         sgDrawClear();
@@ -239,6 +254,7 @@ int main(void)
     sgSpriteDestroy(sprPacman);
     sgSpriteDestroy(sprStrongboxSmall);
     sgSpriteDestroy(sprSupportBar);
+    sgFontDestroy(font);
 
     sgDeinit();
 

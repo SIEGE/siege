@@ -148,7 +148,7 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
     poly->nump = nump;
 
 
-    poly->entity = sgEntityCreate(0.0, SG_EVT_ALL);
+    poly->entity = sgEntityCreate(0.0);
     poly->entity->data = poly;
     poly->entity->lcDestroy = destroyPolyEntity;
     poly->entity->evDraw = drawPolyEntity;
@@ -295,7 +295,7 @@ Light* createLight(SGVec2 pos, SGColor color, float radius, float angle, float a
     light->angle = angle * SG_PI / 180.0;
     light->arc = arc * SG_PI / 180.0;
 
-    light->entity = sgEntityCreate(0.0, SG_EVT_ALL);
+    light->entity = sgEntityCreate(0.0);
     light->entity->data = light;
     light->entity->lcDestroy = destroyLightEntity;
     light->entity->evDraw = drawLightEntity;
@@ -416,7 +416,7 @@ int main(void)
 	sgPhysicsSpaceSetIterations(space, 10);
 	sgPhysicsSpaceSetDamping(space, 0.75);
 
-    SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
+    SGEntity* handler = sgEntityCreate(0.0);
     handler->evMouseButtonPress = evMouseButtonPress;
     handler->evKeyboardKeyPress = evKeyboardKeyPress;
 

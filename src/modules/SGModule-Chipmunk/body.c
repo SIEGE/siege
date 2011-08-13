@@ -36,6 +36,23 @@ SGuint SG_EXPORT sgmPhysicsBodyDestroy(void* body)
     return SG_OK;
 }
 
+SGenum SG_EXPORT sgmPhysicsBodySetSleeping(void* body, SGbool sleeping)
+{
+    if(!body)
+        return SG_OK; // SG_INVALID_VALUE
+    if(sleeping)
+        cpBodySleep(body);
+    else
+        cpBodyActivate(body);
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmPhysicsBodyGetSleeping(void* body, SGbool* sleeping)
+{
+    if(!body)
+        return SG_OK; // SG_INVALID_VALUE
+    *sleeping = cpBodyIsSleeping(body);
+    return SG_OK;
+}
 SGuint SG_EXPORT sgmPhysicsBodySetMass(void* body, float mass)
 {
     if(body == NULL)

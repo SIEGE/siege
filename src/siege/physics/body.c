@@ -77,6 +77,25 @@ void* SG_EXPORT sgPhysicsBodyGetData(SGPhysicsBody* body)
     return body->data;
 }
 
+void SG_EXPORT sgPhysicsBodySetSleeping(SGPhysicsBody* body, SGbool sleeping)
+{
+    if(!body)
+        return;
+
+    if(psgmPhysicsBodySetSleeping)
+        psgmPhysicsBodySetMass(body->handle, sleeping);
+}
+SGbool SG_EXPORT sgPhysicsBodyGetSleeping(SGPhysicsBody* body)
+{
+    if(!body)
+        return SG_FALSE;
+
+    SGbool sleeping = SG_FALSE;
+    if(psgmPhysicsBodyGetSleeping)
+        psgmPhysicsBodyGetSleeping(body->handle, &sleeping);
+    return sleeping;
+}
+
 void SG_EXPORT sgPhysicsBodySetPos(SGPhysicsBody* body, float x, float y)
 {
     if(body == NULL)

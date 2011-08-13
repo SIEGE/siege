@@ -12,6 +12,10 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
+/**
+ * Title: Event
+ */
+
 #ifndef __EVENT_H__
 #define __EVENT_H__
 

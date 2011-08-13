@@ -75,7 +75,7 @@ Polygon* createPoly(SGVec2* points, size_t nump, SGTexture* texture)
     memcpy(poly->points, points, nump * sizeof(SGVec2));
     poly->nump = nump;
 
-    poly->entity = sgEntityCreate(0.0, SG_EVT_ALL);
+    poly->entity = sgEntityCreate(0.0);
     poly->entity->data = poly;
     poly->entity->lcDestroy = destroyPolyEntity;
     poly->entity->evDraw = drawPolyEntity;
@@ -226,7 +226,7 @@ Light* createLight(SGVec2 pos, SGColor color, float radius, float angle, float a
     light->angle = angle * SG_PI / 180.0;
     light->arc = arc * SG_PI / 180.0;
 
-    light->entity = sgEntityCreate(0.0, SG_EVT_ALL);
+    light->entity = sgEntityCreate(0.0);
     light->entity->data = light;
     light->entity->lcDestroy = destroyLightEntity;
     light->entity->evDraw = drawLightEntity;
@@ -336,7 +336,7 @@ int main(void)
     sgInit(640, 480, 32, 0);
     sgWindowSetTitlef("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
 
-    SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
+    SGEntity* handler = sgEntityCreate(0.0);
     handler->evKeyboardKeyPress = evKeyboardKeyPress;
 
     SGSprite* tile = sgSpriteCreateFile2f("data/sprites/FloorMetalPlate.png", 0.0, 0.0);

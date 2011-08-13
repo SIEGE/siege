@@ -12,6 +12,10 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
+/**
+ * Title: Windowing
+ */
+
 #ifndef __SIEGE_CORE_WINDOW_H__
 #define __SIEGE_CORE_WINDOW_H__
 
@@ -189,6 +193,10 @@ void SG_EXPORT sgWindowSetHeight(SGuint height);
  */
 SGuint SG_EXPORT sgWindowGetHeight(void);
 /// @}
+
+SGfloat SG_EXPORT sgWindowGetFPSLimit(void);
+void SG_EXPORT sgWindowSetFPSLimit(SGfloat limit);
+SGfloat SG_EXPORT sgWindowGetFPS(void);
 
 /// @{
 /**

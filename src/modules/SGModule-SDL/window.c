@@ -74,7 +74,7 @@ SGuint SG_EXPORT sgmCoreWindowOpen(void* window, SGuint width, SGuint height, SG
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    Window* cwindow = (Window*)window;
+    Window* cwindow = window;
 
     Uint32 sdlflags = 0;
     if(useGL)
@@ -98,7 +98,7 @@ SGuint SG_EXPORT sgmCoreWindowIsOpened(void* window, SGbool* opened)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    Window* cwindow = (Window*)window;
+    Window* cwindow = window;
 
     *opened = cwindow->opened;
     return SG_OK;
@@ -107,7 +107,7 @@ SGuint SG_EXPORT sgmCoreWindowClose(void* window)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    Window* cwindow = (Window*)window;
+    Window* cwindow = window;
 
     cwindow->opened = SG_FALSE;
     windowClose();
@@ -130,7 +130,7 @@ SGuint SG_EXPORT sgmCoreWindowSetSize(void* window, SGuint width, SGuint height)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    Window* cwindow = (Window*)window;
+    Window* cwindow = window;
 
     cwindow->surface = SDL_SetVideoMode(width, height, cwindow->surface->format->BitsPerPixel, cwindow->surface->flags);
     windowResize(width, height);
@@ -141,7 +141,7 @@ SGuint SG_EXPORT sgmCoreWindowGetSize(void* window, SGuint* width, SGuint* heigh
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    Window* cwindow = (Window*)window;
+    Window* cwindow = window;
 
     *width = cwindow->surface->w;
     *height = cwindow->surface->h;
@@ -153,7 +153,7 @@ SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    Window* cwindow = (Window*)window;
+    Window* cwindow = window;
 
     /*SGbool opened;
     sgmCoreWindowIsOpened(window, &opened);*/
