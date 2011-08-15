@@ -10,7 +10,12 @@ SGAudioSource* srcMusic;
 
 void SG_EXPORT evMouseButtonLeftPress(SGEntity* entity)
 {
-    sgAudioSourcePlay(srcBoom);
+    SGAudioSource* source = sgAudioSourceCreate(0.0, 1.0, 1.0, SG_FALSE);
+    sgAudioSourceQueueBuffer(source, bufBoom);
+    sgAudioSourcePlay(source);
+    sgAudioSourceDestroyLazy(source);
+
+    //sgAudioSourcePlay(srcBoom);
 }
 
 int main(void)

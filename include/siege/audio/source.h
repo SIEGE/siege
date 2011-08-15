@@ -22,7 +22,7 @@
 
 #include "../common.h"
 #include "buffer.h"
-#include "../util/plist.h"
+#include "../util/list.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -79,6 +79,7 @@ typedef struct SGAudioSource
 #ifdef SG_BUILD_LIBRARY
 SGAudioSourceDispatch* _sg_srcDisList;
 SGuint _sg_srcDisLength;
+SGList* _sg_srcDestroy;
 #endif // SG_BUILD_LIBRARY
 
 SGbool SG_EXPORT _sgAudioSourceInit(void);
@@ -103,6 +104,7 @@ SGAudioSource* SG_EXPORT sgAudioSourceCreate(float priority, float volume, float
  * \param source The source to destroy - it should not be used anymore after this call
  */
 void SG_EXPORT sgAudioSourceDestroy(SGAudioSource* source);
+void SG_EXPORT sgAudioSourceDestroyLazy(SGAudioSource* source); /// < destroy when done playing
 
 /**
  * \name Basic functions
@@ -175,6 +177,8 @@ SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source);
  * Queueing buffers (as opposed to simply putting in one large buffer) can be used for things like smooth streaming of large audio data such as music.
  */
 /// @{
+size_t SG_EXPORT sgAudioSourceGetNumProcessedBuffers(SGAudioSource* source);
+size_t SG_EXPORT sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source);
 /**
  * \brief Queue multiple buffers into a source
  *
@@ -199,6 +203,9 @@ void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** 
  */
 void SG_EXPORT sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* buffer);
 /// @}
+
+void SG_EXPORT sgAudioSourceUnqueueBuffers(SGAudioSource* source, size_t numbuffers);
+void SG_EXPORT sgAudioSourceUnqueueBuffer(SGAudioSource* source);
 
 /**
  * \name Position
