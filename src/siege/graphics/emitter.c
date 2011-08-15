@@ -143,10 +143,9 @@ void SG_EXPORT sgEmitterUpdate(SGEmitter* emitter, float time)
 				printf(" full, either reduce lifetime,");
 				printf(" or rate, or make pool bigger\n");
 			}
-			goto out;
+			return;
 		}
 	}
-	out: NULL;
 }
 
 void SG_EXPORT sgEmitterDraw(SGEmitter* emitter)
