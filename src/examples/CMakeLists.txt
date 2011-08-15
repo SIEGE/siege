@@ -18,6 +18,7 @@ IF(BUILD_EXAMPLES)
     ADD_CUSTOM_TARGET(examples)
 
     EXAMPLE("A*" ASTAR AStar astar)
+    EXAMPLE("audio" AUDIO Audio audio)
     EXAMPLE("collision detection" COLDET Coldet coldet)
     EXAMPLE("draw" DRAW Draw draw)
     EXAMPLE("emitter" EMITTER Emitter emitter)

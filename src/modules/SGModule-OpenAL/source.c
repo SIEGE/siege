@@ -28,13 +28,13 @@ SGuint SG_EXPORT sgmAudioSourceMaxSources(SGuint* max)
     ALuint* buf = malloc(threshold * sizeof(ALuint));
     for(*max = 1; *max <= threshold; (*max)++)
     {
-        alGenBuffers(*max, buf);
+        alGenSources(*max, buf);
         if(alGetError() != AL_NO_ERROR)
         {
             (*max)--;
             break;
         }
-        alDeleteBuffers(*max, buf);
+        alDeleteSources(*max, buf);
     }
     free(buf);
     return SG_OK;
@@ -45,6 +45,7 @@ SGuint SG_EXPORT sgmAudioSourceCreate(void** source)
     *source = malloc(sizeof(ALuint));
 
     alGenSources(1, *source);
+
     return SG_OK;
 }
 /*SGuint SG_EXPORT sgmAudioSourceCreateData(void** source, void* buffer, float pitch, float gain, SGbool looping)
@@ -129,7 +130,7 @@ SGuint SG_EXPORT sgmAudioSourceQueueBuffers(void* source, void** buffers, SGuint
     ALuint* arr = malloc(numbuffers * sizeof(ALuint));
     size_t i;
     for(i = 0; i < numbuffers; i++)
-        arr[i] = *(ALuint*)&buffers[i];
+        arr[i] = *(ALuint*)buffers[i];
     alSourceQueueBuffers(*(ALuint*)source, numbuffers, arr);
     free(arr);
     return SG_OK;
