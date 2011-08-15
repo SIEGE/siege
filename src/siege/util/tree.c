@@ -270,7 +270,19 @@ SGTreeNode* SG_EXPORT sgTreeFindItem(SGTree* tree, void* item)
     return node;
 }
 
-SGTreeNode* SG_EXPORT sgTreeInsert(SGTree* tree, void* item);
+SGTreeNode* SG_EXPORT sgTreeInsert(SGTree* tree, void* item)
+{
+    SGTreeNode* node = malloc(sizeof(SGTreeNode));
+    if(!node)
+        return NULL;
+    //node->parent = NULL;
+    node->left = NULL;
+    node->right = NULL;
+    node->level = 1;
+    node->item = item;
+    tree->root = _sgTreeNodeInsert(tree, tree->root, node);
+    return node;
+}
 
 void SG_EXPORT sgTreeRemoveNode(SGTree* tree, SGTreeNode* node)
 {

@@ -2,11 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 IF(${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
     MESSAGE(FATAL_ERROR "In-source builds are not supported. Please delete the CMakeCache.txt file and the CMakeFiles directory and try building out-of-source:\n\tmkdir build && cd build && cmake ..")
-
 ENDIF(${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
-
-MESSAGE(STATUS ${CMAKE_SOURCE_DIR} EQUAL ${CMAKE_BINARY_DIR})
-MESSAGE(FATAL_ERROR "test")
 
 MACRO(CONFIGURE_FILES srcDir destDir)
     MAKE_DIRECTORY(${destDir})
