@@ -60,6 +60,7 @@ void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value);
 void SG_EXPORT _sgJSONDumpTreeItem(SGTreeNode* node, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent);
 void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent);
 
+char* SG_EXPORT _sgJSONSkipComments(char* input, char** error);
 char* SG_EXPORT _sgJSONEscapeString(const char* input, char** str, size_t* len, size_t* mem);
 SGbool SG_EXPORT _sgJSONGetSymbol(char** input);
 
@@ -79,6 +80,7 @@ void SG_EXPORT sgJSONValueDestroy(SGJSONValue* value);
 
 char* SG_EXPORT sgJSONToString(SGJSONValue* value, SGbool pretty);
 void SG_EXPORT sgJSONArrayRemoveValue(SGJSONValue* array, SGJSONValue* value);
+void SG_EXPORT sgJSONObjectSetValue(SGJSONValue* object, const char* key, SGJSONValue* value);
 void SG_EXPORT sgJSONObjectRemoveValue(SGJSONValue* object, const char* key);
 SGJSONValue* SG_EXPORT sgJSONObjectGetValue(SGJSONValue* object, const char* key);
 

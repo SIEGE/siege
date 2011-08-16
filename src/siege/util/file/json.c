@@ -149,6 +149,27 @@ void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, siz
     }
 }
 
+char* SG_EXPORT _sgJSONSkipComments(char* input, char** error)
+{
+    char* end;
+    SGJSONValue val;
+
+    while(1)
+    {
+        input = sgSpaceEnd(input);
+
+        end = _sgJSONParseComment(&val, input, error);
+        if(input != end)
+        {
+            if(!end) return NULL;
+            free(val.v.comment);
+            input = end;
+        }
+        else
+            break;
+    }
+    return input;
+}
 char* SG_EXPORT _sgJSONEscapeString(const char* input, char** str, size_t* len, size_t* mem)
 {
     size_t i;
@@ -412,7 +433,8 @@ char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
 
     into->v.array = sgListCreate();
 
-    input = sgSpaceEnd(input);
+    input = _sgJSONSkipComments(input, error);
+    if(!input) return NULL;
     while(*input != ']' && *input)
     {
         if(into->v.array->first) // if there was a previous item, but no comma...
@@ -426,7 +448,9 @@ char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
                 input++;
         }
 
-        input = sgSpaceEnd(input); // extension: we allow a trailing comma
+        input = _sgJSONSkipComments(input, error);
+        if(!input) return NULL;
+
         if(*input == ']')
         {
             input++;
@@ -448,7 +472,8 @@ char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
 
         sgListAppend(into->v.array, val);
 
-        input = sgSpaceEnd(input);
+        input = _sgJSONSkipComments(input, error);
+        if(!input) return NULL;
     }
 
     if(!*input)
@@ -472,7 +497,8 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
 
     into->v.object = sgTreeCreate(_sgJSONTreeCmp);
 
-    input = sgSpaceEnd(input);
+    input = _sgJSONSkipComments(input, error);
+    if(!input) return NULL;
     while(*input != '}' && *input)
     {
         if(into->v.array->first) // if there was a previous item, but no comma...
@@ -485,7 +511,8 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
             input++;
         }
 
-        input = sgSpaceEnd(input); // extension: we allow a trailing comma
+        input = _sgJSONSkipComments(input, error);
+        if(!input) return NULL;
         if(*input == '}')
         {
             input++;
@@ -515,13 +542,18 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
             titem->key = key.v.string;
         }
 
-        input = sgSpaceEnd(input);
+        input = _sgJSONSkipComments(input, error);
+        if(!input) return NULL;
+
         if(*input != ':')
         {
             *error = sgPrintf("Expected ':', found '%c'", *input);
             return NULL;
         }
         input++;
+
+        input = _sgJSONSkipComments(input, error);
+        if(!input) return NULL;
 
         titem->val = malloc(sizeof(SGJSONValue));
         titem->val->type = SG_JSON_TYPE_NULL;
@@ -540,7 +572,8 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
 
         sgTreeInsert(into->v.object, titem);
 
-        input = sgSpaceEnd(input);
+        input = _sgJSONSkipComments(input, error);
+        if(!input) return NULL;
     }
 
     if(!*input)
@@ -553,23 +586,10 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
 
 char* SG_EXPORT _sgJSONParseValue(SGJSONValue* into, char* input, char** error)
 {
-    //char* start = input;
     char* end;
 
-    while(1)
-    {
-        input = sgSpaceEnd(input);
-
-        end = _sgJSONParseComment(into, input, error);
-        if(input != end)
-        {
-            if(!end) return NULL;
-            free(into->v.comment);
-            input = end;
-        }
-        else
-            break;
-    }
+    input = _sgJSONSkipComments(input, error);
+    if(!input) return NULL;
 
     end = _sgJSONParseNull(into, input, error);
     if(input != end) return end; // end can also be NULL, which indicates an error
@@ -601,6 +621,9 @@ SGJSONValue* SG_EXPORT sgJSONValueCreateString(const char* str)
     SGJSONValue* root = malloc(sizeof(SGJSONValue));
     char* error;
 
+    if(sgStartsWith(str, "\xEF\xBB\xBF")) // skip the byte order mark
+        str = str + 3;
+
     char* ret = _sgJSONParseValue(root, (char*)str, &error);
     if(ret == NULL)
     {
@@ -618,6 +641,7 @@ SGJSONValue* SG_EXPORT sgJSONValueCreateFile(const char* fname)
 
     fseek(file, 0, SEEK_END);
     size_t len = ftell(file);
+    rewind(file);
 
     char* str = malloc(len + 1);
     fread(str, 1, len, file);
@@ -658,6 +682,24 @@ void SG_EXPORT sgJSONArrayRemoveValue(SGJSONValue* array, SGJSONValue* value)
             sgListRemoveNode(array->v.array, node);
             return;
         }
+    }
+}
+void SG_EXPORT sgJSONObjectSetValue(SGJSONValue* object, const char* key, SGJSONValue* value)
+{
+    if(object->type != SG_JSON_TYPE_OBJECT)
+        return;
+
+    SGJSONTreeItem seek;
+    seek.key = (char*)key;
+
+    SGJSONTreeItem* titem;
+
+    SGTreeNode* node = sgTreeFindItem(object->v.object, &seek);
+    if(node)
+    {
+        titem = node->item;
+        _sgJSONFreeValue(titem->val);
+        titem->val = value;
     }
 }
 void SG_EXPORT sgJSONObjectRemoveValue(SGJSONValue* object, const char* key)
