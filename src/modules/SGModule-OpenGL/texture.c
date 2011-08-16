@@ -219,3 +219,30 @@ SGenum SG_EXPORT sgmGraphicsTextureSetWrap(void* texture, SGenum swrap, SGenum t
 
     return SG_OK;
 }
+
+SGenum SG_EXPORT sgmGraphicsTextureSetInterpolation(void* texture, SGenum interp)
+{
+    if(texture == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    TextureData* tdata = texture;
+
+    glBindTexture(GL_TEXTURE_2D, tdata->texid);
+
+    GLenum glinterp = 0;
+    switch(interp)
+    {
+        case SG_GRAPHICS_INTERP_CURRENT:                        break;
+        case SG_GRAPHICS_INTERP_NEAREST: glinterp = GL_NEAREST; break;
+        case SG_GRAPHICS_INTERP_LINEAR:  glinterp = GL_LINEAR;  break;
+        default: interp = SG_GRAPHICS_INTERP_CURRENT;
+    }
+    if(interp != SG_GRAPHICS_INTERP_CURRENT)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glinterp);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glinterp);
+    }
+
+    //glBindTexture(GL_TEXTURE_2D, 0);
+
+    return SG_OK;
+}
