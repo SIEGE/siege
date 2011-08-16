@@ -55,6 +55,7 @@
 #include "physics/constraint.h"
 #include "physics/shape.h"
 #include "physics/space.h"
+#include "util/file/json.h"
 #include "util/angle.h"
 #include "util/color.h"
 #include "util/link.h"
