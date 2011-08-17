@@ -186,12 +186,18 @@ SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
                 if(event.button.button == SDL_BUTTON_WHEELUP)
                 {
                     if(event.button.state == SDL_PRESSED)
+                    {
                         mouseW++;
+                        mouseWheel(mouseW);
+                    }
                 }
                 else if(event.button.button == SDL_BUTTON_WHEELDOWN)
                 {
                     if(event.button.state == SDL_PRESSED)
+                    {
                         mouseW--;
+                        mouseWheel(mouseW);
+                    }
                 }
                 else
                     mouseButton(event.button.button, event.button.state == SDL_PRESSED);

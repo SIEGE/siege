@@ -32,7 +32,7 @@ SGuint SG_EXPORT sgmGraphicsViewportSetView(void* viewport, SGuint wx, SGuint wy
     glLoadIdentity();
 
     glViewport(wx, wy, wwidth, wheight);
-    glOrtho(x, width, height, y, -128, 127);
+    glOrtho(x, x + width, y + height, y, -128, 127);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
