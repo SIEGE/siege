@@ -101,3 +101,28 @@ void SG_EXPORT sgViewportReset(SGViewport* viewport)
 	if(psgmGraphicsViewportSetView != NULL)
 		psgmGraphicsViewportSetView(viewport->handle, viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey, viewport->posx, viewport->posy, viewport->sizex, viewport->sizey);
 }
+
+void SG_EXPORT sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy)
+{
+    viewport->wposx = wposx;
+    viewport->wposy = wposy;
+    sgViewportReset(viewport);
+}
+void SG_EXPORT sgViewportSetWSize(SGViewport* viewport, SGuint wsizex, SGuint wsizey)
+{
+    viewport->wsizex = wsizex;
+    viewport->wsizey = wsizey;
+    sgViewportReset(viewport);
+}
+void SG_EXPORT sgViewportSetPos(SGViewport* viewport, float posx, float posy)
+{
+    viewport->posx = posx;
+    viewport->posy = posy;
+    sgViewportReset(viewport);
+}
+void SG_EXPORT sgViewportSetSize(SGViewport* viewport, float sizex, float sizey)
+{
+    viewport->sizex = sizex;
+    viewport->sizey = sizey;
+    sgViewportReset(viewport);
+}
