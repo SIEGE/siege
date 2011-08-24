@@ -36,6 +36,9 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     (*minfo)->type = SG_MODULE_GRAPHICSLOAD;
     (*minfo)->name = "DevIL";
 
+    ilEnable(IL_ORIGIN_SET);
+    ilOriginFunc(IL_ORIGIN_UPPER_LEFT);
+
     return SG_OK;
 }
 
