@@ -15,8 +15,8 @@ SGEntity* controller;
 #define WIDTH 1280
 #define HEIGHT 720
 
-#define BWIDTH 1   // 4
-#define BLENGTH 8 // 32
+#define BWIDTH 3   // 4
+#define BLENGTH 24 // 32
 
 #define FLOORHEIGHT 8
 
@@ -222,13 +222,15 @@ int main(void)
     sgInit(WIDTH, HEIGHT, 32, 0);
     sgWindowSetTitle("SIEGE Pyramid Demo - Press F1 for debug overlay");
 
+    //sgWindowSetFPSLimit(60.0);
+
     sgDrawSetSmooth(SG_TRUE);
 
     space = sgPhysicsSpaceCreate();
 	//space = sgPhysicsSpaceGetDefault();
 	sgPhysicsSpaceSetIterations(space, 100);
 	sgPhysicsSpaceSetDamping(space, 1.0);
-    sgPhysicsSpaceSetGravity(space, 0.0, /*9.81*/0.5);
+    sgPhysicsSpaceSetGravity(space, 0.0, 9.81/*0.5*/);
 
     controller = sgEntityCreate(0.0);
     controller->evMouseButtonLeftPress = evMouseButtonLeftPress;

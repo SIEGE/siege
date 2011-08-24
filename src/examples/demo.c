@@ -4,11 +4,19 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
+//#include <time.h>
 
 #define NLIGHTS 4
 #define OP >=
 
 SGPhysicsSpace* space;
+
+SGAudioBuffer* bufBoom;
+
+float frand2(float min, float max)
+{
+    return min + rand() / (float)RAND_MAX * (max - min);
+}
 
 typedef struct Polygon
 {
@@ -98,6 +106,31 @@ void destroyPolyEntity(SGEntity* ent)
     free(poly);
 }
 
+void lcPolyCollisionOneBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollision* coll)
+{
+    SGVec2 v1;
+    sgPhysicsBodyGetVel(sgEntityGetPhysicsBody(entity), &v1.x, &v1.y);
+    SGVec2 v2;
+    sgPhysicsBodyGetVel(sgEntityGetPhysicsBody(other), &v2.x, &v2.y);
+
+    float dist = sgPhysicsCollisionGetDistance(coll, 0);
+
+    float vdiff = sgVec2GetLength(sgVec2Sub(v1, v2));
+
+    if(vdiff <= 10.0)
+        return;
+
+    //float pitch = 10.0 - log(fabs(vdiff))/* / 0.125*/;
+    //float pitch = 10.0 + frand2(-1.0, 1.0);
+    float pitch = 10.0 - fabs(dist);
+    float gain = log(vdiff) / 30.0/* fabs(dist)*/;
+
+    SGAudioSource* srcBoom = sgAudioSourceCreate(1.0, gain, pitch, SG_FALSE);
+    sgAudioSourceQueueBuffer(srcBoom, bufBoom);
+    sgAudioSourcePlay(srcBoom);
+    sgAudioSourceDestroyLazy(srcBoom);
+}
+
 void drawPoly(Polygon* poly)
 {
     size_t i;
@@ -151,6 +184,7 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
     poly->entity = sgEntityCreate(0.0);
     poly->entity->data = poly;
     poly->entity->lcDestroy = destroyPolyEntity;
+    poly->entity->lcCollisionOneBegin = lcPolyCollisionOneBegin;
     poly->entity->evDraw = drawPolyEntity;
 
     poly->texture = texture;
@@ -408,9 +442,17 @@ int main(void)
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");
     sgLoadModule("DevIL");
+    sgLoadModule("OpenAL");
+    sgLoadModule("SndFile");
     sgLoadModule("Chipmunk");
     sgInit(640, 480, 32, 0);
     sgWindowSetTitlef("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
+
+    //srand((unsigned int)time(NULL));
+
+    sgWindowSetFPSLimit(60.0);
+
+    bufBoom = sgAudioBufferCreateFile("data/audio/boom.flac");
 
     space = sgPhysicsSpaceGetDefault();
 	sgPhysicsSpaceSetIterations(space, 10);
@@ -523,6 +565,8 @@ int main(void)
     sgSurfaceDestroy(buffer);
     sgSurfaceDestroy(tileset);
     sgSpriteDestroy(tile);
+
+    sgAudioBufferDestroy(bufBoom);
 
     sgDeinit();
 
