@@ -23,6 +23,9 @@ MACRO(SHARED_STATIC name dir ext)
     ADD_LIBRARY(${name} SHARED ${${name}_SOURCES})
     ADD_LIBRARY(${name}.static STATIC ${${name}_SOURCES})
 
+    TARGET_LINK_LIBRARIES(${name} ${ARGN})
+    TARGET_LINK_LIBRARIES(${name}.static ${ARGN})
+
     INSTALL(TARGETS ${name} DESTINATION lib)
     INSTALL(TARGETS ${name}.static DESTINATION lib)
 ENDMACRO(SHARED_STATIC)
