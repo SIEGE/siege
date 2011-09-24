@@ -362,195 +362,204 @@ void SG_EXPORT sgFontPrint(SGFont* font, float x, float y, const char* text)
 	free(dtext);
 }
 
-void SG_EXPORT sgFontPrintCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    sgFontPrintCenteredfvW(font, x, y, format, args);
-    va_end(args);
-}
-void SG_EXPORT sgFontPrintCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args)
-{
-    sgFontPrintCenteredW(font, x, y, sgPrintfvW(format, args));
-}
-
-void SG_EXPORT sgFontPrintCenteredf(SGFont* font, float x, float y, const char* format, ...)
+void SG_EXPORT sgFontPrintAlignedfW(SGFont* font, float x, float y, SGenum align, const wchar_t* format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	sgFontPrintCenteredfv(font, x, y, format, args);
+	sgFontPrintAlignedfvW(font, x, y, align, format, args);
 	va_end(args);
 }
-void SG_EXPORT sgFontPrintCenteredfv(SGFont* font, float x, float y, const char* format, va_list args)
+void SG_EXPORT sgFontPrintAlignedfvW(SGFont* font, float x, float y, SGenum align, const wchar_t* format, va_list args)
 {
-	sgFontPrintCentered(font, x, y, sgPrintfv(format, args));
+    sgFontPrintAlignedW(font, x, y, align, sgPrintfvW(format, args));
 }
 
-void SG_EXPORT sgFontPrintCenteredU32(SGFont* font, float x, float y, const SGdchar* text)
-{
-    float ox, oy;
-    _sgFontCenterOffsetU32(font, &ox, &oy, text);
-    sgFontPrintU32(font, x + ox, y + oy, text);
-}
-void SG_EXPORT sgFontPrintCenteredU16(SGFont* font, float x, float y, const SGwchar* text)
-{
-    float ox, oy;
-	SGdchar* dtext = _sgFontU16ToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x + ox, y + oy, dtext);
-	free(dtext);
-}
-void SG_EXPORT sgFontPrintCenteredU8(SGFont* font, float x, float y, const SGchar* text)
-{
-    float ox, oy;
-	SGdchar* dtext = _sgFontU8ToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x + ox, y + oy, dtext);
-	free(dtext);
-}
-void SG_EXPORT sgFontPrintCenteredW(SGFont* font, float x, float y, const wchar_t* text)
-{
-    float ox, oy;
-	SGdchar* dtext = _sgFontWToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x + ox, y + oy, dtext);
-	free(dtext);
-}
-void SG_EXPORT sgFontPrintCentered(SGFont* font, float x, float y, const char* text)
-{
-	float ox, oy;
-	SGdchar* dtext = _sgFontToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x + ox, y + oy, dtext);
-	free(dtext);
-}
-
-// prints centered on X, but not on Y
-void SG_EXPORT sgFontPrintXCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    sgFontPrintXCenteredfvW(font, x, y, format, args);
-    va_end(args);
-}
-void SG_EXPORT sgFontPrintXCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args)
-{
-    sgFontPrintXCenteredW(font, x, y, sgPrintfvW(format, args));
-}
-
-void SG_EXPORT sgFontPrintXCenteredf(SGFont* font, float x, float y, const char* format, ...)
+void SG_EXPORT SG_HINT_PRINTF(5, 6) sgFontPrintAlignedf(SGFont* font, float x, float y, SGenum align, const char* format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	sgFontPrintXCenteredfv(font, x, y, format, args);
+	sgFontPrintAlignedfv(font, x, y, align, format, args);
 	va_end(args);
 }
-void SG_EXPORT sgFontPrintXCenteredfv(SGFont* font, float x, float y, const char* format, va_list args)
+void SG_EXPORT SG_HINT_PRINTF(5, 0) sgFontPrintAlignedfv(SGFont* font, float x, float y, SGenum align, const char* format, va_list args)
 {
-	sgFontPrintXCentered(font, x, y, sgPrintfv(format, args));
+    sgFontPrintAligned(font, x, y, align, sgPrintfv(format, args));
 }
 
-void SG_EXPORT sgFontPrintXCenteredU32(SGFont* font, float x, float y, const SGdchar* text)
+void SG_EXPORT sgFontPrintAlignedU32(SGFont* font, float x, float y, SGenum align, const SGdchar* text)
 {
     float ox, oy;
+    float sx, sy;
+    // todo: only calc these when needed
     _sgFontCenterOffsetU32(font, &ox, &oy, text);
-    sgFontPrintU32(font, x + ox, y, text);
+    sgFontStrSizeU32(font, &sx, &sy, text);
+    switch(align & SG_ALIGN_HMASK)
+    {
+        case SG_ALIGN_CENTER: x += ox; break;
+        case SG_ALIGN_LEFT: break;
+        case SG_ALIGN_RIGHT: x += sx; break;
+    }
+    switch(align & SG_ALIGN_VMASK)
+    {
+        case SG_ALIGN_CENTER: y += oy; break;
+        case SG_ALIGN_TOP: y += oy + sy / 2.0; break;
+        case SG_ALIGN_BASELINE: break;
+        case SG_ALIGN_BOTTOM: y += oy - sy / 2.0; break;
+    }
+    sgFontPrintU32(font, x, y, text);
 }
-void SG_EXPORT sgFontPrintXCenteredU16(SGFont* font, float x, float y, const SGwchar* text)
+void SG_EXPORT sgFontPrintAlignedU16(SGFont* font, float x, float y, SGenum align, const SGwchar* text)
 {
-    float ox, oy;
 	SGdchar* dtext = _sgFontU16ToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x + ox, y, dtext);
+    sgFontPrintAlignedU32(font, x, y, align, dtext);
 	free(dtext);
 }
-void SG_EXPORT sgFontPrintXCenteredU8(SGFont* font, float x, float y, const SGchar* text)
+void SG_EXPORT sgFontPrintAlignedU8(SGFont* font, float x, float y, SGenum align, const SGchar* text)
 {
-    float ox, oy;
 	SGdchar* dtext = _sgFontU8ToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x + ox, y, dtext);
+    sgFontPrintAlignedU32(font, x, y, align, dtext);
 	free(dtext);
 }
-void SG_EXPORT sgFontPrintXCenteredW(SGFont* font, float x, float y, const wchar_t* text)
+void SG_EXPORT sgFontPrintAlignedW(SGFont* font, float x, float y, SGenum align, const wchar_t* text)
 {
-    float ox, oy;
 	SGdchar* dtext = _sgFontWToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x + ox, y, dtext);
+    sgFontPrintAlignedU32(font, x, y, align, dtext);
 	free(dtext);
 }
-void SG_EXPORT sgFontPrintXCentered(SGFont* font, float x, float y, const char* text)
+void SG_EXPORT sgFontPrintAligned(SGFont* font, float x, float y, SGenum align, const char* text)
 {
-	float ox, oy;
 	SGdchar* dtext = _sgFontToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x + ox, y, dtext);
+    sgFontPrintAlignedU32(font, x, y, align, dtext);
 	free(dtext);
 }
 
-// prints centered on Y, but not on X
-void SG_EXPORT sgFontPrintYCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...)
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...)
 {
     va_list args;
     va_start(args, format);
-    sgFontPrintYCenteredfvW(font, x, y, format, args);
+    sgFontPrintAlignedfvW(font, x, y, SG_ALIGN_CENTER, format, args);
     va_end(args);
 }
-void SG_EXPORT sgFontPrintYCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args)
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args)
 {
-    sgFontPrintYCenteredW(font, x, y, sgPrintfvW(format, args));
+    sgFontPrintAlignedfvW(font, x, y, SG_ALIGN_CENTER, format, args);
 }
-
-void SG_EXPORT sgFontPrintYCenteredf(SGFont* font, float x, float y, const char* format, ...)
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredf(SGFont* font, float x, float y, const char* format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	sgFontPrintYCenteredfv(font, x, y, format, args);
+	sgFontPrintAlignedfv(font, x, y, SG_ALIGN_CENTER, format, args);
 	va_end(args);
 }
-void SG_EXPORT sgFontPrintYCenteredfv(SGFont* font, float x, float y, const char* format, va_list args)
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredfv(SGFont* font, float x, float y, const char* format, va_list args)
 {
-	sgFontPrintYCentered(font, x, y, sgPrintfv(format, args));
+	sgFontPrintAlignedfv(font, x, y, SG_ALIGN_CENTER, format, args);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredU32(SGFont* font, float x, float y, const SGdchar* text)
+{
+    sgFontPrintAlignedU32(font, x, y, SG_ALIGN_CENTER, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredU16(SGFont* font, float x, float y, const SGwchar* text)
+{
+    sgFontPrintAlignedU16(font, x, y, SG_ALIGN_CENTER, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredU8(SGFont* font, float x, float y, const SGchar* text)
+{
+    sgFontPrintAlignedU8(font, x, y, SG_ALIGN_CENTER, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredW(SGFont* font, float x, float y, const wchar_t* text)
+{
+    sgFontPrintAlignedW(font, x, y, SG_ALIGN_CENTER, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCentered(SGFont* font, float x, float y, const char* text)
+{
+    sgFontPrintAligned(font, x, y, SG_ALIGN_CENTER, text);
 }
 
-void SG_EXPORT sgFontPrintYCenteredU32(SGFont* font, float x, float y, const SGdchar* text)
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...)
 {
-    float ox, oy;
-    _sgFontCenterOffsetU32(font, &ox, &oy, text);
-    sgFontPrintU32(font, x, y + oy, text);
+    va_list args;
+    va_start(args, format);
+    sgFontPrintAlignedfvW(font, x, y, SG_ALIGN_CENTER | SG_ALIGN_BASELINE, format, args);
+    va_end(args);
 }
-void SG_EXPORT sgFontPrintYCenteredU16(SGFont* font, float x, float y, const SGwchar* text)
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args)
 {
-	float ox, oy;
-	SGdchar* dtext = _sgFontU16ToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x, y + oy, dtext);
-	free(dtext);
+    sgFontPrintAlignedfvW(font, x, y, SG_ALIGN_CENTER | SG_ALIGN_BASELINE, format, args);
 }
-void SG_EXPORT sgFontPrintYCenteredU8(SGFont* font, float x, float y, const SGchar* text)
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredf(SGFont* font, float x, float y, const char* format, ...)
 {
-    float ox, oy;
-	SGdchar* dtext = _sgFontU8ToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x, y + oy, dtext);
-	free(dtext);
+	va_list args;
+	va_start(args, format);
+    sgFontPrintAlignedfv(font, x, y, SG_ALIGN_CENTER | SG_ALIGN_BASELINE, format, args);
+	va_end(args);
 }
-void SG_EXPORT sgFontPrintYCenteredW(SGFont* font, float x, float y, const wchar_t* text)
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredfv(SGFont* font, float x, float y, const char* format, va_list args)
 {
-    float ox, oy;
-	SGdchar* dtext = _sgFontWToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x, y + oy, dtext);
-	free(dtext);
+    sgFontPrintAlignedfv(font, x, y, SG_ALIGN_CENTER | SG_ALIGN_BASELINE, format, args);
 }
-void SG_EXPORT sgFontPrintYCentered(SGFont* font, float x, float y, const char* text)
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredU32(SGFont* font, float x, float y, const SGdchar* text)
 {
-	float ox, oy;
-	SGdchar* dtext = _sgFontToU32(font, text);
-	_sgFontCenterOffsetU32(font, &ox, &oy, dtext);
-	sgFontPrintU32(font, x, y + oy, dtext);
-	free(dtext);
+    sgFontPrintAlignedU32(font, x, y, SG_ALIGN_CENTER | SG_ALIGN_BASELINE, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredU16(SGFont* font, float x, float y, const SGwchar* text)
+{
+    sgFontPrintAlignedU16(font, x, y, SG_ALIGN_CENTER | SG_ALIGN_BASELINE, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredU8(SGFont* font, float x, float y, const SGchar* text)
+{
+    sgFontPrintAlignedU8(font, x, y, SG_ALIGN_CENTER | SG_ALIGN_BASELINE, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredW(SGFont* font, float x, float y, const wchar_t* text)
+{
+    sgFontPrintAlignedW(font, x, y, SG_ALIGN_CENTER | SG_ALIGN_BASELINE, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCentered(SGFont* font, float x, float y, const char* text)
+{
+    sgFontPrintAligned(font, x, y, SG_ALIGN_CENTER | SG_ALIGN_BASELINE, text);
+}
+
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    sgFontPrintAlignedfvW(font, x, y, SG_ALIGN_LEFT | SG_ALIGN_CENTER, format, args);
+    va_end(args);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args)
+{
+    sgFontPrintAlignedfvW(font, x, y, SG_ALIGN_LEFT | SG_ALIGN_CENTER, format, args);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredf(SGFont* font, float x, float y, const char* format, ...)
+{
+	va_list args;
+	va_start(args, format);
+    sgFontPrintAlignedfv(font, x, y, SG_ALIGN_LEFT | SG_ALIGN_CENTER, format, args);
+	va_end(args);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredfv(SGFont* font, float x, float y, const char* format, va_list args)
+{
+    sgFontPrintAlignedfv(font, x, y, SG_ALIGN_LEFT | SG_ALIGN_CENTER, format, args);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredU32(SGFont* font, float x, float y, const SGdchar* text)
+{
+    sgFontPrintAlignedU32(font, x, y, SG_ALIGN_LEFT | SG_ALIGN_CENTER, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredU16(SGFont* font, float x, float y, const SGwchar* text)
+{
+    sgFontPrintAlignedU16(font, x, y, SG_ALIGN_LEFT | SG_ALIGN_CENTER, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredU8(SGFont* font, float x, float y, const SGchar* text)
+{
+    sgFontPrintAlignedU8(font, x, y, SG_ALIGN_LEFT | SG_ALIGN_CENTER, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredW(SGFont* font, float x, float y, const wchar_t* text)
+{
+    sgFontPrintAlignedW(font, x, y, SG_ALIGN_LEFT | SG_ALIGN_CENTER, text);
+}
+void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCentered(SGFont* font, float x, float y, const char* text)
+{
+    sgFontPrintAligned(font, x, y, SG_ALIGN_LEFT | SG_ALIGN_CENTER, text);
 }
 
 void SG_EXPORT sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...)

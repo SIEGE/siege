@@ -50,7 +50,7 @@ void SG_EXPORT sgSleep(SGlong nseconds)
     // TODO: use select() for a bit more precise sleep (us instead of ms)
     // That requires initializing sockets, however!
     // Also, we have to make sure that the value doesn't happen to be INFINITE.
-    Sleep(nseconds * 10000000);
+    Sleep(nseconds / 1000000);
 #else
     struct timespec ts, tsr;
     ts.tv_sec = nseconds / SG_NANOSECONDS_IN_A_SECOND;

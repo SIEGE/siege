@@ -61,6 +61,7 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
 	_SG_BIND(sgmGraphicsTextureDraw);
 
     _SG_BIND(sgmGraphicsTextureSetWrap);
+    _SG_BIND(sgmGraphicsTextureSetInterpolation);
 
 	_SG_BIND(sgmGraphicsDrawPrimitive);
 	_SG_BIND(sgmGraphicsDrawSetColor);

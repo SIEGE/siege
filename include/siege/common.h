@@ -366,6 +366,10 @@ typedef double SGdouble;
 #define SG_GRAPHICS_WRAP_MIRRORED_REPEAT    0x03
 #define SG_GRAPHICS_WRAP_REPEAT             0x04
 
+#define SG_GRAPHICS_INTERP_CURRENT 0x00
+#define SG_GRAPHICS_INTERP_NEAREST 0x01
+#define SG_GRAPHICS_INTERP_LINEAR  0x02
+
 #define SG_GRAPHICS_FUNC_ZERO                   0x00
 #define SG_GRAPHICS_FUNC_ONE                    0x01
 #define SG_GRAPHICS_FUNC_SRC_COLOR              0x02

@@ -203,5 +203,19 @@ SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetSmooth)(void* context, SGbool smooth)
     glHint(GL_POINT_SMOOTH_HINT  , mode);
     glHint(GL_LINE_SMOOTH_HINT   , mode);
     glHint(GL_POLYGON_SMOOTH_HINT, mode);
+
+    if(smooth)
+    {
+        glEnable(GL_POINT_SMOOTH);
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_POLYGON_SMOOTH);
+    }
+    else
+    {
+        glDisable(GL_POINT_SMOOTH);
+        glDisable(GL_LINE_SMOOTH);
+        glDisable(GL_POLYGON_SMOOTH);
+    }
+
     return SG_OK;
 }

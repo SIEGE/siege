@@ -149,6 +149,11 @@ void SG_EXPORT sgTextureSetWrap(SGTexture* texture, SGenum swrap, SGenum twrap)
     if(psgmGraphicsTextureSetWrap)
         psgmGraphicsTextureSetWrap(texture->handle, swrap, twrap);
 }
+void SG_EXPORT sgTextureSetInterpolation(SGTexture* texture, SGenum interp)
+{
+    if(psgmGraphicsTextureSetInterpolation)
+        psgmGraphicsTextureSetInterpolation(texture->handle, interp);
+}
 
 void SG_EXPORT sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height)
 {

@@ -94,7 +94,7 @@ void drawScore(SGNavGrid* grid, SGFont* font, SGchar score, SGColor color)
 				case 'H': nscore = node->score.h; break;
 				default: nscore = SG_INF;
 			}
-			sgFontPrintCenteredf(font, i * cellw + cellw/2, j * cellh + cellh/2, "%.1f", nscore);
+			sgFontPrintAlignedf(font, i * cellw + cellw/2, j * cellh + cellh/2, SG_ALIGN_CENTER, "%.1f", nscore);
 		}
 	}
 }
