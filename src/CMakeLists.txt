@@ -26,6 +26,9 @@ MACRO(SHARED_STATIC name dir ext)
     TARGET_LINK_LIBRARIES(${name} ${ARGN})
     TARGET_LINK_LIBRARIES(${name}.static ${ARGN})
 
+    SET_TARGET_PROPERTIES(${name} ${name}.static
+        PROPERTIES OUTPUT_NAME ${name})
+
     INSTALL(TARGETS ${name} DESTINATION lib)
     INSTALL(TARGETS ${name}.static DESTINATION lib)
 ENDMACRO(SHARED_STATIC)
