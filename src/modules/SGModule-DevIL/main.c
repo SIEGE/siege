@@ -28,13 +28,16 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 
     ilInit();
 
-    /*int version = ilGetInteger(IL_VERSION_NUM);
+    int version = ilGetInteger(IL_VERSION_NUM);
 
     (*minfo)->mmajor = version / 100;
     (*minfo)->mminor = version / 10 - (*minfo)->mmajor * 100;
     (*minfo)->mpatch = version / 1 - (*minfo)->mminor * 10 - (*minfo)->mmajor * 100;
-    (*minfo)->type = SG_MODULE_GRAPHICSLOAD;*/
+    (*minfo)->type = SG_MODULE_GRAPHICSLOAD;
     (*minfo)->name = "DevIL";
+
+    ilEnable(IL_ORIGIN_SET);
+    ilOriginFunc(IL_ORIGIN_UPPER_LEFT);
 
     return SG_OK;
 }

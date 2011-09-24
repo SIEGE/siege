@@ -63,7 +63,7 @@ int main(void)
     /*space = sgLightSpaceCreate();
     sgLightSpaceSetAmbience4f(space, 0.125, 0.0625, 0.0, 1.0);
 
-    SGEntity* handler = sgEntityCreate(0.0, SG_EVT_ALL);
+    SGEntity* handler = sgEntityCreate(0.0);
     handler->evKeyboardKeyPress = evKeyboardKeyPress;
 
     SGSprite* tile = sgSpriteCreateFile2f("data/sprites/FloorMetalPlate.png", 0.0, 0.0);

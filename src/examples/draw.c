@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-SGFont* font;
 int main(void)
 {
 	sgLoadModule("SDL");

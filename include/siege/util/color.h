@@ -76,6 +76,9 @@ SGColor SG_EXPORT sgColorSub1c(SGColor a, SGColor b);
 SGColor SG_EXPORT sgColorMul1c(SGColor a, SGColor b);
 SGColor SG_EXPORT sgColorDiv1c(SGColor a, SGColor b);
 
+void SG_EXPORT sgColorTo4ub(SGColor c, SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a);
+void SG_EXPORT sgColorTo4ubv(SGColor c, SGubyte* rgba);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

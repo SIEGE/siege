@@ -1,3 +1,6 @@
+NOTE: SIEGE Logo, Artwork and examples/demos are published under separate licenses.
+----------
+
 Copyright (c) 2007, SIEGE Development Team
 
 All rights reserved.

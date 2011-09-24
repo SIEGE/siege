@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -31,6 +31,7 @@
 #include "core/event.h"
 #include "core/window.h"
 #include "graphics/draw.h"
+#include "graphics/emitter.h"
 #include "graphics/font.h"
 #include "graphics/light.h"
 #include "graphics/mask.h"
@@ -55,14 +56,19 @@
 #include "physics/constraint.h"
 #include "physics/shape.h"
 #include "physics/space.h"
-#include "util/arrops.h"
+#include "util/file/json.h"
+#include "util/angle.h"
 #include "util/color.h"
+#include "util/conv.h"
+#include "util/gradient.h"
 #include "util/link.h"
 #include "util/list.h"
 #include "util/matrix.h"
 #include "util/plist.h"
 #include "util/rand.h"
 #include "util/string.h"
+#include "util/time.h"
+#include "util/tree.h"
 #include "util/vector.h"
 
 #endif // __SIEGE_H__

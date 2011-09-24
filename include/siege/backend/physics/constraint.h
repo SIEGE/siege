@@ -26,6 +26,29 @@ extern "C"
 {
 #endif
 
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintCreate)(void** constr, void* body1, void* body2, SGenum type, float* vdata);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintDestroy)(void* constr);
+
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetAnchorOne)(void* constr, float x, float y);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetAnchorTwo)(void* constr, float x, float y);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetMin)(void* constr, float min);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetMax)(void* constr, float max);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetLength)(void* constr, float length);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetAngle)(void* constr, float angle);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetStiffness)(void* constr, float stiffness);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetDamping)(void* constr, float damping);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetPhase)(void* constr, float phase);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetRatchet)(void* constr, float ratchet);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetRatio)(void* constr, float ratio);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetRate)(void* constr, float rate);
+
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetMaxForce)(void* constr, float max);
+	SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetErrorBias)(void* constr, float bias);
+	SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetMaxBias)(void* constr, float max);
+
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintSetData)(void* constr, void* data);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsConstraintGetData)(void* constr, void** data);
+
 #ifdef __cplusplus
 }
 #endif

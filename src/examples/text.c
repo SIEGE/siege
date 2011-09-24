@@ -20,7 +20,7 @@ int main(void)
 
 	SGuint i;
 	for(i = 0; i < numsizes; i++)
-		sizes[i] = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 7 + i, 127);
+		sizes[i] = sgFontCreate("data/fonts/DejaVuSans.ttf", 7 + i, 127);
 
 	font = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 127);
 
@@ -92,7 +92,7 @@ int main(void)
 						640 / 2 + dx / 2, 480 - 120 + dy / 2,
 						SG_FALSE);
 		sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
-		sgFontPrintCentered(font, 640 / 2, 480 - 120, "Some test text");
+		sgFontPrintAligned(font, 640 / 2, 480 - 120, SG_ALIGN_CENTER, "Some test text");
 
 		sgWindowSwapBuffers();
 		sgDrawClear();

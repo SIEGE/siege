@@ -56,6 +56,8 @@ void SG_EXPORT sgPhysicsBodyDestroy(SGPhysicsBody* body)
             psgmPhysicsSpaceRemoveBody(body->space->handle, body->handle);
     }*/
 
+    if(psgmPhysicsSpaceRemoveBody)
+        psgmPhysicsSpaceRemoveBody(body->space->handle, body->handle);
     if(psgmPhysicsBodyDestroy != NULL)
         psgmPhysicsBodyDestroy(body->handle);
 }
@@ -73,6 +75,25 @@ void* SG_EXPORT sgPhysicsBodyGetData(SGPhysicsBody* body)
         return NULL;
 
     return body->data;
+}
+
+void SG_EXPORT sgPhysicsBodySetSleeping(SGPhysicsBody* body, SGbool sleeping)
+{
+    if(!body)
+        return;
+
+    if(psgmPhysicsBodySetSleeping)
+        psgmPhysicsBodySetMass(body->handle, sleeping);
+}
+SGbool SG_EXPORT sgPhysicsBodyGetSleeping(SGPhysicsBody* body)
+{
+    if(!body)
+        return SG_FALSE;
+
+    SGbool sleeping = SG_FALSE;
+    if(psgmPhysicsBodyGetSleeping)
+        psgmPhysicsBodyGetSleeping(body->handle, &sleeping);
+    return sleeping;
 }
 
 void SG_EXPORT sgPhysicsBodySetPos(SGPhysicsBody* body, float x, float y)
@@ -287,3 +308,19 @@ float SG_EXPORT sgPhysicsBodyGetMoment(SGPhysicsBody* body)
     return moment;
 }
 
+void SG_EXPORT sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry)
+{
+	if(!body)
+		return;
+
+	if(psgmPhysicsBodyApplyImpulse)
+		psgmPhysicsBodyApplyImpulse(body->handle, jx, jy, rx, ry);
+}
+void SG_EXPORT sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry)
+{
+	if(!body)
+		return;
+
+	if(psgmPhysicsBodyApplyForce)
+		psgmPhysicsBodyApplyForce(body->handle, jx, jy, rx, ry);
+}

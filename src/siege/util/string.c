@@ -17,6 +17,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 // MinGW thinks it's smart and uses its own variant of vswprintf...
 #define __STRICT_ANSI__
@@ -36,6 +37,23 @@ SGbool SG_EXPORT _sgStringDeinit(void)
 	if(_sg_strBuf)
 		free(_sg_strBuf);
 	return SG_TRUE;
+}
+
+char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what)
+{
+    size_t wlen = strlen(what);
+    if(*len + wlen >= *mem)
+    {
+        if(*mem == 0)
+            *mem = 32;
+        else
+            *mem <<= 1;
+        *str = realloc(*str, *mem);
+    }
+    memcpy(*str + *len, what, wlen);
+    *len += wlen;
+    (*str)[*len] = 0;
+    return *str;
 }
 
 wchar_t* SG_EXPORT sgPrintfW(const wchar_t* format, ...)
@@ -92,6 +110,19 @@ char* SG_EXPORT sgPrintfv(const char* format, va_list args)
 	return _sg_strBuf;
 }
 
+SGbool SG_EXPORT sgStartsWith(const char* text, const char* what)
+{
+    return !strncmp(text, what, strlen(what));
+}
+char* SG_EXPORT sgSpaceEnd(const char* text)
+{
+    if(!text)
+        return NULL;
+
+    while(isspace(*text))
+        text++;
+    return (char*)text;
+}
 char* SG_EXPORT sgLineEnd(const char* text)
 {
 	if(text == NULL)

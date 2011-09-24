@@ -94,7 +94,7 @@ void drawScore(SGNavGrid* grid, SGFont* font, SGchar score, SGColor color)
 				case 'H': nscore = node->score.h; break;
 				default: nscore = SG_INF;
 			}
-			sgFontPrintCenteredf(font, i * cellw + cellw/2, j * cellh + cellh/2, "%.1f", nscore);
+			sgFontPrintAlignedf(font, i * cellw + cellw/2, j * cellh + cellh/2, SG_ALIGN_CENTER, "%.1f", nscore);
 		}
 	}
 }
@@ -252,10 +252,10 @@ int main(void)
 	sgInit(WIDTH, HEIGHT, 32, 0);
 	sgWindowSetTitle("SIEGE A-Star Demo - Hit 'F1' for instructions");
 
-	SGFont* head = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 16, 127);
-	SGFont* text = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", 10, 127);
+	SGFont* head = sgFontCreate("data/fonts/DejaVuSans.ttf", 16, 127);
+	SGFont* text = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 127);
 
-	score = sgFontCreate("data/fonts/DejaVuLGCSans.ttf", cellw / 4.0, 127);
+	score = sgFontCreate("data/fonts/DejaVuSans.ttf", cellw / 4.0, 127);
 
 	SGNavGridData* data;
 	SGList* path = NULL;
@@ -265,7 +265,7 @@ int main(void)
 
 	SGint mx, my;
 
-	SGEntity* handler = sgEntityCreate(1.0, SG_EVT_ALL);
+	SGEntity* handler = sgEntityCreate(1.0);
 	handler->evKeyboardKeyPress = evKeyboardKeyPress;
 	handler->evKeyboardKeyRepeat = evKeyboardKeyPress;
 

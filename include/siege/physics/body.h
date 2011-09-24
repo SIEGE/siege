@@ -42,6 +42,9 @@ void SG_EXPORT sgPhysicsBodyDestroy(SGPhysicsBody* body);
 void SG_EXPORT sgPhysicsBodySetData(SGPhysicsBody* body, void* data);
 void* SG_EXPORT sgPhysicsBodyGetData(SGPhysicsBody* body);
 
+void SG_EXPORT sgPhysicsBodySetSleeping(SGPhysicsBody* body, SGbool sleeping);
+SGbool SG_EXPORT sgPhysicsBodyGetSleeping(SGPhysicsBody* body);
+
 void SG_EXPORT sgPhysicsBodySetPos(SGPhysicsBody* body, float x, float y);
 void SG_EXPORT sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y);
 
@@ -73,6 +76,9 @@ float SG_EXPORT sgPhysicsBodyGetMass(SGPhysicsBody* body);
 
 void SG_EXPORT sgPhysicsBodySetMoment(SGPhysicsBody* body, float moment);
 float SG_EXPORT sgPhysicsBodyGetMoment(SGPhysicsBody* body);
+
+void SG_EXPORT sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
+void SG_EXPORT sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
 
 #ifdef __cplusplus
 }

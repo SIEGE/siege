@@ -10,7 +10,7 @@ FIND_PACKAGE(DL)
 
 IF(UNIX)
 	SET(AUX_INCLUDES "")
-	SET(AUX_LIBRARIES "${DL_LIBRARY}" "m")
+	SET(AUX_LIBRARIES "${DL_LIBRARY}" "m" "rt")
 ELSE(UNIX)
 	SET(AUX_INCLUDES "")
 	SET(AUX_LIBRARIES "")
@@ -22,6 +22,12 @@ MACRO(SHARED_STATIC name dir ext)
     FILE(GLOB_RECURSE ${name}_SOURCES ${dir}/*.${ext})
     ADD_LIBRARY(${name} SHARED ${${name}_SOURCES})
     ADD_LIBRARY(${name}.static STATIC ${${name}_SOURCES})
+
+    TARGET_LINK_LIBRARIES(${name} ${ARGN})
+    TARGET_LINK_LIBRARIES(${name}.static ${ARGN})
+
+    SET_TARGET_PROPERTIES(${name} ${name}.static
+        PROPERTIES OUTPUT_NAME ${name})
 
     INSTALL(TARGETS ${name} DESTINATION lib)
     INSTALL(TARGETS ${name}.static DESTINATION lib)

@@ -15,6 +15,7 @@
 #define SG_BUILD_LIBRARY
 #include <siege/audio/source.h>
 #include <siege/modules/audio.h>
+#include <siege/util/plist.h>
 
 #include <stdlib.h>
 #include <math.h>
@@ -34,10 +35,16 @@ SGbool SG_EXPORT _sgAudioSourceInit(void)
             psgmAudioSourceCreate(&_sg_srcDisList[i].handle);
     }
 
+    _sg_srcDestroy = sgListCreate();
+
     return SG_TRUE;
 }
 SGbool SG_EXPORT _sgAudioSourceDeinit(void)
 {
+    while(_sg_srcDestroy->first)
+        sgAudioSourceDestroy(sgListPopFirst(_sg_srcDestroy));
+    sgListDestroy(_sg_srcDestroy);
+
     SGuint i;
     for(i = 0; i <_sg_srcDisLength; i++)
     {
@@ -100,6 +107,18 @@ SGAudioSourceDispatch* SG_EXPORT _sgAudioSourceGetFreeDispatch(SGAudioSource* so
 
 SGAudioSource* SG_EXPORT sgAudioSourceCreate(float priority, float volume, float pitch, SGbool looping)
 {
+    SGListNode* node;
+    SGListNode* next;
+    for(node = _sg_srcDestroy->first; node; node = next)
+    {
+        next = node->next;
+        if(!sgAudioSourceIsPlaying(node->item))
+        {
+            sgAudioSourceDestroy(node->item);
+            sgListRemoveNode(_sg_srcDestroy, node);
+        }
+    }
+
     SGAudioSource* source = malloc(sizeof(SGAudioSource));
     source->priority = priority;
 
@@ -122,10 +141,17 @@ void SG_EXPORT sgAudioSourceDestroy(SGAudioSource* source)
     if(source == NULL)
         return;
 
+    sgAudioSourceUnqueueBuffers(source, sgAudioSourceGetNumQueuedBuffers(source));
+
     // tell dispatch that the source is available
     if(source->dispatch != NULL)
         source->dispatch->source = NULL;
     free(source);
+}
+void SG_EXPORT sgAudioSourceDestroyLazy(SGAudioSource* source)
+{
+    sgAudioSourceSetLooping(source, SG_FALSE);
+    sgListAppend(_sg_srcDestroy, source);
 }
 
 void SG_EXPORT sgAudioSourcePlay(SGAudioSource* source)
@@ -232,6 +258,32 @@ SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source)
 
     return processed != queued;
 }
+
+size_t SG_EXPORT sgAudioSourceGetNumProcessedBuffers(SGAudioSource* source)
+{
+    if(source == NULL)
+        return 0;
+    if(source->dispatch == NULL)
+        return 0;
+
+    SGuint processed = 0;
+    if(psgmAudioSourceGetNumProcessedBuffers)
+        psgmAudioSourceGetNumProcessedBuffers(source->dispatch->handle, &processed);
+    return processed;
+}
+size_t SG_EXPORT sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source)
+{
+    if(source == NULL)
+        return 0;
+    if(source->dispatch == NULL)
+        return 0;
+
+    SGuint queued = 0;
+    if(psgmAudioSourceGetNumQueuedBuffers)
+        psgmAudioSourceGetNumQueuedBuffers(source->dispatch->handle, &queued);
+    return queued;
+}
+
 void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, size_t numbuffers)
 {
     if(source == NULL)
@@ -250,10 +302,28 @@ void SG_EXPORT sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* bu
     if(source->dispatch == NULL)
         return;
 
-    //if(psgmAudioSourceSetBuffer != NULL)
-    //    psgmAudioSourceSetBuffer(source->dispatch->handle, buffer->handle);
     if(psgmAudioSourceQueueBuffers != NULL)
         psgmAudioSourceQueueBuffers(source->dispatch->handle, &buffer->handle, 1);
+}
+void SG_EXPORT sgAudioSourceUnqueueBuffer(SGAudioSource* source)
+{
+    if(source == NULL)
+        return;
+    if(source->dispatch == NULL)
+        return;
+
+    if(psgmAudioSourceUnqueueBuffers)
+        psgmAudioSourceUnqueueBuffers(source->dispatch->handle, 1);
+}
+void SG_EXPORT sgAudioSourceUnqueueBuffers(SGAudioSource* source, size_t numbuffers)
+{
+    if(source == NULL)
+        return;
+    if(source->dispatch == NULL)
+        return;
+
+    if(psgmAudioSourceUnqueueBuffers)
+        psgmAudioSourceUnqueueBuffers(source->dispatch->handle, numbuffers);
 }
 
 void SG_EXPORT sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y, float z)

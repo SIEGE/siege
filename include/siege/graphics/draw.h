@@ -154,6 +154,9 @@ void SG_EXPORT sgDrawClear(void);
 void SG_EXPORT sgDrawSetBlendFunc(SGenum src, SGenum dst);
 void SG_EXPORT sgDrawSetBlendEquation(SGenum equation);
 
+void SG_EXPORT sgDrawSetDepthTest(SGbool test);
+void SG_EXPORT sgDrawSetSmooth(SGbool smooth);
+
 /**
  * \name Points
  */

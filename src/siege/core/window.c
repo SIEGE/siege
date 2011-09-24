@@ -17,14 +17,22 @@
 #include <siege/core/entity.h>
 #include <siege/core/window.h>
 #include <siege/graphics/viewport.h>
+#include <siege/input/joystick.h>
+#include <siege/input/keyboard.h>
+#include <siege/input/mouse.h>
 #include <siege/modules/graphics.h>
 #include <siege/modules/window.h>
 #include <siege/util/string.h>
+#include <siege/util/time.h>
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
+
+SGfloat _sg_FPS = -1.0f;
+SGlong _sg_FrameLength = -1L;
+SGfloat _sg_achievedFramerate = -1.0f;
 
 void SG_EXPORT _sg_cbWindowOpen(void* window)
 {
@@ -173,6 +181,37 @@ SGuint SG_EXPORT sgWindowGetHeight(void)
 }
 void SG_EXPORT sgWindowSwapBuffers(void)
 {
-	if(psgmCoreWindowSwapBuffers != NULL)
-		psgmCoreWindowSwapBuffers(_sg_winHandle);
+    SGlong origin = sgGetTime();
+
+    if(psgmCoreWindowSwapBuffers != NULL)
+        psgmCoreWindowSwapBuffers(_sg_winHandle);
+	_sgMouseUpdate();
+	_sgKeyboardUpdate();
+
+    SGlong time = sgGetTime();
+    SGlong updateLength = time - origin;
+
+    if(_sg_FPS > 0.0f)
+    {
+        if(updateLength < _sg_FrameLength)
+        {
+            sgSleep(_sg_FrameLength - updateLength);
+        }
+    }
+
+    SGlong frameLength = updateLength + (sgGetTime() - time);
+    _sg_achievedFramerate = (SGfloat) SG_NANOSECONDS_IN_A_SECOND / frameLength;
+}
+SGfloat SG_EXPORT sgWindowGetFPSLimit(void)
+{
+    return _sg_FPS;
+}
+void SG_EXPORT sgWindowSetFPSLimit(SGfloat limit)
+{
+    _sg_FPS = limit;
+    _sg_FrameLength = (1 / _sg_FPS) * SG_NANOSECONDS_IN_A_SECOND;
+}
+SGfloat SG_EXPORT sgWindowGetFPS(void)
+{
+    return _sg_achievedFramerate;
 }

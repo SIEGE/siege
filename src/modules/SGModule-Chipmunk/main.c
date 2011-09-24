@@ -41,7 +41,6 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
 {
     free(minfo);
-
     return SG_OK;
 }
 

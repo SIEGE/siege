@@ -20,7 +20,7 @@
 #include <string.h>
 #include <math.h>
 
-void SG_EXPORT _sgTrailPopPoint(SGTrail* trail)
+void SG_EXPORT sgTrailPopPoint(SGTrail* trail)
 {
     if(trail == NULL)
         return;
@@ -68,8 +68,8 @@ void SG_EXPORT sgTrailAddPoint2f(SGTrail* trail, float x, float y)
     trail->ypoints = realloc(trail->ypoints, trail->numpoints * sizeof(float));
     trail->xpoints[trail->numpoints - 1] = x;
     trail->ypoints[trail->numpoints - 1] = y;
-    if(trail->numpoints > trail->maxpoints)
-        _sgTrailPopPoint(trail);
+    if(trail->numpoints > trail->maxpoints && trail->maxpoints)
+        sgTrailPopPoint(trail);
 }
 void SG_EXPORT sgTrailAddBreak(SGTrail* trail)
 {
@@ -81,7 +81,7 @@ void SG_EXPORT sgTrailDraw(SGTrail* trail)
         return;
 
     if((trail->numpoints != 0) && ((trail->xpoints[0] != trail->xpoints[0]) || (trail->ypoints[0] != trail->ypoints[0])))
-        _sgTrailPopPoint(trail);
+        sgTrailPopPoint(trail);
     if(trail->numpoints == 0)
         return;
 
@@ -118,6 +118,8 @@ void SG_EXPORT sgTrailDraw(SGTrail* trail)
                 sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_STRIP);
                 continue;
             }
+            sgDrawColor2f(1.0, i / (float)(trail->numpoints - 1));
+
             sgDrawVertex2f(x, y);
 
             curlen += sqrt((px - x) * (px - x) + (py - y) * (py - y));

@@ -54,14 +54,14 @@ void SG_EXPORT _sg_cbPhysicsCollisionBegin(void* shandle1, void* shandle2, void*
         psgmPhysicsShapeGetData(shandle2, (void**)&coll.shape2);
     }
 
-    if(coll.shape1)
+    if(coll.shape1 && coll.shape1->body->entity)
     {
         if(coll.shape1->body->entity->lcCollisionBegin)
             coll.shape1->body->entity->lcCollisionBegin(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
         if(coll.shape1->body->entity->lcCollisionOneBegin)
             coll.shape1->body->entity->lcCollisionOneBegin(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
     }
-    if(coll.shape2)
+    if(coll.shape2 && coll.shape2->body->entity)
     {
         if(coll.shape2->body->entity->lcCollisionBegin)
             coll.shape2->body->entity->lcCollisionBegin(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
@@ -84,14 +84,14 @@ void SG_EXPORT _sg_cbPhysicsCollision(void* shandle1, void* shandle2, void* hand
         psgmPhysicsShapeGetData(shandle2, (void**)&coll.shape2);
     }
 
-    if(coll.shape1)
+    if(coll.shape1 && coll.shape1->body->entity)
     {
         if(coll.shape1->body->entity->lcCollision)
             coll.shape1->body->entity->lcCollision(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
         if(coll.shape1->body->entity->lcCollisionOne)
             coll.shape1->body->entity->lcCollisionOne(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
     }
-    if(coll.shape2)
+    if(coll.shape2 && coll.shape2->body->entity)
     {
         if(coll.shape2->body->entity->lcCollision)
             coll.shape2->body->entity->lcCollision(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
@@ -117,14 +117,14 @@ void SG_EXPORT _sg_cbPhysicsCollisionEnd(void* shandle1, void* shandle2, void* h
         psgmPhysicsShapeGetData(shandle2, (void**)&coll.shape2);
     }
 
-    if(coll.shape1)
+    if(coll.shape1 && coll.shape1->body->entity)
     {
         if(coll.shape1->body->entity->lcCollisionEnd)
             coll.shape1->body->entity->lcCollisionEnd(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
         if(coll.shape1->body->entity->lcCollisionOneEnd)
             coll.shape1->body->entity->lcCollisionOneEnd(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
     }
-    if(coll.shape2)
+    if(coll.shape2 && coll.shape2->body->entity)
     {
         if(coll.shape2->body->entity->lcCollisionEnd)
             coll.shape2->body->entity->lcCollisionEnd(coll.shape2->body->entity, coll.shape1->body->entity, &coll);

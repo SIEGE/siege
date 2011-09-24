@@ -29,42 +29,39 @@ void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
 
     SGbool pressed = sgMouseGetButtonPress(button);
 
-    SGenum events[4];
-    memset(events, 0, sizeof(events));
+	SGuint numevents = 2;
+    SGenum events[2];
 
-    events[0] = SG_EVF_MOUSEBUTH;
     if(pressed)
-        events[1] = SG_EVF_MOUSEBUTP;
+        events[0] = SG_EVF_MOUSEBUTP;
     else if(!down)
-        events[1] = SG_EVF_MOUSEBUTR;
+        events[0] = SG_EVF_MOUSEBUTR;
     switch(button)
     {
         case SG_MOUSE_BUTTON_LEFT:
-            events[2] = SG_EVF_MOUSEBUTLH;
             if(pressed)
-                events[3] = SG_EVF_MOUSEBUTLP;
+                events[1] = SG_EVF_MOUSEBUTLP;
             else if(!down)
-                events[3] = SG_EVF_MOUSEBUTLR;
+                events[1] = SG_EVF_MOUSEBUTLR;
             break;
         case SG_MOUSE_BUTTON_RIGHT:
-            events[2] = SG_EVF_MOUSEBUTRH;
             if(pressed)
-                events[3] = SG_EVF_MOUSEBUTRP;
+                events[1] = SG_EVF_MOUSEBUTRP;
             else if(!down)
-                events[3] = SG_EVF_MOUSEBUTRR;
+                events[1] = SG_EVF_MOUSEBUTRR;
             break;
         case SG_MOUSE_BUTTON_MIDDLE:
-            events[2] = SG_EVF_MOUSEBUTMH;
             if(pressed)
-                events[3] = SG_EVF_MOUSEBUTMP;
+                events[1] = SG_EVF_MOUSEBUTMP;
             else if(!down)
-                events[3] = SG_EVF_MOUSEBUTMR;
+                events[1] = SG_EVF_MOUSEBUTMR;
             break;
         default:
+			numevents--;
             break;
     }
 
-    sgEventCall(SG_EV_INTERNAL, (SGuint)4, events[0], button, events[1], button, events[2], events[3]);
+    sgEventCall(SG_EV_INTERNAL, numevents, events[0], button, events[1]);
 }
 void SG_EXPORT _sg_cbMouseMove(void* mouse, SGint x, SGint y)
 {
@@ -81,6 +78,37 @@ void SG_EXPORT _sg_cbMouseWheel(void* mouse, SGint w)
     _sg_mouseWheel = w;
 
     sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_MOUSEWHEEL, w);
+}
+
+void SG_EXPORT _sgMouseUpdate(void)
+{
+	SGuint numevents;
+	SGenum events[2];
+	SGuint i;
+	for(i = 0; i < _sg_mouseButtonNum; i++)
+	{
+		if(_sg_mouseButtonCurr[i])
+		{
+			numevents = 2;
+			events[0] = SG_EVF_MOUSEBUTH;
+			switch(i + 1)
+			{
+				case SG_MOUSE_BUTTON_LEFT:
+					events[1] = SG_EVF_MOUSEBUTLH;
+					break;
+				case SG_MOUSE_BUTTON_RIGHT:
+					events[1] = SG_EVF_MOUSEBUTRH;
+					break;
+				case SG_MOUSE_BUTTON_MIDDLE:
+					events[1] = SG_EVF_MOUSEBUTMH;
+					break;
+				default:
+					numevents--;
+					break;
+			}
+			sgEventCall(SG_EV_INTERNAL, numevents, events[0], i + 1, events[1]);
+		}
+	}
 }
 
 SGbool SG_EXPORT _sgMouseInit(void)

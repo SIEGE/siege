@@ -54,9 +54,12 @@ void SG_EXPORT sgEventCallv(SGenum type, va_list args)
 	SGbool cont = SG_TRUE;
 	SGEvent* event;
 	SGPListNode* node;
+	SGPListNode* next;
 	va_list curarg;
-	for(node = _sg_evList->first; (node != NULL) && cont; node = node->next)
+	for(node = _sg_evList->first; (node != NULL) && cont; node = next)
 	{
+	    next = node->next;
+
 		if(_sg_evStop)
 			break;
 		event = node->item;

@@ -22,9 +22,13 @@ extern "C"
 {
 #endif // __cplusplus
 
+struct SGPhysicsBody;
+
 typedef struct SGPhysicsSpace
 {
     void* handle;
+    struct SGPhysicsBody* sbody;
+    void* data;
 } SGPhysicsSpace;
 
 #ifdef SG_BUILD_LIBRARY
@@ -38,8 +42,18 @@ SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceCreate(void);
 void SG_EXPORT sgPhysicsSpaceDestroy(SGPhysicsSpace* space);
 
 void SG_EXPORT sgPhysicsSpaceStep(SGPhysicsSpace* space, float time);
+
+void SG_EXPORT sgPhysicsSpaceSetIterations(SGPhysicsSpace* space, SGuint iterations);
 void SG_EXPORT sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y);
 //void SG_EXPORT sgPhysicsSpaceGetGravity(SGPhysicsSpace* space, float* x, float* y);
+void SG_EXPORT sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping);
+//float SG_EXPORT sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
+
+void SG_EXPORT sgPhysicsSpaceSetData(SGPhysicsSpace* space, void* data);
+void* SG_EXPORT sgPhysicsSpaceGetData(SGPhysicsSpace* space);
+
+struct SGPhysicsBody* SG_EXPORT sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space);
+SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceGetDefault(void);
 
 #ifdef __cplusplus
 }

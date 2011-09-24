@@ -5,12 +5,16 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
+
+ /**
+  * Title: Core
+  */
 
 #ifndef __SIEGE_CORE_H__
 #define __SIEGE_CORE_H__
@@ -24,15 +28,13 @@ extern "C"
 #endif // __cplusplus
 
 /**
- * \brief Load a number of modules
- * \ingroup Core
+ * Functions: sgLoadModule*
  *
- * \param n The number of modules to load
- * \param args The list of modules to load
+ * Load a module or a number of modules.
  *
- * \return The number of successfully loaded modules.
- *
- * \warning This function should be called \em before sgInit()!
+ * sgLoadModulesv - Load a va_list of modules
+ * sgLoadModules  - Load multiple modules
+ * sgLoadModule   - Load a single module
  *
  * The "Modules" folder is used to look for the modules.
  *
@@ -46,112 +48,87 @@ extern "C"
  *
  * In debug builds, SIEGE tries to find the ".debug." versions first.
  *
- * \see sgLoadModules
- * \see sgLoadModule
+ * Warning:
+ * 	This function should be called *before* sgInit()!
+ *
+ * Parameters:
+ * 	n    - The number of modules to load
+ * 	args - The va_list of modules to load
+ * 	...  - List of modules to load (n items)
+ *  name - Name of the module to load
+ *
+ * Returns:
+ * 	The number of successfully loaded modules.
  */
 SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args);
-/**
- * \brief Load a number of modules
- * \ingroup Core
- *
- * \param n The number of modules to load
- * \param args The list of modules to load
- *
- * \return The number of successfully loaded modules.
- *
- * \warning This function should be called \em before sgInit()!
- *
- * The "Modules" folder is used to look for the modules.
- *
- * For example, if the module "Foo" is requested, SIEGE will look for it
- * in this order (replace ".so" with whatever the dynamic library ending
- * of the OS is):
- * - Modules/SGModule-Foo.so
- * - Modules/libSGModule-Foo.so
- * - Modules/SGModule-Foo.debug.so
- * - Modules/libSGModule-Foo.debug.so
- *
- * In debug builds, SIEGE tries to find the ".debug." versions first.
- *
- * \see sgLoadModulesv
- * \see sgLoadModule
- */
 SGuint SG_EXPORT sgLoadModules(size_t n, ...);
-/**
- * \brief Load a single module
- * \ingroup Core
- *
- * \param name Name of the module to load
- *
- * \return SG_TRUE if successful, SG_FALSE otherwise.
- *
- * \warning This function should be called \em before sgInit()!
- *
- * The "Modules" folder is used to look for the modules.
- * For example, if the module "Foo" is requested, SIEGE will look for it in this order (replace ".so" with whatever the dynamic library ending of the OS is)
- * - Modules/SGModule-Foo.so
- * - Modules/libSGModule-Foo.so
- * - Modules/SGModule-Foo.debug.so
- * - Modules/libSGModule-Foo.debug.so
- * In debug builds, SIEGE tries to find the ".debug." versions first.
- *
- * \see sgLoadModules
- */
 SGbool SG_EXPORT sgLoadModule(const char* name);
 /**
- * \brief Initialize SIEGE
- * \ingroup Core
+ * Function: sgInit
  *
- * \param width Window width
- * \param height Window height
- * \param bpp Window bits (not bytes!) per pixel
- * \param flags Window open flags
+ * Initialize SIEGE.
  *
- * \return SG_TRUE on success, SG_FALSE otherwise.
+ * Warning:
+ * 	This function should be called *after* sgLoadModule() or
+ * 	sgLoadModules()!
  *
- * \warning This function should be called \em after sgLoadModule()
- * or sgLoadModules()!
+ * Parameters:
+ * 	width, height - Window size
+ * 	bpp           - Window bits (not bytes!) per pixel
+ * 	flags         - Window open flags (can be zero)
  *
- * \sa
- *	sgDeinit
+ * Returns:
+ * 	SG_TRUE on success, SG_FALSE otherwise.
+ *
+ * See Also:
+ *	- <sgDeinit>
  */
 SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags);
 /**
- * \brief Cleanup and deinit SIEGE
- * \ingroup Core
+ * Function: sgDeinit
  *
- * \return SG_TRUE on success, SG_FALSE otherwise
- * (which would leave the app in a messy state).
+ * Cleanup and deinit SIEGE.
  *
- * \warning This should \em always be the last SIEGE function you call!
+ * Warning: This should *always* be the last SIEGE function you call!
  *
- * \sa
- *	sgInit
+ * Returns:
+ * 	SG_TRUE on success, SG_FALSE otherwise (which would leave the app
+ * 	in a messy state).
+ *
+ * See Also:
+ *	- <sgInit>
  */
 SGbool SG_EXPORT sgDeinit(void);
-
 /**
- * \brief Start the SIEGE main loop
- * \ingroup Core
+ * Function: sgRun
  *
- * \return The return code which can then be returned from the main() function.
+ * Start the SIEGE main loop.
  *
- * \see sgLoop
- * \see sgStop
+ * Returns:
+ * 	A value meant to be returned from the main() function.
+ *
+ * See Also:
+ * 	- <sgLoop>
+ *  - <sgStop>
  */
 SGint SG_EXPORT sgRun(void);
 /**
- * \brief Run a single SIEGE iteration
- * \ingroup Core
+ * Function: sgLoop
  *
- * \param[out] code The return code, which can be passed to the "return" from main() function
+ * Run a single SIEGE iteration.
  *
- * \return SG_TRUE if the program is to continue running,
- * SG_FALSE if an exit has been requested
- * (either via sgStop() or the window closed)
+ * Parameters:
+ * 	code - The return code, which can be passed to the "return" from
+ *         main() function
+ *
+ * Returns:
+ * 	- SG_TRUE if the program is to continue running,
+ * 	- SG_FALSE if an exit has been requested (either via sgStop() or
+ * 	  the window closed).
  *
  * Example:
- * \code
+ * (begin code)
+ *
  *	int main()
  *	{
  *		// ... init here ...
@@ -166,31 +143,39 @@ SGint SG_EXPORT sgRun(void);
  *		// ... deinit here ...
  *		return ret;
  *	}
- * \endcode
  *
- * \see sgRun
- * \see sgStop
+ * (end code)
+ *
+ * See Also:
+ * 	- <sgRun>
+ *  - <sgStop>
  */
 SGbool SG_EXPORT sgLoop(SGint* code);
 /**
- * \brief Stop the program main loop
- * \ingroup Core
+ * Function: sgStop
  *
- * \param ret The value to ultimately return from the main() function
+ * Stop the program main loop.
  *
- * \warning The loop SIEGE is currently in will
- * (until the implementation is changed otherwise)
- * run to the end before quitting!
+ * Warning:
+ * 	The loop SIEGE is currently in will
+ * 	(until the implementation is changed otherwise)
+ * 	run to the end before quitting!
  *
- * \see sgRun
- * \see sgLoop
+ * Parameters:
+ * 	ret - The value to ultimately return from the main() function
+ *
+ * See Also:
+ * 	- <sgRun>
+ *  - <sgLoop>
  */
 void SG_EXPORT sgStop(SGint ret);
 /**
- * \brief Get the current tick (number of loops passed)
- * \ingroup Core
+ * Function: sgGetTick
  *
- * \return The number of loops SIEGE has ran for since the start
+ * Get the current tick (number of loops passed).
+ *
+ * Returns:
+ * 	The number of loops SIEGE has ran for since the start
  */
 SGulong SG_EXPORT sgGetTick(void);
 

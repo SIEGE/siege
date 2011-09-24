@@ -43,6 +43,8 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x,
 SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float x, float y, float r1, float r2);
 void SG_EXPORT sgPhysicsShapeDestroy(SGPhysicsShape* shape);
 
+void SG_EXPORT sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group);
+SGuint SG_EXPORT sgPhysicsShapeGetGroup(SGPhysicsShape* shape);
 void SG_EXPORT sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction);
 float SG_EXPORT sgPhysicsShapeGetFriction(SGPhysicsShape* shape);
 void SG_EXPORT sgPhysicsShapeSetRestitution(SGPhysicsShape* shape, float restitution);
@@ -56,6 +58,7 @@ float SG_EXPORT sgPhysicsShapeGetMass(SGPhysicsShape* shape, float density);
 float SG_EXPORT sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass);
 float SG_EXPORT sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float density);
 
+void SG_EXPORT sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, float* b, float* r);
 void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape);
 
 #ifdef __cplusplus

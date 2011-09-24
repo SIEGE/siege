@@ -138,7 +138,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 1
-#define SG_VERSION_PATCH 14
+#define SG_VERSION_PATCH 18
 /**
  * \brief Version string
  *
@@ -360,6 +360,16 @@ typedef double SGdouble;
 #define SG_GRAPHICS_PRIMITIVE_INTERSECTING_POLYGON	0x30
 /// @}
 
+#define SG_GRAPHICS_WRAP_CURRENT            0x00
+#define SG_GRAPHICS_WRAP_CLAMP              0x01
+#define SG_GRAPHICS_WRAP_CLAMP_TO_EDGE      0x02
+#define SG_GRAPHICS_WRAP_MIRRORED_REPEAT    0x03
+#define SG_GRAPHICS_WRAP_REPEAT             0x04
+
+#define SG_GRAPHICS_INTERP_CURRENT 0x00
+#define SG_GRAPHICS_INTERP_NEAREST 0x01
+#define SG_GRAPHICS_INTERP_LINEAR  0x02
+
 #define SG_GRAPHICS_FUNC_ZERO                   0x00
 #define SG_GRAPHICS_FUNC_ONE                    0x01
 #define SG_GRAPHICS_FUNC_SRC_COLOR              0x02
@@ -394,6 +404,17 @@ typedef double SGdouble;
  */
 #define SG_PHYSICS_SHAPE_CIRCLE  0x03
 /// @}
+
+#define SG_PHYSICS_CONSTRAINT_PIN       0x01
+#define SG_PHYSICS_CONSTRAINT_SLIDE     0x02
+#define SG_PHYSICS_CONSTRAINT_PIVOT     0x03
+#define SG_PHYSICS_CONSTRAINT_GROOVE    0x04
+#define SG_PHYSICS_CONSTRAINT_LINSPRING 0x05
+#define SG_PHYSICS_CONSTRAINT_ROTSPRING 0x06
+#define SG_PHYSICS_CONSTRAINT_ROTLIMIT  0x07
+#define SG_PHYSICS_CONSTRAINT_RATCHET   0x08
+#define SG_PHYSICS_CONSTRAINT_GEAR      0x09
+#define SG_PHYSICS_CONSTRAINT_MOTOR     0x0A
 
 /**
  * \name Physics body types

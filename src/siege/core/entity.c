@@ -54,203 +54,202 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
 	for(i = 0; i < num; i++)
 	{
         type = va_arg(args, SGenum);
-		if(entity->type & (type & SG_EVT_ALL))
-			switch(type)
-			{
-				case SG_EVF_INIT:
-					if(entity->evInit != NULL)
-						entity->evInit(entity);
-					break;
-				case SG_EVF_DEINIT:
-					if(entity->evDeinit != NULL)
-						entity->evDeinit(entity);
-					break;
+		switch(type)
+		{
+			case SG_EVF_INIT:
+				if(entity->evInit != NULL)
+					entity->evInit(entity);
+				break;
+			case SG_EVF_DEINIT:
+				if(entity->evDeinit != NULL)
+					entity->evDeinit(entity);
+				break;
 
-				case SG_EVF_START:
-					if(entity->evStart != NULL)
-						entity->evStart(entity);
-					break;
-				case SG_EVF_EXIT:
-					if(entity->evExit != NULL)
-						entity->evExit(entity);
-					break;
-				case SG_EVF_TICK:
-					if(entity->evTick != NULL)
-						entity->evTick(entity);
-					break;
-				case SG_EVF_TICKB:
-					if(entity->evTickBegin != NULL)
-						entity->evTickBegin(entity);
-					break;
-				case SG_EVF_TICKE:
-					if(entity->evTickEnd != NULL)
-						entity->evTickEnd(entity);
-					break;
-				case SG_EVF_DRAW:
-					if(entity->evDraw != NULL)
-						entity->evDraw(entity);
-					break;
+			case SG_EVF_START:
+				if(entity->evStart != NULL)
+					entity->evStart(entity);
+				break;
+			case SG_EVF_EXIT:
+				if(entity->evExit != NULL)
+					entity->evExit(entity);
+				break;
+			case SG_EVF_TICK:
+				if(entity->evTick != NULL)
+					entity->evTick(entity);
+				break;
+			case SG_EVF_TICKB:
+				if(entity->evTickBegin != NULL)
+					entity->evTickBegin(entity);
+				break;
+			case SG_EVF_TICKE:
+				if(entity->evTickEnd != NULL)
+					entity->evTickEnd(entity);
+				break;
+			case SG_EVF_DRAW:
+				if(entity->evDraw != NULL)
+					entity->evDraw(entity);
+				break;
 
-				case SG_EVF_WINOPEN:
-					if(entity->evWindowOpen != NULL)
-						entity->evWindowOpen(entity);
-					break;
-				case SG_EVF_WINCLOSE:
-					if(entity->evWindowClose != NULL)
-						entity->evWindowClose(entity);
-					break;
-				case SG_EVF_WINRESIZE:
-                    val[0] = va_arg(args, SGuint);
-                    val[1] = va_arg(args, SGuint);
-					if(entity->evWindowResize != NULL)
-						entity->evWindowResize(entity, val[0], val[1]);
-					break;
+			case SG_EVF_WINOPEN:
+				if(entity->evWindowOpen != NULL)
+					entity->evWindowOpen(entity);
+				break;
+			case SG_EVF_WINCLOSE:
+				if(entity->evWindowClose != NULL)
+					entity->evWindowClose(entity);
+				break;
+			case SG_EVF_WINRESIZE:
+				val[0] = va_arg(args, SGuint);
+				val[1] = va_arg(args, SGuint);
+				if(entity->evWindowResize != NULL)
+					entity->evWindowResize(entity, val[0], val[1]);
+				break;
 
-				case SG_EVF_MOUSEBUTH:
-                    val[0] = va_arg(args, SGuint);
-					if(entity->evMouseButton != NULL)
-						entity->evMouseButton(entity, val[0]);
-					break;
-				case SG_EVF_MOUSEBUTP:
-                    val[0] = va_arg(args, SGuint);
-					if(entity->evMouseButtonPress != NULL)
-						entity->evMouseButtonPress(entity, val[0]);
-					break;
-				case SG_EVF_MOUSEBUTR:
-                    val[0] = va_arg(args, SGuint);
-					if(entity->evMouseButtonRelease != NULL)
-						entity->evMouseButtonRelease(entity, val[0]);
-					break;
+			case SG_EVF_MOUSEBUTH:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evMouseButton != NULL)
+					entity->evMouseButton(entity, val[0]);
+				break;
+			case SG_EVF_MOUSEBUTP:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evMouseButtonPress != NULL)
+					entity->evMouseButtonPress(entity, val[0]);
+				break;
+			case SG_EVF_MOUSEBUTR:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evMouseButtonRelease != NULL)
+					entity->evMouseButtonRelease(entity, val[0]);
+				break;
 
-				case SG_EVF_MOUSEBUTLH:
-					if(entity->evMouseButtonLeft != NULL)
-						entity->evMouseButtonLeft(entity);
-					break;
-				case SG_EVF_MOUSEBUTLP:
-					if(entity->evMouseButtonLeftPress != NULL)
-						entity->evMouseButtonLeftPress(entity);
-					break;
-				case SG_EVF_MOUSEBUTLR:
-					if(entity->evMouseButtonLeftRelease != NULL)
-						entity->evMouseButtonLeftRelease(entity);
-					break;
+			case SG_EVF_MOUSEBUTLH:
+				if(entity->evMouseButtonLeft != NULL)
+					entity->evMouseButtonLeft(entity);
+				break;
+			case SG_EVF_MOUSEBUTLP:
+				if(entity->evMouseButtonLeftPress != NULL)
+					entity->evMouseButtonLeftPress(entity);
+				break;
+			case SG_EVF_MOUSEBUTLR:
+				if(entity->evMouseButtonLeftRelease != NULL)
+					entity->evMouseButtonLeftRelease(entity);
+				break;
 
-				case SG_EVF_MOUSEBUTRH:
-					if(entity->evMouseButtonRight != NULL)
-						entity->evMouseButtonRight(entity);
-					break;
-				case SG_EVF_MOUSEBUTRP:
-					if(entity->evMouseButtonRightPress != NULL)
-						entity->evMouseButtonRightPress(entity);
-					break;
-				case SG_EVF_MOUSEBUTRR:
-					if(entity->evMouseButtonRightRelease != NULL)
-						entity->evMouseButtonRightRelease(entity);
-					break;
+			case SG_EVF_MOUSEBUTRH:
+				if(entity->evMouseButtonRight != NULL)
+					entity->evMouseButtonRight(entity);
+				break;
+			case SG_EVF_MOUSEBUTRP:
+				if(entity->evMouseButtonRightPress != NULL)
+					entity->evMouseButtonRightPress(entity);
+				break;
+			case SG_EVF_MOUSEBUTRR:
+				if(entity->evMouseButtonRightRelease != NULL)
+					entity->evMouseButtonRightRelease(entity);
+				break;
 
-				case SG_EVF_MOUSEBUTMH:
-					if(entity->evMouseButtonMiddle != NULL)
-						entity->evMouseButtonMiddle(entity);
-					break;
-				case SG_EVF_MOUSEBUTMP:
-					if(entity->evMouseButtonMiddlePress != NULL)
-						entity->evMouseButtonMiddlePress(entity);
-					break;
-				case SG_EVF_MOUSEBUTMR:
-					if(entity->evMouseButtonMiddleRelease != NULL)
-						entity->evMouseButtonMiddleRelease(entity);
-					break;
+			case SG_EVF_MOUSEBUTMH:
+				if(entity->evMouseButtonMiddle != NULL)
+					entity->evMouseButtonMiddle(entity);
+				break;
+			case SG_EVF_MOUSEBUTMP:
+				if(entity->evMouseButtonMiddlePress != NULL)
+					entity->evMouseButtonMiddlePress(entity);
+				break;
+			case SG_EVF_MOUSEBUTMR:
+				if(entity->evMouseButtonMiddleRelease != NULL)
+					entity->evMouseButtonMiddleRelease(entity);
+				break;
 
-				case SG_EVF_MOUSEMOVE:
-                    val[0] = va_arg(args, SGuint);
-                    val[1] = va_arg(args, SGuint);
-					if(entity->evMouseMove != NULL)
-						entity->evMouseMove(entity, val[0], val[1]);
-					break;
-				case SG_EVF_MOUSEWHEEL:
-                    val[0] = va_arg(args, SGuint);
-					if(entity->evMouseWheel != NULL)
-						entity->evMouseWheel(entity, val[0]);
-					break;
+			case SG_EVF_MOUSEMOVE:
+				val[0] = va_arg(args, SGint);
+				val[1] = va_arg(args, SGint);
+				if(entity->evMouseMove != NULL)
+					entity->evMouseMove(entity, val[0], val[1]);
+				break;
+			case SG_EVF_MOUSEWHEEL:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evMouseWheel != NULL)
+					entity->evMouseWheel(entity, val[0]);
+				break;
 
-				case SG_EVF_KEYKEYH:
-                    val[0] = va_arg(args, SGuint);
-					if(entity->evKeyboardKey != NULL)
-						entity->evKeyboardKey(entity, val[0]);
-					break;
-				case SG_EVF_KEYKEYP:
-                    val[0] = va_arg(args, SGuint);
-					if(entity->evKeyboardKeyPress != NULL)
-						entity->evKeyboardKeyPress(entity, val[0]);
-					break;
-				case SG_EVF_KEYKEYR:
-				    val[0] = va_arg(args, SGuint);
-					if(entity->evKeyboardKeyRelease != NULL)
-						entity->evKeyboardKeyRelease(entity, val[0]);
-					break;
-				case SG_EVF_KEYKEYA:
-				    val[0] = va_arg(args, SGuint);
-					if(entity->evKeyboardKeyRepeat != NULL)
-						entity->evKeyboardKeyRepeat(entity, val[0]);
-					break;
+			case SG_EVF_KEYKEYH:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evKeyboardKey != NULL)
+					entity->evKeyboardKey(entity, val[0]);
+				break;
+			case SG_EVF_KEYKEYP:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evKeyboardKeyPress != NULL)
+					entity->evKeyboardKeyPress(entity, val[0]);
+				break;
+			case SG_EVF_KEYKEYR:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evKeyboardKeyRelease != NULL)
+					entity->evKeyboardKeyRelease(entity, val[0]);
+				break;
+			case SG_EVF_KEYKEYA:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evKeyboardKeyRepeat != NULL)
+					entity->evKeyboardKeyRepeat(entity, val[0]);
+				break;
 
-				/*case SG_EVF_KEYCHARH:
-				    val[0] = va_arg(args, SGuint);
-					if(entity->evKeyboardChar != NULL)
-						entity->evKeyboardChar(entity, val[0]);
-					break;*/
-				case SG_EVF_KEYCHARP:
-					if(entity->evKeyboardCharPress != NULL)
-						entity->evKeyboardCharPress(entity, val[0]);
-					break;
-				/*case SG_EVF_KEYCHARR:
-				    val[0] = va_arg(args, SGuint);
-					if(entity->evKeyboardCharRelease != NULL)
-						entity->evKeyboardCharRelease(entity, val[0]);
-					break;*/
-				case SG_EVF_KEYCHARA:
-				    val[0] = va_arg(args, SGuint);
-					if(entity->evKeyboardCharRepeat != NULL)
-						entity->evKeyboardCharRepeat(entity, val[0]);
-					break;
+			/*case SG_EVF_KEYCHARH:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evKeyboardChar != NULL)
+					entity->evKeyboardChar(entity, val[0]);
+				break;*/
+			case SG_EVF_KEYCHARP:
+				if(entity->evKeyboardCharPress != NULL)
+					entity->evKeyboardCharPress(entity, val[0]);
+				break;
+			/*case SG_EVF_KEYCHARR:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evKeyboardCharRelease != NULL)
+					entity->evKeyboardCharRelease(entity, val[0]);
+				break;*/
+			case SG_EVF_KEYCHARA:
+				val[0] = va_arg(args, SGuint);
+				if(entity->evKeyboardCharRepeat != NULL)
+					entity->evKeyboardCharRepeat(entity, val[0]);
+				break;
 
-				case SG_EVF_JOYSTICKBUTH:
-				    val[0] = va_arg(args, SGuint);
-                    val[1] = va_arg(args, SGuint);
-					if(entity->evJoystickButton != NULL)
-						entity->evJoystickButton(entity, val[0], val[1]);
-					break;
-				case SG_EVF_JOYSTICKBUTP:
-				    val[0] = va_arg(args, SGuint);
-                    val[1] = va_arg(args, SGuint);
-					if(entity->evJoystickButtonPress != NULL)
-						entity->evJoystickButtonPress(entity, val[0], val[1]);
-					break;
-				case SG_EVF_JOYSTICKBUTR:
-				    val[0] = va_arg(args, SGuint);
-                    val[1] = va_arg(args, SGuint);
-					if(entity->evJoystickButtonRelease != NULL)
-						entity->evJoystickButtonRelease(entity, val[0], val[1]);
-					break;
-				case SG_EVF_JOYSTICKMOVE:
-                    val[0] = va_arg(args, SGuint);
-                    ptr[0] = va_arg(args, float*);
-                    siz[0] = va_arg(args, size_t);
-					if(entity->evJoystickMove != NULL)
-						entity->evJoystickMove(entity, val[0], ptr[0], siz[0]);
-					break;
+			case SG_EVF_JOYSTICKBUTH:
+				val[0] = va_arg(args, SGuint);
+				val[1] = va_arg(args, SGuint);
+				if(entity->evJoystickButton != NULL)
+					entity->evJoystickButton(entity, val[0], val[1]);
+				break;
+			case SG_EVF_JOYSTICKBUTP:
+				val[0] = va_arg(args, SGuint);
+				val[1] = va_arg(args, SGuint);
+				if(entity->evJoystickButtonPress != NULL)
+					entity->evJoystickButtonPress(entity, val[0], val[1]);
+				break;
+			case SG_EVF_JOYSTICKBUTR:
+				val[0] = va_arg(args, SGuint);
+				val[1] = va_arg(args, SGuint);
+				if(entity->evJoystickButtonRelease != NULL)
+					entity->evJoystickButtonRelease(entity, val[0], val[1]);
+				break;
+			case SG_EVF_JOYSTICKMOVE:
+				val[0] = va_arg(args, SGuint);
+				ptr[0] = va_arg(args, float*);
+				siz[0] = va_arg(args, size_t);
+				if(entity->evJoystickMove != NULL)
+					entity->evJoystickMove(entity, val[0], ptr[0], siz[0]);
+				break;
 
-				// networking goes here (SG_EVF_NET)
+			// networking goes here (SG_EVF_NET)
 
-				case SG_EVF_LVLSTART:
-					if(entity->evLevelStart != NULL)
-						entity->evLevelStart(entity);
-					break;
+			case SG_EVF_LVLSTART:
+				if(entity->evLevelStart != NULL)
+					entity->evLevelStart(entity);
+				break;
 
-				case SG_EVF_LVLEND:
-					if(entity->evLevelEnd != NULL)
-						entity->evLevelEnd(entity);
-			}
+			case SG_EVF_LVLEND:
+				if(entity->evLevelEnd != NULL)
+					entity->evLevelEnd(entity);
+		}
 	}
 	return SG_TRUE;
 }
@@ -261,11 +260,10 @@ SGvoid SG_EXPORT _sg_evDraw(SGEntity* entity)
 		sgEntityDraw(entity);
 }
 
-SGEntity* SG_EXPORT sgEntityCreate(float priority, SGenum type)
+SGEntity* SG_EXPORT sgEntityCreate(float priority)
 {
 	SGEntity* entity = malloc(sizeof(SGEntity));
 	memset(entity, 0, sizeof(SGEntity));
-	entity->type = type;
 	entity->active = SG_TRUE;
 	entity->pausable = SG_TRUE;
 	entity->event = sgEventCreate(priority, SG_EV_INTERNAL, entity, (SGEventCall*)_sg_evCall);

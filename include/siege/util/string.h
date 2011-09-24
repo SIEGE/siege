@@ -19,6 +19,12 @@
 
 #include <stdarg.h>
 
+#define SG_OCTDIGITS "01234567"
+#define SG_DECDIGITS SG_OCTDIGITS "89"
+#define SG_HEXDIGITS "ABCDEFabcdef" SG_DECDIGITS
+#define SG_ALPHA     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+#define SG_ALNUM     SG_ALPHA SG_DECDIGITS
+
 #ifdef SG_BUILD_LIBRARY
 size_t _sg_strBufLen;
 char* _sg_strBuf;
@@ -27,12 +33,16 @@ char* _sg_strBuf;
 SGbool SG_EXPORT _sgStringInit(void);
 SGbool SG_EXPORT _sgStringDeinit(void);
 
+char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what);
+
 wchar_t* SG_EXPORT sgPrintfW(const wchar_t* format, ...);
 wchar_t* SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args);
 
 char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...);
 char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args);
 
+SGbool SG_EXPORT sgStartsWith(const char* text, const char* what);
+char* SG_EXPORT sgSpaceEnd(const char* text);
 char* SG_EXPORT sgLineEnd(const char* text);
 SGuint SG_EXPORT sgLineLength(const char* text);
 char* SG_EXPORT sgNextLine(const char* text);

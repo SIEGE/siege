@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGuint type, SGuint numverts, float* vertices, float* texcoords, float* colors)
+SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum type, size_t numverts, float* vertices, float* texcoords, float* colors)
 {
     TextureData* tdata = texture;
 
@@ -44,7 +44,7 @@ SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGuint t
     }
 
     GLuint* indices;
-    SGuint i;
+    size_t i;
     switch(type)
     {
         case SG_GRAPHICS_PRIMITIVE_POINTS:
@@ -141,7 +141,7 @@ SGuint SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
     return SG_OK;
 }
 
-#define SG_GRAPHICS_FUNC_ZERO                   0x00
+/*#define SG_GRAPHICS_FUNC_ZERO                   0x00
 #define SG_GRAPHICS_FUNC_ONE                    0x01
 #define SG_GRAPHICS_FUNC_SRC_COLOR              0x02
 #define SG_GRAPHICS_FUNC_ONE_MINUS_SRC_COLOR    0x03
@@ -156,7 +156,7 @@ SGuint SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
 #define SG_GRAPHICS_EQUATION_SUBTRACT           0x01
 #define SG_GRAPHICS_EQUATION_REVERSE_SUBTRACT   0x02
 #define SG_GRAPHICS_EQUATION_MIN                0x03
-#define SG_GRAPHICS_EQUATION_MAX                0x04
+#define SG_GRAPHICS_EQUATION_MAX                0x04*/
 SGuint SG_EXPORT sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum dst)
 {
     static GLenum table[] = {GL_ZERO, GL_ONE,
@@ -183,6 +183,39 @@ SGuint SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
 
     return SG_UNKNOWN_ERROR;
     //glBlendEquation(table[equation]);
+
+    return SG_OK;
+}
+
+SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthTest)(void* context, SGbool test)
+{
+    if(test)
+        glEnable(GL_DEPTH_TEST);
+    else
+        glDisable(GL_DEPTH_TEST);
+    return SG_OK;
+}
+
+SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetSmooth)(void* context, SGbool smooth)
+{
+    GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
+
+    glHint(GL_POINT_SMOOTH_HINT  , mode);
+    glHint(GL_LINE_SMOOTH_HINT   , mode);
+    glHint(GL_POLYGON_SMOOTH_HINT, mode);
+
+    if(smooth)
+    {
+        glEnable(GL_POINT_SMOOTH);
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_POLYGON_SMOOTH);
+    }
+    else
+    {
+        glDisable(GL_POINT_SMOOTH);
+        glDisable(GL_LINE_SMOOTH);
+        glDisable(GL_POLYGON_SMOOTH);
+    }
 
     return SG_OK;
 }

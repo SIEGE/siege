@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #ifdef __WIN32__
+    #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
 #else
     #include <dlfcn.h>

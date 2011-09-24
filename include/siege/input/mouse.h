@@ -41,6 +41,8 @@ void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool action);
 void SG_EXPORT _sg_cbMouseMove(void* mouse, SGint x, SGint y);
 void SG_EXPORT _sg_cbMouseWheel(void* mouse, SGint w);
 
+void SG_EXPORT _sgMouseUpdate(void);
+
 SGbool SG_EXPORT _sgMouseInit(void);
 SGbool SG_EXPORT _sgMouseDeinit(void);
 

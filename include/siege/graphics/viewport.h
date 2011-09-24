@@ -52,6 +52,11 @@ void SG_EXPORT sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wpos
 void SG_EXPORT sgViewportSet4i(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey);
 void SG_EXPORT sgViewportReset(SGViewport* viewport);
 
+void SG_EXPORT sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy);
+void SG_EXPORT sgViewportSetWSize(SGViewport* viewport, SGuint wsizex, SGuint wsizey);
+void SG_EXPORT sgViewportSetPos(SGViewport* viewport, float posx, float posy);
+void SG_EXPORT sgViewportSetSize(SGViewport* viewport, float sizex, float sizey);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

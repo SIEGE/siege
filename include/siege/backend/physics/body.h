@@ -5,7 +5,7 @@
     This file is part of libSIEGE.
 
     This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
+    2-clause BSD license. Please consult the file "COPYING.txt" for
     details.
 
     If you did not recieve the file with this program, please email
@@ -28,6 +28,8 @@ extern "C"
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyCreate)(void** body, SGenum type);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyDestroy)(void* body);
 
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodySetSleeping)(void* body, SGbool sleeping);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodyGetSleeping)(void* body, SGbool* sleeping);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetMass)(void* body, float mass);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetMass)(void* body, float* mass);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetMoment)(void* body, float moment);
@@ -46,6 +48,9 @@ extern "C"
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetTorque)(void* body, float* torque);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetData)(void* body, void* data);
     SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetData)(void* body, void** data);
+
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodyApplyImpulse)(void* body, float jx, float jy, float rx, float ry);
+    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodyApplyForce)(void* body, float jx, float jy, float rx, float ry);
 #ifdef __cplusplus
 }
 #endif

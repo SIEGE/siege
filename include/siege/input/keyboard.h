@@ -42,6 +42,8 @@ void SG_EXPORT _sg_cbKeyboardChar(void* keyboard, SGdchar chr, SGbool down);
 
 SGint SG_EXPORT _sgKeyboardInside(SGuint* array, SGuint what, SGuint len);
 
+void SG_EXPORT _sgKeyboardUpdate(void);
+
 SGbool SG_EXPORT _sgKeyboardInit(void);
 SGbool SG_EXPORT _sgKeyboardDeinit(void);
 

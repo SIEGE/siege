@@ -135,6 +135,18 @@ void SG_EXPORT sgPhysicsShapeDestroy(SGPhysicsShape* shape)
     free(shape);
 }
 
+void SG_EXPORT sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group)
+{
+	if(psgmPhysicsShapeSetGroup)
+		psgmPhysicsShapeSetGroup(shape->handle, group);
+}
+SGuint SG_EXPORT sgPhysicsShapeGetGroup(SGPhysicsShape* shape)
+{
+	SGuint group = 0;
+	if(psgmPhysicsShapeGetGroup)
+		psgmPhysicsShapeGetGroup(shape->handle, &group);
+	return group;
+}
 void SG_EXPORT sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction)
 {
     if(psgmPhysicsShapeSetFriction != NULL)
@@ -282,6 +294,19 @@ float SG_EXPORT sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float dens
     return SG_NAN;
 }
 
+void SG_EXPORT sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, float* b, float* r)
+{
+	float tmp;
+	if(!t) t = &tmp;
+	if(!l) l = &tmp;
+	if(!b) b = &tmp;
+	if(!r) r = &tmp;
+
+	*t = *l = *b = *r = SG_NAN;
+
+	if(psgmPhysicsShapeGetBBox)
+		psgmPhysicsShapeGetBBox(shape->handle, t, l, b, r);
+}
 void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
 {
     if(shape == NULL)
@@ -289,8 +314,7 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
 
     // draw BB
     float t, l, b, r;
-    if(psgmPhysicsShapeGetBB_TEST != NULL)
-        psgmPhysicsShapeGetBB_TEST(shape->handle, &t, &l, &b, &r);
+    sgPhysicsShapeGetBBox(shape, &t, &l, &b, &r);
 
     sgDrawColor4f(0.5, 0.5, 0.5, 0.5);
     sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
