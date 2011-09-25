@@ -38,6 +38,7 @@ extern "C"
 typedef struct SGJSONValue
 {
     SGenum type;
+    char* strbuf; // used for errors and stringification
     union
     {
         SGTree* object;

@@ -28,10 +28,6 @@
 #include <siege/input/mouse.h>
 #include <siege/input/joystick.h>
 #include <siege/modules/modules.h>
-#include <siege/util/color.h>
-#include <siege/util/link.h>
-#include <siege/util/rand.h>
-#include <siege/util/string.h>
 #include <siege/physics/space.h>
 #include <siege/physics/collision.h>
 
@@ -65,7 +61,6 @@ SGbool SG_EXPORT sgLoadModule(const char* name)
 {
 	if(_sg_firstModule)
 	{
-		_sgLibraryInit();
 		_sgModuleInit();
 		_sg_firstModule = SG_FALSE;
 	}
@@ -78,8 +73,6 @@ SGbool SG_EXPORT sgLoadModule(const char* name)
 
 SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 {
-	_sgStringInit();
-
 	_sgEventInit();
 
 	size_t i;
@@ -113,7 +106,6 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_INIT);
 	_sg_hasInited = SG_TRUE;
 
-	_sgColorInit();
 	_sgWindowInit();
 	_sgViewportInit();
 	_sgTurtleInit();
@@ -130,7 +122,6 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 
 	_sgDrawInit();
 
-	_sgRandInit();
 	_sgPhysicsSpaceInit();
     _sgPhysicsCollisionInit();
 
@@ -150,7 +141,6 @@ SGbool SG_EXPORT sgDeinit(void)
 
     _sgPhysicsCollisionDeinit();
 	_sgPhysicsSpaceDeinit();
-	_sgRandDeinit();
 
 	_sgDrawDeinit();
 
@@ -167,14 +157,10 @@ SGbool SG_EXPORT sgDeinit(void)
 	_sgTurtleDeinit();
 	_sgViewportDeinit();
 	_sgWindowDeinit();
-	_sgColorDeinit();
 
 	_sgEventDeinit();
 
-	_sgStringDeinit();
-
 	_sgModuleDeinit();
-	_sgLibraryDeinit();
 
 	return SG_TRUE;
 }
