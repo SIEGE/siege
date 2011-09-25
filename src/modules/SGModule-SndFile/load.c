@@ -18,31 +18,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmAudioLoadFile(const char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen)
-{
-    SGuint ret;
-    LFile* lfile;
-    ret = sgmAudioFileCreate((void**)&lfile, fname, channels, format, frequency);
-    if(ret != SG_OK)
-        return ret;
-
-    *datalen = lfile->info.frames * lfile->info.channels * lfile->size;
-    *data = malloc(*datalen);
-
-    ret = sgmAudioFileRead(lfile, *data, datalen);
-    ret = sgmAudioFileDestroy(lfile);
-
-    return SG_OK;
-}
-
-//SGuint SG_EXPORT sgmAudioLoadStream(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen)
-
-SGuint SG_EXPORT sgmAudioLoadFreeData(void* data)
-{
-    free(data);
-    return SG_OK;
-}
-
 SGuint SG_EXPORT sgmAudioFileCreate(void** file, const char* fname, SGuint* channels, SGuint* format, SGuint* frequency)
 {
     LFile** lfile = (LFile**)file;

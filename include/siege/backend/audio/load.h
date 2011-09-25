@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -25,10 +25,6 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_HINT_DEPRECATED SG_FPTR(sgmAudioLoadFile)(const char* fname, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    //SGuint SG_EXPORT SG_HINT_DEPRECATED SG_FPTR(sgmAudioLoadStream)(void* stream, SGuint* channels, SGuint* format, SGuint* frequency, void** data, SGuint* datalen);
-    SGuint SG_EXPORT SG_HINT_DEPRECATED SG_FPTR(sgmAudioLoadFreeData)(void* data);
-
     SGuint SG_EXPORT SG_FPTR(sgmAudioFileCreate)(void** file, const char* fname, SGuint* channels, SGuint* format, SGuint* frequency);
     SGuint SG_EXPORT SG_FPTR(sgmAudioFileDestroy)(void* file);
     SGuint SG_EXPORT SG_FPTR(sgmAudioFileNumSamples)(void* file, SGuint* samples);
