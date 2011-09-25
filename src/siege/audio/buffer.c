@@ -18,15 +18,6 @@
 
 #include <stdlib.h>
 
-SGbool SG_EXPORT _sgAudioBufferInit(void)
-{
-    return SG_TRUE;
-}
-SGbool SG_EXPORT _sgAudioBufferDeinit(void)
-{
-    return SG_TRUE;
-}
-
 SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname)
 {
     SGAudioBuffer* buffer = malloc(sizeof(SGAudioBuffer));

@@ -13,7 +13,6 @@
  */
 
 #define SG_BUILD_LIBRARY
-#include <siege/audio/buffer.h>
 #include <siege/audio/source.h>
 #include <siege/core/console.h>
 #include <siege/core/core.h>
@@ -107,7 +106,6 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 	_sgTurtleInit();
 	_sgSurfaceInit();
 
-	_sgAudioBufferInit();
 	_sgAudioSourceInit();
 
 	_sgKeyboardInit();
@@ -151,7 +149,6 @@ SGbool SG_EXPORT sgDeinit(void)
 	_sgKeyboardDeinit();
 
 	_sgAudioSourceDeinit();
-	_sgAudioBufferDeinit();
 
 	_sgSurfaceDeinit();
 	_sgTurtleDeinit();

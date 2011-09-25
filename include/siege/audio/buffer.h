@@ -40,9 +40,6 @@ typedef struct SGAudioBuffer
 	void* handle;
 } SGAudioBuffer;
 
-SGbool SG_EXPORT _sgAudioBufferInit(void);
-SGbool SG_EXPORT _sgAudioBufferDeinit(void);
-
 /// @{
 /**
  * \memberof SGAudioBuffer
