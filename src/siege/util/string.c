@@ -26,19 +26,6 @@
 
 int vswprintf(wchar_t *wcs, size_t maxlen, const wchar_t *format, va_list args);
 
-SGbool SG_EXPORT _sgStringInit(void)
-{
-	_sg_strBufLen = 0;
-	_sg_strBuf = NULL;
-	return SG_TRUE;
-}
-SGbool SG_EXPORT _sgStringDeinit(void)
-{
-	if(_sg_strBuf)
-		free(_sg_strBuf);
-	return SG_TRUE;
-}
-
 char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what)
 {
     size_t wlen = strlen(what);
@@ -56,58 +43,91 @@ char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what)
     return *str;
 }
 
-wchar_t* SG_EXPORT sgPrintfW(const wchar_t* format, ...)
+size_t SG_EXPORT sgSPrintfW(wchar_t* buf, size_t buflen, const wchar_t* format, ...)
 {
     va_list args;
     va_start(args, format);
-    wchar_t* str = sgPrintfvW(format, args);
+    size_t size = sgSPrintfvW(buf, buflen, format, args);
+    va_end(args);
+    return size;
+}
+size_t SG_EXPORT sgSPrintfvW(wchar_t* buf, size_t buflen, const wchar_t* format, va_list args)
+{
+    int ret = vswprintf(buf, buflen, format, args);
+    if(ret < 0)
+        return 0;
+    return ret;
+}
+
+wchar_t* SG_EXPORT sgAPrintfW(const wchar_t* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    wchar_t* str = sgAPrintfvW(format, args);
     va_end(args);
     return str;
 }
-wchar_t* SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args)
+wchar_t* SG_EXPORT sgAPrintfvW(const wchar_t* format, va_list args)
 {
-    int ret = 0;
-    _sg_strBufLen = 0;
+    wchar_t buf;
 
-    do
-    {
-        _sg_strBufLen += 256;
-        _sg_strBuf = realloc(_sg_strBuf, _sg_strBufLen * sizeof(wchar_t));
-        ret = vswprintf((wchar_t*)_sg_strBuf, _sg_strBufLen, format, args);
-    }
-    while(ret >= _sg_strBufLen);
+    va_list argcpy;
+    va_copy(argcpy, args);
+    size_t len = sgSPrintfvW(&buf, 1, format, argcpy);
+    va_end(argcpy);
 
-    if(ret < 0)
+    wchar_t* str = malloc((len + 1) * sizeof(wchar_t));
+    if(!str)
         return NULL;
+    sgSPrintfW(str, len + 1, format, args);
 
-    return (wchar_t*)_sg_strBuf;
+    return str;
 }
 
-char* SG_EXPORT sgPrintf(const char* format, ...)
+size_t SG_EXPORT SG_HINT_PRINTF(3, 4) sgSPrintf(char* buf, size_t buflen, const char* format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	char* str = sgPrintfv(format, args);
+	size_t size = sgSPrintfv(buf, buflen, format, args);
+	va_end(args);
+	return size;
+}
+size_t SG_EXPORT SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const char* format, va_list args)
+{
+    int ret = vsnprintf(buf, buflen, format, args);
+    if(ret < 0)
+        return 0;
+    return ret;
+}
+
+char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgAPrintf(const char* format, ...)
+{
+	va_list args;
+	va_start(args, format);
+	char* str = sgAPrintfv(format, args);
 	va_end(args);
 	return str;
 }
-char* SG_EXPORT sgPrintfv(const char* format, va_list args)
+char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgAPrintfv(const char* format, va_list args)
 {
-	int ret = 0;
-	_sg_strBufLen = 0;
+    char buf;
 
-	do
-	{
-		_sg_strBufLen += 256;
-		_sg_strBuf = realloc(_sg_strBuf, _sg_strBufLen);
-		ret = vsnprintf(_sg_strBuf, _sg_strBufLen, format, args);
-	}
-	while(ret >= _sg_strBufLen);
+    va_list argcpy;
+    va_copy(argcpy, args);
+    size_t len = sgSPrintfv(&buf, 1, format, argcpy);
+    va_end(argcpy);
 
-	if(ret < 0)
-		return NULL;
+    char* str = malloc(len + 1);
+    if(!str)
+        return NULL;
+    sgSPrintfv(str, len + 1, format, args);
 
-	return _sg_strBuf;
+    return str;
+}
+
+void SG_EXPORT sgAPrintFree(void* str)
+{
+    free(str);
 }
 
 SGbool SG_EXPORT sgStartsWith(const char* text, const char* what)

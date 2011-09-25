@@ -284,7 +284,9 @@ void SG_EXPORT sgFontPrintfW(SGFont* font, float x, float y, const wchar_t* form
 }
 void SG_EXPORT sgFontPrintfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args)
 {
-    sgFontPrintW(font, x, y, sgPrintfvW(format, args));
+    wchar_t* buf = sgAPrintfvW(format, args);
+    sgFontPrintW(font, x, y, buf);
+    sgAPrintFree(buf);
 }
 
 void SG_EXPORT sgFontPrintf(SGFont* font, float x, float y, const char* format, ...)
@@ -296,7 +298,9 @@ void SG_EXPORT sgFontPrintf(SGFont* font, float x, float y, const char* format, 
 }
 void SG_EXPORT sgFontPrintfv(SGFont* font, float x, float y, const char* format, va_list args)
 {
-	sgFontPrint(font, x, y, sgPrintfv(format, args));
+    char* buf = sgAPrintfv(format, args);
+	sgFontPrint(font, x, y, buf);
+    sgAPrintFree(buf);
 }
 
 void SG_EXPORT sgFontPrintU32(SGFont* font, float x, float y, const SGdchar* text)
@@ -371,7 +375,9 @@ void SG_EXPORT sgFontPrintAlignedfW(SGFont* font, float x, float y, SGenum align
 }
 void SG_EXPORT sgFontPrintAlignedfvW(SGFont* font, float x, float y, SGenum align, const wchar_t* format, va_list args)
 {
-    sgFontPrintAlignedW(font, x, y, align, sgPrintfvW(format, args));
+    wchar_t* buf = sgAPrintfvW(format, args);
+    sgFontPrintAlignedW(font, x, y, align, buf);
+    sgAPrintFree(buf);
 }
 
 void SG_EXPORT SG_HINT_PRINTF(5, 6) sgFontPrintAlignedf(SGFont* font, float x, float y, SGenum align, const char* format, ...)
@@ -383,7 +389,9 @@ void SG_EXPORT SG_HINT_PRINTF(5, 6) sgFontPrintAlignedf(SGFont* font, float x, f
 }
 void SG_EXPORT SG_HINT_PRINTF(5, 0) sgFontPrintAlignedfv(SGFont* font, float x, float y, SGenum align, const char* format, va_list args)
 {
-    sgFontPrintAligned(font, x, y, align, sgPrintfv(format, args));
+    char* buf = sgAPrintfv(format, args);
+    sgFontPrintAligned(font, x, y, align, buf);
+    sgAPrintFree(buf);
 }
 
 void SG_EXPORT sgFontPrintAlignedU32(SGFont* font, float x, float y, SGenum align, const SGdchar* text)
@@ -571,7 +579,9 @@ void SG_EXPORT sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* 
 }
 void SG_EXPORT sgFontStrSizefvW(SGFont* font, float* x, float* y, const wchar_t* format, va_list args)
 {
-    sgFontStrSizeW(font, x, y, sgPrintfvW(format, args));
+    wchar_t* buf = sgAPrintfvW(format, args);
+    sgFontStrSizeW(font, x, y, buf);
+    sgAPrintFree(buf);
 }
 
 void SG_EXPORT sgFontStrSizef(SGFont* font, float* x, float* y, const char* format, ...)
@@ -583,7 +593,9 @@ void SG_EXPORT sgFontStrSizef(SGFont* font, float* x, float* y, const char* form
 }
 void SG_EXPORT sgFontStrSizefv(SGFont* font, float* x, float* y, const char* format, va_list args)
 {
-	sgFontStrSize(font, x, y, sgPrintfv(format, args));
+    char* buf = sgAPrintfv(format, args);
+	sgFontStrSize(font, x, y, buf);
+    sgAPrintFree(buf);
 }
 
 void SG_EXPORT sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar* text)
@@ -658,7 +670,10 @@ size_t SG_EXPORT sgFontFindIndexfW(SGFont* font, float x, float y, const wchar_t
 }
 size_t SG_EXPORT sgFontFindIndexfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args)
 {
-    return sgFontFindIndexW(font, x, y, sgPrintfvW(format, args));
+    wchar_t* buf = sgAPrintfvW(format, args);
+    size_t ind = sgFontFindIndexW(font, x, y, buf);
+    sgAPrintFree(buf);
+    return ind;
 }
 
 size_t SG_EXPORT sgFontFindIndexf(SGFont* font, float x, float y, const char* format, ...)
@@ -671,7 +686,10 @@ size_t SG_EXPORT sgFontFindIndexf(SGFont* font, float x, float y, const char* fo
 }
 size_t SG_EXPORT sgFontFindIndexfv(SGFont* font, float x, float y, const char* format, va_list args)
 {
-	return sgFontFindIndex(font, x, y, sgPrintfv(format, args));
+    char* buf = sgAPrintfv(format, args);
+	size_t ind = sgFontFindIndex(font, x, y, buf);
+    sgAPrintFree(buf);
+    return ind;
 }
 
 // todo: make this bisect instead of performing a linear search
@@ -779,7 +797,9 @@ void SG_EXPORT sgFontGetPosfW(SGFont* font, float* x, float* y, size_t index, co
 }
 void SG_EXPORT sgFontGetPosfvW(SGFont* font, float* x, float* y, size_t index, const wchar_t* format, va_list args)
 {
-	sgFontGetPosW(font, x, y, index, sgPrintfvW(format, args));
+    wchar_t* buf = sgAPrintfvW(format, args);
+	sgFontGetPosW(font, x, y, index, buf);
+    sgAPrintFree(buf);
 }
 
 void SG_EXPORT SG_HINT_PRINTF(5, 6) sgFontGetPosf(SGFont* font, float* x, float* y, size_t index, const char* format, ...)
@@ -791,7 +811,9 @@ void SG_EXPORT SG_HINT_PRINTF(5, 6) sgFontGetPosf(SGFont* font, float* x, float*
 }
 void SG_EXPORT SG_HINT_PRINTF(5, 0) sgFontGetPosfv(SGFont* font, float* x, float* y, size_t index, const char* format, va_list args)
 {
-	sgFontGetPos(font, x, y, index, sgPrintfv(format, args));
+    char* buf = sgAPrintfv(format, args);
+	sgFontGetPos(font, x, y, index, buf);
+    sgAPrintFree(buf);
 }
 
 void SG_EXPORT sgFontGetPosU32(SGFont* font, float* x, float* y, size_t index, const SGdchar* text)

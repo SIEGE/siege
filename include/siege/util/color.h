@@ -29,18 +29,8 @@ typedef struct SGColor
  float r, g, b, a;
 } SGColor;
 
-#ifdef SG_BUILD_LIBRARY
-size_t _sg_colNum;
-SGubyte* _sg_colFlags;
-char** _sg_colNames;
-SGColor* _sg_colValues;
-#endif // SG_BUILD_LIBRARY
-
-SGbool SG_EXPORT _sgColorInit(void);
-SGbool SG_EXPORT _sgColorDeinit(void);
-
-void SG_EXPORT _sgColorPreprocess(char* buf, size_t buflen, char* name);
-SGColor SG_EXPORT _sgColorValue(char* name, SGubyte flag);
+void SG_EXPORT _sgColorPreprocess(char* buf, size_t buflen, const char* name);
+SGColor SG_EXPORT _sgColorValue(const char* name, SGubyte flag);
 
 SGColor SG_EXPORT sgColor4f(float r, float g, float b, float a);
 SGColor SG_EXPORT sgColor3f(float r, float g, float b);
@@ -64,8 +54,8 @@ SGColor SG_EXPORT sgColorARGB(SGuint color);
 SGColor SG_EXPORT sgColorABGR(SGuint color);
 SGColor SG_EXPORT sgColorRGB(SGuint color);
 SGColor SG_EXPORT sgColorBGR(SGuint color);
-SGColor SG_EXPORT sgColorX11(char* name);
-SGColor SG_EXPORT sgColorWeb(char* name);
+SGColor SG_EXPORT sgColorX11(const char* name);
+SGColor SG_EXPORT sgColorWeb(const char* name);
 SGColor SG_EXPORT sgColorNan(void);
 
 SGbool SG_EXPORT sgColorIsNan(SGColor c);

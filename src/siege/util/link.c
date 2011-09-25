@@ -24,14 +24,6 @@
     #include <dlfcn.h>
 #endif
 
-SGbool SG_EXPORT _sgLibraryInit(void)
-{
-    return SG_TRUE;
-}
-SGbool SG_EXPORT _sgLibraryDeinit(void)
-{
-    return SG_TRUE;
-}
 SGLibrary* SG_EXPORT sgLibraryLoad(char* fname)
 {
 #ifdef __WIN32__
