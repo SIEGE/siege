@@ -90,17 +90,6 @@ SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname)
 	if(psgmAudioFileDestroy)
 		psgmAudioFileDestroy(file);
 
-	/// TODO: This is deprecated, remove when appropriate!
-	if(!psgmAudioFileCreate)
-	{
-		if(psgmAudioLoadFile != NULL)
-			psgmAudioLoadFile(fname, &channels, &format, &frequency, &data, &datalen);
-		if(psgmAudioBufferSetData != NULL)
-			psgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
-		if(psgmAudioLoadFreeData != NULL)
-			psgmAudioLoadFreeData(data);
-	}
-
     return buffer;
 }
 void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer)

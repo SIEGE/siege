@@ -2,15 +2,8 @@
 .*.swp
 .*.kate-swp
 *~
-*.o
-*.a
 /build
 /src/bindings/cython/build/
 /src/bindings/cython/siege/*/*.c
 /doc
-/doc/*/
-/Debug
-/Release
-*.vp*
-*.vtg
 siege.kdev4

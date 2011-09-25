@@ -25,13 +25,8 @@ extern "C"
 
 #define _SG_BIND(name) \
 	fptr = sgGetProcAddress(lib, #name);   \
-	if((fptr != NULL) || _sg_modFirst)	   \
+	if(fptr != NULL)    \
 		(p##name) = fptr; // not completely valid C99, but blame POSIX for that
-
-#ifdef SG_BUILD_LIBRARY
-SGList* _sg_modList;
-SGbool _sg_modFirst;
-#endif // SG_BUILD_LIBRARY
 
 typedef SGuint SG_EXPORT SGMModuleInitFunction(SGModuleInfo** minfo);
 typedef SGuint SG_EXPORT SGMModuleExitFunction(SGModuleInfo* minfo);
@@ -52,11 +47,11 @@ typedef struct SGModule
 } SGModule;
 
 char* SG_EXPORT _sgModuleGetFile(const char* module);
-SGbool SG_EXPORT _sgModuleInit(void);
-SGbool SG_EXPORT _sgModuleDeinit(void);
 
 SGModule* SG_EXPORT sgModuleLoad(const char* name);
 void SG_EXPORT sgModuleUnload(SGModule* module);
+
+SGList* SG_EXPORT sgModuleGetList(void);
 
 #ifdef __cplusplus
 }

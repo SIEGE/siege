@@ -62,10 +62,6 @@ void SG_EXPORT _sgModuleLoadAudio(SGLibrary* lib)
     _SG_BIND(sgmAudioSourceGetLooping);
 
     /// Audio Load
-    _SG_BIND(sgmAudioLoadFile);
-    //_SG_BIND(sgmAudioLoadStream);
-    _SG_BIND(sgmAudioLoadFreeData);
-
     _SG_BIND(sgmAudioFileCreate);
     _SG_BIND(sgmAudioFileDestroy);
     _SG_BIND(sgmAudioFileNumSamples);

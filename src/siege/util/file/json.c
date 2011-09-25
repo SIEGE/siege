@@ -47,6 +47,7 @@ void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value)
             sgTreeDestroy(value->v.object);
             break;
     }
+    free(value->strbuf);
     free(value);
 }
 
@@ -97,6 +98,8 @@ void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, siz
         for(i = 0; i < cindent; i++)
             _sgStringAppend(str, len, mem, "\t");
 
+    char* buf;
+
     switch(value->type)
     {
         case SG_JSON_TYPE_NULL:
@@ -106,7 +109,9 @@ void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, siz
             _sgStringAppend(str, len, mem, value->v.boolean ? "true" : "false");
             break;
         case SG_JSON_TYPE_NUMBER:
-            _sgStringAppend(str, len, mem, sgPrintf("%g", value->v.number));
+            buf = sgAPrintf("%g", value->v.number);
+            _sgStringAppend(str, len, mem, buf);
+            sgAPrintFree(buf);
             break; // nothing to do!
         case SG_JSON_TYPE_STRING:
             _sgStringAppend(str, len, mem, "\"");
@@ -343,7 +348,10 @@ char* SG_EXPORT _sgJSONParseString(SGJSONValue* into, char* input, char** error)
                     span = SG_MIN(strspn(input, SG_OCTDIGITS), 3); // we need up to 3!
                     if(span < 1) // no oct chars, which means we don't knwow what this is...
                     {
-                        *error = sgPrintf("Unknown escape sequence \\%c!", *input);
+                        if(into->strbuf)
+                            free(into->strbuf);
+                        into->strbuf = sgAPrintf("Unknown escape sequence \\%c!", *input);
+                        *error = into->strbuf;
                         return NULL;
                     }
                     // we have at least 1 oct char!
@@ -441,7 +449,10 @@ char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
         {
             if(*input != ',')
             {
-                *error = sgPrintf("Expected a comma, found '%c'", *input);
+                if(into->strbuf)
+                    free(into->strbuf);
+                into->strbuf = sgAPrintf("Expected a comma, found '%c'", *input);
+                *error = into->strbuf;
                 return NULL;
             }
             else
@@ -459,6 +470,7 @@ char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
 
         val = malloc(sizeof(SGJSONValue));
         val->type = SG_JSON_TYPE_NULL;
+        val->strbuf = NULL;
 
         end = _sgJSONParseValue(val, input, error);
         if(!end) return NULL;
@@ -505,7 +517,10 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
         {
             if(*input != ',')
             {
-                *error = sgPrintf("Expected a comma, found '%c'", *input);
+                if(into->strbuf)
+                    free(into->strbuf);
+                into->strbuf = sgAPrintf("Expected a comma, found '%c'", *input);
+                *error = into->strbuf;
                 return NULL;
             }
             input++;
@@ -534,7 +549,10 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
             if(end == NULL) return NULL;
             if(end == input)
             {
-                *error = sgPrintf("Expected key, found '%c'", *input);
+                if(into->strbuf)
+                    free(into->strbuf);
+                into->strbuf = sgAPrintf("Expected key, found '%c'", *input);
+                *error = into->strbuf;
                 free(titem);
                 return NULL;
             }
@@ -547,7 +565,10 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
 
         if(*input != ':')
         {
-            *error = sgPrintf("Expected ':', found '%c'", *input);
+            if(into->strbuf)
+                free(into->strbuf);
+            into->strbuf = sgAPrintf("Expected ':', found '%c'", *input);
+            *error = into->strbuf;
             return NULL;
         }
         input++;
@@ -557,6 +578,7 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
 
         titem->val = malloc(sizeof(SGJSONValue));
         titem->val->type = SG_JSON_TYPE_NULL;
+        titem->val->strbuf = NULL;
 
         end = _sgJSONParseValue(titem->val, input, error);
         if(!end) return NULL;
@@ -612,13 +634,17 @@ char* SG_EXPORT _sgJSONParseValue(SGJSONValue* into, char* input, char** error)
     end = _sgJSONParseObject(into, input, error);
     if(input != end) return end;
 
-    *error = sgPrintf("Error parsing near %c!", *input);
+    if(into->strbuf)
+        free(into->strbuf);
+    into->strbuf = sgAPrintf("Error parsing near '%c'", *input);
+    *error = into->strbuf;
     return NULL;
 }
 
 SGJSONValue* SG_EXPORT sgJSONValueCreateString(const char* str)
 {
     SGJSONValue* root = malloc(sizeof(SGJSONValue));
+    root->strbuf = NULL;
     char* error;
 
     if(sgStartsWith(str, "\xEF\xBB\xBF")) // skip the byte order mark
@@ -664,9 +690,10 @@ char* SG_EXPORT sgJSONToString(SGJSONValue* value, SGbool pretty)
     size_t mem = 32;
     char* str = malloc(mem);
     _sgJSONDumpValue(value, &str, &len, &mem, pretty, 0, 0);
-    char* ret = sgPrintf("%s", str); // we'll recycle sgPrintf's buffer!
-    free(str);
-    return ret;
+    if(value->strbuf)
+        free(value->strbuf);
+    value->strbuf = str;
+    return str;
 }
 void SG_EXPORT sgJSONArrayRemoveValue(SGJSONValue* array, SGJSONValue* value)
 {
