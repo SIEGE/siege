@@ -25,6 +25,8 @@
 #include <string.h>
 #include <dirent.h>
 
+static SGList* _sg_modList;
+
 char* SG_EXPORT _sgModuleGetFile(const char* module)
 {
 	DIR* dir;
@@ -60,27 +62,6 @@ char* SG_EXPORT _sgModuleGetFile(const char* module)
 	return NULL;
 }
 
-SGbool SG_EXPORT _sgModuleInit(void)
-{
-	_sg_modFirst = SG_TRUE;
-	_sg_modList = sgListCreate();
-	if(_sg_modList == NULL)
-		return SG_FALSE;
-	return SG_TRUE;
-}
-SGbool SG_EXPORT _sgModuleDeinit(void)
-{
-	SGListNode* node;
-	SGListNode* next;
-	for(node = _sg_modList->first; node != NULL; node = next)
-	{
-		next = node->next;
-		sgModuleUnload(node->item);
-	}
-	sgListDestroy(_sg_modList);
-	return SG_TRUE;
-}
-
 SGModule* SG_EXPORT sgModuleLoad(const char* name)
 {
 	char* fname = _sgModuleGetFile(name);
@@ -111,10 +92,11 @@ SGModule* SG_EXPORT sgModuleLoad(const char* name)
 	_sgModuleLoadPhysics(module->lib);
 	_sgModuleLoadFonts(module->lib);
 
-	_sg_modFirst = SG_FALSE;
-
 	if(module->sgmModuleInit != NULL)
 		module->sgmModuleInit(&module->minfo);
+
+    if(!_sg_modList)
+        _sg_modList = sgListCreate();
 	module->node = sgListAppend(_sg_modList, module);
 	return module;
 }
@@ -127,8 +109,20 @@ void SG_EXPORT sgModuleUnload(SGModule* module)
 	if(module->sgmModuleExit != NULL)
 		module->sgmModuleExit(module->minfo);
 
-	free(module->name);
 	sgLibraryUnload(module->lib);
+
 	sgListRemoveNode(_sg_modList, module->node);
+    if(!_sg_modList->first)
+    {
+        sgListDestroy(_sg_modList);
+        _sg_modList = NULL;
+    }
+
+    free(module->name);
 	free(module);
+}
+
+SGList* SG_EXPORT sgModuleGetList(void)
+{
+    return _sg_modList;
 }

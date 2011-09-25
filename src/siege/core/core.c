@@ -34,7 +34,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-SGbool _sg_firstModule = SG_TRUE;
 SGbool _sg_firstLoop = SG_TRUE;
 SGbool _sg_exitNow = SG_FALSE;
 SGint _sg_exitVal = 0;
@@ -59,12 +58,6 @@ SGuint SG_EXPORT sgLoadModules(size_t n, ...)
 }
 SGbool SG_EXPORT sgLoadModule(const char* name)
 {
-	if(_sg_firstModule)
-	{
-		_sgModuleInit();
-		_sg_firstModule = SG_FALSE;
-	}
-
 	SGModule* module = sgModuleLoad(name);
 	if(module == NULL)
 		return SG_FALSE;
@@ -75,19 +68,21 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 {
 	_sgEventInit();
 
+    SGList* modList = sgModuleGetList();
+
 	size_t i;
-	size_t nmodules = sgListLength(_sg_modList);
+	size_t nmodules = modList ? sgListLength(modList) : 0;
 	SGListNode* node;
 	SGModuleInfo** infos = malloc(nmodules * sizeof(SGModuleInfo*));
 	SGModule* module;
-	for(i = 0, node = _sg_modList->first; node != NULL; node = node->next, i++)
+	for(i = 0, node = modList ? modList->first : NULL; node != NULL; node = node->next, i++)
 	{
 		module = node->item;
 		infos[i] = module->minfo;
 	}
 	SGbool ok = SG_TRUE;
 	SGbool mok;
-	for(node = _sg_modList->first; node != NULL; node = node->next)
+	for(node = modList ? modList->first : NULL; node != NULL; node = node->next)
 	{
 		module = node->item;
 		mok = SG_TRUE;
@@ -160,7 +155,9 @@ SGbool SG_EXPORT sgDeinit(void)
 
 	_sgEventDeinit();
 
-	_sgModuleDeinit();
+    SGList* modList;
+    while((modList = sgModuleGetList()))
+        sgModuleUnload(modList->first->item);
 
 	return SG_TRUE;
 }
@@ -192,9 +189,10 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 
 	sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
 
+    SGList* modList = sgModuleGetList();
 	SGListNode* node;
 	SGModule* module;
-	for(node = _sg_modList->first; node != NULL; node = node->next)
+	for(node = modList ? modList->first : NULL; node != NULL; node = node->next)
 	{
 		module = node->item;
 		if(module->sgmModuleTick)
