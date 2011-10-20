@@ -16,19 +16,19 @@
 #include <siege/util/rand.h>
 
 #include <stdlib.h>
-#include <time.h>
 
-void SG_EXPORT _sgRandMersenneCreate32(SGRand* rand)
+void SG_EXPORT _sgRandMersenne32Create(SGRand* rand)
 {
     rand->data = malloc(sizeof(SGuint) * 625);
 }
-void SG_EXPORT _sgRandMersenneSeed32(SGRand* rand, SGuint seed, SGuint index)
+void SG_EXPORT _sgRandMersenne32Destroy(SGRand* rand)
 {
-    if(seed == 0)
-        seed = time(NULL);
-
-    SGuint* ind = (SGuint*)rand->data;
-    SGuint* mt = (SGuint*)rand->data + sizeof(SGuint);
+    free(rand->data);
+}
+void SG_EXPORT _sgRandMersenne32Seed(SGRand* rand, SGulong seed, SGulong index)
+{
+    SGuint* ind = &((SGuint*)rand->data)[0];
+    SGuint* mt = &((SGuint*)rand->data)[1];
 
     mt[0] = seed;
     *ind = index % 624;
@@ -36,10 +36,10 @@ void SG_EXPORT _sgRandMersenneSeed32(SGRand* rand, SGuint seed, SGuint index)
     for(i = 1; i < 624; i++)
         mt[i] = (0x6C078965 * (mt[i-1] ^ (mt[i-1] >> 30))) & 0xFFFFFFFF;
 }
-void SG_EXPORT _sgRandMersenneGenNumbers32(SGRand* rand)
+void SG_EXPORT _sgRandMersenne32GenNumbers(SGRand* rand)
 {
-    //SGuint* ind = (SGuint*)rand->data;
-    SGuint* mt = (SGuint*)rand->data + sizeof(SGuint);
+    //SGuint* ind = &((SGuint*)rand->data)[0];
+    SGuint* mt = &((SGuint*)rand->data)[1];
 
     SGuint i;
     for(i = 0; i < 624; i++)
@@ -50,13 +50,13 @@ void SG_EXPORT _sgRandMersenneGenNumbers32(SGRand* rand)
             mt[i] = mt[i] ^ 0x9908B0DF;
     }
 }
-SGuint SG_EXPORT _sgRandMersenneGen32(SGRand* rand)
+SGulong SG_EXPORT _sgRandMersenne32Gen(SGRand* rand)
 {
-    SGuint* ind = (SGuint*)rand->data;
-    SGuint* mt = (SGuint*)rand->data + sizeof(SGuint);
+    SGuint* ind = &((SGuint*)rand->data)[0];
+    SGuint* mt = &((SGuint*)rand->data)[1];
 
     if(*ind == 0)
-        _sgRandMersenneGenNumbers32(rand);
+        _sgRandMersenne32GenNumbers(rand);
 
     SGuint y = mt[*ind];
     y = y ^ (y >> 11);
@@ -68,24 +68,42 @@ SGuint SG_EXPORT _sgRandMersenneGen32(SGRand* rand)
     return y;
 }
 
-SGRand* SG_EXPORT sgRandCreate32(SGenum type, SGuint seed, SGuint index)
+SGRand* SG_EXPORT sgRandCreate(SGenum type)
+{
+    static SGRandCallbacks cbsMersenne32 = {
+        _sgRandMersenne32Create, _sgRandMersenne32Destroy,
+        _sgRandMersenne32Seed, _sgRandMersenne32Gen
+        };
+
+    SGRandCallbacks cbs = { NULL };
+    switch(type)
+    {
+        case SG_RAND_MT19937: cbs = cbsMersenne32; break;
+    }
+
+    SGRand* rand = sgRandCreateCB(&cbs);
+    if(!rand)
+        return NULL;
+
+    rand->type = type;
+
+    return rand;
+}
+SGRand* SG_EXPORT sgRandCreateCB(SGRandCallbacks* cbs)
 {
     SGRand* rand = malloc(sizeof(SGRand));
     if(rand == NULL)
         return NULL;
 
-    rand->type = type;
-    switch(type)
-    {
-        case SG_RAND_MERSENNE:
-            _sgRandMersenneCreate32(rand);
-            _sgRandMersenneSeed32(rand, seed, index);
-            break;
+    rand->type = SG_RAND_USER;
+    rand->stime = time(NULL);
 
-        default:
-            free(rand);
-            return NULL;
-    }
+    rand->cbs = *cbs;
+
+    if(rand->cbs.create)
+        rand->cbs.create(rand);
+    if(rand->cbs.seed)
+        rand->cbs.seed(rand, rand->stime, 0);
 
     return rand;
 }
@@ -94,43 +112,30 @@ void SG_EXPORT sgRandDestroy(SGRand* rand)
     if(rand == NULL)
         return;
 
-    free(rand->data);
+    if(rand->cbs.destroy)
+        rand->cbs.destroy(rand);
     free(rand);
 }
-void SG_EXPORT sgRandSeed32(SGRand* rand, SGuint seed, SGuint index)
+
+void SG_EXPORT sgRandSeed(SGRand* rand, SGulong seed, SGulong index)
 {
     if(rand == NULL)
         return;
 
-    switch(rand->type)
-    {
-        case SG_RAND_MERSENNE:
-            _sgRandMersenneSeed32(rand, seed, index);
-            break;
+    if(!seed)
+        seed = rand->stime;
 
-        default:
-            break;
-    }
+    if(rand->cbs.seed)
+        rand->cbs.seed(rand, seed, index);
 }
-SGuint SG_EXPORT sgRandGen32(SGRand* rand)
+
+SGulong SG_EXPORT sgRandGen(SGRand* rand)
 {
     if(rand == NULL)
         return 0;
 
-    switch(rand->type)
-    {
-        case SG_RAND_MERSENNE:
-            return _sgRandMersenneGen32(rand);
-
-        default:
-            return 0;
-    }
-    // should never reach...
+    if(rand->cbs.gen)
+        return rand->cbs.gen(rand);
     return 0;
 }
 
-// aliases
-void SG_EXPORT sgRandDestroy32(SGRand* rand)
-{
-    sgRandDestroy(rand);
-}
