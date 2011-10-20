@@ -58,6 +58,11 @@ void SG_EXPORT sgModuleSetLoadDirs(size_t ndirs, ...);
 void SG_EXPORT sgModuleSetLoadDir(const char* dir);
 char** SG_EXPORT sgModuleGetLoadDirs(size_t* ndirs);
 
+void SG_EXPORT sgModuleSetLoadPrefixesv(size_t nprefs, va_list args);
+void SG_EXPORT sgModuleSetLoadPrefixes(size_t nprefs, ...);
+void SG_EXPORT sgModuleSetLoadPrefix(const char* prefix);
+char** SG_EXPORT sgModuleGetLoadPrefixes(size_t* nprefs);
+
 SGList* SG_EXPORT sgModuleGetList(void);
 
 #ifdef __cplusplus
