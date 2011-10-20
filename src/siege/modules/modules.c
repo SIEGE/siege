@@ -26,37 +26,48 @@
 #include <dirent.h>
 
 static SGList* _sg_modList;
+static size_t _sg_modNumDirs = 1;
+static char* _sg_modDirs[256] = { "modules" };
+static size_t _sg_modDirsMaxLen = 7;
 
 char* SG_EXPORT _sgModuleGetFile(const char* module)
 {
 	DIR* dir;
 	struct dirent* ent;
 
-	char* buf = malloc(strlen("modules/libSGModule-") + strlen(module) + strlen(".debug.") + 25);
+	char* buf = malloc(_sg_modDirsMaxLen + strlen("/libSGModule-") + strlen(module) + strlen(".debug.") + 25);
 
-	dir = opendir("modules");
-	if(dir != NULL)
-	{
-		while((ent = readdir(dir)))
-		{
-			strcpy(buf, "libSGModule-");
-			strcat(buf, module);
-			strcat(buf, ".");
-			if(strstr(ent->d_name, buf + 3) == ent->d_name) // prefer without "lib"
-			{
-				strcpy(buf, "modules/");
-				strcat(buf, ent->d_name);
-				return buf;
-			}
-			if(strstr(ent->d_name, buf) == ent->d_name)
-			{
-				strcpy(buf, "modules/");
-				strcat(buf, ent->d_name);
-				return buf;
-			}
-		}
-		closedir(dir);
-	}
+    size_t i;
+    for(i = 0; i < _sg_modNumDirs; i++)
+    {
+        dir = opendir(_sg_modDirs[i]);
+        if(dir != NULL)
+        {
+            while((ent = readdir(dir)))
+            {
+                strcpy(buf, "libSGModule-");
+                strcat(buf, module);
+                strcat(buf, ".");
+                if(strstr(ent->d_name, buf + 3) == ent->d_name) // prefer without "lib"
+                {
+                    strcpy(buf, _sg_modDirs[i]);
+                    strcat(buf, "/");
+                    strcat(buf, ent->d_name);
+                    break;
+                }
+                if(strstr(ent->d_name, buf) == ent->d_name)
+                {
+                    strcpy(buf, _sg_modDirs[i]);
+                    strcat(buf, "/");
+                    strcat(buf, ent->d_name);
+                    break;
+                }
+            }
+            closedir(dir);
+            if(ent) // if we've found something
+                return buf;
+        }
+    }
 
 	free(buf);
 	return NULL;
@@ -120,6 +131,59 @@ void SG_EXPORT sgModuleUnload(SGModule* module)
 
     free(module->name);
 	free(module);
+}
+
+void SG_EXPORT sgModuleSetLoadDirsv(size_t ndirs, va_list args)
+{
+    if(!ndirs)
+    {
+        sgModuleSetLoadDir("modules");
+        return;
+    }
+
+    // we only allow up to "ndirs" directories.
+    if(ndirs > sizeof(_sg_modDirs) / sizeof(*_sg_modDirs))
+        ndirs = sizeof(_sg_modDirs) / sizeof(*_sg_modDirs);
+
+    _sg_modDirsMaxLen = 0;
+    size_t len;
+
+    size_t i;
+    for(i = 0; i < ndirs; i++)
+    {
+        _sg_modDirs[i] = va_arg(args, char*);
+        // if it was NULL, then take next arg from this pos
+        if(!_sg_modDirs[i])
+        {
+            ndirs--;
+            i--;
+            continue;
+        }
+
+        len = strlen(_sg_modDirs[i]);
+        if(_sg_modDirsMaxLen < len)
+            _sg_modDirsMaxLen = len;
+    }
+    _sg_modNumDirs = ndirs;
+}
+void SG_EXPORT sgModuleSetLoadDirs(size_t ndirs, ...)
+{
+    va_list args;
+    va_start(args, ndirs);
+    sgModuleSetLoadDirsv(ndirs, args);
+    va_end(args);
+}
+void SG_EXPORT sgModuleSetLoadDir(const char* dir)
+{
+    if(!dir)
+        dir = "modules";
+    sgModuleSetLoadDirs(1, dir);
+}
+char** SG_EXPORT sgModuleGetLoadDirs(size_t* ndirs)
+{
+    if(ndirs)
+        *ndirs = _sg_modNumDirs;
+    return _sg_modDirs;
 }
 
 SGList* SG_EXPORT sgModuleGetList(void)

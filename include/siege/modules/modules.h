@@ -18,6 +18,8 @@
 #include "../util/list.h"
 #include "../util/link.h"
 
+#include <stdarg.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -50,6 +52,11 @@ char* SG_EXPORT _sgModuleGetFile(const char* module);
 
 SGModule* SG_EXPORT sgModuleLoad(const char* name);
 void SG_EXPORT sgModuleUnload(SGModule* module);
+
+void SG_EXPORT sgModuleSetLoadDirsv(size_t ndirs, va_list args);
+void SG_EXPORT sgModuleSetLoadDirs(size_t ndirs, ...);
+void SG_EXPORT sgModuleSetLoadDir(const char* dir);
+char** SG_EXPORT sgModuleGetLoadDirs(size_t* ndirs);
 
 SGList* SG_EXPORT sgModuleGetList(void);
 
