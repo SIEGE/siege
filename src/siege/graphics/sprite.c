@@ -91,6 +91,36 @@ void SG_EXPORT sgSpriteDestroy(SGSprite* sprite)
     free(sprite);
 }
 
+SGbool SG_EXPORT sgSpriteAddFrameFile(SGSprite* sprite, const char* fname)
+{
+    sprite->numimages++;
+    sprite->subimages = realloc(sprite->subimages, sprite->numimages * sizeof(SGTexture*));
+    sprite->subimages[sprite->numimages - 1] = sgTextureCreateFile(fname);
+    if(!sprite->subimages[sprite->numimages - 1])
+    {
+        sprite->numimages--; // failed, reset the number of images
+        return SG_FALSE;
+    }
+    return SG_TRUE;
+}
+
+void SG_EXPORT sgSpriteSetImage(SGSprite* sprite, float image)
+{
+    sprite->image = image;
+}
+float SG_EXPORT sgSpriteGetImage(SGSprite* sprite)
+{
+    return sprite->image;
+}
+void SG_EXPORT sgSpriteSetSpeed(SGSprite* sprite, float speed)
+{
+    sprite->speed = speed;
+}
+float SG_EXPORT sgSpriteGetSpeed(SGSprite* sprite)
+{
+    return sprite->speed;
+}
+
 void SG_EXPORT sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle)
 {
     if(sprite == NULL)

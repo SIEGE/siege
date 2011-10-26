@@ -43,6 +43,13 @@ SGSprite* SG_EXPORT sgSpriteCreateFile2f(const char* fname, float xoffset, float
 SGSprite* SG_EXPORT sgSpriteCreateFile(const char* fname);
 void SG_EXPORT sgSpriteDestroy(SGSprite* sprite);
 
+SGbool SG_EXPORT sgSpriteAddFrameFile(SGSprite* sprite, const char* fname);
+
+void SG_EXPORT sgSpriteSetImage(SGSprite* sprite, float image);
+float SG_EXPORT sgSpriteGetImage(SGSprite* sprite);
+void SG_EXPORT sgSpriteSetSpeed(SGSprite* sprite, float speed);
+float SG_EXPORT sgSpriteGetSpeed(SGSprite* sprite);
+
 void SG_EXPORT sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle);
 void SG_EXPORT sgSpriteDrawDegs3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle);
 void SG_EXPORT sgSpriteDrawRads2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle);
