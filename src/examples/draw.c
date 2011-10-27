@@ -33,6 +33,12 @@ int main(void)
 		sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
 		sgDrawLine(64, 160, 192, 288);
 
+        sgDrawColor4f(0.0, 0.5, 0.75, 1.0);
+        sgDrawRectangleRoundWH(320, 240, 128, 128, 32, 16, SG_TRUE);
+
+        sgDrawColor4f(0.0, 0.75, 1.0, 1.0);
+        sgDrawRectangleRoundWH(320, 240, 128, 128, 32, 16, SG_FALSE);
+
 		sgWindowSwapBuffers();
 		sgDrawClear();
 	}

@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -220,6 +220,9 @@ void SG_EXPORT sgDrawQuad(float x1, float y1, float x2, float y2, float x3, floa
 void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fill);
 void SG_EXPORT sgDrawRectangleWH(float x, float y, float w, float h, SGbool fill);
 /// @}
+
+void SG_EXPORT sgDrawRectangleRound(float x1, float y1, float x2, float y2, float rx, float ry, SGbool fill);
+void SG_EXPORT sgDrawRectangleRoundWH(float x1, float y1, float w, float h, float rx, float ry, SGbool fill);
 
 /**
  * \name Ellipses

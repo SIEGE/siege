@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -329,6 +329,45 @@ void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fi
 void SG_EXPORT sgDrawRectangleWH(float x, float y, float w, float h, SGbool fill)
 {
 	sgDrawRectangle(x, y, x + w, y + h, fill);
+}
+
+void SG_EXPORT sgDrawRectangleRound(float x1, float y1, float x2, float y2, float rx, float ry, SGbool fill)
+{
+    float tmp;
+    if(x1 > x2)
+    {
+        tmp = x1;
+        x1 = x2;
+        x2 = tmp;
+    }
+    if(y1 > y2)
+    {
+        tmp = y1;
+        y1 = y2;
+        y2 = tmp;
+    }
+
+    sgDrawEArcRads(x1 + rx, y1 + ry, rx, ry,-SG_PI    ,-SG_PI / 2, SG_FALSE, fill);
+    sgDrawEArcRads(x2 - rx, y1 + ry, rx, ry,-SG_PI / 2,         0, SG_FALSE, fill);
+    sgDrawEArcRads(x2 - rx, y2 - ry, rx, ry,         0, SG_PI / 2, SG_FALSE, fill);
+    sgDrawEArcRads(x1 + rx, y2 - ry, rx, ry, SG_PI / 2,-SG_PI    , SG_FALSE, fill);
+    if(fill)
+    {
+        sgDrawRectangle(x1 + rx, y1, x2 - rx, y1 + ry, SG_TRUE);
+        sgDrawRectangle(x1, y1 + ry, x2, y2 - ry, SG_TRUE);
+        sgDrawRectangle(x1 + rx, y2, x2 - rx, y2 - ry, SG_TRUE);
+    }
+    else
+    {
+        sgDrawLine(x1 + rx, y1, x2 - rx, y1);
+        sgDrawLine(x1, y1 + ry, x1, y2 - ry);
+        sgDrawLine(x2, y1 + ry, x2, y2 - ry);
+        sgDrawLine(x1 + rx, y2, x2 - rx, y2);
+    }
+}
+void SG_EXPORT sgDrawRectangleRoundWH(float x1, float y1, float w, float h, float rx, float ry, SGbool fill)
+{
+    sgDrawRectangleRound(x1, y1, x1 + w, y1 + h, rx, ry, fill);
 }
 
 void SG_EXPORT sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill)
