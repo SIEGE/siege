@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -125,4 +125,44 @@ void SG_EXPORT sgViewportSetSize(SGViewport* viewport, float sizex, float sizey)
     viewport->sizex = sizex;
     viewport->sizey = sizey;
     sgViewportReset(viewport);
+}
+void SG_EXPORT sgViewportZoomCentered(SGViewport* viewport, float factor)
+{
+    float ox = viewport->sizex;
+    float oy = viewport->sizey;
+    viewport->sizex /= factor;
+    viewport->sizey /= factor;
+    viewport->posx += ox - viewport->sizex / 2;
+    viewport->posy += oy - viewport->sizey / 2;
+    sgViewportReset(viewport);
+}
+
+SGbool SG_EXPORT sgViewportInsideWindow(SGViewport* viewport, float x, float y)
+{
+    return viewport->wposx <= x && viewport->wposx + viewport->wsizex <= x
+        && viewport->wposy <= y && viewport->wposy + viewport->wsizey <= y;
+}
+SGbool SG_EXPORT sgViewportInsideLocal(SGViewport* viewport, float x, float y)
+{
+    return viewport->posx <= x && viewport->posx + viewport->sizex <= x
+        && viewport->posy <= y && viewport->posy + viewport->sizey <= y;
+}
+
+void SG_EXPORT sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* wy, float lx, float ly)
+{
+    float tmp;
+    if(!wx) wx = &tmp;
+    if(!wy) wy = &tmp;
+
+    *wx = (lx + viewport->posx) * viewport->wsizex / viewport->sizex;
+    *wy = (ly + viewport->posy) * viewport->wsizey / viewport->sizey;
+}
+void SG_EXPORT sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly, float wx, float wy)
+{
+    float tmp;
+    if(!lx) lx = &tmp;
+    if(!ly) ly = &tmp;
+
+    *lx = viewport->posx + wx * viewport->sizex / viewport->wsizex;
+    *ly = viewport->posy + wy * viewport->sizey / viewport->wsizey;
 }

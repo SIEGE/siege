@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -56,6 +56,13 @@ void SG_EXPORT sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wpos
 void SG_EXPORT sgViewportSetWSize(SGViewport* viewport, SGuint wsizex, SGuint wsizey);
 void SG_EXPORT sgViewportSetPos(SGViewport* viewport, float posx, float posy);
 void SG_EXPORT sgViewportSetSize(SGViewport* viewport, float sizex, float sizey);
+void SG_EXPORT sgViewportZoomCentered(SGViewport* viewport, float factor);
+
+SGbool SG_EXPORT sgViewportInsideWindow(SGViewport* viewport, float x, float y);
+SGbool SG_EXPORT sgViewportInsideLocal(SGViewport* viewport, float x, float y);
+
+void SG_EXPORT sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* wy, float lx, float ly);
+void SG_EXPORT sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly, float wx, float wy);
 
 #ifdef __cplusplus
 }
