@@ -28,7 +28,7 @@ struct SGRand;
 
 typedef void SG_EXPORT (SGRandCreateFunction)(struct SGRand* rand);
 typedef void SG_EXPORT (SGRandDestroyFunction)(struct SGRand* rand);
-typedef void SG_EXPORT (SGRandSeedFunction)(struct SGRand* rand, size_t seed, size_t index);
+typedef void SG_EXPORT (SGRandSeedFunction)(struct SGRand* rand, SGulong seed, SGulong index);
 typedef SGulong SG_EXPORT (SGRandGenFunction)(struct SGRand* rand);
 
 typedef struct SGRandCallbacks
