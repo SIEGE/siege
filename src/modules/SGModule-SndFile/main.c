@@ -26,8 +26,8 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     (*minfo)->vpatch = SG_VERSION_PATCH;
 
     char buffer[256];
-    int buflen;
-    buflen = sf_command(NULL, SFC_GET_LIB_VERSION, buffer, sizeof(buffer) / sizeof(char));
+    /*int buflen;
+    buflen = */sf_command(NULL, SFC_GET_LIB_VERSION, buffer, sizeof(buffer) / sizeof(char));
     int mmajor, mminor, mpatch;
     sscanf(buffer, "%d.%d.%d", &mmajor, &mminor, &mpatch);
 

@@ -569,7 +569,7 @@ void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
     sgDrawColor4f(0.0, 0.0, 0.0, 1.0);
     sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLES);
 
-    SGVec2* curr;
+    /*SGVec2* curr;*/
     SGVec2* next;
     SGVec2 tcurr, tnext;
     SGVec2 tmpc, tmpn;
@@ -585,7 +585,7 @@ void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
     }
     for(i = 0; i < shape->numverts; i++)
     {
-        curr = &shape->verts[i];
+        /*curr = &shape->verts[i];*/
         next = &shape->verts[(i + 1) % shape->numverts];
 
         tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + shape->angle);
@@ -611,7 +611,7 @@ void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
 
 void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
 {
-    SGVec2* curr;
+    /*SGVec2* curr;*/
     SGVec2* next;
     SGVec2 tcurr, tnext;
     SGVec2 tmpc, tmpn;
@@ -630,7 +630,7 @@ void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
     }
     for(i = 0; i < shape->numverts; i++)
     {
-        curr = &shape->verts[i];
+        /*curr = &shape->verts[i];*/
         next = &shape->verts[(i + 1) % shape->numverts];
 
         tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + shape->angle);

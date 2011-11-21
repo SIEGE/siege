@@ -615,7 +615,7 @@ void SG_EXPORT sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar*
 	*y = 0.0f;
 	const SGdchar* chr;
 	float w;
-	float h;
+	/*float h;*/
 	SGCharInfo* info = NULL;
 	while(start != NULL)
 	{
@@ -623,7 +623,7 @@ void SG_EXPORT sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar*
 		info = realloc(info, (end - start) * sizeof(SGCharInfo));
 		_sgFontGetChars(font, (SGdchar*)start, end - start, info);
 		w = 0.0f;
-		h = 0.0f;
+		/*h = 0.0f;*/
 		for(chr = start; chr < end; chr++)
 			w += info[chr - start].width;
 		*x = (*x > w) ? *x : w;

@@ -66,38 +66,38 @@ SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
     tdata->hratio = tdata->height / (float)tdata->aheight;
     tdata->bpp = bpp;
 
-    SGubyte bypp;
+    /*SGubyte bypp;*/
     switch(bpp)
     {
         case 8:
 			tdata->gliformat = GL_R3_G3_B2;
 			tdata->glformat = GL_RGB;
 			tdata->gltype = GL_UNSIGNED_BYTE_3_3_2;
-			bypp = 1;
+			/*bypp = 1;*/
             break;
         case 15:
 			tdata->gliformat = GL_RGB5; // GL_RGB5_A1
 			tdata->glformat = GL_RGB;
 			tdata->gltype = GL_UNSIGNED_SHORT_5_5_5_1;
-            bypp = 2;
+            /*bypp = 2;*/
             break;
         case 16:
             tdata->gliformat = GL_RGB5;
             tdata->glformat = GL_RGB;
 			tdata->gltype = GL_UNSIGNED_SHORT_5_6_5;
-            bypp = 2;
+            /*bypp = 2;*/
             break;
         case 24:
             tdata->gliformat = GL_RGB8;
             tdata->glformat = GL_RGB;
 			tdata->gltype = GL_UNSIGNED_BYTE;
-            bypp = 3;
+            /*bypp = 3;*/
             break;
         case 32:
             tdata->gliformat = GL_RGBA8;
             tdata->glformat = GL_RGBA;
 			tdata->gltype = GL_UNSIGNED_BYTE;
-            bypp = 4;
+            /*bypp = 4;*/
             break;
         default:
             return SG_INVALID_VALUE;

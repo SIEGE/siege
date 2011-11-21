@@ -54,7 +54,7 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 	if(psgmGraphicsTextureGetData != NULL)
 		psgmGraphicsTextureGetData(texture->handle, &awidth, &aheight, &bpp, (void**)&data);
 
-	SGubyte bypp = 0;
+	/*SGubyte bypp = 0;*/
 	SGubyte r, g, b, a;
 	SGubyte rbits = 0;
 	SGubyte gbits = 0;
@@ -68,30 +68,30 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 			gbits = 8;
 			bbits = 8;
 			abits = 8;
-			bypp = 4;
+			/*bypp = 4;*/
 			break;
 		case 24:
 			rbits = 8;
 			gbits = 8;
 			bbits = 8;
-			bypp = 3;
+			/*bypp = 3;*/
 			break;
 		case 16:
 			rbits = 5;
 			gbits = 6;
 			bbits = 5;
-			bypp = 2;
+			/*bypp = 2;*/
 			break;
 		case 15:
 			rbits = 5;
 			gbits = 5;
 			bbits = 5;
 			abits = 1; // ?
-			bypp = 2;
+			/*bypp = 2;*/
 			break;
 		case 8:
 			abits = 8;
-			bypp = 1;
+			/*bypp = 1;*/
 			break;
 
 		default:

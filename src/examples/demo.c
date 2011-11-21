@@ -253,7 +253,7 @@ void drawLight(Light* light)
     sgDrawColor4f(light->color.r, light->color.g, light->color.b, light->color.a);
 
     SGVec2 tcurr, tnext;
-    SGVec2* curr;
+    /*SGVec2* curr;*/
     SGVec2* next;
     Polygon* poly;
     SGVec2 tmpc, tmpn;
@@ -288,7 +288,7 @@ void drawLight(Light* light)
         }
         for(i = 0; i < poly->nump; i++)
         {
-            curr = &poly->points[i];
+            /*curr = &poly->points[i];*/
             next = &poly->points[(i + 1) % poly->nump];
 
             tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
@@ -358,7 +358,7 @@ void drawLightDBG(Light* light)
         return;
 
     SGVec2 tcurr, tnext;
-    SGVec2* curr;
+    /*SGVec2* curr;*/
     SGVec2* next;
     Polygon* poly;
     SGVec2 tmpc, tmpn;
@@ -382,7 +382,7 @@ void drawLightDBG(Light* light)
         }
         for(i = 0; i < poly->nump; i++)
         {
-            curr = &poly->points[i];
+            /*curr = &poly->points[i];*/
             next = &poly->points[(i + 1) % poly->nump];
 
             tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
@@ -412,7 +412,7 @@ void drawLightDBG(Light* light)
         }
         for(i = 0; i < poly->nump; i++)
         {
-            curr = &poly->points[i];
+            /*curr = &poly->points[i];*/
             next = &poly->points[(i + 1) % poly->nump];
 
             tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
