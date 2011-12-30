@@ -38,62 +38,74 @@ SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreate(SGPhysicsBody* body1, S
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreatePin(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2)
 {
-    float vdata[] = {x1, y1, x2, y2};
+    float vdata[4];
+    vdata[0] = x1; vdata[1] = y1; vdata[2] = x2; vdata[3] = y2;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_PIN, vdata);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateSlide(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float min, float max)
 {
-    float vdata[] = {x1, y1, x2, y2, min, max};
+    float vdata[6];
+    vdata[0] = x1; vdata[1] = y1; vdata[2] = x2; vdata[3] = y2;
+    vdata[4] = min; vdata[5] = max;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_SLIDE, vdata);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreatePivot(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2)
 {
-    float vdata[] = {x1, y1, x2, y2};
+    float vdata[4];
+    vdata[0] = x1; vdata[1] = y1; vdata[2] = x2; vdata[3] = y2;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_PIVOT, vdata);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateGroove(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float xa, float ya)
 {
-    float vdata[] = {x1, y1, x2, y2, xa, ya};
+    float vdata[6];
+    vdata[0] = x1; vdata[1] = y1; vdata[2] = x2; vdata[3] = y2;
+    vdata[4] = xa; vdata[5] = ya;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_GROOVE, vdata);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateLinSpring(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float rest, float st, float damp)
 {
-    float vdata[] = {x1, y1, x2, y2, rest, st, damp};
+    float vdata[7];
+    vdata[0] = x1; vdata[1] = y1; vdata[2] = x2; vdata[3] = y2;
+    vdata[4] = rest; vdata[5] = st; vdata[6] = damp;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_LINSPRING, vdata);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRotSpringRads(SGPhysicsBody* body1, SGPhysicsBody* body2, float rads, float st, float damp)
 {
-    float vdata[] = {rads, st, damp};
+    float vdata[3];
+    vdata[0] = rads; vdata[1] = st; vdata[2] = damp;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_ROTSPRING, vdata);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRotSpringDegs(SGPhysicsBody* body1, SGPhysicsBody* body2, float degs, float st, float damp)
 {
-    float vdata[] = {degs * SG_PI / 180.0, st, damp};
-    return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_ROTSPRING, vdata);
+    return sgPhysicsConstraintCreateRotSpringRads(body1, body2, degs * SG_PI / 180.0, st, damp);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRotLimitRads(SGPhysicsBody* body1, SGPhysicsBody* body2, float min, float max)
 {
-    float vdata[] = {min, max};
+    float vdata[2];
+    vdata[0] = min; vdata[1] = max;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_ROTLIMIT, vdata);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRotLimitDegs(SGPhysicsBody* body1, SGPhysicsBody* body2, float min, float max)
 {
-    float vdata[] = {min * SG_PI / 180.0, max * SG_PI / 180.0};
-    return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_ROTLIMIT, vdata);
+    return sgPhysicsConstraintCreateRotLimitRads(body1, body2, min * SG_PI / 180.0, max * SG_PI / 180.0);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRatchet(SGPhysicsBody* body1, SGPhysicsBody* body2, float phase, float ratchet)
 {
-    float vdata[] = {phase, ratchet};
+    float vdata[2];
+    vdata[0] = phase; vdata[1] = ratchet;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_RATCHET, vdata);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateGear(SGPhysicsBody* body1, SGPhysicsBody* body2, float phase, float ratio)
 {
-    float vdata[] = {phase, ratio};
+    float vdata[2];
+    vdata[0] = phase; vdata[1] = ratio;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_GEAR, vdata);
 }
 SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateMotor(SGPhysicsBody* body1, SGPhysicsBody* body2, float rate)
 {
-    float vdata[] = {rate};
+    float vdata[1];
+    // we do this anyways since that float might become double in SIEGE's future
+    vdata[0] = rate;
     return sgPhysicsConstraintCreate(body1, body2, SG_PHYSICS_CONSTRAINT_MOTOR, vdata);
 }
 void SG_EXPORT sgPhysicsConstraintDestroy(SGPhysicsConstraint* constr)

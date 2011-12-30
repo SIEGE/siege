@@ -472,7 +472,8 @@ SGColor SG_EXPORT _sgColorValue(const char* name, SGubyte flag)
 
 SGColor SG_EXPORT sgColor4f(float r, float g, float b, float a)
 {
-    SGColor c = {r, g, b, a};
+    SGColor c;
+    c.r = r; c.g = g; c.b = b; c.a = a;
     return c;
 }
 SGColor SG_EXPORT sgColor3f(float r, float g, float b)

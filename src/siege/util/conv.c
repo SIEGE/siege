@@ -86,7 +86,7 @@ void* SG_EXPORT sgConv(SGConv* conv, size_t* outlen, const void* str, size_t len
 		psgmFontsConv(conv->handle, &buf, outlen, (void*)str, len);
 		outbuf = malloc(*outlen + 4);
 		memcpy(outbuf, buf, *outlen);
-		memset(outbuf + *outlen, 0, 4);
+		memset((char*)outbuf + *outlen, 0, 4);
 		if(psgmFontsConvFreeData != NULL)
 			psgmFontsConvFreeData(buf);
 	}

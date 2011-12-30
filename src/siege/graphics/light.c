@@ -72,10 +72,14 @@ SGLightSpace* SG_EXPORT sgLightSpaceCreate(void)
 
     space->buffer = sgSurfaceCreate(width, height, 32);
     space->lbuffer = sgSurfaceCreate(width, height, 32);
+
     space->lights = sgListCreate();
     space->shapes = sgListCreate();
 
-    space->ambience = (SGColor){0.0, 0.0, 0.0, 0.0};
+    space->ambience.r = 0.0;
+    space->ambience.g = 0.0;
+    space->ambience.b = 0.0;
+    space->ambience.a = 0.0;
 
     return space;
 }

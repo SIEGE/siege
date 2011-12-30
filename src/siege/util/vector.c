@@ -5,7 +5,7 @@
     This file is part of libSIEGE.
 
     This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
+    2-clause BSD license. Please consult the file "COPYING.txt" for
     details.
 
     If you did not recieve the file with this program, please email
@@ -20,7 +20,8 @@
 
 SGVec2 SG_EXPORT sgVec2f(float x, float y)
 {
-    SGVec2 vec = {x, y};
+    SGVec2 vec;
+    vec.x = x; vec.y = y;
     return vec;
 }
 SGVec2 SG_EXPORT sgVec2fv(float* xy)
@@ -29,8 +30,7 @@ SGVec2 SG_EXPORT sgVec2fv(float* xy)
 }
 SGVec2 SG_EXPORT sgVec2PolarRads(float rads, float len)
 {
-    SGVec2 vec = {cos(rads) * len, sin(rads) * len};
-    return vec;
+    return sgVec2f(cos(rads) * len, sin(rads) * len);
 }
 SGVec2 SG_EXPORT sgVec2PolarDegs(float degs, float len)
 {
@@ -119,7 +119,8 @@ float SG_EXPORT sgVec2Cross(SGVec2 a, SGVec2 b)
 
 SGVec3 SG_EXPORT sgVec3f(float x, float y, float z)
 {
-    SGVec3 vec = {x, y, z};
+    SGVec3 vec;
+    vec.x = x; vec.y = y; vec.z = z;
     return vec;
 }
 SGVec3 SG_EXPORT sgVec3fv(float* xyz)
@@ -128,8 +129,7 @@ SGVec3 SG_EXPORT sgVec3fv(float* xyz)
 }
 SGVec3 SG_EXPORT sgVec3CylindricalRads(float rads, float radius, float z)
 {
-	SGVec3 vec = {cos(rads) * radius, sin(rads) * radius, z};
-	return vec;
+    return sgVec3f(cos(rads) * radius, sin(rads) * radius, z);
 }
 SGVec3 SG_EXPORT sgVec3CylindricalDegs(float degs, float radius, float z)
 {
@@ -141,8 +141,7 @@ SGVec3 SG_EXPORT sgVec3SphericalRads(float azimuth, float zenith, float radius)
 	float sa = sin(azimuth);
 	float cz = cos(zenith);
 	float sz = sin(zenith);
-	SGVec3 vec = {radius * ca * sz, radius * sa * sz, radius * cz};
-	return vec;
+	return sgVec3f(radius * ca * sz, radius * sa * sz, radius * cz);
 }
 SGVec3 SG_EXPORT sgVec3SphericalDegs(float azimuth, float zenith, float radius)
 {
@@ -217,7 +216,8 @@ SGVec3 SG_EXPORT sgVec3Cross(SGVec3 a, SGVec3 b)
 
 SGVec4 SG_EXPORT sgVec4f(float x, float y, float z, float w)
 {
-    SGVec4 vec = {x, y, z, w};
+    SGVec4 vec;
+    vec.x = x; vec.y = y; vec.z = z; vec.w = w;
     return vec;
 }
 SGVec4 SG_EXPORT sgVec4fv(float* xyzw)
