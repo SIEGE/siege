@@ -199,6 +199,7 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
 					entity->evKeyboardChar(entity, val[0]);
 				break;*/
 			case SG_EVF_KEYCHARP:
+                val[0] = va_arg(args, SGenum);
 				if(entity->evKeyboardCharPress != NULL)
 					entity->evKeyboardCharPress(entity, val[0]);
 				break;

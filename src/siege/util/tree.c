@@ -126,7 +126,7 @@ SGTreeNode* SG_EXPORT _sgTreeNodeInsert(SGTree* tree, SGTreeNode* root, SGTreeNo
 }
 SGTreeNode* SG_EXPORT _sgTreeNodeRemove(SGTree* tree, SGTreeNode* root, SGTreeNode* node)
 {
-    SGTreeNode* remove;
+    SGTreeNode* remove = NULL;
     SGTreeNode* curr;
     SGTreeNode* stack[256];
     ptrdiff_t top;

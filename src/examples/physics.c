@@ -229,7 +229,7 @@ int main(void)
     controller->evKeyboardKeyRepeat = evKeyboardKeyRepeat;
 
     SGlong accum = SG_NANOSECONDS_IN_A_SECOND, origin = sgGetTime();
-    SGfloat fps;
+    SGfloat fps = 0.0;
     while(sgLoop(NULL))
     {
         accum += sgGetTime() - origin;

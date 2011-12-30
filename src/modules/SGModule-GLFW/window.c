@@ -133,7 +133,7 @@ SGuint SG_EXPORT sgmCoreWindowOpen(void* window, SGuint width, SGuint height, SG
             stencil = 0;
             break;
         default:
-            break;
+            return SG_INVALID_VALUE;
     }
     glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, 1);
 

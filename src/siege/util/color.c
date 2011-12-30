@@ -440,7 +440,7 @@ const SGColor _sg_colValues[] =
 void SG_EXPORT _sgColorPreprocess(char* buf, size_t buflen, const char* name)
 {
     size_t i, j;
-    for(i = 0; name[i] && (j < (buflen - 1)); i++)
+    for(i = 0, j = 0; name[i] && (j < (buflen - 1)); i++)
     {
         if(name[i] == ' ')
             continue;

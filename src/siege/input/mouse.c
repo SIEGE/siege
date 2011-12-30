@@ -36,25 +36,30 @@ void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
         events[0] = SG_EVF_MOUSEBUTP;
     else if(!down)
         events[0] = SG_EVF_MOUSEBUTR;
+    else
+    {
+        events[1] = 0;
+        numevents--;
+    }
     switch(button)
     {
         case SG_MOUSE_BUTTON_LEFT:
             if(pressed)
-                events[1] = SG_EVF_MOUSEBUTLP;
+                events[numevents-1] = SG_EVF_MOUSEBUTLP;
             else if(!down)
-                events[1] = SG_EVF_MOUSEBUTLR;
+                events[numevents-1] = SG_EVF_MOUSEBUTLR;
             break;
         case SG_MOUSE_BUTTON_RIGHT:
             if(pressed)
-                events[1] = SG_EVF_MOUSEBUTRP;
+                events[numevents-1] = SG_EVF_MOUSEBUTRP;
             else if(!down)
-                events[1] = SG_EVF_MOUSEBUTRR;
+                events[numevents-1] = SG_EVF_MOUSEBUTRR;
             break;
         case SG_MOUSE_BUTTON_MIDDLE:
             if(pressed)
-                events[1] = SG_EVF_MOUSEBUTMP;
+                events[numevents-1] = SG_EVF_MOUSEBUTMP;
             else if(!down)
-                events[1] = SG_EVF_MOUSEBUTMR;
+                events[numevents-1] = SG_EVF_MOUSEBUTMR;
             break;
         default:
 			numevents--;
@@ -103,6 +108,7 @@ void SG_EXPORT _sgMouseUpdate(void)
 					events[1] = SG_EVF_MOUSEBUTMH;
 					break;
 				default:
+                    events[1] = 0;
 					numevents--;
 					break;
 			}
