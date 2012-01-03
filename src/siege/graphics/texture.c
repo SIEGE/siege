@@ -30,9 +30,13 @@ SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname)
 
     SGuint ret;
     if(psgmGraphicsLoadFile != NULL)
+    {
         ret = psgmGraphicsLoadFile(fname, &width, &height, &bpp, &data);
-    if((psgmGraphicsLoadFile == NULL) || (ret != SG_OK))
-        fprintf(stderr, "Could not load image %s\n", fname);
+        if(ret != SG_OK)
+			fprintf(stderr, "Could not load image %s\n", fname);
+	}
+    else
+		fprintf(stderr, "Could not load image %s\n", fname);
 
     SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
     if(psgmGraphicsLoadFreeData != NULL)

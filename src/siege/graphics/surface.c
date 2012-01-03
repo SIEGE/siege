@@ -40,8 +40,12 @@ SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname)
 
     SGuint ret;
     if(psgmGraphicsLoadFile != NULL)
+    {
         ret = psgmGraphicsLoadFile(fname, &width, &height, &bpp, &data);
-    if((psgmGraphicsLoadFile == NULL) || (ret != SG_OK))
+        if(ret != SG_OK)
+			fprintf(stderr, "Could not load image %s\n", fname);
+	}
+    else
         fprintf(stderr, "Could not load image %s\n", fname);
 
     SGSurface* surface = sgSurfaceCreateData(width, height, bpp, data);
