@@ -2,7 +2,7 @@
 .*.swp
 .*.kate-swp
 *~
-/build
+/build*
 /src/bindings/cython/build/
 /src/bindings/cython/siege/*/*.c
 /doc
