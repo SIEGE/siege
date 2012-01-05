@@ -60,6 +60,7 @@
 #include "util/angle.h"
 #include "util/color.h"
 #include "util/conv.h"
+#include "util/directory.h"
 #include "util/gradient.h"
 #include "util/link.h"
 #include "util/list.h"

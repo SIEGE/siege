@@ -17,6 +17,10 @@
 
 #include "../common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 #define SG_THREAD_INITIAL 0
 #define SG_THREAD_RUNNING 1
 #define SG_THREAD_SUSPENDED 2
@@ -71,5 +75,9 @@ void SG_EXPORT sgSemaphoreDestroy(SGSemaphore* sem);
 
 void SG_EXPORT sgSemaphoreWait(SGSemaphore* sem);
 void SG_EXPORT sgSemaphorePost(SGSemaphore* sem); // TODO: "Post" -> "Signal"?
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // __SIEGE_UTIL_THREAD_H__

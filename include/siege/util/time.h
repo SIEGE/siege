@@ -14,11 +14,11 @@
 #ifndef __SIEGE_UTIL_TIME_H__
 #define __SIEGE_UTIL_TIME_H__
 
+#include "../common.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-
-#include "../common.h"
 
 #define SG_NANOSECONDS_IN_A_SECOND 1000000000ULL
 #define SG_MICROSECONDS_IN_A_SECOND 1000000ULL
