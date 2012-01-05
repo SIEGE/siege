@@ -195,7 +195,7 @@ void SG_EXPORT sgWindowSwapBuffers(void)
     {
         if(updateLength < _sg_FrameLength)
         {
-            sgSleep(_sg_FrameLength - updateLength);
+            sgNSleep(_sg_FrameLength - updateLength);
         }
     }
 

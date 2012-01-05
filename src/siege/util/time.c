@@ -13,13 +13,13 @@
  */
 #include <siege/util/time.h>
 
+#include <time.h>
+
 #ifdef __WIN32__
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
-    #include <time.h>
 #else
     #include <unistd.h>
-    #include <time.h>
 #endif
 
 SGlong SG_EXPORT sgGetTime(void)
@@ -44,13 +44,13 @@ SGlong SG_EXPORT sgGetTime(void)
 #endif
 }
 
-void SG_EXPORT sgNSleep(SGlong nseconds)
+void SG_EXPORT sgNSleep(SGulong nseconds)
 {
 #ifdef __WIN32__
     // TODO: use select() for a bit more precise sleep (us instead of ms)
     // That requires initializing sockets, however!
     // Also, we have to make sure that the value doesn't happen to be INFINITE.
-    Sleep(nseconds / 1000000);
+    Sleep(nseconds / 1000000U);
 #else
     struct timespec ts, tsr;
     ts.tv_sec = nseconds / SG_NANOSECONDS_IN_A_SECOND;
@@ -64,15 +64,15 @@ void SG_EXPORT sgNSleep(SGlong nseconds)
     }
 #endif
 }
-void SG_EXPORT sgUSleep(SGlong useconds)
+void SG_EXPORT sgUSleep(SGulong useconds)
 {
-	sgNSleep(useconds * 1000);
+	sgNSleep(useconds * 1000U);
 }
-void SG_EXPORT sgMSleep(SGlong mseconds)
+void SG_EXPORT sgMSleep(SGulong mseconds)
 {
-	sgUSleep(mseconds * 1000);
+	sgUSleep(mseconds * 1000U);
 }
-void SG_EXPORT sgSleep(SGlong nseconds)
+void SG_EXPORT sgSleep(SGulong seconds)
 {
-	sgNSleep(nseconds);
+	sgMSleep(seconds * 1000U);
 }

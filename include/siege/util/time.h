@@ -20,9 +20,9 @@ extern "C" {
 
 #include "../common.h"
 
-#define SG_NANOSECONDS_IN_A_SECOND 1000000000LL
-#define SG_MICROSECONDS_IN_A_SECOND 1000000LL
-#define SG_MILLISECONDS_IN_A_SECOND 1000LL
+#define SG_NANOSECONDS_IN_A_SECOND 1000000000ULL
+#define SG_MICROSECONDS_IN_A_SECOND 1000000ULL
+#define SG_MILLISECONDS_IN_A_SECOND 1000ULL
 
 /**
  * Function: sgGetTime
@@ -36,17 +36,16 @@ SGlong SG_EXPORT sgGetTime(void);
  *
  * Sleep for the given amount of {nano/micro/milli}seconds.
  */
-void SG_EXPORT sgNSleep(SGlong nseconds);
-void SG_EXPORT sgUSleep(SGlong useconds);
-void SG_EXPORT sgMSleep(SGlong mseconds);
+void SG_EXPORT sgNSleep(SGulong nseconds);
+void SG_EXPORT sgUSleep(SGulong useconds);
+void SG_EXPORT sgMSleep(SGulong mseconds);
 
 /**
  * Function: sgSleep
  *
- * Sleep for the given amount of nanoseconds.
- * Note that this function will eventually be changed to seconds.
+ * Sleep for the given amount of seconds.
  */
-void SG_EXPORT sgSleep(SGlong nseconds);
+void SG_EXPORT sgSleep(SGulong seconds);
 
 #ifdef __cplusplus
 }
