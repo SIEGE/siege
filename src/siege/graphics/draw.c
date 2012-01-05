@@ -104,35 +104,35 @@ void SG_EXPORT sgDrawColor1ub(SGubyte g)
 {
 	sgDrawColor4ub(g, g, g, 255);
 }
-void SG_EXPORT sgDrawColor4fv(float* rgba)
+void SG_EXPORT sgDrawColor4fv(const float* rgba)
 {
 	sgDrawColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-void SG_EXPORT sgDrawColor3fv(float* rgb)
+void SG_EXPORT sgDrawColor3fv(const float* rgb)
 {
 	sgDrawColor3f(rgb[0], rgb[1], rgb[2]);
 }
-void SG_EXPORT sgDrawColor2fv(float* ga)
+void SG_EXPORT sgDrawColor2fv(const float* ga)
 {
 	sgDrawColor2f(ga[0], ga[1]);
 }
-void SG_EXPORT sgDrawColor1fv(float* g)
+void SG_EXPORT sgDrawColor1fv(const float* g)
 {
 	sgDrawColor1f(g[0]);
 }
-void SG_EXPORT sgDrawColor4ubv(SGubyte* rgba)
+void SG_EXPORT sgDrawColor4ubv(const SGubyte* rgba)
 {
 	sgDrawColor4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-void SG_EXPORT sgDrawColor3ubv(SGubyte* rgb)
+void SG_EXPORT sgDrawColor3ubv(const SGubyte* rgb)
 {
 	sgDrawColor3ub(rgb[0], rgb[1], rgb[2]);
 }
-void SG_EXPORT sgDrawColor2ubv(SGubyte* ga)
+void SG_EXPORT sgDrawColor2ubv(const SGubyte* ga)
 {
 	sgDrawColor2ub(ga[0], ga[1]);
 }
-void SG_EXPORT sgDrawColor1ubv(SGubyte* g)
+void SG_EXPORT sgDrawColor1ubv(const SGubyte* g)
 {
 	sgDrawColor1ub(g[0]);
 }
@@ -141,7 +141,7 @@ void SG_EXPORT sgDrawTexCoord2f(float s, float t)
 	_sg_drawCurTexCoord[0] = s;
 	_sg_drawCurTexCoord[1] = t;
 }
-void SG_EXPORT sgDrawTexCoord2fv(float* st)
+void SG_EXPORT sgDrawTexCoord2fv(const float* st)
 {
 	sgDrawTexCoord2f(st[0], st[1]);
 }
@@ -163,11 +163,11 @@ void SG_EXPORT sgDrawVertex2f(float x, float y)
 {
 	sgDrawVertex3f(x, y, 0.0f);
 }
-void SG_EXPORT sgDrawVertex3fv(float* xyz)
+void SG_EXPORT sgDrawVertex3fv(const float* xyz)
 {
 	sgDrawVertex3f(xyz[0], xyz[1], xyz[2]);
 }
-void SG_EXPORT sgDrawVertex2fv(float* xy)
+void SG_EXPORT sgDrawVertex2fv(const float* xy)
 {
 	sgDrawVertex2f(xy[0], xy[1]);
 }
@@ -209,35 +209,35 @@ void SG_EXPORT sgDrawClear1ub(SGubyte g)
 {
 	sgDrawClear4ub(g, g, g, 255);
 }
-void SG_EXPORT sgDrawClear4fv(float* rgba)
+void SG_EXPORT sgDrawClear4fv(const float* rgba)
 {
 	sgDrawClear4f(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-void SG_EXPORT sgDrawClear3fv(float* rgb)
+void SG_EXPORT sgDrawClear3fv(const float* rgb)
 {
 	sgDrawClear3f(rgb[0], rgb[1], rgb[2]);
 }
-void SG_EXPORT sgDrawClear2fv(float* ga)
+void SG_EXPORT sgDrawClear2fv(const float* ga)
 {
 	sgDrawClear2f(ga[0], ga[1]);
 }
-void SG_EXPORT sgDrawClear1fv(float* g)
+void SG_EXPORT sgDrawClear1fv(const float* g)
 {
 	sgDrawClear1f(g[0]);
 }
-void SG_EXPORT sgDrawClear4ubv(SGubyte* rgba)
+void SG_EXPORT sgDrawClear4ubv(const SGubyte* rgba)
 {
 	sgDrawClear4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-void SG_EXPORT sgDrawClear3ubv(SGubyte* rgb)
+void SG_EXPORT sgDrawClear3ubv(const SGubyte* rgb)
 {
 	sgDrawClear3ub(rgb[0], rgb[1], rgb[2]);
 }
-void SG_EXPORT sgDrawClear2ubv(SGubyte* ga)
+void SG_EXPORT sgDrawClear2ubv(const SGubyte* ga)
 {
 	sgDrawClear2ub(ga[0], ga[1]);
 }
-void SG_EXPORT sgDrawClear1ubv(SGubyte* g)
+void SG_EXPORT sgDrawClear1ubv(const SGubyte* g)
 {
 	sgDrawClear1ub(g[0]);
 }

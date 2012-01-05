@@ -24,7 +24,7 @@
     #include <dlfcn.h>
 #endif
 
-SGLibrary* SG_EXPORT sgLibraryLoad(char* fname)
+SGLibrary* SG_EXPORT sgLibraryLoad(const char* fname)
 {
 #ifdef __WIN32__
     HMODULE handle = LoadLibrary(fname);

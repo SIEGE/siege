@@ -24,7 +24,7 @@ SGVec2 SG_EXPORT sgVec2f(float x, float y)
     vec.x = x; vec.y = y;
     return vec;
 }
-SGVec2 SG_EXPORT sgVec2fv(float* xy)
+SGVec2 SG_EXPORT sgVec2fv(const float* xy)
 {
     return sgVec2f(xy[0], xy[1]);
 }
@@ -123,7 +123,7 @@ SGVec3 SG_EXPORT sgVec3f(float x, float y, float z)
     vec.x = x; vec.y = y; vec.z = z;
     return vec;
 }
-SGVec3 SG_EXPORT sgVec3fv(float* xyz)
+SGVec3 SG_EXPORT sgVec3fv(const float* xyz)
 {
     return sgVec3f(xyz[0], xyz[1], xyz[2]);
 }
@@ -220,7 +220,7 @@ SGVec4 SG_EXPORT sgVec4f(float x, float y, float z, float w)
     vec.x = x; vec.y = y; vec.z = z; vec.w = w;
     return vec;
 }
-SGVec4 SG_EXPORT sgVec4fv(float* xyzw)
+SGVec4 SG_EXPORT sgVec4fv(const float* xyzw)
 {
     return sgVec4f(xyzw[0], xyzw[1], xyzw[2], xyzw[3]);
 }

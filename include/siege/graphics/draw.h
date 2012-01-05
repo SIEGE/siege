@@ -83,14 +83,14 @@ void SG_EXPORT sgDrawColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a);
 void SG_EXPORT sgDrawColor3ub(SGubyte r, SGubyte g, SGubyte b);
 void SG_EXPORT sgDrawColor2ub(SGubyte g, SGubyte a);
 void SG_EXPORT sgDrawColor1ub(SGubyte g);
-void SG_EXPORT sgDrawColor4fv(float* rgba);
-void SG_EXPORT sgDrawColor3fv(float* rgb);
-void SG_EXPORT sgDrawColor2fv(float* ga);
-void SG_EXPORT sgDrawColor1fv(float* g);
-void SG_EXPORT sgDrawColor4ubv(SGubyte* rgba);
-void SG_EXPORT sgDrawColor3ubv(SGubyte* rgb);
-void SG_EXPORT sgDrawColor2ubv(SGubyte* ga);
-void SG_EXPORT sgDrawColor1ubv(SGubyte* g);
+void SG_EXPORT sgDrawColor4fv(const float* rgba);
+void SG_EXPORT sgDrawColor3fv(const float* rgb);
+void SG_EXPORT sgDrawColor2fv(const float* ga);
+void SG_EXPORT sgDrawColor1fv(const float* g);
+void SG_EXPORT sgDrawColor4ubv(const SGubyte* rgba);
+void SG_EXPORT sgDrawColor3ubv(const SGubyte* rgb);
+void SG_EXPORT sgDrawColor2ubv(const SGubyte* ga);
+void SG_EXPORT sgDrawColor1ubv(const SGubyte* g);
 /**
  * \brief Set the texture coordinate of the following vertex
  *
@@ -103,7 +103,7 @@ void SG_EXPORT sgDrawColor1ubv(SGubyte* g);
  *	clipping mode) indicate flipping or tiling.
  */
 void SG_EXPORT sgDrawTexCoord2f(float s, float t);
-void SG_EXPORT sgDrawTexCoord2fv(float* st);
+void SG_EXPORT sgDrawTexCoord2fv(const float* st);
 /**
  * \brief Place a vertex at a specific depth
  *
@@ -113,8 +113,8 @@ void SG_EXPORT sgDrawTexCoord2fv(float* st);
  */
 void SG_EXPORT sgDrawVertex3f(float x, float y, float z);
 void SG_EXPORT sgDrawVertex2f(float x, float y);
-void SG_EXPORT sgDrawVertex3fv(float* xyz);
-void SG_EXPORT sgDrawVertex2fv(float* xy);
+void SG_EXPORT sgDrawVertex3fv(const float* xyz);
+void SG_EXPORT sgDrawVertex2fv(const float* xy);
 /// @}
 
 /**
@@ -137,14 +137,14 @@ void SG_EXPORT sgDrawClear4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a);
 void SG_EXPORT sgDrawClear3ub(SGubyte r, SGubyte g, SGubyte b);
 void SG_EXPORT sgDrawClear2ub(SGubyte g, SGubyte a);
 void SG_EXPORT sgDrawClear1ub(SGubyte g);
-void SG_EXPORT sgDrawClear4fv(float* rgba);
-void SG_EXPORT sgDrawClear3fv(float* rgb);
-void SG_EXPORT sgDrawClear2fv(float* ga);
-void SG_EXPORT sgDrawClear1fv(float* g);
-void SG_EXPORT sgDrawClear4ubv(SGubyte* rgba);
-void SG_EXPORT sgDrawClear3ubv(SGubyte* rgb);
-void SG_EXPORT sgDrawClear2ubv(SGubyte* ga);
-void SG_EXPORT sgDrawClear1ubv(SGubyte* g);
+void SG_EXPORT sgDrawClear4fv(const float* rgba);
+void SG_EXPORT sgDrawClear3fv(const float* rgb);
+void SG_EXPORT sgDrawClear2fv(const float* ga);
+void SG_EXPORT sgDrawClear1fv(const float* g);
+void SG_EXPORT sgDrawClear4ubv(const SGubyte* rgba);
+void SG_EXPORT sgDrawClear3ubv(const SGubyte* rgb);
+void SG_EXPORT sgDrawClear2ubv(const SGubyte* ga);
+void SG_EXPORT sgDrawClear1ubv(const SGubyte* g);
 /**
  * \brief Clear the drawable with black color
  */

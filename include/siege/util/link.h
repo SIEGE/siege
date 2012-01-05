@@ -30,7 +30,7 @@ typedef struct SGLibrary
 
 typedef void (SGLibraryFunction)(void);
 
-SGLibrary* SG_EXPORT sgLibraryLoad(char* fname);
+SGLibrary* SG_EXPORT sgLibraryLoad(const char* fname);
 void SG_EXPORT sgLibraryUnload(SGLibrary* lib);
 SGLibraryFunction* SG_EXPORT sgGetProcAddress(SGLibrary* lib, const char* proc);
 void* SG_EXPORT sgGetVarAddress(SGLibrary* lib, const char* var);

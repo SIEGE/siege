@@ -21,10 +21,10 @@
 extern "C" {
 #endif // __cplusplus
 
-#define SG_THREAD_INITIAL 0
-#define SG_THREAD_RUNNING 1
+#define SG_THREAD_INITIAL   0
+#define SG_THREAD_RUNNING   1
 #define SG_THREAD_SUSPENDED 2
-#define SG_THREAD_EXITED 3
+#define SG_THREAD_EXITED    3
 
 struct SGThread;
 
