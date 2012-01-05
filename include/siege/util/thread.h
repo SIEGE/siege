@@ -26,8 +26,6 @@ extern "C" {
 #define SG_THREAD_SUSPENDED 2
 #define SG_THREAD_EXITED 3
 
-struct SGThreadKey;
-
 struct SGThread;
 
 typedef SGint SG_EXPORT (SGThreadFunction)(struct SGThread* thread, void* data);
