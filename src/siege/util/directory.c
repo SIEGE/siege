@@ -29,7 +29,7 @@ SGDirectory* SG_EXPORT sgDirectoryOpen(const char* fname)
     SGDirectory* dir = malloc(sizeof(SGDirectory));
 
     size_t len = strlen(fname);
-	dir->name = malloc(len + 3);
+    dir->name = malloc(len + 3);
     memcpy(dir->name, fname, len + 1);
 
 #ifdef __WIN32__
@@ -40,29 +40,32 @@ SGDirectory* SG_EXPORT sgDirectoryOpen(const char* fname)
     dir->handle = FindFirstFile(dir->name, dir->ibuf);
     if(!dir->handle)
     {
-		free(dir->name);
-		free(dir->ibuf);
-		free(dir);
-		return NULL;
-	}
-	else
-		FindClose(dir->handle);
+        free(dir->name);
+        free(dir->ibuf);
+        free(dir);
+        return NULL;
+    }
+    else
+    {
+        FindClose(dir->handle);
+        dir->handle = NULL;
+    }
 #else
-	dir->buflen = NAME_MAX + 1;
-	// that +1 is just in case, even though dirent has [1] at d_name
-	//dir->ibuf = malloc(sizeof(struct dirent) + NAME_MAX + 1);
-	dir->ibuf = NULL;
-	dir->handle = opendir(dir->name);
-	if(!dir->handle)
-	{
-		free(dir->name);
-		free(dir);
-		return NULL;
-	}
+    dir->buflen = NAME_MAX + 1;
+    // that +1 is just in case, even though dirent has [1] at d_name
+    //dir->ibuf = malloc(sizeof(struct dirent) + NAME_MAX + 1);
+    dir->ibuf = NULL;
+    dir->handle = opendir(dir->name);
+    if(!dir->handle)
+    {
+        free(dir->name);
+        free(dir);
+        return NULL;
+    }
 #endif
-	dir->buf = malloc(dir->buflen);
-	dir->buf[0] = 0;
-	dir->buf[dir->buflen - 1] = 0;
+    dir->buf = malloc(dir->buflen);
+    dir->buf[0] = 0;
+    dir->buf[dir->buflen - 1] = 0;
 
     return dir;
 }
@@ -106,7 +109,7 @@ char* SG_EXPORT sgDirectoryNext(SGDirectory* dir, char* buf, size_t len)
 #else
     struct dirent* ent = readdir(dir->handle);
     if(!ent)
-		return NULL;
+        return NULL;
     // memcpy?
     strncpy(buf, ent->d_name, SG_MIN(NAME_MAX+1,len));
     buf[SG_MIN(NAME_MAX+1,len)-1] = 0;
