@@ -44,7 +44,7 @@ SGlong SG_EXPORT sgGetTime(void)
 #endif
 }
 
-void SG_EXPORT sgSleep(SGlong nseconds)
+void SG_EXPORT sgNSleep(SGlong nseconds)
 {
 #ifdef __WIN32__
     // TODO: use select() for a bit more precise sleep (us instead of ms)
@@ -63,4 +63,16 @@ void SG_EXPORT sgSleep(SGlong nseconds)
         usleep(ts.tv_nsec / 1000);
     }
 #endif
+}
+void SG_EXPORT sgUSleep(SGlong useconds)
+{
+	sgNSleep(useconds * 1000);
+}
+void SG_EXPORT sgMSleep(SGlong mseconds)
+{
+	sgUSleep(mseconds * 1000);
+}
+void SG_EXPORT sgSleep(SGlong nseconds)
+{
+	sgNSleep(nseconds);
 }

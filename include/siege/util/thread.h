@@ -31,7 +31,10 @@ typedef struct SGThread
     SGThreadFunction* func;
     void* data;
     SGenum status; /* TODO: make status work properly */
-    SGint rbuf;
+    // these are used for pthreads
+    SGint ret;
+    void* sem;
+    SGuint susp;
 } SGThread;
 typedef struct SGMutex
 {
@@ -46,10 +49,10 @@ SGThread* SG_EXPORT sgThreadCreate(size_t ssize, SGThreadFunction* func, void* d
 void SG_EXPORT sgThreadDestroy(SGThread* thread);
 
 void SG_EXPORT sgThreadStart(SGThread* thread);
-SGuint SG_EXPORT sgThreadResume(SGThread* thread);
+SGuint SG_EXPORT sgThreadResume(SGThread* thread); /* TODO: make suspend/resume work properly in POSIX systems */
 SGuint SG_EXPORT sgThreadSuspend(SGThread* thread);
 
-void SG_EXPORT sgThreadYield(SGThread* thread);
+//void SG_EXPORT sgThreadYield(SGThread* thread);
 void SG_EXPORT sgThreadExit(SGThread* thread, SGint ret);
 
 SGint SG_EXPORT sgThreadJoin(SGThread* thread);
@@ -63,7 +66,7 @@ void SG_EXPORT sgMutexDestroy(SGMutex* mutex);
 void SG_EXPORT sgMutexLock(SGMutex* mutex);
 void SG_EXPORT sgMutexUnlock(SGMutex* mutex);
 
-SGSemaphore* SG_EXPORT sgSemaphoreCreate(SGint init, SGint max);
+SGSemaphore* SG_EXPORT sgSemaphoreCreate(SGuint init, SGuint max);
 void SG_EXPORT sgSemaphoreDestroy(SGSemaphore* sem);
 
 void SG_EXPORT sgSemaphoreWait(SGSemaphore* sem);
