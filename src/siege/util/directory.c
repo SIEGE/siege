@@ -16,10 +16,10 @@
 #include <siege/util/directory.h>
 
 #include <stdlib.h>
+#include <string.h>
 #ifdef __WIN32__
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
-    #include <string.h>
 #else
     #include <dirent.h>
 #endif
@@ -29,25 +29,25 @@ SGDirectory* SG_EXPORT sgDirectoryOpen(const char* fname)
     SGDirectory* dir = malloc(sizeof(SGDirectory));
 
     size_t len = strlen(fname);
-
-    dir->buflen = 0;
-    dir->buf = NULL;
-    dir->ibuf = NULL;
+	dir->name = malloc(len + 3);
+    memcpy(dir->name, fname, len + 1);
 
 #ifdef __WIN32__
-    dir->name = malloc(len + 3);
     memcpy(dir->name + len, "\\*", 3);
 
     dir->buflen = MAX_PATH + 1;
-    dir->buf = malloc(dir->buflen);
-    dir->buf[0] = 0;
-    dir->buf[dir->buflen - 1] = 0;
     dir->ibuf = malloc(sizeof(WIN32_FIND_DATA));
     dir->handle = NULL;
 #else
-    /* TODO */
+	dir->buflen = NAME_MAX + 1;
+	// that +1 is just in case, even though dirent has [1] at d_name
+	//dir->ibuf = malloc(sizeof(struct dirent) + NAME_MAX + 1);
+	dir->ibuf = NULL;
+	dir->handle = opendir(dir->name);
 #endif
-    memcpy(dir->name, fname, len);
+	dir->buf = malloc(dir->buflen);
+	dir->buf[0] = 0;
+	dir->buf[dir->buflen - 1] = 0;
 
     return dir;
 }
@@ -59,7 +59,7 @@ void SG_EXPORT sgDirectoryClose(SGDirectory* dir)
     if(dir->handle)
         FindClose(dir->handle);
 #else
-    /* TODO */
+    closedir(dir->handle);
 #endif
     free(dir->name);
     free(dir->buf);
@@ -89,7 +89,12 @@ char* SG_EXPORT sgDirectoryNext(SGDirectory* dir, char* buf, size_t len)
     strncpy(buf, data->cFileName, SG_MIN(MAX_PATH,len));
     buf[SG_MIN(MAX_PATH,len)-1] = 0;
 #else
-    /* TODO */
+    struct dirent* ent = readdir(dir->handle);
+    if(!ent)
+		return NULL;
+    // memcpy?
+    strncpy(buf, ent->d_name, SG_MIN(NAME_MAX+1,len));
+    buf[SG_MIN(NAME_MAX+1,len)-1] = 0;
 #endif
 
     return buf;
@@ -103,6 +108,6 @@ void SG_EXPORT sgDirectoryRewind(SGDirectory* dir)
         dir->handle = NULL;
     }
 #else
-    /* TODO */
+    rewinddir(dir->handle);
 #endif
 }
