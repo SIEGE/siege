@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -13,6 +13,8 @@
  */
 
 #define SG_BUILD_LIBRARY
+#include <siege/util/thread.h>
+
 #include <siege/audio/source.h>
 #include <siege/core/console.h>
 #include <siege/core/core.h>
@@ -34,11 +36,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-SGbool _sg_firstLoop = SG_TRUE;
-SGbool _sg_exitNow = SG_FALSE;
-SGint _sg_exitVal = 0;
+SGbool _sg_firstLoop;
+SGbool _sg_exitNow;
+SGint _sg_exitVal;
 SGbool _sg_hasInited = SG_FALSE;
 SGulong _sg_curTick = 0;
+
+SGThread* _sg_renderThread;
+static SGint SG_EXPORT _sgRenderThread(SGThread* thread, void* data)
+{
+    while(!_sg_exitNow)
+    {
+        sgDrawClear();
+        sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DRAW);
+        sgWindowSwapBuffers();
+    }
+    return 0;
+}
 
 SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args)
 {
@@ -66,6 +80,15 @@ SGbool SG_EXPORT sgLoadModule(const char* name)
 
 SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 {
+    _sg_firstLoop = SG_TRUE;
+    _sg_exitNow = SG_FALSE;
+    _sg_exitVal = 0;
+
+    if(flags & SG_INIT_RENDERTHREAD)
+        _sg_renderThread = sgThreadCreate(0, _sgRenderThread, NULL);
+    else
+        _sg_renderThread = NULL;
+
 	_sgEventInit();
 
     SGList* modList = sgModuleGetList();
@@ -130,6 +153,9 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 
 SGbool SG_EXPORT sgDeinit(void)
 {
+    sgStop(0);
+    sgThreadDestroy(_sg_renderThread);
+
 	_sg_hasInited = SG_FALSE;
 	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DEINIT);
 
@@ -171,8 +197,11 @@ SGint SG_EXPORT sgRun(void)
 		return _sg_exitVal;
 	while(sgLoop(&_sg_exitVal))
 	{
-		sgWindowSwapBuffers();
-		sgDrawClear();
+        if(!_sg_renderThread)
+        {
+            sgWindowSwapBuffers();
+            sgDrawClear();
+        }
 	}
 	return _sg_exitVal;
 }
@@ -184,6 +213,8 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 	if(_sg_firstLoop)
 	{
 		sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_START);
+		if(_sg_renderThread)
+            sgThreadStart(_sg_renderThread);
 		_sg_firstLoop = SG_FALSE;
 	}
 
@@ -204,15 +235,14 @@ SGbool SG_EXPORT sgLoop(SGint* code)
     sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICK);
     sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICKE);
 
-    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DRAW);
+    if(!_sg_renderThread)
+        sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DRAW);
 
 	if(code != NULL)
 		*code = _sg_exitVal;
 	if(_sg_exitNow)
 	{
 		sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_EXIT);
-		_sg_exitNow = SG_FALSE;
-
 		return SG_FALSE;
 	}
 	return SG_TRUE;
@@ -220,8 +250,10 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 
 void SG_EXPORT sgStop(SGint ret)
 {
-	_sg_exitNow = SG_TRUE;
-	_sg_exitVal = ret;
+    _sg_exitNow = SG_TRUE;
+    _sg_exitVal = ret;
+    if(_sg_renderThread)
+        sgThreadJoin(_sg_renderThread);
 }
 
 SGulong SG_EXPORT sgGetTick(void)

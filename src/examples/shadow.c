@@ -24,8 +24,48 @@ SGLight* createLight(SGVec2 pos, SGColor color, float radius, float angle, float
     return light;
 }
 
-SGbool overlayDBG = SG_FALSE;
+// SG_TRUE if they should be mulplicative, SG_FALSE for additive!
+SGbool multLights = SG_TRUE;
+SGbool sqrmult = SG_TRUE;
 
+SGbool overlayDBG = SG_FALSE;
+clock_t prev;
+clock_t curr;
+
+SGSprite* tile;
+SGSurface* tileset;
+
+void evTick(SGEntity* ent)
+{
+    sgLightSpaceUpdate(space);
+
+    lights[0]->pos.x = sgMouseGetPosX();
+    lights[0]->pos.y = sgMouseGetPosY();
+
+    curr = clock();
+    if(curr - prev >= 1000/60)
+        sgMSleep(curr - prev - 1000/60);
+    prev = curr;
+}
+void evDraw(SGEntity* ent)
+{
+    sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
+    sgSurfaceDraw(tileset);
+
+    size_t i;
+    for(i = 0; i < NSHAPES; i++)
+        sgShadowShapeDrawDBG(shapes[i], SG_TRUE);
+    for(i = 0; i < NSHAPES; i++)
+        sgShadowShapeDrawDBG(shapes[i], SG_FALSE);
+
+    sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
+    sgLightSpaceDraw(space, (multLights ? SG_SHADOW_DRAW_MUL : 0) | (sqrmult ? SG_SHADOW_DRAW_SQR : 0));
+
+    //sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
+
+    if(overlayDBG)
+        sgLightSpaceDrawDBG(space, 0);
+}
 void evKeyboardKeyPress(SGEntity* ent, SGenum key)
 {
     switch(key)
@@ -44,30 +84,24 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
     }
 }
 
-void sleep(clock_t ms)
-{
-    volatile clock_t end = clock() + ms * 1000 / CLOCKS_PER_SEC;
-    while(clock() < end)
-    {
-    }
-}
-
 int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");
     sgLoadModule("DevIL");
-    sgInit(640, 480, 32, 0);
+    sgInit(640, 480, 32, /*SG_INIT_RENDERTHREAD*/0);
     sgWindowSetTitlef("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%u to toggle lights", NLIGHTS);
 
     space = sgLightSpaceCreate();
     sgLightSpaceSetAmbience4f(space, 0.125, 0.0625, 0.0, 1.0);
 
     SGEntity* handler = sgEntityCreate(0.0);
+    handler->evTick = evTick;
+    handler->evDraw = evDraw;
     handler->evKeyboardKeyPress = evKeyboardKeyPress;
 
-    SGSprite* tile = sgSpriteCreateFile2f("data/sprites/FloorMetalPlate.png", 0.0, 0.0);
-    SGSurface* tileset = sgSurfaceCreate(640, 480, 32);
+    tile = sgSpriteCreateFile2f("data/sprites/FloorMetalPlate.png", 0.0, 0.0);
+    tileset = sgSurfaceCreate(640, 480, 32);
 
     size_t i, j;
 
@@ -99,42 +133,9 @@ int main(void)
     lights[2] = createLight((SGVec2){200, 400}, (SGColor){1.0 , 0.5, 0.0, 1.0}, 128, 0, 360);
     lights[3] = createLight((SGVec2){50 , 50 }, (SGColor){1.0 , 1.0, 1.0, 1.0}, 320, 45, 60);
 
-    // SG_TRUE if they should be mulplicative, SG_FALSE for additive!
-    SGbool multLights = SG_TRUE;
-    SGbool sqrmult = SG_TRUE;
+    prev = clock();
 
-    clock_t prev = clock();
-    clock_t curr;
-
-    while(sgLoop(NULL))
-    {
-        sgLightSpaceUpdate(space);
-        sgLightSpaceDraw(space, (multLights ? SG_SHADOW_DRAW_MUL : 0) | (sqrmult ? SG_SHADOW_DRAW_SQR : 0));
-
-        //sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
-
-        lights[0]->pos.x = sgMouseGetPosX();
-        lights[0]->pos.y = sgMouseGetPosY();
-
-        if(overlayDBG)
-            sgLightSpaceDrawDBG(space, 0);
-
-        sgWindowSwapBuffers();
-        sgDrawClear();
-
-        curr = clock();
-        if(curr - prev >= 1000/60)
-            sleep(curr - prev - 1000/60);
-        prev = curr;
-
-        sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
-        sgSurfaceDraw(tileset);
-
-        for(i = 0; i < NSHAPES; i++)
-            sgShadowShapeDrawDBG(shapes[i], SG_TRUE);
-        for(i = 0; i < NSHAPES; i++)
-            sgShadowShapeDrawDBG(shapes[i], SG_FALSE);
-    }
+    SGint ret = sgRun();
 
     sgSurfaceDestroy(tileset);
     sgSpriteDestroy(tile);
@@ -143,5 +144,5 @@ int main(void)
 
     sgDeinit();
 
-    return 0;
+    return ret;
 }

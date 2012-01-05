@@ -26,6 +26,8 @@ extern "C" {
 #define SG_THREAD_SUSPENDED 2
 #define SG_THREAD_EXITED 3
 
+struct SGThreadKey;
+
 struct SGThread;
 
 typedef SGint SG_EXPORT (SGThreadFunction)(struct SGThread* thread, void* data);
@@ -40,10 +42,17 @@ typedef struct SGThread
     void* sem;
     SGuint susp;
 } SGThread;
+
+typedef struct SGThreadKey
+{
+    void* handle;
+} SGThreadKey;
+
 typedef struct SGMutex
 {
     void* handle;
 } SGMutex;
+
 typedef struct SGSemaphore
 {
     void* handle;
@@ -56,23 +65,32 @@ void SG_EXPORT sgThreadStart(SGThread* thread);
 SGuint SG_EXPORT sgThreadResume(SGThread* thread); /* TODO: make suspend/resume work properly in POSIX systems */
 SGuint SG_EXPORT sgThreadSuspend(SGThread* thread);
 
-//void SG_EXPORT sgThreadYield(SGThread* thread);
-void SG_EXPORT sgThreadExit(SGThread* thread, SGint ret);
+SGThread* SG_EXPORT sgThreadGetCurrent(void);
+//void SG_EXPORT sgThreadYield(void);
+void SG_EXPORT sgThreadExit(SGint ret);
 
 SGint SG_EXPORT sgThreadJoin(SGThread* thread);
 void SG_EXPORT sgThreadKill(SGThread* thread, SGint ret);
 
-//SGenum SG_EXPORT sgThreadGetStatus(SGThread* thread);
+SGenum SG_EXPORT sgThreadGetStatus(SGThread* thread);
+
+SGThreadKey* SG_EXPORT sgThreadKeyCreate(void);
+void SG_EXPORT sgThreadKeyDestroy(SGThreadKey* key);
+
+void SG_EXPORT sgThreadKeySetVal(SGThreadKey* key, void* val);
+void* SG_EXPORT sgThreadKeyGetVal(SGThreadKey* key);
 
 SGMutex* SG_EXPORT sgMutexCreate(void);
 void SG_EXPORT sgMutexDestroy(SGMutex* mutex);
 
+SGbool SG_EXPORT sgMutexTryLock(SGMutex* mutex);
 void SG_EXPORT sgMutexLock(SGMutex* mutex);
 void SG_EXPORT sgMutexUnlock(SGMutex* mutex);
 
 SGSemaphore* SG_EXPORT sgSemaphoreCreate(SGuint init, SGuint max);
 void SG_EXPORT sgSemaphoreDestroy(SGSemaphore* sem);
 
+SGbool SG_EXPORT sgSemaphoreTryWait(SGSemaphore* sem);
 void SG_EXPORT sgSemaphoreWait(SGSemaphore* sem);
 void SG_EXPORT sgSemaphorePost(SGSemaphore* sem); // TODO: "Post" -> "Signal"?
 

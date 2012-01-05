@@ -13,6 +13,15 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+// used for printing
+unsigned int numdigits(unsigned int n, unsigned int base)
+{
+    unsigned int num = 1;
+    while((n /= base))
+        num++;
+    return num;
+}
+
 // the number of printers available
 #define NUMPRINTERS 2
 // the number of "clients" trying to print
@@ -51,11 +60,11 @@ SGint SG_EXPORT client(SGThread* thread, void* data)
 	unsigned int* i = data;
 	srand(*i);
 
-	mprintf("%u: Waiting for printer...\n", *i);
+	mprintf("%*u [%p]: Waiting for printer...\n", numdigits(NUMTHREADS, 10), *i, sgThreadGetCurrent());
 	sgSemaphoreWait(sem);
-	mprintf("%u: Printing...\n", *i);
+	mprintf("%*u [%p]: Printing...\n", numdigits(NUMTHREADS, 10), *i, sgThreadGetCurrent());
 	sgMSleep(1000 * (rand() % 10));
-	mprintf("%u: Done printing\n", *i);
+	mprintf("%*u [%p]: Done printing\n", numdigits(NUMTHREADS, 10), *i, sgThreadGetCurrent());
 	sgSemaphorePost(sem);
 	return 0;
 }

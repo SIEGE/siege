@@ -138,7 +138,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 3
-#define SG_VERSION_PATCH 6
+#define SG_VERSION_PATCH 8
 /**
  * \brief Version string
  *
@@ -447,6 +447,11 @@ typedef double SGdouble;
 #define SG_WINDOW_FULLSCREEN 0x01
 #define SG_WINDOW_RESIZABLE  0x02
 /// @}
+
+/**
+ * Init flags
+ */
+#define SG_INIT_RENDERTHREAD 0x04
 
 /**
  * \name Keyboard keys
