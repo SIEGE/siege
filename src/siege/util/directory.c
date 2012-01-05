@@ -37,13 +37,28 @@ SGDirectory* SG_EXPORT sgDirectoryOpen(const char* fname)
 
     dir->buflen = MAX_PATH + 1;
     dir->ibuf = malloc(sizeof(WIN32_FIND_DATA));
-    dir->handle = NULL;
+    dir->handle = FindFirstFile(dir->name, dir->ibuf);
+    if(!dir->handle)
+    {
+		free(dir->name);
+		free(dir->ibuf);
+		free(dir);
+		return NULL;
+	}
+	else
+		FindClose(dir->handle);
 #else
 	dir->buflen = NAME_MAX + 1;
 	// that +1 is just in case, even though dirent has [1] at d_name
 	//dir->ibuf = malloc(sizeof(struct dirent) + NAME_MAX + 1);
 	dir->ibuf = NULL;
 	dir->handle = opendir(dir->name);
+	if(!dir->handle)
+	{
+		free(dir->name);
+		free(dir);
+		return NULL;
+	}
 #endif
 	dir->buf = malloc(dir->buflen);
 	dir->buf[0] = 0;

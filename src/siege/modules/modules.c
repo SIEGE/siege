@@ -20,10 +20,11 @@
 #include <siege/modules/physics.h>
 #include <siege/modules/fonts.h>
 
+#include <siege/util/directory.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <dirent.h>
 
 static SGList* _sg_modList;
 
@@ -37,36 +38,36 @@ static size_t _sg_modPrefsMaxLen = 12;
 
 char* SG_EXPORT _sgModuleGetFile(const char* module)
 {
-	DIR* dir;
-	struct dirent* ent;
+	SGDirectory* dir;
+	char* dname;
 
 	char* buf = malloc(_sg_modDirsMaxLen + strlen("/") + _sg_modPrefsMaxLen + strlen(module) + strlen(".debug.") + 25);
 
     size_t i, j;
     for(i = 0; i < _sg_modNumDirs; i++)
     {
-        dir = opendir(_sg_modDirs[i]);
+		dir = sgDirectoryOpen(_sg_modDirs[i]);
         if(dir != NULL)
         {
-            while((ent = readdir(dir)))
+            while((dname = sgDirectoryNext(dir, NULL, 0)))
             {
                 for(j = 0; j < _sg_modNumPrefs; j++)
                 {
                     strcpy(buf, _sg_modPrefs[i]);
                     strcat(buf, module);
                     strcat(buf, ".");
-                    if(strstr(ent->d_name, buf) == ent->d_name)
+                    if(strstr(dname, buf) == dname)
                     {
                         strcpy(buf, _sg_modDirs[i]);
                         strcat(buf, "/");
-                        strcat(buf, ent->d_name);
+                        strcat(buf, dname);
                         goto found;
                     }
                 }
             }
         found:
-            closedir(dir);
-            if(ent) // if we've found something
+			sgDirectoryClose(dir);
+            if(dname) // if we've found something
                 return buf;
         }
     }
