@@ -38,15 +38,15 @@ static size_t _sg_modPrefsMaxLen = 12;
 
 char* SG_EXPORT _sgModuleGetFile(const char* module)
 {
-	SGDirectory* dir;
-	char* dname;
+    SGDirectory* dir;
+    char* dname;
 
-	char* buf = malloc(_sg_modDirsMaxLen + strlen("/") + _sg_modPrefsMaxLen + strlen(module) + strlen(".debug.") + 25);
+    char* buf = malloc(_sg_modDirsMaxLen + strlen("/") + _sg_modPrefsMaxLen + strlen(module) + strlen(".debug.") + 25);
 
     size_t i, j;
     for(i = 0; i < _sg_modNumDirs; i++)
     {
-		dir = sgDirectoryOpen(_sg_modDirs[i]);
+        dir = sgDirectoryOpen(_sg_modDirs[i]);
         if(dir != NULL)
         {
             while((dname = sgDirectoryNext(dir, NULL, 0)))
@@ -66,66 +66,66 @@ char* SG_EXPORT _sgModuleGetFile(const char* module)
                 }
             }
         found:
-			sgDirectoryClose(dir);
+            sgDirectoryClose(dir);
             if(dname) // if we've found something
                 return buf;
         }
     }
 
-	free(buf);
-	return NULL;
+    free(buf);
+    return NULL;
 }
 
 SGModule* SG_EXPORT sgModuleLoad(const char* name)
 {
-	char* fname = _sgModuleGetFile(name);
-	if(fname == NULL)
-	{
-		fprintf(stderr, "Warning: Unable to load module %s: Not found\n", name);
-		return NULL;
-	}
+    char* fname = _sgModuleGetFile(name);
+    if(fname == NULL)
+    {
+        fprintf(stderr, "Warning: Unable to load module %s: Not found\n", name);
+        return NULL;
+    }
 
-	SGModule* module = malloc(sizeof(SGModule));
-	module->name = malloc(strlen(name) + 1);
-	strcpy(module->name, name);
-	module->lib = sgLibraryLoad(fname);
-	//fprintf(stderr, "Loading %s: %s\n", name, fname);
-	if(module->lib == NULL)
-		fprintf(stderr, "Warning: Unable to load module %s: Unknown error\n", name);
-	free(fname);
+    SGModule* module = malloc(sizeof(SGModule));
+    module->name = malloc(strlen(name) + 1);
+    strcpy(module->name, name);
+    module->lib = sgLibraryLoad(fname);
+    //fprintf(stderr, "Loading %s: %s\n", name, fname);
+    if(module->lib == NULL)
+        fprintf(stderr, "Warning: Unable to load module %s: Unknown error\n", name);
+    free(fname);
 
-	module->sgmModuleInit = (SGMModuleInitFunction*)sgGetProcAddress(module->lib, "sgmModuleInit");
-	module->sgmModuleExit = (SGMModuleExitFunction*)sgGetProcAddress(module->lib, "sgmModuleExit");
-	module->sgmModuleTick = (SGMModuleTickFunction*)sgGetProcAddress(module->lib, "sgmModuleTick");
-	module->sgmModuleMatch = (SGMModuleMatchFunction*)sgGetProcAddress(module->lib, "sgmModuleMatch");
+    module->sgmModuleInit = (SGMModuleInitFunction*)sgGetProcAddress(module->lib, "sgmModuleInit");
+    module->sgmModuleExit = (SGMModuleExitFunction*)sgGetProcAddress(module->lib, "sgmModuleExit");
+    module->sgmModuleTick = (SGMModuleTickFunction*)sgGetProcAddress(module->lib, "sgmModuleTick");
+    module->sgmModuleMatch = (SGMModuleMatchFunction*)sgGetProcAddress(module->lib, "sgmModuleMatch");
 
-	_sgModuleLoadAudio(module->lib);
-	_sgModuleLoadWindow(module->lib);
-	_sgModuleLoadGraphics(module->lib);
-	_sgModuleLoadInput(module->lib);
-	_sgModuleLoadPhysics(module->lib);
-	_sgModuleLoadFonts(module->lib);
+    _sgModuleLoadAudio(module->lib);
+    _sgModuleLoadWindow(module->lib);
+    _sgModuleLoadGraphics(module->lib);
+    _sgModuleLoadInput(module->lib);
+    _sgModuleLoadPhysics(module->lib);
+    _sgModuleLoadFonts(module->lib);
 
-	if(module->sgmModuleInit != NULL)
-		module->sgmModuleInit(&module->minfo);
+    if(module->sgmModuleInit != NULL)
+        module->sgmModuleInit(&module->minfo);
 
     if(!_sg_modList)
         _sg_modList = sgListCreate();
-	module->node = sgListAppend(_sg_modList, module);
-	return module;
+    module->node = sgListAppend(_sg_modList, module);
+    return module;
 }
 
 void SG_EXPORT sgModuleUnload(SGModule* module)
 {
-	if(module == NULL)
-		return;
+    if(module == NULL)
+        return;
 
-	if(module->sgmModuleExit != NULL)
-		module->sgmModuleExit(module->minfo);
+    if(module->sgmModuleExit != NULL)
+        module->sgmModuleExit(module->minfo);
 
-	sgLibraryUnload(module->lib);
+    sgLibraryUnload(module->lib);
 
-	sgListRemoveNode(_sg_modList, module->node);
+    sgListRemoveNode(_sg_modList, module->node);
     if(!_sg_modList->first)
     {
         sgListDestroy(_sg_modList);
@@ -133,7 +133,7 @@ void SG_EXPORT sgModuleUnload(SGModule* module)
     }
 
     free(module->name);
-	free(module);
+    free(module);
 }
 
 void SG_EXPORT sgModuleSetLoadDirsv(size_t ndirs, va_list args)
