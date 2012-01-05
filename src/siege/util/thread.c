@@ -70,16 +70,18 @@ static void* _sgThreadEntry(void* param)
 static void _sgThreadInit(void)
 {
 #ifdef __WIN32__
-    static DWORD tls;
+    static DWORD key;
     HANDLE handle = GetCurrentThread();
     _sg_thrMain.handle = handle;
-    tls = TlsAlloc();
-    _sg_thrKey.handle = &tls;
+    key = TlsAlloc();
+    _sg_thrKey.handle = &key;
 #else
     static pthread_t handle;
+    static pthread_key_t key;
     handle = pthread_self();
     _sg_thrMain.handle = &handle;
-    /* TODO */
+    pthread_key_create(&key, NULL);
+    _sg_thrKey.handle = &key;
 #endif
     sgThreadKeySetVal(&_sg_thrKey, &_sg_thrMain);
 }
@@ -256,7 +258,13 @@ SGThreadKey* SG_EXPORT sgThreadKeyCreate(void)
         return NULL;
     }
 #else
-    /* TODO */
+	key->handle = malloc(sizeof(pthread_key_t));
+	if(pthread_key_create(key->handle, NULL))
+	{
+		free(key->handle);
+		free(key);
+		return NULL;
+	}
 #endif
 
     return key;
@@ -268,8 +276,9 @@ void SG_EXPORT sgThreadKeyDestroy(SGThreadKey* key)
 #ifdef __WIN32__
     TlsFree(*(DWORD*)key->handle);
 #else
-    /* TODO */
+	pthread_key_delete(*(pthread_key_t*)key->handle);
 #endif
+	free(key->handle);
     free(key);
 }
 
@@ -278,7 +287,7 @@ void SG_EXPORT sgThreadKeySetVal(SGThreadKey* key, void* val)
 #ifdef __WIN32__
     TlsSetValue(*(DWORD*)key->handle, val);
 #else
-    /* TODO */
+    pthread_setspecific(*(pthread_key_t*)key->handle, val);
 #endif
 }
 void* SG_EXPORT sgThreadKeyGetVal(SGThreadKey* key)
@@ -286,7 +295,7 @@ void* SG_EXPORT sgThreadKeyGetVal(SGThreadKey* key)
 #ifdef __WIN32__
     return TlsGetValue(*(DWORD*)key->handle);
 #else
-    /* TODO */
+    return pthread_getspecific(*(pthread_key_t*)key->handle);
 #endif
 }
 
