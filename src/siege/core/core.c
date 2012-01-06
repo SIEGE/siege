@@ -36,14 +36,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-SGbool _sg_firstLoop;
-SGbool _sg_exitNow;
-SGint _sg_exitVal;
-SGbool _sg_hasInited = SG_FALSE;
-SGulong _sg_curTick = 0;
+static SGbool _sg_firstLoop;
+static SGbool _sg_exitNow;
+static SGint _sg_exitVal;
+static SGbool _sg_hasInited = SG_FALSE;
+static SGulong _sg_curTick = 0;
 
-SGThread* _sg_renderThread;
-static SGint SG_EXPORT _sgRenderThread(SGThread* thread, void* data)
+static SGThread* _sg_renderThread;
+static SGint SG_EXPORT _sgRenderThread(void* data)
 {
     while(!_sg_exitNow)
     {

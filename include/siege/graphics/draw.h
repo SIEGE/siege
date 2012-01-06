@@ -30,19 +30,6 @@ extern "C"
 {
 #endif // __cplusplus
 
-#ifdef SG_BUILD_LIBRARY
-SGenum _sg_drawType;
-SGTexture* _sg_drawTexture;
-float _sg_drawCurPoint[3];
-float _sg_drawCurTexCoord[2];
-float _sg_drawCurColor[4];
-
-float* _sg_drawPoints;
-float* _sg_drawTexCoords;
-float* _sg_drawColors;
-SGuint _sg_drawNumPoints;
-#endif // SG_BUILD_LIBRARY
-
 SGbool SG_EXPORT _sgDrawInit(void);
 SGbool SG_EXPORT _sgDrawDeinit(void);
 
@@ -91,6 +78,12 @@ void SG_EXPORT sgDrawColor4ubv(const SGubyte* rgba);
 void SG_EXPORT sgDrawColor3ubv(const SGubyte* rgb);
 void SG_EXPORT sgDrawColor2ubv(const SGubyte* ga);
 void SG_EXPORT sgDrawColor1ubv(const SGubyte* g);
+
+void SG_EXPORT sgDrawGetColor4f(float* r, float* g, float* b, float* a);
+void SG_EXPORT sgDrawGetColor4ub(SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a);
+void SG_EXPORT sgDrawGetColor4fv(float* rgba);
+void SG_EXPORT sgDrawGetColor4ubv(SGubyte* rgba);
+
 /**
  * \brief Set the texture coordinate of the following vertex
  *

@@ -14,12 +14,27 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/util/thread.h>
+#include <siege/util/threadkey.h>
 
 #include <stdlib.h>
 
 static SGbool _sg_thrInited = SG_FALSE;
 static SGThread _sg_thrMain = { NULL, NULL, NULL, SG_THREAD_RUNNING, 0, NULL, 0 };
 static SGThreadKey _sg_thrKey = { NULL };
+
+static void _sgThreadAtExit(void)
+{
+    SGThread* thread = sgThreadGetCurrent();
+    if(!thread)
+        return;
+
+    size_t i;
+    for(i = thread->numdtors; i > 0; i--)
+        thread->dtors[i-1]();
+    thread->numdtors = 0;
+    free(thread->dtors);
+    thread->dtors = NULL;
+}
 
 #ifdef __WIN32__
 #define WIN32_LEAN_AND_MEAN
@@ -28,13 +43,12 @@ static DWORD WINAPI _sgThreadEntry(LPVOID param)
 {
     sgThreadKeySetVal(&_sg_thrKey, param);
     SGThread* thread = param;
-    SGint ret = thread->func(thread, thread->data);
+    SGint ret = thread->func(thread->data);
     thread->status = SG_THREAD_EXITED;
     return ret;
 }
 #else
 #include <sys/types.h>
-#include <semaphore.h>
 #include <pthread.h>
 #include <signal.h>
 //#include <sched.h>
@@ -61,7 +75,8 @@ static void* _sgThreadEntry(void* param)
     sgThreadKeySetVal(&_sg_thrKey, param);
 	SGThread* thread = param;
 	sem_wait(thread->sem);
-	thread->ret = thread->func(thread, thread->data);
+	thread->ret = thread->func(thread->data);
+    _sgThreadAtExit();
 	thread->status = SG_THREAD_EXITED;
 	return &thread->ret;
 }
@@ -84,6 +99,7 @@ static void _sgThreadInit(void)
     _sg_thrKey.handle = &key;
 #endif
     sgThreadKeySetVal(&_sg_thrKey, &_sg_thrMain);
+    atexit(_sgThreadAtExit);
 }
 
 SGThread* SG_EXPORT sgThreadCreate(size_t ssize, SGThreadFunction* func, void* data)
@@ -101,6 +117,8 @@ SGThread* SG_EXPORT sgThreadCreate(size_t ssize, SGThreadFunction* func, void* d
     thread->func = func;
     thread->data = data;
     thread->status = SG_THREAD_INITIAL;
+    thread->numdtors = 0;
+    thread->dtors = NULL;
 
     thread->ret = 0;
     thread->sem = NULL;
@@ -180,9 +198,13 @@ SGuint SG_EXPORT sgThreadSuspend(SGThread* thread)
 	return ret;
 }
 
-SGThread* SG_EXPORT sgThreadGetCurrent(void)
+void SG_EXPORT sgThreadAtExit(SGThreadDestroy* dtor)
 {
-    return sgThreadKeyGetVal(&_sg_thrKey);
+    SGThread* thread = sgThreadGetCurrent();
+    if(!thread)
+        return;
+    thread->dtors = realloc(thread->dtors, (thread->numdtors + 1) * sizeof(SGThreadDestroy*));
+    thread->dtors[thread->numdtors++] = dtor;
 }
 /*void SG_EXPORT sgThreadYield(void)
 {
@@ -195,6 +217,7 @@ SGThread* SG_EXPORT sgThreadGetCurrent(void)
 void SG_EXPORT sgThreadExit(SGint ret)
 {
     SGThread* thread = sgThreadGetCurrent();
+    _sgThreadAtExit();
     if(thread)
         thread->status = SG_THREAD_EXITED;
 #ifdef __WIN32__
@@ -208,6 +231,16 @@ void SG_EXPORT sgThreadExit(SGint ret)
     else
         pthread_exit(NULL);
 #endif
+}
+SGThread* SG_EXPORT sgThreadGetCurrent(void)
+{
+    if(!_sg_thrInited)
+    {
+        _sgThreadInit();
+        _sg_thrInited = SG_TRUE;
+    }
+
+    return sgThreadKeyGetVal(&_sg_thrKey);
 }
 
 SGint SG_EXPORT sgThreadJoin(SGThread* thread)
@@ -242,165 +275,4 @@ void SG_EXPORT sgThreadKill(SGThread* thread, SGint ret)
 SGenum SG_EXPORT sgThreadGetStatus(SGThread* thread)
 {
     return thread->status;
-}
-
-SGThreadKey* SG_EXPORT sgThreadKeyCreate(void)
-{
-    SGThreadKey* key = malloc(sizeof(SGThreadKey));
-
-#ifdef __WIN32__
-    key->handle = malloc(sizeof(DWORD));
-    *(DWORD*)key->handle = TlsAlloc();
-    if(*(DWORD*)key->handle == TLS_OUT_OF_INDEXES)
-    {
-        free(key->handle);
-        free(key);
-        return NULL;
-    }
-#else
-	key->handle = malloc(sizeof(pthread_key_t));
-	if(pthread_key_create(key->handle, NULL))
-	{
-		free(key->handle);
-		free(key);
-		return NULL;
-	}
-#endif
-
-    return key;
-}
-void SG_EXPORT sgThreadKeyDestroy(SGThreadKey* key)
-{
-    if(!key)
-        return;
-#ifdef __WIN32__
-    TlsFree(*(DWORD*)key->handle);
-#else
-	pthread_key_delete(*(pthread_key_t*)key->handle);
-#endif
-	free(key->handle);
-    free(key);
-}
-
-void SG_EXPORT sgThreadKeySetVal(SGThreadKey* key, void* val)
-{
-#ifdef __WIN32__
-    TlsSetValue(*(DWORD*)key->handle, val);
-#else
-    pthread_setspecific(*(pthread_key_t*)key->handle, val);
-#endif
-}
-void* SG_EXPORT sgThreadKeyGetVal(SGThreadKey* key)
-{
-#ifdef __WIN32__
-    return TlsGetValue(*(DWORD*)key->handle);
-#else
-    return pthread_getspecific(*(pthread_key_t*)key->handle);
-#endif
-}
-
-SGMutex* SG_EXPORT sgMutexCreate(void)
-{
-    SGMutex* mutex = malloc(sizeof(SGMutex));
-    if(!mutex)
-        return NULL;
-
-#ifdef __WIN32__
-    mutex->handle = CreateMutex(NULL, FALSE, NULL);
-#else
-    mutex->handle = malloc(sizeof(pthread_mutex_t));
-    pthread_mutex_init(mutex->handle, NULL);
-#endif
-
-    return mutex;
-}
-void SG_EXPORT sgMutexDestroy(SGMutex* mutex)
-{
-    if(!mutex)
-        return;
-#ifdef __WIN32__
-    CloseHandle(mutex->handle);
-#else
-    pthread_mutex_destroy(mutex->handle);
-    free(mutex->handle);
-#endif
-    free(mutex);
-}
-
-SGbool SG_EXPORT sgMutexTryLock(SGMutex* mutex)
-{
-#ifdef __WIN32__
-    return !WaitForSingleObject(mutex->handle, 0);
-#else
-    return !pthread_mutex_trylock(mutex->handle);
-#endif
-}
-void SG_EXPORT sgMutexLock(SGMutex* mutex)
-{
-#ifdef __WIN32__
-    WaitForSingleObject(mutex->handle, INFINITE);
-#else
-    pthread_mutex_lock(mutex->handle);
-#endif
-}
-void SG_EXPORT sgMutexUnlock(SGMutex* mutex)
-{
-#ifdef __WIN32__
-    ReleaseMutex(mutex->handle);
-#else
-    pthread_mutex_unlock(mutex->handle);
-#endif
-}
-
-SGSemaphore* SG_EXPORT sgSemaphoreCreate(SGuint init, SGuint max)
-{
-    SGSemaphore* sem = malloc(sizeof(SGSemaphore));
-    if(!sem)
-        return NULL;
-
-#ifdef __WIN32__
-    sem->handle = CreateSemaphore(NULL, init, max, NULL);
-#else
-    sem->handle = malloc(sizeof(sem_t));
-    sem_init(sem->handle, 0, init);
-#endif
-
-    return sem;
-}
-void SG_EXPORT sgSemaphoreDestroy(SGSemaphore* sem)
-{
-    if(!sem)
-        return;
-#ifdef __WIN32__
-    CloseHandle(sem->handle);
-#else
-    sem_destroy(sem->handle);
-    free(sem->handle);
-#endif
-    free(sem);
-}
-
-SGbool SG_EXPORT sgSemaphoreTryWait(SGSemaphore* sem)
-{
-#ifdef __WIN32__
-    return !WaitForSingleObject(sem->handle, 0);
-#else
-    return !sem_trywait(sem->handle);
-#endif
-}
-void SG_EXPORT sgSemaphoreWait(SGSemaphore* sem)
-{
-#ifdef __WIN32__
-    WaitForSingleObject(sem->handle, INFINITE);
-#else
-    sem_wait(sem->handle);
-#endif
-}
-void SG_EXPORT sgSemaphorePost(SGSemaphore* sem)
-{
-#ifdef __WIN32__
-    ReleaseSemaphore(sem->handle, 1, NULL);
-#else
-    sem_post(sem->handle);
-#endif
 }

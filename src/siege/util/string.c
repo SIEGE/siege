@@ -14,6 +14,8 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/util/string.h>
+#include <siege/util/thread.h>
+#include <siege/util/mutex.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -41,6 +43,59 @@ char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what)
     *len += wlen;
     (*str)[*len] = 0;
     return *str;
+}
+
+static SGMutex* _sg_strMutex;
+
+static void SG_EXPORT _sgStringDeinit(void)
+{
+    sgMutexDestroy(_sg_strMutex);
+}
+/*
+ * Will have to solve the race condition regarding two sgPrintf's
+ * getting called for the first time, at the same time...
+ *
+ * Maybe a global mutex for just this purpose?
+ */
+static void SG_EXPORT _sgStringInit(void)
+{
+    sgThreadAtExit(_sgStringDeinit);
+    _sg_strMutex = sgMutexCreate();
+}
+
+size_t SG_EXPORT sgPrintfW(const wchar_t* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    size_t ret = sgPrintfvW(format, args);
+    va_end(args);
+    return ret;
+}
+size_t SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args)
+{
+    if(!_sg_strMutex)
+        _sgStringInit();
+    sgMutexLock(_sg_strMutex);
+    size_t ret = vwprintf(format, args);
+    sgMutexUnlock(_sg_strMutex);
+    return ret;
+}
+size_t SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    size_t ret = sgPrintfvW(format, args);
+    va_end(args);
+    return ret;
+}
+size_t SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args)
+{
+    if(!_sg_strMutex)
+        _sgStringInit();
+    sgMutexLock(_sg_strMutex);
+    size_t ret = vprintf(format, args);
+    sgMutexUnlock(_sg_strMutex);
+    return ret;
 }
 
 size_t SG_EXPORT sgSPrintfW(wchar_t* buf, size_t buflen, const wchar_t* format, ...)

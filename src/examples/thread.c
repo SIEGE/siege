@@ -55,7 +55,7 @@ int mprintf(const char* format, ...)
  * 0 and 9 seconds.
  * It then releases the printer for the next thread (client) to use.
  */
-SGint SG_EXPORT client(SGThread* thread, void* data)
+SGint SG_EXPORT client(void* data)
 {
 	unsigned int* i = data;
 	srand(*i);

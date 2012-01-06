@@ -27,6 +27,14 @@
 
 char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what);
 
+// wprintf, locked with a mutex for thread-safety
+size_t SG_EXPORT sgPrintfW(const wchar_t* format, ...);
+size_t SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args);
+
+// printf, locked with a mutex for thread-safety
+size_t SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...);
+size_t SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args);
+
 size_t SG_EXPORT sgSPrintfW(wchar_t* buf, size_t buflen, const wchar_t* format, ...);
 size_t SG_EXPORT sgSPrintfvW(wchar_t* buf, size_t buflen, const wchar_t* format, va_list args);
 

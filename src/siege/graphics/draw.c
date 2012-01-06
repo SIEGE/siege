@@ -16,42 +16,90 @@
 #include <siege/graphics/draw.h>
 #include <siege/core/window.h>
 #include <siege/modules/graphics.h>
+#include <siege/util/thread.h>
+#include <siege/util/threadkey.h>
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 
+typedef struct SGDrawContext
+{
+    SGenum type;
+    SGTexture* texture;
+    float point[3];
+    float texCoord[2];
+    float color[4];
+
+    float* points;
+    float* texCoords;
+    float* colors;
+    size_t numPoints;
+} SGDrawContext;
+
+static SGThreadKey* _sg_drawKey;
+
+static void SG_EXPORT _sgDrawThreadDeinit(void)
+{
+    SGDrawContext* ctx = sgThreadKeyGetVal(_sg_drawKey);
+    if(!ctx)
+        return;
+    free(ctx->points);
+    free(ctx->texCoords);
+    free(ctx->colors);
+    free(ctx);
+}
+static void SG_EXPORT _sgDrawThreadInit(void)
+{
+    sgThreadAtExit(_sgDrawThreadDeinit);
+
+    SGDrawContext* ctx = malloc(sizeof(SGDrawContext));
+    sgThreadKeySetVal(_sg_drawKey, ctx);
+
+    ctx->texCoord[0] = 0.0f;
+    ctx->texCoord[1] = 0.0f;
+    ctx->color[0] = 1.0f;
+    ctx->color[1] = 1.0f;
+    ctx->color[2] = 1.0f;
+    ctx->color[3] = 1.0f;
+
+    ctx->points = NULL;
+    ctx->texCoords = NULL;
+    ctx->colors = NULL;
+    ctx->numPoints = 0;
+}
+static SGDrawContext* SG_EXPORT _sgDrawGetContext(void)
+{
+    SGDrawContext* ctx = sgThreadKeyGetVal(_sg_drawKey);
+    if(!ctx)
+        _sgDrawThreadInit();
+    ctx = sgThreadKeyGetVal(_sg_drawKey);
+    return ctx;
+}
+
 SGbool SG_EXPORT _sgDrawInit(void)
 {
-	_sg_drawCurTexCoord[0] = 0.0f;
-	_sg_drawCurTexCoord[1] = 0.0f;
-	_sg_drawCurColor[0] = 1.0f;
-	_sg_drawCurColor[1] = 1.0f;
-	_sg_drawCurColor[2] = 1.0f;
-	_sg_drawCurColor[3] = 1.0f;
-
-	_sg_drawPoints = NULL;
-	_sg_drawTexCoords = NULL;
-	_sg_drawColors = NULL;
-	_sg_drawNumPoints = 0;
+    _sg_drawKey = sgThreadKeyCreate();
 	return SG_TRUE;
 }
 SGbool SG_EXPORT _sgDrawDeinit(void)
 {
-	free(_sg_drawPoints);
-	free(_sg_drawTexCoords);
-	free(_sg_drawColors);
-	return SG_TRUE;
+    sgThreadKeyDestroy(_sg_drawKey);
+    return SG_TRUE;
 }
 
 void SG_EXPORT sgDrawBeginT(SGenum type, SGTexture* texture)
 {
-	if(_sg_drawNumPoints != 0)
-		fprintf(stderr, "sgDrawBegin called without sgDrawEnd.");
+    SGDrawContext* ctx = _sgDrawGetContext();
+    if(ctx->numPoints)
+    {
+        fprintf(stderr, "Warning: sgDrawBegin called without sgDrawEnd\n");
+        return;
+    }
 
-	_sg_drawType = type;
-	_sg_drawTexture = texture;
+    ctx->type = type;
+    ctx->texture = texture;
 }
 void SG_EXPORT sgDrawBegin(SGenum type)
 {
@@ -59,22 +107,22 @@ void SG_EXPORT sgDrawBegin(SGenum type)
 }
 void SG_EXPORT sgDrawEnd(void)
 {
-	void* texture = NULL;
-	if(_sg_drawTexture != NULL)
-		texture = _sg_drawTexture->handle;
+    SGDrawContext* ctx = _sgDrawGetContext();
+    void* texture = ctx->texture ? ctx->texture->handle : NULL;
 
 	if(psgmGraphicsDrawPrimitive != NULL)
-		psgmGraphicsDrawPrimitive(_sg_gfxHandle, texture, _sg_drawType, _sg_drawNumPoints, _sg_drawPoints, _sg_drawTexCoords, _sg_drawColors);
-	_sg_drawNumPoints = 0;
+		psgmGraphicsDrawPrimitive(_sg_gfxHandle, texture, ctx->type, ctx->numPoints, ctx->points, ctx->texCoords, ctx->colors);
+	ctx->numPoints = 0;
 }
 void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
 {
-	_sg_drawCurColor[0] = r;
-	_sg_drawCurColor[1] = g;
-	_sg_drawCurColor[2] = b;
-	_sg_drawCurColor[3] = a;
+    SGDrawContext* ctx = _sgDrawGetContext();
+    ctx->color[0] = r;
+    ctx->color[1] = g;
+    ctx->color[2] = b;
+    ctx->color[3] = a;
 	if(psgmGraphicsDrawSetColor != NULL)
-		psgmGraphicsDrawSetColor(_sg_gfxHandle, _sg_drawCurColor);
+		psgmGraphicsDrawSetColor(_sg_gfxHandle, ctx->color);
 }
 void SG_EXPORT sgDrawColor3f(float r, float g, float b)
 {
@@ -136,10 +184,38 @@ void SG_EXPORT sgDrawColor1ubv(const SGubyte* g)
 {
 	sgDrawColor1ub(g[0]);
 }
+
+void SG_EXPORT sgDrawGetColor4f(float* r, float* g, float* b, float* a)
+{
+    SGDrawContext* ctx = _sgDrawGetContext();
+    if(r) *r = ctx->color[0];
+    if(g) *g = ctx->color[1];
+    if(b) *b = ctx->color[2];
+    if(a) *a = ctx->color[3];
+}
+void SG_EXPORT sgDrawGetColor4ub(SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a)
+{
+    float fr, fg, fb, fa;
+    sgDrawGetColor4f(&fr, &fg, &fb, &fa);
+    if(r) *r = (SGubyte)fr * 255.0;
+    if(g) *g = (SGubyte)fg * 255.0;
+    if(b) *b = (SGubyte)fb * 255.0;
+    if(a) *a = (SGubyte)fa * 255.0;
+}
+void SG_EXPORT sgDrawGetColor4fv(float* rgba)
+{
+    sgDrawGetColor4f(&rgba[0], &rgba[1], &rgba[2], &rgba[3]);
+}
+void SG_EXPORT sgDrawGetColor4ubv(SGubyte* rgba)
+{
+    sgDrawGetColor4ub(&rgba[0], &rgba[1], &rgba[2], &rgba[3]);
+}
+
 void SG_EXPORT sgDrawTexCoord2f(float s, float t)
 {
-	_sg_drawCurTexCoord[0] = s;
-	_sg_drawCurTexCoord[1] = t;
+    SGDrawContext* ctx = _sgDrawGetContext();
+    ctx->texCoord[0] = s;
+    ctx->texCoord[1] = t;
 }
 void SG_EXPORT sgDrawTexCoord2fv(const float* st)
 {
@@ -147,17 +223,18 @@ void SG_EXPORT sgDrawTexCoord2fv(const float* st)
 }
 void SG_EXPORT sgDrawVertex3f(float x, float y, float z)
 {
-	_sg_drawCurPoint[0] = x;
-	_sg_drawCurPoint[1] = y;
-	_sg_drawCurPoint[2] = z;
+    SGDrawContext* ctx = _sgDrawGetContext();
+    ctx->point[0] = x;
+    ctx->point[1] = y;
+    ctx->point[2] = z;
 
-	_sg_drawNumPoints++;
-	_sg_drawPoints = realloc(_sg_drawPoints, _sg_drawNumPoints * sizeof(_sg_drawCurPoint));
-	_sg_drawTexCoords = realloc(_sg_drawTexCoords, _sg_drawNumPoints * sizeof(_sg_drawCurTexCoord));
-	_sg_drawColors = realloc(_sg_drawColors, _sg_drawNumPoints * sizeof(_sg_drawCurColor));
-	memcpy(&_sg_drawPoints[(_sg_drawNumPoints - 1) * 3], _sg_drawCurPoint, sizeof(_sg_drawCurPoint));
-	memcpy(&_sg_drawTexCoords[(_sg_drawNumPoints - 1) * 2], _sg_drawCurTexCoord, sizeof(_sg_drawCurTexCoord));
-	memcpy(&_sg_drawColors[(_sg_drawNumPoints - 1) * 4], _sg_drawCurColor, sizeof(_sg_drawCurColor));
+    ctx->numPoints++;
+	ctx->points = realloc(ctx->points, ctx->numPoints * sizeof(ctx->point));
+	ctx->texCoords = realloc(ctx->texCoords, ctx->numPoints * sizeof(ctx->texCoord));
+	ctx->colors = realloc(ctx->colors, ctx->numPoints * sizeof(ctx->color));
+	memcpy(&ctx->points[(ctx->numPoints - 1) * 3], ctx->point, sizeof(ctx->point));
+	memcpy(&ctx->texCoords[(ctx->numPoints - 1) * 2], ctx->texCoord, sizeof(ctx->texCoord));
+	memcpy(&ctx->colors[(ctx->numPoints - 1) * 4], ctx->color, sizeof(ctx->color));
 }
 void SG_EXPORT sgDrawVertex2f(float x, float y)
 {

@@ -28,33 +28,21 @@ extern "C" {
 
 struct SGThread;
 
-typedef SGint SG_EXPORT (SGThreadFunction)(struct SGThread* thread, void* data);
+typedef void SG_EXPORT (SGThreadDestroy)(void);
+typedef SGint SG_EXPORT (SGThreadFunction)(void* data);
 typedef struct SGThread
 {
     void* handle;
     SGThreadFunction* func;
     void* data;
     SGenum status; /* TODO: make status work properly */
+    size_t numdtors;
+    SGThreadDestroy** dtors;
     // these are used for pthreads
     SGint ret;
     void* sem;
     SGuint susp;
 } SGThread;
-
-typedef struct SGThreadKey
-{
-    void* handle;
-} SGThreadKey;
-
-typedef struct SGMutex
-{
-    void* handle;
-} SGMutex;
-
-typedef struct SGSemaphore
-{
-    void* handle;
-} SGSemaphore;
 
 SGThread* SG_EXPORT sgThreadCreate(size_t ssize, SGThreadFunction* func, void* data);
 void SG_EXPORT sgThreadDestroy(SGThread* thread);
@@ -63,34 +51,15 @@ void SG_EXPORT sgThreadStart(SGThread* thread);
 SGuint SG_EXPORT sgThreadResume(SGThread* thread); /* TODO: make suspend/resume work properly in POSIX systems */
 SGuint SG_EXPORT sgThreadSuspend(SGThread* thread);
 
-SGThread* SG_EXPORT sgThreadGetCurrent(void);
+void SG_EXPORT sgThreadAtExit(SGThreadDestroy* dtor);
 //void SG_EXPORT sgThreadYield(void);
 void SG_EXPORT sgThreadExit(SGint ret);
+SGThread* SG_EXPORT sgThreadGetCurrent(void);
 
 SGint SG_EXPORT sgThreadJoin(SGThread* thread);
 void SG_EXPORT sgThreadKill(SGThread* thread, SGint ret);
 
 SGenum SG_EXPORT sgThreadGetStatus(SGThread* thread);
-
-SGThreadKey* SG_EXPORT sgThreadKeyCreate(void);
-void SG_EXPORT sgThreadKeyDestroy(SGThreadKey* key);
-
-void SG_EXPORT sgThreadKeySetVal(SGThreadKey* key, void* val);
-void* SG_EXPORT sgThreadKeyGetVal(SGThreadKey* key);
-
-SGMutex* SG_EXPORT sgMutexCreate(void);
-void SG_EXPORT sgMutexDestroy(SGMutex* mutex);
-
-SGbool SG_EXPORT sgMutexTryLock(SGMutex* mutex);
-void SG_EXPORT sgMutexLock(SGMutex* mutex);
-void SG_EXPORT sgMutexUnlock(SGMutex* mutex);
-
-SGSemaphore* SG_EXPORT sgSemaphoreCreate(SGuint init, SGuint max);
-void SG_EXPORT sgSemaphoreDestroy(SGSemaphore* sem);
-
-SGbool SG_EXPORT sgSemaphoreTryWait(SGSemaphore* sem);
-void SG_EXPORT sgSemaphoreWait(SGSemaphore* sem);
-void SG_EXPORT sgSemaphorePost(SGSemaphore* sem); // TODO: "Post" -> "Signal"?
 
 #ifdef __cplusplus
 }

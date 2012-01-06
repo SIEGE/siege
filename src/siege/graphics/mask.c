@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -98,10 +98,13 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 			fprintf(stderr, "Unsupported BPP '%d'\n", bpp);
 	}
 
-	r = (SGubyte)(_sg_drawCurColor[0] * ((1 << rbits) - 1));
-	g = (SGubyte)(_sg_drawCurColor[1] * ((1 << gbits) - 1));
-	b = (SGubyte)(_sg_drawCurColor[2] * ((1 << bbits) - 1));
-	a = (SGubyte)(_sg_drawCurColor[3] * ((1 << abits) - 1));
+    float col[4];
+    sgDrawGetColor4fv(col);
+
+    r = (SGubyte)(col[0] * ((1 << rbits) - 1));
+    g = (SGubyte)(col[1] * ((1 << gbits) - 1));
+    b = (SGubyte)(col[2] * ((1 << bbits) - 1));
+    a = (SGubyte)(col[3] * ((1 << abits) - 1));
 
 	SGuint ui = a
 			|	(b << abits)
