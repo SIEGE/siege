@@ -202,11 +202,7 @@ char* SG_EXPORT sgLineEnd(const char* text)
 {
 	if(text == NULL)
 		return NULL;
-
-	char* ret = strpbrk(text, "\r\n");
-	if(ret == NULL)
-		ret = (char*)text + strlen(text);
-	return ret;
+    return (char*)text + strcspn(text, "\r\n");
 }
 SGuint SG_EXPORT sgLineLength(const char* text)
 {
@@ -218,7 +214,7 @@ char* SG_EXPORT sgNextLine(const char* text)
 		return NULL;
 
 	char* brk = strpbrk(text, "\r\n");
-	if(brk == NULL)
+    if(!brk)
 		return NULL;
 	if((brk[0] == '\r') && (brk[1] == '\n'))
 		return brk + 2;
@@ -237,6 +233,15 @@ SGuint SG_EXPORT sgNumLines(const char* text)
 	return numlines;
 }
 
+/*size_t SG_EXPORT sgStrcspnU32(const SGdchar* text, const SGdchar* sel)
+{
+    size_t i, j;
+    for(i = 0; text[i]; i++)
+        for(j = 0; sel[j]; j++)
+            if(text[i] == sel[j])
+                return i;
+    return i;
+}*/
 SGdchar* SG_EXPORT sgLineEndU32(const SGdchar* text)
 {
 	if(text == NULL)
