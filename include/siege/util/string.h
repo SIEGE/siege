@@ -19,6 +19,11 @@
 
 #include <stdarg.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 #define SG_OCTDIGITS "01234567"
 #define SG_DECDIGITS SG_OCTDIGITS "89"
 #define SG_HEXDIGITS "ABCDEFabcdef" SG_DECDIGITS
@@ -60,4 +65,9 @@ SGdchar* SG_EXPORT sgLineEndU32(const SGdchar* text);
 SGuint SG_EXPORT sgLineLengthU32(const SGdchar* text);
 SGdchar* SG_EXPORT sgNextLineU32(const SGdchar* text);
 SGuint SG_EXPORT sgNumLinesU32(const SGdchar* text);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
 #endif // __SIEGE_UTIL_STRING_H__

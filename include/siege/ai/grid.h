@@ -18,6 +18,11 @@
 #include "../common.h"
 #include "astar.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #define SG_NAVGRID_CLEAR 0
 #define SG_NAVGRID_WALL  1
 #define SG_NAVGRID_START 2
@@ -62,5 +67,9 @@ void SG_EXPORT sgNavGridSearchCreate(SGNavGrid* grid);
 SGbool SG_EXPORT sgNavGridSearchStep(SGNavGrid* grid);
 SGbool SG_EXPORT sgNavGridGoalFound(SGNavGrid* grid);
 SGList* SG_EXPORT sgNavGridSearchPath(SGNavGrid* grid, size_t* pathlen);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __SIEGE_AI_GRID_H__

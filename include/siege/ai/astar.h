@@ -18,6 +18,11 @@
 #include "../common.h"
 #include "../util/list.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 struct SGAStarNode;
 
 typedef float  SG_EXPORT (*SGAStarScore)(struct SGAStarNode*, struct SGAStarNode*);
@@ -69,5 +74,9 @@ void SG_EXPORT sgAStarNodeLink(SGAStarNode* from, SGAStarNode* to);
 void SG_EXPORT sgAStarNodeDLink(SGAStarNode* one, SGAStarNode* two);
 void SG_EXPORT sgAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to);
 void SG_EXPORT sgAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __SIEGE_AI_ASTAR_H__

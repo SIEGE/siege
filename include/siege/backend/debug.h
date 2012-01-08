@@ -15,6 +15,11 @@
 #ifndef __SIEGE_BACKEND_DEBUG_H__
 #define __SIEGE_BACKEND_DEBUG_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #ifndef SIEGE_DEBUG
 #define SIEGE_DEBUG 1
 #endif // SIEGE_DEBUG
@@ -22,5 +27,9 @@
 #if SIEGE_DEBUG
 
 #endif // SIEGE_DEBUG
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __SIEGE_BACKEND_DEBUG_H__
