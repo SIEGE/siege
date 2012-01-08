@@ -17,6 +17,11 @@
 
 #include "../common.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif // __cplusplus
+
 #ifdef SG_BUILD_LIBRARY
 #endif // SG_BUILD_LIBRARY
 
@@ -42,5 +47,9 @@ void SG_EXPORT sgConvDestroy(SGConv* conv);
 void* SG_EXPORT sgConv(SGConv* conv, size_t* outlen, const void* str, size_t len);
 
 void* SG_EXPORT sgConv2s(const char* from, const char* to, size_t* outlen, const void* str, size_t len);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // __SIEGE_UTIL_CONV_H__
