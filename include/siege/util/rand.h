@@ -19,6 +19,11 @@
 
 #include <time.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif // __cplusplus
+
 #define SG_RAND_USER    0
 #define SG_RAND_MT19937 1
 
@@ -54,5 +59,9 @@ void SG_EXPORT sgRandDestroy(SGRand* rand);
 void SG_EXPORT sgRandSeed(SGRand* rand, SGulong seed, SGulong index);
 
 SGulong SG_EXPORT sgRandGen(SGRand* rand);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // __SIEGE_UTIL_RAND_H__
