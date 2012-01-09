@@ -49,6 +49,7 @@ static DWORD WINAPI _sgThreadEntry(LPVOID param)
 }
 #else
 #include <sys/types.h>
+#include <semaphore.h>  // sem_t
 #include <pthread.h>
 #include <signal.h>
 //#include <sched.h>
