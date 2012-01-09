@@ -84,7 +84,7 @@ size_t SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
-    size_t ret = sgPrintfvW(format, args);
+    size_t ret = sgPrintfv(format, args);
     va_end(args);
     return ret;
 }
