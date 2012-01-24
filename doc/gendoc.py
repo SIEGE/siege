@@ -1,7 +1,7 @@
 import os
 import re
 
-srcdir = 'include/siege'
+srcdir = '../include/siege'
 
 tabwidth = 4
 private_start = ['_sg', '_SG', '__']
@@ -20,6 +20,7 @@ class Source:
         self.elements = {}
         self.lastelem = None
         self.lastdoc = ''
+        self.newline = False
 
         self.filename = filename
 
@@ -81,6 +82,7 @@ class Define(Element):
     def __str__(self):
         return 'define %s => %s' % (self.name, self.val)
 
+re_newline  = re.compile(r'\n+')
 re_space    = re.compile(r'\s+')
 re_doc_sl   = re.compile(r'///+(.*)$', re.MULTILINE)
 re_doc_ml   = re.compile(r'/\*\*(.*?)\*/', re.DOTALL)
@@ -95,9 +97,16 @@ re_define   = re.compile(r'#[ \t]*define[ \t]+(\w+)(?:[ \t]+(.*))?$', re.MULTILI
 re_pre      = re.compile(r'#.*$', re.MULTILINE)
 re_ignore   = re.compile(r'.')
 
+def f_newline(m):
+    global source
+    source.newline = True
 def f_doc(m):
     global source
-    source.lastdoc += m.group(1) + '\n'
+    if not source.newline and source.lastelem:
+        source.lastelem.doc += m.group(1) + '\n'
+    else:
+        source.lastdoc += m.group(1) + '\n'
+    source.newline = True
 def f_struct(m):
     Struct(m.group(1))
 def f_typedef(m):
@@ -113,9 +122,10 @@ def f_define(m):
     Define(m.group(1), m.group(2))
 def f_ignore(m):
     pass
-    #print 'Warning: Ignoring %s' % m.group(0)
+    #print('Warning: Ignoring %s' % m.group(0))
 
 res = []
+res.append((re_newline, f_newline))
 res.append((re_space, None))
 res.append((re_doc_sl, f_doc))
 res.append((re_doc_ml, f_doc))
@@ -167,3 +177,12 @@ try:
             handle_file(rfile)
 finally:
     os.chdir(curdir)
+
+#exit(1)
+for source in sources:
+    print('%s:' % source.filename[2:])
+    for element in source.elements:
+        element = source.elements[element]
+        print('\t%s%s' % (element, '' if element.public else '*'))
+        if element.doc:
+            print('\t\t%s' % repr(element.doc))
