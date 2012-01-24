@@ -90,11 +90,11 @@ re_com_sl   = re.compile(r'//.*$', re.MULTILINE)
 re_com_ml   = re.compile(r'/\*.*?\*/', re.DOTALL)
 re_struct   = re.compile(r'(?:typedef )?struct (\w+)')
 #re_typedef  = re.compile(r'typedef\s+(?:(\w+\s+)+(\w+)|(.+)\s*\(.+?\)\s*\(.+?\))\s*;')
-re_typedef  = re.compile(r'typedef\s+(?:(?:[\w*]+\s+)+(\w+)|(?:[\w*]+\s+)+\(\*(.+?)\)\s*\(.*?\))\s*;')
+re_typedef  = re.compile(r'typedef\s+(?:(?:[\w*]+\s+)+(\w+)|(?:[\w*]+\s+)+\(\*(.+?)\)\s*\(.*?\))\s*;') # bug: typedef functions
 re_function = re.compile(r'((?:[\w*]+\s+)+)(\w+)\s*\((.*?)\)\s*;')
 re_macro    = re.compile(r'#[ \t]*define[ \t]+(\w+)\((.*?)\)[ \t]*(.*)$', re.MULTILINE)
 re_define   = re.compile(r'#[ \t]*define[ \t]+(\w+)(?:[ \t]+(.*))?$', re.MULTILINE)
-re_pre      = re.compile(r'#.*$', re.MULTILINE)
+re_pre      = re.compile(r'#.*$', re.MULTILINE) # bug: #define foo /* ... \n ... */
 re_ignore   = re.compile(r'.')
 
 def f_newline(m):
@@ -139,18 +139,76 @@ res.append((re_define, f_define))
 res.append((re_pre, None))
 res.append((re_ignore, f_ignore))
 
+def fsearch(regs, string, pos = 0):
+    found = None
+    for re in regs:
+        m = re.search(string, pos)
+        if m is not None and (found is None or m.start() < found.start()):
+            found = m
+    return found
+
+def splitany(regs, string):
+    res = []
+    pos = 0
+    while True:
+        m = fsearch(regs, string, pos)
+        if m is None:
+            res.append('')
+            res.append(string[pos:])
+            break
+        res.append(string[pos:m.start()])
+        res.append(m.group())
+        pos = m.end()
+    return res
+
+def preprocess(text):
+    text = text.replace('\r\n', '\n').replace('\r', '\n') # handle different newlines...
+    text = text.replace('\\\n', '') # handle line splicing
+    text = text.expandtabs(tabwidth) # expand tabs
+
+    re_str = re.compile(r'"(?:[^"]|\\.)*"')
+    re_char = re.compile(r'\'\'')
+    re_com_sl = re.compile(r'//.*$', re.MULTILINE)
+    re_com_ml = re.compile(r'/\*.*?\*/', re.DOTALL)
+    re_pre = re.compile(r'#.*$', re.MULTILINE) # bug: #define FOO /* ... \n ... */
+
+    split = splitany([re_str, re_char, re_com_sl, re_com_ml, re_pre], text)
+
+    for i in range(0, len(split), 2): # bug: FOO((...),/* comment*/,"string") macro invokation, 'FOOB' means 'FOO' is replaced
+        for key in repl:
+            if isinstance(repl[key], str): # FOO
+                split[i] = split[i].replace(key, repl[key])
+            else: # FOO(...)
+                res = ''
+                found = 0
+                end = 0
+                while True:
+                    found = split[i].find(key, end)
+                    if found == -1:
+                        res += split[i][end:]
+                        break
+                    res += split[i][end:found]
+                    end = split[i].find(')', found) + 1
+                    if end == 0:
+                        print('Warning: Unterminated macro or unimplemented invokation')
+                        res += split[i][found:]
+                        break
+                    res += repl[key](split[i][found+len(key):end])
+                split[i] = res
+        #print(split[i])
+
+    #exit(1)
+
+    return ''.join(split)
+
 def handle_file(fname):
     Source(fname)
 
     input = ''
     with open(fname) as f:
         input = f.read()
-    # handle different newlines...
-    input = input.replace('\r\n', '\n').replace('\r', '\n')
-    # handle line splicing
-    input = input.replace('\\\n', '')
-    # expand tabs
-    input = input.expandtabs(tabwidth)
+
+    input = preprocess(input)
 
     while len(input):
         for r,f in res:
@@ -185,4 +243,6 @@ for source in sources:
         element = source.elements[element]
         print('\t%s%s' % (element, '' if element.public else '*'))
         if element.doc:
-            print('\t\t%s' % repr(element.doc))
+            for line in element.doc.splitlines():
+                print('\t\t%s' % line)
+            #print('\t\t%s' % repr(element.doc))
