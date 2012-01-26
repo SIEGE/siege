@@ -1,7 +1,6 @@
 SIEGE:
 http://libsiege.org
-http://sourceforge.net/projects/siege/
-http://gitorious.org/siege
+http://github.com/SIEGE
 
 D Info:
 http://digitalmars.com/d/1.0/
@@ -19,10 +18,6 @@ Reference:
 	Phobos: http://www.digitalmars.com/d/1.0/phobos/phobos.html
 	OpenGL: http://www.opengl.org/sdk/docs/man/
 	GLFW: http://glfw.sourceforge.net/GLFWReference26.pdf
-	Monster: <none yet>
 	Chipmunk: http://code.google.com/p/chipmunk-physics/w/list
 	DevIL: http://openil.sourceforge.net/docs/DevIL%20Reference%20Guide.pdf
 	FreeType: http://www.freetype.org/freetype2/docs/reference/ft2-base_interface.html
-
-Tutorials:
-	Monster: http://monster.snaptoad.com/tutorials/index.html
