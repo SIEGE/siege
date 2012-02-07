@@ -22,6 +22,9 @@
     #include <windows.h>
 #else
     #include <dirent.h>
+    #ifndef NAME_MAX
+    #define NAME_MAX 4096
+    #endif /* NAME_MAX */
 #endif
 
 SGDirectory* SG_EXPORT sgDirectoryOpen(const char* fname)
