@@ -23,7 +23,7 @@
 #else
     #include <dirent.h>
     #ifndef NAME_MAX
-    #define NAME_MAX 4096
+        #define NAME_MAX 4096
     #endif /* NAME_MAX */
 #endif
 
