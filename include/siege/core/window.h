@@ -19,6 +19,7 @@
 #ifndef __SIEGE_CORE_WINDOW_H__
 #define __SIEGE_CORE_WINDOW_H__
 
+#include "../graphics/image.h"
 #include "../modules/window.h"
 
 #include <stdarg.h>
@@ -70,6 +71,8 @@ SGbool SG_EXPORT sgWindowIsOpened(void);
  * \brief Close the window
  */
 void SG_EXPORT sgWindowClose(void);
+
+void SG_EXPORT sgWindowSetIcon(SGImageData* idata);
 
 /**
  * \name Title

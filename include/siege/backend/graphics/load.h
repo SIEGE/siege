@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -25,9 +25,9 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsLoadFile)(const char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data);
-    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsLoadStream)(void* stream, SGuint* width, SGuint* height, SGuint* bpp, void** data);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsLoadFreeData)(void* data);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsLoadFile)(const char* fname, size_t* width, size_t* height, SGenum* bpp, void** data);
+    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsLoadStream)(void* stream, size_t* width, size_t* height, SGenum* bpp, void** data);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsLoadFreeData)(void* data);
 #ifdef __cplusplus
 }
 #endif

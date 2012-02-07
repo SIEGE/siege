@@ -33,6 +33,7 @@
 #include "graphics/draw.h"
 #include "graphics/emitter.h"
 #include "graphics/font.h"
+#include "graphics/image.h"
 #include "graphics/light.h"
 #include "graphics/mask.h"
 #include "graphics/sprite.h"

@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -112,6 +112,11 @@ void SG_EXPORT sgWindowClose(void)
 		psgmGraphicsContextDestroy(_sg_gfxHandle);
 	if(psgmCoreWindowClose != NULL)
 		psgmCoreWindowClose(_sg_winHandle);
+}
+void SG_EXPORT sgWindowSetIcon(SGImageData* idata)
+{
+    if(psgmCoreWindowSetIcon)
+        psgmCoreWindowSetIcon(_sg_winHandle, idata->width, idata->height, idata->bpp, idata->data);
 }
 void SG_EXPORT sgWindowSetTitlef(const char* format, ...)
 {

@@ -33,8 +33,8 @@ SGbool SG_EXPORT _sgSurfaceDeinit(void)
 
 SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname)
 {
-    SGuint width;
-    SGuint height;
+    size_t width;
+    size_t height;
     SGuint bpp;
     void* data;
 

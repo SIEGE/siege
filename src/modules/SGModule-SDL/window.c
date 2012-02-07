@@ -143,7 +143,34 @@ SGenum SG_EXPORT sgmCoreWindowSetIcon(void* window, size_t width, size_t height,
     amask = 0xFF000000;
 #endif
 
-    windowIcon = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, width, height, 32, rmask, gmask, bmask, amask);
+    SGubyte bypp;
+    switch(bpp)
+    {
+        case 8:
+            bypp = 1;
+            break;
+        case 15:
+            bypp = 2;
+            break;
+        case 16:
+            bypp = 2;
+            break;
+        case 24:
+            bypp = 3;
+            break;
+        case 32:
+            bypp = 4;
+            break;
+        default:
+            return SG_INVALID_VALUE;
+    }
+
+    windowIcon = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, width, height, bpp, rmask, gmask, bmask, amask);
+    SDL_LockSurface(windowIcon);
+    size_t i;
+    for(i = 0; i < height; i++)
+        memcpy(&windowIcon->pixels[i * windowIcon->pitch], data, bypp * width);
+    SDL_UnlockSurface(windowIcon);
     SDL_WM_SetIcon(windowIcon, NULL);
 
     return SG_OK;

@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmGraphicsLoadFile(const char* fname, SGuint* width, SGuint* height, SGuint* bpp, void** data)
+SGenum SG_EXPORT sgmGraphicsLoadFile(const char* fname, size_t* width, size_t* height, SGenum* bpp, void** data)
 {
     if(strcmp(fname, "") == 0)
     {
@@ -55,12 +55,12 @@ SGuint SG_EXPORT sgmGraphicsLoadFile(const char* fname, SGuint* width, SGuint* h
     return SG_OK;
 }
 
-/*SGuint SG_EXPORT sgmGraphicsLoadStream(char* fname, SGuint* width, SGuint* height, SGuint* bpp, SGPointer* data)
+/*SGenum SG_EXPORT sgmGraphicsLoadStream(char* fname, size_t* width, size_t* height, SGenum* bpp, void** data)
 {
     return 1;
 }*/
 
-SGuint sgmGraphicsLoadFreeData(void* data)
+SGenum sgmGraphicsLoadFreeData(void* data)
 {
     free(data);
     return SG_OK;
