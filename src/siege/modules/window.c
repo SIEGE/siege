@@ -28,6 +28,7 @@ void SG_EXPORT _sgModuleLoadWindow(SGLibrary* lib)
     _SG_BIND(sgmCoreWindowIsOpened);
     _SG_BIND(sgmCoreWindowClose);
     //_SG_BIND(sgmCoreWindowIsClosed);
+    _SG_BIND(sgmCoreWindowSetIcon);
     _SG_BIND(sgmCoreWindowSetTitle);
     //_SG_BIND(sgmCoreWindowGetTitle);
     //_SG_BIND(sgmCoreWindowFreeTitle);

@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+SDL_Surface* windowIcon;
+
 void windowOpen()
 {
     if(main_window->cbWindow->open != NULL)
@@ -52,6 +54,8 @@ SGuint SG_EXPORT sgmCoreWindowCreate(void** window)
 
     main_window = *window;
 
+    windowIcon = NULL;
+
     return SG_OK;
 }
 
@@ -67,6 +71,9 @@ SGuint SG_EXPORT sgmCoreWindowDestroy(void* window)
     free(cwindow->cbKeyboard);
     free(cwindow->cbMouse);
     free(cwindow);
+
+    SDL_FreeSurface(windowIcon);
+    windowIcon = NULL;
 
     return SG_OK;
 }
@@ -115,6 +122,32 @@ SGuint SG_EXPORT sgmCoreWindowClose(void* window)
     return SG_OK;
 }
 //SGuint SG_EXPORT sgmCoreWindowIsClosed(void* window, SGbool* closed);
+SGenum SG_EXPORT sgmCoreWindowSetIcon(void* window, size_t width, size_t height, SGenum bpp, void* data)
+{
+    if(!window) return SG_OK; // SG_INVALID_VALUE
+    return SG_UNKNOWN_ERROR; /// TODO
+
+    if(windowIcon)
+        SDL_FreeSurface(windowIcon);
+
+    Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xFF000000;
+    gmask = 0x00FF0000;
+    bmask = 0x0000FF00;
+    amask = 0x000000FF;
+#else
+    rmask = 0x000000FF;
+    gmask = 0x0000FF00;
+    bmask = 0x00FF0000;
+    amask = 0xFF000000;
+#endif
+
+    windowIcon = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, width, height, 32, rmask, gmask, bmask, amask);
+    SDL_WM_SetIcon(windowIcon, NULL);
+
+    return SG_OK;
+}
 SGuint SG_EXPORT sgmCoreWindowSetTitle(void* window, const char* title) /// TODO: icon title + icon
 {
     if(window == NULL)

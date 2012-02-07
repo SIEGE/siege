@@ -38,6 +38,7 @@ extern "C"
     SGuint SG_EXPORT SG_FPTR(sgmCoreWindowIsOpened)(void* window, SGbool* opened);
     SGuint SG_EXPORT SG_FPTR(sgmCoreWindowClose)(void* window);
     //SGuint SG_EXPORT SG_FPTR(sgmCoreWindowIsClosed)(void* window, SGbool* closed);
+    SGenum SG_EXPORT SG_FPTR(sgmCoreWindowSetIcon)(void* window, size_t width, size_t height, SGenum bpp, void* data);
     SGuint SG_EXPORT SG_FPTR(sgmCoreWindowSetTitle)(void* window, const char* title);
     //SGuint SG_EXPORT SG_FPTR(sgmCoreWindowGetTitle)(void* window, char** title);
     //SGuint SG_EXPORT SG_FPTR(sgmCoreWindowFreeTitle)(char* title);
