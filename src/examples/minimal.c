@@ -3,7 +3,8 @@
 int main(void)
 {
 	sgLoadModules(2, "SDL", "OpenGL");
-	sgInit(640, 480, 32, 0);
+	sgInit(0);
+	sgWindowOpen(640, 480, 32, 0);
 
 	SGint ret = sgRun();
 

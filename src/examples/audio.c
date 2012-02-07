@@ -24,7 +24,8 @@ int main(void)
 	sgLoadModule("OpenGL");
     sgLoadModule("OpenAL");
     sgLoadModule("SndFile");
-	sgInit(640, 480, 32, 0);
+    sgInit(0);
+	sgWindowOpen(640, 480, 32, 0);
 	sgWindowSetTitle("SIEGE Audio Demo");
 
     printf("Loading audio data...\n");

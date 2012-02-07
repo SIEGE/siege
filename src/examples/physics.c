@@ -197,7 +197,8 @@ int main(void)
     sgLoadModule("DevIL");
     sgLoadModule("Chipmunk");
     sgLoadModule("Freetype");
-    sgInit(640, 480, 32, 0);
+    sgInit(0);
+    sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Physics Demo - Press F1 for debug overlay");
     sgWindowSetFPSLimit(60.0f);
 

@@ -73,9 +73,7 @@ SGbool SG_EXPORT sgLoadModule(const char* name);
  * 	sgLoadModules()!
  *
  * Parameters:
- * 	width, height - Window size
- * 	bpp           - Window bits (not bytes!) per pixel
- * 	flags         - Window open flags (can be zero)
+ * 	flags         - Init flags (can be zero)
  *
  * Returns:
  * 	SG_TRUE on success, SG_FALSE otherwise.
@@ -83,7 +81,7 @@ SGbool SG_EXPORT sgLoadModule(const char* name);
  * See Also:
  *	- <sgDeinit>
  */
-SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags);
+SGbool SG_EXPORT sgInit(SGenum flags);
 /**
  * Function: sgDeinit
  *

@@ -15,7 +15,8 @@ int main(void)
 	sgLoadModule("OpenGL");
 	sgLoadModule("Freetype");
 	sgLoadModule("IConv");
-	sgInit(640, 480, 32, 0);
+	sgInit(0);
+	sgWindowOpen(640, 480, 32, 0);
 	sgWindowSetTitle("SIEGE Text Demo");
 
 	SGuint i;

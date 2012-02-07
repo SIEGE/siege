@@ -78,7 +78,7 @@ SGbool SG_EXPORT sgLoadModule(const char* name)
 	return SG_TRUE;
 }
 
-SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
+SGbool SG_EXPORT sgInit(SGenum flags)
 {
     _sg_firstLoop = SG_TRUE;
     _sg_exitNow = SG_FALSE;
@@ -144,7 +144,7 @@ SGbool SG_EXPORT sgInit(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 
 	_sgEntityInit();
 
-	sgWindowOpen(width, height, bpp, flags);
+	//sgWindowOpen(width, height, bpp, flags);
 
     _sgLightInit();
 

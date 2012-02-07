@@ -7,7 +7,8 @@ int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");
-    sgInit(640, 480, 32, 0);
+    sgInit(0);
+    sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Surface Demo - Press F1 to clear surface");
 
     SGSurface* surf = sgSurfaceCreate(640, 480, 32);

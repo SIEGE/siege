@@ -445,7 +445,8 @@ int main(void)
     sgLoadModule("OpenAL");
     sgLoadModule("SndFile");
     sgLoadModule("Chipmunk");
-    sgInit(640, 480, 32, 0);
+    sgInit(0);
+    sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitlef("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);
 
     //srand((unsigned int)time(NULL));

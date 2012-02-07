@@ -249,7 +249,8 @@ int main(void)
 	sgLoadModule("OpenGL");
 	sgLoadModule("Freetype");
 	//sgLoadModule("DevIL");
-	sgInit(WIDTH, HEIGHT, 32, 0);
+	sgInit(0);
+	sgWindowOpen(WIDTH, HEIGHT, 32, 0);
 	sgWindowSetTitle("SIEGE A-Star Demo - Hit 'F1' for instructions");
 
 	SGFont* head = sgFontCreate("data/fonts/DejaVuSans.ttf", 16, 127);

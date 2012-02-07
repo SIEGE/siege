@@ -27,30 +27,34 @@
     currently, we use winw/winh, we should try getting some viewport info...
 */
 
+static SGLightSpace* _sgLightGetSpace(void)
+{
+    if(!_sg_lightSpaceMain) _sg_lightSpaceMain = sgLightSpaceCreate();
+    return _sg_lightSpaceMain;
+}
+
 SGbool SG_EXPORT _sgLightInit(void)
 {
-    _sg_lightSpaceMain = sgLightSpaceCreate();
-
+    _sg_lightSpaceMain = NULL;
     return SG_TRUE;
 }
 SGbool SG_EXPORT _sgLightDeinit(void)
 {
     sgLightSpaceDestroy(_sg_lightSpaceMain);
+    _sg_lightSpaceMain = NULL;
 
     return SG_TRUE;
 }
 
 void SG_EXPORT _sgLightSpaceAddLight(SGLightSpace* space, SGLight* light)
 {
-    if(space == NULL)
-        space = _sg_lightSpaceMain;
+    if(space == NULL) space = _sgLightGetSpace();
     light->space = space;
     light->node = sgListAppend(space->lights, light);
 }
 void SG_EXPORT _sgLightSpaceAddShadowShape(SGLightSpace* space, SGShadowShape* shape)
 {
-    if(space == NULL)
-        space = _sg_lightSpaceMain;
+    if(space == NULL) space = _sgLightGetSpace();
     shape->space = space;
     shape->node = sgListAppend(space->shapes, shape);
 }
