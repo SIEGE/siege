@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -67,7 +67,7 @@ SGuint SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, 
 	FT_Glyph glyph;
 	FT_BitmapGlyph bitmap_glyph;
 	FT_Bitmap bitmap;
-	SGuint i, j;
+	SGuint i/*, j*/;
 	for(i = 0; i < charnum; i++)
 	{
 		ret = FT_Load_Glyph(fface->ftface, FT_Get_Char_Index(fface->ftface, chars[i]), FT_LOAD_DEFAULT);
@@ -89,9 +89,9 @@ SGuint SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, 
 		dataheight[i] = bitmap.rows;
 
 		data[i] = malloc(bitmap.width * bitmap.rows);
-		//data[i] = memcpy(data[i], bitmap.buffer, bitmap.width * bitmap.rows);
-		for(j = 0; j < bitmap.rows; j++)
-			memcpy((char*)data[i] + j * bitmap.width, bitmap.buffer + (bitmap.rows - j - 1) * bitmap.width, bitmap.width);
+		memcpy(data[i], bitmap.buffer, bitmap.width * bitmap.rows);
+		/*for(j = 0; j < bitmap.rows; j++)
+			memcpy((char*)data[i] + j * bitmap.width, bitmap.buffer + (bitmap.rows - j - 1) * bitmap.width, bitmap.width);*/
 
 		prex[i] = bitmap_glyph->left;
 		//prey[i] = -bitmap_glyph->top + bitmap.rows;
