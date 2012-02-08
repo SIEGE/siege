@@ -168,7 +168,7 @@ SGenum SG_EXPORT sgmCoreWindowSetIcon(void* window, size_t width, size_t height,
     SDL_LockSurface(windowIcon);
     size_t i;
     for(i = 0; i < height; i++)
-        memcpy(&windowIcon->pixels[i * windowIcon->pitch], ((char*)data) + bypp * width * i, bypp * width);
+        memcpy(&((char*)windowIcon->pixels)[i * windowIcon->pitch], ((char*)data) + bypp * width * i, bypp * width);
     SDL_UnlockSurface(windowIcon);
     SDL_WM_SetIcon(windowIcon, NULL);
 
