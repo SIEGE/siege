@@ -21,22 +21,38 @@
 #include <string.h>
 #include <ctype.h>
 
-// MinGW thinks it's smart and uses its own variant of vswprintf...
-#define __STRICT_ANSI__
 #include <stdio.h>
 #include <wchar.h>
 
-int vswprintf(wchar_t *wcs, size_t maxlen, const wchar_t *format, va_list args);
+#ifdef __MINGW32__
+/*
+ * MinGW thinks it's smart and uses its own variant of vswprintf, though
+ * I suppose it's mostly Microsoft's fault since this is the variant
+ * present in WinAPI...
+ *
+ * Either way, because of this problem, we we have to use this
+ * workaround...
+ */
+static int ugly_mingw_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* format, va_list args)
+{
+    va_list argcpy;
+    va_copy(argcpy, args);
+    int len = _vscwprintf(format, argcpy);
+    va_end(argcpy);
+
+    if(maxlen < len + 1)
+        return len;
+    return vswprintf(wcs, format, args);
+}
+#define vswprintf ugly_mingw_vswprintf_hack
+#endif /* __MINGW32__ */
 
 char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what)
 {
     size_t wlen = strlen(what);
     if(*len + wlen >= *mem)
     {
-        if(*mem == 0)
-            *mem = 32;
-        else
-            *mem <<= 1;
+        *mem = *mem ? *mem << 1 : 32;
         *str = realloc(*str, *mem);
     }
     memcpy(*str + *len, what, wlen);
@@ -65,9 +81,10 @@ static void SG_EXPORT _sgStringInit(void)
 
 size_t SG_EXPORT sgPrintfW(const wchar_t* format, ...)
 {
+    size_t ret;
     va_list args;
     va_start(args, format);
-    size_t ret = sgPrintfvW(format, args);
+    ret = sgPrintfvW(format, args);
     va_end(args);
     return ret;
 }
@@ -82,9 +99,10 @@ size_t SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args)
 }
 size_t SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...)
 {
+    size_t ret;
     va_list args;
     va_start(args, format);
-    size_t ret = sgPrintfv(format, args);
+    ret = sgPrintfv(format, args);
     va_end(args);
     return ret;
 }
@@ -100,11 +118,12 @@ size_t SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args
 
 size_t SG_EXPORT sgSPrintfW(wchar_t* buf, size_t buflen, const wchar_t* format, ...)
 {
+    size_t ret;
     va_list args;
     va_start(args, format);
-    size_t size = sgSPrintfvW(buf, buflen, format, args);
+    ret = sgSPrintfvW(buf, buflen, format, args);
     va_end(args);
-    return size;
+    return ret;
 }
 size_t SG_EXPORT sgSPrintfvW(wchar_t* buf, size_t buflen, const wchar_t* format, va_list args)
 {
@@ -116,36 +135,39 @@ size_t SG_EXPORT sgSPrintfvW(wchar_t* buf, size_t buflen, const wchar_t* format,
 
 wchar_t* SG_EXPORT sgAPrintfW(const wchar_t* format, ...)
 {
+    wchar_t* str;
     va_list args;
     va_start(args, format);
-    wchar_t* str = sgAPrintfvW(format, args);
+    str = sgAPrintfvW(format, args);
     va_end(args);
     return str;
 }
 wchar_t* SG_EXPORT sgAPrintfvW(const wchar_t* format, va_list args)
 {
     wchar_t buf;
+    size_t len;
 
     va_list argcpy;
     va_copy(argcpy, args);
-    size_t len = sgSPrintfvW(&buf, 1, format, argcpy);
+    len = sgSPrintfvW(&buf, 1, format, argcpy);
     va_end(argcpy);
 
     wchar_t* str = malloc((len + 1) * sizeof(wchar_t));
     if(!str)
         return NULL;
-    sgSPrintfW(str, len + 1, format, args);
+    sgSPrintfvW(str, len + 1, format, args);
 
     return str;
 }
 
 size_t SG_EXPORT SG_HINT_PRINTF(3, 4) sgSPrintf(char* buf, size_t buflen, const char* format, ...)
 {
+    size_t ret;
 	va_list args;
 	va_start(args, format);
-	size_t size = sgSPrintfv(buf, buflen, format, args);
+    ret = sgSPrintfv(buf, buflen, format, args);
 	va_end(args);
-	return size;
+    return ret;
 }
 size_t SG_EXPORT SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const char* format, va_list args)
 {
@@ -157,11 +179,12 @@ size_t SG_EXPORT SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const
 
 char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgAPrintf(const char* format, ...)
 {
+    char* str;
 	va_list args;
 	va_start(args, format);
-	char* str = sgAPrintfv(format, args);
+    str = sgAPrintfv(format, args);
 	va_end(args);
-	return str;
+    return str;
 }
 char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgAPrintfv(const char* format, va_list args)
 {
