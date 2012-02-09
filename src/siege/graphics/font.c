@@ -161,29 +161,39 @@ void SG_EXPORT _sgFontCenterOffsetU32(SGFont* font, float* x, float* y, const SG
 SGdchar* SG_EXPORT _sgFontU16ToU32(SGFont* font, const SGwchar* text)
 {
 	size_t len;
-	for(len = 0; text[len]; len++)
-	{
-	}
+    for(len = 0; text[len]; len++) { }
+    size_t buflen = len + 1;
 
-	return sgConv(font->conv[3], NULL, text, len * sizeof(SGwchar));
+    SGdchar* buf = malloc(buflen * sizeof(SGdchar));
+    sgConv(font->conv[3], buf, buflen, text, len, SG_FALSE);
+    return buf;
 }
 SGdchar* SG_EXPORT _sgFontU8ToU32(SGFont* font, const SGchar* text)
 {
 	size_t len = strlen(text);
+    size_t buflen = len + 1;
 
-	return sgConv(font->conv[2], NULL, text, len * sizeof(SGchar));
+    SGdchar* buf = malloc(buflen * sizeof(SGdchar));
+    sgConv(font->conv[2], buf, buflen, text, len, SG_FALSE);
+    return buf;
 }
 SGdchar* SG_EXPORT _sgFontWToU32(SGFont* font, const wchar_t* text)
 {
 	size_t len = wcslen(text);
+    size_t buflen = len + 1;
 
-	return sgConv(font->conv[1], NULL, text, len * sizeof(wchar_t));
+    SGdchar* buf = malloc(buflen * sizeof(SGdchar));
+    sgConv(font->conv[1], buf, buflen, text, len, SG_FALSE);
+    return buf;
 }
 SGdchar* SG_EXPORT _sgFontToU32(SGFont* font, const char* text)
 {
 	size_t len = strlen(text);
+    size_t buflen = len + 1;
 
-	return sgConv(font->conv[0], NULL, text, len);
+    SGdchar* buf = malloc(buflen * sizeof(SGdchar));
+    sgConv(font->conv[0], buf, buflen, text, len, SG_FALSE);
+    return buf;
 }
 
 SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
@@ -210,10 +220,10 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
 	memcpy(font->fname, fname, len);
 	font->height = height;
 
-	font->conv[0] = sgConvCreate("char", "UTF-32");
-	font->conv[1] = sgConvCreate("wchar_t", "UTF-32");
-	font->conv[2] = sgConvCreate("UTF-8", "UTF-32");
-	font->conv[3] = sgConvCreate("UTF-16", "UTF-32");
+    font->conv[0] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_CHAR);
+    font->conv[1] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_WCHAR_T);
+    font->conv[2] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_UTF8);
+    font->conv[3] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_UTF16);
 
 	font->numchars = preload;
 	font->chars = malloc(preload * sizeof(SGCharInfo));

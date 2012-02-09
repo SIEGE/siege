@@ -14,7 +14,6 @@ int main(void)
 	sgLoadModule("SDL");
 	sgLoadModule("OpenGL");
 	sgLoadModule("Freetype");
-	sgLoadModule("IConv");
 	sgInit(0);
 	sgWindowOpen(640, 480, 32, 0);
 	sgWindowSetTitle("SIEGE Text Demo");

@@ -33,19 +33,47 @@
  * Either way, because of this problem, we we have to use this
  * workaround...
  */
-static int ugly_mingw_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* format, va_list args)
+static int ugly_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* format, va_list args)
 {
+    int len;
     va_list argcpy;
     va_copy(argcpy, args);
-    int len = _vscwprintf(format, argcpy);
+    len = _vscwprintf(format, argcpy);
     va_end(argcpy);
 
     if(maxlen < len + 1)
         return len;
     return vswprintf(wcs, format, args);
 }
-#define vswprintf ugly_mingw_vswprintf_hack
+#else /* and if it's not MinGW, we need a different hack... UGH */
+static int ugly_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* format, va_list args)
+{
+    size_t buflen = 32;
+    wchar_t* buf = NULL;
+    int len;
+    va_list argcpy;
+    do
+    {
+        buflen <<= 1;
+        buf = realloc(buf, buflen * sizeof(wchar_t));
+        va_copy(argcpy, args);
+        len = vswprintf(buf, buflen, format, argcpy);
+        va_end(argcpy);
+        if(len < 0)
+        {
+            free(buf);
+            return -1;
+        }
+    }
+    while(len == -1 || len == buflen - 1);
+    free(buf);
+
+    if(maxlen < len + 1)
+        return len;
+    return vswprintf(wcs, maxlen, format, args);
+}
 #endif /* __MINGW32__ */
+#define vswprintf ugly_vswprintf_hack
 
 char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what)
 {
@@ -59,6 +87,15 @@ char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what)
     *len += wlen;
     (*str)[*len] = 0;
     return *str;
+}
+
+size_t _sgStrbufAppend(size_t sz, size_t pos, void* out, size_t outlen, const void* in, size_t inlen)
+{
+    if(pos + 1 >= outlen)
+        return inlen;
+
+    memcpy(((char*)out) + pos * sz, in, SG_MIN(outlen - pos - 1, inlen) * sz);
+    return inlen;
 }
 
 static SGMutex* _sg_strMutex;
@@ -223,8 +260,7 @@ char* SG_EXPORT sgSpaceEnd(const char* text)
 }
 char* SG_EXPORT sgLineEnd(const char* text)
 {
-	if(text == NULL)
-		return NULL;
+    if(!text) return NULL;
     return (char*)text + strcspn(text, "\r\n");
 }
 SGuint SG_EXPORT sgLineLength(const char* text)
@@ -233,8 +269,7 @@ SGuint SG_EXPORT sgLineLength(const char* text)
 }
 char* SG_EXPORT sgNextLine(const char* text)
 {
-	if(text == NULL)
-		return NULL;
+    if(!text) return NULL;
 
 	char* brk = strpbrk(text, "\r\n");
     if(!brk)
@@ -248,7 +283,7 @@ SGuint SG_EXPORT sgNumLines(const char* text)
 	SGuint numlines = 0;
 
 	const char* ptr = text;
-	while(ptr != NULL)
+    while(ptr)
 	{
 		ptr = sgNextLine(ptr);
 		numlines++;

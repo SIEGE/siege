@@ -29,10 +29,5 @@ void SG_EXPORT _sgModuleLoadFonts(SGLibrary* lib)
 
 	_SG_BIND(sgmFontsCharsCreate);
     _SG_BIND(sgmFontsCharsFreeData);
-
-	_SG_BIND(sgmFontsConvCreate);
-	_SG_BIND(sgmFontsConvDestroy);
-	_SG_BIND(sgmFontsConv);
-	_SG_BIND(sgmFontsConvFreeData);
 }
 

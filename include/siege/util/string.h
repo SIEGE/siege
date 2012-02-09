@@ -32,6 +32,8 @@ extern "C"
 
 char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what);
 
+size_t SG_EXPORT _sgStrbufAppend(size_t sz, size_t pos, void* out, size_t outlen, const void* in, size_t inlen);
+
 // wprintf, locked with a mutex for thread-safety
 size_t SG_EXPORT sgPrintfW(const wchar_t* format, ...);
 size_t SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args);
