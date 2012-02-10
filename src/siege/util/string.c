@@ -14,8 +14,8 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/util/string.h>
-#include <siege/util/thread.h>
-#include <siege/util/mutex.h>
+#include <siege/util/thread/thread.h>
+#include <siege/util/thread/mutex.h>
 
 #include <stdlib.h>
 #include <string.h>

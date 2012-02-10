@@ -15,7 +15,7 @@
 #ifndef __SIEGE_UTIL_THREAD_H__
 #define __SIEGE_UTIL_THREAD_H__
 
-#include "../common.h"
+#include "../../common.h"
 
 #ifdef __cplusplus
 extern "C"

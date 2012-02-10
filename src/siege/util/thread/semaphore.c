@@ -13,7 +13,7 @@
  */
 
 #define SG_BUILD_LIBRARY
-#include <siege/util/semaphore.h>
+#include <siege/util/thread/semaphore.h>
 
 #include <stdlib.h>
 

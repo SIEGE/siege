@@ -13,7 +13,7 @@
  */
 
 #define SG_BUILD_LIBRARY
-#include <siege/util/mutex.h>
+#include <siege/util/thread/mutex.h>
 
 #include <stdlib.h>
 

@@ -16,8 +16,8 @@
 #include <siege/graphics/draw.h>
 #include <siege/core/window.h>
 #include <siege/modules/graphics.h>
-#include <siege/util/thread.h>
-#include <siege/util/threadkey.h>
+#include <siege/util/thread/thread.h>
+#include <siege/util/thread/key.h>
 
 #include <stdlib.h>
 #include <stdio.h>

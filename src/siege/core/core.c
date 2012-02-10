@@ -13,7 +13,7 @@
  */
 
 #define SG_BUILD_LIBRARY
-#include <siege/util/thread.h>
+#include <siege/util/thread/thread.h>
 
 #include <siege/audio/source.h>
 #include <siege/core/console.h>

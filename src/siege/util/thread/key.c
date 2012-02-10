@@ -13,7 +13,7 @@
  */
 
 #define SG_BUILD_LIBRARY
-#include <siege/util/threadkey.h>
+#include <siege/util/thread/key.h>
 
 #include <stdlib.h>
 

@@ -12,10 +12,10 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
-#ifndef __SIEGE_UTIL_SEMAPHORE_H__
-#define __SIEGE_UTIL_SEMAPHORE_H__
+#ifndef __SIEGE_UTIL_THREAD_SEMAPHORE_H__
+#define __SIEGE_UTIL_THREAD_SEMAPHORE_H__
 
-#include "../common.h"
+#include "../../common.h"
 
 #ifdef __cplusplus
 extern "C"
