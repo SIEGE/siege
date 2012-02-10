@@ -27,6 +27,10 @@ extern "C"
 {
 #endif // __cplusplus
 
+void SG_EXPORT sgGetVersionv(SGushort* version);
+void SG_EXPORT sgGetVersion(SGushort* vmajor, SGushort* vminor, SGushort* vpatch);
+char* SG_EXPORT sgGetVersionString(void);
+
 /**
  * Functions: sgLoadModule*
  *

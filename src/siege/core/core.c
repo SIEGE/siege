@@ -54,6 +54,21 @@ static SGint SG_EXPORT _sgRenderThread(void* data)
     return 0;
 }
 
+void SG_EXPORT sgGetVersionv(SGushort* version)
+{
+    sgGetVersion(&version[0], &version[1], &version[2]);
+}
+void SG_EXPORT sgGetVersion(SGushort* vmajor, SGushort* vminor, SGushort* vpatch)
+{
+    if(vmajor) *vmajor = SG_VERSION_MAJOR;
+    if(vminor) *vminor = SG_VERSION_MINOR;
+    if(vpatch) *vpatch = SG_VERSION_PATCH;
+}
+char* SG_EXPORT sgGetVersionString(void)
+{
+    return SG_VERSION_STRING;
+}
+
 SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args)
 {
 	SGuint loaded = 0;
