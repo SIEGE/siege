@@ -141,15 +141,20 @@ class SGNameIndex(NameIndex):
 
         return dict
 
-process(c_sg=Composite(c_nopriv, sg),
+process(cp_sg=Composite(c, sg),
+        c_sg=Composite(c_nopriv, sg),
         link=Linker(),
         html=HTML.Formatter(title='SIEGE Reference Manual', index=[FileTree()], content=[
-                            Scope(parts=[Summary(),Detail()]),
+                            Scope(parts=[
+                                Summary(),
+                                Detail()
+                                ]),
                             Source(),
                             Directory(src_dir=srcdir, base_path=srcdir),
                             XRef(),
                             FileDetails(),
                             FileIndex(),
+                            #FileListing(),
                             #InheritanceTree(),
                             #InheritanceGraph(),
                             SGNameIndex(private=['`', '_', 'sgm'], prefix=['_', 'SG_', 'SG', 'sg'])]),
