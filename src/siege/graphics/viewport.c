@@ -61,7 +61,7 @@ SGViewport* SG_EXPORT sgViewportCreate(void)
 		return NULL;
 
 	if(psgmGraphicsViewportCreate != NULL)
-		psgmGraphicsViewportCreate(viewport->handle, _sg_gfxHandle);
+		psgmGraphicsViewportCreate(&viewport->handle, _sg_gfxHandle);
 	sgListAppend(_sg_viewList, viewport);
 	return viewport;
 }
