@@ -28,7 +28,6 @@ extern "C"
 #endif // __cplusplus
 
 /// @{
-typedef void	 SGvoid;
 typedef uint8_t  SGbool;
 /// \brief Equivalent to SGuint
 typedef uint32_t SGenum;

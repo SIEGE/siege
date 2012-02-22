@@ -30,9 +30,9 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-SGfloat _sg_FPS = -1.0f;
-SGlong _sg_FrameLength = -1L;
-SGfloat _sg_achievedFramerate = -1.0f;
+static SGfloat _sg_FPS = -1.0f;
+static SGlong _sg_FrameLength = -1L;
+static SGfloat _sg_achievedFramerate = -1.0f;
 
 void SG_EXPORT _sg_cbWindowOpen(void* window)
 {
@@ -74,12 +74,9 @@ SGbool SG_EXPORT _sgWindowDeinit(void)
 
 SGbool SG_EXPORT sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 {
-	if(width == 0)
-		width = 640;
-	if(height == 0)
-		height = 480;
-	if(bpp == 0)
-		bpp = 32;
+    if(!width)  width = 640;
+    if(!height) height = 480;
+    if(!bpp)    bpp = 32;
 
 	if(sgWindowIsOpened())
 		sgWindowClose();
@@ -133,10 +130,10 @@ void SG_EXPORT sgWindowSetTitlefv(const char* format, va_list args)
 }
 void SG_EXPORT sgWindowSetTitle(const char* title)
 {
-	int len = strlen(title) + 1;
-	_sg_winTitle = realloc(_sg_winTitle, len);
-	strcpy(_sg_winTitle, title);
-	if(psgmCoreWindowSetTitle != NULL)
+    size_t len = strlen(title);
+    _sg_winTitle = realloc(_sg_winTitle, len + 1);
+    memcpy(_sg_winTitle, title, len + 1);
+    if(psgmCoreWindowSetTitle)
 		psgmCoreWindowSetTitle(_sg_winHandle, _sg_winTitle);
 }
 char* SG_EXPORT sgWindowGetTitle(void)
@@ -152,19 +149,16 @@ void SG_EXPORT sgWindowSetSize(SGuint width, SGuint height)
 }
 void SG_EXPORT sgWindowGetSize(SGuint* width, SGuint* height)
 {
-	SGuint w, h;
-	if(psgmCoreWindowGetSize != NULL)
-		psgmCoreWindowGetSize(_sg_winHandle, &w, &h);
-	if(width != NULL)
-		*width = w;
-	if(height != NULL)
-		*height = h;
+    SGuint tmp;
+    if(!width)  width = &tmp;
+    if(!height) height = &tmp;
+
+    if(psgmCoreWindowGetSize)
+        psgmCoreWindowGetSize(_sg_winHandle, width, height);
 }
 void SG_EXPORT sgWindowSetWidth(SGuint width)
 {
-	SGuint height;
-	sgWindowGetSize(NULL, &height);
-	sgWindowSetSize(width, height);
+    sgWindowSetSize(width, sgWindowGetHeight());
 }
 SGuint SG_EXPORT sgWindowGetWidth(void)
 {
@@ -174,9 +168,7 @@ SGuint SG_EXPORT sgWindowGetWidth(void)
 }
 void SG_EXPORT sgWindowSetHeight(SGuint height)
 {
-	SGuint width;
-	sgWindowGetSize(&width, NULL);
-	sgWindowSetSize(width, height);
+    sgWindowSetSize(sgWindowGetWidth(), height);
 }
 SGuint SG_EXPORT sgWindowGetHeight(void)
 {

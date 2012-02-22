@@ -82,7 +82,7 @@ typedef struct SGEntity
 	 * 	if required - SIEGE handles this as an opaque pointer and thus
 	 *  will not do *anything* with this data.
 	 */
-	SGvoid* data;
+	void* data;
 
 	/**
 	 * Variable: visible
@@ -203,7 +203,7 @@ typedef struct SGEntity
 	 *
 	 * The entity is about to be destroyed.
 	 */
-	SGvoid SG_EXPORT (*lcDestroy)(struct SGEntity* entity);
+	void SG_EXPORT (*lcDestroy)(struct SGEntity* entity);
 
 	/**
 	 * Variables: lcMouse*
@@ -243,27 +243,27 @@ typedef struct SGEntity
 	 *    if applicable?
 	 *  - Should lcMouseExit be renamed to lcMouseLeave?
 	 */
-	SGvoid SG_EXPORT (*lcMouseEnter)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*lcMouseExit)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseEnter)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseExit)(struct SGEntity* entity);
 
-	SGvoid SG_EXPORT (*lcMouseButton)(struct SGEntity* entity, SGuint button);
-	SGvoid SG_EXPORT (*lcMouseButtonPress)(struct SGEntity* entity, SGuint button);
-	SGvoid SG_EXPORT (*lcMouseButtonRelease)(struct SGEntity* entity, SGuint button);
+	void SG_EXPORT (*lcMouseButton)(struct SGEntity* entity, SGuint button);
+	void SG_EXPORT (*lcMouseButtonPress)(struct SGEntity* entity, SGuint button);
+	void SG_EXPORT (*lcMouseButtonRelease)(struct SGEntity* entity, SGuint button);
 
-	SGvoid SG_EXPORT (*lcMouseButtonLeft)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*lcMouseButtonLeftPress)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*lcMouseButtonLeftRelease)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseButtonLeft)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseButtonLeftPress)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseButtonLeftRelease)(struct SGEntity* entity);
 
-	SGvoid SG_EXPORT (*lcMouseButtonRight)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*lcMouseButtonRightPress)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*lcMouseButtonRightRelease)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseButtonRight)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseButtonRightPress)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseButtonRightRelease)(struct SGEntity* entity);
 
-	SGvoid SG_EXPORT (*lcMouseButtonMiddle)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*lcMouseButtonMiddlePress)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*lcMouseButtonMiddleRelease)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseButtonMiddle)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseButtonMiddlePress)(struct SGEntity* entity);
+	void SG_EXPORT (*lcMouseButtonMiddleRelease)(struct SGEntity* entity);
 
-	SGvoid SG_EXPORT (*lcMouseMove)(struct SGEntity* entity, SGint x, SGint y);
-	SGvoid SG_EXPORT (*lcMouseWheel)(struct SGEntity* entity, SGint wheel);
+	void SG_EXPORT (*lcMouseMove)(struct SGEntity* entity, SGint x, SGint y);
+	void SG_EXPORT (*lcMouseWheel)(struct SGEntity* entity, SGint wheel);
 
 	/**
 	 * Variables: lcCollision*
@@ -288,17 +288,17 @@ typedef struct SGEntity
 	 *  coll - Collision handler
 	 */
 
-	SGvoid SG_EXPORT (*lcCollision)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	SGvoid SG_EXPORT (*lcCollisionOne)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	SGvoid SG_EXPORT (*lcCollisionTwo)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_EXPORT (*lcCollision)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_EXPORT (*lcCollisionOne)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_EXPORT (*lcCollisionTwo)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
 
-	SGvoid SG_EXPORT (*lcCollisionBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	SGvoid SG_EXPORT (*lcCollisionOneBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	SGvoid SG_EXPORT (*lcCollisionTwoBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_EXPORT (*lcCollisionBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_EXPORT (*lcCollisionOneBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_EXPORT (*lcCollisionTwoBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
 
-	SGvoid SG_EXPORT (*lcCollisionEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	SGvoid SG_EXPORT (*lcCollisionOneEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	SGvoid SG_EXPORT (*lcCollisionTwoEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_EXPORT (*lcCollisionEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_EXPORT (*lcCollisionOneEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_EXPORT (*lcCollisionTwoEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
 
 	/**
 	 * Group: Global events
@@ -315,8 +315,8 @@ typedef struct SGEntity
 	 * Parameters:
 	 * 	entity - The entity which is receiving the message
 	 */
-	SGvoid SG_EXPORT (*evInit)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evDeinit)(struct SGEntity* entity);
+	void SG_EXPORT (*evInit)(struct SGEntity* entity);
+	void SG_EXPORT (*evDeinit)(struct SGEntity* entity);
 
 	/**
 	 * Variables: Looping
@@ -334,13 +334,13 @@ typedef struct SGEntity
 	 * Parameters:
 	 * 	entity - The entity which is receiving the message
 	 */
-	SGvoid SG_EXPORT (*evStart)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evExit)(struct SGEntity* entity);
+	void SG_EXPORT (*evStart)(struct SGEntity* entity);
+	void SG_EXPORT (*evExit)(struct SGEntity* entity);
 
-	SGvoid SG_EXPORT (*evTick)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evTickBegin)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evTickEnd)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evDraw)(struct SGEntity* entity);
+	void SG_EXPORT (*evTick)(struct SGEntity* entity);
+	void SG_EXPORT (*evTickBegin)(struct SGEntity* entity);
+	void SG_EXPORT (*evTickEnd)(struct SGEntity* entity);
+	void SG_EXPORT (*evDraw)(struct SGEntity* entity);
 
 	/**
 	 * Variables: evWindow*
@@ -355,9 +355,9 @@ typedef struct SGEntity
 	 * 	entity - The entity which is receiving the message
 	 *  width, height - The new window size
 	 */
-	SGvoid SG_EXPORT (*evWindowOpen)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evWindowClose)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evWindowResize)(struct SGEntity* entity, SGuint width, SGuint height);
+	void SG_EXPORT (*evWindowOpen)(struct SGEntity* entity);
+	void SG_EXPORT (*evWindowClose)(struct SGEntity* entity);
+	void SG_EXPORT (*evWindowResize)(struct SGEntity* entity, SGuint width, SGuint height);
 
 	/**
 	 * Variables: evMouse*
@@ -389,24 +389,24 @@ typedef struct SGEntity
 	 *  x, y   - New mouse position
 	 *  wheel  - New mouse wheel position
 	 */
-	SGvoid SG_EXPORT (*evMouseButton)(struct SGEntity* entity, SGuint button);
-	SGvoid SG_EXPORT (*evMouseButtonPress)(struct SGEntity* entity, SGuint button);
-	SGvoid SG_EXPORT (*evMouseButtonRelease)(struct SGEntity* entity, SGuint button);
+	void SG_EXPORT (*evMouseButton)(struct SGEntity* entity, SGuint button);
+	void SG_EXPORT (*evMouseButtonPress)(struct SGEntity* entity, SGuint button);
+	void SG_EXPORT (*evMouseButtonRelease)(struct SGEntity* entity, SGuint button);
 
-	SGvoid SG_EXPORT (*evMouseButtonLeft)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evMouseButtonLeftPress)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evMouseButtonLeftRelease)(struct SGEntity* entity);
+	void SG_EXPORT (*evMouseButtonLeft)(struct SGEntity* entity);
+	void SG_EXPORT (*evMouseButtonLeftPress)(struct SGEntity* entity);
+	void SG_EXPORT (*evMouseButtonLeftRelease)(struct SGEntity* entity);
 
-	SGvoid SG_EXPORT (*evMouseButtonRight)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evMouseButtonRightPress)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evMouseButtonRightRelease)(struct SGEntity* entity);
+	void SG_EXPORT (*evMouseButtonRight)(struct SGEntity* entity);
+	void SG_EXPORT (*evMouseButtonRightPress)(struct SGEntity* entity);
+	void SG_EXPORT (*evMouseButtonRightRelease)(struct SGEntity* entity);
 
-	SGvoid SG_EXPORT (*evMouseButtonMiddle)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evMouseButtonMiddlePress)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evMouseButtonMiddleRelease)(struct SGEntity* entity);
+	void SG_EXPORT (*evMouseButtonMiddle)(struct SGEntity* entity);
+	void SG_EXPORT (*evMouseButtonMiddlePress)(struct SGEntity* entity);
+	void SG_EXPORT (*evMouseButtonMiddleRelease)(struct SGEntity* entity);
 
-	SGvoid SG_EXPORT (*evMouseMove)(struct SGEntity* entity, SGint x, SGint y);
-	SGvoid SG_EXPORT (*evMouseWheel)(struct SGEntity* entity, SGint wheel);
+	void SG_EXPORT (*evMouseMove)(struct SGEntity* entity, SGint x, SGint y);
+	void SG_EXPORT (*evMouseWheel)(struct SGEntity* entity, SGint wheel);
 
 	/**
 	 * Variables: evKeyboard*
@@ -426,15 +426,15 @@ typedef struct SGEntity
 	 *  key    - The key that triggered the event
 	 *  chr    - The UTF-32 character that triggered the event
 	 */
-	SGvoid SG_EXPORT (*evKeyboardKey)(struct SGEntity* entity, SGuint key);
-	SGvoid SG_EXPORT (*evKeyboardKeyPress)(struct SGEntity* entity, SGuint key);
-	SGvoid SG_EXPORT (*evKeyboardKeyRelease)(struct SGEntity* entity, SGuint key);
-	SGvoid SG_EXPORT (*evKeyboardKeyRepeat)(struct SGEntity* entity, SGuint key);
+	void SG_EXPORT (*evKeyboardKey)(struct SGEntity* entity, SGuint key);
+	void SG_EXPORT (*evKeyboardKeyPress)(struct SGEntity* entity, SGuint key);
+	void SG_EXPORT (*evKeyboardKeyRelease)(struct SGEntity* entity, SGuint key);
+	void SG_EXPORT (*evKeyboardKeyRepeat)(struct SGEntity* entity, SGuint key);
 
-	//SGvoid SG_EXPORT (*evKeyboardChar)(struct SGEntity* entity, SGdchar chr);
-	SGvoid SG_EXPORT (*evKeyboardCharPress)(struct SGEntity* entity, SGdchar chr);
-	//SGvoid SG_EXPORT (*evKeyboardCharRelease)(struct SGEntity* entity, SGdchar chr);
-	SGvoid SG_EXPORT (*evKeyboardCharRepeat)(struct SGEntity* entity, SGdchar chr);
+	//void SG_EXPORT (*evKeyboardChar)(struct SGEntity* entity, SGdchar chr);
+	void SG_EXPORT (*evKeyboardCharPress)(struct SGEntity* entity, SGdchar chr);
+	//void SG_EXPORT (*evKeyboardCharRelease)(struct SGEntity* entity, SGdchar chr);
+	void SG_EXPORT (*evKeyboardCharRepeat)(struct SGEntity* entity, SGdchar chr);
 
 	/**
 	 * Variables: evJoystick*
@@ -453,10 +453,10 @@ typedef struct SGEntity
 	 *  axis    - The axis positions
 	 *  numaxis - The number of axis
 	 */
-	SGvoid SG_EXPORT (*evJoystickButton)(struct SGEntity* entity, SGuint joy, SGuint button);
-	SGvoid SG_EXPORT (*evJoystickButtonPress)(struct SGEntity* entity, SGuint joy, SGuint button);
-	SGvoid SG_EXPORT (*evJoystickButtonRelease)(struct SGEntity* entity, SGuint joy, SGuint button);
-	SGvoid SG_EXPORT (*evJoystickMove)(struct SGEntity* entity, SGuint joy, SGfloat* axis, size_t numaxis);
+	void SG_EXPORT (*evJoystickButton)(struct SGEntity* entity, SGuint joy, SGuint button);
+	void SG_EXPORT (*evJoystickButtonPress)(struct SGEntity* entity, SGuint joy, SGuint button);
+	void SG_EXPORT (*evJoystickButtonRelease)(struct SGEntity* entity, SGuint joy, SGuint button);
+	void SG_EXPORT (*evJoystickMove)(struct SGEntity* entity, SGuint joy, SGfloat* axis, size_t numaxis);
 
 	// networking goes here
 
@@ -471,8 +471,8 @@ typedef struct SGEntity
 	 * Parameters:
 	 * 	entity  - The entity which is receiving the message
 	 */
-	SGvoid SG_EXPORT (*evLevelStart)(struct SGEntity* entity);
-	SGvoid SG_EXPORT (*evLevelEnd)(struct SGEntity* entity);
+	void SG_EXPORT (*evLevelStart)(struct SGEntity* entity);
+	void SG_EXPORT (*evLevelEnd)(struct SGEntity* entity);
 } SGEntity;
 
 /**
@@ -480,7 +480,7 @@ typedef struct SGEntity
  */
 
 SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args);
-SGvoid SG_EXPORT _sg_evDraw(SGEntity* entity);
+void SG_EXPORT _sg_evDraw(SGEntity* entity);
 
 SGbool SG_EXPORT _sgEntityInit(void);
 SGbool SG_EXPORT _sgEntityDeinit(void);
