@@ -257,36 +257,6 @@ void SG_EXPORT sgFontPrintAlignedU8(SGFont* font, float x, float y, SGenum align
 void SG_EXPORT sgFontPrintAlignedW(SGFont* font, float x, float y, SGenum align, const wchar_t* text);
 void SG_EXPORT sgFontPrintAligned(SGFont* font, float x, float y, SGenum align, const char* text);
 
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args);
-void SG_EXPORT SG_HINT_DEPRECATED SG_HINT_PRINTF(4, 5) sgFontPrintCenteredf(SGFont* font, float x, float y, const char* format, ...);
-void SG_EXPORT SG_HINT_DEPRECATED SG_HINT_PRINTF(4, 0) sgFontPrintCenteredfv(SGFont* font, float x, float y, const char* format, va_list args);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredU32(SGFont* font, float x, float y, const SGdchar* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredU16(SGFont* font, float x, float y, const SGwchar* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredU8(SGFont* font, float x, float y, const SGchar* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCenteredW(SGFont* font, float x, float y, const wchar_t* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintCentered(SGFont* font, float x, float y, const char* text);
-
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args);
-void SG_EXPORT SG_HINT_DEPRECATED SG_HINT_PRINTF(4, 5) sgFontPrintXCenteredf(SGFont* font, float x, float y, const char* format, ...);
-void SG_EXPORT SG_HINT_DEPRECATED SG_HINT_PRINTF(4, 0) sgFontPrintXCenteredfv(SGFont* font, float x, float y, const char* format, va_list args);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredU32(SGFont* font, float x, float y, const SGdchar* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredU16(SGFont* font, float x, float y, const SGwchar* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredU8(SGFont* font, float x, float y, const SGchar* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCenteredW(SGFont* font, float x, float y, const wchar_t* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintXCentered(SGFont* font, float x, float y, const char* text);
-
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredfW(SGFont* font, float x, float y, const wchar_t* format, ...);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredfvW(SGFont* font, float x, float y, const wchar_t* format, va_list args);
-void SG_EXPORT SG_HINT_DEPRECATED SG_HINT_PRINTF(4, 5) sgFontPrintYCenteredf(SGFont* font, float x, float y, const char* format, ...);
-void SG_EXPORT SG_HINT_DEPRECATED SG_HINT_PRINTF(4, 0) sgFontPrintYCenteredfv(SGFont* font, float x, float y, const char* format, va_list args);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredU32(SGFont* font, float x, float y, const SGdchar* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredU16(SGFont* font, float x, float y, const SGwchar* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredU8(SGFont* font, float x, float y, const SGchar* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCenteredW(SGFont* font, float x, float y, const wchar_t* text);
-void SG_EXPORT SG_HINT_DEPRECATED sgFontPrintYCentered(SGFont* font, float x, float y, const char* text);
-
 /**
  * \name Get size of printed text
  *
