@@ -61,8 +61,7 @@ SGSurface* SG_EXPORT sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp
 
     if(psgmGraphicsSurfaceCreate != NULL)
         psgmGraphicsSurfaceCreate(&surface->handle, _sg_gfxHandle);
-    if(psgmGraphicsSurfaceSetData != NULL)
-        psgmGraphicsSurfaceSetData(surface->handle, width, height, bpp, data);
+    sgSurfaceSetData(surface, width, height, bpp, data);
 
     return surface;
 }
@@ -75,6 +74,30 @@ void SG_EXPORT sgSurfaceDestroy(SGSurface* surface)
     if(psgmGraphicsSurfaceDestroy != NULL)
         psgmGraphicsSurfaceDestroy(surface->handle);
     free(surface);
+}
+
+void SG_EXPORT sgSurfaceSetData(SGSurface* surface, size_t width, size_t height, SGenum bpp, void* data)
+{
+    if(psgmGraphicsSurfaceSetData)
+        psgmGraphicsSurfaceSetData(surface->handle, width, height, bpp, data);
+}
+void SG_EXPORT sgSurfaceSetSubData(SGSurface* surface, size_t x, size_t y, size_t width, size_t height, SGenum bpp, void* data)
+{
+    if(psgmGraphicsSurfaceSetSubData)
+        psgmGraphicsSurfaceSetSubData(surface->handle, x, y, width, height, bpp, data);
+}
+void* SG_EXPORT sgSurfaceGetData(SGSurface* surface)
+{
+    SGuint w, h;
+    SGenum bpp;
+    void* data = NULL;
+    if(psgmGraphicsSurfaceGetData)
+        psgmGraphicsSurfaceGetData(surface->handle, &w, &h, &bpp, &data);
+    return data;
+}
+void SG_EXPORT sgSurfaceFreeData(void* data)
+{
+    psgmGraphicsSurfaceFreeData(data);
 }
 
 void SG_EXPORT sgSurfaceDrawRads3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
@@ -242,4 +265,11 @@ SGuint SG_EXPORT sgSurfaceGetHeight(SGSurface* surface)
     if(psgmGraphicsSurfaceGetSize != NULL)
         psgmGraphicsSurfaceGetSize(surface->handle, &width, &height);
     return height;
+}
+SGenum SG_EXPORT sgSurfaceGetBPP(SGSurface* surface)
+{
+    SGenum bpp;
+    if(psgmGraphicsSurfaceGetBPP)
+        psgmGraphicsSurfaceGetBPP(surface->handle, &bpp);
+    return bpp;
 }

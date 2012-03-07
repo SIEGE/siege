@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -29,9 +29,11 @@ extern "C"
 	//SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureCreateData)(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureDestroy)(void* texture);
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureSetData)(void* texture, SGuint width, SGuint height, SGuint bpp, void* data);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsTextureSetSubData)(void* texture, SGuint x, SGuint y, SGuint width, SGuint height, SGenum bpp, void* data);
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureGetData)(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data);
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureFreeData)(void* data);
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureGetSize)(void* texture, SGuint* width, SGuint* height);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsTextureGetBPP)(void* texture, SGenum* bpp);
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsTextureDraw)(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
 
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsTextureSetWrap)(void* texture, SGenum swrap, SGenum twrap);

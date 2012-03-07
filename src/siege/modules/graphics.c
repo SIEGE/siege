@@ -43,9 +43,11 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
 	_SG_BIND(sgmGraphicsSurfaceSetTexture);
 	_SG_BIND(sgmGraphicsSurfaceGetTexture);
 	_SG_BIND(sgmGraphicsSurfaceSetData);
+    _SG_BIND(sgmGraphicsSurfaceSetSubData);
 	_SG_BIND(sgmGraphicsSurfaceGetData);
 	_SG_BIND(sgmGraphicsSurfaceFreeData);
 	_SG_BIND(sgmGraphicsSurfaceGetSize);
+    _SG_BIND(sgmGraphicsSurfaceGetBPP);
 	_SG_BIND(sgmGraphicsSurfaceDraw);
 	_SG_BIND(sgmGraphicsSurfaceSetTarget);
 	//_SG_BIND(sgmGraphicsSurfaceGetTarget);
@@ -55,9 +57,11 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
 	//_SG_BIND(sgmGraphicsTextureCreateData);
 	_SG_BIND(sgmGraphicsTextureDestroy);
 	_SG_BIND(sgmGraphicsTextureSetData);
+    _SG_BIND(sgmGraphicsTextureSetSubData);
 	_SG_BIND(sgmGraphicsTextureGetData);
 	_SG_BIND(sgmGraphicsTextureFreeData);
 	_SG_BIND(sgmGraphicsTextureGetSize);
+    _SG_BIND(sgmGraphicsTextureGetBPP);
 	_SG_BIND(sgmGraphicsTextureDraw);
 
     _SG_BIND(sgmGraphicsTextureSetWrap);

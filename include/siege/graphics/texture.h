@@ -32,6 +32,11 @@ SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp
 SGTexture* SG_EXPORT sgTextureCreate(SGuint width, SGuint height, SGenum bpp);
 void SG_EXPORT sgTextureDestroy(SGTexture* texture);
 
+void SG_EXPORT sgTextureSetData(SGTexture* texture, size_t width, size_t height, SGenum bpp, void* data);
+void SG_EXPORT sgTextureSetSubData(SGTexture* texture, size_t x, size_t y, size_t width, size_t height, SGenum bpp, void* data);
+void* SG_EXPORT sgTextureGetData(SGTexture* texture);
+void SG_EXPORT sgTextureFreeData(void* data);
+
 void SG_EXPORT sgTextureDrawRads3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
 void SG_EXPORT sgTextureDrawDegs3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
 void SG_EXPORT sgTextureDrawRads2f2f2f1f(SGTexture* texture, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle);
@@ -58,6 +63,7 @@ void SG_EXPORT sgTextureSetInterpolation(SGTexture* texture, SGenum interp);
 void SG_EXPORT sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height);
 SGuint SG_EXPORT sgTextureGetWidth(SGTexture* texture);
 SGuint SG_EXPORT sgTextureGetHeight(SGTexture* texture);
+SGenum SG_EXPORT sgTextureGetBPP(SGTexture* texture);
 
 #ifdef __cplusplus
 }

@@ -51,8 +51,7 @@ SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp
 
     if(psgmGraphicsTextureCreate != NULL)
         psgmGraphicsTextureCreate(&texture->handle, _sg_gfxHandle);
-    if(psgmGraphicsTextureSetData != NULL)
-        psgmGraphicsTextureSetData(texture->handle, width, height, bpp, data);
+    sgTextureSetData(texture, width, height, bpp, data);
 
     return texture;
 }
@@ -68,6 +67,30 @@ void SG_EXPORT sgTextureDestroy(SGTexture* texture)
     if(psgmGraphicsTextureDestroy != NULL)
         psgmGraphicsTextureDestroy(texture->handle);
     free(texture);
+}
+
+void SG_EXPORT sgTextureSetData(SGTexture* texture, size_t width, size_t height, SGenum bpp, void* data)
+{
+    if(psgmGraphicsTextureSetData)
+        psgmGraphicsTextureSetData(texture->handle, width, height, bpp, data);
+}
+void SG_EXPORT sgTextureSetSubData(SGTexture* texture, size_t x, size_t y, size_t width, size_t height, SGenum bpp, void* data)
+{
+    if(psgmGraphicsTextureSetSubData)
+        psgmGraphicsTextureSetSubData(texture->handle, x, y, width, height, bpp, data);
+}
+void* SG_EXPORT sgTextureGetData(SGTexture* texture)
+{
+    SGuint w, h;
+    SGenum bpp;
+    void* data = NULL;
+    if(psgmGraphicsTextureGetData)
+        psgmGraphicsTextureGetData(texture->handle, &w, &h, &bpp, &data);
+    return data;
+}
+void SG_EXPORT sgTextureFreeData(void* data)
+{
+    psgmGraphicsTextureFreeData(data);
 }
 
 void SG_EXPORT sgTextureDrawRads3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
@@ -189,4 +212,11 @@ SGuint SG_EXPORT sgTextureGetHeight(SGTexture* texture)
     if(psgmGraphicsTextureGetSize != NULL)
         psgmGraphicsTextureGetSize(texture->handle, &width, &height);
     return height;
+}
+SGenum SG_EXPORT sgTextureGetBPP(SGTexture* texture)
+{
+    SGenum bpp;
+    if(psgmGraphicsTextureGetBPP)
+        psgmGraphicsTextureGetBPP(texture->handle, &bpp);
+    return bpp;
 }

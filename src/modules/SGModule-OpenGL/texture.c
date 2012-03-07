@@ -115,6 +115,55 @@ SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
 
     return SG_OK;
 }
+SGenum SG_EXPORT sgmGraphicsTextureSetSubData(void* texture, SGuint x, SGuint y, SGuint width, SGuint height, SGenum bpp, void* data)
+{
+    if(texture == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+
+    TextureData* tdata = texture;
+    glBindTexture(GL_TEXTURE_2D, tdata->texid);
+
+    GLuint glformat;
+    GLuint gltype;
+    SGubyte bypp;
+    switch(bpp)
+    {
+        case 8:
+            glformat = GL_RGB;
+            gltype = GL_UNSIGNED_BYTE_3_3_2;
+            bypp = 1;
+            break;
+        case 15:
+            glformat = GL_RGB;
+            gltype = GL_UNSIGNED_SHORT_5_5_5_1;
+            bypp = 2;
+            break;
+        case 16:
+            glformat = GL_RGB;
+            gltype = GL_UNSIGNED_SHORT_5_6_5;
+            bypp = 2;
+            break;
+        case 24:
+            glformat = GL_RGB;
+            gltype = GL_UNSIGNED_BYTE;
+            bypp = 3;
+            break;
+        case 32:
+            glformat = GL_RGBA;
+            gltype = GL_UNSIGNED_BYTE;
+            bypp = 4;
+            break;
+        default:
+            return SG_INVALID_VALUE;
+    }
+
+    size_t i;
+    if(data)
+        for(i = 0; i < height; i++)
+            glTexSubImage2D(GL_TEXTURE_2D, 0, x, tdata->height - y - i - 1, width, 1, glformat, gltype, ((char*)data) + (i * width) * bypp);
+
+    return SG_OK;
+}
 SGuint SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data)
 {
 	if(texture == NULL)
@@ -146,6 +195,15 @@ SGuint SG_EXPORT sgmGraphicsTextureGetSize(void* texture, SGuint* width, SGuint*
     TextureData* tdata = (TextureData*)texture;
     *width = tdata->width;
     *height = tdata->height;
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmGraphicsTextureGetBPP(void* texture, SGenum* bpp)
+{
+    if(!texture)
+        return SG_OK; // SG_INVALID_VALUE
+
+    TextureData* tdata = (TextureData*)texture;
+    *bpp = tdata->bpp;
     return SG_OK;
 }
 

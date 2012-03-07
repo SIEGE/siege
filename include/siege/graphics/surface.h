@@ -39,6 +39,11 @@ SGSurface* SG_EXPORT sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp
 SGSurface* SG_EXPORT sgSurfaceCreate(SGuint width, SGuint height, SGenum bpp);
 void SG_EXPORT sgSurfaceDestroy(SGSurface* surface);
 
+void SG_EXPORT sgSurfaceSetData(SGSurface* surface, size_t width, size_t height, SGenum bpp, void* data);
+void SG_EXPORT sgSurfaceSetSubData(SGSurface* surface, size_t x, size_t y, size_t width, size_t height, SGenum bpp, void* data);
+void* SG_EXPORT sgSurfaceGetData(SGSurface* surface);
+void SG_EXPORT sgSurfaceFreeData(void* data);
+
 void SG_EXPORT sgSurfaceDrawRads3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
 void SG_EXPORT sgSurfaceDrawDegs3f2f2f1f(SGSurface* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
 void SG_EXPORT sgSurfaceDrawRads2f2f2f1f(SGSurface* surface, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle);
@@ -74,6 +79,7 @@ void SG_EXPORT sgSurfaceClear(SGSurface* surface);
 void SG_EXPORT sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height);
 SGuint SG_EXPORT sgSurfaceGetWidth(SGSurface* surface);
 SGuint SG_EXPORT sgSurfaceGetHeight(SGSurface* surface);
+SGenum SG_EXPORT sgSurfaceGetBPP(SGSurface* surface);
 
 #ifdef __cplusplus
 }
