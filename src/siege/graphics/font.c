@@ -415,7 +415,7 @@ void SG_EXPORT sgFontPrintAlignedU32(SGFont* font, float x, float y, SGenum alig
     {
         case SG_ALIGN_CENTER: x += ox; break;
         case SG_ALIGN_LEFT: break;
-        case SG_ALIGN_RIGHT: x += sx; break;
+        case SG_ALIGN_RIGHT: x += ox - sx / 2.0; break;
     }
     switch(align & SG_ALIGN_VMASK)
     {
