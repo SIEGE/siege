@@ -137,7 +137,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 5
-#define SG_VERSION_PATCH 3
+#define SG_VERSION_PATCH 4
 /**
  * \brief Version string
  *
@@ -166,7 +166,7 @@ typedef double SGdouble;
 #	elif defined(_MSC_VER)
 		union _SG_MSVC_NAN_HACK
 		{
-			unsigned uint8_t bytes[4];
+			unsigned char bytes[4];
 			float value;
 		} ;
 		/// \todo Get this to the proper value and test
@@ -188,7 +188,7 @@ typedef double SGdouble;
 #	elif defined(_MSC_VER)
 		union _SG_MSVC_INF_HACK
 		{
-			unsigned uint8_t bytes[4];
+			unsigned char bytes[4];
 			float value;
 		} ;
 		static union _SG_MSVC_INF_HACK _sg_msvc_infHack = {{0x00, 0x00, 0x80, 0x7F}};

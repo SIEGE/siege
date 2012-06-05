@@ -20,6 +20,7 @@
 #define __SIEGE_CORE_ENTITY_H__
 
 #include "../common.h"
+#include "../util/plist.h"
 #include "event.h"
 
 #ifdef __cplusplus
@@ -62,6 +63,15 @@ typedef struct SGEntity
 	 */
 	SGbool pausable;
 	/**
+	 * Variable: node
+	 *
+	 * Handle to the linked list holding the entity.
+	 *
+	 * Warning:
+	 *  For internal use only.
+	 */
+	SGPListNode* node;
+	/**
 	 * Variable: event
 	 *
 	 * Entity event handle.
@@ -70,7 +80,7 @@ typedef struct SGEntity
 	 *
 	 * Warning:
 	 *	For internal use only.
-	*/
+	 */
 	SGEvent* event;
 	/**
 	 * Variable: data

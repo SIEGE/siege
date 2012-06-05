@@ -279,7 +279,7 @@ SGEntity* SG_EXPORT sgEntityCreate(float priority)
 
 	entity->evDraw = _sg_evDraw;
 
-	sgPListInsertPriority(_sg_cList, priority, entity);
+	entity->node = sgPListInsertPriority(_sg_cList, priority, entity);
 	return entity;
 }
 void SG_EXPORT sgEntityDestroy(SGEntity* entity)
@@ -290,7 +290,7 @@ void SG_EXPORT sgEntityDestroy(SGEntity* entity)
 	if(entity->lcDestroy != NULL)
 		entity->lcDestroy(entity);
 
-	sgListRemoveItem(_sg_cList, entity);
+	sgListRemoveNode(_sg_cList, entity->node);
 	sgEventDestroy(entity->event);
 
 	free(entity);
