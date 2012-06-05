@@ -77,7 +77,7 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
 {
     switch(key)
     {
-        case SG_KEYBOARD_KEY_F1:
+        case SG_KEY_F1:
             overlayDBG = !overlayDBG;
             break;
 
@@ -181,7 +181,7 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
     poly->nump = nump;
 
 
-    poly->entity = sgEntityCreate(0.0);
+    poly->entity = sgEntityCreate();
     poly->entity->data = poly;
     poly->entity->lcDestroy = destroyPolyEntity;
     poly->entity->lcCollisionOneBegin = lcPolyCollisionOneBegin;
@@ -329,7 +329,7 @@ Light* createLight(SGVec2 pos, SGColor color, float radius, float angle, float a
     light->angle = angle * SG_PI / 180.0;
     light->arc = arc * SG_PI / 180.0;
 
-    light->entity = sgEntityCreate(0.0);
+    light->entity = sgEntityCreate();
     light->entity->data = light;
     light->entity->lcDestroy = destroyLightEntity;
     light->entity->evDraw = drawLightEntity;
@@ -459,7 +459,7 @@ int main(void)
 	sgPhysicsSpaceSetIterations(space, 10);
 	sgPhysicsSpaceSetDamping(space, 0.75);
 
-    SGEntity* handler = sgEntityCreate(0.0);
+    SGEntity* handler = sgEntityCreate();
     handler->evMouseButtonPress = evMouseButtonPress;
     handler->evKeyboardKeyPress = evKeyboardKeyPress;
 

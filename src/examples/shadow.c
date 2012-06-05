@@ -70,7 +70,7 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
 {
     switch(key)
     {
-        case SG_KEYBOARD_KEY_F1:
+        case SG_KEY_F1:
             overlayDBG = !overlayDBG;
             break;
 
@@ -96,7 +96,7 @@ int main(void)
     space = sgLightSpaceCreate();
     sgLightSpaceSetAmbience4f(space, 0.125, 0.0625, 0.0, 1.0);
 
-    SGEntity* handler = sgEntityCreate(0.0);
+    SGEntity* handler = sgEntityCreate();
     handler->evTick = evTick;
     handler->evDraw = evDraw;
     handler->evKeyboardKeyPress = evKeyboardKeyPress;

@@ -25,7 +25,7 @@
 
 SGbool SG_EXPORT _sgEntityInit(void)
 {
-	_sg_cList = sgPListCreate(SG_PLIST_HFO);
+	_sg_cList = sgListCreate();
 	if(_sg_cList != NULL)
 		return SG_TRUE;
 	return SG_FALSE;
@@ -261,13 +261,13 @@ void SG_EXPORT _sg_evDraw(SGEntity* entity)
 		sgEntityDraw(entity);
 }
 
-SGEntity* SG_EXPORT sgEntityCreate(float priority)
+SGEntity* SG_EXPORT sgEntityCreate(void)
 {
 	SGEntity* entity = malloc(sizeof(SGEntity));
 	memset(entity, 0, sizeof(SGEntity));
 	entity->active = SG_TRUE;
 	entity->pausable = SG_TRUE;
-	entity->event = sgEventCreate(priority, SG_EV_INTERNAL, entity, (SGEventCall*)_sg_evCall);
+	entity->event = sgEventCreate(0.0, SG_EV_INTERNAL, entity, (SGEventCall*)_sg_evCall);
 
 	entity->visible = SG_TRUE;
 	entity->x = 0.0;
@@ -279,7 +279,7 @@ SGEntity* SG_EXPORT sgEntityCreate(float priority)
 
 	entity->evDraw = _sg_evDraw;
 
-	entity->node = sgPListInsertPriority(_sg_cList, priority, entity);
+	entity->node = sgListAppend(_sg_cList, entity);
 	return entity;
 }
 void SG_EXPORT sgEntityDestroy(SGEntity* entity)

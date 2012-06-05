@@ -140,7 +140,7 @@ typedef SGbool SG_EXPORT (SGEventCall)(void* data, va_list args);
 
 #ifdef SG_BUILD_LIBRARY
 SGPList* _sg_evList;
-SGPList* _sg_cList;
+SGList* _sg_cList;
 SGbool _sg_evStop;
 #endif // SG_BUILD_LIBRARY
 
@@ -152,6 +152,8 @@ typedef struct SGEvent
 	/**
 	 * \private
 	 * \brief The event's priority
+     *
+     * \todo Should events have priorities?
 	 */
 	float priority;
 	/**

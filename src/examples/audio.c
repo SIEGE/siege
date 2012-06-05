@@ -43,7 +43,7 @@ int main(void)
     srcBoom = sgAudioSourceCreate(0.0, 1.0, 1.0, SG_FALSE);
     sgAudioSourceQueueBuffer(srcBoom, bufBoom);
 
-    SGEntity* handle = sgEntityCreate(0.0);
+    SGEntity* handle = sgEntityCreate();
     handle->evMouseButtonLeftPress = evMouseButtonLeftPress;
 
 	while(sgLoop(NULL))

@@ -17,7 +17,7 @@ int main(void)
     SGint mx, my;
     while(sgLoop(NULL))
     {
-        if(sgKeyboardKeyPress(SG_KEYBOARD_KEY_F1))
+        if(sgKeyboardKeyPress(SG_KEY_F1))
             sgSurfaceClear(surf);
 
         sgMouseGetPos(&mx, &my);

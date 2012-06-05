@@ -89,7 +89,7 @@ SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density,
                        w / 2.0,  h / 2.0,
                        w / 2.0, -h / 2.0};
 
-    SGEntity* entity = sgEntityCreate(0.0);
+    SGEntity* entity = sgEntityCreate();
 
     Box* box = calloc(1, sizeof(Box));
     entity->data = box;
@@ -174,7 +174,7 @@ void boxDrawDBG(SGEntity* entity)
 
 void evKeyboardKeyPress(SGEntity* entity, SGenum key)
 {
-    if(key == SG_KEYBOARD_KEY_F1)
+    if(key == SG_KEY_F1)
         overlay = !overlay;
 }
 void evKeyboardKeyRepeat(SGEntity* entity, SGenum key)
@@ -223,7 +223,7 @@ int main(void)
     for(i = 224; i < 448; i += 64)
         createFloor(sprHazardWall, i, 320);
 
-    controller = sgEntityCreate(0.0);
+    controller = sgEntityCreate();
     controller->evMouseButtonLeftPress = evMouseButtonLeftPress;
     controller->evMouseButtonRightPress = evMouseButtonRightPress;
     controller->evKeyboardKeyPress = evKeyboardKeyPress;

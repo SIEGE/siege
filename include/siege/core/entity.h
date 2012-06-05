@@ -20,7 +20,7 @@
 #define __SIEGE_CORE_ENTITY_H__
 
 #include "../common.h"
-#include "../util/plist.h"
+#include "../util/list.h"
 #include "event.h"
 
 #ifdef __cplusplus
@@ -500,13 +500,10 @@ SGbool SG_EXPORT _sgEntityDeinit(void);
  *
  * Create a new entity.
  *
- * Parameters:
- * 	priority - The entity's priority - higher priority entities get their events called first
- *
  * Returns:
  * 	The newly created entity if successful, NULL otherwise
  */
-SGEntity* SG_EXPORT sgEntityCreate(float priority);
+SGEntity* SG_EXPORT sgEntityCreate(void);
 /**
  * Function: sgEntityDestroy
  *

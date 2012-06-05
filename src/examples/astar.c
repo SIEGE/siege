@@ -155,7 +155,7 @@ void recreateGrid(SGbool copy, SGbool refont)
 
 void SG_EXPORT evKeyboardKeyPress(SGEntity* entity, SGenum key)
 {
-	if(key == SG_KEYBOARD_KEY_F1)
+	if(key == SG_KEY_F1)
 	{
 		instructions = !instructions;
 	}
@@ -170,7 +170,7 @@ void SG_EXPORT evKeyboardKeyPress(SGEntity* entity, SGenum key)
 		scores = (scores != 'G') ? 'G' : 0;
 	else if(key == 'H')
 		scores = (scores != 'H') ? 'H' : 0;
-	else if(key == '+' || key == SG_KEYBOARD_KEY_KP_ADD)
+	else if(key == '+' || key == SG_KEY_KP_ADD)
 	{
 		if(cellw < 128)
 		{
@@ -179,7 +179,7 @@ void SG_EXPORT evKeyboardKeyPress(SGEntity* entity, SGenum key)
 			recreateGrid(SG_FALSE, SG_TRUE);
 		}
 	}
-	else if(key == '-' || key == SG_KEYBOARD_KEY_KP_SUBTRACT)
+	else if(key == '-' || key == SG_KEY_KP_SUBTRACT)
 	{
 		if(cellw > 8)
 		{
@@ -266,7 +266,7 @@ int main(void)
 
 	SGint mx, my;
 
-	SGEntity* handler = sgEntityCreate(1.0);
+	SGEntity* handler = sgEntityCreate();
 	handler->evKeyboardKeyPress = evKeyboardKeyPress;
 	handler->evKeyboardKeyRepeat = evKeyboardKeyPress;
 

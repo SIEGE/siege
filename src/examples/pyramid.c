@@ -101,7 +101,7 @@ SGEntity* createBox(float x, float y, float angle, float length, float width, fl
                        w / 2.0,  h / 2.0,
                        w / 2.0, -h / 2.0};
 
-    SGEntity* entity = sgEntityCreate(0.0);
+    SGEntity* entity = sgEntityCreate();
 
     Box* box = malloc(sizeof(Box));
     box->length = length;
@@ -151,7 +151,7 @@ void boxDrawDBG(SGEntity* entity)
 
 void evKeyboardKeyPress(SGEntity* entity, SGenum key)
 {
-    if(key == SG_KEYBOARD_KEY_F1)
+    if(key == SG_KEY_F1)
         overlay = !overlay;
 }
 void evKeyboardKeyRepeat(SGEntity* entity, SGenum key)
@@ -233,7 +233,7 @@ int main(void)
 	sgPhysicsSpaceSetDamping(space, 1.0);
     sgPhysicsSpaceSetGravity(space, 0.0, 9.81/*0.5*/);
 
-    controller = sgEntityCreate(0.0);
+    controller = sgEntityCreate();
     controller->evMouseButtonLeftPress = evMouseButtonLeftPress;
     controller->evMouseButtonRightPress = evMouseButtonRightPress;
     controller->evMouseButtonMiddlePress = evMouseButtonMiddlePress;
