@@ -15,7 +15,7 @@
 #define SG_BUILD_LIBRARY
 #include <siege/audio/source.h>
 #include <siege/modules/audio.h>
-#include <siege/util/plist.h>
+#include <siege/util/list.h> // plist
 
 #include <stdlib.h>
 #include <math.h>
