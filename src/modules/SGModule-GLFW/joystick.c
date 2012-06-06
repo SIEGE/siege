@@ -13,12 +13,20 @@
 */
 
 #include "main.h"
+#include "window.h"
 #include "joystick.h"
 
 #include <stdio.h>
 
 #include <stdlib.h>
 #include <string.h>
+
+void _swapPtr(void** a, void** b)
+{
+    void* tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
 
 SGuint SG_EXPORT sgmCoreJoystickGetNumJoysticks(void* window, size_t* numjoys)
 {
@@ -39,13 +47,18 @@ SGuint SG_EXPORT sgmCoreJoystickCreate(void** joystick, void* window, SGuint id)
     Joystick** cjoystick = (Joystick**)joystick;
 
     *cjoystick = malloc(sizeof(Joystick));
-    (*cjoystick)->id = GLFW_JOYSTICK_1 + id - 1;
+    (*cjoystick)->id = GLFW_JOYSTICK_1 + id;
     (*cjoystick)->active = glfwGetJoystickParam((*cjoystick)->id, GLFW_PRESENT);
 
     (*cjoystick)->numaxis = glfwGetJoystickParam((*cjoystick)->id, GLFW_AXES);
+    (*cjoystick)->paxis = calloc((*cjoystick)->numaxis, sizeof(float));
     (*cjoystick)->axis = calloc((*cjoystick)->numaxis, sizeof(float));
     (*cjoystick)->numbuttons = glfwGetJoystickParam((*cjoystick)->id, GLFW_BUTTONS);
+    (*cjoystick)->pbuttons = calloc((*cjoystick)->numbuttons, sizeof(SGbool));
     (*cjoystick)->buttons = calloc((*cjoystick)->numbuttons, sizeof(SGbool));
+
+    joylist = realloc(joylist, (joylen + 1) * sizeof(Joystick*));
+    joylist[joylen++] = *cjoystick;
 
     return SG_OK;
 }
@@ -55,7 +68,24 @@ SGuint SG_EXPORT sgmCoreJoystickDestroy(void* joystick)
         return SG_OK; // SG_INVALID_VALUE
     Joystick* cjoystick = (Joystick*)joystick;
 
+    size_t i;
+    for(i = 0; i < joylen; i++)
+    {
+        if(joylist[i] == cjoystick)
+        {
+            memmove(joylist + i, joylist + i + 1, (joylen - i - 1) * sizeof(Joystick));
+            if(!--joylen)
+            {
+                free(joylist);
+                joylist = NULL;
+            }
+            break;
+        }
+    }
+
+    free(cjoystick->paxis);
     free(cjoystick->axis);
+    free(cjoystick->pbuttons);
     free(cjoystick->buttons);
     free(cjoystick);
 
@@ -66,7 +96,7 @@ SGuint SG_EXPORT sgmCoreJoystickGetID(void* joystick, SGuint* id)
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
     Joystick* cjoystick = (Joystick*)joystick;
-    *id = cjoystick->id - GLFW_JOYSTICK_1 + 1;
+    *id = cjoystick->id - GLFW_JOYSTICK_1;
 
     return SG_OK;
 }
@@ -118,7 +148,7 @@ SGuint SG_EXPORT sgmCoreJoystickSetCallbacks(void* joystick, SGCoreJoystickCallb
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    // TODO
+    main_window->cbJoystick = callbacks;
 
     return SG_OK; // SG_INVALID_VALUE
 }

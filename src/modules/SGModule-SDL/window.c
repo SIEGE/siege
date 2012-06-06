@@ -14,7 +14,7 @@
 
 #include "main.h"
 #include "window.h"
-//#include "joystick.h"
+#include "joystick.h"
 #include "keyboard.h"
 #include "mouse.h"
 
@@ -265,6 +265,14 @@ SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
             case SDL_MOUSEMOTION:
                 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
                 mouseMove(event.motion.x, event.motion.y);
+                break;
+
+            case SDL_JOYAXISMOTION:
+            case SDL_JOYBALLMOTION:
+            case SDL_JOYHATMOTION:
+                break;
+            case SDL_JOYBUTTONDOWN:
+            case SDL_JOYBUTTONUP:
                 break;
 
             case SDL_QUIT:

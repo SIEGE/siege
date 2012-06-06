@@ -26,6 +26,9 @@ void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
     if(psgmCoreJoystickGetID != NULL)
         psgmCoreJoystickGetID(joystick, &joy);
 
+    printf("BUTTON %u - %u\n", joy, button);
+    return;
+
     SGbool pressed = _sg_joyJoys[joy]->bcurr[button] && !_sg_joyJoys[joy]->bprev[button];
 
     _sg_joyJoys[joy]->bprev[button] = _sg_joyJoys[joy]->bcurr[button];
@@ -100,13 +103,18 @@ _SGJoystick* SG_EXPORT _sgJoystickCreate(SGuint id)
     if(psgmCoreJoystickGetNumButtons != NULL)
         psgmCoreJoystickGetNumButtons(joy->handle, &joy->numbuttons);
     joy->bprev = malloc(joy->numbuttons * sizeof(SGbool));
+    memset(joy->bprev, 0, joy->numbuttons * sizeof(SGbool));
     joy->bcurr = malloc(joy->numbuttons * sizeof(SGbool));
+    memset(joy->bcurr, 0, joy->numbuttons * sizeof(SGbool));
 
     if(psgmCoreJoystickGetNumAxis != NULL)
         psgmCoreJoystickGetNumAxis(joy->handle, &joy->numaxis);
-    joy->aprev = malloc(joy->numaxis * sizeof(SGbool));
-    joy->acurr = malloc(joy->numaxis * sizeof(SGbool));
-    joy->adelt = malloc(joy->numaxis * sizeof(SGbool));
+    joy->aprev = malloc(joy->numaxis * sizeof(float));
+    joy->acurr = malloc(joy->numaxis * sizeof(float));
+    joy->adelt = malloc(joy->numaxis * sizeof(float));
+    size_t i;
+    for(i = 0; i < joy->numaxis; i++)
+        joy->aprev[i] = joy->acurr[i] = joy->adelt[i] = 0.0;
 
     return joy;
 }
@@ -115,16 +123,31 @@ void SG_EXPORT _sgJoystickDestroy(_SGJoystick* joy)
     if(joy == NULL)
         return;
 
+    if(psgmCoreJoystickDestroy != NULL)
+        psgmCoreJoystickDestroy(joy->handle);
+
     free(joy->aprev);
     free(joy->acurr);
     free(joy->adelt);
     free(joy->bprev);
     free(joy->bcurr);
 
-    if(psgmCoreJoystickDestroy != NULL)
-        psgmCoreJoystickDestroy(joy->handle);
-
     free(joy);
+}
+
+size_t SG_EXPORT sgJoystickGetNumJoysticks(void)
+{
+    return _sg_joyNum;
+}
+size_t SG_EXPORT sgJoystickGetNumButtons(SGuint joy)
+{
+    if(joy > _sg_joyNum) return 0;
+    return _sg_joyJoys[joy]->numbuttons;
+}
+size_t SG_EXPORT sgJoystickGetNumAxis(SGuint joy)
+{
+    if(joy > _sg_joyNum) return 0;
+    return _sg_joyJoys[joy]->numaxis;
 }
 
 SGbool SG_EXPORT sgJoystickGetButtonPrev(SGuint joy, SGuint button)

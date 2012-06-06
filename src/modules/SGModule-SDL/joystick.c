@@ -13,6 +13,7 @@
 */
 
 #include "main.h"
+#include "window.h"
 #include "joystick.h"
 
 #include <stdio.h>
@@ -107,8 +108,8 @@ SGuint SG_EXPORT sgmCoreJoystickSetCallbacks(void* joystick, SGCoreJoystickCallb
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    // TODO
+    main_window->cbJoystick = callbacks;
 
-    return SG_OK; // SG_INVALID_VALUE
+    return SG_OK;
 }
 //SGuint SG_EXPORT sgmCoreJoystickGetCallbacks(void* joystick, SGCoreJoystickCallbacks** callbacks);

@@ -38,6 +38,7 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     if(!glfwInit())
         return SG_UNKNOWN_ERROR;
     glfwEnable(GLFW_KEY_REPEAT);
+    glfwDisable(GLFW_AUTO_POLL_EVENTS);
 
     return SG_OK;
 }

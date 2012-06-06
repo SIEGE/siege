@@ -53,6 +53,10 @@ SGbool SG_EXPORT _sgJoystickDeinit(void);
 _SGJoystick* SG_EXPORT _sgJoystickCreate(SGuint id);
 void SG_EXPORT _sgJoystickDestroy(_SGJoystick* joy);
 
+size_t SG_EXPORT sgJoystickGetNumJoysticks(void);
+size_t SG_EXPORT sgJoystickGetNumButtons(SGuint joy);
+size_t SG_EXPORT sgJoystickGetNumAxis(SGuint joy);
+
 SGbool SG_EXPORT sgJoystickGetButtonPrev(SGuint joy, SGuint button);
 SGbool SG_EXPORT sgJoystickGetButton(SGuint joy, SGuint button);
 SGbool SG_EXPORT sgJoystickGetButtonPress(SGuint joy, SGuint button);

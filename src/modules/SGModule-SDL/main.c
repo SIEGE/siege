@@ -41,6 +41,7 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 
     if(SDL_Init(SDL_INIT_EVERYTHING))
         return SG_UNKNOWN_ERROR;
+    SDL_JoystickEventState(SDL_ENABLE);
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 

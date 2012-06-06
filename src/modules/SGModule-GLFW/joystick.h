@@ -21,9 +21,15 @@ typedef struct Joystick
     SGbool active;
 
     SGuint numaxis;
+    float* paxis;
     float* axis;
     SGuint numbuttons;
+    SGbool* pbuttons;
     SGbool* buttons;
 } Joystick;
+size_t joylen;
+Joystick** joylist;
+
+void _swapPtr(void** a, void** b);
 
 #endif // __JOYSTICK_H__
