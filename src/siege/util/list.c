@@ -21,24 +21,19 @@
 SGList* SG_EXPORT sgListCreate(void)
 {
 	SGList* list = malloc(sizeof(SGList));
-	if(list == NULL)
-		return NULL;
+    if(!list) return NULL;
+
 	list->first = NULL;
 	list->last = NULL;
-	list->internal = NULL;
-	list->internalFree = NULL;
 	return list;
 }
 void SG_EXPORT sgListDestroy(SGList* list)
 {
-	if(list == NULL)
-		return;
+    if(!list) return;
 
 	while(list->first != NULL)
 		sgListRemoveNode(list, list->first);
 
-	if(list->internalFree != NULL)
-		list->internalFree(list->internal);
 	free(list);
 }
 
@@ -80,12 +75,10 @@ SGListNode* SG_EXPORT sgListFindIndex(SGList* list, size_t index)
 
 SGListNode* SG_EXPORT sgListInsertNode(SGList* list, SGListNode* after, void* item)
 {
-	if(list == NULL)
-		return NULL;
+    if(!list) return NULL;
 
 	SGListNode* node = malloc(sizeof(SGListNode));
-	if(node == NULL)
-		return NULL;
+    if(!node) return NULL;
 
 	node->list = list;
 
@@ -113,8 +106,6 @@ SGListNode* SG_EXPORT sgListInsertNode(SGList* list, SGListNode* after, void* it
 	}
 
 	node->item = item;
-	node->internal = NULL;
-	node->internalFree = NULL;
 	return node;
 }
 SGListNode* SG_EXPORT sgListInsertItem(SGList* list, void* after, void* item)
@@ -142,10 +133,8 @@ SGListNode* SG_EXPORT sgListAppend(SGList* list, void* item)
 
 void SG_EXPORT sgListRemoveNode(SGList* list, SGListNode* node)
 {
-	if(list == NULL)
-		return;
-	if(node == NULL)
-		return;
+    if(!list) return;
+    if(!node) return;
 
 	if(list->first == node)
 		list->first = node->next;
@@ -157,8 +146,6 @@ void SG_EXPORT sgListRemoveNode(SGList* list, SGListNode* node)
 	if(node->next != NULL)
 		node->next->prev = node->prev;
 
-	if(node->internalFree != NULL)
-		node->internalFree(node->internal);
 	free(node);
 }
 void SG_EXPORT sgListRemoveItem(SGList* list, void* item)

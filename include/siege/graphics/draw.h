@@ -22,7 +22,7 @@
 #define __SIEGE_GRAPHICS_DRAW_H__
 
 #include "../common.h"
-#include "../util/plist.h"
+#include "../util/list.h"
 #include "texture.h"
 
 #ifdef __cplusplus

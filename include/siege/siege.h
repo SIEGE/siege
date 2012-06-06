@@ -70,7 +70,6 @@
 #include "util/link.h"
 #include "util/list.h"
 #include "util/matrix.h"
-#include "util/plist.h"
 #include "util/rand.h"
 #include "util/string.h"
 #include "util/time.h"

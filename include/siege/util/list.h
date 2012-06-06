@@ -30,18 +30,12 @@ typedef struct SGListNode
 	struct SGListNode* prev;
 	struct SGListNode* next;
 	void* item;
-
-	void* internal;
-	void (*internalFree)(void*);
 } SGListNode;
 
 typedef struct SGList
 {
 	struct SGListNode* first;
 	struct SGListNode* last;
-
-	void* internal;
-	void (*internalFree)(void*);
 } SGList;
 
 SGList* SG_EXPORT sgListCreate(void);
