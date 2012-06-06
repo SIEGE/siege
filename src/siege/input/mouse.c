@@ -24,7 +24,7 @@ void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
 {
     if(button - 1 >= _sg_mouseButtonNum)
         return;
-    _sg_mouseButtonPrev[button - 1] = _sg_mouseButtonCurr[button - 1];
+    //_sg_mouseButtonPrev[button - 1] = !down; //_sg_mouseButtonCurr[button - 1];
     _sg_mouseButtonCurr[button - 1] = down;
 
     SGbool pressed = sgMouseGetButtonPress(button);
@@ -115,6 +115,8 @@ void SG_EXPORT _sgMouseUpdate(void)
 			sgEventCall(SG_EV_INTERNAL, numevents, events[0], i + 1, events[1]);
 		}
 	}
+    memcpy(_sg_mouseButtonPrev, _sg_mouseButtonBuff, _sg_mouseButtonNum * sizeof(SGbool));
+    memcpy(_sg_mouseButtonBuff, _sg_mouseButtonCurr, _sg_mouseButtonNum * sizeof(SGbool));
 }
 
 SGbool SG_EXPORT _sgMouseInit(void)
@@ -134,6 +136,8 @@ SGbool SG_EXPORT _sgMouseInit(void)
         psgmCoreMouseGetNumButtons(_sg_mouseHandle, &_sg_mouseButtonNum);
     _sg_mouseButtonPrev = malloc(_sg_mouseButtonNum * sizeof(SGbool));
     memset(_sg_mouseButtonPrev, 0, _sg_mouseButtonNum * sizeof(SGbool));
+    _sg_mouseButtonBuff = malloc(_sg_mouseButtonNum * sizeof(SGbool));
+    memset(_sg_mouseButtonBuff, 0, _sg_mouseButtonNum * sizeof(SGbool));
     _sg_mouseButtonCurr = malloc(_sg_mouseButtonNum * sizeof(SGbool));
     memset(_sg_mouseButtonCurr, 0, _sg_mouseButtonNum * sizeof(SGbool));
 
@@ -149,6 +153,7 @@ SGbool SG_EXPORT _sgMouseInit(void)
 SGbool SG_EXPORT _sgMouseDeinit(void)
 {
     free(_sg_mouseButtonPrev);
+    free(_sg_mouseButtonBuff);
     free(_sg_mouseButtonCurr);
     _sg_mouseButtonNum = 0;
 

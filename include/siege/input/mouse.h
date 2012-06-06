@@ -24,6 +24,7 @@ extern "C"
 
 #ifdef SG_BUILD_LIBRARY
 SGbool* _sg_mouseButtonPrev;
+SGbool* _sg_mouseButtonBuff;
 SGbool* _sg_mouseButtonCurr;
 size_t _sg_mouseButtonNum;
 SGint _sg_mouseXPrev;
