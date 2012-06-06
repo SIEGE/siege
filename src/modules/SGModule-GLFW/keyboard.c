@@ -57,31 +57,19 @@ SGuint keysSIEGE[] = {
 
 SGuint keyGLFWtoSIEGE(int key)
 {
-    SGuint sgkey = key;
-
-    int i;
-    for(i = 0; keysGLFW[i] != 0; i++)
+    size_t i;
+    for(i = 0; keysGLFW[i]; i++)
         if(keysGLFW[i] == key)
-        {
-            sgkey = keysSIEGE[i];
-            break;
-        }
-
-    return sgkey;
+            return keysSIEGE[i];
+    return key;
 }
 int keySIEGEtoGLFW(SGuint key)
 {
-    int glfwkey = key;
-
-    int i;
-    for(i = 0; keysSIEGE[i] != 0; i++)
+    size_t i;
+    for(i = 0; keysSIEGE[i]; i++)
         if(keysSIEGE[i] == key)
-        {
-            glfwkey = keysGLFW[i];
-            break;
-        }
-
-    return glfwkey;
+            return keysGLFW[i];
+    return key;
 }
 
 void GLFWCALL keyboardKey(int key, int down)
@@ -126,7 +114,7 @@ SGuint SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallb
         return SG_OK; // SG_INVALID_VALUE
 
     if(callbacks == NULL)
-        main_window->cbKeyboard = NULL; // TODO: check if memcpy handles NULL gracefully (if it does, remove this if/else)
+        main_window->cbKeyboard = NULL;
     else
         main_window->cbKeyboard = memcpy(main_window->cbKeyboard, callbacks, sizeof(SGCoreKeyboardCallbacks));
 

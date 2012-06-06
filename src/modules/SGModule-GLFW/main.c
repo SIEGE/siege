@@ -37,6 +37,7 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 
     if(!glfwInit())
         return SG_UNKNOWN_ERROR;
+    glfwEnable(GLFW_KEY_REPEAT);
 
     return SG_OK;
 }

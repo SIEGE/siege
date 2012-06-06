@@ -24,23 +24,18 @@ extern "C"
 
 /// \todo Create and use AList (Associative List) for this
 #ifdef SG_BUILD_LIBRARY
-SGenum* _sg_keyStatusType;
-SGbool* _sg_keyStatusDownPrev;
-SGbool* _sg_keyStatusDownCurr;
-SGuint _sg_keyStatusLength;
-SGenum* _sg_charStatusType;
-SGbool* _sg_charStatusDownPrev;
-SGbool* _sg_charStatusDownCurr;
-SGuint _sg_charStatusLength;
-
+#define SG_KEY_NUM 0x400
+#define SG_CHAR_NUM 0x10000
+SGbool _sg_keyPrev[SG_KEY_NUM];
+SGbool _sg_keyCurr[SG_KEY_NUM];
+SGbool _sg_charPrev[SG_CHAR_NUM];
+SGbool _sg_charCurr[SG_CHAR_NUM];
 void* _sg_keyHandle;
 SGCoreKeyboardCallbacks _sg_keyCallbacks;
 #endif // SG_BUILD_LIBRARY
 
 void SG_EXPORT _sg_cbKeyboardKey(void* keyboard, SGuint key, SGbool down);
 void SG_EXPORT _sg_cbKeyboardChar(void* keyboard, SGdchar chr, SGbool down);
-
-SGint SG_EXPORT _sgKeyboardInside(SGuint* array, SGuint what, SGuint len);
 
 void SG_EXPORT _sgKeyboardUpdate(void);
 

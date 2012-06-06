@@ -18,6 +18,7 @@
 #include <siege/core/entity.h>
 
 #include <stdlib.h>
+#include <string.h>
 
 void SG_EXPORT _sg_cbKeyboardKey(void* keyboard, SGenum key, SGbool down)
 {
@@ -40,44 +41,33 @@ void SG_EXPORT _sg_cbKeyboardChar(void* keyboard, SGdchar chr, SGbool down)
     _sgKeyboardCharUpdate(chr, down);
     SGbool pressed = sgKeyboardCharPress(chr);
 
-    SGenum type = 0;
+    SGenum evt = 0;
     if(pressed)
-        type = SG_EVF_KEYCHARP;
+        evt = SG_EVF_KEYCHARP;
+    /*else if(!down)
+        evt = SG_EVF_KEYCHARR;*/
     else if(down)
-        type = SG_EVF_KEYCHARA;
-    if(type == 0)
+        evt = SG_EVF_KEYCHARA;
+    else
         return;
 
-    sgEventCall(SG_EV_INTERNAL, (SGuint)1, type, chr);
-}
-
-SGint SG_EXPORT _sgKeyboardInside(SGenum* array, SGenum what, SGuint len)
-{
-    SGuint i;
-    for(i = 0; i < len; i++)
-        if(array[i] == what)
-            return i;
-    return -1;
+    sgEventCall(SG_EV_INTERNAL, (SGuint)1, evt, chr);
 }
 
 void SG_EXPORT _sgKeyboardUpdate(void)
 {
-	size_t i;
-	for(i = 0; i < _sg_keyStatusLength; i++)
-		if(_sg_keyStatusDownCurr[i])
-			sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_KEYKEYH, _sg_keyStatusType[i]);
+    SGenum i;
+    for(i = 0; i < SG_KEY_NUM; i++)
+        if(_sg_keyCurr[i])
+            sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_KEYKEYH, i);
 }
 
 SGbool SG_EXPORT _sgKeyboardInit(void)
 {
-    _sg_keyStatusType = NULL;
-    _sg_keyStatusDownPrev = NULL;
-    _sg_keyStatusDownCurr = NULL;
-    _sg_keyStatusLength = 0;
-    _sg_charStatusType = NULL;
-    _sg_charStatusDownPrev = NULL;
-    _sg_charStatusDownCurr = NULL;
-    _sg_charStatusLength = 0;
+    memset(_sg_keyPrev, 0, SG_KEY_NUM * sizeof(SGbool));
+    memset(_sg_keyCurr, 0, SG_KEY_NUM * sizeof(SGbool));
+    memset(_sg_charPrev, 0, SG_CHAR_NUM * sizeof(SGbool));
+    memset(_sg_charCurr, 0, SG_CHAR_NUM * sizeof(SGbool));
 
     _sg_keyCallbacks.key = _sg_cbKeyboardKey;
     _sg_keyCallbacks.chr = _sg_cbKeyboardChar;
@@ -90,15 +80,6 @@ SGbool SG_EXPORT _sgKeyboardInit(void)
 }
 SGbool SG_EXPORT _sgKeyboardDeinit(void)
 {
-    free(_sg_keyStatusType);
-    free(_sg_keyStatusDownPrev);
-    free(_sg_keyStatusDownCurr);
-    _sg_keyStatusLength = 0;
-    free(_sg_charStatusType);
-    free(_sg_charStatusDownPrev);
-    free(_sg_charStatusDownCurr);
-    _sg_charStatusLength = 0;
-
     if(psgmCoreKeyboardDestroy != NULL)
         psgmCoreKeyboardDestroy(_sg_keyHandle);
     return SG_TRUE;
@@ -106,77 +87,45 @@ SGbool SG_EXPORT _sgKeyboardDeinit(void)
 
 void SG_EXPORT _sgKeyboardKeyUpdate(SGenum key, SGbool down)
 {
-    SGint i = _sgKeyboardInside(_sg_keyStatusType, key, _sg_keyStatusLength);
-    if(i == -1)
-    {
-        i = _sg_keyStatusLength;
-        _sg_keyStatusLength++;
-        _sg_keyStatusType = realloc(_sg_keyStatusType, _sg_keyStatusLength * sizeof(SGenum));
-        _sg_keyStatusDownPrev = realloc(_sg_keyStatusDownPrev, _sg_keyStatusLength * sizeof(SGbool));
-        _sg_keyStatusDownCurr = realloc(_sg_keyStatusDownCurr, _sg_keyStatusLength * sizeof(SGbool));
-        _sg_keyStatusType[i] = key;
-        _sg_keyStatusDownCurr[i] = !down;
-    }
-    _sg_keyStatusDownPrev[i] = _sg_keyStatusDownCurr[i];
-    _sg_keyStatusDownCurr[i] = down;
+    if(key >= SG_KEY_NUM) return;
+    _sg_keyPrev[key] = _sg_keyCurr[key];
+    _sg_keyCurr[key] = down;
 }
 void SG_EXPORT _sgKeyboardCharUpdate(SGdchar chr, SGbool down)
 {
-    SGint i = _sgKeyboardInside(_sg_charStatusType, chr, _sg_charStatusLength);
-    if(i == -1)
-    {
-        i = _sg_charStatusLength;
-        _sg_charStatusLength++;
-        _sg_charStatusType = realloc(_sg_charStatusType, _sg_charStatusLength * sizeof(SGenum));
-        _sg_charStatusDownPrev = realloc(_sg_charStatusDownPrev, _sg_charStatusLength * sizeof(SGbool));
-        _sg_charStatusDownCurr = realloc(_sg_charStatusDownCurr, _sg_charStatusLength * sizeof(SGbool));
-        _sg_charStatusType[i] = chr;
-        _sg_charStatusDownCurr[i] = !down;
-    }
-    _sg_charStatusDownPrev[i] = _sg_charStatusDownCurr[i];
-    _sg_charStatusDownCurr[i] = down;
+    if(chr >= SG_CHAR_NUM) return;
+    _sg_charPrev[chr] = _sg_charCurr[chr];
+    _sg_charCurr[chr] = down;
 }
 
 SGbool SG_EXPORT sgKeyboardKey(SGenum key)
 {
-    SGint i = _sgKeyboardInside(_sg_keyStatusType, key, _sg_keyStatusLength);
-    if(i == -1)
-        return SG_FALSE;
-    return _sg_keyStatusDownCurr[i];
+    if(key >= SG_KEY_NUM) return SG_FALSE;
+    return _sg_keyCurr[key];
 }
 SGbool SG_EXPORT sgKeyboardKeyPress(SGenum key)
 {
-    SGint i = _sgKeyboardInside(_sg_keyStatusType, key, _sg_keyStatusLength);
-    if(i == -1)
-        return SG_FALSE;
-    return !_sg_keyStatusDownPrev[i] && _sg_keyStatusDownCurr[i];
+    if(key >= SG_KEY_NUM) return SG_FALSE;
+    return !_sg_keyPrev[key] && _sg_keyCurr[key];
 }
 SGbool SG_EXPORT sgKeyboardKeyRelease(SGenum key)
 {
-    SGint i = _sgKeyboardInside(_sg_keyStatusType, key, _sg_keyStatusLength);
-    if(i == -1)
-        return SG_FALSE;
-    return _sg_keyStatusDownPrev[i] && !_sg_keyStatusDownCurr[i];
+    if(key >= SG_KEY_NUM) return SG_FALSE;
+    return _sg_keyPrev[key] && !_sg_keyCurr[key];
 }
 
 SGbool SG_EXPORT sgKeyboardChar(SGdchar chr)
 {
-    SGint i = _sgKeyboardInside(_sg_charStatusType, chr, _sg_charStatusLength);
-    if(i == -1)
-        return SG_FALSE;
-    return _sg_charStatusDownCurr[i];
+    if(chr >= SG_CHAR_NUM) return SG_FALSE;
+    return _sg_charCurr[chr];
 }
 SGbool SG_EXPORT sgKeyboardCharPress(SGdchar chr)
 {
-    SGint i = _sgKeyboardInside(_sg_charStatusType, chr, _sg_charStatusLength);
-    if(i == -1)
-        return SG_FALSE;
-    return !_sg_charStatusDownPrev[i] && _sg_charStatusDownCurr[i];
+    if(chr >= SG_CHAR_NUM) return SG_FALSE;
+    return !_sg_charPrev[chr] && _sg_charCurr[chr];
 }
 SGbool SG_EXPORT sgKeyboardCharRelease(SGdchar chr)
 {
-    SGint i = _sgKeyboardInside(_sg_charStatusType, chr, _sg_charStatusLength);
-    if(i == -1)
-        return SG_FALSE;
-    return _sg_charStatusDownPrev[i] && !_sg_charStatusDownCurr[i];
+    if(chr >= SG_CHAR_NUM) return SG_FALSE;
+    return _sg_charPrev[chr] && !_sg_charCurr[chr];
 }
