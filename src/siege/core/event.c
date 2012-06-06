@@ -21,40 +21,36 @@
 
 SGbool SG_EXPORT _sgEventInit(void)
 {
-	_sg_evList = sgPListCreate(SG_PLIST_HFO);
+	_sg_evList = sgListCreate();
 	if(_sg_evList != NULL)
 		return SG_TRUE;
 	return SG_FALSE;
 }
 SGbool SG_EXPORT _sgEventDeinit(void)
 {
-	//SGPListNode* node;
-	//for(node = _sg_evList->first; node != NULL; node = node->next)
-	//	  free(node);
 	sgListDestroy(_sg_evList);
 	return SG_TRUE;
 }
-SGEvent* SG_EXPORT sgEventCreate(float priority, SGenum type, void* data, SGEventCall* func)
+SGEvent* SG_EXPORT sgEventCreate(SGenum type, void* data, SGEventCall* func)
 {
 	SGEvent* event = malloc(sizeof(SGEvent));
-	event->priority = priority;
 	event->type = type;
 	event->data = data;
 	event->func = func;
-	sgPListInsertPriority(_sg_evList, priority, event);
+    event->node = sgListAppend(_sg_evList, event);
 	return event;
 }
 void SG_EXPORT sgEventDestroy(SGEvent* event)
 {
-	sgListRemoveItem(_sg_evList, event);
+    sgListRemoveNode(_sg_evList, event->node);
 }
 void SG_EXPORT sgEventCallv(SGenum type, va_list args)
 {
 	_sg_evStop = SG_FALSE;
 	SGbool cont = SG_TRUE;
 	SGEvent* event;
-	SGPListNode* node;
-	SGPListNode* next;
+	SGListNode* node;
+	SGListNode* next;
 	va_list curarg;
 	for(node = _sg_evList->first; (node != NULL) && cont; node = next)
 	{

@@ -20,7 +20,7 @@
 #define __EVENT_H__
 
 #include "../physics/collision.h"
-#include "../util/plist.h"
+#include "../util/list.h"
 #include "../common.h"
 
 #include <stdarg.h>
@@ -139,7 +139,7 @@ extern "C"
 typedef SGbool SG_EXPORT (SGEventCall)(void* data, va_list args);
 
 #ifdef SG_BUILD_LIBRARY
-SGPList* _sg_evList;
+SGList* _sg_evList;
 SGList* _sg_cList;
 SGbool _sg_evStop;
 #endif // SG_BUILD_LIBRARY
@@ -149,13 +149,10 @@ SGbool _sg_evStop;
  */
 typedef struct SGEvent
 {
-	/**
-	 * \private
-	 * \brief The event's priority
-     *
-     * \todo Should events have priorities?
-	 */
-	float priority;
+    /**
+     * \brief The list node that holds the event
+     */
+    SGListNode* node;
 	/**
 	 * \brief The event's type
 	 */
@@ -181,13 +178,12 @@ SGbool SG_EXPORT _sgEventDeinit(void);
 /**
  * \memberof SGEvent
  * \brief Create an event handler
- * \param priority Event handler priority
  * \param type Event handler type
  * \param data User data for the event handler
  * \param func Function to call when the event is triggered
  * \return The newly created event handler if successful, NULL otherwise.
  */
-SGEvent* SG_EXPORT sgEventCreate(float priority, SGenum type, void* data, SGEventCall* func);
+SGEvent* SG_EXPORT sgEventCreate(SGenum type, void* data, SGEventCall* func);
 /**
  * \memberof SGEvent
  * \brief Destroy an event handler

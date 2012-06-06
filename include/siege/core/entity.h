@@ -70,7 +70,7 @@ typedef struct SGEntity
 	 * Warning:
 	 *  For internal use only.
 	 */
-	SGPListNode* node;
+    SGListNode* node;
 	/**
 	 * Variable: event
 	 *

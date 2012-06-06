@@ -267,7 +267,7 @@ SGEntity* SG_EXPORT sgEntityCreate(void)
 	memset(entity, 0, sizeof(SGEntity));
 	entity->active = SG_TRUE;
 	entity->pausable = SG_TRUE;
-	entity->event = sgEventCreate(0.0, SG_EV_INTERNAL, entity, (SGEventCall*)_sg_evCall);
+	entity->event = sgEventCreate(SG_EV_INTERNAL, entity, (SGEventCall*)_sg_evCall);
 
 	entity->visible = SG_TRUE;
 	entity->x = 0.0;
