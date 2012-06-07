@@ -36,7 +36,16 @@ SGuint SG_EXPORT sgmCoreJoystickCreate(void** joystick, void* window, SGuint id)
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    *joystick = SDL_JoystickOpen(id);
+    if(id >= JOY_MAX)
+        return SG_OK; // SG_INVALID_VALUE -- later something else
+
+    *joystick = &joylist[id];
+
+    if(!joylist[id].ref++)
+    {
+        joylist[id].sdl = SDL_JoystickOpen(id);
+        joylist[id].axis = malloc(SDL_JoystickNumAxes(joylist[id].sdl) * sizeof(float));
+    }
 
     return SG_OK;
 }
@@ -44,8 +53,13 @@ SGuint SG_EXPORT sgmCoreJoystickDestroy(void* joystick)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
+    Joystick* cjoystick = joystick;
 
-    SDL_JoystickClose(joystick);
+    if(!--cjoystick->ref)
+    {
+        SDL_JoystickClose(cjoystick->sdl);
+        free(cjoystick->axis);
+    }
 
     return SG_OK;
 }
@@ -53,8 +67,9 @@ SGuint SG_EXPORT sgmCoreJoystickGetID(void* joystick, SGuint* id)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
+    Joystick* cjoystick = joystick;
 
-    *id = SDL_JoystickIndex(joystick);
+    *id = SDL_JoystickIndex(cjoystick->sdl);
 
     return SG_OK;
 }
@@ -62,8 +77,9 @@ SGuint SG_EXPORT sgmCoreJoystickGetNumButtons(void* joystick, size_t* numbuttons
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
+    Joystick* cjoystick = joystick;
 
-    *numbuttons = SDL_JoystickNumButtons(joystick);
+    *numbuttons = SDL_JoystickNumButtons(cjoystick->sdl);
 
     return SG_OK;
 }
@@ -72,11 +88,12 @@ SGuint SG_EXPORT sgmCoreJoystickButtonGetState(void* joystick, SGbool* state)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
+    Joystick* cjoystick = joystick;
 
-    int numb = SDL_JoystickNumButtons(joystick);
+    int numb = SDL_JoystickNumButtons(cjoystick->sdl);
     int i;
     for(i = 0; i < numb; i++)
-        state[i] = SDL_JoystickGetButton(joystick, i);
+        state[i] = SDL_JoystickGetButton(cjoystick->sdl, i);
 
     return SG_OK;
 }
@@ -84,8 +101,9 @@ SGuint SG_EXPORT sgmCoreJoystickGetNumAxis(void* joystick, size_t* numaxis)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
+    Joystick* cjoystick = joystick;
 
-    *numaxis = SDL_JoystickNumAxes(joystick);
+    *numaxis = SDL_JoystickNumAxes(cjoystick->sdl);
 
     return SG_OK;
 }
@@ -94,11 +112,12 @@ SGuint SG_EXPORT sgmCoreJoystickAxisGetPosition(void* joystick, float* position)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
+    Joystick* cjoystick = joystick;
 
-    int numa = SDL_JoystickNumAxes(joystick);
+    int numa = SDL_JoystickNumAxes(cjoystick->sdl);
     int i;
     for(i = 0; i < numa; i++)
-        position[i] = SDL_JoystickGetAxis(joystick, i) / 32768.0;
+        position[i] = (SDL_JoystickGetAxis(cjoystick->sdl, i) + 0.5) / 32767.5;
 
     return SG_OK;
 }

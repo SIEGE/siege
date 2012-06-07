@@ -47,6 +47,8 @@ SGCoreJoystickCallbacks _sg_joyCallbacks;
 void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down);
 void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis);
 
+void SG_EXPORT _sgJoystickUpdate(void);
+
 SGbool SG_EXPORT _sgJoystickInit(void);
 SGbool SG_EXPORT _sgJoystickDeinit(void);
 

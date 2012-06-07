@@ -26,20 +26,20 @@ void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
     if(psgmCoreJoystickGetID != NULL)
         psgmCoreJoystickGetID(joystick, &joy);
 
-    SGbool pressed = _sg_joyJoys[joy]->bcurr[button] && !_sg_joyJoys[joy]->bprev[button];
-
     _sg_joyJoys[joy]->bprev[button] = _sg_joyJoys[joy]->bcurr[button];
     _sg_joyJoys[joy]->bcurr[button] = down;
 
-    SGenum events[2];
-    memset(events, 0, sizeof(events));
-    events[0] = SG_EVF_JOYSTICKBUTH;
-    if(pressed)
-        events[1] = SG_EVF_JOYSTICKBUTP;
-    else if(!down)
-        events[1] = SG_EVF_JOYSTICKBUTR;
+    SGbool pressed = _sg_joyJoys[joy]->bcurr[button] && !_sg_joyJoys[joy]->bprev[button];
 
-    sgEntityEventSignal(2, events[0], joy, button, events[1], joy, button);
+    SGenum evt = 0;
+    if(pressed)
+        evt = SG_EVF_JOYSTICKBUTP;
+    else if(!down)
+        evt = SG_EVF_JOYSTICKBUTR;
+    else
+        return;
+
+    sgEntityEventSignal(1, evt, joy, button);
 }
 void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
 {
@@ -47,16 +47,30 @@ void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
     if(psgmCoreJoystickGetID != NULL)
         psgmCoreJoystickGetID(joystick, &joy);
 
-    size_t numaxis = 0;
-    if(psgmCoreJoystickGetNumAxis != NULL)
-        psgmCoreJoystickGetNumAxis(joystick, &numaxis);
+    memcpy(_sg_joyJoys[joy]->aprev, _sg_joyJoys[joy]->acurr, _sg_joyJoys[joy]->numaxis * sizeof(float));
+    memcpy(_sg_joyJoys[joy]->acurr, axis, _sg_joyJoys[joy]->numaxis * sizeof(float));
+    size_t i;
+    for(i = 0; i < _sg_joyJoys[joy]->numaxis; i++)
+        _sg_joyJoys[joy]->adelt[i] = _sg_joyJoys[joy]->acurr[i] - _sg_joyJoys[joy]->aprev[i];
 
-    sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, axis, numaxis);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, axis, _sg_joyJoys[joy]->numaxis);
+}
+
+void SG_EXPORT _sgJoystickUpdate(void)
+{
+    SGenum i, j;
+    for(i = 0; i < _sg_joyNum; i++)
+        for(j = 0; j < _sg_joyJoys[i]->numbuttons; j++)
+            if(_sg_joyJoys[i]->bcurr[j])
+                sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKBUTH, i, j);
 }
 
 SGbool SG_EXPORT _sgJoystickInit(void)
 {
-    SGuint i;
+    _sg_joyCallbacks.button = _sg_cbJoystickButton;
+    _sg_joyCallbacks.move = _sg_cbJoystickMove;
+
+    size_t i;
     _sg_joyNum = 0;
 
     if(psgmCoreJoystickGetNumJoysticks != NULL)
@@ -65,10 +79,6 @@ SGbool SG_EXPORT _sgJoystickInit(void)
     _sg_joyJoys = malloc(_sg_joyNum * sizeof(_SGJoystick*));
     for(i = 0; i < _sg_joyNum; i++)
         _sg_joyJoys[i] = _sgJoystickCreate(i);
-
-    _sg_joyCallbacks.button = _sg_cbJoystickButton;
-    _sg_joyCallbacks.move = _sg_cbJoystickMove;
-    memset(&_sg_joyCallbacks, 0, sizeof(SGCoreJoystickCallbacks));
 
     return SG_TRUE;
 }

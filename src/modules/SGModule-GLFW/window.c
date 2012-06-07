@@ -243,11 +243,19 @@ SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
 
         glfwGetJoystickPos(joylist[i]->id, joylist[i]->axis, joylist[i]->numaxis);
         if(memcmp(joylist[i]->axis, joylist[i]->paxis, joylist[i]->numaxis * sizeof(float)))
-            main_window->cbJoystick->move(joylist[i], joylist[i]->axis);
+        {
+            if(main_window->cbJoystick->move)
+                main_window->cbJoystick->move(joylist[i], joylist[i]->axis);
+        }
         glfwGetJoystickButtons(joylist[i]->id, joylist[i]->buttons, joylist[i]->numbuttons);
         for(j = 0; j < joylist[i]->numbuttons; j++)
+        {
             if(joylist[i]->buttons[j] != joylist[i]->pbuttons[j])
-                main_window->cbJoystick->button(joylist[i], j, joylist[i]->buttons[j]);
+            {
+                if(main_window->cbJoystick->button)
+                    main_window->cbJoystick->button(joylist[i], j, joylist[i]->buttons[j]);
+            }
+        }
     }
 
     glfwSwapBuffers();

@@ -15,4 +15,14 @@
 #ifndef __JOYSTICK_H__
 #define __JOYSTICK_H__
 
+#define JOY_MAX 256
+
+typedef struct Joystick
+{
+    size_t ref;
+    SDL_Joystick* sdl;
+    float* axis;
+} Joystick;
+Joystick joylist[JOY_MAX];
+
 #endif // __JOYSTICK_H__

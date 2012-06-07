@@ -219,8 +219,9 @@ SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
     if(!cwindow->opened)
         return SG_OK;
 
-    SDL_Event event;
+    Joystick* joy;
 
+    SDL_Event event;
     while (SDL_PollEvent(&event))
     {
         switch(event.type)
@@ -268,11 +269,23 @@ SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
                 break;
 
             case SDL_JOYAXISMOTION:
+                joy = &joylist[event.jaxis.which];
+                if(!joy->ref) // if we've just destroyed the joystick
+                    break;
+                joy->axis[event.jaxis.axis] = (event.jaxis.value + 0.5) / 32767.5;
+                if(main_window->cbJoystick->move)
+                    main_window->cbJoystick->move(joy, joy->axis);
+                break;
             case SDL_JOYBALLMOTION:
-            case SDL_JOYHATMOTION:
+            case SDL_JOYHATMOTION: /// \todo TODO
                 break;
             case SDL_JOYBUTTONDOWN:
             case SDL_JOYBUTTONUP:
+                joy = &joylist[event.jbutton.which];
+                if(!joy->ref) // if we've just destroyed the joystick
+                    break;
+                if(main_window->cbJoystick->button)
+                    main_window->cbJoystick->button(joy, event.jbutton.button, event.jbutton.state);
                 break;
 
             case SDL_QUIT:

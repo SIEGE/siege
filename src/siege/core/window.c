@@ -182,8 +182,9 @@ void SG_EXPORT sgWindowSwapBuffers(void)
 
     if(psgmCoreWindowSwapBuffers != NULL)
         psgmCoreWindowSwapBuffers(_sg_winHandle);
-	_sgMouseUpdate();
-	_sgKeyboardUpdate();
+    _sgMouseUpdate();
+    _sgKeyboardUpdate();
+    _sgJoystickUpdate();
 
     SGlong time = sgGetTime();
     SGlong updateLength = time - origin;
