@@ -26,9 +26,6 @@ void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
     if(psgmCoreJoystickGetID != NULL)
         psgmCoreJoystickGetID(joystick, &joy);
 
-    printf("BUTTON %u - %u\n", joy, button);
-    return;
-
     SGbool pressed = _sg_joyJoys[joy]->bcurr[button] && !_sg_joyJoys[joy]->bprev[button];
 
     _sg_joyJoys[joy]->bprev[button] = _sg_joyJoys[joy]->bcurr[button];
