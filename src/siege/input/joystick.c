@@ -39,7 +39,7 @@ void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
     else if(!down)
         events[1] = SG_EVF_JOYSTICKBUTR;
 
-    sgEventCall(SG_EV_INTERNAL, (SGuint)2, events[0], joy, button, events[1], joy, button);
+    sgEntityEventSignal(2, events[0], joy, button, events[1], joy, button);
 }
 void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
 {
@@ -51,7 +51,7 @@ void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
     if(psgmCoreJoystickGetNumAxis != NULL)
         psgmCoreJoystickGetNumAxis(joystick, &numaxis);
 
-    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, axis, numaxis);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, axis, numaxis);
 }
 
 SGbool SG_EXPORT _sgJoystickInit(void)

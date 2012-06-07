@@ -18,7 +18,6 @@
 #include <siege/audio/source.h>
 #include <siege/core/console.h>
 #include <siege/core/core.h>
-#include <siege/core/event.h>
 #include <siege/core/entity.h>
 #include <siege/core/window.h>
 #include <siege/graphics/light.h>
@@ -48,7 +47,7 @@ static SGint SG_EXPORT _sgRenderThread(void* data)
     while(!_sg_exitNow)
     {
         sgDrawClear();
-        sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DRAW);
+        sgEntityEventSignal(1, (SGenum)SG_EVF_DRAW);
         sgWindowSwapBuffers();
     }
     return 0;
@@ -104,7 +103,7 @@ SGbool SG_EXPORT sgInit(SGenum flags)
     else
         _sg_renderThread = NULL;
 
-	_sgEventInit();
+	//_sgEventInit();
 
     SGList* modList = sgModuleGetList();
 
@@ -136,7 +135,9 @@ SGbool SG_EXPORT sgInit(SGenum flags)
 	if(!ok)
 		return SG_FALSE;
 
-	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_INIT);
+    _sgEntityInit();
+
+    sgEntityEventSignal(1, (SGenum)SG_EVF_INIT);
 	_sg_hasInited = SG_TRUE;
 
 	_sgWindowInit();
@@ -157,8 +158,6 @@ SGbool SG_EXPORT sgInit(SGenum flags)
 	_sgPhysicsSpaceInit();
     _sgPhysicsCollisionInit();
 
-	_sgEntityInit();
-
 	//sgWindowOpen(width, height, bpp, flags);
 
     _sgLightInit();
@@ -172,9 +171,9 @@ SGbool SG_EXPORT sgDeinit(void)
     sgThreadDestroy(_sg_renderThread);
 
 	_sg_hasInited = SG_FALSE;
-	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DEINIT);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_DEINIT);
 
-    _sgEntityDeinit();
+    // sgEntityDestroyAll();
 
     _sgLightDeinit();
 
@@ -196,7 +195,7 @@ SGbool SG_EXPORT sgDeinit(void)
 	_sgViewportDeinit();
 	_sgWindowDeinit();
 
-	_sgEventDeinit();
+    _sgEntityDeinit();
 
     SGList* modList;
     while((modList = sgModuleGetList()))
@@ -227,13 +226,13 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 
 	if(_sg_firstLoop)
 	{
-		sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_START);
+        sgEntityEventSignal(1, (SGenum)SG_EVF_START);
 		if(_sg_renderThread)
             sgThreadStart(_sg_renderThread);
 		_sg_firstLoop = SG_FALSE;
 	}
 
-	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICKB);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_TICKB);
 
 	sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
 
@@ -247,17 +246,17 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 			module->sgmModuleTick(_sg_curTick);
 	}
 
-    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICK);
-    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_TICKE);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_TICK);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_TICKE);
 
     if(!_sg_renderThread)
-        sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_DRAW);
+        sgEntityEventSignal(1, (SGenum)SG_EVF_DRAW);
 
 	if(code != NULL)
 		*code = _sg_exitVal;
 	if(_sg_exitNow)
 	{
-		sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_EXIT);
+        sgEntityEventSignal(1, (SGenum)SG_EVF_EXIT);
 		return SG_FALSE;
 	}
 	return SG_TRUE;

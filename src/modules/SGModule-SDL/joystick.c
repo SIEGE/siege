@@ -108,7 +108,11 @@ SGuint SG_EXPORT sgmCoreJoystickSetCallbacks(void* joystick, SGCoreJoystickCallb
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    main_window->cbJoystick = callbacks;
+    Window* cwindow = main_window;
+    if(!callbacks)
+        cwindow->cbJoystick = NULL;
+    else
+        memcpy(cwindow->cbJoystick, callbacks, sizeof(SGCoreJoystickCallbacks));
 
     return SG_OK;
 }

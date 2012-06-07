@@ -29,7 +29,7 @@ void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
 
     SGbool pressed = sgMouseGetButtonPress(button);
 
-	SGuint numevents = 2;
+    size_t numevents = 2;
     SGenum events[2];
 
     if(pressed)
@@ -62,11 +62,11 @@ void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
                 events[numevents-1] = SG_EVF_MOUSEBUTMR;
             break;
         default:
-			numevents--;
+            numevents--;
             break;
     }
 
-    sgEventCall(SG_EV_INTERNAL, numevents, events[0], button, events[1]);
+    sgEntityEventSignal(numevents, events[0], button, events[1]);
 }
 void SG_EXPORT _sg_cbMouseMove(void* mouse, SGint x, SGint y)
 {
@@ -75,19 +75,19 @@ void SG_EXPORT _sg_cbMouseMove(void* mouse, SGint x, SGint y)
     _sg_mouseX = x;
     _sg_mouseY = y;
 
-    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_MOUSEMOVE, x, y);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEMOVE, x, y);
 }
 void SG_EXPORT _sg_cbMouseWheel(void* mouse, SGint w)
 {
     _sg_mouseWheelPrev = _sg_mouseWheel;
     _sg_mouseWheel = w;
 
-    sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_MOUSEWHEEL, w);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEWHEEL, w);
 }
 
 void SG_EXPORT _sgMouseUpdate(void)
 {
-	SGuint numevents;
+    size_t numevents;
 	SGenum events[2];
 	SGuint i;
 	for(i = 0; i < _sg_mouseButtonNum; i++)
@@ -112,7 +112,7 @@ void SG_EXPORT _sgMouseUpdate(void)
 					numevents--;
 					break;
 			}
-			sgEventCall(SG_EV_INTERNAL, numevents, events[0], i + 1, events[1]);
+            sgEntityEventSignal(numevents, events[0], i + 1, events[1]);
 		}
 	}
     memcpy(_sg_mouseButtonPrev, _sg_mouseButtonBuff, _sg_mouseButtonNum * sizeof(SGbool));

@@ -28,7 +28,6 @@
 #include "core/console.h"
 #include "core/core.h"
 #include "core/entity.h"
-#include "core/event.h"
 #include "core/window.h"
 #include "graphics/draw.h"
 #include "graphics/emitter.h"

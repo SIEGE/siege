@@ -298,10 +298,10 @@ SGuint SG_EXPORT sgmCoreWindowSetCallbacks(void* window, SGCoreWindowCallbacks* 
         return SG_OK; // SG_INVALID_VALUE
 
     Window* cwindow = (Window*)window;
-    if(callbacks == NULL)
-        cwindow->cbWindow = NULL; // TODO: check if memcpy handles NULL gracefully (if it does, remove this if/else)
+    if(!callbacks)
+        cwindow->cbWindow = NULL;
     else
-        cwindow->cbWindow = memcpy(cwindow->cbWindow, callbacks, sizeof(SGCoreWindowCallbacks));
+        memcpy(cwindow->cbWindow, callbacks, sizeof(SGCoreWindowCallbacks));
 
     return SG_OK;
 }

@@ -34,7 +34,7 @@ void SG_EXPORT _sg_cbKeyboardKey(void* keyboard, SGenum key, SGbool down)
         evt = SG_EVF_KEYKEYA;
 
     //sgEventCall(SG_EV_INTERNAL, (SGuint)2, (SGenum)SG_EVF_KEYKEYH, key, evt, key);
-    sgEventCall(SG_EV_INTERNAL, (SGuint)1, evt, key);
+    sgEntityEventSignal(1, evt, key);
 }
 void SG_EXPORT _sg_cbKeyboardChar(void* keyboard, SGdchar chr, SGbool down)
 {
@@ -51,7 +51,7 @@ void SG_EXPORT _sg_cbKeyboardChar(void* keyboard, SGdchar chr, SGbool down)
     else
         return;
 
-    sgEventCall(SG_EV_INTERNAL, (SGuint)1, evt, chr);
+    sgEntityEventSignal(1, evt, chr);
 }
 
 void SG_EXPORT _sgKeyboardUpdate(void)
@@ -59,7 +59,7 @@ void SG_EXPORT _sgKeyboardUpdate(void)
     SGenum i;
     for(i = 0; i < SG_KEY_NUM; i++)
         if(_sg_keyCurr[i])
-            sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_KEYKEYH, i);
+            sgEntityEventSignal(1, (SGenum)SG_EVF_KEYKEYH, i);
 }
 
 SGbool SG_EXPORT _sgKeyboardInit(void)

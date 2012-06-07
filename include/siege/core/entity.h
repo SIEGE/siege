@@ -21,12 +21,113 @@
 
 #include "../common.h"
 #include "../util/list.h"
-#include "event.h"
+
+#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif // __cplusplus
+
+/**
+ * \name Event types
+ */
+/// @{
+/**
+ * \private
+ * \def SG_EV_INTERNAL
+ *
+ *	Used internally for \ref SGEntity "SGEntity"
+ */
+#define SG_EV_INTERNAL ((SGenum)-1)
+
+// EventClient types -- these should be OR'd together
+#define SG_EVT_MODULE	0x00010000U
+#define SG_EVT_CORE		0x00020000U
+#define SG_EVT_WINDOW	0x00040000U
+#define SG_EVT_MOUSE	0x00080000U
+#define SG_EVT_KEYBOARD 0x00100000U
+#define SG_EVT_JOYSTICK 0x00200000U
+#define SG_EVT_NETWORK	0x00400000U
+#define SG_EVT_PHYSICS	0x00800000U
+#define SG_EVT_LEVEL	0x01000000U
+#define SG_EVT_LOCAL	0x02000000U
+#define SG_EVT_ALL		0xFFFF0000U
+/// @}
+
+/**
+ * \name Event functions
+ * \brief Used in \ref SGEntity "SGEntity"
+ */
+/// @{
+#define SG_EVF_INIT   (SG_EVT_MODULE | 0x0001)
+#define SG_EVF_DEINIT (SG_EVT_MODULE | 0x0002)
+
+#define SG_EVF_START (SG_EVT_CORE | 0x0001)
+#define SG_EVF_EXIT  (SG_EVT_CORE | 0x0002)
+#define SG_EVF_TICK  (SG_EVT_CORE | 0x0004)
+#define SG_EVF_TICKB (SG_EVT_CORE | 0x0008)
+#define SG_EVF_TICKE (SG_EVT_CORE | 0x0010)
+#define SG_EVF_DRAW  (SG_EVT_CORE | 0x0020)
+
+#define SG_EVF_WINOPEN	 (SG_EVT_WINDOW | 0x0001)
+#define SG_EVF_WINCLOSE  (SG_EVT_WINDOW | 0x0002)
+#define SG_EVF_WINRESIZE (SG_EVT_WINDOW | 0x0004)
+
+/*
+ * H: held
+ * P: press
+ * R: release
+ * A: repeat ("again")
+ */
+
+#define SG_EVF_MOUSEBUTH  (SG_EVT_MOUSE | 0x0001)
+#define SG_EVF_MOUSEBUTP  (SG_EVT_MOUSE | 0x0002)
+#define SG_EVF_MOUSEBUTR  (SG_EVT_MOUSE | 0x0004)
+#define SG_EVF_MOUSEBUTLH (SG_EVT_MOUSE | 0x0008)
+#define SG_EVF_MOUSEBUTLP (SG_EVT_MOUSE | 0x0010)
+#define SG_EVF_MOUSEBUTLR (SG_EVT_MOUSE | 0x0020)
+#define SG_EVF_MOUSEBUTRH (SG_EVT_MOUSE | 0x0040)
+#define SG_EVF_MOUSEBUTRP (SG_EVT_MOUSE | 0x0080)
+#define SG_EVF_MOUSEBUTRR (SG_EVT_MOUSE | 0x0100)
+#define SG_EVF_MOUSEBUTMH (SG_EVT_MOUSE | 0x0200)
+#define SG_EVF_MOUSEBUTMP (SG_EVT_MOUSE | 0x0400)
+#define SG_EVF_MOUSEBUTMR (SG_EVT_MOUSE | 0x0800)
+#define SG_EVF_MOUSEMOVE  (SG_EVT_MOUSE | 0x1000)
+#define SG_EVF_MOUSEWHEEL (SG_EVT_MOUSE | 0x2000)
+
+#define SG_EVF_KEYKEYH	(SG_EVT_KEYBOARD | 0x0001)
+#define SG_EVF_KEYKEYP	(SG_EVT_KEYBOARD | 0x0002)
+#define SG_EVF_KEYKEYR	(SG_EVT_KEYBOARD | 0x0004)
+#define SG_EVF_KEYKEYA	(SG_EVT_KEYBOARD | 0x0008)
+//#define SG_EVF_KEYCHARH (SG_EVT_KEYBOARD | 0x0010)
+#define SG_EVF_KEYCHARP (SG_EVT_KEYBOARD | 0x0020)
+//#define SG_EVF_KEYCHARR (SG_EVT_KEYBOARD | 0x0040)
+#define SG_EVF_KEYCHARA (SG_EVT_KEYBOARD | 0x0080)
+
+#define SG_EVF_JOYSTICKBUTH (SG_EVT_JOYSTICK | 0x0001)
+#define SG_EVF_JOYSTICKBUTP (SG_EVT_JOYSTICK | 0x0002)
+#define SG_EVF_JOYSTICKBUTR (SG_EVT_JOYSTICK | 0x0004)
+#define SG_EVF_JOYSTICKMOVE (SG_EVT_JOYSTICK | 0x0008)
+
+//#define SG_EVF_NET (SG_EVT_NETWORK | 0x0001)
+
+#define SG_EVF_PHYSCOLH  (SG_EVT_PHYSICS | 0x0001)
+#define SG_EVF_PHYSCOL1  (SG_EVT_PHYSICS | 0x0002)
+#define SG_EVF_PHYSCOL2  (SG_EVT_PHYSICS | 0x0004)
+#define SG_EVF_PHYSCOLBH (SG_EVT_PHYSICS | 0x0008)
+#define SG_EVF_PHYSCOLB1 (SG_EVT_PHYSICS | 0x0010)
+#define SG_EVF_PHYSCOLB2 (SG_EVT_PHYSICS | 0x0020)
+#define SG_EVF_PHYSCOLEH (SG_EVT_PHYSICS | 0x0040)
+#define SG_EVF_PHYSCOLE1 (SG_EVT_PHYSICS | 0x0080)
+#define SG_EVF_PHYSCOLE2 (SG_EVT_PHYSICS | 0x0100)
+#define SG_EVF_PHYSCOLRH (SG_EVT_PHYSICS | 0x0200)
+#define SG_EVF_PHYSCOLR1 (SG_EVT_PHYSICS | 0x0400)
+#define SG_EVF_PHYSCOLR2 (SG_EVT_PHYSICS | 0x0800)
+
+#define SG_EVF_LVLSTART (SG_EVT_LEVEL | 0x0001)
+#define SG_EVF_LVLEND	(SG_EVT_LEVEL | 0x0002)
+/// @}
 
 struct SGSprite;
 struct SGMask;
@@ -71,17 +172,6 @@ typedef struct SGEntity
 	 *  For internal use only.
 	 */
     SGListNode* node;
-	/**
-	 * Variable: event
-	 *
-	 * Entity event handle.
-	 *
-	 * This provides a handle for handling the entity's events.
-	 *
-	 * Warning:
-	 *	For internal use only.
-	 */
-	SGEvent* event;
 	/**
 	 * Variable: data
 	 *
@@ -485,12 +575,14 @@ typedef struct SGEntity
 	void SG_EXPORT (*evLevelEnd)(struct SGEntity* entity);
 } SGEntity;
 
+#ifdef SG_BUILD_LIBRARY
+SGList* _sg_entList;
+SGbool _sg_entStop;
+#endif // SG_BUILD_LIBRARY
+
 /**
  * Group: Functions
  */
-
-SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args);
-void SG_EXPORT _sg_evDraw(SGEntity* entity);
 
 SGbool SG_EXPORT _sgEntityInit(void);
 SGbool SG_EXPORT _sgEntityDeinit(void);
@@ -688,6 +780,10 @@ float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity);
  * 	entity - The entity to draw.
  */
 void SG_EXPORT sgEntityDraw(SGEntity* entity);
+
+void SG_EXPORT sgEntityEventSignalv(size_t num, va_list args);
+void SG_EXPORT sgEntityEventSignal(size_t num, ...);
+void SG_EXPORT sgEntityEventStop(void);
 
 #ifdef __cplusplus
 }

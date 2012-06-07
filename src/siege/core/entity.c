@@ -25,25 +25,23 @@
 
 SGbool SG_EXPORT _sgEntityInit(void)
 {
-	_sg_cList = sgListCreate();
-	if(_sg_cList != NULL)
-		return SG_TRUE;
-	return SG_FALSE;
+    _sg_entList = sgListCreate();
+    if(!_sg_entList)
+        return SG_FALSE;
+    return SG_TRUE;
 }
 SGbool SG_EXPORT _sgEntityDeinit(void)
 {
-	while(_sg_cList->first)
-		sgEntityDestroy(_sg_cList->first->item);
-	sgListDestroy(_sg_cList);
-	return SG_TRUE;
+    while(_sg_entList->first)
+        sgEntityDestroy(_sg_entList->first->item);
+    sgListDestroy(_sg_entList);
+    return SG_TRUE;
 }
 
-SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
+static void SG_EXPORT _sg_evCall(SGEntity* entity, size_t num, va_list args)
 {
-	if(!entity->active)
-		return SG_TRUE;
+    if(!entity->active) return;
 
-    SGuint num = va_arg(args, SGuint);
     SGenum type;
 
     size_t siz[2];
@@ -252,10 +250,8 @@ SGbool SG_EXPORT _sg_evCall(SGEntity* entity, va_list args)
 					entity->evLevelEnd(entity);
 		}
 	}
-	return SG_TRUE;
 }
-
-void SG_EXPORT _sg_evDraw(SGEntity* entity)
+static void SG_EXPORT _sg_evDraw(SGEntity* entity)
 {
 	if(entity->visible)
 		sgEntityDraw(entity);
@@ -267,7 +263,6 @@ SGEntity* SG_EXPORT sgEntityCreate(void)
 	memset(entity, 0, sizeof(SGEntity));
 	entity->active = SG_TRUE;
 	entity->pausable = SG_TRUE;
-	entity->event = sgEventCreate(SG_EV_INTERNAL, entity, (SGEventCall*)_sg_evCall);
 
 	entity->visible = SG_TRUE;
 	entity->x = 0.0;
@@ -279,7 +274,7 @@ SGEntity* SG_EXPORT sgEntityCreate(void)
 
 	entity->evDraw = _sg_evDraw;
 
-	entity->node = sgListAppend(_sg_cList, entity);
+	entity->node = sgListAppend(_sg_entList, entity);
 	return entity;
 }
 void SG_EXPORT sgEntityDestroy(SGEntity* entity)
@@ -290,8 +285,7 @@ void SG_EXPORT sgEntityDestroy(SGEntity* entity)
 	if(entity->lcDestroy != NULL)
 		entity->lcDestroy(entity);
 
-	sgListRemoveNode(_sg_cList, entity->node);
-	sgEventDestroy(entity->event);
+    sgListRemoveNode(_sg_entList, entity->node);
 
 	free(entity);
 }
@@ -477,3 +471,34 @@ void SG_EXPORT sgEntityDraw(SGEntity* entity)
 	sgSpriteDrawRads3f1f(entity->sprite, entity->x, entity->y, entity->depth, entity->angle);
 }
 
+void SG_EXPORT sgEntityEventSignalv(size_t num, va_list args)
+{
+    _sg_entStop = SG_FALSE;
+    SGEntity* entity;
+    SGListNode* node;
+    SGListNode* next;
+    va_list curarg;
+    for(node = _sg_entList->first; node; node = next)
+    {
+        next = node->next;
+
+        if(_sg_entStop)
+            break;
+        entity = node->item;
+
+        va_copy(curarg, args);
+        _sg_evCall(entity, num, curarg);
+        va_end(curarg);
+    }
+}
+void SG_EXPORT sgEntityEventSignal(size_t num, ...)
+{
+    va_list args;
+    va_start(args, num);
+    sgEntityEventSignalv(num, args);
+    va_end(args);
+}
+void SG_EXPORT sgEntityEventStop(void)
+{
+    _sg_entStop = SG_TRUE;
+}

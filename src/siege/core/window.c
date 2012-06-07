@@ -36,16 +36,16 @@ static SGfloat _sg_achievedFramerate = -1.0f;
 
 void SG_EXPORT _sg_cbWindowOpen(void* window)
 {
-	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINOPEN);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_WINOPEN);
 }
 void SG_EXPORT _sg_cbWindowClose(void* window)
 {
-	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINCLOSE);
-	sgStop(0);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_WINCLOSE);
+    sgStop(0);
 }
 void SG_EXPORT _sg_cbWindowResize(void* window, SGuint width, SGuint height)
 {
-	sgEventCall(SG_EV_INTERNAL, (SGuint)1, (SGenum)SG_EVF_WINRESIZE, width, height);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_WINRESIZE, width, height);
 }
 
 SGbool SG_EXPORT _sgWindowInit(void)
