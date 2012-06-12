@@ -29,6 +29,7 @@
 #include "core/core.h"
 #include "core/entity.h"
 #include "core/window.h"
+#include "graphics/atlas.h"
 #include "graphics/draw.h"
 #include "graphics/emitter.h"
 #include "graphics/font.h"
