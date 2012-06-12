@@ -33,14 +33,6 @@ extern "C"
  * \name Event types
  */
 /// @{
-/**
- * \private
- * \def SG_EV_INTERNAL
- *
- *	Used internally for \ref SGEntity "SGEntity"
- */
-#define SG_EV_INTERNAL ((SGenum)-1)
-
 // EventClient types -- these should be OR'd together
 #define SG_EVT_MODULE	0x00010000U
 #define SG_EVT_CORE		0x00020000U
@@ -52,6 +44,7 @@ extern "C"
 #define SG_EVT_PHYSICS	0x00800000U
 #define SG_EVT_LEVEL	0x01000000U
 #define SG_EVT_LOCAL	0x02000000U
+#define SG_EVT_USER     0x80000000U
 #define SG_EVT_ALL		0xFFFF0000U
 /// @}
 
@@ -127,6 +120,10 @@ extern "C"
 
 #define SG_EVF_LVLSTART (SG_EVT_LEVEL | 0x0001)
 #define SG_EVF_LVLEND	(SG_EVT_LEVEL | 0x0002)
+
+#define SG_EVF_USER     SG_EVT_USER
+
+#define SG_EV_USERMASK  0x7FFFFFFFU // available bits for the user, same as ~SG_EVF_USER
 /// @}
 
 struct SGSprite;
@@ -573,6 +570,8 @@ typedef struct SGEntity
 	 */
 	void SG_EXPORT (*evLevelStart)(struct SGEntity* entity);
 	void SG_EXPORT (*evLevelEnd)(struct SGEntity* entity);
+
+    void SG_EXPORT (*evUser)(struct SGEntity* entity, SGuint id, va_list args);
 } SGEntity;
 
 #ifdef SG_BUILD_LIBRARY

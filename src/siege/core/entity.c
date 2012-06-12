@@ -248,6 +248,13 @@ static void SG_EXPORT _sg_evCall(SGEntity* entity, size_t num, va_list args)
 			case SG_EVF_LVLEND:
 				if(entity->evLevelEnd != NULL)
 					entity->evLevelEnd(entity);
+
+            default:
+                if(type & SG_EVT_USER)
+                {
+                    if(entity->evUser)
+                        entity->evUser(entity, type & SG_EV_USERMASK, args);
+                }
 		}
 	}
 }
