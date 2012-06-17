@@ -77,3 +77,7 @@ void SG_EXPORT sgSemaphorePost(SGSemaphore* sem)
     sem_post(sem->handle);
 #endif
 }
+void SG_EXPORT sgSemaphoreSignal(SGSemaphore* sem)
+{
+    sgSemaphorePost(sem);
+}

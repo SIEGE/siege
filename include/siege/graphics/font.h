@@ -244,7 +244,6 @@ void SG_EXPORT sgFontPrintW(SGFont* font, float x, float y, const wchar_t* text)
 void SG_EXPORT sgFontPrint(SGFont* font, float x, float y, const char* text);
 /// @}
 
-/// TODO
 void SG_EXPORT sgFontPrintAlignedfW(SGFont* font, float x, float y, SGenum align, const wchar_t* format, ...);
 void SG_EXPORT sgFontPrintAlignedfvW(SGFont* font, float x, float y, SGenum align, const wchar_t* format, va_list args);
 

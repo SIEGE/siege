@@ -32,7 +32,8 @@ void SG_EXPORT sgSemaphoreDestroy(SGSemaphore* sem);
 
 SGbool SG_EXPORT sgSemaphoreTryWait(SGSemaphore* sem);
 void SG_EXPORT sgSemaphoreWait(SGSemaphore* sem);
-void SG_EXPORT sgSemaphorePost(SGSemaphore* sem); // TODO: "Post" -> "Signal"?
+void SG_EXPORT sgSemaphorePost(SGSemaphore* sem);
+void SG_EXPORT sgSemaphoreSignal(SGSemaphore* sem);
 
 #ifdef __cplusplus
 }

@@ -128,7 +128,7 @@ SGuint SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallb
         return SG_OK; // SG_INVALID_VALUE
 
     if(callbacks == NULL)
-        main_window->cbKeyboard = NULL; // TODO: check if memcpy handles NULL gracefully (if it does, remove this if/else)
+        main_window->cbKeyboard = NULL;
     else
         main_window->cbKeyboard = memcpy(main_window->cbKeyboard, callbacks, sizeof(SGCoreKeyboardCallbacks));
 

@@ -139,7 +139,7 @@ SGuint SG_EXPORT sgmCoreMouseSetCallbacks(void* mouse, SGCoreMouseCallbacks* cal
         return SG_OK; // SG_INVALID_VALUE
 
     if(callbacks == NULL)
-        main_window->cbMouse = NULL; // TODO: check if memcpy handles NULL gracefully (if it does, remove this if/else)
+        main_window->cbMouse = NULL;
     else
         main_window->cbMouse = memcpy(main_window->cbMouse, callbacks, sizeof(SGCoreMouseCallbacks));
 
