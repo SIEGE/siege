@@ -21,6 +21,7 @@
 
 #include "../common.h"
 #include "../util/list.h"
+#include "../util/tree.h"
 
 #include <stdarg.h>
 
@@ -190,6 +191,15 @@ typedef struct SGEntity
 	 * does not affect manually drawing the entity via <SGEntityDraw>.
 	 */
 	SGbool visible;
+
+    /**
+     * Variables: tnode, tlnode
+     *
+     * Tree node, for use with name lookups. Holds the entity's name,
+     * can be NULL.
+     */
+    SGTreeNode* tnode;
+    SGListNode* tlnode;
 
 	// attachments...
 	/**
@@ -576,6 +586,7 @@ typedef struct SGEntity
 
 #ifdef SG_BUILD_LIBRARY
 SGList* _sg_entList;
+SGTree* _sg_entTree;
 SGbool _sg_entStop;
 #endif // SG_BUILD_LIBRARY
 
@@ -606,6 +617,9 @@ SGEntity* SG_EXPORT sgEntityCreate(void);
  * 	entity - The entity to destroy. It should not be used anymore after this call.
  */
 void SG_EXPORT sgEntityDestroy(SGEntity* entity);
+
+void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name);
+char* SG_EXPORT sgEntityGetName(SGEntity* entity);
 
 /**
  * Functions: sgEntity*Sprite
@@ -779,6 +793,8 @@ float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity);
  * 	entity - The entity to draw.
  */
 void SG_EXPORT sgEntityDraw(SGEntity* entity);
+
+SGList* SG_EXPORT sgEntityFind(const char* name);
 
 void SG_EXPORT sgEntityEventSignalv(size_t num, va_list args);
 void SG_EXPORT sgEntityEventSignal(size_t num, ...);

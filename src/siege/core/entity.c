@@ -23,11 +23,25 @@
 #include <string.h>
 #include <math.h>
 
+typedef struct SGEntityTreeNode
+{
+    char* name;
+    SGList* list;
+} SGEntityTreeNode;
+
+static SGint SG_EXPORT _cbEntityTreeCmp(const void* a, const void* b)
+{
+    const SGEntityTreeNode* an = a;
+    const SGEntityTreeNode* bn = b;
+    return strcmp(an->name, bn->name);
+}
+
 SGbool SG_EXPORT _sgEntityInit(void)
 {
     _sg_entList = sgListCreate();
     if(!_sg_entList)
         return SG_FALSE;
+    _sg_entTree = sgTreeCreate(_cbEntityTreeCmp);
     return SG_TRUE;
 }
 SGbool SG_EXPORT _sgEntityDeinit(void)
@@ -35,6 +49,7 @@ SGbool SG_EXPORT _sgEntityDeinit(void)
     while(_sg_entList->first)
         sgEntityDestroy(_sg_entList->first->item);
     sgListDestroy(_sg_entList);
+    sgTreeDestroy(_sg_entTree);
     return SG_TRUE;
 }
 
@@ -282,6 +297,7 @@ SGEntity* SG_EXPORT sgEntityCreate(void)
 	entity->evDraw = _sg_evDraw;
 
 	entity->node = sgListAppend(_sg_entList, entity);
+    entity->tnode = NULL;
 	return entity;
 }
 void SG_EXPORT sgEntityDestroy(SGEntity* entity)
@@ -293,8 +309,53 @@ void SG_EXPORT sgEntityDestroy(SGEntity* entity)
 		entity->lcDestroy(entity);
 
     sgListRemoveNode(_sg_entList, entity->node);
+    sgEntitySetName(entity, NULL);
 
 	free(entity);
+}
+
+void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name)
+{
+    SGEntityTreeNode* enode;
+    if(entity->tnode)
+    {
+        enode = entity->tnode->item;
+        sgListRemoveNode(enode->list, entity->tlnode);
+        if(!enode->list->first) // empty list
+        {
+            sgTreeRemoveNode(_sg_entTree, entity->tnode);
+            sgListDestroy(enode->list);
+            free(enode->name);
+            free(enode);
+        }
+        entity->tnode = NULL;
+        entity->tlnode = NULL;
+    }
+    if(!name)
+        return;
+
+    SGEntityTreeNode fnode;
+    fnode.name = (char*)name;
+
+    size_t len = strlen(name);
+    SGTreeNode* tnode = sgTreeFindItem(_sg_entTree, &fnode);
+    if(!tnode)
+    {
+        enode = malloc(sizeof(SGEntityTreeNode));
+        enode->name = malloc(len + 1);
+        memcpy(enode->name, name, len + 1);
+        enode->list = sgListCreate();
+        tnode = sgTreeInsert(_sg_entTree, enode);
+    }
+    entity->tlnode = sgListAppend(enode->list, entity);
+    entity->tnode = tnode;
+}
+char* SG_EXPORT sgEntityGetName(SGEntity* entity)
+{
+    if(!entity->tnode) return NULL;
+
+    SGEntityTreeNode* enode = entity->tnode->item;
+    return enode->name;
 }
 
 void SG_EXPORT sgEntitySetSprite(SGEntity* entity, SGSprite* sprite)
@@ -476,6 +537,18 @@ void SG_EXPORT sgEntityDraw(SGEntity* entity)
 	}
 
 	sgSpriteDrawRads3f1f(entity->sprite, entity->x, entity->y, entity->depth, entity->angle);
+}
+
+SGList* SG_EXPORT sgEntityFind(const char* name)
+{
+    SGEntityTreeNode fnode;
+    fnode.name = (char*)name;
+
+    SGTreeNode* tnode = sgTreeFindItem(_sg_entTree, &fnode);
+    if(!tnode) return NULL;
+
+    SGEntityTreeNode* enode = tnode->item;
+    return enode->list;
 }
 
 void SG_EXPORT sgEntityEventSignalv(size_t num, va_list args)

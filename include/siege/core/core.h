@@ -31,6 +31,9 @@ void SG_EXPORT sgGetVersionv(SGushort* version);
 void SG_EXPORT sgGetVersion(SGushort* vmajor, SGushort* vminor, SGushort* vpatch);
 char* SG_EXPORT sgGetVersionString(void);
 
+char* SG_EXPORT sgGetCompileDate(void);
+char* SG_EXPORT sgGetCompileTime(void);
+
 /**
  * Functions: sgLoadModule*
  *

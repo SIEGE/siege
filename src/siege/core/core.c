@@ -68,6 +68,15 @@ char* SG_EXPORT sgGetVersionString(void)
     return SG_VERSION_STRING;
 }
 
+char* SG_EXPORT sgGetCompileDate(void)
+{
+    return __DATE__;
+}
+char* SG_EXPORT sgGetCompileTime(void)
+{
+    return __TIME__;
+}
+
 SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args)
 {
 	SGuint loaded = 0;
