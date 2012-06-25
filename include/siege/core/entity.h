@@ -617,6 +617,7 @@ SGEntity* SG_EXPORT sgEntityCreate(void);
  * 	entity - The entity to destroy. It should not be used anymore after this call.
  */
 void SG_EXPORT sgEntityDestroy(SGEntity* entity);
+void SG_EXPORT sgEntityDestroyAll(void);
 
 void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name);
 char* SG_EXPORT sgEntityGetName(SGEntity* entity);

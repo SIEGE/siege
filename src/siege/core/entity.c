@@ -46,8 +46,7 @@ SGbool SG_EXPORT _sgEntityInit(void)
 }
 SGbool SG_EXPORT _sgEntityDeinit(void)
 {
-    while(_sg_entList->first)
-        sgEntityDestroy(_sg_entList->first->item);
+    sgEntityDestroyAll();
     sgListDestroy(_sg_entList);
     sgTreeDestroy(_sg_entTree);
     return SG_TRUE;
@@ -312,6 +311,11 @@ void SG_EXPORT sgEntityDestroy(SGEntity* entity)
     sgEntitySetName(entity, NULL);
 
 	free(entity);
+}
+void SG_EXPORT sgEntityDestroyAll(void)
+{
+    while(_sg_entList->first)
+        sgEntityDestroy(_sg_entList->first->item);
 }
 
 void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name)

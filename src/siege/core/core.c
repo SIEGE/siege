@@ -182,7 +182,7 @@ SGbool SG_EXPORT sgDeinit(void)
 	_sg_hasInited = SG_FALSE;
     sgEntityEventSignal(1, (SGenum)SG_EVF_DEINIT);
 
-    // sgEntityDestroyAll();
+    sgEntityDestroyAll();
 
     _sgLightDeinit();
 

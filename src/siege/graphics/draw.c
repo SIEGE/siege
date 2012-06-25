@@ -39,10 +39,15 @@ typedef struct SGDrawContext
 } SGDrawContext;
 
 static SGThreadKey* _sg_drawKey;
+static SGDrawContext* _sg_drawCtx;
 
 static void SG_EXPORT _sgDrawThreadDeinit(void)
 {
-    SGDrawContext* ctx = sgThreadKeyGetVal(_sg_drawKey);
+    SGDrawContext* ctx;
+    if(sgThreadGetCurrent() == sgThreadGetMain())
+        ctx = _sg_drawCtx;
+    else
+        ctx = sgThreadKeyGetVal(_sg_drawKey);
     if(!ctx)
         return;
     free(ctx->points);
@@ -56,6 +61,9 @@ static void SG_EXPORT _sgDrawThreadInit(void)
 
     SGDrawContext* ctx = malloc(sizeof(SGDrawContext));
     sgThreadKeySetVal(_sg_drawKey, ctx);
+
+    if(sgThreadGetCurrent() == sgThreadGetMain())
+        _sg_drawCtx = ctx;
 
     ctx->texCoord[0] = 0.0f;
     ctx->texCoord[1] = 0.0f;

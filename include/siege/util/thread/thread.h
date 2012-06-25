@@ -55,6 +55,7 @@ SGuint SG_EXPORT sgThreadSuspend(SGThread* thread);
 void SG_EXPORT sgThreadAtExit(SGThreadDestroy* dtor);
 //void SG_EXPORT sgThreadYield(void);
 void SG_EXPORT sgThreadExit(SGint ret);
+SGThread* SG_EXPORT sgThreadGetMain(void);
 SGThread* SG_EXPORT sgThreadGetCurrent(void);
 
 SGint SG_EXPORT sgThreadJoin(SGThread* thread);

@@ -233,6 +233,15 @@ void SG_EXPORT sgThreadExit(SGint ret)
         pthread_exit(NULL);
 #endif
 }
+SGThread* SG_EXPORT sgThreadGetMain(void)
+{
+    if(!_sg_thrInited)
+    {
+        _sgThreadInit();
+        _sg_thrInited = SG_TRUE;
+    }
+    return &_sg_thrMain;
+}
 SGThread* SG_EXPORT sgThreadGetCurrent(void)
 {
     if(!_sg_thrInited)
