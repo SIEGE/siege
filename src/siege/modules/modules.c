@@ -126,7 +126,7 @@ void SG_EXPORT sgModuleUnload(SGModule* module)
     sgLibraryUnload(module->lib);
 
     sgListRemoveNode(_sg_modList, module->node);
-    if(!_sg_modList->first)
+    if(!_sg_modList->head)
     {
         sgListDestroy(_sg_modList);
         _sg_modList = NULL;

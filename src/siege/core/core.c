@@ -121,14 +121,14 @@ SGbool SG_EXPORT sgInit(SGenum flags)
 	SGListNode* node;
 	SGModuleInfo** infos = malloc(nmodules * sizeof(SGModuleInfo*));
 	SGModule* module;
-	for(i = 0, node = modList ? modList->first : NULL; node != NULL; node = node->next, i++)
+	for(i = 0, node = modList ? modList->head : NULL; node != NULL; node = node->next, i++)
 	{
 		module = node->item;
 		infos[i] = module->minfo;
 	}
 	SGbool ok = SG_TRUE;
 	SGbool mok;
-	for(node = modList ? modList->first : NULL; node != NULL; node = node->next)
+	for(node = modList ? modList->head : NULL; node != NULL; node = node->next)
 	{
 		module = node->item;
 		mok = SG_TRUE;
@@ -208,7 +208,7 @@ SGbool SG_EXPORT sgDeinit(void)
 
     SGList* modList;
     while((modList = sgModuleGetList()))
-        sgModuleUnload(modList->first->item);
+        sgModuleUnload(modList->head->item);
 
 	return SG_TRUE;
 }
@@ -248,7 +248,7 @@ SGbool SG_EXPORT sgLoop(SGint* code)
     SGList* modList = sgModuleGetList();
 	SGListNode* node;
 	SGModule* module;
-	for(node = modList ? modList->first : NULL; node != NULL; node = node->next)
+	for(node = modList ? modList->head : NULL; node != NULL; node = node->next)
 	{
 		module = node->item;
 		if(module->sgmModuleTick)

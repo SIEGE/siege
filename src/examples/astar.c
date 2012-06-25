@@ -49,7 +49,7 @@ void drawPath(SGList* path, SGColor color, SGbool lines, SGbool fill)
 	if(lines)
 		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_STRIP);
 	sgDrawColor4fv(&color.r);
-	for(node = path->first; node; node = node->next)
+	for(node = path->head; node; node = node->next)
 	{
 		data = node->item;
 		if(lines)

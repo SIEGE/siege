@@ -41,7 +41,7 @@ SGbool SG_EXPORT _sgAudioSourceInit(void)
 }
 SGbool SG_EXPORT _sgAudioSourceDeinit(void)
 {
-    while(_sg_srcDestroy->first)
+    while(_sg_srcDestroy->head)
         sgAudioSourceDestroy(sgListPopFirst(_sg_srcDestroy));
     sgListDestroy(_sg_srcDestroy);
 
@@ -109,7 +109,7 @@ SGAudioSource* SG_EXPORT sgAudioSourceCreate(float priority, float volume, float
 {
     SGListNode* node;
     SGListNode* next;
-    for(node = _sg_srcDestroy->first; node; node = next)
+    for(node = _sg_srcDestroy->head; node; node = next)
     {
         next = node->next;
         if(!sgAudioSourceIsPlaying(node->item))

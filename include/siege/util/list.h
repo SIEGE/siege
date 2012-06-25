@@ -26,7 +26,6 @@ extern "C"
 
 typedef struct SGListNode
 {
-	struct SGList* list;
 	struct SGListNode* prev;
 	struct SGListNode* next;
 	void* item;
@@ -34,8 +33,8 @@ typedef struct SGListNode
 
 typedef struct SGList
 {
-	struct SGListNode* first;
-	struct SGListNode* last;
+	struct SGListNode* head;
+	struct SGListNode* tail;
 } SGList;
 
 SGList* SG_EXPORT sgListCreate(void);

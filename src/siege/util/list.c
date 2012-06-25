@@ -23,16 +23,16 @@ SGList* SG_EXPORT sgListCreate(void)
 	SGList* list = malloc(sizeof(SGList));
     if(!list) return NULL;
 
-	list->first = NULL;
-	list->last = NULL;
+	list->head = NULL;
+	list->tail = NULL;
 	return list;
 }
 void SG_EXPORT sgListDestroy(SGList* list)
 {
     if(!list) return;
 
-	while(list->first != NULL)
-		sgListRemoveNode(list, list->first);
+	while(list->head != NULL)
+		sgListRemoveNode(list, list->head);
 
 	free(list);
 }
@@ -43,7 +43,7 @@ size_t SG_EXPORT sgListLength(SGList* list)
 		return 0;
 
 	size_t i;
-	SGListNode* node = list->first;
+	SGListNode* node = list->head;
 	for(i = 0; node != NULL; i++)
 		node = node->next;
 	return i;
@@ -55,7 +55,7 @@ SGListNode* SG_EXPORT sgListFindItem(SGList* list, void* item)
 		return NULL;
 
 	SGListNode* node;
-	for(node = list->first; node != NULL; node = node->next)
+	for(node = list->head; node != NULL; node = node->next)
 		if(node->item == item)
 			return node;
 	return NULL;
@@ -67,7 +67,7 @@ SGListNode* SG_EXPORT sgListFindIndex(SGList* list, size_t index)
 
 	size_t i;
 	SGListNode* node;
-	for(node = list->first, i = 0; node != NULL; node = node->next, i++)
+	for(node = list->head, i = 0; node != NULL; node = node->next, i++)
 		if(i == index)
 			return node;
 	return NULL;
@@ -80,18 +80,16 @@ SGListNode* SG_EXPORT sgListInsertNode(SGList* list, SGListNode* after, void* it
 	SGListNode* node = malloc(sizeof(SGListNode));
     if(!node) return NULL;
 
-	node->list = list;
-
 	if(after == NULL) // first item
 	{
 		node->prev = NULL;
-		node->next = list->first;
-		if(list->first)
-			list->first->prev = node;
-		list->first = node;
+		node->next = list->head;
+		if(list->head)
+			list->head->prev = node;
+		list->head = node;
 
-		if(!list->last)
-			list->last = node;
+		if(!list->tail)
+			list->tail = node;
 	}
 	else // not first item
 	{
@@ -101,8 +99,8 @@ SGListNode* SG_EXPORT sgListInsertNode(SGList* list, SGListNode* after, void* it
 			after->next->prev = node;
 		after->next = node;
 
-		if(after == list->last)
-			list->last = node;
+		if(after == list->tail)
+			list->tail = node;
 	}
 
 	node->item = item;
@@ -128,7 +126,7 @@ SGListNode* SG_EXPORT sgListPrepend(SGList* list, void* item)
 }
 SGListNode* SG_EXPORT sgListAppend(SGList* list, void* item)
 {
-	return sgListInsertNode(list, list->last, item);
+	return sgListInsertNode(list, list->tail, item);
 }
 
 void SG_EXPORT sgListRemoveNode(SGList* list, SGListNode* node)
@@ -136,10 +134,10 @@ void SG_EXPORT sgListRemoveNode(SGList* list, SGListNode* node)
     if(!list) return;
     if(!node) return;
 
-	if(list->first == node)
-		list->first = node->next;
-	if(list->last == node)
-		list->last = node->prev;
+	if(list->head == node)
+		list->head = node->next;
+	if(list->tail == node)
+		list->tail = node->prev;
 
 	if(node->prev != NULL)
 		node->prev->next = node->next;
@@ -165,32 +163,32 @@ SGListNode* SG_EXPORT sgListGetFirst(SGList* list)
 {
 	if(list == NULL)
 		return NULL;
-	return list->first;
+	return list->head;
 }
 SGListNode* SG_EXPORT sgListGetLast(SGList* list)
 {
 	if(list == NULL)
 		return NULL;
-	return list->last;
+	return list->tail;
 }
 
 void* SG_EXPORT sgListPopFirst(SGList* list)
 {
 	if(list == NULL)
 		return NULL;
-	if(list->first == NULL)
+	if(list->head == NULL)
 		return NULL;
-	void* item = list->first->item;
-	sgListRemoveNode(list, list->first);
+	void* item = list->head->item;
+	sgListRemoveNode(list, list->head);
 	return item;
 }
 void* SG_EXPORT sgListPopLast(SGList* list)
 {
 	if(list == NULL)
 		return NULL;
-	if(list->last == NULL)
+	if(list->tail == NULL)
 		return NULL;
-	void* item = list->last->item;
-	sgListRemoveNode(list, list->last);
+	void* item = list->tail->item;
+	sgListRemoveNode(list, list->tail);
 	return item;
 }

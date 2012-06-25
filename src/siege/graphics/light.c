@@ -94,11 +94,11 @@ void SG_EXPORT sgLightSpaceDestroy(SGLightSpace* space)
 
     SGListNode* node;
 
-    for(node = space->lights->first; node != NULL; node = node->next)
+    for(node = space->lights->head; node != NULL; node = node->next)
         sgLightDestroy(node->item);
     sgListDestroy(space->lights);
 
-    for(node = space->shapes->first; node != NULL; node = node->next)
+    for(node = space->shapes->head; node != NULL; node = node->next)
         sgShadowShapeDestroy(node->item);
     sgListDestroy(space->shapes);
 
@@ -127,7 +127,7 @@ void SG_EXPORT sgLightSpaceUpdate(SGLightSpace* space)
     SGListNode* snode;
 
     sgSurfaceClear4f(space->buffer, space->ambience.r, space->ambience.g, space->ambience.b, space->ambience.a);
-    for(lnode = space->lights->first; lnode != NULL; lnode = lnode->next)
+    for(lnode = space->lights->head; lnode != NULL; lnode = lnode->next)
     {
         if(!sgLightGetActive(lnode->item))
             continue;
@@ -137,7 +137,7 @@ void SG_EXPORT sgLightSpaceUpdate(SGLightSpace* space)
         sgLightDraw(lnode->item);
         if(sgLightGetShadow(lnode->item))
         {
-            for(snode = space->shapes->first; snode != NULL; snode = snode->next)
+            for(snode = space->shapes->head; snode != NULL; snode = snode->next)
             {
                 if(!sgShadowShapeGetActive(snode->item))
                     continue;
@@ -172,26 +172,26 @@ void SG_EXPORT sgLightSpaceDrawDBG(SGLightSpace* space, SGenum flags)
 {
     SGListNode* lnode;
     SGListNode* snode;
-    for(snode = space->shapes->first; snode != NULL; snode = snode->next)
+    for(snode = space->shapes->head; snode != NULL; snode = snode->next)
     {
         if(!sgShadowShapeGetActive(snode->item))
             continue;
         sgShadowShapeDrawDBG(snode->item, SG_TRUE);
     }
-    for(snode = space->shapes->first; snode != NULL; snode = snode->next)
+    for(snode = space->shapes->head; snode != NULL; snode = snode->next)
     {
         if(!sgShadowShapeGetActive(snode->item))
             continue;
         sgShadowShapeDrawDBG(snode->item, SG_FALSE);
     }
-    for(lnode = space->lights->first; lnode != NULL; lnode = lnode->next)
+    for(lnode = space->lights->head; lnode != NULL; lnode = lnode->next)
     {
         if(!sgLightGetActive(lnode->item))
             continue;
         sgLightDrawDBG(lnode->item);
         if(sgLightGetShadow(lnode->item))
         {
-            for(snode = space->shapes->first; snode != NULL; snode = snode->next)
+            for(snode = space->shapes->head; snode != NULL; snode = snode->next)
             {
                 if(!sgShadowShapeGetActive(snode->item))
                     continue;

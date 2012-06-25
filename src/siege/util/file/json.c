@@ -32,7 +32,7 @@ void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value)
             free(value->v.string);
             break;
         case SG_JSON_TYPE_ARRAY:
-            while(value->v.array->first)
+            while(value->v.array->head)
                 _sgJSONFreeValue(sgListPopFirst(value->v.array));
             sgListDestroy(value->v.array);
             break;
@@ -127,7 +127,7 @@ void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, siz
             _sgStringAppend(str, len, mem, "[");
             if(pretty)
                 _sgStringAppend(str, len, mem, "\n");
-            for(node = value->v.array->first; node; node = node->next)
+            for(node = value->v.array->head; node; node = node->next)
             {
                 _sgJSONDumpValue(node->item, str, len, mem, pretty, indent + 1, indent + 1);
                 if(node->next)
@@ -445,7 +445,7 @@ char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
     if(!input) return NULL;
     while(*input != ']' && *input)
     {
-        if(into->v.array->first) // if there was a previous item, but no comma...
+        if(into->v.array->head) // if there was a previous item, but no comma...
         {
             if(*input != ',')
             {
@@ -513,7 +513,7 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
     if(!input) return NULL;
     while(*input != '}' && *input)
     {
-        if(into->v.array->first) // if there was a previous item, but no comma...
+        if(into->v.array->head) // if there was a previous item, but no comma...
         {
             if(*input != ',')
             {
@@ -701,7 +701,7 @@ void SG_EXPORT sgJSONArrayRemoveValue(SGJSONValue* array, SGJSONValue* value)
         return;
 
     SGListNode* node;
-    for(node = array->v.array->first; node; node = node->next)
+    for(node = array->v.array->head; node; node = node->next)
     {
         if(node->item == value)
         {

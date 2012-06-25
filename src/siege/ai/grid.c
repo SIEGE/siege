@@ -282,7 +282,7 @@ SGList* SG_EXPORT sgNavGridSearchPath(SGNavGrid* grid, size_t* pathlen)
 	SGListNode* node;
 	SGAStarNode* anode;
 
-	for(node = list->first; node != NULL; node = node->next)
+	for(node = list->head; node != NULL; node = node->next)
 	{
 		anode = node->item;
 		sgListAppend(grid->path, anode->data);

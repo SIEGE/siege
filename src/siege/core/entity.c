@@ -314,8 +314,8 @@ void SG_EXPORT sgEntityDestroy(SGEntity* entity)
 }
 void SG_EXPORT sgEntityDestroyAll(void)
 {
-    while(_sg_entList->first)
-        sgEntityDestroy(_sg_entList->first->item);
+    while(_sg_entList->head)
+        sgEntityDestroy(_sg_entList->head->item);
 }
 
 void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name)
@@ -325,7 +325,7 @@ void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name)
     {
         enode = entity->tnode->item;
         sgListRemoveNode(enode->list, entity->tlnode);
-        if(!enode->list->first) // empty list
+        if(!enode->list->head) // empty list
         {
             sgTreeRemoveNode(_sg_entTree, entity->tnode);
             sgListDestroy(enode->list);
@@ -562,7 +562,7 @@ void SG_EXPORT sgEntityEventSignalv(size_t num, va_list args)
     SGListNode* node;
     SGListNode* next;
     va_list curarg;
-    for(node = _sg_entList->first; node; node = next)
+    for(node = _sg_entList->head; node; node = next)
     {
         next = node->next;
 

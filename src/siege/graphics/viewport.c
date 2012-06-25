@@ -32,7 +32,7 @@ SGbool SG_EXPORT _sgViewportDeinit(void)
 	//sgViewportDestroy(_sg_viewMain);
 	SGListNode* node;
 	SGListNode* next;
-	for(node = _sg_viewList->first; node != NULL; node = next)
+	for(node = _sg_viewList->head; node != NULL; node = next)
 	{
 		next = node->next;
 		sgViewportDestroy(node->item);

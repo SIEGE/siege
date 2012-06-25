@@ -63,7 +63,7 @@ SGbool SG_EXPORT sgAStarStep(SGAStar* search)
 	SGListNode* node;
 	SGAStarNode* anode;
 	float minf = SG_INF;
-	for(node = search->set.open->first; node != NULL; node = node->next)
+	for(node = search->set.open->head; node != NULL; node = node->next)
 	{
 		anode = node->item;
 		if(anode->score.f <= minf) // we allow for == in order to allow for score.f to be SG_INF
@@ -102,12 +102,12 @@ SGbool SG_EXPORT sgAStarStep(SGAStar* search)
 	SGbool tenbetter;
 	SGListNode* open;
 	SGListNode* closed;
-	for(node = min->links->first; node != NULL; node = node->next)
+	for(node = min->links->head; node != NULL; node = node->next)
 	{
 		anode = node->item;
 
 		inside = SG_FALSE;
-		for(closed = search->set.closed->first; closed != NULL; closed = closed->next)
+		for(closed = search->set.closed->head; closed != NULL; closed = closed->next)
 			if(anode == closed->item)
 			{
 				inside = SG_TRUE;
@@ -122,7 +122,7 @@ SGbool SG_EXPORT sgAStarStep(SGAStar* search)
 			teng = min->score.g + 1;
 
 		inside = 0;
-		for(open = search->set.open->first; open != NULL; open = open->next)
+		for(open = search->set.open->head; open != NULL; open = open->next)
 			if(anode == open->item)
 			{
 				inside = SG_TRUE;
