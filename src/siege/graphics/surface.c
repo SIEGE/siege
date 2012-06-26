@@ -180,14 +180,14 @@ void SG_EXPORT sgSurfaceDraw(SGSurface* surface)
 
 void SG_EXPORT sgSurfaceTarget(SGSurface* surface)
 {
-    if(psgmGraphicsSurfaceSetTarget != NULL)
-        psgmGraphicsSurfaceSetTarget(surface->handle);
+    if(psgmGraphicsSurfaceTarget != NULL)
+        psgmGraphicsSurfaceTarget(surface->handle);
     _sg_surfTarget = surface->handle;
 }
 void SG_EXPORT sgSurfaceUntarget(SGSurface* surface)
 {
-    if(psgmGraphicsSurfaceResetTarget != NULL)
-        psgmGraphicsSurfaceResetTarget(_sg_surfTarget);
+    if(psgmGraphicsSurfaceUntarget != NULL)
+        psgmGraphicsSurfaceUntarget(_sg_surfTarget);
     _sg_surfTarget = NULL;
 }
 void SG_EXPORT sgSurfaceClear4f(SGSurface* surface, float r, float g, float b, float a)

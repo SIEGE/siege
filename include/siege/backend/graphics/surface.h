@@ -38,9 +38,8 @@ extern "C"
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceGetSize)(void* surface, SGuint* width, SGuint* height);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsSurfaceGetBPP)(void* surface, SGenum* bpp);
 	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceDraw)(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceSetTarget)(void* surface);
-	//SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceGetTarget)(void** surface);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceResetTarget)(void* surface);
+	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceTarget)(void* surface);
+	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceUntarget)(void* surface);
 #ifdef __cplusplus
 }
 #endif

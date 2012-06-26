@@ -22,7 +22,6 @@
 typedef struct ContextData
 {
     SGuint bpp;
-    struct TextureData* temp;
     struct SurfaceData* target;
 
     struct FBOFunctions fbo;

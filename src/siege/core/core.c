@@ -167,8 +167,6 @@ SGbool SG_EXPORT sgInit(SGenum flags)
 	_sgPhysicsSpaceInit();
     _sgPhysicsCollisionInit();
 
-	//sgWindowOpen(width, height, bpp, flags);
-
     _sgLightInit();
 
 	return SG_TRUE;

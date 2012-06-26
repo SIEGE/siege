@@ -23,7 +23,6 @@ SGuint SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint h
 {
     ContextData** cdata = (ContextData**)context;
     *context = calloc(1, sizeof(ContextData));
-    (*cdata)->temp = NULL;
     (*cdata)->target = NULL;
     (*cdata)->bpp = bpp;
 
@@ -51,7 +50,6 @@ SGuint SG_EXPORT sgmGraphicsContextDestroy(void* context)
     if(context == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-    sgmGraphicsTextureDestroy(((ContextData*)context)->temp);
     free(context);
 
     return SG_OK;
@@ -61,7 +59,7 @@ SGuint SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint he
 {
     if(context == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    ContextData* cdata = (ContextData*)context;
+    //ContextData* cdata = (ContextData*)context;
 
     glViewport(0, 0, width, height);
 
@@ -75,10 +73,6 @@ SGuint SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint he
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
-    sgmGraphicsTextureDestroy(cdata->temp);
-    sgmGraphicsTextureCreate((void**)&cdata->temp, cdata);
-    sgmGraphicsTextureSetData(cdata->temp, width, height, cdata->bpp, NULL);
 
     return SG_OK;
 }

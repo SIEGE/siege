@@ -49,9 +49,8 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
 	_SG_BIND(sgmGraphicsSurfaceGetSize);
     _SG_BIND(sgmGraphicsSurfaceGetBPP);
 	_SG_BIND(sgmGraphicsSurfaceDraw);
-	_SG_BIND(sgmGraphicsSurfaceSetTarget);
-	//_SG_BIND(sgmGraphicsSurfaceGetTarget);
-	_SG_BIND(sgmGraphicsSurfaceResetTarget);
+	_SG_BIND(sgmGraphicsSurfaceTarget);
+	_SG_BIND(sgmGraphicsSurfaceUntarget);
 
 	_SG_BIND(sgmGraphicsTextureCreate);
 	//_SG_BIND(sgmGraphicsTextureCreateData);
