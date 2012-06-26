@@ -173,10 +173,15 @@ SGuint SG_EXPORT sgmGraphicsSurfaceSetTarget(void* surface)
 
     if(sdata->isFBO)
     {
-        //printf("GLE1 %X\n", glGetError());
-        //printf("GLE2 %X\n", glGetError());
+        glPushAttrib(GL_VIEWPORT_BIT);
+        glViewport(0, 0, sdata->texture->width, sdata->texture->height);
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        glOrtho(0, sdata->texture->width, sdata->texture->height, 0, 127, -128);
+        glMatrixMode(GL_MODELVIEW);
+
         cdata->fbo.glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, sdata->fboid);
-        //printf("GLE3 %X\n", glGetError());
     }
     else
     {
@@ -212,7 +217,14 @@ SGuint SG_EXPORT sgmGraphicsSurfaceResetTarget(void* surface)
     ContextData* cdata = (ContextData*)sdata->texture->context;
 
     if(sdata->isFBO)
+    {
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopAttrib();
+
         cdata->fbo.glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    }
     else
     {
         if(cdata->target == NULL)
