@@ -210,7 +210,7 @@ typedef double SGdouble;
 #   define SG_PI PI
 #else // we don't have a PI defined
 #   define SG_PI 3.14159265358979323846
-#endif // PI defind
+#endif // PI defined
 
 /**
  * \name Some commonly used macros

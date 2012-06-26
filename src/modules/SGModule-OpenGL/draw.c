@@ -107,7 +107,7 @@ SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum t
             if(colors != NULL)
                 glDisableClientState(GL_COLOR_ARRAY);
             glDisableClientState(GL_VERTEX_ARRAY);
-            return SG_INVALID_VALUE;
+            return SG_INVALID_ENUM;
     }
 
     if(texcoords != NULL)
