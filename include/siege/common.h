@@ -137,7 +137,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 6
-#define SG_VERSION_PATCH 6
+#define SG_VERSION_PATCH 7
 /**
  * \brief Version string
  *
@@ -231,10 +231,11 @@ typedef double SGdouble;
  * They are currently not used in the frontend -> client space, but they may be in the future.
  */
 /// @{
-#define SG_OK			 0
-#define SG_NO_ERROR		 0
-#define SG_UNKNOWN_ERROR 1
-#define SG_INVALID_VALUE 2
+#define SG_OK               0
+#define SG_NO_ERROR         0
+#define SG_UNKNOWN_ERROR    1
+#define SG_INVALID_VALUE    2
+#define SG_INVALID_ENUM     3
 /// @}
 
 /**
@@ -385,6 +386,15 @@ typedef double SGdouble;
 #define SG_GRAPHICS_EQUATION_REVERSE_SUBTRACT   0x02
 #define SG_GRAPHICS_EQUATION_MIN                0x03
 #define SG_GRAPHICS_EQUATION_MAX                0x04
+
+#define SG_DEPTH_NEVER      0
+#define SG_DEPTH_EQUAL      1
+#define SG_DEPTH_NOTEQUAL   2
+#define SG_DEPTH_LESS       3
+#define SG_DEPTH_LEQUAL     4 /* default */
+#define SG_DEPTH_GREATER    5
+#define SG_DEPTH_GEQUAL     6
+#define SG_DEPTH_ALWAYS     7
 
 /**
  * \name Physics shapes

@@ -187,7 +187,27 @@ SGuint SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
     return SG_OK;
 }
 
-SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthTest)(void* context, SGbool test)
+SGenum SG_EXPORT sgmGraphicsDrawSetDepthFunc(void* context, SGenum func)
+{
+    GLenum glfunc = 0;
+    switch(func)
+    {
+        case SG_DEPTH_NEVER:    glfunc = GL_NEVER;    break;
+        case SG_DEPTH_EQUAL:    glfunc = GL_EQUAL;    break;
+        case SG_DEPTH_NOTEQUAL: glfunc = GL_NOTEQUAL; break;
+        case SG_DEPTH_LESS:     glfunc = GL_LESS;     break;
+        case SG_DEPTH_LEQUAL:   glfunc = GL_LEQUAL;   break;
+        case SG_DEPTH_GREATER:  glfunc = GL_GREATER;  break;
+        case SG_DEPTH_GEQUAL:   glfunc = GL_GEQUAL;   break;
+        case SG_DEPTH_ALWAYS:   glfunc = GL_ALWAYS;   break;
+        default:
+            return SG_INVALID_ENUM;
+    }
+    glDepthFunc(glfunc);
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmGraphicsDrawSetDepthTest(void* context, SGbool test)
 {
     if(test)
         glEnable(GL_DEPTH_TEST);
@@ -196,7 +216,7 @@ SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthTest)(void* context, SGbool test
     return SG_OK;
 }
 
-SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetSmooth)(void* context, SGbool smooth)
+SGenum SG_EXPORT sgmGraphicsDrawSetSmooth(void* context, SGbool smooth)
 {
     GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
 

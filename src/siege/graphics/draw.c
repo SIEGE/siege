@@ -342,6 +342,11 @@ void SG_EXPORT sgDrawSetBlendEquation(SGenum equation)
         psgmGraphicsDrawSetBlendEquation(_sg_gfxHandle, equation);
 }
 
+void SG_EXPORT sgDrawSetDepthFunc(SGenum func)
+{
+    if(psgmGraphicsDrawSetDepthFunc)
+        psgmGraphicsDrawSetDepthFunc(_sg_gfxHandle, func);
+}
 void SG_EXPORT sgDrawSetDepthTest(SGbool test)
 {
     if(psgmGraphicsDrawSetDepthTest)

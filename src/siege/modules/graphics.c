@@ -81,6 +81,7 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
     _SG_BIND(sgmGraphicsDrawSetBlendFunc);
     _SG_BIND(sgmGraphicsDrawSetBlendEquation);
 
+    _SG_BIND(sgmGraphicsDrawSetDepthFunc);
     _SG_BIND(sgmGraphicsDrawSetDepthTest);
     _SG_BIND(sgmGraphicsDrawSetSmooth);
 
