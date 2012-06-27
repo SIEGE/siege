@@ -38,10 +38,6 @@ void SG_EXPORT _sgModuleLoadInput(SGLibrary* lib)
     /// Input - Keyboard
     _SG_BIND(sgmCoreKeyboardCreate);
     _SG_BIND(sgmCoreKeyboardDestroy);
-    //_SG_BIND(sgmCoreKeyboardSetKey);
-    _SG_BIND(sgmCoreKeyboardGetKey);
-    //_SG_BIND(sgmCoreKeyboardSetChr);
-    //_SG_BIND(sgmCoreKeyboardGetChr);
 
     _SG_BIND(sgmCoreKeyboardSetCallbacks);
     //_SG_BIND(sgmCoreKeyboardGetCallbacks);

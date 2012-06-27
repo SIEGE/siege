@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int keysGLFW[] = {
+static const int keysGLFW[] = {
      GLFW_KEY_SPACE     , GLFW_KEY_ESC
     ,GLFW_KEY_F1        , GLFW_KEY_F2         , GLFW_KEY_F3         , GLFW_KEY_F4      , GLFW_KEY_F5  , GLFW_KEY_F6
     ,GLFW_KEY_F7        , GLFW_KEY_F8         , GLFW_KEY_F9         , GLFW_KEY_F10     , GLFW_KEY_F11 , GLFW_KEY_F12
@@ -38,7 +38,7 @@ int keysGLFW[] = {
     ,0
 };
 
-SGuint keysSIEGE[] = {
+static const SGenum keysSIEGE[] = {
      SG_KEY_SPACE     , SG_KEY_ESC
     ,SG_KEY_F1        , SG_KEY_F2         , SG_KEY_F3         , SG_KEY_F4      , SG_KEY_F5  , SG_KEY_F6
     ,SG_KEY_F7        , SG_KEY_F8         , SG_KEY_F9         , SG_KEY_F10     , SG_KEY_F11 , SG_KEY_F12
@@ -55,7 +55,8 @@ SGuint keysSIEGE[] = {
     ,0
 };
 
-SGuint keyGLFWtoSIEGE(int key)
+/* TODO: change into O(1) conversion by using direct table access */
+static SGenum keyGLFWtoSIEGE(int key)
 {
     size_t i;
     for(i = 0; keysGLFW[i]; i++)
@@ -63,19 +64,13 @@ SGuint keyGLFWtoSIEGE(int key)
             return keysSIEGE[i];
     return key;
 }
-int keySIEGEtoGLFW(SGuint key)
-{
-    size_t i;
-    for(i = 0; keysSIEGE[i]; i++)
-        if(keysSIEGE[i] == key)
-            return keysGLFW[i];
-    return key;
-}
+
+static int dummyKeyboard = 1;
 
 void GLFWCALL keyboardKey(int key, int down)
 {
     if(main_window->cbKeyboard->key != NULL)
-        main_window->cbKeyboard->key((void*)1, keyGLFWtoSIEGE(key), down);
+        main_window->cbKeyboard->key(&dummyKeyboard, keyGLFWtoSIEGE(key), down);
 }
 void GLFWCALL keyboardChar(int chr, int down)
 {
@@ -83,43 +78,30 @@ void GLFWCALL keyboardChar(int chr, int down)
         return;
 
     if(main_window->cbKeyboard->chr != NULL)
-        main_window->cbKeyboard->chr((void*)1, chr);
+        main_window->cbKeyboard->chr(&dummyKeyboard, chr);
 }
 
 SGuint SG_EXPORT sgmCoreKeyboardCreate(void** keyboard, void* window)
 {
-    *keyboard = malloc(1);
+    *keyboard = &dummyKeyboard;
     return SG_OK;
 }
 SGuint SG_EXPORT sgmCoreKeyboardDestroy(void* keyboard)
 {
     if(keyboard == NULL)
-        return SG_OK; // SG_INVALID_VALUE
-
-    free(keyboard);
+        return SG_INVALID_VALUE;
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmCoreKeyboardSetKey(void* keyboard, SGuint key, SGbool down);
-SGuint SG_EXPORT sgmCoreKeyboardGetKey(void* keyboard, SGuint key, SGbool* down)
-{
-    if(keyboard == NULL)
-        return SG_OK; // SG_INVALID_VALUE
-
-    *down = glfwGetKey(keySIEGEtoGLFW(key));
-    return SG_OK;
-}
-//SGuint SG_EXPORT sgmCoreKeyboardSetChr(void* keyboard, SGuint chr, SGbool down);
-//SGuint SG_EXPORT sgmCoreKeyboardGetChr(void* keyboard, SGuint chr, SGbool* down);
 
 SGuint SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallbacks* callbacks)
 {
     if(keyboard == NULL)
-        return SG_OK; // SG_INVALID_VALUE
+        return SG_INVALID_VALUE;
 
     if(callbacks == NULL)
         main_window->cbKeyboard = NULL;
     else
-        main_window->cbKeyboard = memcpy(main_window->cbKeyboard, callbacks, sizeof(SGCoreKeyboardCallbacks));
+        memcpy(main_window->cbKeyboard, callbacks, sizeof(SGCoreKeyboardCallbacks));
 
     return SG_OK;
 }

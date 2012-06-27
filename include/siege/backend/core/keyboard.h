@@ -33,10 +33,6 @@ extern "C"
 
     SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardCreate)(void** keyboard, void* window);
     SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardDestroy)(void* keyboard);
-    //SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardSetKey)(void* keyboard, SGuint key, SGbool down);
-    SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardGetKey)(void* keyboard, SGuint key, SGbool* down);
-    //SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardSetChr)(void* keyboard, SGuint chr, SGbool down);
-    //SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardGetChr)(void* keyboard, SGuint chr, SGbool* down);
 
     SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardSetCallbacks)(void* keyboard, SGCoreKeyboardCallbacks* callbacks);
     //SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardGetCallbacks)(void* keyboard, SGCoreKeyboardCallbacks** callbacks);
