@@ -75,6 +75,29 @@ static int ugly_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* forma
 #endif /* __MINGW32__ */
 #define vswprintf ugly_vswprintf_hack
 
+/*
+ * Windows' snprintf is non-conforming in that it returns -1 instead of
+ * the to-be size if the buffer is not large enough.
+ *
+ * MinGW gets around this problem, but at least some other compilers do
+ * not. What follows is a super-ugly workaround.
+ */
+#if defined(__WIN32__) && !defined(__MINGW32__)
+static int ugly_vsnprintf_hack(char* str, size_t size, const char* format, va_list args)
+{
+    int len;
+    va_list argcpy;
+    va_copy(argcpy, args);
+    len = _vscprintf(format, argcpy);
+    va_end(argcpy);
+
+    if(size < len + 1)
+        return len;
+    return vsnprintf(str, size, format, args);
+}
+#define vsnprintf ugly_vsnprintf_hack
+#endif /* defined(__WIN32__) && !defined(__MINGW32__) */
+
 char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what)
 {
     size_t wlen = strlen(what);
