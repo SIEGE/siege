@@ -75,9 +75,9 @@ void destroyBox(SGEntity* entity)
 
 SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density, SGbool stat)
 {
-    SGuint type = SG_PHYSICS_BODY_NORMAL;
+    SGuint type = SG_BODY_NORMAL;
     if(stat)
-        type = (density == SG_INF) ? SG_PHYSICS_BODY_STATIC : SG_PHYSICS_BODY_SEMISTATIC;
+        type = (density == SG_INF) ? SG_BODY_STATIC : SG_BODY_SEMISTATIC;
 
     SGPhysicsBody* body = sgPhysicsBodyCreate(NULL, type);
 

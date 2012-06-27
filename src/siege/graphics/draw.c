@@ -360,7 +360,7 @@ void SG_EXPORT sgDrawSetSmooth(SGbool smooth)
 
 void SG_EXPORT sgDrawPoint(float x, float y)
 {
-	sgDrawBegin(SG_GRAPHICS_PRIMITIVE_POINTS);
+    sgDrawBegin(SG_POINTS);
 		sgDrawVertex2f(x, y);
 	sgDrawEnd();
 }
@@ -373,7 +373,7 @@ void SG_EXPORT sgDrawPointSetSize(float size)
 
 void SG_EXPORT sgDrawLine(float x1, float y1, float x2, float y2)
 {
-	sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINES);
+    sgDrawBegin(SG_LINES);
 		sgDrawVertex2f(x1, y1);
 		sgDrawVertex2f(x2, y2);
 	sgDrawEnd();
@@ -388,9 +388,9 @@ void SG_EXPORT sgDrawLineSetWidth(float width)
 void SG_EXPORT sgDrawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, SGbool fill)
 {
 	if(fill)
-		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLES);
+        sgDrawBegin(SG_TRIANGLES);
 	else
-		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
+        sgDrawBegin(SG_LINE_LOOP);
 
 		sgDrawVertex2f(x1, y1);
 		sgDrawVertex2f(x2, y2);
@@ -401,9 +401,9 @@ void SG_EXPORT sgDrawTriangle(float x1, float y1, float x2, float y2, float x3, 
 void SG_EXPORT sgDrawQuad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, SGbool fill)
 {
 	if(fill)
-		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_QUADS);
+        sgDrawBegin(SG_QUADS);
 	else
-		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
+        sgDrawBegin(SG_LINE_LOOP);
 
 	sgDrawVertex2f(x1, y1);
 	sgDrawVertex2f(x2, y2);
@@ -486,11 +486,11 @@ void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, fl
 
 	if(fill)
 	{
-		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
+        sgDrawBegin(SG_TRIANGLE_FAN);
 		sgDrawVertex2f(x, y);
 	}
 	else
-		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_STRIP);
+        sgDrawBegin(SG_LINE_STRIP);
 
 	for(i = 0; i <= numsides; i++)
 	{

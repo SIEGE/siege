@@ -100,7 +100,7 @@ void SG_EXPORT sgTurtleMove(SGTurtle* turtle, float x, float y)
     sgTurtleJump(turtle, x, y);
     if(turtle->curr.draw)
     {
-        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINES);
+        sgDrawBegin(SG_LINES);
             sgDrawVertex2f(turtle->prev.x, turtle->prev.y);
             sgDrawVertex2f(x, y);
         sgDrawEnd();

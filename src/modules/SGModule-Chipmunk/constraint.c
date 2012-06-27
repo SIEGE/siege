@@ -25,16 +25,16 @@ SGenum SG_EXPORT sgmPhysicsConstraintCreate(void** constr, void* body1, void* bo
 
     switch(type)
     {
-        case SG_PHYSICS_CONSTRAINT_PIN:       *constr = cpPinJointNew(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3])); break;
-        case SG_PHYSICS_CONSTRAINT_SLIDE:     *constr = cpSlideJointNew(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3]), vdata[4], vdata[5]); break;
-        case SG_PHYSICS_CONSTRAINT_PIVOT:     *constr = cpPivotJointNew2(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3])); break;
-        case SG_PHYSICS_CONSTRAINT_GROOVE:    *constr = cpGrooveJointNew(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3]), cpv(vdata[4], vdata[5])); break;
-        case SG_PHYSICS_CONSTRAINT_LINSPRING: *constr = cpDampedSpringNew(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3]), vdata[4], vdata[5], vdata[6]); break;
-        case SG_PHYSICS_CONSTRAINT_ROTSPRING: *constr = cpDampedRotarySpringNew(body1, body2, vdata[0], vdata[1], vdata[2]); break;
-        case SG_PHYSICS_CONSTRAINT_ROTLIMIT:  *constr = cpRotaryLimitJointNew(body1, body2, vdata[0], vdata[1]); break;
-        case SG_PHYSICS_CONSTRAINT_RATCHET:   *constr = cpRatchetJointNew(body1, body2, vdata[0], vdata[1]); break;
-        case SG_PHYSICS_CONSTRAINT_GEAR:      *constr = cpGearJointNew(body1, body2, vdata[0], vdata[1]); break;
-        case SG_PHYSICS_CONSTRAINT_MOTOR:     *constr = cpSimpleMotorNew(body1, body2, vdata[0]); break;
+        case SG_CONSTRAINT_PIN:       *constr = cpPinJointNew(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3])); break;
+        case SG_CONSTRAINT_SLIDE:     *constr = cpSlideJointNew(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3]), vdata[4], vdata[5]); break;
+        case SG_CONSTRAINT_PIVOT:     *constr = cpPivotJointNew2(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3])); break;
+        case SG_CONSTRAINT_GROOVE:    *constr = cpGrooveJointNew(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3]), cpv(vdata[4], vdata[5])); break;
+        case SG_CONSTRAINT_LINSPRING: *constr = cpDampedSpringNew(body1, body2, cpv(vdata[0], vdata[1]), cpv(vdata[2], vdata[3]), vdata[4], vdata[5], vdata[6]); break;
+        case SG_CONSTRAINT_ROTSPRING: *constr = cpDampedRotarySpringNew(body1, body2, vdata[0], vdata[1], vdata[2]); break;
+        case SG_CONSTRAINT_ROTLIMIT:  *constr = cpRotaryLimitJointNew(body1, body2, vdata[0], vdata[1]); break;
+        case SG_CONSTRAINT_RATCHET:   *constr = cpRatchetJointNew(body1, body2, vdata[0], vdata[1]); break;
+        case SG_CONSTRAINT_GEAR:      *constr = cpGearJointNew(body1, body2, vdata[0], vdata[1]); break;
+        case SG_CONSTRAINT_MOTOR:     *constr = cpSimpleMotorNew(body1, body2, vdata[0]); break;
         default:
             *constr = NULL;
             return SG_OK; // SG_INVALID_ENUM

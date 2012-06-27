@@ -252,26 +252,26 @@ SGenum SG_EXPORT sgmGraphicsTextureSetWrap(void* texture, SGenum swrap, SGenum t
     GLenum glwrap = 0;
     switch(swrap)
     {
-        case SG_GRAPHICS_WRAP_CURRENT:                                          break;
-        case SG_GRAPHICS_WRAP_CLAMP:            glwrap = GL_CLAMP;              break;
-        case SG_GRAPHICS_WRAP_CLAMP_TO_EDGE:    glwrap = GL_CLAMP_TO_EDGE;      break;
-        case SG_GRAPHICS_WRAP_MIRRORED_REPEAT:  glwrap = GL_MIRRORED_REPEAT;    break;
-        case SG_GRAPHICS_WRAP_REPEAT:           glwrap = GL_REPEAT;             break;
-        default: swrap = SG_GRAPHICS_WRAP_CURRENT;
+        case SG_WRAP_CURRENT:                                          break;
+        case SG_WRAP_CLAMP:            glwrap = GL_CLAMP;              break;
+        case SG_WRAP_CLAMP_TO_EDGE:    glwrap = GL_CLAMP_TO_EDGE;      break;
+        case SG_WRAP_MIRRORED_REPEAT:  glwrap = GL_MIRRORED_REPEAT;    break;
+        case SG_WRAP_REPEAT:           glwrap = GL_REPEAT;             break;
+        default: swrap = SG_WRAP_CURRENT;
     }
-    if(swrap != SG_GRAPHICS_WRAP_CURRENT)
+    if(swrap != SG_WRAP_CURRENT)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, glwrap);
 
     switch(twrap)
     {
-        case SG_GRAPHICS_WRAP_CURRENT:                                          break;
-        case SG_GRAPHICS_WRAP_CLAMP:            glwrap = GL_CLAMP;              break;
-        case SG_GRAPHICS_WRAP_CLAMP_TO_EDGE:    glwrap = GL_CLAMP_TO_EDGE;      break;
-        case SG_GRAPHICS_WRAP_MIRRORED_REPEAT:  glwrap = GL_MIRRORED_REPEAT;    break;
-        case SG_GRAPHICS_WRAP_REPEAT:           glwrap = GL_REPEAT;             break;
-        default: twrap = SG_GRAPHICS_WRAP_CURRENT;
+        case SG_WRAP_CURRENT:                                          break;
+        case SG_WRAP_CLAMP:            glwrap = GL_CLAMP;              break;
+        case SG_WRAP_CLAMP_TO_EDGE:    glwrap = GL_CLAMP_TO_EDGE;      break;
+        case SG_WRAP_MIRRORED_REPEAT:  glwrap = GL_MIRRORED_REPEAT;    break;
+        case SG_WRAP_REPEAT:           glwrap = GL_REPEAT;             break;
+        default: twrap = SG_WRAP_CURRENT;
     }
-    if(twrap != SG_GRAPHICS_WRAP_CURRENT)
+    if(twrap != SG_WRAP_CURRENT)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, glwrap);
 
     //glBindTexture(GL_TEXTURE_2D, 0);
@@ -290,12 +290,12 @@ SGenum SG_EXPORT sgmGraphicsTextureSetInterpolation(void* texture, SGenum interp
     GLenum glinterp = 0;
     switch(interp)
     {
-        case SG_GRAPHICS_INTERP_CURRENT:                        break;
-        case SG_GRAPHICS_INTERP_NEAREST: glinterp = GL_NEAREST; break;
-        case SG_GRAPHICS_INTERP_LINEAR:  glinterp = GL_LINEAR;  break;
-        default: interp = SG_GRAPHICS_INTERP_CURRENT;
+        case SG_INTERP_CURRENT:                        break;
+        case SG_INTERP_NEAREST: glinterp = GL_NEAREST; break;
+        case SG_INTERP_LINEAR:  glinterp = GL_LINEAR;  break;
+        default: interp = SG_INTERP_CURRENT;
     }
-    if(interp != SG_GRAPHICS_INTERP_CURRENT)
+    if(interp != SG_INTERP_CURRENT)
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glinterp);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glinterp);

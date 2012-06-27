@@ -24,7 +24,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceCreate(void** space)
     *space = cpSpaceNew();
 
     DataExt* data = malloc(sizeof(DataExt));
-    data->type = SG_PHYSICS_BODY_STATIC;
+    data->type = SG_BODY_STATIC;
     data->data = NULL;
     cpBodySetUserData(cpSpaceGetStaticBody(*space), data);
 
@@ -86,7 +86,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    if(((DataExt*)cpBodyGetUserData(cpShapeGetBody(shape)))->type != SG_PHYSICS_BODY_STATIC)
+    if(((DataExt*)cpBodyGetUserData(cpShapeGetBody(shape)))->type != SG_BODY_STATIC)
         cpSpaceAddShape(space, shape);
     else
         cpSpaceAddStaticShape(space, shape);
@@ -96,7 +96,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    if(((DataExt*)cpBodyGetUserData(cpShapeGetBody(shape)))->type != SG_PHYSICS_BODY_STATIC)
+    if(((DataExt*)cpBodyGetUserData(cpShapeGetBody(shape)))->type != SG_BODY_STATIC)
         cpSpaceRemoveShape(space, shape);
     else
         cpSpaceRemoveStaticShape(space, shape);
@@ -108,7 +108,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    if((((DataExt*)cpBodyGetUserData(body))->type != SG_PHYSICS_BODY_STATIC) && (((DataExt*)cpBodyGetUserData(body))->type != SG_PHYSICS_BODY_SEMISTATIC)) // we shouldn't put the body in, if it's static
+    if((((DataExt*)cpBodyGetUserData(body))->type != SG_BODY_STATIC) && (((DataExt*)cpBodyGetUserData(body))->type != SG_BODY_SEMISTATIC)) // we shouldn't put the body in, if it's static
         cpSpaceAddBody(space, body);
     return SG_OK;
 }
@@ -116,7 +116,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-    if((((DataExt*)cpBodyGetUserData(body))->type != SG_PHYSICS_BODY_STATIC) && (((DataExt*)cpBodyGetUserData(body))->type != SG_PHYSICS_BODY_SEMISTATIC)) // we shouldn't put the body in, if it's static
+    if((((DataExt*)cpBodyGetUserData(body))->type != SG_BODY_STATIC) && (((DataExt*)cpBodyGetUserData(body))->type != SG_BODY_SEMISTATIC)) // we shouldn't put the body in, if it's static
         cpSpaceRemoveBody(space, body);
     return SG_OK;
 }

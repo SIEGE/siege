@@ -105,7 +105,7 @@ void SG_EXPORT sgTrailDraw(SGTrail* trail)
         py = y;
     }
 
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_STRIP);
+    sgDrawBegin(SG_LINE_STRIP);
         px = trail->xpoints[0];
         py = trail->ypoints[0];
         for(i = 0; i < trail->numpoints; i++)
@@ -115,7 +115,7 @@ void SG_EXPORT sgTrailDraw(SGTrail* trail)
             if((x != x) || (y != y))
             {
                 sgDrawEnd();
-                sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_STRIP);
+                sgDrawBegin(SG_LINE_STRIP);
                 continue;
             }
             sgDrawColor2f(1.0, i / (float)(trail->numpoints - 1));

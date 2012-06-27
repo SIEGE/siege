@@ -44,7 +44,7 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreate(SGPhysicsBody* body, SGenum type)
 }
 SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float x1, float y1, float x2, float y2, float width)
 {
-    SGPhysicsShape* shape = sgPhysicsShapeCreate(body, SG_PHYSICS_SHAPE_SEGMENT);
+    SGPhysicsShape* shape = sgPhysicsShapeCreate(body, SG_SHAPE_SEGMENT);
     if(shape == NULL)
         return NULL;
 
@@ -70,7 +70,7 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float
 }
 SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x, float y, float* verts, size_t numverts)
 {
-    SGPhysicsShape* shape = sgPhysicsShapeCreate(body, SG_PHYSICS_SHAPE_POLYGON);
+    SGPhysicsShape* shape = sgPhysicsShapeCreate(body, SG_SHAPE_POLYGON);
     if(shape == NULL)
         return NULL;
 
@@ -92,7 +92,7 @@ SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x,
 }
 SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float x, float y, float r1, float r2)
 {
-    SGPhysicsShape* shape = sgPhysicsShapeCreate(body, SG_PHYSICS_SHAPE_CIRCLE);
+    SGPhysicsShape* shape = sgPhysicsShapeCreate(body, SG_SHAPE_CIRCLE);
     if(shape == NULL)
         return NULL;
 
@@ -192,10 +192,10 @@ float SG_EXPORT sgPhysicsShapeGetAreaS(SGPhysicsShape* shape)
 
     switch(shape->type)
     {
-        case SG_PHYSICS_SHAPE_SEGMENT:
+        case SG_SHAPE_SEGMENT:
             return hypot(shape->verts[0] - shape->verts[2], shape->verts[1] - shape->verts[3]) * shape->verts[4];
 
-        case SG_PHYSICS_SHAPE_POLYGON:
+        case SG_SHAPE_POLYGON:
             area = 0;
             for(i = 0; i < shape->numverts; i++)
             {
@@ -208,7 +208,7 @@ float SG_EXPORT sgPhysicsShapeGetAreaS(SGPhysicsShape* shape)
             }
             return area / 2.0;
 
-        case SG_PHYSICS_SHAPE_CIRCLE:
+        case SG_SHAPE_CIRCLE:
             return SG_PI * (shape->verts[1] * shape->verts[1] - shape->verts[0] * shape->verts[0]);
     }
     return SG_NAN;
@@ -234,13 +234,13 @@ float SG_EXPORT sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass)
 
     switch(shape->type)
     {
-        case SG_PHYSICS_SHAPE_SEGMENT:
+        case SG_SHAPE_SEGMENT:
             return mass * (((shape->verts[0] - shape->verts[2]) * (shape->verts[0] - shape->verts[2]) -
                             (shape->verts[1] - shape->verts[3]) * (shape->verts[1] - shape->verts[3])) / 12.0 +
                            ((shape->verts[0] - shape->verts[2]) * (shape->verts[0] - shape->verts[2]) +
                             (shape->verts[1] - shape->verts[3]) * (shape->verts[1] - shape->verts[3])) / 2.0);
 
-        case SG_PHYSICS_SHAPE_POLYGON:
+        case SG_SHAPE_POLYGON:
             nom = 0;
             den = 0;
             for(i = 0; i < shape->numverts; i++)
@@ -255,7 +255,7 @@ float SG_EXPORT sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass)
             }
             return nom / den * mass / 6.0;
 
-        case SG_PHYSICS_SHAPE_CIRCLE:
+        case SG_SHAPE_CIRCLE:
             return mass * (shape->verts[0] * shape->verts[0] + shape->verts[1] * shape->verts[1]) / 2.0;
     }
     return SG_NAN;
@@ -272,10 +272,10 @@ float SG_EXPORT sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float dens
 
     switch(shape->type)
     {
-        case SG_PHYSICS_SHAPE_SEGMENT:
+        case SG_SHAPE_SEGMENT:
             return sgPhysicsShapeGetMomentMass(shape, sgPhysicsShapeGetMass(shape, density));
 
-        case SG_PHYSICS_SHAPE_POLYGON:
+        case SG_SHAPE_POLYGON:
             moment = 0;
             for(i = 0; i < shape->numverts; i++)
             {
@@ -288,7 +288,7 @@ float SG_EXPORT sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float dens
             }
             return moment;
 
-        case SG_PHYSICS_SHAPE_CIRCLE:
+        case SG_SHAPE_CIRCLE:
             return sgPhysicsShapeGetMomentMass(shape, sgPhysicsShapeGetMass(shape, density));
     }
     return SG_NAN;
@@ -317,7 +317,7 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
     sgPhysicsShapeGetBBox(shape, &t, &l, &b, &r);
 
     sgDrawColor4f(0.5, 0.5, 0.5, 0.5);
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
+    sgDrawBegin(SG_LINE_LOOP);
         sgDrawVertex2f(l, t);
         sgDrawVertex2f(r, t);
         sgDrawVertex2f(r, b);
@@ -333,7 +333,7 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
         float tl;
         float tx[2];
         float ty[2];
-        if(shape->type == SG_PHYSICS_SHAPE_SEGMENT)
+        if(shape->type == SG_SHAPE_SEGMENT)
         {
             ta = atan2(shape->y + shape->verts[1], shape->x + shape->verts[0]);
             tl = hypot(shape->y + shape->verts[1], shape->x + shape->verts[0]);
@@ -349,7 +349,7 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
             sgDrawLineSetWidth(1.0);
             return;
         }
-        else if(shape->type == SG_PHYSICS_SHAPE_CIRCLE)
+        else if(shape->type == SG_SHAPE_CIRCLE)
         {
             //sgDrawLineSetWidth(fabs(shape->verts[1] - shape->verts[0])*2.0);
             //sgDrawCircle(x, y, (shape->verts[0] + shape->verts[1]) / 2.0, SG_FALSE);
@@ -389,7 +389,7 @@ void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
     for(i = 0; i < pnum; i++)
         psgmPhysicsBodyLocalToWorld_TEST(shape->body->handle, &points[2*i], &points[2*i+1]);
 
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
+    sgDrawBegin(SG_LINE_LOOP);
         for(i = 0; i < pnum; i++)
             sgDrawVertex2f(points[2*i], points[2*i+1]);
     sgDrawEnd();

@@ -160,7 +160,7 @@ void SG_EXPORT sgEmitterDraw(SGEmitter* emitter)
 		if (particle->age < emitter->duration)
 		{
 			angle = 0;
-			sgDrawBeginT(SG_GRAPHICS_PRIMITIVE_QUADS, emitter->texture);
+            sgDrawBeginT(SG_QUADS, emitter->texture);
 			sgDrawColor4f(1.0, 1.0, 1.0, particle->alpha);
 			sgDrawTexCoord2f(0.0, 0.0);
 			sgDrawVertex2f(particle->x + cos(particle->rotation + angle) * particle->width / 2, particle->y + sin(particle->rotation + angle) * particle->height / 2);

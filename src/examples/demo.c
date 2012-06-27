@@ -143,7 +143,7 @@ void drawPoly(Polygon* poly)
         sgDrawColor4f(0.0, 0.5, 0.75, 1.0);
     else
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
-    sgDrawBeginT(SG_GRAPHICS_PRIMITIVE_CONVEX_POLYGON, poly->texture);
+    sgDrawBeginT(SG_CONVEX_POLYGON, poly->texture);
         for(i = 0; i < poly->nump; i++)
         {
             sgDrawTexCoord2f((poly->points[i].x - poly->min.x) / (poly->max.x - poly->min.x)
@@ -157,7 +157,7 @@ void drawPoly(Polygon* poly)
         sgDrawColor4f(0.0, 1.0, 0.75, 1.0);
     else
         sgDrawColor4f(0.75, 0.75, 0.75, 1.0);
-    sgDrawBeginT(SG_GRAPHICS_PRIMITIVE_LINE_LOOP, poly->texture);
+    sgDrawBeginT(SG_LINE_LOOP, poly->texture);
         for(i = 0; i < poly->nump; i++)
         {
             sgDrawTexCoord2f((poly->points[i].x - poly->min.x) / (poly->max.x - poly->min.x)
@@ -214,7 +214,7 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
             poly->max.y = points[i].y;
     }
 
-    poly->body = sgPhysicsBodyCreate(NULL, stat ? SG_PHYSICS_BODY_STATIC : SG_PHYSICS_BODY_NORMAL);
+    poly->body = sgPhysicsBodyCreate(NULL, stat ? SG_BODY_STATIC : SG_BODY_NORMAL);
     sgEntitySetPhysicsBody(poly->entity, poly->body);
     sgEntitySetPos(poly->entity, x, y);
     poly->shape = sgPhysicsShapeCreatePoly(poly->body, 0.0, 0.0, (float*)points, nump);
@@ -262,7 +262,7 @@ void drawLight(Light* light)
 
     int sides = SG_MAX(3, (int)(light->radius * 0.5));
     float f = 2 * SG_PI / sides;
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
+    sgDrawBegin(SG_TRIANGLE_FAN);
         sgDrawColor4f(light->color.r, light->color.g, light->color.b, light->color.a);
         sgDrawVertex2f(light->pos.x, light->pos.y);
         sgDrawColor4f(light->color.r, light->color.g, light->color.b, 0.0);
@@ -277,7 +277,7 @@ void drawLight(Light* light)
     sgDrawColor4f(0.0, 0.0, 0.0, 1.0);
     for(p = 0; p < npolys; p++)
     {
-        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLES);
+        sgDrawBegin(SG_TRIANGLES);
         poly = polys[p];
 
         sgEntityGetPos(poly->entity, &x, &y);
@@ -345,7 +345,7 @@ void drawPolyDBG(Polygon* poly)
 {
     /*size_t i;
     sgDrawColor4f(0.0, 1.0, 1.0, 1.0);
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
+    sgDrawBegin(SG_LINE_LOOP);
         for(i = 0; i < poly->nump; i++)
             sgDrawVertex2f(poly->points[i].x, poly->points[i].y);
     sgDrawEnd();*/
@@ -369,7 +369,7 @@ void drawLightDBG(Light* light)
     sgDrawCircle(light->pos.x, light->pos.y, light->radius, SG_FALSE);
 
     sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINES);
+    sgDrawBegin(SG_LINES);
     for(p = 0; p < npolys; p++)
     {
         poly = polys[p];
@@ -401,7 +401,7 @@ void drawLightDBG(Light* light)
     sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
     for(p = 0; p < npolys; p++)
     {
-        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINES);
+        sgDrawBegin(SG_LINES);
         poly = polys[p];
 
         sgEntityGetPos(poly->entity, &x, &y);
@@ -514,27 +514,27 @@ int main(void)
 
         sgSurfaceClear4f(buffer, ambience.r, ambience.g, ambience.b, ambience.a);
         sgSurfaceTarget(buffer);
-        sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_ONE, SG_GRAPHICS_FUNC_ONE);
+        sgDrawSetBlendFunc(SG_FUNC_ONE, SG_FUNC_ONE);
         for(i = 0; i < NLIGHTS; i++)
         {
             if(lights[i]->enabled)
                 sgSurfaceDraw(lights[i]->surface);
         }
-        sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
+        sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE_MINUS_SRC_ALPHA);
         sgSurfaceUntarget(buffer);
 
         if(multLights)
         {
             if(sqrmult)
-                sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_DST_COLOR, SG_GRAPHICS_FUNC_SRC_COLOR);
+                sgDrawSetBlendFunc(SG_FUNC_DST_COLOR, SG_FUNC_SRC_COLOR);
             else
-                sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_DST_COLOR, SG_GRAPHICS_FUNC_ZERO);
+                sgDrawSetBlendFunc(SG_FUNC_DST_COLOR, SG_FUNC_ZERO);
         }
         else
-            sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_ONE, SG_GRAPHICS_FUNC_ONE);
+            sgDrawSetBlendFunc(SG_FUNC_ONE, SG_FUNC_ONE);
         sgSurfaceDraw(buffer);
 
-        sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
+        sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE_MINUS_SRC_ALPHA);
 
         lights[0]->pos.x = sgMouseGetPosX();
         lights[0]->pos.y = sgMouseGetPosY();

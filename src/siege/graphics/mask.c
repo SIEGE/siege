@@ -251,7 +251,7 @@ void SG_EXPORT sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent)
 		return;
 	SGuint i, j;
 
-	sgDrawBegin(SG_GRAPHICS_PRIMITIVE_POINTS);
+	sgDrawBegin(SG_POINTS);
 		for(i = 0; i < mask->width; i++)
 		{
 			for(j = 0; j < mask->height; j++)

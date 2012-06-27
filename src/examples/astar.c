@@ -47,7 +47,7 @@ void drawPath(SGList* path, SGColor color, SGbool lines, SGbool fill)
 	SGListNode* node;
 	SGNavGridData* data;
 	if(lines)
-		sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_STRIP);
+        sgDrawBegin(SG_LINE_STRIP);
 	sgDrawColor4fv(&color.r);
 	for(node = path->head; node; node = node->next)
 	{

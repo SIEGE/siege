@@ -31,13 +31,13 @@ SGenum SG_EXPORT sgmPhysicsShapeCreate(void** shape, void* body, float xoffset, 
     cpVect* nvect;
     switch(type)
     {
-        case SG_PHYSICS_SHAPE_SEGMENT: // vertices: [x1, y1, x2, y2, width]
+        case SG_SHAPE_SEGMENT: // vertices: [x1, y1, x2, y2, width]
             a = (cpVect) {verts[0] + xoffset, verts[1] + yoffset};
             b = (cpVect) {verts[2] + xoffset, verts[3] + yoffset};
             *shape = cpSegmentShapeNew(body, a, b, verts[4]);
             break;
 
-        case SG_PHYSICS_SHAPE_POLYGON: // vertices: [x1, y1, x2, y2, ..., xn, yn]
+        case SG_SHAPE_POLYGON: // vertices: [x1, y1, x2, y2, ..., xn, yn]
             // assert(sizeof(cpVect) == sizeof(float)*2);
             nvect = malloc(numverts * sizeof(cpFloat) * 2);
             for(i = 0; i < numverts; i++)
@@ -46,7 +46,7 @@ SGenum SG_EXPORT sgmPhysicsShapeCreate(void** shape, void* body, float xoffset, 
             free(nvect);
             break;
 
-        case SG_PHYSICS_SHAPE_CIRCLE: // vertices: [radius]
+        case SG_SHAPE_CIRCLE: // vertices: [radius]
             *shape = cpCircleShapeNew(body, verts[0], offset);
             break;
 

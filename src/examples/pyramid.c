@@ -74,12 +74,12 @@ void drawBox(SGEntity* entity)
     }
 
     sgDrawColor4f(0.75, 0.75, 0.75, 1.0);
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_QUADS);
+    sgDrawBegin(SG_QUADS);
         for(i = 0; i < 4; i++)
             sgDrawVertex2fv(&verts[i].x);
     sgDrawEnd();
     sgDrawColor4f(0.0, 0.0, 0.0, 1.0);
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
+    sgDrawBegin(SG_LINE_LOOP);
         for(i = 0; i < 4; i++)
             sgDrawVertex2fv(&verts[i].x);
     sgDrawEnd();
@@ -87,9 +87,9 @@ void drawBox(SGEntity* entity)
 }
 SGEntity* createBox(float x, float y, float angle, float length, float width, float density, SGbool stat)
 {
-    SGuint type = SG_PHYSICS_BODY_NORMAL;
+    SGuint type = SG_BODY_NORMAL;
     if(stat)
-        type = (density == SG_INF) ? SG_PHYSICS_BODY_STATIC : SG_PHYSICS_BODY_SEMISTATIC;
+        type = (density == SG_INF) ? SG_BODY_STATIC : SG_BODY_SEMISTATIC;
 
     SGPhysicsBody* body = sgPhysicsBodyCreate(space, type);
 

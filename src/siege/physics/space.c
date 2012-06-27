@@ -45,7 +45,7 @@ SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceCreate(void)
 	space->sbody->handle = NULL;
 	space->sbody->space = space;
 	space->sbody->data = NULL;
-	space->sbody->type = SG_PHYSICS_BODY_STATIC;
+	space->sbody->type = SG_BODY_STATIC;
 	space->sbody->entity = NULL;
 	if(psgmPhysicsSpaceGetStaticBody)
 		psgmPhysicsSpaceGetStaticBody(space->handle, &space->sbody->handle);

@@ -131,7 +131,7 @@ void SG_EXPORT sgLightSpaceUpdate(SGLightSpace* space)
     {
         if(!sgLightGetActive(lnode->item))
             continue;
-        sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_ONE, SG_GRAPHICS_FUNC_ZERO);
+        sgDrawSetBlendFunc(SG_FUNC_ONE, SG_FUNC_ZERO);
         sgSurfaceClear4f(space->lbuffer, 0.0, 0.0, 0.0, 1.0);
         sgSurfaceTarget(space->lbuffer);
         sgLightDraw(lnode->item);
@@ -146,27 +146,27 @@ void SG_EXPORT sgLightSpaceUpdate(SGLightSpace* space)
         }
         sgSurfaceUntarget(space->lbuffer);
 
-        sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE);
+        sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE);
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
         sgSurfaceTarget(space->buffer);
         sgSurfaceDraw(space->lbuffer);
         sgSurfaceUntarget(space->buffer);
     }
-    sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
+    sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE_MINUS_SRC_ALPHA);
 }
 void SG_EXPORT sgLightSpaceDraw(SGLightSpace* space, SGenum flags)
 {
     if(flags & SG_SHADOW_DRAW_MUL)
     {
         if(flags & SG_SHADOW_DRAW_SQR)
-            sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_DST_COLOR, SG_GRAPHICS_FUNC_SRC_COLOR);
+            sgDrawSetBlendFunc(SG_FUNC_DST_COLOR, SG_FUNC_SRC_COLOR);
         else
-            sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_DST_COLOR, SG_GRAPHICS_FUNC_ZERO);
+            sgDrawSetBlendFunc(SG_FUNC_DST_COLOR, SG_FUNC_ZERO);
     }
     else
-        sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE);
+        sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE);
     sgSurfaceDraw(space->buffer);
-    sgDrawSetBlendFunc(SG_GRAPHICS_FUNC_SRC_ALPHA, SG_GRAPHICS_FUNC_ONE_MINUS_SRC_ALPHA);
+    sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE_MINUS_SRC_ALPHA);
 }
 void SG_EXPORT sgLightSpaceDrawDBG(SGLightSpace* space, SGenum flags)
 {
@@ -403,7 +403,7 @@ void SG_EXPORT sgLightDraw(SGLight* light)
         size_t i;
         int sides = SG_MAX(3, (int)(light->radius * 0.5));
         float f = 2 * SG_PI / sides;
-        sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLE_FAN);
+        sgDrawBegin(SG_TRIANGLE_FAN);
             sgDrawVertex2f(light->pos.x, light->pos.y);
             sgDrawColor4f(light->color.r, light->color.g, light->color.b, 0.0);
             for(i = 0; i <= sides; i++)
@@ -446,7 +446,7 @@ SGShadowShape* SG_EXPORT sgShadowShapeCreate(SGLightSpace* space, SGenum type)
 }
 SGShadowShape* SG_EXPORT sgShadowShapeCreateSegment(SGLightSpace* space, float x1, float y1, float x2, float y2)
 {
-    SGShadowShape* shape = sgShadowShapeCreate(space, SG_SHADOW_SHAPE_SEGMENT);
+    SGShadowShape* shape = sgShadowShapeCreate(space, SG_SHAPE_SEGMENT);
     if(shape == NULL)
         return NULL;
 
@@ -464,7 +464,7 @@ SGShadowShape* SG_EXPORT sgShadowShapeCreateSegment(SGLightSpace* space, float x
 }
 SGShadowShape* SG_EXPORT sgShadowShapeCreatePoly(SGLightSpace* space, float x, float y, float* verts, size_t numverts)
 {
-    SGShadowShape* shape = sgShadowShapeCreate(space, SG_SHADOW_SHAPE_POLYGON);
+    SGShadowShape* shape = sgShadowShapeCreate(space, SG_SHAPE_POLYGON);
     if(shape == NULL)
         return NULL;
 
@@ -482,7 +482,7 @@ SGShadowShape* SG_EXPORT sgShadowShapeCreatePoly(SGLightSpace* space, float x, f
 }
 SGShadowShape* SG_EXPORT sgShadowShapeCreateCircle(SGLightSpace* space, float x, float y, float radius)
 {
-    SGShadowShape* shape = sgShadowShapeCreate(space, SG_SHADOW_SHAPE_SEGMENT);
+    SGShadowShape* shape = sgShadowShapeCreate(space, SG_SHAPE_SEGMENT);
     if(shape == NULL)
         return NULL;
 
@@ -547,17 +547,17 @@ void SG_EXPORT sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
     size_t i;
     switch(shape->type)
     {
-        case SG_SHADOW_SHAPE_SEGMENT:
+        case SG_SHAPE_SEGMENT:
             vec = sgVec2SetAngleRads(shape->verts[0],
                                      sgVec2GetAngleRads(shape->verts[0]) + shape->angle);
             sgDrawLine(shape->pos.x + vec.x, shape->pos.y + vec.y,
                        shape->pos.x - vec.x, shape->pos.y - vec.y);
             break;
-        case SG_SHADOW_SHAPE_POLYGON:
+        case SG_SHAPE_POLYGON:
             if(fill)
-                sgDrawBegin(SG_GRAPHICS_PRIMITIVE_CONVEX_POLYGON);
+                sgDrawBegin(SG_CONVEX_POLYGON);
             else
-                sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINE_LOOP);
+                sgDrawBegin(SG_LINE_LOOP);
             for(i = 0; i < shape->numverts; i++)
             {
                 vec = sgVec2SetAngleRads(shape->verts[i],
@@ -566,7 +566,7 @@ void SG_EXPORT sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
             }
             sgDrawEnd();
             break;
-        case SG_SHADOW_SHAPE_CIRCLE:
+        case SG_SHAPE_CIRCLE:
             sgDrawCircle(shape->pos.x, shape->pos.y, shape->verts[0].x, fill);
             break;
     }
@@ -575,7 +575,7 @@ void SG_EXPORT sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
 void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
 {
     sgDrawColor4f(0.0, 0.0, 0.0, 1.0);
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_TRIANGLES);
+    sgDrawBegin(SG_TRIANGLES);
 
     /*SGVec2* curr;*/
     SGVec2* next;
@@ -626,7 +626,7 @@ void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
     size_t i;
 
     sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-    sgDrawBegin(SG_GRAPHICS_PRIMITIVE_LINES);
+    sgDrawBegin(SG_LINES);
 
     SGuint winw, winh;
     sgWindowGetSize(&winw, &winh);
