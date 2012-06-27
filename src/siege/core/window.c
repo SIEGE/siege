@@ -126,7 +126,7 @@ void SG_EXPORT sgWindowSetTitlefv(const char* format, va_list args)
 {
 	char* title = sgAPrintfv(format, args);
 	sgWindowSetTitle(title);
-	free(title);
+	sgAPrintFree(title);
 }
 void SG_EXPORT sgWindowSetTitle(const char* title)
 {
