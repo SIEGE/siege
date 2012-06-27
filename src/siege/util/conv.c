@@ -579,10 +579,12 @@ size_t SG_EXPORT sgConv(SGConv* conv, void* out, size_t outlen, const void* in, 
 
         num += _sgStrbufAppend(outsize, num, out, outlen, buf, len);
     }
-    memset(((char*)out) + SG_MIN(num, outlen-1) * outsize, 0, outsize); /* 0-terminate */
+    if(outlen)
+        memset(((char*)out) + SG_MIN(num, outlen-1) * outsize, 0, outsize); /* 0-terminate */
     return num;
 error:
-    memset(((char*)out) + SG_MIN(num, outlen-1) * outsize, 0, outsize); /* 0-terminate */
+    if(outlen)
+        memset(((char*)out) + SG_MIN(num, outlen-1) * outsize, 0, outsize); /* 0-terminate */
     return 0;
 }
 size_t SG_EXPORT sgConv2s(SGenum dst, SGenum src, void* out, size_t outlen, const void* in, size_t inlen, SGbool strict)
