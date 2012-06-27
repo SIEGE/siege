@@ -28,7 +28,7 @@ extern "C"
     typedef struct SGCoreKeyboardCallbacks
     {
         void SG_EXPORT (*key)(void* keyboard, SGuint key, SGbool down);
-        void SG_EXPORT (*chr)(void* keyboard, SGuint chr, SGbool down);
+        void SG_EXPORT (*chr)(void* keyboard, SGuint chr);
     } SGCoreKeyboardCallbacks;
 
     SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardCreate)(void** keyboard, void* window);

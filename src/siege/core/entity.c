@@ -205,25 +205,10 @@ static void SG_EXPORT _sg_evCall(SGEntity* entity, size_t num, va_list args)
 					entity->evKeyboardKeyRepeat(entity, val[0]);
 				break;
 
-			/*case SG_EVF_KEYCHARH:
-				val[0] = va_arg(args, SGuint);
-				if(entity->evKeyboardChar != NULL)
-					entity->evKeyboardChar(entity, val[0]);
-				break;*/
 			case SG_EVF_KEYCHARP:
                 val[0] = va_arg(args, SGenum);
 				if(entity->evKeyboardCharPress != NULL)
 					entity->evKeyboardCharPress(entity, val[0]);
-				break;
-			/*case SG_EVF_KEYCHARR:
-				val[0] = va_arg(args, SGuint);
-				if(entity->evKeyboardCharRelease != NULL)
-					entity->evKeyboardCharRelease(entity, val[0]);
-				break;*/
-			case SG_EVF_KEYCHARA:
-				val[0] = va_arg(args, SGuint);
-				if(entity->evKeyboardCharRepeat != NULL)
-					entity->evKeyboardCharRepeat(entity, val[0]);
 				break;
 
 			case SG_EVF_JOYSTICKBUTH:

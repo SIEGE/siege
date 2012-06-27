@@ -22,6 +22,6 @@ SGuint keySDLtoSIEGE(int key);
 int keySIEGEtoSDL(SGuint key);
 
 void keyboardKey(int key, int down);
-void keyboardChar(int chr, int down);
+void keyboardChar(int chr);
 
 #endif // __KEYBOARD_H__

@@ -94,10 +94,7 @@ extern "C"
 #define SG_EVF_KEYKEYP	(SG_EVT_KEYBOARD | 0x0002)
 #define SG_EVF_KEYKEYR	(SG_EVT_KEYBOARD | 0x0004)
 #define SG_EVF_KEYKEYA	(SG_EVT_KEYBOARD | 0x0008)
-//#define SG_EVF_KEYCHARH (SG_EVT_KEYBOARD | 0x0010)
 #define SG_EVF_KEYCHARP (SG_EVT_KEYBOARD | 0x0020)
-//#define SG_EVF_KEYCHARR (SG_EVT_KEYBOARD | 0x0040)
-#define SG_EVF_KEYCHARA (SG_EVT_KEYBOARD | 0x0080)
 
 #define SG_EVF_JOYSTICKBUTH (SG_EVT_JOYSTICK | 0x0001)
 #define SG_EVF_JOYSTICKBUTP (SG_EVT_JOYSTICK | 0x0002)
@@ -538,10 +535,7 @@ typedef struct SGEntity
 	void SG_EXPORT (*evKeyboardKeyRelease)(struct SGEntity* entity, SGuint key);
 	void SG_EXPORT (*evKeyboardKeyRepeat)(struct SGEntity* entity, SGuint key);
 
-	//void SG_EXPORT (*evKeyboardChar)(struct SGEntity* entity, SGdchar chr);
 	void SG_EXPORT (*evKeyboardCharPress)(struct SGEntity* entity, SGdchar chr);
-	//void SG_EXPORT (*evKeyboardCharRelease)(struct SGEntity* entity, SGdchar chr);
-	void SG_EXPORT (*evKeyboardCharRepeat)(struct SGEntity* entity, SGdchar chr);
 
 	/**
 	 * Variables: evJoystick*

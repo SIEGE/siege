@@ -33,25 +33,11 @@ void SG_EXPORT _sg_cbKeyboardKey(void* keyboard, SGenum key, SGbool down)
     else
         evt = SG_EVF_KEYKEYA;
 
-    //sgEventCall(SG_EV_INTERNAL, (SGuint)2, (SGenum)SG_EVF_KEYKEYH, key, evt, key);
     sgEntityEventSignal(1, evt, key);
 }
-void SG_EXPORT _sg_cbKeyboardChar(void* keyboard, SGdchar chr, SGbool down)
+void SG_EXPORT _sg_cbKeyboardChar(void* keyboard, SGdchar chr)
 {
-    _sgKeyboardCharUpdate(chr, down);
-    SGbool pressed = sgKeyboardCharPress(chr);
-
-    SGenum evt = 0;
-    if(pressed)
-        evt = SG_EVF_KEYCHARP;
-    /*else if(!down)
-        evt = SG_EVF_KEYCHARR;*/
-    else if(down)
-        evt = SG_EVF_KEYCHARA;
-    else
-        return;
-
-    sgEntityEventSignal(1, evt, chr);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_KEYCHARP, chr);
 }
 
 void SG_EXPORT _sgKeyboardUpdate(void)
@@ -66,8 +52,6 @@ SGbool SG_EXPORT _sgKeyboardInit(void)
 {
     memset(_sg_keyPrev, 0, SG_KEY_NUM * sizeof(SGbool));
     memset(_sg_keyCurr, 0, SG_KEY_NUM * sizeof(SGbool));
-    memset(_sg_charPrev, 0, SG_CHAR_NUM * sizeof(SGbool));
-    memset(_sg_charCurr, 0, SG_CHAR_NUM * sizeof(SGbool));
 
     _sg_keyCallbacks.key = _sg_cbKeyboardKey;
     _sg_keyCallbacks.chr = _sg_cbKeyboardChar;
@@ -91,12 +75,6 @@ void SG_EXPORT _sgKeyboardKeyUpdate(SGenum key, SGbool down)
     _sg_keyPrev[key] = _sg_keyCurr[key];
     _sg_keyCurr[key] = down;
 }
-void SG_EXPORT _sgKeyboardCharUpdate(SGdchar chr, SGbool down)
-{
-    if(chr >= SG_CHAR_NUM) return;
-    _sg_charPrev[chr] = _sg_charCurr[chr];
-    _sg_charCurr[chr] = down;
-}
 
 SGbool SG_EXPORT sgKeyboardKey(SGenum key)
 {
@@ -112,20 +90,4 @@ SGbool SG_EXPORT sgKeyboardKeyRelease(SGenum key)
 {
     if(key >= SG_KEY_NUM) return SG_FALSE;
     return _sg_keyPrev[key] && !_sg_keyCurr[key];
-}
-
-SGbool SG_EXPORT sgKeyboardChar(SGdchar chr)
-{
-    if(chr >= SG_CHAR_NUM) return SG_FALSE;
-    return _sg_charCurr[chr];
-}
-SGbool SG_EXPORT sgKeyboardCharPress(SGdchar chr)
-{
-    if(chr >= SG_CHAR_NUM) return SG_FALSE;
-    return !_sg_charPrev[chr] && _sg_charCurr[chr];
-}
-SGbool SG_EXPORT sgKeyboardCharRelease(SGdchar chr)
-{
-    if(chr >= SG_CHAR_NUM) return SG_FALSE;
-    return _sg_charPrev[chr] && !_sg_charCurr[chr];
 }

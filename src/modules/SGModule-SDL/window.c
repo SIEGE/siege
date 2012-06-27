@@ -237,8 +237,8 @@ SGuint SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
             case SDL_KEYUP:
                 keyStates = SDL_GetKeyState(&keyNumStates);
                 keyboardKey(event.key.keysym.sym, event.key.state == SDL_PRESSED);
-                if(event.key.keysym.unicode != 0)
-                    keyboardChar(event.key.keysym.unicode, event.key.state == SDL_PRESSED);
+                if(event.key.state == SDL_PRESSED && event.key.keysym.unicode != 0)
+                    keyboardChar(event.key.keysym.unicode);
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:

@@ -79,8 +79,11 @@ void GLFWCALL keyboardKey(int key, int down)
 }
 void GLFWCALL keyboardChar(int chr, int down)
 {
+    if(!down)
+        return;
+
     if(main_window->cbKeyboard->chr != NULL)
-        main_window->cbKeyboard->chr((void*)1, chr, down);
+        main_window->cbKeyboard->chr((void*)1, chr);
 }
 
 SGuint SG_EXPORT sgmCoreKeyboardCreate(void** keyboard, void* window)
