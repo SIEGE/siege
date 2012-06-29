@@ -254,10 +254,11 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 	}
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICK);
-    sgEntityEventSignal(1, (SGenum)SG_EVF_TICKE);
 
     if(!_sg_renderThread)
         sgEntityEventSignal(1, (SGenum)SG_EVF_DRAW);
+
+    sgEntityEventSignal(1, (SGenum)SG_EVF_TICKE);
 
 	if(code != NULL)
 		*code = _sg_exitVal;
