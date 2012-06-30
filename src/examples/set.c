@@ -1,5 +1,5 @@
 /*
- * An example of use of SIEGE binary search trees.
+ * An example of use of SIEGE sets.
  *
  * Yes, I know I went a *tad* overboard here, but I wanted a good
  * platform for testing these as well.
@@ -36,28 +36,28 @@ static char* skipSpace(char* str)
     return skip(str, WHITESPACE);
 }
 
-static SGint SG_EXPORT _treeCmp(const void* a, const void* b)
+static SGint SG_EXPORT _setCmp(const void* a, const void* b, void* data)
 {
     return strcmp(a, b);
 }
 
-static int insertItem(SGTree* tree, const char* str)
+static int insertItem(SGSet* set, const char* str)
 {
-    if(sgTreeFindItem(tree, (void*)str))
+    if(sgSetSearch(set, (void*)str))
         return 0;
     size_t len = strlen(str);
     char* item = malloc(len + 1);
     memcpy(item, str, len + 1);
-    return sgTreeInsert(tree, item) ? 1 : -1;
+    return sgSetInsert(set, item) ? 1 : -1;
 }
-static int removeItem(SGTree* tree, const char* str)
+static int removeItem(SGSet* set, const char* str)
 {
-    if(!sgTreeFindItem(tree, (void*)str))
+    if(!sgSetSearch(set, (void*)str))
         return 0;
-    sgTreeRemoveItem(tree, (void*)str);
+    sgSetRemoveItem(set, (void*)str);
     return 1;
 }
-static void printNode(SGTreeNode* node)
+static void printNode(SGSetNode* node)
 {
     if(!node) return;
 
@@ -65,16 +65,16 @@ static void printNode(SGTreeNode* node)
     printf("\"%s\" ", (char*)node->item);
     printNode(node->right);
 }
-static void printTree(SGTree* tree)
+static void printSet(SGSet* set)
 {
-    if(!tree->root)
-        printf("<the tree is empty>");
+    if(!set->root)
+        printf("<the set is empty>");
 
-    printNode(tree->root);
+    printNode(set->root);
     printf("\n");
     fflush(stdout);
 }
-static void pprintNode(SGTreeNode* node, int depth, unsigned char* right)
+static void pprintNode(SGSetNode* node, int depth, unsigned char* right)
 {
     int i;
     for(i = 1; i < depth; i++)
@@ -100,22 +100,22 @@ static void pprintNode(SGTreeNode* node, int depth, unsigned char* right)
     right[depth + 1] = 1;
     pprintNode(node->right, depth + 1, right);
 }
-static void pprintTree(SGTree* tree)
+static void pprintSet(SGSet* set)
 {
-    if(!tree->root)
+    if(!set->root)
     {
-        printf("<the tree is empty>\n");
+        printf("<the set is empty>\n");
         return;
     }
 
     unsigned char right[256];
     right[0] = 1;
 
-    pprintNode(tree->root, 0, right);
+    pprintNode(set->root, 0, right);
     printf("\n");
     fflush(stdout);
 }
-static void sprintNode(SGTreeNode* node, int depth, int pretty)
+static void sprintNode(SGSetNode* node, int depth, int pretty)
 {
     int i;
     if(pretty)
@@ -142,9 +142,9 @@ static void sprintNode(SGTreeNode* node, int depth, int pretty)
     sprintNode(node->right, depth + 1, pretty);
     printf(")");
 }
-static void sprintTree(SGTree* tree, int pretty)
+static void sprintSet(SGSet* set, int pretty)
 {
-    sprintNode(tree->root, 0, pretty);
+    sprintNode(set->root, 0, pretty);
     printf("\n");
     fflush(stdout);
 }
@@ -154,22 +154,22 @@ int main(void)
     char buf[1024];
     char* ptr;
 
-    SGTree* tree = sgTreeCreate(_treeCmp);
+    SGSet* set = sgSetCreate(_setCmp, NULL);
 
-    printf("Example of SIEGE binary trees");
+    printf("Example of SIEGE sets");
     printf("----------------------------------------\n");
 
     int option;
     do
     {
-        printf("Select a tree operation:\n");
+        printf("Select a set operation:\n");
         printf("+<elem> -- Add a new element\n");
         printf("-<elem> -- Delete an element\n");
         printf("?<elem> -- Query whether an element is present\n");
         printf("p       -- Print all elements in (strcmp) order\n");
-        printf("pp      -- Pretty-print the tree\n");
-        printf("s       -- Print the tree in a compact s-expression form\n");           // yes, I was bored.
-        printf("ss      -- Pretty print the tree in a compact s-expression form\n");    // ...very bored.
+        printf("pp      -- Pretty-print the set's search tree\n");
+        printf("s       -- Print the set's tree in a compact s-expression form\n");         // yes, I was bored.
+        printf("ss      -- Pretty print the set's tree in a compact s-expression form\n");  // ...very bored.
         printf("\n");
         printf("q        -- Quit the program\n");
         printf("----------------------------------------\n");
@@ -206,9 +206,9 @@ int main(void)
                     printf("Error -- element must be a non-empty string!\n");
                     break;
                 }
-                switch(insertItem(tree, ptr))
+                switch(insertItem(set, ptr))
                 {
-                    case 0: printf("Element '%s' already exists in the tree!\n", ptr); break;
+                    case 0: printf("Element '%s' already exists in the set!\n", ptr); break;
                     case 1: printf("Element '%s' successfully added!\n", ptr); break;
                     default: printf("Error adding element '%s' -- probably out of memory!\n", ptr);
                 }
@@ -219,9 +219,9 @@ int main(void)
                     printf("Error -- element must be a non-empty string!\n");
                     break;
                 }
-                switch(removeItem(tree, ptr))
+                switch(removeItem(set, ptr))
                 {
-                    case 0: printf("There is no element '%s' in the tree!\n", ptr); break;
+                    case 0: printf("There is no element '%s' in the set!\n", ptr); break;
                     case 1: printf("Element '%s' successfully removed!\n", ptr); break;
                     default: printf("Error removing element '%s'!\n", ptr);
                 }
@@ -232,22 +232,22 @@ int main(void)
                     printf("Error -- element must be a non-empty string!\n");
                     break;
                 }
-                if(sgTreeFindItem(tree, ptr))
-                    printf("Element '%s' is present in the tree!\n", ptr);
+                if(sgSetSearch(set, ptr))
+                    printf("Element '%s' is present in the set!\n", ptr);
                 else
-                    printf("Element '%s' is *NOT* present in the tree!\n", ptr);
+                    printf("Element '%s' is *NOT* present in the set!\n", ptr);
                 break;
             case 'p':
-                printTree(tree);
+                printSet(set);
                 break;
             case 'P':
-                pprintTree(tree);
+                pprintSet(set);
                 break;
             case 's':
-                sprintTree(tree, 0);
+                sprintSet(set, 0);
                 break;
             case 'S':
-                sprintTree(tree, 1);
+                sprintSet(set, 1);
                 break;
             case 'q':
                 break; /* handled by the while() */
@@ -260,9 +260,9 @@ int main(void)
     }
     while(option != 'q');
 
-    while(tree->root)
-        removeItem(tree, tree->root->item);
-    sgTreeDestroy(tree);
+    while(set->root)
+        removeItem(set, set->root->item);
+    sgSetDestroy(set);
 
     return 0;
 }

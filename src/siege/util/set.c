@@ -13,24 +13,24 @@
  */
 
 #define SG_BUILD_LIBRARY
-#include <siege/util/tree.h>
+#include <siege/util/set.h>
 
 #include <stdlib.h>
 #include <string.h>
 
 /// \TODO Non-recursive variant of this function.
-void SG_EXPORT _sgTreeDestroyNode(SGTreeNode* node)
+void SG_EXPORT _sgSetDestroyNode(SGSetNode* node)
 {
     if(!node)
         return;
-    _sgTreeDestroyNode(node->left);
-    _sgTreeDestroyNode(node->right);
+    _sgSetDestroyNode(node->left);
+    _sgSetDestroyNode(node->right);
     free(node);
 }
 
-SGTreeNode* SG_EXPORT _sgTreeNodeSkew(SGTreeNode* node)
+SGSetNode* SG_EXPORT _sgSetNodeSkew(SGSetNode* node)
 {
-    SGTreeNode* ret;
+    SGSetNode* ret;
     size_t level = node->left ? node->left->level : 0;
     if(level == node->level && node->level)
     {
@@ -42,9 +42,9 @@ SGTreeNode* SG_EXPORT _sgTreeNodeSkew(SGTreeNode* node)
     }
     return node;
 }
-SGTreeNode* SG_EXPORT _sgTreeNodeSplit(SGTreeNode* node)
+SGSetNode* SG_EXPORT _sgSetNodeSplit(SGSetNode* node)
 {
-    SGTreeNode* ret;
+    SGSetNode* ret;
     size_t level = node->right ? (node->right->right ? node->right->right->level : 0) : 0;
     if(level == node->level && node->level)
     {
@@ -65,10 +65,10 @@ SGTreeNode* SG_EXPORT _sgTreeNodeSplit(SGTreeNode* node)
  * the typical amount of memory in a computer, nevermind that a single node is
  * more than 1 byte.
  */
-SGTreeNode* SG_EXPORT _sgTreeNodeInsert(SGTree* tree, SGTreeNode* root, SGTreeNode* node)
+SGSetNode* SG_EXPORT _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node)
 {
-    SGTreeNode* curr;
-    SGTreeNode* stack[256];
+    SGSetNode* curr;
+    SGSetNode* stack[256];
     ptrdiff_t top;
     int cmp;
 
@@ -82,7 +82,7 @@ SGTreeNode* SG_EXPORT _sgTreeNodeInsert(SGTree* tree, SGTreeNode* root, SGTreeNo
         while(1)
         {
             stack[top++] = curr;
-            cmp = tree->cmp(curr->item, node->item);
+            cmp = set->cmp(curr->item, node->item, set->data);
 
             if(!cmp)
                 break;
@@ -108,8 +108,8 @@ SGTreeNode* SG_EXPORT _sgTreeNodeInsert(SGTree* tree, SGTreeNode* root, SGTreeNo
             if(top)
                 cmp = (stack[top - 1]->right == stack[top]) ? -1 : 1;
 
-            stack[top] = _sgTreeNodeSkew(stack[top]);
-            stack[top] = _sgTreeNodeSplit(stack[top]);
+            stack[top] = _sgSetNodeSkew(stack[top]);
+            stack[top] = _sgSetNodeSplit(stack[top]);
 
             if(top)
             {
@@ -124,16 +124,16 @@ SGTreeNode* SG_EXPORT _sgTreeNodeInsert(SGTree* tree, SGTreeNode* root, SGTreeNo
     }
     return root;
 }
-SGTreeNode* SG_EXPORT _sgTreeNodeRemove(SGTree* tree, SGTreeNode* root, SGTreeNode* node)
+SGSetNode* SG_EXPORT _sgSetNodeRemove(SGSet* set, SGSetNode* root, SGSetNode* node)
 {
-    SGTreeNode* remove = NULL;
-    SGTreeNode* curr;
-    SGTreeNode* stack[256];
+    SGSetNode* remove = NULL;
+    SGSetNode* curr;
+    SGSetNode* stack[256];
     ptrdiff_t top;
     int tcmp;
     int cmp;
-    SGTreeNode* heir;
-    SGTreeNode* prev;
+    SGSetNode* heir;
+    SGSetNode* prev;
     size_t llevel;
     size_t rlevel;
     if(root)
@@ -148,7 +148,7 @@ SGTreeNode* SG_EXPORT _sgTreeNodeRemove(SGTree* tree, SGTreeNode* root, SGTreeNo
             if(!curr)
                 return root;
 
-            tcmp = tree->cmp(curr->item, node->item);
+            tcmp = set->cmp(curr->item, node->item, set->data);
             if(!tcmp)
                 break;
             cmp = tcmp;
@@ -206,16 +206,16 @@ SGTreeNode* SG_EXPORT _sgTreeNodeRemove(SGTree* tree, SGTreeNode* root, SGTreeNo
 
                 if(stack[top])
                 {
-                    stack[top] = _sgTreeNodeSkew(stack[top]);
+                    stack[top] = _sgSetNodeSkew(stack[top]);
                     if(stack[top]->right)
                     {
-                        stack[top]->right = _sgTreeNodeSkew(stack[top]->right);
+                        stack[top]->right = _sgSetNodeSkew(stack[top]->right);
                         if(stack[top]->right->right)
-                            stack[top]->right->right = _sgTreeNodeSkew(stack[top]->right->right);
+                            stack[top]->right->right = _sgSetNodeSkew(stack[top]->right->right);
                     }
-                    stack[top] = _sgTreeNodeSplit(stack[top]);
+                    stack[top] = _sgSetNodeSplit(stack[top]);
                     if(stack[top]->right)
-                        stack[top]->right = _sgTreeNodeSplit(stack[top]->right);
+                        stack[top]->right = _sgSetNodeSplit(stack[top]->right);
                 }
             }
 
@@ -234,32 +234,33 @@ SGTreeNode* SG_EXPORT _sgTreeNodeRemove(SGTree* tree, SGTreeNode* root, SGTreeNo
     return root;
 }
 
-SGTree* SG_EXPORT sgTreeCreate(SGTreeNodeCmp* cmp)
+SGSet* SG_EXPORT sgSetCreate(SGSetCmp* cmp, void* data)
 {
-    SGTree* tree = malloc(sizeof(SGTree));
-    if(!tree)
+    SGSet* set = malloc(sizeof(SGSet));
+    if(!set)
         return NULL;
-    tree->root = NULL;
-    tree->cmp = cmp;
-    return tree;
+    set->root = NULL;
+    set->cmp = cmp;
+    set->data = data;
+    return set;
 }
-void SG_EXPORT sgTreeDestroy(SGTree* tree)
+void SG_EXPORT sgSetDestroy(SGSet* set)
 {
-    if(!tree)
+    if(!set)
         return;
-    _sgTreeDestroyNode(tree->root);
-    free(tree);
+    _sgSetDestroyNode(set->root);
+    free(set);
 }
 
-//size_t SG_EXPORT sgTreeNumNodes(SGTree* tree);
+//size_t SG_EXPORT sgSetNumNodes(SGSet* set);
 
-SGTreeNode* SG_EXPORT sgTreeFindItem(SGTree* tree, void* item)
+SGSetNode* SG_EXPORT sgSetSearch(SGSet* set, const void* item)
 {
-    SGTreeNode* node = tree->root;
+    SGSetNode* node = set->root;
     int cmp;
     while(node)
     {
-        cmp = tree->cmp(node->item, item);
+        cmp = set->cmp(node->item, item, set->data);
         if(!cmp)
             break;
         if(cmp < 0)
@@ -269,10 +270,14 @@ SGTreeNode* SG_EXPORT sgTreeFindItem(SGTree* tree, void* item)
     }
     return node;
 }
-
-SGTreeNode* SG_EXPORT sgTreeInsert(SGTree* tree, void* item)
+SGSetNode* SG_EXPORT SG_HINT_DEPRECATED sgSetFindItem(SGSet* set, const void* item)
 {
-    SGTreeNode* node = malloc(sizeof(SGTreeNode));
+    return sgSetSearch(set, item);
+}
+
+SGSetNode* SG_EXPORT sgSetInsert(SGSet* set, void* item)
+{
+    SGSetNode* node = malloc(sizeof(SGSetNode));
     if(!node)
         return NULL;
     //node->parent = NULL;
@@ -280,67 +285,67 @@ SGTreeNode* SG_EXPORT sgTreeInsert(SGTree* tree, void* item)
     node->right = NULL;
     node->level = 1;
     node->item = item;
-    tree->root = _sgTreeNodeInsert(tree, tree->root, node);
+    set->root = _sgSetNodeInsert(set, set->root, node);
     return node;
 }
 
-void SG_EXPORT sgTreeRemoveNode(SGTree* tree, SGTreeNode* node)
+void SG_EXPORT sgSetRemoveNode(SGSet* set, SGSetNode* node)
 {
-    tree->root = _sgTreeNodeRemove(tree, tree->root, node);
+    set->root = _sgSetNodeRemove(set, set->root, node);
 }
-void SG_EXPORT sgTreeRemoveItem(SGTree* tree, void* item)
+void SG_EXPORT sgSetRemoveItem(SGSet* set, void* item)
 {
-    SGTreeNode* node = sgTreeFindItem(tree, item);
+    SGSetNode* node = sgSetSearch(set, item);
     if(!node)
         return;
-    sgTreeRemoveNode(tree, node);
+    sgSetRemoveNode(set, node);
 }
 
-SGTreeNode* SG_EXPORT sgTreeGetRoot(SGTree* tree)
+SGSetNode* SG_EXPORT sgSetGetRoot(SGSet* set)
 {
-    return tree->root;
+    return set->root;
 }
-SGTreeNode* SG_EXPORT sgTreeGetFirst(SGTree* tree)
+SGSetNode* SG_EXPORT sgSetGetFirst(SGSet* set)
 {
-    SGTreeNode* curr = tree->root;
+    SGSetNode* curr = set->root;
     if(curr)
         while(curr->left)
             curr = curr->left;
     return curr;
 }
-SGTreeNode* SG_EXPORT sgTreeGetLast(SGTree* tree)
+SGSetNode* SG_EXPORT sgSetGetLast(SGSet* set)
 {
-    SGTreeNode* curr = tree->root;
+    SGSetNode* curr = set->root;
     if(curr)
         while(curr->right)
             curr = curr->right;
     return curr;
 }
 
-void* SG_EXPORT sgTreePopRoot(SGTree* tree)
+void* SG_EXPORT sgSetPopRoot(SGSet* set)
 {
-    SGTreeNode* node = sgTreeGetRoot(tree);
+    SGSetNode* node = sgSetGetRoot(set);
     if(!node)
         return NULL;
     void* item = node->item;
-    sgTreeRemoveNode(tree, node);
+    sgSetRemoveNode(set, node);
     return item;
 }
-void* SG_EXPORT sgTreePopFirst(SGTree* tree)
+void* SG_EXPORT sgSetPopFirst(SGSet* set)
 {
-    SGTreeNode* node = sgTreeGetFirst(tree);
+    SGSetNode* node = sgSetGetFirst(set);
     if(!node)
         return NULL;
     void* item = node->item;
-    sgTreeRemoveNode(tree, node);
+    sgSetRemoveNode(set, node);
     return item;
 }
-void* SG_EXPORT sgTreePopLast(SGTree* tree)
+void* SG_EXPORT sgSetPopLast(SGSet* set)
 {
-    SGTreeNode* node = sgTreeGetLast(tree);
+    SGSetNode* node = sgSetGetLast(set);
     if(!node)
         return NULL;
     void* item = node->item;
-    sgTreeRemoveNode(tree, node);
+    sgSetRemoveNode(set, node);
     return item;
 }

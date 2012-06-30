@@ -21,7 +21,7 @@
 
 #include "../common.h"
 #include "../util/list.h"
-#include "../util/tree.h"
+#include "../util/set.h"
 
 #include <stdarg.h>
 
@@ -190,13 +190,13 @@ typedef struct SGEntity
 	SGbool visible;
 
     /**
-     * Variables: tnode, tlnode
+     * Variables: snode, slnode
      *
-     * Tree node, for use with name lookups. Holds the entity's name,
+     * Set node, for use with name lookups. Holds the entity's name,
      * can be NULL.
      */
-    SGTreeNode* tnode;
-    SGListNode* tlnode;
+    SGSetNode* snode;
+    SGListNode* slnode;
 
 	// attachments...
 	/**
@@ -580,7 +580,7 @@ typedef struct SGEntity
 
 #ifdef SG_BUILD_LIBRARY
 SGList* _sg_entList;
-SGTree* _sg_entTree;
+SGSet* _sg_entSet;
 SGbool _sg_entStop;
 #endif // SG_BUILD_LIBRARY
 

@@ -17,7 +17,7 @@
 
 #include "../../common.h"
 #include "../list.h"
-#include "../tree.h"
+#include "../set.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -41,7 +41,7 @@ typedef struct SGJSONValue
     char* strbuf; // used for errors and stringification
     union
     {
-        SGTree* object;
+        SGSet* object;
         SGList* array;
         char* string;
         double number;
@@ -50,15 +50,14 @@ typedef struct SGJSONValue
     } v;
 } SGJSONValue;
 
-typedef struct SGJSONTreeItem
+typedef struct SGJSONSetItem
 {
     char* key;
     SGJSONValue* val;
-} SGJSONTreeItem;
+} SGJSONSetItem;
 
-SGint SG_EXPORT _sgJSONTreeCmp(const void* a, const void* b);
 void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value);
-void SG_EXPORT _sgJSONDumpTreeItem(SGTreeNode* node, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent);
+void SG_EXPORT _sgJSONDumpSetItem(SGSetNode* node, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent);
 void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent);
 
 char* SG_EXPORT _sgJSONSkipComments(char* input, char** error);

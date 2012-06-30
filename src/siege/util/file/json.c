@@ -7,11 +7,9 @@
 #include <stdio.h>
 #include <ctype.h>
 
-SGint SG_EXPORT _sgJSONTreeCmp(const void* a, const void* b)
+static SGint SG_EXPORT _sgJSONSetCmp(const SGJSONSetItem* a, const SGJSONSetItem* b)
 {
-    const SGJSONTreeItem* ai = a;
-    const SGJSONTreeItem* bi = b;
-    return strcmp(ai->key, bi->key);
+    return strcmp(a->key, b->key);
 }
 
 void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value)
@@ -19,7 +17,7 @@ void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value)
     if(!value)
         return;
 
-    SGJSONTreeItem* titem;
+    SGJSONSetItem* titem;
 
     switch(value->type)
     {
@@ -39,26 +37,26 @@ void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value)
         case SG_JSON_TYPE_OBJECT:
             while(value->v.object->root)
             {
-                titem = sgTreePopRoot(value->v.object);
+                titem = sgSetPopRoot(value->v.object);
                 free(titem->key);
                 _sgJSONFreeValue(titem->val);
                 free(titem);
             }
-            sgTreeDestroy(value->v.object);
+            sgSetDestroy(value->v.object);
             break;
     }
     free(value->strbuf);
     free(value);
 }
 
-void SG_EXPORT _sgJSONDumpTreeItem(SGTreeNode* node, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent)
+void SG_EXPORT _sgJSONDumpSetItem(SGSetNode* node, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent)
 {
     if(!node)
         return;
 
     if(node->left)
     {
-        _sgJSONDumpTreeItem(node->left, str, len, mem, pretty, indent, indent);
+        _sgJSONDumpSetItem(node->left, str, len, mem, pretty, indent, indent);
         _sgStringAppend(str, len, mem, ",");
         if(pretty)
             _sgStringAppend(str, len, mem, "\n");
@@ -69,7 +67,7 @@ void SG_EXPORT _sgJSONDumpTreeItem(SGTreeNode* node, char** str, size_t* len, si
         for(i = 0; i < indent; i++)
             _sgStringAppend(str, len, mem, "\t");
 
-    SGJSONTreeItem* titem = node->item;
+    SGJSONSetItem* titem = node->item;
     _sgStringAppend(str, len, mem, "\"");
     _sgJSONEscapeString(titem->key, str, len, mem);
     _sgStringAppend(str, len, mem, "\":");
@@ -82,7 +80,7 @@ void SG_EXPORT _sgJSONDumpTreeItem(SGTreeNode* node, char** str, size_t* len, si
         _sgStringAppend(str, len, mem, ",");
         if(pretty)
             _sgStringAppend(str, len, mem, "\n");
-        _sgJSONDumpTreeItem(node->right, str, len, mem, pretty, indent, indent);
+        _sgJSONDumpSetItem(node->right, str, len, mem, pretty, indent, indent);
     }
 }
 
@@ -144,7 +142,7 @@ void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, siz
             _sgStringAppend(str, len, mem, "{");
             if(pretty)
                 _sgStringAppend(str, len, mem, "\n");
-            _sgJSONDumpTreeItem(value->v.object->root, str, len, mem, pretty, indent + 1, indent + 1);
+            _sgJSONDumpSetItem(value->v.object->root, str, len, mem, pretty, indent + 1, indent + 1);
             if(pretty)
                 _sgStringAppend(str, len, mem, "\n");
             _sgStringAppend(str, len, mem, "}");
@@ -499,7 +497,7 @@ char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
 char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
 {
     char* end;
-    SGJSONTreeItem* titem;
+    SGJSONSetItem* titem;
     SGJSONValue key;
     into->type = SG_JSON_TYPE_OBJECT;
 
@@ -507,7 +505,7 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
         return input;
     input++;
 
-    into->v.object = sgTreeCreate(_sgJSONTreeCmp);
+    into->v.object = sgSetCreate((SGSetCmp*)_sgJSONSetCmp, NULL);
 
     input = _sgJSONSkipComments(input, error);
     if(!input) return NULL;
@@ -534,7 +532,7 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
             return input;
         }
 
-        titem = malloc(sizeof(SGJSONTreeItem));
+        titem = malloc(sizeof(SGJSONSetItem));
         end = input;
         if(_sgJSONGetSymbol(&end)) // extension
         {
@@ -592,7 +590,7 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
         }
         input = end;
 
-        sgTreeInsert(into->v.object, titem);
+        sgSetInsert(into->v.object, titem);
 
         input = _sgJSONSkipComments(input, error);
         if(!input) return NULL;
@@ -716,12 +714,12 @@ void SG_EXPORT sgJSONObjectSetValue(SGJSONValue* object, const char* key, SGJSON
     if(object->type != SG_JSON_TYPE_OBJECT)
         return;
 
-    SGJSONTreeItem seek;
+    SGJSONSetItem seek;
     seek.key = (char*)key;
 
-    SGJSONTreeItem* titem;
+    SGJSONSetItem* titem;
 
-    SGTreeNode* node = sgTreeFindItem(object->v.object, &seek);
+    SGSetNode* node = sgSetSearch(object->v.object, &seek);
     if(node)
     {
         titem = node->item;
@@ -734,17 +732,17 @@ void SG_EXPORT sgJSONObjectRemoveValue(SGJSONValue* object, const char* key)
     if(object->type != SG_JSON_TYPE_OBJECT)
         return;
 
-    SGJSONTreeItem titem;
+    SGJSONSetItem titem;
     titem.key = (char*)key;
 
-    SGTreeNode* node = sgTreeFindItem(object->v.object, &titem);
+    SGSetNode* node = sgSetSearch(object->v.object, &titem);
     if(node)
     {
-        titem = *(SGJSONTreeItem*)node->item;
+        titem = *(SGJSONSetItem*)node->item;
         free(titem.key);
         _sgJSONFreeValue(titem.val);
         free(node->item);
-        sgTreeRemoveNode(object->v.object, node);
+        sgSetRemoveNode(object->v.object, node);
     }
 }
 SGJSONValue* SG_EXPORT sgJSONObjectGetValue(SGJSONValue* object, const char* key)
@@ -752,10 +750,10 @@ SGJSONValue* SG_EXPORT sgJSONObjectGetValue(SGJSONValue* object, const char* key
     if(object->type != SG_JSON_TYPE_OBJECT)
         return NULL;
 
-    SGJSONTreeItem seek;
+    SGJSONSetItem seek;
     seek.key = (char*)key;
 
-    SGTreeNode* node = sgTreeFindItem(object->v.object, &seek);
+    SGSetNode* node = sgSetSearch(object->v.object, &seek);
     if(node)
         return node->item;
     return NULL;
