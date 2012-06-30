@@ -149,6 +149,10 @@ void SG_EXPORT sgDrawSetBlendEquation(SGenum equation);
 
 void SG_EXPORT sgDrawSetDepthFunc(SGenum func);
 void SG_EXPORT sgDrawSetDepthTest(SGbool test);
+
+void SG_EXPORT sgDrawSetAlphaFunc(SGenum func, float ref);
+void SG_EXPORT sgDrawSetAlphaTest(SGbool test);
+
 void SG_EXPORT sgDrawSetSmooth(SGbool smooth);
 
 /**

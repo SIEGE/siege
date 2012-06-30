@@ -39,6 +39,8 @@ extern "C"
     SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawSetBlendEquation)(void* context, SGenum equation);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthFunc)(void* context, SGenum func);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthTest)(void* context, SGbool test);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetAlphaFunc)(void* context, SGenum func, float ref);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetAlphaTest)(void* context, SGbool test);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetSmooth)(void* context, SGbool smooth);
 #ifdef __cplusplus
 }

@@ -352,6 +352,18 @@ void SG_EXPORT sgDrawSetDepthTest(SGbool test)
     if(psgmGraphicsDrawSetDepthTest)
         psgmGraphicsDrawSetDepthTest(_sg_gfxHandle, test);
 }
+
+void SG_EXPORT sgDrawSetAlphaFunc(SGenum func, float ref)
+{
+    if(psgmGraphicsDrawSetAlphaFunc)
+        psgmGraphicsDrawSetAlphaFunc(_sg_gfxHandle, func, ref);
+}
+void SG_EXPORT sgDrawSetAlphaTest(SGbool test)
+{
+    if(psgmGraphicsDrawSetAlphaTest)
+        psgmGraphicsDrawSetAlphaTest(_sg_gfxHandle, test);
+}
+
 void SG_EXPORT sgDrawSetSmooth(SGbool smooth)
 {
     if(psgmGraphicsDrawSetSmooth)

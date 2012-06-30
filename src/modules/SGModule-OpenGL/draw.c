@@ -192,14 +192,14 @@ SGenum SG_EXPORT sgmGraphicsDrawSetDepthFunc(void* context, SGenum func)
     GLenum glfunc = 0;
     switch(func)
     {
-        case SG_DEPTH_NEVER:    glfunc = GL_NEVER;    break;
-        case SG_DEPTH_EQUAL:    glfunc = GL_EQUAL;    break;
-        case SG_DEPTH_NOTEQUAL: glfunc = GL_NOTEQUAL; break;
-        case SG_DEPTH_LESS:     glfunc = GL_LESS;     break;
-        case SG_DEPTH_LEQUAL:   glfunc = GL_LEQUAL;   break;
-        case SG_DEPTH_GREATER:  glfunc = GL_GREATER;  break;
-        case SG_DEPTH_GEQUAL:   glfunc = GL_GEQUAL;   break;
-        case SG_DEPTH_ALWAYS:   glfunc = GL_ALWAYS;   break;
+        case SG_CMP_NEVER:    glfunc = GL_NEVER;    break;
+        case SG_CMP_EQUAL:    glfunc = GL_EQUAL;    break;
+        case SG_CMP_NOTEQUAL: glfunc = GL_NOTEQUAL; break;
+        case SG_CMP_LESS:     glfunc = GL_LESS;     break;
+        case SG_CMP_LEQUAL:   glfunc = GL_LEQUAL;   break;
+        case SG_CMP_GREATER:  glfunc = GL_GREATER;  break;
+        case SG_CMP_GEQUAL:   glfunc = GL_GEQUAL;   break;
+        case SG_CMP_ALWAYS:   glfunc = GL_ALWAYS;   break;
         default:
             return SG_INVALID_ENUM;
     }
@@ -213,6 +213,35 @@ SGenum SG_EXPORT sgmGraphicsDrawSetDepthTest(void* context, SGbool test)
         glEnable(GL_DEPTH_TEST);
     else
         glDisable(GL_DEPTH_TEST);
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmGraphicsDrawSetAlphaFunc(void* context, SGenum func, float ref)
+{
+    GLenum glfunc = 0;
+    switch(func)
+    {
+        case SG_CMP_NEVER:    glfunc = GL_NEVER;    break;
+        case SG_CMP_EQUAL:    glfunc = GL_EQUAL;    break;
+        case SG_CMP_NOTEQUAL: glfunc = GL_NOTEQUAL; break;
+        case SG_CMP_LESS:     glfunc = GL_LESS;     break;
+        case SG_CMP_LEQUAL:   glfunc = GL_LEQUAL;   break;
+        case SG_CMP_GREATER:  glfunc = GL_GREATER;  break;
+        case SG_CMP_GEQUAL:   glfunc = GL_GEQUAL;   break;
+        case SG_CMP_ALWAYS:   glfunc = GL_ALWAYS;   break;
+        default:
+            return SG_INVALID_ENUM;
+    }
+    glAlphaFunc(glfunc, ref);
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmGraphicsDrawSetAlphaTest(void* context, SGbool test)
+{
+    if(test)
+        glEnable(GL_ALPHA_TEST);
+    else
+        glDisable(GL_ALPHA_TEST);
     return SG_OK;
 }
 

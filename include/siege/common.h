@@ -387,14 +387,14 @@ typedef double SGdouble;
 #define SG_EQUATION_MIN                 0x03
 #define SG_EQUATION_MAX                 0x04
 
-#define SG_DEPTH_NEVER      0
-#define SG_DEPTH_EQUAL      1
-#define SG_DEPTH_NOTEQUAL   2
-#define SG_DEPTH_LESS       3
-#define SG_DEPTH_LEQUAL     4 /* default */
-#define SG_DEPTH_GREATER    5
-#define SG_DEPTH_GEQUAL     6
-#define SG_DEPTH_ALWAYS     7
+#define SG_CMP_NEVER    0
+#define SG_CMP_EQUAL    1
+#define SG_CMP_NOTEQUAL 2
+#define SG_CMP_LESS     3
+#define SG_CMP_LEQUAL   4 /* default for DepthFunc */
+#define SG_CMP_GREATER  5
+#define SG_CMP_GEQUAL   6
+#define SG_CMP_ALWAYS   7 /* default for AlphaFunc */
 
 /**
  * \name Physics shapes
