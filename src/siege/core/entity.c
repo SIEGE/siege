@@ -23,30 +23,19 @@
 #include <string.h>
 #include <math.h>
 
-typedef struct SGEntitySetNode
-{
-    char* name;
-    SGList* list;
-} SGEntitySetNode;
-
-static SGint SG_EXPORT _cbEntitySetCmp(const SGEntitySetNode* a, const SGEntitySetNode* b, void* data)
-{
-    return strcmp(a->name, b->name);
-}
-
 SGbool SG_EXPORT _sgEntityInit(void)
 {
     _sg_entList = sgListCreate();
     if(!_sg_entList)
         return SG_FALSE;
-    _sg_entSet = sgSetCreate((SGSetCmp*)_cbEntitySetCmp, NULL);
+    _sg_entSMap = sgSMapCreate();
     return SG_TRUE;
 }
 SGbool SG_EXPORT _sgEntityDeinit(void)
 {
     sgEntityDestroyAll();
     sgListDestroy(_sg_entList);
-    sgSetDestroy(_sg_entSet);
+    sgSMapDestroy(_sg_entSMap);
     return SG_TRUE;
 }
 
@@ -279,7 +268,7 @@ SGEntity* SG_EXPORT sgEntityCreate(void)
 	entity->evDraw = _sg_evDraw;
 
 	entity->node = sgListAppend(_sg_entList, entity);
-    entity->snode = NULL;
+    entity->mnode = NULL;
 	return entity;
 }
 void SG_EXPORT sgEntityDestroy(SGEntity* entity)
@@ -303,46 +292,34 @@ void SG_EXPORT sgEntityDestroyAll(void)
 
 void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name)
 {
-    SGEntitySetNode* enode;
-    if(entity->snode)
+    SGList* list;
+    if(entity->mnode)
     {
-        enode = entity->snode->item;
-        sgListRemoveNode(enode->list, entity->slnode);
-        if(!enode->list->head) // empty list
+        list = entity->mnode->val;
+        sgListRemoveNode(list, entity->mlnode);
+        if(!list->head)
         {
-            sgSetRemoveNode(_sg_entSet, entity->snode);
-            sgListDestroy(enode->list);
-            free(enode->name);
-            free(enode);
+            sgSMapRemove(_sg_entSMap, entity->mnode->key);
+            sgListDestroy(list);
         }
-        entity->snode = NULL;
-        entity->slnode = NULL;
+        entity->mnode = NULL;
+        entity->mlnode = NULL;
     }
     if(!name)
         return;
 
-    SGEntitySetNode fnode;
-    fnode.name = (char*)name;
+    SGSMapNode* mnode = sgSMapFind(_sg_entSMap, name);
+    if(!mnode)
+        mnode = sgSMapAssignNode(_sg_entSMap, name, sgListCreate());
 
-    size_t len = strlen(name);
-    SGSetNode* snode = sgSetSearch(_sg_entSet, &fnode);
-    if(!snode)
-    {
-        enode = malloc(sizeof(SGEntitySetNode));
-        enode->name = malloc(len + 1);
-        memcpy(enode->name, name, len + 1);
-        enode->list = sgListCreate();
-        snode = sgSetInsert(_sg_entSet, enode);
-    }
-    entity->slnode = sgListAppend(enode->list, entity);
-    entity->snode = snode;
+    entity->mnode = mnode;
+    entity->mlnode = sgListAppend(mnode->val, entity);
 }
 char* SG_EXPORT sgEntityGetName(SGEntity* entity)
 {
-    if(!entity->snode) return NULL;
+    if(!entity->mnode) return NULL;
 
-    SGEntitySetNode* enode = entity->snode->item;
-    return enode->name;
+    return entity->mnode->key;
 }
 
 void SG_EXPORT sgEntitySetSprite(SGEntity* entity, SGSprite* sprite)
@@ -528,14 +505,7 @@ void SG_EXPORT sgEntityDraw(SGEntity* entity)
 
 SGList* SG_EXPORT sgEntityFind(const char* name)
 {
-    SGEntitySetNode fnode;
-    fnode.name = (char*)name;
-
-    SGSetNode* snode = sgSetSearch(_sg_entSet, &fnode);
-    if(!snode) return NULL;
-
-    SGEntitySetNode* enode = snode->item;
-    return enode->list;
+    return sgSMapFind(_sg_entSMap, name);
 }
 
 void SG_EXPORT sgEntityEventSignalv(size_t num, va_list args)

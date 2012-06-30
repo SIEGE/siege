@@ -21,7 +21,7 @@
 
 #include "../common.h"
 #include "../util/list.h"
-#include "../util/set.h"
+#include "../util/smap.h"
 
 #include <stdarg.h>
 
@@ -190,13 +190,12 @@ typedef struct SGEntity
 	SGbool visible;
 
     /**
-     * Variables: snode, slnode
+     * Variables: mnode, mlnode
      *
-     * Set node, for use with name lookups. Holds the entity's name,
-     * can be NULL.
+     * Map list info. `mnode` holds the entity name.
      */
-    SGSetNode* snode;
-    SGListNode* slnode;
+    SGSMapNode* mnode;
+    SGListNode* mlnode;
 
 	// attachments...
 	/**
@@ -580,7 +579,7 @@ typedef struct SGEntity
 
 #ifdef SG_BUILD_LIBRARY
 SGList* _sg_entList;
-SGSet* _sg_entSet;
+SGSMap* _sg_entSMap;
 SGbool _sg_entStop;
 #endif // SG_BUILD_LIBRARY
 
