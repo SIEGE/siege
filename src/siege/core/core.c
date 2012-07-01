@@ -103,6 +103,9 @@ SGbool SG_EXPORT sgLoadModule(const char* name)
 
 SGbool SG_EXPORT sgInit(SGenum flags)
 {
+    if(_sg_hasInited)
+        return SG_TRUE;
+
     _sg_firstLoop = SG_TRUE;
     _sg_exitNow = SG_FALSE;
     _sg_exitVal = 0;
@@ -174,6 +177,9 @@ SGbool SG_EXPORT sgInit(SGenum flags)
 
 SGbool SG_EXPORT sgDeinit(void)
 {
+    if(!_sg_hasInited)
+        return SG_TRUE;
+
     sgStop(0);
     sgThreadDestroy(_sg_renderThread);
 
