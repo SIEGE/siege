@@ -33,6 +33,7 @@ typedef struct SGAtlasNode
 {
     struct SGAtlasNode* child[2];
     SGAtlasArea area;
+    SGbool reserved;
 } SGAtlasNode;
 
 typedef struct SGAtlasTexture
@@ -63,7 +64,7 @@ void SG_EXPORT sgAtlasDestroy(SGAtlas* atlas);
 SGAtlasArea* SG_EXPORT sgAtlasAreaReserve(SGAtlas* atlas, size_t width, size_t height, SGbool overflow);
 void SG_EXPORT sgAtlasAreaSetData(SGAtlas* atlas, SGAtlasArea* area, size_t width, size_t height, SGenum bpp, void* data);
 
-void SG_EXPORT sgAtlasGetTexCoords(SGAtlas* atlas, SGint x, SGint y, SGint w, SGint h, float* x0, float* y0, float* x1, float* y1);
+void SG_EXPORT sgAtlasGetTexCoords4i(SGAtlas* atlas, SGint x, SGint y, SGint w, SGint h, float* x0, float* y0, float* x1, float* y1);
 void SG_EXPORT sgAtlasGetTexCoordsA(SGAtlas* atlas, SGAtlasArea* area, float* x0, float* y0, float* x1, float* y1);
 
 size_t SG_EXPORT sgAtlasGetNumTextures(SGAtlas* atlas);
@@ -72,6 +73,8 @@ SGTexture* SG_EXPORT sgAtlasGetTexture(SGAtlas* atlas, size_t index);
 void SG_EXPORT sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height);
 size_t SG_EXPORT sgAtlasGetWidth(SGAtlas* atlas);
 size_t SG_EXPORT sgAtlasGetHeight(SGAtlas* atlas);
+
+void SG_EXPORT sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbool wires);
 
 #ifdef __cplusplus
 }
