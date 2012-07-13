@@ -23,14 +23,14 @@ SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum t
 {
     TextureData* tdata = texture;
 
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(3, GL_FLOAT, 0, vertices);
-
     if(tdata)
     {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, tdata->texid);
     }
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
 
     if(texcoords != NULL)
     {

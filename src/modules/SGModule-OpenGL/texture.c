@@ -219,22 +219,34 @@ SGuint SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z
     glScalef(xscale, yscale, 1.0);
     glTranslatef(-x - xoffset, -y - yoffset, 0.0);
 
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+    float vertices[4*3] = {
+            x               , y                , z,
+            x + tdata->width, y                , z,
+            x + tdata->width, y + tdata->height, z,
+            x               , y + tdata->height, z
+        };
+    float texcoords[4*2] = {
+            0.0               , tdata->hratio/*1*/,
+            tdata->wratio/*1*/, tdata->hratio/*1*/,
+            tdata->wratio/*1*/, 0.0               ,
+            0.0               , 0.0
+        };
+
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
+    glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, tdata->texid);
-    glBegin(GL_QUADS);
-        glTexCoord2f(0.0, tdata->hratio/*1*/);
-        glVertex3f(x, y, z);
 
-        glTexCoord2f(tdata->wratio/*1*/, tdata->hratio/*1*/);
-        glVertex3f(x + tdata->width, y, z);
+    glDrawArrays(GL_QUADS, 0, 4);
 
-        glTexCoord2f(tdata->wratio/*1*/, 0.0);
-        glVertex3f(x + tdata->width, y + tdata->height, z);
-
-        glTexCoord2f(0.0, 0.0);
-        glVertex3f(x, y + tdata->height, z);
-    glEnd();
     glDisable(GL_TEXTURE_2D);
+
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
 
     glPopMatrix();
 
