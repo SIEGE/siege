@@ -63,7 +63,7 @@ int main(void)
             num++;
         }
     }
-    printf("Successfully inserted: %zu/%u items\n", num, NUMTEST);
+    printf("Successfully inserted: %u/%u items\n", (unsigned int)num, NUMTEST);
 
     while(sgLoop(NULL))
     {
