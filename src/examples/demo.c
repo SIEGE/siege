@@ -294,7 +294,7 @@ void drawLight(Light* light)
             tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
             tnext = sgVec2Add(tnext, sgVec2f(x, y));
 
-            if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
+            if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
             {
                 tmpc = sgVec2Add(tcurr, sgVec2SetLength(sgVec2Sub(tcurr, light->pos), 640 + 480));
                 tmpn = sgVec2Add(tnext, sgVec2SetLength(sgVec2Sub(tnext, light->pos), 640 + 480));
@@ -388,7 +388,7 @@ void drawLightDBG(Light* light)
             tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
             tnext = sgVec2Add(tnext, sgVec2f(x, y));
 
-            if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
+            if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
             {
                 sgDrawVertex2f(tcurr.x, tcurr.y);
                 sgDrawVertex2f(tnext.x, tnext.y);
@@ -418,7 +418,7 @@ void drawLightDBG(Light* light)
             tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
             tnext = sgVec2Add(tnext, sgVec2f(x, y));
 
-            if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
+            if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
             {
                 tmpc = sgVec2Add(tcurr, sgVec2SetLength(sgVec2Sub(tcurr, light->pos), 640 + 480));
                 tmpn = sgVec2Add(tnext, sgVec2SetLength(sgVec2Sub(tnext, light->pos), 640 + 480));

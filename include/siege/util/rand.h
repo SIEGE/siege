@@ -5,7 +5,7 @@
     This file is part of libSIEGE.
 
     This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
+    2-clause BSD license. Please consult the file "COPYING.txt" for
     details.
 
     If you did not recieve the file with this program, please email
@@ -50,15 +50,19 @@ typedef struct SGRand
     time_t stime;
     SGubyte* data;
     SGRandCallbacks cbs;
+    SGulong max;
 } SGRand;
 
 SGRand* SG_EXPORT sgRandCreate(SGenum type);
-SGRand* SG_EXPORT sgRandCreateCB(SGRandCallbacks* cbs);
+SGRand* SG_EXPORT sgRandCreateCB(SGRandCallbacks* cbs, SGulong max);
 void SG_EXPORT sgRandDestroy(SGRand* rand);
 
 void SG_EXPORT sgRandSeed(SGRand* rand, SGulong seed, SGulong index);
 
 SGulong SG_EXPORT sgRandGen(SGRand* rand);
+float SG_EXPORT sgRandGenf(SGRand* rand);
+float SG_EXPORT sgRandGen1f(SGRand* rand, float max);
+float SG_EXPORT sgRandGen2f(SGRand* rand, float min, float max);
 
 #ifdef __cplusplus
 }

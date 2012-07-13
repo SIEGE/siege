@@ -599,7 +599,7 @@ void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
         tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + shape->angle);
         tnext = sgVec2Add(tnext, shape->pos);
 
-        if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
+        if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
         {
             tmpc = sgVec2Add(tcurr, sgVec2SetLength(sgVec2Sub(tcurr, light->pos), winw + winh));
             tmpn = sgVec2Add(tnext, sgVec2SetLength(sgVec2Sub(tnext, light->pos), winw + winh));
@@ -644,7 +644,7 @@ void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
         tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + shape->angle);
         tnext = sgVec2Add(tnext, shape->pos);
 
-        if(sgVec2Cross(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
+        if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
         {
             sgDrawVertex2f(tcurr.x, tcurr.y);
             sgDrawVertex2f(tnext.x, tnext.y);

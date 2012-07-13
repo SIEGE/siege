@@ -5,7 +5,7 @@
     This file is part of libSIEGE.
 
     This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
+    2-clause BSD license. Please consult the file "COPYING.txt" for
     details.
 
     If you did not recieve the file with this program, please email
@@ -112,10 +112,22 @@ SGVec2 SG_EXPORT sgVec2Sub(SGVec2 a, SGVec2 b);
 SGVec2 SG_EXPORT sgVec2Mul(SGVec2 a, SGVec2 b);
 SGVec2 SG_EXPORT sgVec2Div(SGVec2 a, SGVec2 b);
 
+float SG_EXPORT sgVec2Distance(SGVec2 a, SGVec2 b);
+float SG_EXPORT sgVec2Distance2(SGVec2 a, SGVec2 b);
+
 float SG_EXPORT sgVec2Dot(SGVec2 a, SGVec2 b);
-float SG_EXPORT sgVec2Cross(SGVec2 a, SGVec2 b);
+/*
+ * Calculates the perpendicular dot product.
+ *
+ * This is what some call the 2D cross product, though I have opted to call the
+ * (IMO more mathematically correct) the generalization above "cross product".
+ */
+float SG_EXPORT sgVec2PDot(SGVec2 a, SGVec2 b);
+SGVec2 SG_EXPORT sgVec2Cross(SGVec2 a);
 
-
+SGVec2 SG_EXPORT sgVec2Reflect(SGVec2 ray, SGVec2 normal);
+float SG_EXPORT sgVec2ProjectScalar(SGVec2 v, SGVec2 target);
+SGVec2 SG_EXPORT sgVec2Project(SGVec2 v, SGVec2 target);
 
 SGVec3 SG_EXPORT sgVec3f(float x, float y, float z);
 SGVec3 SG_EXPORT sgVec3fv(const float* xyz);
@@ -144,9 +156,17 @@ SGVec3 SG_EXPORT sgVec3Sub(SGVec3 a, SGVec3 b);
 SGVec3 SG_EXPORT sgVec3Mul(SGVec3 a, SGVec3 b);
 SGVec3 SG_EXPORT sgVec3Div(SGVec3 a, SGVec3 b);
 
+float SG_EXPORT sgVec3Distance(SGVec3 a, SGVec3 b);
+float SG_EXPORT sgVec3Distance2(SGVec3 a, SGVec3 b);
+
 float SG_EXPORT sgVec3Dot(SGVec3 a, SGVec3 b);
 SGVec3 SG_EXPORT sgVec3Cross(SGVec3 a, SGVec3 b);
+// A dot (B cross C)
+float SG_EXPORT sgVec3Triple(SGVec3 a, SGVec3 b, SGVec3 c);
 
+SGVec3 SG_EXPORT sgVec3Reflect(SGVec3 ray, SGVec3 normal);
+float SG_EXPORT sgVec3ProjectScalar(SGVec3 v, SGVec3 target);
+SGVec3 SG_EXPORT sgVec3Project(SGVec3 v, SGVec3 target);
 
 
 SGVec4 SG_EXPORT sgVec4f(float x, float y, float z, float w);
@@ -174,8 +194,15 @@ SGVec4 SG_EXPORT sgVec4Sub(SGVec4 a, SGVec4 b);
 SGVec4 SG_EXPORT sgVec4Mul(SGVec4 a, SGVec4 b);
 SGVec4 SG_EXPORT sgVec4Div(SGVec4 a, SGVec4 b);
 
+float SG_EXPORT sgVec4Distance(SGVec4 a, SGVec4 b);
+float SG_EXPORT sgVec4Distance2(SGVec4 a, SGVec4 b);
+
 float SG_EXPORT sgVec4Dot(SGVec4 a, SGVec4 b);
 //SGVec4 sgVec4Cross(SGVec4 a, SGVec4 b, SGVec4 c);
+
+SGVec4 SG_EXPORT sgVec4Reflect(SGVec4 ray, SGVec4 normal);
+float SG_EXPORT sgVec4ProjectScalar(SGVec4 v, SGVec4 target);
+SGVec4 SG_EXPORT sgVec4Project(SGVec4 v, SGVec4 target);
 
 #ifdef __cplusplus
 }

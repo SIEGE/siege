@@ -204,7 +204,7 @@ float SG_EXPORT sgPhysicsShapeGetAreaS(SGPhysicsShape* shape)
                 next.x = shape->verts[2*((i+1) % shape->numverts)];
                 next.y = shape->verts[2*((i+1) % shape->numverts)+1];
 
-                area += sgVec2Cross(curr, next);
+                area += sgVec2PDot(curr, next);
             }
             return area / 2.0;
 
@@ -250,8 +250,8 @@ float SG_EXPORT sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass)
                 next.x = shape->verts[2*((i+1) % shape->numverts)] - shape->x;
                 next.y = shape->verts[2*((i+1) % shape->numverts)+1] - shape->y;
 
-                nom += fabs(sgVec2Cross(curr, next)) * (sgVec2GetLength2(next) + sgVec2Dot(next, curr) + sgVec2GetLength2(curr));
-                den += fabs(sgVec2Cross(curr, next));
+                nom += fabs(sgVec2PDot(curr, next)) * (sgVec2GetLength2(next) + sgVec2Dot(next, curr) + sgVec2GetLength2(curr));
+                den += fabs(sgVec2PDot(curr, next));
             }
             return nom / den * mass / 6.0;
 
@@ -284,7 +284,7 @@ float SG_EXPORT sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float dens
                 next.x = shape->verts[2*((i+1) % shape->numverts)] - shape->x;
                 next.y = shape->verts[2*((i+1) % shape->numverts)+1] - shape->y;
 
-                moment += density / 12.0 * fabs(sgVec2Cross(curr, next)) * (sgVec2GetLength2(next) + sgVec2Dot(next, curr) + sgVec2GetLength2(curr));
+                moment += density / 12.0 * fabs(sgVec2PDot(curr, next)) * (sgVec2GetLength2(next) + sgVec2Dot(next, curr) + sgVec2GetLength2(curr));
             }
             return moment;
 

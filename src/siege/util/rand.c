@@ -5,7 +5,7 @@
     This file is part of libSIEGE.
 
     This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
+    2-clause BSD license. Please consult the file "COPYING.txt" for
     details.
 
     If you did not recieve the file with this program, please email
@@ -76,12 +76,13 @@ SGRand* SG_EXPORT sgRandCreate(SGenum type)
         };
 
     SGRandCallbacks cbs = { NULL };
+    SGulong max = (SGulong)-1;
     switch(type)
     {
-        case SG_RAND_MT19937: cbs = cbsMersenne32; break;
+        case SG_RAND_MT19937: cbs = cbsMersenne32; max = (SGuint)-1; break;
     }
 
-    SGRand* rand = sgRandCreateCB(&cbs);
+    SGRand* rand = sgRandCreateCB(&cbs, max);
     if(!rand)
         return NULL;
 
@@ -89,7 +90,7 @@ SGRand* SG_EXPORT sgRandCreate(SGenum type)
 
     return rand;
 }
-SGRand* SG_EXPORT sgRandCreateCB(SGRandCallbacks* cbs)
+SGRand* SG_EXPORT sgRandCreateCB(SGRandCallbacks* cbs, SGulong max)
 {
     SGRand* rand = malloc(sizeof(SGRand));
     if(rand == NULL)
@@ -99,6 +100,7 @@ SGRand* SG_EXPORT sgRandCreateCB(SGRandCallbacks* cbs)
     rand->stime = time(NULL);
 
     rand->cbs = *cbs;
+    rand->max = max;
 
     if(rand->cbs.create)
         rand->cbs.create(rand);
@@ -138,4 +140,15 @@ SGulong SG_EXPORT sgRandGen(SGRand* rand)
         return rand->cbs.gen(rand);
     return 0;
 }
-
+float SG_EXPORT sgRandGenf(SGRand* rand)
+{
+    return sgRandGen(rand) / (float)rand->max;
+}
+float SG_EXPORT sgRandGen1f(SGRand* rand, float max)
+{
+    return sgRandGenf(rand) * max;
+}
+float SG_EXPORT sgRandGen2f(SGRand* rand, float min, float max)
+{
+    return min + sgRandGen1f(rand, max - min);
+}
