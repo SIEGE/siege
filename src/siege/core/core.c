@@ -31,6 +31,7 @@
 #include <siege/modules/modules.h>
 #include <siege/physics/space.h>
 #include <siege/physics/collision.h>
+#include <siege/util/timer.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -244,6 +245,8 @@ SGbool SG_EXPORT sgLoop(SGint* code)
             sgThreadStart(_sg_renderThread);
 		_sg_firstLoop = SG_FALSE;
 	}
+
+    sgTimerUpdateAll(SG_FALSE, SG_TRUE);
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICKB);
 

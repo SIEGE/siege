@@ -77,6 +77,7 @@
 #include "util/smap.h"
 #include "util/string.h"
 #include "util/time.h"
+#include "util/timer.h"
 #include "util/vector.h"
 
 #endif // __SIEGE_H__
