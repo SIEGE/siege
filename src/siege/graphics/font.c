@@ -24,13 +24,17 @@
 #include <string.h>
 #include <wchar.h>
 
+static SGint SG_EXPORT _sgFontMapCmp(const SGdchar* a, const SGdchar* b, void* data)
+{
+    return *a - *b;
+}
+
 SGCharInfo* SG_EXPORT _sgFontFindCache(SGFont* font, SGdchar c)
 {
-	SGuint i;
-	for(i = 0; i < font->numcache; i++)
-		if(font->cachechars[i] == c)
-			return &font->cache[i];
-	return NULL;
+    size_t* ind = sgMapFind(font->cmap, &c);
+    if(!ind) return NULL;
+
+    return &font->cache[*ind];
 }
 SGbool SG_EXPORT _sgFontGetChars(SGFont* font, SGdchar* str, SGuint strlen, SGCharInfo* info)
 {
@@ -93,6 +97,8 @@ SGbool SG_EXPORT _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbo
 	void* data;
 	SGubyte* rgba;
 	SGCharInfo* cache;
+    SGdchar* key;
+    size_t* val;
 	for(i = 0; i < alen; i++)
 	{
 		ret |= psgmFontsCharsCreate(font->handle, &achars[i], 1, &ci.width, &ci.height, &ci.xpre, &ci.ypre, &ci.xpost, &ci.ypost, &ci.dwidth, &ci.dheight, &data);
@@ -127,6 +133,12 @@ SGbool SG_EXPORT _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbo
 				font->cache = realloc(font->cache, font->numcache * sizeof(SGCharInfo));
 				font->cachechars[font->numcache - 1] = achars[i];
 				cache = &font->cache[font->numcache - 1];
+
+                key = malloc(sizeof(SGdchar));
+                *key = achars[i];
+                val = malloc(sizeof(size_t));
+                *val = font->numcache - 1;
+                sgMapAssign(font->cmap, key, val);
 			}
 			memcpy(cache, &ci, sizeof(SGCharInfo));
 		}
@@ -232,6 +244,8 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
 	font->cachechars = NULL;
 	font->cache = NULL;
 
+    font->cmap = sgMapCreate((SGMapCmp*)_sgFontMapCmp, NULL);
+
 	SGuint i;
 	SGdchar* prestr = malloc(preload * sizeof(SGdchar));
 	for(i = 0; i < preload; i++)
@@ -262,6 +276,20 @@ void SG_EXPORT sgFontDestroy(SGFont* font)
 	free(font->chars);
 	free(font->cachechars);
 	free(font->cache);
+
+    SGMapNode* node;
+    SGdchar* key;
+    for(;;)
+    {
+        node = sgMapGetRoot(font->cmap);
+        if(!node) break;
+
+        key = node->key;
+        free(sgMapPopRoot(font->cmap));
+        free(key);
+    }
+    sgMapDestroy(font->cmap);
+
 	free(font);
 }
 

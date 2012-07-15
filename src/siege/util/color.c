@@ -615,28 +615,28 @@ SGColor SG_EXPORT sgColorMix(SGColor a, SGColor b, float t)
                      a.b + t * (b.b - a.b),
                      a.a + t * (b.a - a.a));
 }
-SGColor SG_EXPORT sgColorAdd1c(SGColor a, SGColor b)
+SGColor SG_EXPORT sgColorAdd(SGColor a, SGColor b)
 {
     return sgColor4f(a.r + b.r,
                      a.g + b.g,
                      a.b + b.b,
                      a.a + b.a);
 }
-SGColor SG_EXPORT sgColorSub1c(SGColor a, SGColor b)
+SGColor SG_EXPORT sgColorSub(SGColor a, SGColor b)
 {
     return sgColor4f(a.r - b.r,
                      a.g - b.g,
                      a.b - b.b,
                      a.a - b.a);
 }
-SGColor SG_EXPORT sgColorMul1c(SGColor a, SGColor b)
+SGColor SG_EXPORT sgColorMul(SGColor a, SGColor b)
 {
     return sgColor4f(a.r * b.r,
                      a.g * b.g,
                      a.b * b.b,
                      a.a * b.a);
 }
-SGColor SG_EXPORT sgColorDiv1c(SGColor a, SGColor b)
+SGColor SG_EXPORT sgColorDiv(SGColor a, SGColor b)
 {
     return sgColor4f(a.r / b.r,
                      a.g / b.g,

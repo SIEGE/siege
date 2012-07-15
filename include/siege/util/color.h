@@ -61,10 +61,10 @@ SGColor SG_EXPORT sgColorNan(void);
 SGbool SG_EXPORT sgColorIsNan(SGColor c);
 
 SGColor SG_EXPORT sgColorMix(SGColor a, SGColor b, float t);
-SGColor SG_EXPORT sgColorAdd1c(SGColor a, SGColor b);
-SGColor SG_EXPORT sgColorSub1c(SGColor a, SGColor b);
-SGColor SG_EXPORT sgColorMul1c(SGColor a, SGColor b);
-SGColor SG_EXPORT sgColorDiv1c(SGColor a, SGColor b);
+SGColor SG_EXPORT sgColorAdd(SGColor a, SGColor b);
+SGColor SG_EXPORT sgColorSub(SGColor a, SGColor b);
+SGColor SG_EXPORT sgColorMul(SGColor a, SGColor b);
+SGColor SG_EXPORT sgColorDiv(SGColor a, SGColor b);
 
 void SG_EXPORT sgColorTo4ub(SGColor c, SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a);
 void SG_EXPORT sgColorTo4ubv(SGColor c, SGubyte* rgba);

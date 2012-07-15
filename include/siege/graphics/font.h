@@ -22,6 +22,7 @@
 
 #include "../common.h"
 #include "../util/conv.h"
+#include "../util/map.h"
 #include "texture.h"
 
 #include <stdarg.h>
@@ -135,6 +136,7 @@ typedef struct SGFont
 	SGuint numcache;		/// < Length of the arrays
 	SGdchar* cachechars;	/// < The character UTF-32 values (keys)
 	SGCharInfo* cache;		/// < Character infos (values)
+    SGMap* cmap;          ///< SGdchar->SGCharInfo mapping
 	/// @}
 } SGFont;
 
