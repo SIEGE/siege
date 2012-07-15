@@ -58,9 +58,6 @@ SGAtlas* SG_EXPORT sgAtlasCreateTexture(SGTexture* texture, SGbool owner);
 SGAtlas* SG_EXPORT sgAtlasCreateFile(const char* fname);
 void SG_EXPORT sgAtlasDestroy(SGAtlas* atlas);
 
-/*
- * TODO: implement
- */
 SGAtlasArea* SG_EXPORT sgAtlasAreaReserve(SGAtlas* atlas, size_t width, size_t height, SGbool overflow);
 void SG_EXPORT sgAtlasAreaSetData(SGAtlas* atlas, SGAtlasArea* area, size_t width, size_t height, SGenum bpp, void* data);
 
