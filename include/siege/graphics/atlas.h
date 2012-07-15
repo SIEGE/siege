@@ -64,11 +64,32 @@ void SG_EXPORT sgAtlasDestroy(SGAtlas* atlas);
 SGAtlasArea* SG_EXPORT sgAtlasAreaReserve(SGAtlas* atlas, size_t width, size_t height, SGbool overflow);
 void SG_EXPORT sgAtlasAreaSetData(SGAtlas* atlas, SGAtlasArea* area, size_t width, size_t height, SGenum bpp, void* data);
 
-void SG_EXPORT sgAtlasGetTexCoords4i(SGAtlas* atlas, SGint x, SGint y, SGint w, SGint h, float* x0, float* y0, float* x1, float* y1);
-void SG_EXPORT sgAtlasGetTexCoordsA(SGAtlas* atlas, SGAtlasArea* area, float* x0, float* y0, float* x1, float* y1);
+void SG_EXPORT sgAtlasAreaDrawRads3f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
+void SG_EXPORT sgAtlasAreaDrawDegs3f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
+void SG_EXPORT sgAtlasAreaDrawRads2f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle);
+void SG_EXPORT sgAtlasAreaDrawDegs2f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle);
+void SG_EXPORT sgAtlasAreaDrawRads3f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float angle);
+void SG_EXPORT sgAtlasAreaDrawDegs3f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float angle);
+void SG_EXPORT sgAtlasAreaDrawRads2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float angle);
+void SG_EXPORT sgAtlasAreaDrawDegs2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float angle);
+void SG_EXPORT sgAtlasAreaDrawRads3f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float angle);
+void SG_EXPORT sgAtlasAreaDrawDegs3f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float angle);
+void SG_EXPORT sgAtlasAreaDrawRads2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float angle);
+void SG_EXPORT sgAtlasAreaDrawDegs2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float angle);
+void SG_EXPORT sgAtlasAreaDraw3f2f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset);
+void SG_EXPORT sgAtlasAreaDraw2f2f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float xoffset, float yoffset);
+void SG_EXPORT sgAtlasAreaDraw3f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale);
+void SG_EXPORT sgAtlasAreaDraw2f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale);
+void SG_EXPORT sgAtlasAreaDraw3f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z);
+void SG_EXPORT sgAtlasAreaDraw2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y);
+void SG_EXPORT sgAtlasAreaDraw(SGAtlas* atlas, SGAtlasArea* area);
+
+void SG_EXPORT sgAtlasGetTexCoords4i(SGAtlas* atlas, SGint x, SGint y, SGint w, SGint h, float* s0, float* t0, float* s1, float* t1);
+void SG_EXPORT sgAtlasGetTexCoordsA(SGAtlas* atlas, SGAtlasArea* area, float* s0, float* t0, float* s1, float* t1);
 
 size_t SG_EXPORT sgAtlasGetNumTextures(SGAtlas* atlas);
 SGTexture* SG_EXPORT sgAtlasGetTexture(SGAtlas* atlas, size_t index);
+SGTexture* SG_EXPORT sgAtlasGetTextureA(SGAtlas* atlas, SGAtlasArea* area);
 
 void SG_EXPORT sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height);
 size_t SG_EXPORT sgAtlasGetWidth(SGAtlas* atlas);
