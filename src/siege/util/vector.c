@@ -50,6 +50,8 @@ SGVec2 SG_EXPORT sgVec2Normalize(SGVec2 vec)
 SGVec2 SG_EXPORT sgVec2SetLength(SGVec2 vec, float length)
 {
     float scale = length / sgVec2GetLength(vec);
+    if(scale != scale)
+        scale = 0;
     return sgVec2f(vec.x * scale, vec.y * scale);
 }
 float SG_EXPORT sgVec2GetLength(SGVec2 vec)
@@ -189,6 +191,8 @@ SGVec3 SG_EXPORT sgVec3Normalize(SGVec3 vec)
 SGVec3 SG_EXPORT sgVec3SetLength(SGVec3 vec, float length)
 {
     float scale = length / sgVec3GetLength(vec);
+    if(scale != scale)
+        scale = 0;
     return sgVec3f(vec.x * scale, vec.y * scale, vec.z * scale);
 }
 float SG_EXPORT sgVec3GetLength(SGVec3 vec)
@@ -296,6 +300,8 @@ SGVec4 SG_EXPORT sgVec4Normalize(SGVec4 vec)
 SGVec4 SG_EXPORT sgVec4SetLength(SGVec4 vec, float length)
 {
     float scale = length / sgVec4GetLength(vec);
+    if(scale != scale)
+        scale = 0;
     return sgVec4f(vec.x * scale, vec.y * scale, vec.z * scale, vec.w * scale);
 }
 float SG_EXPORT sgVec4GetLength(SGVec4 vec)
