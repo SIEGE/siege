@@ -7,3 +7,12 @@
 /src/bindings/cython/siege/*/*.c
 /doc
 siege.kdev4
+
+/src/siege/makefile
+/src/bindings/d/wbuild.sh
+*.obj
+*.exe
+*.lib
+*.map
+*.def
+*.swap
