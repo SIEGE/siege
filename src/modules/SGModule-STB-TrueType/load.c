@@ -69,6 +69,7 @@ SGenum SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, 
     int adv, left;
     int dw, dh;
     int xo, yo;
+    int kern = 0;
 
     int glyph;
     size_t i;
@@ -80,8 +81,10 @@ SGenum SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, 
         datawidth[i] = dw;
         dataheight[i] = dh;
 
+        if(i) kern = stbtt_GetGlyphKernAdvance(&fface->info, chars[i-1], chars[i]);
+
         stbtt_GetGlyphHMetrics(&fface->info, glyph, &adv, &left);
-        prex[i] = left * scale + xo;
+        prex[i] = (left + kern) * scale + xo;
         prey[i] = yo;
         postx[i] = adv * scale;
         posty[i] = 0;
