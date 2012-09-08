@@ -52,6 +52,7 @@ SGStream* SG_EXPORT sgStreamCreateCMemory(const void* mem, size_t size, SGFree* 
 SGStream* SG_EXPORT sgStreamCreateBuffer(size_t size);
 void SG_EXPORT sgStreamDestroy(SGStream* stream);
 
+SGlong SG_EXPORT sgStreamTellSize(SGStream* stream);
 SGbool SG_EXPORT sgStreamSeek(SGStream* stream, SGlong offset, SGenum origin);
 SGlong SG_EXPORT sgStreamTell(SGStream* stream);
 SGulong SG_EXPORT sgStreamRead(SGStream* stream, void* ptr, size_t size, size_t count);

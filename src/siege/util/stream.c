@@ -203,6 +203,16 @@ void SG_EXPORT sgStreamDestroy(SGStream* stream)
     free(stream);
 }
 
+SGlong SG_EXPORT sgStreamTellSize(SGStream* stream)
+{
+    SGlong pos = sgStreamTell(stream);
+    if(pos < 0)
+        return -1;
+    sgStreamSeek(stream, 0, SG_SEEK_END);
+    SGlong size = sgStreamTell(stream);
+    sgStreamSeek(stream, pos, SG_SEEK_SET);
+    return size;
+}
 SGbool SG_EXPORT sgStreamSeek(SGStream* stream, SGlong offset, SGenum origin)
 {
     if(!stream->seek)
