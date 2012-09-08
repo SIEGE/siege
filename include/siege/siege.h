@@ -75,6 +75,7 @@
 #include "util/rand.h"
 #include "util/set.h"
 #include "util/smap.h"
+#include "util/stream.h"
 #include "util/string.h"
 #include "util/time.h"
 #include "util/timer.h"
