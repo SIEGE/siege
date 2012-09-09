@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #define SG_BUILD_LIBRARY
 #include <siege/audio/buffer.h>
@@ -18,9 +18,12 @@
 
 #include <stdlib.h>
 
-SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname)
+SGAudioBuffer* SG_EXPORT sgAudioBufferCreateStream(SGStream* stream, SGbool delstream)
 {
     SGAudioBuffer* buffer = malloc(sizeof(SGAudioBuffer));
+
+    buffer->stream = stream;
+    buffer->del = delstream;
 
     if(psgmAudioBufferCreate != NULL)
         psgmAudioBufferCreate(&buffer->handle);
@@ -34,10 +37,11 @@ SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname)
     void* file = NULL;
     void* handle = NULL;
     if(psgmAudioFileCreate)
-		psgmAudioFileCreate(&file, fname, &channels, &format, &frequency);
+        psgmAudioFileCreate(&file, stream, &channels, &format, &frequency);
 
 	if(psgmAudioFileGetHandle
 	&& psgmAudioFileGetHandle(file, &handle) == SG_OK
+    && psgmAudioBufferSetHandle
 	&& psgmAudioBufferSetHandle(buffer->handle, handle) == SG_OK)
 	{
 	}
@@ -83,6 +87,10 @@ SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname)
 
     return buffer;
 }
+SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname)
+{
+    return sgAudioBufferCreateStream(sgStreamCreateFile(fname, "r"), SG_TRUE);
+}
 void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer)
 {
     if(buffer == NULL)
@@ -90,6 +98,8 @@ void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer)
 
     if(psgmAudioBufferDestroy != NULL)
         psgmAudioBufferDestroy(buffer->handle);
+    if(buffer->del)
+        sgStreamDestroy(buffer->stream);
     free(buffer);
 }
 

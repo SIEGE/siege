@@ -18,6 +18,7 @@
 typedef struct LFile
 {
     SF_INFO info;
+    SF_VIRTUAL_IO io;
     SNDFILE* snd;
 
     SGuint format;

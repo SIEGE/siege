@@ -16,6 +16,7 @@
 #define __SIEGE_AUDIO_BUFFER_H__
 
 #include "../common.h"
+#include "../util/stream.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -38,8 +39,12 @@ typedef struct SGAudioBuffer
 	 *	For internal use only.
 	 */
 	void* handle;
+
+    SGStream* stream;
+    SGbool del;
 } SGAudioBuffer;
 
+SGAudioBuffer* SG_EXPORT sgAudioBufferCreateStream(SGStream* stream, SGbool delstream);
 /// @{
 /**
  * \memberof SGAudioBuffer
