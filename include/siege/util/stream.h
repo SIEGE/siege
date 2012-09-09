@@ -22,28 +22,7 @@ extern "C"
 {
 #endif // __cplusplus
 
-#define SG_SEEK_SET 0
-#define SG_SEEK_CUR 1
-#define SG_SEEK_END 2
-
-typedef SGbool SGStreamSeek(void* stream, SGlong offset, SGenum origin);
-typedef SGlong SGStreamTell(void* stream);
-typedef SGulong SGStreamRead(void* stream, void* ptr, size_t size, size_t count);
-typedef SGulong SGStreamWrite(void* stream, const void* ptr, size_t size, size_t count);
-typedef SGbool SGStreamClose(void* stream);
-
-typedef void SGFree(void* ptr);
-
-typedef struct SGStream
-{
-    SGStreamSeek* seek;
-    SGStreamTell* tell;
-    SGStreamRead* read;
-    SGStreamWrite* write;
-    SGStreamClose* close;
-
-    void* data;
-} SGStream;
+/* SGStream structures and typedefs declared in common.h */
 
 SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, void* data);
 SGStream* SG_EXPORT sgStreamCreateFile(const char* fname, const char* mode);

@@ -541,6 +541,29 @@ typedef double SGdouble;
 #define SG_MOUSE_BUTTON_MIDDLE 3
 /// @}
 
+typedef void SG_EXPORT SGFree(void* ptr);
+
+#define SG_SEEK_SET 0
+#define SG_SEEK_CUR 1
+#define SG_SEEK_END 2
+
+typedef SGbool  SG_EXPORT SGStreamSeek(void* stream, SGlong offset, SGenum origin);
+typedef SGlong  SG_EXPORT SGStreamTell(void* stream);
+typedef SGulong SG_EXPORT SGStreamRead(void* stream, void* ptr, size_t size, size_t count);
+typedef SGulong SG_EXPORT SGStreamWrite(void* stream, const void* ptr, size_t size, size_t count);
+typedef SGbool  SG_EXPORT SGStreamClose(void* stream);
+
+typedef struct SGStream
+{
+    SGStreamSeek* seek;
+    SGStreamTell* tell;
+    SGStreamRead* read;
+    SGStreamWrite* write;
+    SGStreamClose* close;
+
+    void* data;
+} SGStream;
+
 /**
  * \brief Module info
  *

@@ -133,7 +133,20 @@ SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStr
 }
 SGStream* SG_EXPORT sgStreamCreateFile(const char* fname, const char* mode)
 {
-    FILE* file = fopen(fname, mode);
+    char mbuf[256];
+    mbuf[0] = 0;
+
+    size_t i;
+    for(i = 0; mode[i] && i < 255; i++)
+    {
+        if(!strchr("rwa+", mode[i]))
+            continue;
+        mbuf[i] = mode[i];
+    }
+    mbuf[i++] = 'b';
+    mbuf[i++] = 0;
+
+    FILE* file = fopen(fname, mbuf);
     if(!file) return NULL;
 
     SGStream* stream = sgStreamCreate(cbFileSeek, cbFileTell, cbFileRead, cbFileWrite, cbFileClose, file);
