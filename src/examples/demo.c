@@ -115,7 +115,7 @@ void lcPolyCollisionOneBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollisi
 
     float dist = sgPhysicsCollisionGetDistance(coll, 0);
 
-    float vdiff = sgVec2GetLength(sgVec2Sub(v1, v2));
+    float vdiff = sgVec2Length(sgVec2Sub(v1, v2));
 
     if(vdiff <= 10.0)
         return;
@@ -148,7 +148,7 @@ void drawPoly(Polygon* poly)
         {
             sgDrawTexCoord2f((poly->points[i].x - poly->min.x) / (poly->max.x - poly->min.x)
                             ,(poly->points[i].y - poly->min.y) / (poly->max.y - poly->min.y));
-            tpos = sgVec2SetAngleRads(poly->points[i], sgVec2GetAngleRads(poly->points[i]) + sgEntityGetAngleRads(poly->entity));
+            tpos = sgVec2RotateRads(poly->points[i], sgVec2AngleRads(poly->points[i]) + sgEntityGetAngleRads(poly->entity));
             sgDrawVertex2f(x + tpos.x, y + tpos.y);
         }
     sgDrawEnd();
@@ -162,7 +162,7 @@ void drawPoly(Polygon* poly)
         {
             sgDrawTexCoord2f((poly->points[i].x - poly->min.x) / (poly->max.x - poly->min.x)
                             ,(poly->points[i].y - poly->min.y) / (poly->max.y - poly->min.y));
-            tpos = sgVec2SetAngleRads(poly->points[i], sgVec2GetAngleRads(poly->points[i]) + sgEntityGetAngleRads(poly->entity));
+            tpos = sgVec2RotateRads(poly->points[i], sgVec2AngleRads(poly->points[i]) + sgEntityGetAngleRads(poly->entity));
             sgDrawVertex2f(x + tpos.x, y + tpos.y);
         }
     sgDrawEnd();
@@ -283,7 +283,7 @@ void drawLight(Light* light)
         sgEntityGetPos(poly->entity, &x, &y);
         if(poly->nump > 0)
         {
-            tcurr = sgVec2SetAngleRads(poly->points[0], sgVec2GetAngleRads(poly->points[0]) + sgEntityGetAngleRads(poly->entity));
+            tcurr = sgVec2RotateRads(poly->points[0], sgVec2AngleRads(poly->points[0]) + sgEntityGetAngleRads(poly->entity));
             tcurr = sgVec2Add(tcurr, sgVec2f(x, y));
         }
         for(i = 0; i < poly->nump; i++)
@@ -291,13 +291,13 @@ void drawLight(Light* light)
             /*curr = &poly->points[i];*/
             next = &poly->points[(i + 1) % poly->nump];
 
-            tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
+            tnext = sgVec2RotateRads(*next, sgVec2AngleRads(*next) + sgEntityGetAngleRads(poly->entity));
             tnext = sgVec2Add(tnext, sgVec2f(x, y));
 
             if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
             {
-                tmpc = sgVec2Add(tcurr, sgVec2SetLength(sgVec2Sub(tcurr, light->pos), 640 + 480));
-                tmpn = sgVec2Add(tnext, sgVec2SetLength(sgVec2Sub(tnext, light->pos), 640 + 480));
+                tmpc = sgVec2Add(tcurr, sgVec2Resize(sgVec2Sub(tcurr, light->pos), 640 + 480));
+                tmpn = sgVec2Add(tnext, sgVec2Resize(sgVec2Sub(tnext, light->pos), 640 + 480));
 
                 sgDrawVertex2f(tcurr.x, tcurr.y);
                 sgDrawVertex2f(tnext.x, tnext.y);
@@ -377,7 +377,7 @@ void drawLightDBG(Light* light)
         sgEntityGetPos(poly->entity, &x, &y);
         if(poly->nump > 0)
         {
-            tcurr = sgVec2SetAngleRads(poly->points[0], sgVec2GetAngleRads(poly->points[0]) + sgEntityGetAngleRads(poly->entity));
+            tcurr = sgVec2RotateRads(poly->points[0], sgVec2AngleRads(poly->points[0]) + sgEntityGetAngleRads(poly->entity));
             tcurr = sgVec2Add(tcurr, sgVec2f(x, y));
         }
         for(i = 0; i < poly->nump; i++)
@@ -385,7 +385,7 @@ void drawLightDBG(Light* light)
             /*curr = &poly->points[i];*/
             next = &poly->points[(i + 1) % poly->nump];
 
-            tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
+            tnext = sgVec2RotateRads(*next, sgVec2AngleRads(*next) + sgEntityGetAngleRads(poly->entity));
             tnext = sgVec2Add(tnext, sgVec2f(x, y));
 
             if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
@@ -407,7 +407,7 @@ void drawLightDBG(Light* light)
         sgEntityGetPos(poly->entity, &x, &y);
         if(poly->nump > 0)
         {
-            tcurr = sgVec2SetAngleRads(poly->points[0], sgVec2GetAngleRads(poly->points[0]) + sgEntityGetAngleRads(poly->entity));
+            tcurr = sgVec2RotateRads(poly->points[0], sgVec2AngleRads(poly->points[0]) + sgEntityGetAngleRads(poly->entity));
             tcurr = sgVec2Add(tcurr, sgVec2f(x, y));
         }
         for(i = 0; i < poly->nump; i++)
@@ -415,13 +415,13 @@ void drawLightDBG(Light* light)
             /*curr = &poly->points[i];*/
             next = &poly->points[(i + 1) % poly->nump];
 
-            tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + sgEntityGetAngleRads(poly->entity));
+            tnext = sgVec2RotateRads(*next, sgVec2AngleRads(*next) + sgEntityGetAngleRads(poly->entity));
             tnext = sgVec2Add(tnext, sgVec2f(x, y));
 
             if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
             {
-                tmpc = sgVec2Add(tcurr, sgVec2SetLength(sgVec2Sub(tcurr, light->pos), 640 + 480));
-                tmpn = sgVec2Add(tnext, sgVec2SetLength(sgVec2Sub(tnext, light->pos), 640 + 480));
+                tmpc = sgVec2Add(tcurr, sgVec2Resize(sgVec2Sub(tcurr, light->pos), 640 + 480));
+                tmpn = sgVec2Add(tnext, sgVec2Resize(sgVec2Sub(tnext, light->pos), 640 + 480));
 
                 sgDrawVertex2f(tcurr.x, tcurr.y);
                 sgDrawVertex2f(tmpc.x, tmpc.y);

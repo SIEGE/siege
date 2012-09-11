@@ -196,10 +196,10 @@ void SG_EXPORT sgAtlasAreaDrawRads3f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, fl
     p2 = sgVec2f(-xoffset + area->w * xscale, -yoffset + area->h * yscale);
     p3 = sgVec2f(-xoffset + area->w * xscale, -yoffset                   );
 
-    p0 = sgVec2SetAngleRads(p0, sgVec2GetAngleRads(p0) + angle);
-    p1 = sgVec2SetAngleRads(p1, sgVec2GetAngleRads(p1) + angle);
-    p2 = sgVec2SetAngleRads(p2, sgVec2GetAngleRads(p2) + angle);
-    p3 = sgVec2SetAngleRads(p3, sgVec2GetAngleRads(p3) + angle);
+    p0 = sgVec2RotateRads(p0, sgVec2AngleRads(p0) + angle);
+    p1 = sgVec2RotateRads(p1, sgVec2AngleRads(p1) + angle);
+    p2 = sgVec2RotateRads(p2, sgVec2AngleRads(p2) + angle);
+    p3 = sgVec2RotateRads(p3, sgVec2AngleRads(p3) + angle);
 
     p0 = sgVec2Add(p0, pos);
     p1 = sgVec2Add(p1, pos);

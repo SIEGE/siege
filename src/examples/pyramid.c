@@ -68,7 +68,7 @@ void drawBox(SGEntity* entity)
     float angle = sgEntityGetAngleRads(entity);
     for(i = 0; i < 4; i++)
     {
-        verts[i] = sgVec2SetAngleRads(verts[i], sgVec2GetAngleRads(verts[i]) + angle);
+        verts[i] = sgVec2RotateRads(verts[i], sgVec2AngleRads(verts[i]) + angle);
         verts[i].x += x;
         verts[i].y += y;
     }
@@ -176,7 +176,7 @@ void evMouseButtonRightPress(SGEntity* entity)
     pos.x = mx < WIDTH / 2.0 ? 0 : WIDTH;
     pos.y = HEIGHT / 2.0;
 
-    SGVec2 vel = sgVec2SetLength(sgVec2Sub(mouse, pos), 100.0);
+    SGVec2 vel = sgVec2Resize(sgVec2Sub(mouse, pos), 100.0);
 
     SGEntity* bentity = createBox(pos.x, pos.y, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
     SGPhysicsBody* body = sgEntityGetPhysicsBody(bentity);
