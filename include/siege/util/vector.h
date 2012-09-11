@@ -39,6 +39,25 @@ typedef struct SGVec4
     float x, y, z, w;
 } SGVec4;
 
+/* BEGIN DEPRECATED PARTS */
+SGVec2 SG_EXPORT SG_HINT_DEPRECATED sgVec2SetLength(SGVec2 vec, float length);
+float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetLength(SGVec2 vec);
+float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetLength2(SGVec2 vec);
+
+SGVec2 SG_EXPORT SG_HINT_DEPRECATED sgVec2SetAngleRads(SGVec2 vec, float rads);
+float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetAngleRads(SGVec2 vec);
+SGVec2 SG_EXPORT SG_HINT_DEPRECATED sgVec2SetAngleDegs(SGVec2 vec, float degs);
+float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetAngleDegs(SGVec2 vec);
+
+SGVec3 SG_EXPORT SG_HINT_DEPRECATED sgVec3SetLength(SGVec3 vec, float length);
+float SG_EXPORT SG_HINT_DEPRECATED sgVec3GetLength(SGVec3 vec);
+float SG_EXPORT SG_HINT_DEPRECATED sgVec3GetLength2(SGVec3 vec);
+
+SGVec4 SG_EXPORT SG_HINT_DEPRECATED sgVec4SetLength(SGVec4 vec, float length);
+float SG_EXPORT SG_HINT_DEPRECATED sgVec4GetLength(SGVec4 vec);
+float SG_EXPORT SG_HINT_DEPRECATED sgVec4GetLength2(SGVec4 vec);
+/* END DEPRECATED PARTS */
+
 /**
     \memberof SGVec2
     \brief Create a 2D vector from coordinates
@@ -74,35 +93,14 @@ SGVec2 SG_EXPORT sgVec2Nan(void);
 */
 SGVec2 SG_EXPORT sgVec2Normalize(SGVec2 vec);
 
-/**
-    \memberof SGVec2
-    \brief Set the vector's length
-    \param vec The vector of which the length we want to set
-    \param length The new length
-    \return A vector with the same angle but new length.
-*/
-SGVec2 SG_EXPORT sgVec2SetLength(SGVec2 vec, float length);
-/**
-    \memberof SGVec2
-    \brief Get the vector's length
-    \param vec The vector of which the length we want to get
-    \return The length of the vector.
-    \note
-        If the squared length is required, it is more efficient to use \ref sgVec2GetLength2 "sgVec2GetLength2".
-*/
-float SG_EXPORT sgVec2GetLength(SGVec2 vec);
-/**
-    \memberof SGVec2
-    \brief Get the vector's squared length
-    \param vec The vector of which the squared length we want to get
-    \return The length of the vector, squared.
-*/
-float SG_EXPORT sgVec2GetLength2(SGVec2 vec);
+SGVec2 SG_EXPORT sgVec2Resize(SGVec2 vec, float length);
+float SG_EXPORT sgVec2Length(SGVec2 vec);
+float SG_EXPORT sgVec2Length2(SGVec2 vec);
 
-SGVec2 SG_EXPORT sgVec2SetAngleRads(SGVec2 vec, float rads);
-float SG_EXPORT sgVec2GetAngleRads(SGVec2 vec);
-SGVec2 SG_EXPORT sgVec2SetAngleDegs(SGVec2 vec, float degs);
-float SG_EXPORT sgVec2GetAngleDegs(SGVec2 vec);
+SGVec2 SG_EXPORT sgVec2RotateRads(SGVec2 vec, float rads);
+float SG_EXPORT sgVec2AngleRads(SGVec2 vec);
+SGVec2 SG_EXPORT sgVec2RotateDegs(SGVec2 vec, float degs);
+float SG_EXPORT sgVec2AngleDegs(SGVec2 vec);
 
 SGbool SG_EXPORT sgVec2IsNan(SGVec2 vec);
 
@@ -120,7 +118,7 @@ float SG_EXPORT sgVec2Dot(SGVec2 a, SGVec2 b);
  * Calculates the perpendicular dot product.
  *
  * This is what some call the 2D cross product, though I have opted to call the
- * (IMO more mathematically correct) the generalization above "cross product".
+ * (IMO more mathematically correct) the generalization below "cross product".
  */
 float SG_EXPORT sgVec2PDot(SGVec2 a, SGVec2 b);
 SGVec2 SG_EXPORT sgVec2Cross(SGVec2 a);
@@ -139,9 +137,9 @@ SGVec3 SG_EXPORT sgVec3Nan(void);
 
 SGVec3 SG_EXPORT sgVec3Normalize(SGVec3 vec);
 
-SGVec3 SG_EXPORT sgVec3SetLength(SGVec3 vec, float length);
-float SG_EXPORT sgVec3GetLength(SGVec3 vec);
-float SG_EXPORT sgVec3GetLength2(SGVec3 vec);
+SGVec3 SG_EXPORT sgVec3Resize(SGVec3 vec, float length);
+float SG_EXPORT sgVec3Length(SGVec3 vec);
+float SG_EXPORT sgVec3Length2(SGVec3 vec);
 
 //SGVec3 sgVec3SetAngleRads(SGVec3 vec, float rads);
 //float sgVec3GetAngleRads(SGVec3 vec);
@@ -177,9 +175,9 @@ SGVec4 SG_EXPORT sgVec4Nan(void);
 
 SGVec4 SG_EXPORT sgVec4Normalize(SGVec4 vec);
 
-SGVec4 SG_EXPORT sgVec4SetLength(SGVec4 vec, float length);
-float SG_EXPORT sgVec4GetLength(SGVec4 vec);
-float SG_EXPORT sgVec4GetLength2(SGVec4 vec);
+SGVec4 SG_EXPORT sgVec4Resize(SGVec4 vec, float length);
+float SG_EXPORT sgVec4Length(SGVec4 vec);
+float SG_EXPORT sgVec4Length2(SGVec4 vec);
 
 //SGVec4 sgVec4SetAngleRads(SGVec4 vec, float rads);
 //float sgVec4GetAngleRads(SGVec4 vec);
