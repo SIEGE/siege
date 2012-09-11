@@ -41,7 +41,9 @@ extern "C"
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthTest)(void* context, SGbool test);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetAlphaFunc)(void* context, SGenum func, float ref);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetAlphaTest)(void* context, SGbool test);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetSmooth)(void* context, SGbool smooth);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetPointSmooth)(void* context, SGbool smooth);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetLineSmooth)(void* context, SGbool smooth);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetPolygonSmooth)(void* context, SGbool smooth);
 #ifdef __cplusplus
 }
 #endif

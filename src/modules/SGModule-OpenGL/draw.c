@@ -1,16 +1,16 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
-
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "license.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
 #include "main.h"
 #include "texture.h"
@@ -245,26 +245,42 @@ SGenum SG_EXPORT sgmGraphicsDrawSetAlphaTest(void* context, SGbool test)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsDrawSetSmooth(void* context, SGbool smooth)
+SGenum SG_EXPORT sgmGraphicsDrawSetPointSmooth(void* context, SGbool smooth)
 {
     GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
 
-    glHint(GL_POINT_SMOOTH_HINT  , mode);
-    glHint(GL_LINE_SMOOTH_HINT   , mode);
-    glHint(GL_POLYGON_SMOOTH_HINT, mode);
+    glHint(GL_POINT_SMOOTH_HINT, mode);
 
     if(smooth)
-    {
         glEnable(GL_POINT_SMOOTH);
-        glEnable(GL_LINE_SMOOTH);
-        glEnable(GL_POLYGON_SMOOTH);
-    }
     else
-    {
         glDisable(GL_POINT_SMOOTH);
+
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmGraphicsDrawSetLineSmooth(void* context, SGbool smooth)
+{
+    GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
+
+    glHint(GL_LINE_SMOOTH_HINT, mode);
+
+    if(smooth)
+        glEnable(GL_LINE_SMOOTH);
+    else
         glDisable(GL_LINE_SMOOTH);
+
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmGraphicsDrawSetPolygonSmooth(void* context, SGbool smooth)
+{
+    GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
+
+    glHint(GL_LINE_SMOOTH_HINT   , mode);
+
+    if(smooth)
+        glEnable(GL_POLYGON_SMOOTH);
+    else
         glDisable(GL_POLYGON_SMOOTH);
-    }
 
     return SG_OK;
 }

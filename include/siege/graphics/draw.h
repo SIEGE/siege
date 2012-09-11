@@ -153,7 +153,9 @@ void SG_EXPORT sgDrawSetDepthTest(SGbool test);
 void SG_EXPORT sgDrawSetAlphaFunc(SGenum func, float ref);
 void SG_EXPORT sgDrawSetAlphaTest(SGbool test);
 
-void SG_EXPORT sgDrawSetSmooth(SGbool smooth);
+void SG_EXPORT sgDrawSetPointSmooth(SGbool smooth);
+void SG_EXPORT sgDrawSetLineSmooth(SGbool smooth);
+void SG_EXPORT sgDrawSetPolygonSmooth(SGbool smooth);
 
 /**
  * \name Points

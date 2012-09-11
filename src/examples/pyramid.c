@@ -225,7 +225,7 @@ int main(void)
 
     //sgWindowSetFPSLimit(60.0);
 
-    sgDrawSetSmooth(SG_TRUE);
+    sgDrawSetLineSmooth(SG_TRUE);
 
     space = sgPhysicsSpaceCreate();
 	//space = sgPhysicsSpaceGetDefault();

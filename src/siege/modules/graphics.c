@@ -86,7 +86,9 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
     _SG_BIND(sgmGraphicsDrawSetAlphaFunc);
     _SG_BIND(sgmGraphicsDrawSetAlphaTest);
 
-    _SG_BIND(sgmGraphicsDrawSetSmooth);
+    _SG_BIND(sgmGraphicsDrawSetPointSmooth);
+    _SG_BIND(sgmGraphicsDrawSetLineSmooth);
+    _SG_BIND(sgmGraphicsDrawSetPolygonSmooth);
 
 	/// Graphics Load
 	_SG_BIND(sgmGraphicsLoadFile);

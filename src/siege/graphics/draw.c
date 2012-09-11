@@ -364,10 +364,20 @@ void SG_EXPORT sgDrawSetAlphaTest(SGbool test)
         psgmGraphicsDrawSetAlphaTest(_sg_gfxHandle, test);
 }
 
-void SG_EXPORT sgDrawSetSmooth(SGbool smooth)
+void SG_EXPORT sgDrawSetPointSmooth(SGbool smooth)
 {
-    if(psgmGraphicsDrawSetSmooth)
-        psgmGraphicsDrawSetSmooth(_sg_gfxHandle, smooth);
+    if(psgmGraphicsDrawSetPointSmooth)
+        psgmGraphicsDrawSetPointSmooth(_sg_gfxHandle, smooth);
+}
+void SG_EXPORT sgDrawSetLineSmooth(SGbool smooth)
+{
+    if(psgmGraphicsDrawSetLineSmooth)
+        psgmGraphicsDrawSetLineSmooth(_sg_gfxHandle, smooth);
+}
+void SG_EXPORT sgDrawSetPolygonSmooth(SGbool smooth)
+{
+    if(psgmGraphicsDrawSetPolygonSmooth)
+        psgmGraphicsDrawSetPolygonSmooth(_sg_gfxHandle, smooth);
 }
 
 void SG_EXPORT sgDrawPoint(float x, float y)
