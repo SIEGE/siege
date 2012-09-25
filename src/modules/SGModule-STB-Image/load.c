@@ -15,7 +15,6 @@
 #include <siege/backend.h>
 #include "stb_image.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -38,7 +37,7 @@ SGenum SG_EXPORT sgmGraphicsLoadFile(const char* fname, size_t* width, size_t* h
     *height = h;
     *bpp = 32;
 
-    printf("%s: %p\n", fname, *data);
+    //printf("%s: %p\n", fname, *data);
 
     return *data ? SG_OK : SG_UNKNOWN_ERROR;
 }
