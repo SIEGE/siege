@@ -309,66 +309,6 @@ typedef struct SGEntity
 	void SG_EXPORT (*lcDestroy)(struct SGEntity* entity);
 
 	/**
-	 * Variables: lcMouse*
-	 *
-	 * Mouse-related local events.
-	 *
-	 * lcMouseEnter - Mouse has just entered the entity's area
-	 * lcMouseExit - Mouse has just leaved the entity's area
-	 *
-	 * lcMouseButton - A mouse button is being held over the object
-	 * lcMouseButtonPress - A mouse button has just been pressed over the object
-	 * lcMouseButtonRelease - A mouse button has just been released over the object
-	 *
-	 * lcMouseButtonLeft - Left mouse button is being held over the object
-	 * lcMouseButtonLeftPress - Left mouse button has just been pressed over the object
-	 * lcMouseButtonLeftRelease - Left mouse button has just been released over the object
-	 *
-	 * lcMouseButtonRight - Right mouse button is being held over the object
-	 * lcMouseButtonRightPress - Right mouse button has just been pressed over the object
-	 * lcMouseButtonRightRelease - Right mouse button has just been released over the object
-	 *
-	 * lcMouseButtonMiddle - Middle mouse button is being held over the object
-	 * lcMouseButtonMiddlePress - Middle mouse button has just been pressed over the object
-	 * lcMouseButtonMiddleRelease - Middle mouse button has just been released over the object
-	 *
-	 * lcMouseMove - The mouse has just been moved over the object
-	 * lcMouseWheel - The mouse wheel has just been scrolled over the object
-	 *
-	 * Parameters:
-	 * 	entity - The entity which is receiving the message
-	 *  button - The mouse button
-	 *  x, y   - New mouse position
-	 *  wheel  - New mouse wheel position
-	 *
-	 * TODO:
-	 * 	- Should two entities with the same depth both get this called
-	 *    if applicable?
-	 *  - Should lcMouseExit be renamed to lcMouseLeave?
-	 */
-	void SG_EXPORT (*lcMouseEnter)(struct SGEntity* entity);
-	void SG_EXPORT (*lcMouseExit)(struct SGEntity* entity);
-
-	void SG_EXPORT (*lcMouseButton)(struct SGEntity* entity, SGuint button);
-	void SG_EXPORT (*lcMouseButtonPress)(struct SGEntity* entity, SGuint button);
-	void SG_EXPORT (*lcMouseButtonRelease)(struct SGEntity* entity, SGuint button);
-
-	void SG_EXPORT (*lcMouseButtonLeft)(struct SGEntity* entity);
-	void SG_EXPORT (*lcMouseButtonLeftPress)(struct SGEntity* entity);
-	void SG_EXPORT (*lcMouseButtonLeftRelease)(struct SGEntity* entity);
-
-	void SG_EXPORT (*lcMouseButtonRight)(struct SGEntity* entity);
-	void SG_EXPORT (*lcMouseButtonRightPress)(struct SGEntity* entity);
-	void SG_EXPORT (*lcMouseButtonRightRelease)(struct SGEntity* entity);
-
-	void SG_EXPORT (*lcMouseButtonMiddle)(struct SGEntity* entity);
-	void SG_EXPORT (*lcMouseButtonMiddlePress)(struct SGEntity* entity);
-	void SG_EXPORT (*lcMouseButtonMiddleRelease)(struct SGEntity* entity);
-
-	void SG_EXPORT (*lcMouseMove)(struct SGEntity* entity, SGint x, SGint y);
-	void SG_EXPORT (*lcMouseWheel)(struct SGEntity* entity, SGint wheel);
-
-	/**
 	 * Variables: lcCollision*
 	 *
 	 * Physical collision events.

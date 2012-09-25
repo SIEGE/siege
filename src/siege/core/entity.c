@@ -252,8 +252,10 @@ static void SG_EXPORT _sg_evDraw(SGEntity* entity)
 
 SGEntity* SG_EXPORT sgEntityCreate(void)
 {
+    static const SGEntity DefaultEntity = { 0 };
+
 	SGEntity* entity = malloc(sizeof(SGEntity));
-	memset(entity, 0, sizeof(SGEntity));
+    *entity = DefaultEntity;
 	entity->active = SG_TRUE;
 	entity->pausable = SG_TRUE;
 
