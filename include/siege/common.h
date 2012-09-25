@@ -137,7 +137,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 7
-#define SG_VERSION_PATCH 5
+#define SG_VERSION_PATCH 6
 /**
  * \brief Version string
  *
@@ -222,6 +222,15 @@ typedef double SGdouble;
 #define SG_MIN(x, y) (((x) < (y)) ? (x) : (y))
 #define SG_ABS(x) (((x) < 0) ? -(x) : (x))
 /// @}
+
+#define SG_BYTE     0
+#define SG_UBYTE    1
+#define SG_SHORT    2
+#define SG_USHORT   3
+#define SG_INT      4
+#define SG_UINT     5
+#define SG_FLOAT    6
+#define SG_DOUBLE   7
 
 /**
  * \name Module error values

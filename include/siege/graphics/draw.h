@@ -33,6 +33,18 @@ extern "C"
 SGbool SG_EXPORT _sgDrawInit(void);
 SGbool SG_EXPORT _sgDrawDeinit(void);
 
+void SG_EXPORT sgVertexPointer(SGubyte size, SGenum type, size_t stride, const void* ptr);
+void SG_EXPORT sgColorPointer(SGubyte size, SGenum type, size_t stride, const void* ptr);
+void SG_EXPORT sgTexCoordPointer(SGenum type, size_t stride, const void* ptr);
+void SG_EXPORT sgIndexPointer(SGenum type, size_t stride, const void* ptr);
+
+void SG_EXPORT sgResetPointers(SGbool color, SGbool texcoord, SGbool index);
+
+void SG_EXPORT sgDrawArraysT(SGenum mode, SGTexture* texture, size_t first, size_t count);
+void SG_EXPORT sgDrawElementsT(SGenum mode, SGTexture* texture, size_t count, SGenum type, const void* indices);
+void SG_EXPORT sgDrawArrays(SGenum mode, size_t first, size_t count);
+void SG_EXPORT sgDrawElements(SGenum mode, size_t count, SGenum type, const void* indices);
+
 /**
  * \name Procedural drawing
  */
@@ -40,16 +52,16 @@ SGbool SG_EXPORT _sgDrawDeinit(void);
 /**
  * \brief Begin drawing a textured primitive
  *
- * \param type Type of the primitive to draw
+ * \param mode Type of the primitive to draw
  * \param texture The texture to use for the primitive
  */
-void SG_EXPORT sgDrawBeginT(SGenum type, SGTexture* texture);
+void SG_EXPORT sgDrawBeginT(SGenum mode, SGTexture* texture);
 /**
  * \brief Begin drawing an untextured primitive
  *
- * \param type Type of the primitive to draw
+ * \param mode Type of the primitive to draw
  */
-void SG_EXPORT sgDrawBegin(SGenum type);
+void SG_EXPORT sgDrawBegin(SGenum mode);
 /**
  * \brief Finish drawing the primitive
  */

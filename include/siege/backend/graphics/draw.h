@@ -25,7 +25,14 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPrimitive)(void* context, void* texture, SGenum type, size_t numverts, float* vertices, float* texcoords, float* colors);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSetVertexPointer)(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSetColorPointer)(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSetTexCoordPointer)(void* context, SGenum type, size_t stride, const void* ptr);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSetIndexPointer)(void* context, SGenum type, size_t stride, const void* ptr);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawArrays)(void* context, void* texture, SGenum mode, size_t first, size_t count);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawElements)(void* context, void* texture, SGenum mode, size_t count, SGenum type, const void* indices);
+
+    SGuint SG_EXPORT SG_HINT_DEPRECATED SG_FPTR(sgmGraphicsDrawPrimitive)(void* context, void* texture, SGenum type, size_t numverts, float* vertices, float* texcoords, float* colors);
     SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawSetColor)(void* context, float* color);
     SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPointSetSize)(void* context, float size);
     //SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPointGetSize)(void* context, float* size);

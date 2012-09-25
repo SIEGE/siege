@@ -13,117 +13,198 @@
  */
 
 #include "main.h"
+#include "context.h"
 #include "texture.h"
 #include "draw.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum type, size_t numverts, float* vertices, float* texcoords, float* colors)
-{
-    TextureData* tdata = texture;
+static const SGenum sgtypes[] = {
+    SG_BYTE, SG_UBYTE,
+    SG_SHORT, SG_USHORT,
+    SG_INT, SG_UINT,
+    SG_FLOAT, SG_DOUBLE,
+};
+static const GLenum gltypes[] = {
+    GL_BYTE, GL_UNSIGNED_BYTE,
+    GL_SHORT, GL_UNSIGNED_SHORT,
+    GL_INT, GL_UNSIGNED_INT,
+    GL_FLOAT, GL_DOUBLE,
+};
 
+static GLenum typeSGtoGL(SGenum type)
+{
+    size_t i;
+    for(i = 0; i < sizeof(sgtypes) / sizeof(*sgtypes); i++)
+        if(sgtypes[i] == type)
+            return gltypes[i];
+    return 0;
+}
+
+static GLenum modeSGtoGL(SGenum mode)
+{
+    switch(mode)
+    {
+        case SG_POINTS:     return GL_POINTS;
+        case SG_LINES:      return GL_LINES;
+        case SG_LINE_STRIP: return GL_LINE_STRIP;
+        case SG_LINE_FAN: /* TODO */
+            /*
+            *out = malloc((numverts - 1) * sizeof(GLuint) * 2);
+            for(i = 0; i < numverts - 1; i++)
+            {
+                out[2*i  ] = 0;
+                out[2*i+1] = i+1;
+            }
+            return GL_LINES;*/
+            return 0;
+        case SG_LINE_LOOP:      return GL_LINE_LOOP;
+        case SG_TRIANGLES:      return GL_TRIANGLES;
+        case SG_TRIANGLE_STRIP: return GL_TRIANGLE_STRIP;
+        case SG_TRIANGLE_FAN:   return GL_TRIANGLE_FAN;
+        //case SG_TRIANGLE_LOOP:
+        case SG_QUADS:          return GL_QUADS;
+        case SG_QUAD_STRIP:     return GL_QUAD_STRIP;
+        //case SG_QUAD_FAN:
+        //case SG_QUAD_LOOP:
+        case SG_CONVEX_POLYGON: return GL_POLYGON;
+
+        /* TODO -- convert! */
+        case SG_CONCAVE_POLYGON:
+        case SG_INTERSECTING_POLYGON:   return GL_POLYGON;
+
+        default: return 0;
+    }
+}
+
+static void enableAll(ContextData* cdata, TextureData* tdata)
+{
     if(tdata)
     {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, tdata->texid);
     }
 
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(3, GL_FLOAT, 0, vertices);
-
-    if(texcoords != NULL)
-    {
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
-    }
-    if(colors != NULL)
+    //if(cdata->vact)
+        glEnableClientState(GL_VERTEX_ARRAY);
+    if(cdata->cact)
     {
         glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(4, GL_FLOAT, 0, colors);
+        glPushAttrib(GL_CURRENT_BIT);
     }
-
-    GLuint* indices;
-    size_t i;
-    switch(type)
-    {
-        case SG_POINTS:
-            glDrawArrays(GL_POINTS, 0, numverts);
-            break;
-        case SG_LINES:
-            glDrawArrays(GL_LINES, 0, numverts);
-            break;
-        case SG_LINE_STRIP:
-            glDrawArrays(GL_LINE_STRIP, 0, numverts);
-            break;
-        case SG_LINE_FAN:
-            indices = malloc((numverts - 1) * sizeof(GLuint) * 2);
-            for(i = 0; i < numverts - 1; i++)
-            {
-                indices[2*i  ] = 0;
-                indices[2*i+1] = i+1;
-            }
-            glDrawElements(GL_LINES, numverts, GL_UNSIGNED_INT, indices);
-            free(indices);
-            break;
-        case SG_LINE_LOOP:
-            glDrawArrays(GL_LINE_LOOP, 0, numverts);
-            break;
-        case SG_TRIANGLES:
-            glDrawArrays(GL_TRIANGLES, 0, numverts);
-            break;
-        case SG_TRIANGLE_STRIP:
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, numverts);
-            break;
-        case SG_TRIANGLE_FAN:
-            glDrawArrays(GL_TRIANGLE_FAN, 0, numverts);
-            break;
-        //case SG_TRIANGLE_LOOP:
-        //    break;
-        case SG_QUADS:
-            glDrawArrays(GL_QUADS, 0, numverts);
-            break;
-        case SG_QUAD_STRIP:
-            glDrawArrays(GL_QUAD_STRIP, 0, numverts);
-            break;
-        //case SG_QUAD_FAN:
-        //    break;
-        //case SG_QUAD_LOOP:
-        //    break;
-        case SG_CONVEX_POLYGON:
-            glDrawArrays(GL_POLYGON, 0, numverts);
-            break;
-
-        // we don't bother converting at this point (as the frontend will soon handle it)
-        // so we just try our luck with GL_POLYGON
-        case SG_CONCAVE_POLYGON:
-        case SG_INTERSECTING_POLYGON:
-            glDrawArrays(GL_POLYGON, 0, numverts);
-            break;
-
-        default:
-            if(texcoords != NULL)
-                glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-            if(colors != NULL)
-                glDisableClientState(GL_COLOR_ARRAY);
-            glDisableClientState(GL_VERTEX_ARRAY);
-            return SG_INVALID_ENUM;
-    }
-
-    if(texcoords != NULL)
+    if(cdata->tact)
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    if(cdata->iact)
+        glEnableClientState(GL_INDEX_ARRAY);
+}
+static void disableAll(ContextData* cdata, TextureData* tdata)
+{
+    if(cdata->iact)
+        glDisableClientState(GL_INDEX_ARRAY);
+    if(cdata->tact)
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    if(colors != NULL)
+    if(cdata->cact)
+    {
         glDisableClientState(GL_COLOR_ARRAY);
-
-    glDisableClientState(GL_VERTEX_ARRAY);
+        glPopAttrib();
+    }
+    //if(cdata->vact)
+        glDisableClientState(GL_VERTEX_ARRAY);
 
     if(tdata)
     {
         glDisable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
+}
+
+SGenum SG_EXPORT sgmGraphicsSetVertexPointer(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr)
+{
+    GLenum gltype = typeSGtoGL(type);
+    if(!gltype) return SG_INVALID_ENUM;
+
+    ContextData* cdata = context;
+    cdata->vact = ptr != NULL;
+    cdata->vptr = NULL;
+    glVertexPointer(size, gltype, stride, ptr);
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmGraphicsSetColorPointer(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr)
+{
+    GLenum gltype = typeSGtoGL(type);
+    if(!gltype) return SG_INVALID_ENUM;
+
+    ContextData* cdata = context;
+    cdata->cact = ptr != NULL;
+    cdata->cptr = NULL;
+    glColorPointer(size, gltype, stride, ptr);
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmGraphicsSetTexCoordPointer(void* context, SGenum type, size_t stride, const void* ptr)
+{
+    GLenum gltype = typeSGtoGL(type);
+    if(!gltype) return SG_INVALID_ENUM;
+
+    ContextData* cdata = context;
+    cdata->tact = ptr != NULL;
+    cdata->tptr = NULL;
+    glTexCoordPointer(2, gltype, stride, ptr);
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmGraphicsSetIndexPointer(void* context, SGenum type, size_t stride, const void* ptr)
+{
+    GLenum gltype = typeSGtoGL(type);
+    if(!gltype) return SG_INVALID_ENUM;
+
+    ContextData* cdata = context;
+    cdata->iact = ptr != NULL;
+    cdata->iptr = NULL;
+    glIndexPointer(gltype, stride, ptr);
+    return SG_OK;
+}
+SGenum SG_EXPORT sgmGraphicsDrawArrays(void* context, void* texture, SGenum mode, size_t first, size_t count)
+{
+    GLenum glmode = modeSGtoGL(mode);
+    if(!glmode) return SG_INVALID_ENUM;
+
+    enableAll(context, texture);
+    glDrawArrays(glmode, first, count);
+    disableAll(context, texture);
 
     return SG_OK;
+}
+SGenum SG_EXPORT sgmGraphicsDrawElements(void* context, void* texture, SGenum mode, size_t count, SGenum type, const void* indices)
+{
+    GLenum glmode = modeSGtoGL(mode);
+    if(!glmode) return SG_INVALID_ENUM;
+
+    GLenum gltype = typeSGtoGL(type);
+    if(!gltype) return SG_INVALID_ENUM;
+
+    enableAll(context, texture);
+    glDrawElements(mode, count, gltype, indices);
+    disableAll(context, texture);
+
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum mode, size_t numverts, float* vertices, float* texcoords, float* colors)
+{
+    sgmGraphicsSetVertexPointer(context, 3, SG_FLOAT, 0, vertices);
+    if(texcoords)
+        sgmGraphicsSetTexCoordPointer(context, SG_FLOAT, 0, texcoords);
+    if(colors)
+        sgmGraphicsSetColorPointer(context, 4, SG_FLOAT, 0, colors);
+
+    SGenum ret = sgmGraphicsDrawArrays(context, texture, mode, 0, numverts);
+
+    if(colors)
+        sgmGraphicsSetColorPointer(context, 4, SG_FLOAT, 0, NULL);
+    if(texcoords)
+        sgmGraphicsSetTexCoordPointer(context, SG_FLOAT, 0, NULL);
+
+    return ret;
 }
 SGuint SG_EXPORT sgmGraphicsDrawSetColor(void* context, float* color)
 {

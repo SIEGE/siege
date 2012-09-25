@@ -26,7 +26,7 @@
 
 typedef struct SGDrawContext
 {
-    SGenum type;
+    SGenum mode;
     SGTexture* texture;
     float point[3];
     float texCoord[2];
@@ -36,6 +36,33 @@ typedef struct SGDrawContext
     float* texCoords;
     float* colors;
     size_t numPoints;
+
+    struct
+    {
+        SGubyte size;
+        SGenum type;
+        size_t stride;
+        const void* ptr;
+    } vdata;
+    struct
+    {
+        SGubyte size;
+        SGenum type;
+        size_t stride;
+        const void* ptr;
+    } cdata;
+    struct
+    {
+        SGenum type;
+        size_t stride;
+        const void* ptr;
+    } tdata;
+    struct
+    {
+        SGenum type;
+        size_t stride;
+        const void* ptr;
+    } idata;
 } SGDrawContext;
 
 static SGThreadKey* _sg_drawKey;
@@ -76,6 +103,11 @@ static void SG_EXPORT _sgDrawThreadInit(void)
     ctx->texCoords = NULL;
     ctx->colors = NULL;
     ctx->numPoints = 0;
+
+    ctx->vdata.ptr = NULL;
+    ctx->cdata.ptr = NULL;
+    ctx->tdata.ptr = NULL;
+    ctx->idata.ptr = NULL;
 }
 static SGDrawContext* SG_EXPORT _sgDrawGetContext(void)
 {
@@ -84,6 +116,21 @@ static SGDrawContext* SG_EXPORT _sgDrawGetContext(void)
         _sgDrawThreadInit();
     ctx = sgThreadKeyGetVal(_sg_drawKey);
     return ctx;
+}
+
+static void enablePointers(void)
+{
+    SGDrawContext* ctx = _sgDrawGetContext();
+
+    //void* context, SGubyte size, SGenum type, size_t stride, const void* ptr
+    if(psgmGraphicsSetVertexPointer)
+        psgmGraphicsSetVertexPointer(_sg_gfxHandle, ctx->vdata.size, ctx->vdata.type, ctx->vdata.stride, ctx->vdata.ptr);
+    if(psgmGraphicsSetColorPointer)
+        psgmGraphicsSetColorPointer(_sg_gfxHandle, ctx->cdata.size, ctx->cdata.type, ctx->cdata.stride, ctx->cdata.ptr);
+    if(psgmGraphicsSetTexCoordPointer)
+        psgmGraphicsSetTexCoordPointer(_sg_gfxHandle, ctx->tdata.type, ctx->tdata.stride, ctx->tdata.ptr);
+    if(psgmGraphicsSetIndexPointer)
+        psgmGraphicsSetIndexPointer(_sg_gfxHandle, ctx->idata.type, ctx->idata.stride, ctx->idata.ptr);
 }
 
 SGbool SG_EXPORT _sgDrawInit(void)
@@ -97,7 +144,67 @@ SGbool SG_EXPORT _sgDrawDeinit(void)
     return SG_TRUE;
 }
 
-void SG_EXPORT sgDrawBeginT(SGenum type, SGTexture* texture)
+void SG_EXPORT sgVertexPointer(SGubyte size, SGenum type, size_t stride, const void* ptr)
+{
+    SGDrawContext* ctx = _sgDrawGetContext();
+    ctx->vdata.size = size;
+    ctx->vdata.type = type;
+    ctx->vdata.stride = stride;
+    ctx->vdata.ptr = ptr;
+}
+void SG_EXPORT sgColorPointer(SGubyte size, SGenum type, size_t stride, const void* ptr)
+{
+    SGDrawContext* ctx = _sgDrawGetContext();
+    ctx->cdata.size = size;
+    ctx->cdata.type = type;
+    ctx->cdata.stride = stride;
+    ctx->cdata.ptr = ptr;
+}
+void SG_EXPORT sgTexCoordPointer(SGenum type, size_t stride, const void* ptr)
+{
+    SGDrawContext* ctx = _sgDrawGetContext();
+    ctx->tdata.type = type;
+    ctx->tdata.stride = stride;
+    ctx->tdata.ptr = ptr;
+}
+void SG_EXPORT sgIndexPointer(SGenum type, size_t stride, const void* ptr)
+{
+    SGDrawContext* ctx = _sgDrawGetContext();
+    ctx->idata.type = type;
+    ctx->idata.stride = stride;
+    ctx->idata.ptr = ptr;
+}
+
+void SG_EXPORT sgResetPointers(SGbool color, SGbool texcoord, SGbool index)
+{
+    SGDrawContext* ctx = _sgDrawGetContext();
+    if(color)    ctx->cdata.ptr = NULL;
+    if(texcoord) ctx->tdata.ptr = NULL;
+    if(index)    ctx->idata.ptr = NULL;
+}
+
+void SG_EXPORT sgDrawArraysT(SGenum mode, SGTexture* texture, size_t first, size_t count)
+{
+    enablePointers();
+    if(psgmGraphicsDrawArrays)
+        psgmGraphicsDrawArrays(_sg_gfxHandle, texture ? texture->handle : NULL, mode, first, count);
+}
+void SG_EXPORT sgDrawElementsT(SGenum mode, SGTexture* texture, size_t count, SGenum type, const void* indices)
+{
+    enablePointers();
+    if(psgmGraphicsDrawElements)
+        psgmGraphicsDrawElements(_sg_gfxHandle, texture ? texture->handle : NULL, mode, count, type, indices);
+}
+void SG_EXPORT sgDrawArrays(SGenum mode, size_t first, size_t count)
+{
+    sgDrawArraysT(mode, NULL, first, count);
+}
+void SG_EXPORT sgDrawElements(SGenum mode, size_t count, SGenum type, const void* indices)
+{
+    sgDrawElementsT(mode, NULL, count, type, indices);
+}
+
+void SG_EXPORT sgDrawBeginT(SGenum mode, SGTexture* texture)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     if(ctx->numPoints)
@@ -106,21 +213,31 @@ void SG_EXPORT sgDrawBeginT(SGenum type, SGTexture* texture)
         return;
     }
 
-    ctx->type = type;
+    ctx->mode = mode;
     ctx->texture = texture;
 }
-void SG_EXPORT sgDrawBegin(SGenum type)
+void SG_EXPORT sgDrawBegin(SGenum mode)
 {
-	sgDrawBeginT(type, NULL);
+    sgDrawBeginT(mode, NULL);
 }
 void SG_EXPORT sgDrawEnd(void)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     void* texture = ctx->texture ? ctx->texture->handle : NULL;
 
-	if(psgmGraphicsDrawPrimitive != NULL)
-		psgmGraphicsDrawPrimitive(_sg_gfxHandle, texture, ctx->type, ctx->numPoints, ctx->points, ctx->texCoords, ctx->colors);
-	ctx->numPoints = 0;
+    if(psgmGraphicsSetVertexPointer)
+        psgmGraphicsSetVertexPointer(_sg_gfxHandle, 3, SG_FLOAT, 0, ctx->points);
+    if(psgmGraphicsSetColorPointer)
+        psgmGraphicsSetColorPointer(_sg_gfxHandle, 4, SG_FLOAT, 0, ctx->colors);
+    if(psgmGraphicsSetTexCoordPointer)
+        psgmGraphicsSetTexCoordPointer(_sg_gfxHandle, SG_FLOAT, 0, ctx->texCoords);
+    if(psgmGraphicsSetIndexPointer)
+        psgmGraphicsSetIndexPointer(_sg_gfxHandle, SG_FLOAT, 0, NULL);
+    if(psgmGraphicsDrawArrays)
+        psgmGraphicsDrawArrays(_sg_gfxHandle, texture, ctx->mode, 0, ctx->numPoints);
+    else if(psgmGraphicsDrawPrimitive) /* DEPRECATED -- remove when appropriate! */
+        psgmGraphicsDrawPrimitive(_sg_gfxHandle, texture, ctx->mode, ctx->numPoints, ctx->points, ctx->texCoords, ctx->colors);
+    ctx->numPoints = 0;
 }
 void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
 {

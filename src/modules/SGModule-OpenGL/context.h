@@ -25,6 +25,15 @@ typedef struct ContextData
     struct SurfaceData* target;
 
     struct FBOFunctions fbo;
+
+    SGbool vact;
+    SGbool cact;
+    SGbool tact;
+    SGbool iact;
+    void* vptr;
+    void* cptr;
+    void* tptr;
+    void* iptr;
 } ContextData;
 
 #endif // __CONTEXT_H__
