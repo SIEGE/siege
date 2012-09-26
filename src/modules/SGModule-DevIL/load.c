@@ -55,14 +55,8 @@ SGenum SG_EXPORT sgmGraphicsLoad(SGStream* stream, size_t* width, size_t* height
     return SG_OK;
 }
 
-/*SGenum SG_EXPORT sgmGraphicsLoadStream(char* fname, size_t* width, size_t* height, SGenum* bpp, void** data)
-{
-    return 1;
-}*/
-
 SGenum sgmGraphicsLoadFreeData(void* data)
 {
     free(data);
     return SG_OK;
 }
-
