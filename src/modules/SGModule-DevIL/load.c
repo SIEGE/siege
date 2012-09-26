@@ -19,9 +19,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGenum SG_EXPORT sgmGraphicsLoadFile(const char* fname, size_t* width, size_t* height, SGenum* bpp, void** data)
+SGenum SG_EXPORT sgmGraphicsLoad(SGStream* stream, size_t* width, size_t* height, SGenum* bpp, void** data)
 {
-    if(strcmp(fname, "") == 0)
+    if(!stream)
     {
         *width = 2;
         *height = 2;
@@ -36,7 +36,7 @@ SGenum SG_EXPORT sgmGraphicsLoadFile(const char* fname, size_t* width, size_t* h
     ilGenImages(1, &img);
     ilBindImage(img);
 
-    ilLoadImage(fname);
+    ilLoadF(IL_TYPE_UNKNOWN, stream);
 
     *width = ilGetInteger(IL_IMAGE_WIDTH);
     *height = ilGetInteger(IL_IMAGE_HEIGHT);

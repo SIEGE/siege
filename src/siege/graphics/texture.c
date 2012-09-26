@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <math.h>
 
-SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname)
+SGTexture* SG_EXPORT sgTextureCreateStream(SGStream* stream)
 {
     size_t width;
     size_t height;
@@ -29,18 +29,51 @@ SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname)
     void* data;
 
     SGuint ret;
-    if(psgmGraphicsLoadFile != NULL)
+    if(psgmGraphicsLoad)
     {
-        ret = psgmGraphicsLoadFile(fname, &width, &height, &bpp, &data);
+        ret = psgmGraphicsLoad(stream, &width, &height, &bpp, &data);
         if(ret != SG_OK)
-			fprintf(stderr, "Could not load image %s\n", fname);
-	}
+            fprintf(stderr, "Could not load image\n");
+    }
     else
-		fprintf(stderr, "Could not load image %s\n", fname);
+        fprintf(stderr, "Could not load image\n");
 
     SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
     if(psgmGraphicsLoadFreeData != NULL)
         psgmGraphicsLoadFreeData(data);
+    return texture;
+}
+SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname)
+{
+    /* DEPRECATED PART */
+    if(!psgmGraphicsLoad)
+    {
+        size_t width;
+        size_t height;
+        SGuint bpp;
+        void* data;
+
+        SGuint ret;
+        if(psgmGraphicsLoadFile != NULL)
+        {
+            ret = psgmGraphicsLoadFile(fname, &width, &height, &bpp, &data);
+            if(ret != SG_OK)
+                fprintf(stderr, "Could not load image %s\n", fname);
+        }
+        else
+            fprintf(stderr, "Could not load image %s\n", fname);
+
+        SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
+        if(psgmGraphicsLoadFreeData != NULL)
+            psgmGraphicsLoadFreeData(data);
+        return texture;
+    }
+    /* END DEPRECATED PART */
+    SGStream* stream = sgStreamCreateFile(fname, "r");
+    if(!stream)
+        fprintf(stderr, "Could not load image %s\n", fname);
+    SGTexture* texture = sgTextureCreateStream(stream);
+    sgStreamDestroy(stream);
     return texture;
 }
 SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data)

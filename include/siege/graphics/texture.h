@@ -16,6 +16,7 @@
 #define __SIEGE_GRAPHICS_TEXTURE_H__
 
 #include "../common.h"
+#include "../util/stream.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -27,6 +28,7 @@ typedef struct SGTexture
 	void* handle;
 } SGTexture;
 
+SGTexture* SG_EXPORT sgTextureCreateStream(SGStream* stream);
 SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname);
 SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data);
 SGTexture* SG_EXPORT sgTextureCreate(SGuint width, SGuint height, SGenum bpp);

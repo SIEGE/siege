@@ -25,8 +25,8 @@
 extern "C"
 {
 #endif
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsLoadFile)(const char* fname, size_t* width, size_t* height, SGenum* bpp, void** data);
-    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsLoadStream)(void* stream, size_t* width, size_t* height, SGenum* bpp, void** data);
+    SGenum SG_EXPORT SG_HINT_DEPRECATED SG_FPTR(sgmGraphicsLoadFile)(const char* fname, size_t* width, size_t* height, SGenum* bpp, void** data);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsLoad)(SGStream* stream, size_t* width, size_t* height, SGenum* bpp, void** data);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsLoadFreeData)(void* data);
 #ifdef __cplusplus
 }

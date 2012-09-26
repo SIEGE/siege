@@ -19,6 +19,59 @@
 #include <stdlib.h>
 #include <string.h>
 
+static ILHANDLE ILAPIENTRY f_open(ILconst_string str)
+{
+    return NULL;
+}
+static void ILAPIENTRY f_close(ILHANDLE data)
+{
+}
+static ILboolean ILAPIENTRY f_eof(ILHANDLE data)
+{
+    SGStream* stream = data;
+    if(!stream->eof) return IL_TRUE; /* error */
+
+    return stream->eof(stream->data);
+}
+static ILint ILAPIENTRY f_getc(ILHANDLE data)
+{
+    SGStream* stream = data;
+    if(!stream->read) return EOF;
+
+    char c;
+    return stream->read(stream->data, &c, 1, 1) == 1 ? c : EOF;
+}
+static ILint ILAPIENTRY f_read(void* ptr, ILuint size, ILuint count, ILHANDLE data)
+{
+    SGStream* stream = data;
+    if(!stream->read) return EOF;
+
+    return stream->read(stream->data, ptr, size, count);
+}
+static ILint ILAPIENTRY f_seek(ILHANDLE data, ILint pos, ILint whence)
+{
+    SGStream* stream = data;
+    if(!stream->seek) return EOF;
+
+    SGenum swhence;
+    switch(whence)
+    {
+        case SEEK_SET: swhence = SG_SEEK_SET; break;
+        case SEEK_CUR: swhence = SG_SEEK_CUR; break;
+        case SEEK_END: swhence = SG_SEEK_END; break;
+        default: return -1;
+    }
+
+    return stream->seek(stream->data, pos, swhence);
+}
+static ILint ILAPIENTRY f_tell(ILHANDLE data)
+{
+    SGStream* stream = data;
+    if(!stream->tell) return EOF;
+
+    return stream->tell(stream->data);
+}
+
 SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*)calloc(1, sizeof(SGModuleInfo));
@@ -38,6 +91,8 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 
     ilEnable(IL_ORIGIN_SET);
     ilOriginFunc(IL_ORIGIN_UPPER_LEFT);
+
+    ilSetRead(f_open, f_close, f_eof, f_getc, f_read, f_seek, f_tell);
 
     return SG_OK;
 }

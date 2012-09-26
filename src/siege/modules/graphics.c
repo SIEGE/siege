@@ -99,7 +99,7 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
 
 	/// Graphics Load
 	_SG_BIND(sgmGraphicsLoadFile);
-	//_SG_BIND(sgmGraphicsLoadStream);
+    _SG_BIND(sgmGraphicsLoad);
 	_SG_BIND(sgmGraphicsLoadFreeData);
 }
 

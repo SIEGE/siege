@@ -31,7 +31,7 @@ SGbool SG_EXPORT _sgSurfaceDeinit(void)
     return SG_TRUE;
 }
 
-SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname)
+SGSurface* SG_EXPORT sgSurfaceCreateStream(SGStream* stream)
 {
     size_t width;
     size_t height;
@@ -39,18 +39,51 @@ SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname)
     void* data;
 
     SGuint ret;
-    if(psgmGraphicsLoadFile != NULL)
+    if(psgmGraphicsLoad)
     {
-        ret = psgmGraphicsLoadFile(fname, &width, &height, &bpp, &data);
+        ret = psgmGraphicsLoad(stream, &width, &height, &bpp, &data);
         if(ret != SG_OK)
-			fprintf(stderr, "Could not load image %s\n", fname);
-	}
+            fprintf(stderr, "Could not load image\n");
+    }
     else
-        fprintf(stderr, "Could not load image %s\n", fname);
+        fprintf(stderr, "Could not load image\n");
 
     SGSurface* surface = sgSurfaceCreateData(width, height, bpp, data);
     if(psgmGraphicsLoadFreeData != NULL)
         psgmGraphicsLoadFreeData(data);
+    return surface;
+}
+SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname)
+{
+    /* DEPRECATED PART */
+    if(!psgmGraphicsLoad)
+    {
+        size_t width;
+        size_t height;
+        SGuint bpp;
+        void* data;
+
+        SGuint ret;
+        if(psgmGraphicsLoadFile != NULL)
+        {
+            ret = psgmGraphicsLoadFile(fname, &width, &height, &bpp, &data);
+            if(ret != SG_OK)
+                fprintf(stderr, "Could not load image %s\n", fname);
+        }
+        else
+            fprintf(stderr, "Could not load image %s\n", fname);
+
+        SGSurface* surface = sgSurfaceCreateData(width, height, bpp, data);
+        if(psgmGraphicsLoadFreeData != NULL)
+            psgmGraphicsLoadFreeData(data);
+        return surface;
+    }
+    /* END DEPRECATED PART */
+    SGStream* stream = sgStreamCreateFile(fname, "r");
+    if(!stream)
+        fprintf(stderr, "Could not load image %s\n", fname);
+    SGSurface* surface = sgSurfaceCreateStream(stream);
+    sgStreamDestroy(stream);
     return surface;
 }
 SGSurface* SG_EXPORT sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data)
