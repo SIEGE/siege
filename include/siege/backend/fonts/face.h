@@ -16,6 +16,7 @@
 #define __SIEGE_BACKEND_FONTS_FACE_H__
 
 #include "../../common.h"
+#include "../util/stream.h"
 
 #ifndef SG_FPTR
 #define SG_FPTR(name)	name

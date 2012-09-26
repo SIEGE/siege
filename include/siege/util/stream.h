@@ -22,8 +22,31 @@ extern "C"
 {
 #endif // __cplusplus
 
-/* SGStream structures and typedefs declared in common.h */
+#define SG_SEEK_SET 0
+#define SG_SEEK_CUR 1
+#define SG_SEEK_END 2
 
+typedef SGbool  SG_EXPORT SGStreamSeek(void* stream, SGlong offset, SGenum origin);
+typedef SGlong  SG_EXPORT SGStreamTell(void* stream);
+typedef SGulong SG_EXPORT SGStreamRead(void* stream, void* ptr, size_t size, size_t count);
+typedef SGulong SG_EXPORT SGStreamWrite(void* stream, const void* ptr, size_t size, size_t count);
+typedef SGbool  SG_EXPORT SGStreamClose(void* stream);
+typedef SGbool  SG_EXPORT SGStreamEOF(void* stream);
+
+typedef struct SGStream
+{
+    SGStreamSeek* seek;
+    SGStreamTell* tell;
+    SGStreamRead* read;
+    SGStreamWrite* write;
+    SGStreamClose* close;
+    SGStreamEOF* eof;
+
+    void* data;
+} SGStream;
+
+/* these are not available for backend modules */
+#ifndef SG_BUILD_BACKEND
 SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data);
 SGStream* SG_EXPORT sgStreamCreateFile(const char* fname, const char* mode);
 SGStream* SG_EXPORT sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree);
@@ -37,6 +60,7 @@ SGlong SG_EXPORT sgStreamTell(SGStream* stream);
 SGulong SG_EXPORT sgStreamRead(SGStream* stream, void* ptr, size_t size, size_t count);
 SGulong SG_EXPORT sgStreamWrite(SGStream* stream, const void* ptr, size_t size, size_t count);
 SGbool SG_EXPORT sgStreamClose(SGStream* stream);
+#endif /* SG_BUILD_BACKEND */
 
 #ifdef __cplusplus
 }

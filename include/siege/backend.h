@@ -15,6 +15,8 @@
 #ifndef __SIEGE_BACKEND_H__
 #define __SIEGE_BACKEND_H__
 
+#define SG_BUILD_BACKEND
+
 #include "backend/module.h"
 // Graphics
 #include "backend/graphics/context.h"
@@ -44,6 +46,8 @@
 #include "backend/physics/constraint.h"
 #include "backend/physics/shape.h"
 #include "backend/physics/space.h"
+// Util
+#include "backend/util/stream.h"
 
 // Test (things in a state of flux, will be removed or at least renamed)
 #ifdef SIEGE_TEST

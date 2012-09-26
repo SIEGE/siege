@@ -16,6 +16,7 @@
 #define __SIEGE_BACKEND_AUDIO_LOAD_H__
 
 #include "../../common.h"
+#include "../util/stream.h"
 
 #ifndef SG_FPTR
 #define SG_FPTR(name)	name
