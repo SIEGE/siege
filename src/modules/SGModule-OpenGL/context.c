@@ -25,6 +25,14 @@ SGuint SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint h
     *context = calloc(1, sizeof(ContextData));
     (*cdata)->target = NULL;
     (*cdata)->bpp = bpp;
+    (*cdata)->vact = SG_FALSE;
+    (*cdata)->cact = SG_FALSE;
+    (*cdata)->tact = SG_FALSE;
+    (*cdata)->iact = SG_FALSE;
+    (*cdata)->vptr = NULL;
+    (*cdata)->cptr = NULL;
+    (*cdata)->tptr = NULL;
+    (*cdata)->iptr = NULL;
 
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
@@ -47,8 +55,13 @@ SGuint SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint h
 
 SGuint SG_EXPORT sgmGraphicsContextDestroy(void* context)
 {
-    if(context == NULL)
-        return SG_OK; // SG_INVALID_VALUE
+    if(!context) return SG_INVALID_VALUE;
+    ContextData* cdata = context;
+
+    if(cdata->vptr) free(cdata->vptr);
+    if(cdata->cptr) free(cdata->cptr);
+    if(cdata->tptr) free(cdata->tptr);
+    if(cdata->iptr) free(cdata->iptr);
 
     free(context);
 

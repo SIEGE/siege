@@ -66,6 +66,13 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
     _SG_BIND(sgmGraphicsTextureSetWrap);
     _SG_BIND(sgmGraphicsTextureSetInterpolation);
 
+    _SG_BIND(sgmGraphicsSetVertexPointer);
+    _SG_BIND(sgmGraphicsSetColorPointer);
+    _SG_BIND(sgmGraphicsSetTexCoordPointer);
+    _SG_BIND(sgmGraphicsSetIndexPointer);
+    _SG_BIND(sgmGraphicsDrawArrays);
+    _SG_BIND(sgmGraphicsDrawElements);
+
 	_SG_BIND(sgmGraphicsDrawPrimitive);
 	_SG_BIND(sgmGraphicsDrawSetColor);
 	_SG_BIND(sgmGraphicsDrawPointSetSize);
@@ -86,7 +93,9 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
     _SG_BIND(sgmGraphicsDrawSetAlphaFunc);
     _SG_BIND(sgmGraphicsDrawSetAlphaTest);
 
-    _SG_BIND(sgmGraphicsDrawSetSmooth);
+    _SG_BIND(sgmGraphicsDrawSetPointSmooth);
+    _SG_BIND(sgmGraphicsDrawSetLineSmooth);
+    _SG_BIND(sgmGraphicsDrawSetPolygonSmooth);
 
 	/// Graphics Load
 	_SG_BIND(sgmGraphicsLoadFile);

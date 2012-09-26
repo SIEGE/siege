@@ -18,6 +18,64 @@
 #include <stdlib.h>
 #include <math.h>
 
+/* BEGIN DEPRECATED PARTS */
+SGVec2 SG_EXPORT SG_HINT_DEPRECATED sgVec2SetLength(SGVec2 vec, float length)
+{
+    return sgVec2Resize(vec, length);
+}
+float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetLength(SGVec2 vec)
+{
+    return sgVec2Length(vec);
+}
+float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetLength2(SGVec2 vec)
+{
+    return sgVec2Length2(vec);
+}
+
+SGVec2 SG_EXPORT SG_HINT_DEPRECATED sgVec2SetAngleRads(SGVec2 vec, float rads)
+{
+    return sgVec2RotateRads(vec, rads);
+}
+float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetAngleRads(SGVec2 vec)
+{
+    return sgVec2AngleRads(vec);
+}
+SGVec2 SG_EXPORT SG_HINT_DEPRECATED sgVec2SetAngleDegs(SGVec2 vec, float degs)
+{
+    return sgVec2RotateDegs(vec, degs);
+}
+float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetAngleDegs(SGVec2 vec)
+{
+    return sgVec2AngleDegs(vec);
+}
+
+SGVec3 SG_EXPORT SG_HINT_DEPRECATED sgVec3SetLength(SGVec3 vec, float length)
+{
+    return sgVec3Resize(vec, length);
+}
+float SG_EXPORT SG_HINT_DEPRECATED sgVec3GetLength(SGVec3 vec)
+{
+    return sgVec3Length(vec);
+}
+float SG_EXPORT SG_HINT_DEPRECATED sgVec3GetLength2(SGVec3 vec)
+{
+    return sgVec3Length2(vec);
+}
+
+SGVec4 SG_EXPORT SG_HINT_DEPRECATED sgVec4SetLength(SGVec4 vec, float length)
+{
+    return sgVec4Resize(vec, length);
+}
+float SG_EXPORT SG_HINT_DEPRECATED sgVec4GetLength(SGVec4 vec)
+{
+    return sgVec4Length(vec);
+}
+float SG_EXPORT SG_HINT_DEPRECATED sgVec4GetLength2(SGVec4 vec)
+{
+    return sgVec4Length2(vec);
+}
+/* END DEPRECATED PARTS */
+
 SGVec2 SG_EXPORT sgVec2f(float x, float y)
 {
     SGVec2 vec;
@@ -43,41 +101,41 @@ SGVec2 SG_EXPORT sgVec2Nan(void)
 
 SGVec2 SG_EXPORT sgVec2Normalize(SGVec2 vec)
 {
-    float len = sgVec2GetLength(vec);
+    float len = sgVec2Length(vec);
     return sgVec2f(vec.x / len, vec.y / len);
 }
 
-SGVec2 SG_EXPORT sgVec2SetLength(SGVec2 vec, float length)
+SGVec2 SG_EXPORT sgVec2Resize(SGVec2 vec, float length)
 {
-    float scale = length / sgVec2GetLength(vec);
+    float scale = length / sgVec2Length(vec);
     if(scale != scale)
         scale = 0;
     return sgVec2f(vec.x * scale, vec.y * scale);
 }
-float SG_EXPORT sgVec2GetLength(SGVec2 vec)
+float SG_EXPORT sgVec2Length(SGVec2 vec)
 {
-    return sqrt(sgVec2GetLength2(vec));
+    return sqrt(sgVec2Length2(vec));
 }
-float SG_EXPORT sgVec2GetLength2(SGVec2 vec)
+float SG_EXPORT sgVec2Length2(SGVec2 vec)
 {
     return sgVec2Dot(vec, vec);
 }
 
-SGVec2 SG_EXPORT sgVec2SetAngleRads(SGVec2 vec, float rads)
+SGVec2 SG_EXPORT sgVec2RotateRads(SGVec2 vec, float rads)
 {
-    float len = sgVec2GetLength(vec);
+    float len = sgVec2Length(vec);
     return sgVec2PolarRads(rads, len);
 }
-float SG_EXPORT sgVec2GetAngleRads(SGVec2 vec)
+float SG_EXPORT sgVec2AngleRads(SGVec2 vec)
 {
     return atan2(vec.y, vec.x);
 }
-SGVec2 SG_EXPORT sgVec2SetAngleDegs(SGVec2 vec, float degs)
+SGVec2 SG_EXPORT sgVec2RotateDegs(SGVec2 vec, float degs)
 {
-    float len = sgVec2GetLength(vec);
+    float len = sgVec2Length(vec);
     return sgVec2PolarDegs(degs, len);
 }
-float SG_EXPORT sgVec2GetAngleDegs(SGVec2 vec)
+float SG_EXPORT sgVec2AngleDegs(SGVec2 vec)
 {
     return atan2(vec.y, vec.x) * 180.0 / SG_PI;
 }
@@ -110,11 +168,11 @@ SGVec2 SG_EXPORT sgVec2Div(SGVec2 a, SGVec2 b)
 
 float SG_EXPORT sgVec2Distance(SGVec2 a, SGVec2 b)
 {
-    return sgVec2GetLength(sgVec2Sub(a, b));
+    return sgVec2Length(sgVec2Sub(a, b));
 }
 float SG_EXPORT sgVec2Distance2(SGVec2 a, SGVec2 b)
 {
-    return sgVec2GetLength2(sgVec2Sub(a, b));
+    return sgVec2Length2(sgVec2Sub(a, b));
 }
 
 float SG_EXPORT sgVec2Dot(SGVec2 a, SGVec2 b)
@@ -135,15 +193,15 @@ SGVec2 SG_EXPORT sgVec2Reflect(SGVec2 ray, SGVec2 normal)
     ray = sgVec2Normalize(ray);
     normal = sgVec2Normalize(normal);
 
-    return sgVec2Sub(ray, sgVec2SetLength(normal, 2.0 * sgVec2Dot(ray, normal)));
+    return sgVec2Sub(ray, sgVec2Resize(normal, 2.0 * sgVec2Dot(ray, normal)));
 }
 float SG_EXPORT sgVec2ProjectScalar(SGVec2 v, SGVec2 target)
 {
-    return sgVec2Dot(v, target) / sgVec2GetLength(target);
+    return sgVec2Dot(v, target) / sgVec2Length(target);
 }
 SGVec2 SG_EXPORT sgVec2Project(SGVec2 v, SGVec2 target)
 {
-    return sgVec2SetLength(target, sgVec2ProjectScalar(v, target));
+    return sgVec2Resize(target, sgVec2ProjectScalar(v, target));
 }
 
 
@@ -184,22 +242,22 @@ SGVec3 SG_EXPORT sgVec3Nan(void)
 
 SGVec3 SG_EXPORT sgVec3Normalize(SGVec3 vec)
 {
-    float len = sgVec3GetLength(vec);
+    float len = sgVec3Length(vec);
     return sgVec3f(vec.x / len, vec.y / len, vec.z / len);
 }
 
-SGVec3 SG_EXPORT sgVec3SetLength(SGVec3 vec, float length)
+SGVec3 SG_EXPORT sgVec3Resize(SGVec3 vec, float length)
 {
-    float scale = length / sgVec3GetLength(vec);
+    float scale = length / sgVec3Length(vec);
     if(scale != scale)
         scale = 0;
     return sgVec3f(vec.x * scale, vec.y * scale, vec.z * scale);
 }
-float SG_EXPORT sgVec3GetLength(SGVec3 vec)
+float SG_EXPORT sgVec3Length(SGVec3 vec)
 {
-    return sqrt(sgVec3GetLength2(vec));
+    return sqrt(sgVec3Length2(vec));
 }
-float SG_EXPORT sgVec3GetLength2(SGVec3 vec)
+float SG_EXPORT sgVec3Length2(SGVec3 vec)
 {
     return sgVec3Dot(vec, vec);
 }
@@ -237,11 +295,11 @@ SGVec3 SG_EXPORT sgVec3Div(SGVec3 a, SGVec3 b)
 
 float SG_EXPORT sgVec3Distance(SGVec3 a, SGVec3 b)
 {
-    return sgVec3GetLength(sgVec3Sub(a, b));
+    return sgVec3Length(sgVec3Sub(a, b));
 }
 float SG_EXPORT sgVec3Distance2(SGVec3 a, SGVec3 b)
 {
-    return sgVec3GetLength2(sgVec3Sub(a, b));
+    return sgVec3Length2(sgVec3Sub(a, b));
 }
 
 float SG_EXPORT sgVec3Dot(SGVec3 a, SGVec3 b)
@@ -262,15 +320,15 @@ SGVec3 SG_EXPORT sgVec3Reflect(SGVec3 ray, SGVec3 normal)
     ray = sgVec3Normalize(ray);
     normal = sgVec3Normalize(normal);
 
-    return sgVec3Sub(ray, sgVec3SetLength(normal, 2.0 * sgVec3Dot(ray, normal)));
+    return sgVec3Sub(ray, sgVec3Resize(normal, 2.0 * sgVec3Dot(ray, normal)));
 }
 float SG_EXPORT sgVec3ProjectScalar(SGVec3 v, SGVec3 target)
 {
-    return sgVec3Dot(v, target) / sgVec3GetLength(target);
+    return sgVec3Dot(v, target) / sgVec3Length(target);
 }
 SGVec3 SG_EXPORT sgVec3Project(SGVec3 v, SGVec3 target)
 {
-    return sgVec3SetLength(target, sgVec3ProjectScalar(v, target));
+    return sgVec3Resize(target, sgVec3ProjectScalar(v, target));
 }
 
 
@@ -293,22 +351,22 @@ SGVec4 SG_EXPORT sgVec4Nan(void)
 
 SGVec4 SG_EXPORT sgVec4Normalize(SGVec4 vec)
 {
-    float len = sgVec4GetLength(vec);
+    float len = sgVec4Length(vec);
     return sgVec4f(vec.x / len, vec.y / len, vec.z / len, vec.w / len);
 }
 
-SGVec4 SG_EXPORT sgVec4SetLength(SGVec4 vec, float length)
+SGVec4 SG_EXPORT sgVec4Resize(SGVec4 vec, float length)
 {
-    float scale = length / sgVec4GetLength(vec);
+    float scale = length / sgVec4Length(vec);
     if(scale != scale)
         scale = 0;
     return sgVec4f(vec.x * scale, vec.y * scale, vec.z * scale, vec.w * scale);
 }
-float SG_EXPORT sgVec4GetLength(SGVec4 vec)
+float SG_EXPORT sgVec4Length(SGVec4 vec)
 {
-    return sqrt(sgVec4GetLength2(vec));
+    return sqrt(sgVec4Length2(vec));
 }
-float SG_EXPORT sgVec4GetLength2(SGVec4 vec)
+float SG_EXPORT sgVec4Length2(SGVec4 vec)
 {
     return sgVec4Dot(vec, vec);
 }
@@ -346,11 +404,11 @@ SGVec4 SG_EXPORT sgVec4Div(SGVec4 a, SGVec4 b)
 
 float SG_EXPORT sgVec4Distance(SGVec4 a, SGVec4 b)
 {
-    return sgVec4GetLength(sgVec4Sub(a, b));
+    return sgVec4Length(sgVec4Sub(a, b));
 }
 float SG_EXPORT sgVec4Distance2(SGVec4 a, SGVec4 b)
 {
-    return sgVec4GetLength2(sgVec4Sub(a, b));
+    return sgVec4Length2(sgVec4Sub(a, b));
 }
 
 float SG_EXPORT sgVec4Dot(SGVec4 a, SGVec4 b)
@@ -364,13 +422,13 @@ SGVec4 SG_EXPORT sgVec4Reflect(SGVec4 ray, SGVec4 normal)
     ray = sgVec4Normalize(ray);
     normal = sgVec4Normalize(normal);
 
-    return sgVec4Sub(ray, sgVec4SetLength(normal, 2.0 * sgVec4Dot(ray, normal)));
+    return sgVec4Sub(ray, sgVec4Resize(normal, 2.0 * sgVec4Dot(ray, normal)));
 }
 float SG_EXPORT sgVec4ProjectScalar(SGVec4 v, SGVec4 target)
 {
-    return sgVec4Dot(v, target) / sgVec4GetLength(target);
+    return sgVec4Dot(v, target) / sgVec4Length(target);
 }
 SGVec4 SG_EXPORT sgVec4Project(SGVec4 v, SGVec4 target)
 {
-    return sgVec4SetLength(target, sgVec4ProjectScalar(v, target));
+    return sgVec4Resize(target, sgVec4ProjectScalar(v, target));
 }

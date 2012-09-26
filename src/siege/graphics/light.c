@@ -548,8 +548,8 @@ void SG_EXPORT sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
     switch(shape->type)
     {
         case SG_SHAPE_SEGMENT:
-            vec = sgVec2SetAngleRads(shape->verts[0],
-                                     sgVec2GetAngleRads(shape->verts[0]) + shape->angle);
+            vec = sgVec2RotateRads(shape->verts[0],
+                                     sgVec2AngleRads(shape->verts[0]) + shape->angle);
             sgDrawLine(shape->pos.x + vec.x, shape->pos.y + vec.y,
                        shape->pos.x - vec.x, shape->pos.y - vec.y);
             break;
@@ -560,8 +560,8 @@ void SG_EXPORT sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
                 sgDrawBegin(SG_LINE_LOOP);
             for(i = 0; i < shape->numverts; i++)
             {
-                vec = sgVec2SetAngleRads(shape->verts[i],
-                                         sgVec2GetAngleRads(shape->verts[i]) + shape->angle);
+                vec = sgVec2RotateRads(shape->verts[i],
+                                         sgVec2AngleRads(shape->verts[i]) + shape->angle);
                 sgDrawVertex2f(shape->pos.x + vec.x, shape->pos.y + vec.y);
             }
             sgDrawEnd();
@@ -588,7 +588,7 @@ void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
 
     if(shape->numverts > 0)
     {
-        tcurr = sgVec2SetAngleRads(shape->verts[0], sgVec2GetAngleRads(shape->verts[0]) + shape->angle);
+        tcurr = sgVec2RotateRads(shape->verts[0], sgVec2AngleRads(shape->verts[0]) + shape->angle);
         tcurr = sgVec2Add(tcurr, shape->pos);
     }
     for(i = 0; i < shape->numverts; i++)
@@ -596,13 +596,13 @@ void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
         /*curr = &shape->verts[i];*/
         next = &shape->verts[(i + 1) % shape->numverts];
 
-        tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + shape->angle);
+        tnext = sgVec2RotateRads(*next, sgVec2AngleRads(*next) + shape->angle);
         tnext = sgVec2Add(tnext, shape->pos);
 
         if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
         {
-            tmpc = sgVec2Add(tcurr, sgVec2SetLength(sgVec2Sub(tcurr, light->pos), winw + winh));
-            tmpn = sgVec2Add(tnext, sgVec2SetLength(sgVec2Sub(tnext, light->pos), winw + winh));
+            tmpc = sgVec2Add(tcurr, sgVec2Resize(sgVec2Sub(tcurr, light->pos), winw + winh));
+            tmpn = sgVec2Add(tnext, sgVec2Resize(sgVec2Sub(tnext, light->pos), winw + winh));
 
             sgDrawVertex2f(tcurr.x, tcurr.y);
             sgDrawVertex2f(tnext.x, tnext.y);
@@ -633,7 +633,7 @@ void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
 
     if(shape->numverts > 0)
     {
-        tcurr = sgVec2SetAngleRads(shape->verts[0], sgVec2GetAngleRads(shape->verts[0]) + shape->angle);
+        tcurr = sgVec2RotateRads(shape->verts[0], sgVec2AngleRads(shape->verts[0]) + shape->angle);
         tcurr = sgVec2Add(tcurr, shape->pos);
     }
     for(i = 0; i < shape->numverts; i++)
@@ -641,7 +641,7 @@ void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
         /*curr = &shape->verts[i];*/
         next = &shape->verts[(i + 1) % shape->numverts];
 
-        tnext = sgVec2SetAngleRads(*next, sgVec2GetAngleRads(*next) + shape->angle);
+        tnext = sgVec2RotateRads(*next, sgVec2AngleRads(*next) + shape->angle);
         tnext = sgVec2Add(tnext, shape->pos);
 
         if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
@@ -649,8 +649,8 @@ void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
             sgDrawVertex2f(tcurr.x, tcurr.y);
             sgDrawVertex2f(tnext.x, tnext.y);
 
-            tmpc = sgVec2Add(tcurr, sgVec2SetLength(sgVec2Sub(tcurr, light->pos), winw + winh));
-            tmpn = sgVec2Add(tnext, sgVec2SetLength(sgVec2Sub(tnext, light->pos), winw + winh));
+            tmpc = sgVec2Add(tcurr, sgVec2Resize(sgVec2Sub(tcurr, light->pos), winw + winh));
+            tmpn = sgVec2Add(tnext, sgVec2Resize(sgVec2Sub(tnext, light->pos), winw + winh));
 
             sgDrawVertex2f(tcurr.x, tcurr.y);
             sgDrawVertex2f(tmpc.x, tmpc.y);

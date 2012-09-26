@@ -116,8 +116,6 @@ SGbool SG_EXPORT sgInit(SGenum flags)
     else
         _sg_renderThread = NULL;
 
-	//_sgEventInit();
-
     SGList* modList = sgModuleGetList();
 
 	size_t i;
