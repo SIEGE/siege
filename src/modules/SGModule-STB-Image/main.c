@@ -12,12 +12,28 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
-#include <siege/backend.h>
+#include "common.h"
 
 #include <stdio.h>
 
 #include <stdlib.h>
 #include <string.h>
+
+static int f_read(void* data, char* ptr, int size)
+{
+    SGStream* stream = data;
+    return stream->read(stream->data, ptr, 1, size);
+}
+static void f_skip(void* data, unsigned n)
+{
+    SGStream* stream = data;
+    stream->seek(stream->data, n, SG_SEEK_CUR);
+}
+static int f_eof(void* data)
+{
+    SGStream* stream = data;
+    return stream->eof(stream->data);
+}
 
 SGenum SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
@@ -27,6 +43,10 @@ SGenum SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     (*minfo)->vpatch = SG_VERSION_PATCH;
 
     (*minfo)->name = "STB-Image";
+
+    callbacks.read = f_read;
+    callbacks.skip = f_skip;
+    callbacks.eof = f_eof;
 
     return SG_OK;
 }

@@ -18,30 +18,38 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-SGenum SG_EXPORT sgmFontsFaceCreate(void** face, const char* fname)
+SGenum SG_EXPORT sgmFontsFaceCreate(void** face, SGStream* stream)
 {
+    if(!stream || !stream->read || !stream->seek || !stream->tell)
+        return SG_INVALID_VALUE;
+
     *face = malloc(sizeof(FontFace));
     FontFace* fface = *face;
 
-    SGenum err = SG_UNKNOWN_ERROR;
-    FILE* file = NULL;
-    size_t size;
+    SGlong pos;
+    SGlong size;
 
-    file = fopen(fname, "rb");
-    if(!file) goto end;
-    fseek(file, 0, SEEK_END);
-    size = ftell(file);
-    fseek(file, 0, SEEK_SET);
+    pos = stream->tell(stream->data);
+    if(pos < 0)
+        goto err;
+
+    stream->seek(stream->data, 0, SG_SEEK_END);
+    size = stream->tell(stream->data);
+    stream->seek(stream->data, pos, SG_SEEK_SET);
+    // "size < pos" is a sanity test
+    if(size < 0 || size < pos)
+        goto err;
 
     fface->buf = malloc(size);
-    if(fread(fface->buf, 1, size, file) != size) goto end;
+    if(stream->read(stream->data, fface->buf, 1, size) != size)
+        goto err;
     stbtt_InitFont(&fface->info, fface->buf, 0);
 
-    err = SG_OK;
-end:
-    if(file)
-        fclose(file);
-    return err;
+    return SG_OK;
+
+err:
+    free(*face);
+    return SG_UNKNOWN_ERROR;
 }
 SGenum SG_EXPORT sgmFontsFaceDestroy(void* face)
 {

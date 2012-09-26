@@ -5,22 +5,21 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
 
-#include <siege/backend.h>
-#include "stb_image.h"
+#include "common.h"
 
 #include <stdlib.h>
 #include <string.h>
 
-SGenum SG_EXPORT sgmGraphicsLoadFile(const char* fname, size_t* width, size_t* height, SGenum* bpp, void** data)
+SGenum SG_EXPORT sgmGraphicsLoad(SGStream* stream, size_t* width, size_t* height, SGenum* bpp, void** data)
 {
-    if(strcmp(fname, "") == 0)
+    if(!stream)
     {
         *width = 2;
         *height = 2;
@@ -29,23 +28,18 @@ SGenum SG_EXPORT sgmGraphicsLoadFile(const char* fname, size_t* width, size_t* h
 
         return SG_OK;
     }
+    if(!stream->read || !stream->seek || !stream->eof)
+        return SG_INVALID_VALUE;
 
     int w, h, n;
 
-    *data = stbi_load(fname, &w, &h, &n, 4);
+    *data = stbi_load_from_callbacks(&callbacks, stream, &w, &h, &n, 4);
     *width = w;
     *height = h;
     *bpp = 32;
 
-    //printf("%s: %p\n", fname, *data);
-
     return *data ? SG_OK : SG_UNKNOWN_ERROR;
 }
-
-/*SGenum SG_EXPORT sgmGraphicsLoadStream(char* fname, size_t* width, size_t* height, SGenum* bpp, void** data)
-{
-    return 1;
-}*/
 
 SGenum sgmGraphicsLoadFreeData(void* data)
 {
