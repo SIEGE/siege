@@ -39,9 +39,9 @@ static sf_count_t vio_seek(sf_count_t offset, int whence, void* data)
     SGenum swhence;
     switch(whence)
     {
-        case SEEK_SET: swhence = SG_SEEK_SET;
-        case SEEK_CUR: swhence = SG_SEEK_CUR;
-        case SEEK_END: swhence = SG_SEEK_END;
+        case SEEK_SET: swhence = SG_SEEK_SET; break;
+        case SEEK_CUR: swhence = SG_SEEK_CUR; break;
+        case SEEK_END: swhence = SG_SEEK_END; break;
         default: return -1;
     }
 
