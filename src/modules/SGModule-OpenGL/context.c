@@ -1,25 +1,24 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
-
-#include "main.h"
+#include "common.h"
 #include "context.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-SGuint SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp)
+SGenum SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp)
 {
     ContextData** cdata = (ContextData**)context;
     *context = calloc(1, sizeof(ContextData));
@@ -53,7 +52,7 @@ SGuint SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint h
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmGraphicsContextDestroy(void* context)
+SGenum SG_EXPORT sgmGraphicsContextDestroy(void* context)
 {
     if(!context) return SG_INVALID_VALUE;
     ContextData* cdata = context;
@@ -68,7 +67,7 @@ SGuint SG_EXPORT sgmGraphicsContextDestroy(void* context)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint height)
+SGenum SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint height)
 {
     if(context == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -90,7 +89,7 @@ SGuint SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint he
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmGraphicsContextClear(void* context, float* color)
+SGenum SG_EXPORT sgmGraphicsContextClear(void* context, float* color)
 {
     if(context == NULL)
         return SG_OK; // SG_INVALID_VALUE

@@ -1,21 +1,19 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
-    This file is part of libSIEGE.
+#include "common.h"
 
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
-
-#include "main.h"
-#include "constraint.h"
-
-#include <stdio.h>
 #include <stdlib.h>
 
 SGenum SG_EXPORT sgmPhysicsConstraintCreate(void** constr, void* body1, void* body2, SGenum type, float* vdata)
@@ -67,14 +65,14 @@ SGenum SG_EXPORT sgmPhysicsConstraintSetMaxForce(void* constr, float max)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
-	cpConstraintSetMaxForce(constr, max);
+    cpConstraintSetMaxForce(constr, max);
     return SG_OK;
 }
 SGenum SG_EXPORT sgmPhysicsConstraintSetErrorBias(void* constr, float bias)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
-	cpConstraintSetErrorBias(constr, bias);
+    cpConstraintSetErrorBias(constr, bias);
     return SG_OK;
 }
 SGenum SG_EXPORT sgmPhysicsConstraintSetMaxBias(void* constr, float max)
@@ -88,7 +86,7 @@ SGenum SG_EXPORT sgmPhysicsConstraintSetMaxBias(void* constr, float max)
 SGenum SG_EXPORT sgmPhysicsConstraintSetData(void* constr, void* data)
 {
     if(!constr)
-		return SG_OK; // SG_INVALID_VALUE
+        return SG_OK; // SG_INVALID_VALUE
     cpConstraintSetUserData(constr, data);
     return SG_OK;
 }
@@ -96,7 +94,7 @@ SGenum SG_EXPORT sgmPhysicsConstraintSetData(void* constr, void* data)
 SGenum SG_EXPORT sgmPhysicsConstraintGetData(void* constr, void** data)
 {
     if(!constr)
-		return SG_OK; // SG_INVALID_VALUE
+        return SG_OK; // SG_INVALID_VALUE
     *data = cpConstraintGetUserData(constr);
     return SG_OK;
 }

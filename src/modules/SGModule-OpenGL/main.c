@@ -1,23 +1,20 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
-
-#include "main.h"
-
-#include <stdio.h>
+#include "common.h"
 
 #include <stdlib.h>
-#include <string.h>
 
 #ifndef GL_FRAMEBUFFER_EXT
 #define GL_FRAMEBUFFER_EXT          0
@@ -29,9 +26,9 @@ PROC_HANDLE;
 
 void checkFBO(FBOFunctions* fbo)
 {
-#define CHECK(FBO, NAME)                	\
-    FBO->NAME = GET_PROC_ADDRESS(#NAME);	\
-    if(FBO->NAME == NULL)               	\
+#define CHECK(FBO, NAME)                    \
+    FBO->NAME = GET_PROC_ADDRESS(#NAME);    \
+    if(FBO->NAME == NULL)                   \
         FBO->hasFBO = 0;
 
     //GLboolean (*glIsRenderbufferEXT) (GLuint);
@@ -63,7 +60,7 @@ SGuint higherPower(SGuint num)
     return ret;
 }
 
-SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
+SGenum SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*)calloc(1, sizeof(SGModuleInfo));
     (*minfo)->vmajor = SG_VERSION_MAJOR;
@@ -77,25 +74,23 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     (*minfo)->type = SG_MODULE_GRAPHICS;
     (*minfo)->name = "OpenGL";
 
-	INIT_HANDLE();
+    INIT_HANDLE();
 
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
+SGenum SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
 {
     if(minfo == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-	DEINIT_HANDLE();
+    DEINIT_HANDLE();
 
     free(minfo);
     return SG_OK;
 }
 
-//SGuint SG_EXPORT sgmModuleFree(void* data)
-
-SGuint SG_EXPORT sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
+SGenum SG_EXPORT sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
 {
     *ok = SG_TRUE; // we'll let the core module decide for us...
     return SG_OK;

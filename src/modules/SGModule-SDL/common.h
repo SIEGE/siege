@@ -12,11 +12,12 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __COMMON_H__
+#define __COMMON_H__
 
 #include <siege/backend.h>
+#include <SDL/SDL.h>
 
-#include "stb_truetype.h"
+SGbool useGL;
 
-#endif // __MAIN_H__
+#endif // __COMMON_H__

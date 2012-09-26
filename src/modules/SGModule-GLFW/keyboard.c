@@ -1,18 +1,18 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
-
-#include "main.h"
+#include "common.h"
 #include "keyboard.h"
 #include "window.h"
 
@@ -81,19 +81,19 @@ void GLFWCALL keyboardChar(int chr, int down)
         main_window->cbKeyboard->chr(&dummyKeyboard, chr);
 }
 
-SGuint SG_EXPORT sgmCoreKeyboardCreate(void** keyboard, void* window)
+SGenum SG_EXPORT sgmCoreKeyboardCreate(void** keyboard, void* window)
 {
     *keyboard = &dummyKeyboard;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmCoreKeyboardDestroy(void* keyboard)
+SGenum SG_EXPORT sgmCoreKeyboardDestroy(void* keyboard)
 {
     if(keyboard == NULL)
         return SG_INVALID_VALUE;
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallbacks* callbacks)
+SGenum SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallbacks* callbacks)
 {
     if(keyboard == NULL)
         return SG_INVALID_VALUE;
@@ -105,4 +105,4 @@ SGuint SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallb
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmCoreKeyboardGetCallbacks(void* keyboard, SGCoreKeyboardCallbacks** callbacks);
+//SGenum SG_EXPORT sgmCoreKeyboardGetCallbacks(void* keyboard, SGCoreKeyboardCallbacks** callbacks);

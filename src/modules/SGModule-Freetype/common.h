@@ -12,18 +12,16 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
-#ifndef __MOUSE_H__
-#define __MOUSE_H__
+#ifndef __COMMON_H__
+#define __COMMON_H__
 
-#include "common.h"
+#include <siege/backend.h>
 
-Uint8 mouseState;
-int mouseX;
-int mouseY;
-int mouseW;
+#include <ft2build.h>
+#include FT_FREETYPE_H
+//#include FT_MULTIPLE_MASTERS_H
+#include FT_GLYPH_H
 
-void mouseButton(int button, int action);
-void mouseMove(int x, int y);
-void mouseWheel(int w);
+FT_Library library;
 
-#endif // __MOUSE_H__
+#endif // __COMMON_H__

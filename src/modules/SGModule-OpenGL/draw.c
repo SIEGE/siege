@@ -5,20 +5,16 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
 
-#include "main.h"
+#include "common.h"
 #include "context.h"
 #include "texture.h"
-#include "draw.h"
-
-#include <stdio.h>
-#include <stdlib.h>
 
 static const SGenum sgtypes[] = {
     SG_BYTE, SG_UBYTE,
@@ -86,12 +82,11 @@ static void enableAll(ContextData* cdata, TextureData* tdata)
         glBindTexture(GL_TEXTURE_2D, tdata->texid);
     }
 
-    //if(cdata->vact)
-        glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
     if(cdata->cact)
     {
-        glEnableClientState(GL_COLOR_ARRAY);
         glPushAttrib(GL_CURRENT_BIT);
+        glEnableClientState(GL_COLOR_ARRAY);
     }
     if(cdata->tact)
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -109,8 +104,7 @@ static void disableAll(ContextData* cdata, TextureData* tdata)
         glDisableClientState(GL_COLOR_ARRAY);
         glPopAttrib();
     }
-    //if(cdata->vact)
-        glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
 
     if(tdata)
     {
@@ -206,17 +200,17 @@ SGenum SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum m
 
     return ret;
 }
-SGuint SG_EXPORT sgmGraphicsDrawSetColor(void* context, float* color)
+SGenum SG_EXPORT sgmGraphicsDrawSetColor(void* context, float* color)
 {
     glColor4fv(color);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmGraphicsDrawPointSetSize(void* context, float size)
+SGenum SG_EXPORT sgmGraphicsDrawPointSetSize(void* context, float size)
 {
     glPointSize(size);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
+SGenum SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
 {
     glLineWidth(size);
     return SG_OK;
@@ -238,7 +232,7 @@ SGuint SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
 #define SG_GRAPHICS_EQUATION_REVERSE_SUBTRACT   0x02
 #define SG_GRAPHICS_EQUATION_MIN                0x03
 #define SG_GRAPHICS_EQUATION_MAX                0x04*/
-SGuint SG_EXPORT sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum dst)
+SGenum SG_EXPORT sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum dst)
 {
     static GLenum table[] = {GL_ZERO, GL_ONE,
                              GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR,
@@ -255,7 +249,7 @@ SGuint SG_EXPORT sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum d
     return SG_OK;
 }
 // todo
-SGuint SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
+SGenum SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
 {
     static GLenum table[] = {GL_FUNC_ADD, GL_FUNC_SUBTRACT, GL_FUNC_REVERSE_SUBTRACT, GL_MIN, GL_MAX};
 

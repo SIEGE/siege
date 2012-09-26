@@ -12,11 +12,16 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
-#include "main.h"
-#include "load.h"
+#include "common.h"
 
 #include <stdlib.h>
-#include <stdio.h>
+
+typedef struct FontFace
+{
+    stbtt_fontinfo info;
+    void* buf;
+    float height;
+} FontFace;
 
 SGenum SG_EXPORT sgmFontsFaceCreate(void** face, SGStream* stream)
 {

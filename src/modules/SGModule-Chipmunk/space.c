@@ -1,25 +1,24 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
-
-#include "main.h"
-#include "space.h"
+#include "common.h"
 #include "collision.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgmPhysicsSpaceCreate(void** space)
+SGenum SG_EXPORT sgmPhysicsSpaceCreate(void** space)
 {
     *space = cpSpaceNew();
 
@@ -33,19 +32,19 @@ SGuint SG_EXPORT sgmPhysicsSpaceCreate(void** space)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmPhysicsSpaceDestroy(void* space)
+SGenum SG_EXPORT sgmPhysicsSpaceDestroy(void* space)
 {
     if(space == NULL)
         return SG_OK; // SG_INVALID_VALUE
 
-	free(cpBodyGetUserData(cpSpaceGetStaticBody(space)));
+    free(cpBodyGetUserData(cpSpaceGetStaticBody(space)));
 
     //cpSpaceFreeChildren(space);
     cpSpaceFree(space);
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmPhysicsSpaceStep(void* space, float time)
+SGenum SG_EXPORT sgmPhysicsSpaceStep(void* space, float time)
 {
     if(space == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -56,33 +55,33 @@ SGuint SG_EXPORT sgmPhysicsSpaceStep(void* space, float time)
 
 SGenum SG_EXPORT sgmPhysicsSpaceSetIterations(void* space, SGuint iterations)
 {
-	if(!space)
-		return SG_OK; // SG_INVALID_VALUE
-	cpSpaceSetIterations(space, iterations);
-	return SG_OK;
+    if(!space)
+        return SG_OK; // SG_INVALID_VALUE
+    cpSpaceSetIterations(space, iterations);
+    return SG_OK;
 }
 //SGenum SG_EXPORT sgmPhysicsSpaceGetIterations(void* space, SGuint* iterations, SGuint* eiterations);
 
-SGuint SG_EXPORT sgmPhysicsSpaceSetGravity(void* space, float x, float y)
+SGenum SG_EXPORT sgmPhysicsSpaceSetGravity(void* space, float x, float y)
 {
     if(!space)
         return SG_OK; // SG_INVALID_VALUE
     cpSpaceSetGravity(space, cpv(x, y));
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmPhysicsSpaceGetGravity(void* space, float* x, float* y);
+//SGenum SG_EXPORT sgmPhysicsSpaceGetGravity(void* space, float* x, float* y);
 
 SGenum SG_EXPORT sgmPhysicsSpaceSetDamping(void* space, float damping)
 {
-	if(!space)
-		return SG_OK; // SG_INVALID_VALUE
-	cpSpace* cspace = space;
-	cspace->damping = damping;
-	return SG_OK;
+    if(!space)
+        return SG_OK; // SG_INVALID_VALUE
+    cpSpace* cspace = space;
+    cspace->damping = damping;
+    return SG_OK;
 }
 //SGenum SG_EXPORT sgmPhysicsSpaceGetDamping(void* space, float* damping);
 
-SGuint SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape)
+SGenum SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -92,7 +91,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape)
         cpSpaceAddStaticShape(space, shape);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape)
+SGenum SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -102,9 +101,9 @@ SGuint SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape)
         cpSpaceRemoveStaticShape(space, shape);
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmPhysicsSpaceAddStaticShape(void* space, void* shape);
-//SGuint SG_EXPORT sgmPhysicsSpaceRemoveStaticShape(void* space, void* shape);
-SGuint SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body)
+//SGenum SG_EXPORT sgmPhysicsSpaceAddStaticShape(void* space, void* shape);
+//SGenum SG_EXPORT sgmPhysicsSpaceRemoveStaticShape(void* space, void* shape);
+SGenum SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -112,7 +111,7 @@ SGuint SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body)
         cpSpaceAddBody(space, body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body)
+SGenum SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -120,14 +119,14 @@ SGuint SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body)
         cpSpaceRemoveBody(space, body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsSpaceAddConstraint(void* space, void* constraint)
+SGenum SG_EXPORT sgmPhysicsSpaceAddConstraint(void* space, void* constraint)
 {
     if(space == NULL || constraint == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpSpaceAddConstraint(space, constraint);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint)
+SGenum SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint)
 {
     if(space == NULL || constraint == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -137,8 +136,8 @@ SGuint SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint)
 
 SGenum SG_EXPORT sgmPhysicsSpaceGetStaticBody(void* space, void** body)
 {
-	if(!space || !body)
-		return SG_OK; // SG_INVALID_VALUE
-	*body = cpSpaceGetStaticBody(space);
-	return SG_OK;
+    if(!space || !body)
+        return SG_OK; // SG_INVALID_VALUE
+    *body = cpSpaceGetStaticBody(space);
+    return SG_OK;
 }

@@ -1,24 +1,22 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
-    This file is part of libSIEGE.
+#include "common.h"
 
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
-
-#include "main.h"
-#include "buffer.h"
-
-#include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgmAudioBufferCreate(void** buffer)
+SGenum SG_EXPORT sgmAudioBufferCreate(void** buffer)
 {
     *buffer = malloc(sizeof(ALuint));
 
@@ -26,14 +24,14 @@ SGuint SG_EXPORT sgmAudioBufferCreate(void** buffer)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmAudioBufferDestroy(void* buffer)
+SGenum SG_EXPORT sgmAudioBufferDestroy(void* buffer)
 {
     alDeleteBuffers(1, buffer);
     free(buffer);
     return SG_OK;
 }
 
-void* toStereo(SGuint channels, void* data, SGuint* datalen, ALuint* alformat)
+static void* toStereo(SGuint channels, void* data, SGuint* datalen, ALuint* alformat)
 {
     if(channels == 2)
     {
@@ -133,7 +131,7 @@ void* toStereo(SGuint channels, void* data, SGuint* datalen, ALuint* alformat)
     return data;
 }
 
-SGuint SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
+SGenum SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
 {
     //AL_FORMAT_[MONO, STEREO][8, 16]
     ALuint alformat;
@@ -232,8 +230,8 @@ SGuint SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint for
     alBufferData(*(ALuint*)buffer, alformat, data, datalen, frequency);
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmAudioBufferGetData(void* buffer, SGuint* channels, SGuint* format, SGuint* frequency, SGPointer* data, SGuint* datalen);
-/*SGuint SG_EXPORT sgmAudioBufferCreateData(void** buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
+//SGenum SG_EXPORT sgmAudioBufferGetData(void* buffer, SGuint* channels, SGuint* format, SGuint* frequency, SGPointer* data, SGuint* datalen);
+/*SGenum SG_EXPORT sgmAudioBufferCreateData(void** buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
 {
     SGuint ret = sgmAudioBufferCreate(buffer);
     if(ret != SG_OK)

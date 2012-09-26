@@ -1,24 +1,22 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
-    This file is part of libSIEGE.
+#include "common.h"
 
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
-
-#include "main.h"
-#include "body.h"
-
-#include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgmPhysicsBodyCreate(void** body, SGenum type)
+SGenum SG_EXPORT sgmPhysicsBodyCreate(void** body, SGenum type)
 {
     *body = cpBodyNew(1, 1);
     DataExt* data = malloc(sizeof(DataExt));
@@ -27,7 +25,7 @@ SGuint SG_EXPORT sgmPhysicsBodyCreate(void** body, SGenum type)
     cpBodySetUserData(*body, data);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyDestroy(void* body)
+SGenum SG_EXPORT sgmPhysicsBodyDestroy(void* body)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -53,42 +51,42 @@ SGenum SG_EXPORT sgmPhysicsBodyGetSleeping(void* body, SGbool* sleeping)
     *sleeping = cpBodyIsSleeping(body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodySetMass(void* body, float mass)
+SGenum SG_EXPORT sgmPhysicsBodySetMass(void* body, float mass)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpBodySetMass(body, mass);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyGetMass(void* body, float* mass)
+SGenum SG_EXPORT sgmPhysicsBodyGetMass(void* body, float* mass)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     *mass = cpBodyGetMass(body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodySetMoment(void* body, float moment)
+SGenum SG_EXPORT sgmPhysicsBodySetMoment(void* body, float moment)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpBodySetMoment(body, moment);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyGetMoment(void* body, float* moment)
+SGenum SG_EXPORT sgmPhysicsBodyGetMoment(void* body, float* moment)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     *moment = cpBodyGetMoment(body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodySetPosition(void* body, float x, float y)
+SGenum SG_EXPORT sgmPhysicsBodySetPosition(void* body, float x, float y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpBodySetPos(body, cpv(x, y));
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyGetPosition(void* body, float* x, float* y)
+SGenum SG_EXPORT sgmPhysicsBodyGetPosition(void* body, float* x, float* y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -97,14 +95,14 @@ SGuint SG_EXPORT sgmPhysicsBodyGetPosition(void* body, float* x, float* y)
     *y = pos.y;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodySetVelocity(void* body, float x, float y)
+SGenum SG_EXPORT sgmPhysicsBodySetVelocity(void* body, float x, float y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpBodySetVel(body, cpv(x, y));
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyGetVelocity(void* body, float* x, float* y)
+SGenum SG_EXPORT sgmPhysicsBodyGetVelocity(void* body, float* x, float* y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -113,14 +111,14 @@ SGuint SG_EXPORT sgmPhysicsBodyGetVelocity(void* body, float* x, float* y)
     *y = vel.y;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodySetForce(void* body, float x, float y)
+SGenum SG_EXPORT sgmPhysicsBodySetForce(void* body, float x, float y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpBodySetForce(body, cpv(x, y));
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyGetForce(void* body, float* x, float* y)
+SGenum SG_EXPORT sgmPhysicsBodyGetForce(void* body, float* x, float* y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -129,56 +127,56 @@ SGuint SG_EXPORT sgmPhysicsBodyGetForce(void* body, float* x, float* y)
     *y = force.y;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodySetAngle(void* body, float angle)
+SGenum SG_EXPORT sgmPhysicsBodySetAngle(void* body, float angle)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpBodySetAngle(body, angle);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyGetAngle(void* body, float* angle)
+SGenum SG_EXPORT sgmPhysicsBodyGetAngle(void* body, float* angle)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     *angle = cpBodyGetAngle(body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodySetAngularVelocity(void* body, float angvel)
+SGenum SG_EXPORT sgmPhysicsBodySetAngularVelocity(void* body, float angvel)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpBodySetAngVel(body, angvel);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyGetAngularVelocity(void* body, float* angvel)
+SGenum SG_EXPORT sgmPhysicsBodyGetAngularVelocity(void* body, float* angvel)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     *angvel = cpBodyGetAngVel(body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodySetTorque(void* body, float torque)
+SGenum SG_EXPORT sgmPhysicsBodySetTorque(void* body, float torque)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpBodySetTorque(body, torque);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyGetTorque(void* body, float* torque)
+SGenum SG_EXPORT sgmPhysicsBodyGetTorque(void* body, float* torque)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     *torque = cpBodyGetTorque(body);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodySetData(void* body, void* data)
+SGenum SG_EXPORT sgmPhysicsBodySetData(void* body, void* data)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
     ((DataExt*)cpBodyGetUserData(body))->data = data;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyGetData(void* body, void** data)
+SGenum SG_EXPORT sgmPhysicsBodyGetData(void* body, void** data)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -190,8 +188,8 @@ SGenum SG_EXPORT sgmPhysicsBodyApplyImpulse(void* body, float jx, float jy, floa
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
-	cpBodyApplyImpulse(body, cpv(jx, jy), cpv(rx, ry));
-	return SG_OK;
+    cpBodyApplyImpulse(body, cpv(jx, jy), cpv(rx, ry));
+    return SG_OK;
 }
 SGenum SG_EXPORT sgmPhysicsBodyApplyForce(void* body, float jx, float jy, float rx, float ry)
 {

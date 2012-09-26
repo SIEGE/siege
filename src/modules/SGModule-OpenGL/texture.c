@@ -5,21 +5,17 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
 
-#include "main.h"
+#include "common.h"
 #include "texture.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-
-SGuint SG_EXPORT sgmGraphicsTextureCreate(void** texture, void* context)
+SGenum SG_EXPORT sgmGraphicsTextureCreate(void** texture, void* context)
 {
     TextureData** tdata = (TextureData**)texture;
     *tdata = calloc(1, sizeof(TextureData));
@@ -39,8 +35,8 @@ SGuint SG_EXPORT sgmGraphicsTextureCreate(void** texture, void* context)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmGraphicsTextureCreateData(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data)
-SGuint SG_EXPORT sgmGraphicsTextureDestroy(void* texture)
+//SGenum SG_EXPORT sgmGraphicsTextureCreateData(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data)
+SGenum SG_EXPORT sgmGraphicsTextureDestroy(void* texture)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -51,7 +47,7 @@ SGuint SG_EXPORT sgmGraphicsTextureDestroy(void* texture)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint height, SGuint bpp, void* data)
+SGenum SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint height, SGuint bpp, void* data)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -70,33 +66,33 @@ SGuint SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
     switch(bpp)
     {
         case 8:
-			tdata->gliformat = GL_R3_G3_B2;
-			tdata->glformat = GL_RGB;
-			tdata->gltype = GL_UNSIGNED_BYTE_3_3_2;
+            tdata->gliformat = GL_R3_G3_B2;
+            tdata->glformat = GL_RGB;
+            tdata->gltype = GL_UNSIGNED_BYTE_3_3_2;
             bypp = 1;
             break;
         case 15:
-			tdata->gliformat = GL_RGB5; // GL_RGB5_A1
-			tdata->glformat = GL_RGB;
-			tdata->gltype = GL_UNSIGNED_SHORT_5_5_5_1;
+            tdata->gliformat = GL_RGB5; // GL_RGB5_A1
+            tdata->glformat = GL_RGB;
+            tdata->gltype = GL_UNSIGNED_SHORT_5_5_5_1;
             bypp = 2;
             break;
         case 16:
             tdata->gliformat = GL_RGB5;
             tdata->glformat = GL_RGB;
-			tdata->gltype = GL_UNSIGNED_SHORT_5_6_5;
+            tdata->gltype = GL_UNSIGNED_SHORT_5_6_5;
             bypp = 2;
             break;
         case 24:
             tdata->gliformat = GL_RGB8;
             tdata->glformat = GL_RGB;
-			tdata->gltype = GL_UNSIGNED_BYTE;
+            tdata->gltype = GL_UNSIGNED_BYTE;
             bypp = 3;
             break;
         case 32:
             tdata->gliformat = GL_RGBA8;
             tdata->glformat = GL_RGBA;
-			tdata->gltype = GL_UNSIGNED_BYTE;
+            tdata->gltype = GL_UNSIGNED_BYTE;
             bypp = 4;
             break;
         default:
@@ -164,30 +160,30 @@ SGenum SG_EXPORT sgmGraphicsTextureSetSubData(void* texture, SGuint x, SGuint y,
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data)
+SGenum SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data)
 {
-	if(texture == NULL)
-		return SG_OK; // SG_INVALID_VALUE
-	TextureData* tdata = texture;
+    if(texture == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    TextureData* tdata = texture;
 
-	glBindTexture(GL_TEXTURE_2D, tdata->texid);
+    glBindTexture(GL_TEXTURE_2D, tdata->texid);
 
-	*width = tdata->awidth;
-	*height = tdata->aheight;
-	*bpp = tdata->bpp;
+    *width = tdata->awidth;
+    *height = tdata->aheight;
+    *bpp = tdata->bpp;
 
-	*data = malloc(tdata->awidth * tdata->aheight * (tdata->bpp == 15 ? 2 : (tdata->bpp / 8)));
-	glGetTexImage(GL_TEXTURE_2D, 0, tdata->glformat, tdata->gltype, *data);
+    *data = malloc(tdata->awidth * tdata->aheight * (tdata->bpp == 15 ? 2 : (tdata->bpp / 8)));
+    glGetTexImage(GL_TEXTURE_2D, 0, tdata->glformat, tdata->gltype, *data);
 
-	return SG_OK;
+    return SG_OK;
 }
-SGuint SG_EXPORT sgmGraphicsTextureFreeData(void* data)
+SGenum SG_EXPORT sgmGraphicsTextureFreeData(void* data)
 {
-	free(data);
+    free(data);
 
-	return SG_OK;
+    return SG_OK;
 }
-SGuint SG_EXPORT sgmGraphicsTextureGetSize(void* texture, SGuint* width, SGuint* height)
+SGenum SG_EXPORT sgmGraphicsTextureGetSize(void* texture, SGuint* width, SGuint* height)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -207,7 +203,7 @@ SGenum SG_EXPORT sgmGraphicsTextureGetBPP(void* texture, SGenum* bpp)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
+SGenum SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE

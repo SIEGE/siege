@@ -1,24 +1,23 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
-
-#include "main.h"
-#include "test.h"
+#include "common.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgmPhysicsBodyWorldToLocal_TEST(void* body, float* x, float* y)
+SGenum SG_EXPORT sgmPhysicsBodyWorldToLocal_TEST(void* body, float* x, float* y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -27,7 +26,7 @@ SGuint SG_EXPORT sgmPhysicsBodyWorldToLocal_TEST(void* body, float* x, float* y)
     *y = vect.y;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsBodyLocalToWorld_TEST(void* body, float* x, float* y)
+SGenum SG_EXPORT sgmPhysicsBodyLocalToWorld_TEST(void* body, float* x, float* y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -36,7 +35,7 @@ SGuint SG_EXPORT sgmPhysicsBodyLocalToWorld_TEST(void* body, float* x, float* y)
     *y = vect.y;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsShapeGetPoints_TEST(void* shape, SGuint* pnum, float** points)
+SGenum SG_EXPORT sgmPhysicsShapeGetPoints_TEST(void* shape, SGuint* pnum, float** points)
 {
     if(shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -86,7 +85,7 @@ SGuint SG_EXPORT sgmPhysicsShapeGetPoints_TEST(void* shape, SGuint* pnum, float*
     }*/
     return SG_OK;
 }
-SGuint SG_EXPORT sgmPhysicsShapeFreePoints_TEST(float* points)
+SGenum SG_EXPORT sgmPhysicsShapeFreePoints_TEST(float* points)
 {
     free(points);
     return SG_OK;

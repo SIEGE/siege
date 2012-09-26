@@ -11,19 +11,10 @@
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
+#ifndef __COMMON_H__
+#define __COMMON_H__
 
-#ifndef __MOUSE_H__
-#define __MOUSE_H__
+#include <siege/backend.h>
+#include <IL/il.h>
 
-#include "common.h"
-
-Uint8 mouseState;
-int mouseX;
-int mouseY;
-int mouseW;
-
-void mouseButton(int button, int action);
-void mouseMove(int x, int y);
-void mouseWheel(int w);
-
-#endif // __MOUSE_H__
+#endif // __COMMON_H__

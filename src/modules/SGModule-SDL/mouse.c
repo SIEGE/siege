@@ -1,25 +1,20 @@
 /*
-    Copyright (c) 2007 SIEGE Development Team
-    All rights reserved.
+ * Copyright (c) 2007 SIEGE Development Team
+ * All rights reserved.
+ *
+ * This file is part of libSIEGE.
+ *
+ * This software is copyrighted work licensed under the terms of the
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
+ * details.
+ *
+ * If you did not recieve the file with this program, please email
+ * Tim Chas <darkuranium@gmail.com>.
+ */
 
-    This file is part of libSIEGE.
-
-    This software is copyrighted work licensed under the terms of the
-    2-clause BSD license. Please consult the file "license.txt" for
-    details.
-
-    If you did not recieve the file with this program, please email
-    Tim Chas <darkuranium@gmail.com>.
-*/
-
-#include "main.h"
+#include "common.h"
 #include "mouse.h"
 #include "window.h"
-
-#include <stdio.h>
-
-#include <stdlib.h>
-#include <string.h>
 
 void mouseButton(int button, int action)
 {
@@ -44,12 +39,12 @@ void mouseWheel(int w)
         main_window->cbMouse->wheel((void*)1, w);
 }
 
-SGuint SG_EXPORT sgmCoreMouseCreate(void** mouse, void* window)
+SGenum SG_EXPORT sgmCoreMouseCreate(void** mouse, void* window)
 {
     *mouse = (void*)1;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmCoreMouseDestroy(void* mouse)
+SGenum SG_EXPORT sgmCoreMouseDestroy(void* mouse)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -57,7 +52,7 @@ SGuint SG_EXPORT sgmCoreMouseDestroy(void* mouse)
     return SG_OK;
 }
 // should these two [sgmCoreMouseShow,sgmCoreMouseHide] be put into a single function?
-SGuint SG_EXPORT sgmCoreMouseShow(void* mouse)
+SGenum SG_EXPORT sgmCoreMouseShow(void* mouse)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -66,7 +61,7 @@ SGuint SG_EXPORT sgmCoreMouseShow(void* mouse)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgmCoreMouseHide(void* mouse)
+SGenum SG_EXPORT sgmCoreMouseHide(void* mouse)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -75,9 +70,9 @@ SGuint SG_EXPORT sgmCoreMouseHide(void* mouse)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmCoreMouseIsShown(void* mouse, SGbool* shown);
-//SGuint SG_EXPORT sgmCoreMouseIsHidden(void* mouse, SGbool* hidden);
-SGuint SG_EXPORT sgmCoreMouseGetNumButtons(void* mouse, size_t* numbuttons)
+//SGenum SG_EXPORT sgmCoreMouseIsShown(void* mouse, SGbool* shown);
+//SGenum SG_EXPORT sgmCoreMouseIsHidden(void* mouse, SGbool* hidden);
+SGenum SG_EXPORT sgmCoreMouseGetNumButtons(void* mouse, size_t* numbuttons)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -86,8 +81,8 @@ SGuint SG_EXPORT sgmCoreMouseGetNumButtons(void* mouse, size_t* numbuttons)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmCoreMouseButtonSetState(void* mouse, SGbool* state);
-SGuint SG_EXPORT sgmCoreMouseButtonGetState(void* mouse, SGbool* state)
+//SGenum SG_EXPORT sgmCoreMouseButtonSetState(void* mouse, SGbool* state);
+SGenum SG_EXPORT sgmCoreMouseButtonGetState(void* mouse, SGbool* state)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -100,7 +95,7 @@ SGuint SG_EXPORT sgmCoreMouseButtonGetState(void* mouse, SGbool* state)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgmCoreMouseSetPosition(void* mouse, SGint x, SGint y)
+SGenum SG_EXPORT sgmCoreMouseSetPosition(void* mouse, SGint x, SGint y)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -112,7 +107,7 @@ SGuint SG_EXPORT sgmCoreMouseSetPosition(void* mouse, SGint x, SGint y)
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgmCoreMouseGetPosition(void* mouse, SGint* x, SGint* y)
+SGenum SG_EXPORT sgmCoreMouseGetPosition(void* mouse, SGint* x, SGint* y)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -122,8 +117,8 @@ SGuint SG_EXPORT sgmCoreMouseGetPosition(void* mouse, SGint* x, SGint* y)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmCoreMouseSetWheel(void* mouse, SGint w);
-SGuint SG_EXPORT sgmCoreMouseGetWheel(void* mouse, SGint* w)
+//SGenum SG_EXPORT sgmCoreMouseSetWheel(void* mouse, SGint w);
+SGenum SG_EXPORT sgmCoreMouseGetWheel(void* mouse, SGint* w)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -133,7 +128,7 @@ SGuint SG_EXPORT sgmCoreMouseGetWheel(void* mouse, SGint* w)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmCoreMouseSetCallbacks(void* mouse, SGCoreMouseCallbacks* callbacks)
+SGenum SG_EXPORT sgmCoreMouseSetCallbacks(void* mouse, SGCoreMouseCallbacks* callbacks)
 {
     if(mouse == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -145,4 +140,4 @@ SGuint SG_EXPORT sgmCoreMouseSetCallbacks(void* mouse, SGCoreMouseCallbacks* cal
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmCoreMouseGetCallbacks(void* mouse, SGCoreMouseCallbacks** callbacks);
+//SGenum SG_EXPORT sgmCoreMouseGetCallbacks(void* mouse, SGCoreMouseCallbacks** callbacks);
