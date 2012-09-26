@@ -15,11 +15,67 @@
 #include "main.h"
 #include "load.h"
 
+static unsigned long f_read(FT_Stream data, unsigned long offset, unsigned char* buffer, unsigned long count)
+{
+    StreamInfo* sinfo = data->descriptor.pointer;
+    SGStream* stream = sinfo->stream;
 
-SGuint SG_EXPORT sgmFontsFaceCreate(void** face, const char* fname)
+    stream->seek(stream->data, sinfo->offset + offset, SG_SEEK_SET);
+    return stream->read(stream->data, buffer, 1, count);
+}
+static void f_close(FT_Stream data)
+{
+    StreamInfo* sinfo = data->descriptor.pointer;
+    SGStream* stream = sinfo->stream;
+    stream->seek(stream->data, sinfo->offset + data->size, SG_SEEK_SET);
+}
+
+static SGenum initStream(FT_Stream fstream, StreamInfo* sinfo, SGStream* stream)
+{
+    if(!stream->read || !stream->seek || !stream->tell)
+        return SG_INVALID_VALUE;
+
+    SGlong pos = stream->tell(stream->data);
+    if(pos < 0)
+        return SG_UNKNOWN_ERROR;
+
+    SGlong size;
+    stream->seek(stream->data, 0, SG_SEEK_END);
+    size = stream->tell(stream->data);
+    stream->seek(stream->data, pos, SG_SEEK_SET);
+    // sanity check with size, even though it should always be >= pos
+    if(size < 0 || size < pos)
+        return SG_UNKNOWN_ERROR;
+
+    sinfo->stream = stream;
+    sinfo->offset = pos;
+
+    fstream->base = NULL;
+    fstream->size = size - pos;
+    fstream->pos = 0;
+    fstream->descriptor.pointer = sinfo;
+    fstream->pathname.pointer = NULL;
+    fstream->read = f_read;
+    fstream->close = f_close;
+
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmFontsFaceCreate(void** face, SGStream* stream)
 {
 	*face = malloc(sizeof(FontFace));
-	int ret = FT_New_Face(library, fname, 0, &(*(FontFace**)face)->ftface);
+    FontFace* fface = *face;
+    SGenum iret = initStream(&fface->stream, &fface->sinfo, stream);
+    if(iret != SG_OK)
+    {
+        free(*face);
+        return iret;
+    }
+
+    fface->oargs.flags = FT_OPEN_STREAM;
+    fface->oargs.stream = &fface->stream;
+
+    int ret = FT_Open_Face(library, &fface->oargs, 0, &fface->ftface);
 	if(ret != 0)
 		return SG_UNKNOWN_ERROR;
 	return SG_OK;

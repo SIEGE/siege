@@ -145,7 +145,8 @@ void recreateGrid(SGbool copy, SGbool refont)
 
 	if(refont)
 	{
-		score = sgFontResize(prevfont, cellw / 4.0);
+        /* TODO: resize */
+		//score = sgFontResize(prevfont, cellw / 4.0);
 		//if(score != prevfont)
 			//sgFontDestroy(prevfont);
 	}

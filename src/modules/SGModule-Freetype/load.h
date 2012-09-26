@@ -15,9 +15,18 @@
 #ifndef __LOAD_H__
 #define __LOAD_H__
 
+typedef struct StreamInfo
+{
+    SGStream* stream;
+    size_t offset;
+} StreamInfo;
+
 typedef struct FontFace
 {
     FT_Face ftface;
+    FT_StreamRec stream;
+    StreamInfo sinfo;
+    FT_Open_Args oargs;
     float height;
 } FontFace;
 

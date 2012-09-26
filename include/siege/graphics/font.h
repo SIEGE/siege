@@ -21,6 +21,7 @@
 #define __SIEGE_GRAPHICS_FONT_H__
 
 #include "../common.h"
+#include "../util/stream.h"
 #include "../util/conv.h"
 #include "../util/map.h"
 #include "texture.h"
@@ -114,7 +115,6 @@ typedef struct SGFont
 	 * \private
 	 */
 	void* handle;
-	char* fname;	/// < Filename used to load the font
 	float height;	/// < Height of the font
 	/// @}
 
@@ -138,6 +138,9 @@ typedef struct SGFont
 	SGCharInfo* cache;		/// < Character infos (values)
     SGMap* cmap;          ///< SGdchar->SGCharInfo mapping
 	/// @}
+
+    SGStream* stream;
+    SGbool del;
 } SGFont;
 
 SGCharInfo* SG_EXPORT _sgFontFindCache(SGFont* font, SGdchar c);
@@ -153,6 +156,7 @@ SGdchar* SG_EXPORT _sgFontU8ToU32(SGFont* font, const SGchar* text);
 SGdchar* SG_EXPORT _sgFontWToU32(SGFont* font, const wchar_t* text);
 SGdchar* SG_EXPORT _sgFontToU32(SGFont* font, const char* text);
 
+SGFont* SG_EXPORT sgFontCreateStream(SGStream* stream, SGbool delstream, float height, SGuint preload);
 /// @{
 /**
  * \brief Load a font
@@ -172,6 +176,8 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload);
  */
 void SG_EXPORT sgFontDestroy(SGFont* font);
 /// @}
+
+/* resize functions temporarily removed */
 
 /**
  * \name Resizing
@@ -196,7 +202,7 @@ void SG_EXPORT sgFontDestroy(SGFont* font);
  * \see sgFontResize
  */
 
-SGFont* SG_EXPORT sgFontResizeCopy(SGFont* font, float height);
+//SGFont* SG_EXPORT sgFontResizeCopy(SGFont* font, float height);
 /**
  * \brief Resize the font, duplicating only if necessarry.
  *
@@ -211,7 +217,7 @@ SGFont* SG_EXPORT sgFontResizeCopy(SGFont* font, float height);
  *
  * \see	sgFontResizeCopy
  */
-SGFont* SG_EXPORT sgFontResize(SGFont* font, float height);
+//SGFont* SG_EXPORT sgFontResize(SGFont* font, float height);
 /// @}
 
 /**

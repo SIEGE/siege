@@ -208,18 +208,21 @@ SGdchar* SG_EXPORT _sgFontToU32(SGFont* font, const char* text)
     return buf;
 }
 
-SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
+SGFont* SG_EXPORT sgFontCreateStream(SGStream* stream, SGbool delstream, float height, SGuint preload)
 {
 	SGFont* font = malloc(sizeof(SGFont));
 	if(font == NULL)
 		return NULL;
 
+    font->stream = stream;
+    font->del = delstream;
+
 	SGuint ret = SG_OK;
 	if(psgmFontsFaceCreate != NULL)
-		ret = psgmFontsFaceCreate(&font->handle, fname);
+        ret = psgmFontsFaceCreate(&font->handle, stream);
 	if(ret != SG_OK)
 	{
-		fprintf(stderr, "Warning: Cannot create font %s\n", fname);
+		fprintf(stderr, "Warning: Cannot create font\n");
 		free(font);
 		return NULL;
 	}
@@ -227,9 +230,6 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
 	if(psgmFontsFaceSetHeight != NULL)
 		psgmFontsFaceSetHeight(font->handle, height);
 
-	SGuint len = strlen(fname) + 1;
-	font->fname = malloc(len);
-	memcpy(font->fname, fname, len);
 	font->height = height;
 
     font->conv[0] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_CHAR);
@@ -255,6 +255,16 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
 	free(prestr);
 	return font;
 }
+SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
+{
+    SGStream* stream = sgStreamCreateFile(fname, "r");
+    if(!stream)
+    {
+        fprintf(stderr, "Warning: Cannot create font %s\n", fname);
+        return NULL;
+    }
+    return sgFontCreateStream(stream, SG_TRUE, height, preload);
+}
 void SG_EXPORT sgFontDestroy(SGFont* font)
 {
 	if(font == NULL)
@@ -272,7 +282,6 @@ void SG_EXPORT sgFontDestroy(SGFont* font)
 	for(i = 0; i < 4; i++)
 		sgConvDestroy(font->conv[i]);
 
-	free(font->fname);
 	free(font->chars);
 	free(font->cachechars);
 	free(font->cache);
@@ -290,10 +299,12 @@ void SG_EXPORT sgFontDestroy(SGFont* font)
     }
     sgMapDestroy(font->cmap);
 
+    if(font->del)
+        sgStreamDestroy(font->stream);
 	free(font);
 }
 
-SGFont* SG_EXPORT sgFontResizeCopy(SGFont* font, float height)
+/*SGFont* SG_EXPORT sgFontResizeCopy(SGFont* font, float height)
 {
 	if(font == NULL)
 		return NULL;
@@ -311,7 +322,7 @@ SGFont* SG_EXPORT sgFontResize(SGFont* font, float height)
 	SGFont* newFont = sgFontResizeCopy(font, height);
 	sgFontDestroy(font);
 	return newFont;
-}
+}*/
 
 void SG_EXPORT sgFontPrintfW(SGFont* font, float x, float y, const wchar_t* format, ...)
 {
