@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <math.h>
 
-SGTexture* SG_EXPORT sgTextureCreateStream(SGStream* stream)
+SGTexture* SG_EXPORT sgTextureCreateStream(SGStream* stream, SGbool delstream)
 {
     size_t width;
     size_t height;
@@ -41,6 +41,8 @@ SGTexture* SG_EXPORT sgTextureCreateStream(SGStream* stream)
     SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
     if(psgmGraphicsLoadFreeData != NULL)
         psgmGraphicsLoadFreeData(data);
+    if(delstream)
+        sgStreamDestroy(stream);
     return texture;
 }
 SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname)
@@ -72,9 +74,7 @@ SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname)
     SGStream* stream = sgStreamCreateFile(fname, "r");
     if(!stream)
         fprintf(stderr, "Could not load image %s\n", fname);
-    SGTexture* texture = sgTextureCreateStream(stream);
-    sgStreamDestroy(stream);
-    return texture;
+    return sgTextureCreateStream(stream, SG_TRUE);
 }
 SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data)
 {
