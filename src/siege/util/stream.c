@@ -29,23 +29,27 @@ static SGbool SG_EXPORT cbFileSeek(void* stream, SGlong offset, SGenum origin)
         case SG_SEEK_END: corigin = SEEK_END; break;
         default: return SG_FALSE;
     }
-    return !fseek(stream, offset, corigin);
+    return !fseek((FILE*)stream, offset, corigin);
 }
 static SGlong SG_EXPORT cbFileTell(void* stream)
 {
-    return ftell(stream);
+    return ftell((FILE*)stream);
 }
 static SGulong SG_EXPORT cbFileRead(void* stream, void* ptr, size_t size, size_t count)
 {
-    return fread(ptr, size, count, stream);
+    return fread(ptr, size, count, (FILE*)stream);
 }
 static SGulong SG_EXPORT cbFileWrite(void* stream, const void* ptr, size_t size, size_t count)
 {
-    return fwrite(ptr, size, count, stream);
+    return fwrite(ptr, size, count, (FILE*)stream);
 }
 static SGbool SG_EXPORT cbFileClose(void* stream)
 {
-    return !fclose(stream);
+    return !fclose((FILE*)stream);
+}
+static SGbool SG_EXPORT cbFileEOF(void* stream)
+{
+    return feof((FILE*)stream);
 }
 
 typedef struct MemoryInfo
@@ -110,13 +114,18 @@ static SGbool SG_EXPORT cbMemoryClose(void* stream)
     free(minfo);
     return SG_TRUE;
 }
+static SGbool SG_EXPORT cbMemoryEOF(void* stream)
+{
+    MemoryInfo* minfo = stream;
+    return minfo->cur == minfo->end;
+}
 
 static void SG_EXPORT cbBufferFree(void* ptr)
 {
     free(ptr);
 }
 
-SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, void* data)
+SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data)
 {
     SGStream* stream = malloc(sizeof(SGStream));
     if(!stream) return NULL;
@@ -126,6 +135,7 @@ SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStr
     stream->read = read;
     stream->write = write;
     stream->close = close;
+    stream->eof = eof;
 
     stream->data = data;
 
@@ -149,7 +159,7 @@ SGStream* SG_EXPORT sgStreamCreateFile(const char* fname, const char* mode)
     FILE* file = fopen(fname, mbuf);
     if(!file) return NULL;
 
-    SGStream* stream = sgStreamCreate(cbFileSeek, cbFileTell, cbFileRead, cbFileWrite, cbFileClose, file);
+    SGStream* stream = sgStreamCreate(cbFileSeek, cbFileTell, cbFileRead, cbFileWrite, cbFileClose, cbFileEOF, file);
     if(!stream)
     {
         fclose(file);
@@ -168,7 +178,7 @@ SGStream* SG_EXPORT sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree)
 
     minfo->free = free;
 
-    SGStream* stream = sgStreamCreate(cbMemorySeek, cbMemoryTell, cbMemoryRead, cbMemoryWrite, cbMemoryClose, minfo);
+    SGStream* stream = sgStreamCreate(cbMemorySeek, cbMemoryTell, cbMemoryRead, cbMemoryWrite, cbMemoryClose, cbMemoryEOF, minfo);
     if(!stream)
     {
         free(minfo);
@@ -187,7 +197,7 @@ SGStream* SG_EXPORT sgStreamCreateCMemory(const void* mem, size_t size, SGFree* 
 
     minfo->free = free;
 
-    SGStream* stream = sgStreamCreate(cbMemorySeek, cbMemoryTell, cbMemoryRead, NULL, cbMemoryClose, minfo);
+    SGStream* stream = sgStreamCreate(cbMemorySeek, cbMemoryTell, cbMemoryRead, NULL, cbMemoryClose, cbMemoryEOF, minfo);
     if(!stream)
     {
         free(minfo);

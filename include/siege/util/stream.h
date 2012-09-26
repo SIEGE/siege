@@ -24,7 +24,7 @@ extern "C"
 
 /* SGStream structures and typedefs declared in common.h */
 
-SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, void* data);
+SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data);
 SGStream* SG_EXPORT sgStreamCreateFile(const char* fname, const char* mode);
 SGStream* SG_EXPORT sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree);
 SGStream* SG_EXPORT sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbfree);

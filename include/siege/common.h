@@ -561,6 +561,7 @@ typedef SGlong  SG_EXPORT SGStreamTell(void* stream);
 typedef SGulong SG_EXPORT SGStreamRead(void* stream, void* ptr, size_t size, size_t count);
 typedef SGulong SG_EXPORT SGStreamWrite(void* stream, const void* ptr, size_t size, size_t count);
 typedef SGbool  SG_EXPORT SGStreamClose(void* stream);
+typedef SGbool  SG_EXPORT SGStreamEOF(void* stream);
 
 typedef struct SGStream
 {
@@ -569,6 +570,7 @@ typedef struct SGStream
     SGStreamRead* read;
     SGStreamWrite* write;
     SGStreamClose* close;
+    SGStreamEOF* eof;
 
     void* data;
 } SGStream;
