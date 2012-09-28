@@ -107,7 +107,7 @@ SGuint SG_EXPORT sgmFontsFaceSetHeight(void* face, float height)
     if(face == NULL)
         return SG_OK; // SG_INVALID_VALUE
     ((FontFace*)face)->height = height;
-    FT_Set_Char_Size(((FontFace*)face)->ftface, (SGuint)(height * 64), (SGuint)(height * 64), 96, 96);
+    FT_Set_Char_Size(((FontFace*)face)->ftface, (SGuint)(height * 64), (SGuint)(height * 64), 72, 72);
     return SG_OK;
 }
 /*SGuint SG_EXPORT sgmFontsFaceGetHeight(void* face, float* height)
