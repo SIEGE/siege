@@ -18,6 +18,8 @@
 #include "keyboard.h"
 #include "mouse.h"
 
+#include <stdlib.h>
+
 static SDL_Surface* windowIcon;
 
 void windowOpen()

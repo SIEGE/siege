@@ -16,6 +16,9 @@
 #include "window.h"
 #include "joystick.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 SGenum SG_EXPORT sgmCoreJoystickGetNumJoysticks(void* window, size_t* numjoys)
 {
     if(window == NULL)

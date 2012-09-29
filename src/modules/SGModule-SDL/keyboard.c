@@ -16,6 +16,7 @@
 #include "keyboard.h"
 #include "window.h"
 
+#include <string.h>
 #include <ctype.h>
 
 static const int keysSDL[] = {

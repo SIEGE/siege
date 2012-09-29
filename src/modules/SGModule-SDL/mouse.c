@@ -16,6 +16,8 @@
 #include "mouse.h"
 #include "window.h"
 
+#include <string.h>
+
 void mouseButton(int button, int action)
 {
     if(button == 2)
