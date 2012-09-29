@@ -94,7 +94,7 @@ SGenum SG_EXPORT sgmFontsFaceCreate(void** face, SGStream* stream)
         return SG_UNKNOWN_ERROR;
     return SG_OK;
 }
-SGuint SG_EXPORT sgmFontsFaceDestroy(void* face)
+SGenum SG_EXPORT sgmFontsFaceDestroy(void* face)
 {
     if(face == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -102,20 +102,28 @@ SGuint SG_EXPORT sgmFontsFaceDestroy(void* face)
     free(face);
     return SG_OK;
 }
-SGuint SG_EXPORT sgmFontsFaceSetHeight(void* face, float height)
+
+SGenum SG_EXPORT sgmFontsFaceSetHeight(void* face, float height, SGuint dpi)
 {
     if(face == NULL)
         return SG_OK; // SG_INVALID_VALUE
     ((FontFace*)face)->height = height;
-    FT_Set_Char_Size(((FontFace*)face)->ftface, (SGuint)(height * 64), (SGuint)(height * 64), 72, 72);
+    FT_Set_Char_Size(((FontFace*)face)->ftface, (SGuint)(height * 64), (SGuint)(height * 64), dpi, dpi);
     return SG_OK;
 }
-/*SGuint SG_EXPORT sgmFontsFaceGetHeight(void* face, float* height)
+SGenum SG_EXPORT sgmFontsFaceGetMetrics(void* face, float* ascent, float* descent, float* linegap)
 {
-    *height = ((FontFace*)face)->height;
+    if(!face) return SG_INVALID_VALUE;
+    FontFace* fface = face;
+
+    *ascent = fface->ftface->size->metrics.ascender / 64.0;
+    *descent = fface->ftface->size->metrics.descender / 64.0;
+    *linegap = fface->ftface->size->metrics.height / 64.0 + *descent - *ascent;
+
     return SG_OK;
-}*/
-SGuint SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, float* width, float* height, float* prex, float* prey, float* postx, float* posty, SGuint* datawidth, SGuint* dataheight, void** data)
+}
+
+SGenum SG_EXPORT sgmFontsCharsCreate(void* face, const SGdchar* chars, size_t numchars, float* width, float* height, float* prex, float* prey, float* postx, float* posty, size_t* datawidth, size_t* dataheight, void** data)
 {
     if(face == NULL)
     {
@@ -137,8 +145,8 @@ SGuint SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, 
     FT_Glyph glyph;
     FT_BitmapGlyph bitmap_glyph;
     FT_Bitmap bitmap;
-    SGuint i/*, j*/;
-    for(i = 0; i < charnum; i++)
+    SGuint i;
+    for(i = 0; i < numchars; i++)
     {
         ret = FT_Load_Glyph(fface->ftface, FT_Get_Char_Index(fface->ftface, chars[i]), FT_LOAD_DEFAULT);
         if(ret)
@@ -160,27 +168,45 @@ SGuint SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, 
 
         data[i] = malloc(bitmap.width * bitmap.rows);
         memcpy(data[i], bitmap.buffer, bitmap.width * bitmap.rows);
-        /*for(j = 0; j < bitmap.rows; j++)
-            memcpy((char*)data[i] + j * bitmap.width, bitmap.buffer + (bitmap.rows - j - 1) * bitmap.width, bitmap.width);*/
 
         prex[i] = bitmap_glyph->left;
-        //prey[i] = -bitmap_glyph->top + bitmap.rows;
         prey[i] = -bitmap_glyph->top;
 
         postx[i] = fface->ftface->glyph->advance.x / 64.0;
         posty[i] = 0;
 
-        width[i] = fface->ftface->glyph->/*bitmap.width*/advance.x / 64.0;
-        height[i] = fface->height;
+        width[i] = fface->ftface->glyph->metrics.width;
+        height[i] = fface->ftface->glyph->metrics.height;
 
         FT_Done_Glyph(glyph);
     }
 
     return SG_OK;
 }
-
-SGuint SG_EXPORT sgmFontsCharsFreeData(void* data)
+SGenum SG_EXPORT sgmFontsCharsFreeData(void* data)
 {
     free(data);
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmFontsCharsGetKerning(void* face, const SGdchar* chars, size_t numchars, float* kerning)
+{
+    if(!face) return SG_INVALID_VALUE;
+    FontFace* fface = face;
+
+    FT_Vector vec;
+
+    FT_UInt prev = numchars ? FT_Get_Char_Index(fface->ftface, chars[0]) : 0;
+    FT_UInt curr;
+
+    size_t i;
+    for(i = 1; i < numchars; i++)
+    {
+        curr = FT_Get_Char_Index(fface->ftface, chars[i]);
+        FT_Get_Kerning(fface->ftface, prev, curr, FT_KERNING_DEFAULT, &vec);
+        kerning[i-1] = vec.x / 64.0;
+        prev = curr;
+    }
+
     return SG_OK;
 }

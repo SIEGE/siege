@@ -17,6 +17,7 @@
 #include <siege/graphics/font.h>
 #include <siege/modules/fonts.h>
 #include <siege/util/string.h>
+#include <siege/util/vector.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -113,6 +114,7 @@ SGbool SG_EXPORT _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbo
 			psgmFontsCharsFreeData(data);
 
 		SGTexture* texture = sgTextureCreateData(ci.dwidth, ci.dheight, 32, rgba);
+        sgTextureSetWrap(texture, SG_WRAP_CLAMP_TO_EDGE, SG_WRAP_CLAMP_TO_EDGE);
 		free(rgba);
 		ci.texture = texture;
 		if(achars[i] < font->numchars)
@@ -163,11 +165,10 @@ SGubyte* SG_EXPORT _sgFontToRGBA(SGFont* font, SGubyte* data, SGuint datalen)
 
 void SG_EXPORT _sgFontCenterOffsetU32(SGFont* font, float* x, float* y, const SGdchar* text)
 {
-    //SGuint numlines = sgNumLines(text);
-    float cx, cy;
-    sgFontStrSizeU32(font, &cx, &cy, text);
-    *x = -cx / 2.0f;
-    *y = -1 / 0.63 + cy / 2.0f;
+    float sx, sy;
+    sgFontStrSizeU32(font, &sx, &sy, text);
+    *x = -sx / 2.0;
+    *y = sy / 2.0;
 }
 
 SGdchar* SG_EXPORT _sgFontU16ToU32(SGFont* font, const SGwchar* text)
@@ -208,52 +209,163 @@ SGdchar* SG_EXPORT _sgFontToU32(SGFont* font, const char* text)
     return buf;
 }
 
-SGFont* SG_EXPORT sgFontCreateStream(SGStream* stream, SGbool delstream, float height, SGuint preload)
+static void SG_EXPORT _sgFontCreateCache(SGFont* font)
 {
-	SGFont* font = malloc(sizeof(SGFont));
-	if(font == NULL)
-		return NULL;
+    font->numchars = font->npreload;
+    font->chars = malloc(font->npreload * sizeof(SGCharInfo));
+
+    font->numcache = 0;
+    font->cachechars = NULL;
+    font->cache = NULL;
+
+    font->cmap = sgMapCreate((SGMapCmp*)_sgFontMapCmp, NULL);
+
+    size_t i;
+    SGdchar* prestr = malloc(font->npreload * sizeof(SGdchar));
+    for(i = 0; i < font->npreload; i++)
+        prestr[i] = i;
+
+    _sgFontLoad(font, prestr, font->npreload, SG_TRUE);
+    free(prestr);
+}
+static void SG_EXPORT _sgFontDestroyCache(SGFont* font)
+{
+    size_t i;
+    for(i = 0; i < font->numchars; i++)
+        sgTextureDestroy(font->chars[i].texture);
+    for(i = 0; i < font->numcache; i++)
+        sgTextureDestroy(font->cache[i].texture);
+
+    free(font->chars);
+    free(font->cachechars);
+    free(font->cache);
+
+    SGMapNode* node;
+    SGdchar* key;
+    if(font->cmap)
+    {
+        for(;;)
+        {
+            node = sgMapGetRoot(font->cmap);
+            if(!node) break;
+
+            key = node->key;
+            free(sgMapPopRoot(font->cmap));
+            free(key);
+        }
+        sgMapDestroy(font->cmap);
+    }
+}
+static void SG_EXPORT _sgFontSetHeight(SGFont* font, float height, SGuint dpi)
+{
+    font->height = height;
+    font->dpi = dpi;
+    if(psgmFontsFaceSetHeight)
+        psgmFontsFaceSetHeight(font->handle, height, dpi);
+    if(psgmFontsFaceGetMetrics)
+        psgmFontsFaceGetMetrics(font->handle, &font->ascent, &font->descent, &font->linegap);
+    else
+    {
+        font->ascent = SG_NAN;
+        font->descent = SG_NAN;
+        font->linegap = SG_NAN;
+    }
+}
+
+typedef SGbool SG_EXPORT ExecLineStartFunction(SGFont* font, const SGdchar* text, const SGdchar* start, const SGdchar* end, void* data);
+typedef SGbool SG_EXPORT ExecLineEndFunction(SGFont* font, const SGdchar* text, const SGdchar* start, const SGdchar* end, float xoffset, float yoffset, void* data);
+typedef SGbool SG_EXPORT ExecCharFunction(SGFont* font, const SGdchar* text, const SGdchar* chr, SGCharInfo* cinfo, float xoffset, float yoffset, void* data);
+typedef SGbool SG_EXPORT ExecDoneFunction(SGFont* font, float xoffset, float yoffset, void* data);
+static SGbool SG_EXPORT _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecLineStartFunction* execLineStart, ExecCharFunction* execChar, ExecLineEndFunction* execLineEnd, ExecDoneFunction* execDone, void* data)
+{
+    if(!font)
+        return SG_FALSE;
+
+    float xoffset = 0.0;
+    float yoffset = 0.0;
+
+    const SGdchar* start = text;
+    const SGdchar* end;
+    const SGdchar* chr;
+    size_t line = 0;
+
+    float linesep = font->ascent - font->descent + font->linegap;
+
+    SGCharInfo* info = NULL;
+    float* kerning = NULL;
+    while(start != NULL)
+    {
+        end = sgLineEndU32(start);
+        if(execLineStart && execLineStart(font, text, start, end, data))
+            goto end;
+        info = realloc(info, (end - start) * sizeof(SGCharInfo));
+        /*
+         * we actually alloc 1 more, but it's better
+         * than getting into trouble because of unsigned wrap
+         * due to end being the same as start
+         */
+        kerning = realloc(kerning, (end - start) * sizeof(float));
+        if(psgmFontsCharsGetKerning)
+            psgmFontsCharsGetKerning(font->handle, start, end - start, kerning);
+        if(!_sgFontGetChars(font, (SGdchar*)start, end - start, info) && ((end - start) != 0))
+        {
+            start = sgNextLineU32(start);
+            continue;
+        }
+        xoffset = 0.0;
+        yoffset = linesep * line;
+        for(chr = start; chr < end; chr++)
+        {
+            if(execChar && execChar(font, text, chr, &info[chr-start], xoffset, yoffset, data))
+                goto end;
+            if(psgmFontsCharsGetKerning && chr != end - 1)
+                xoffset += kerning[chr - start];
+            xoffset += info[chr - start].xpost;
+            yoffset += info[chr - start].ypost;
+        }
+        if(execLineEnd && execLineEnd(font, text, start, end, xoffset, yoffset, data))
+            goto end;
+        line++;
+        start = sgNextLineU32(start);
+    }
+end:
+    free(info);
+    free(kerning);
+    if(execDone)
+        return execDone(font, xoffset, yoffset, data);
+    return SG_TRUE;
+}
+
+SGFont* SG_EXPORT sgFontCreateStream(SGStream* stream, SGbool delstream, float height, SGuint dpi, SGuint preload)
+{
+    SGFont* font = malloc(sizeof(SGFont));
+    if(font == NULL)
+        return NULL;
 
     font->stream = stream;
     font->del = delstream;
 
-	SGuint ret = SG_OK;
-	if(psgmFontsFaceCreate != NULL)
+    SGuint ret = SG_OK;
+    if(psgmFontsFaceCreate != NULL)
         ret = psgmFontsFaceCreate(&font->handle, stream);
-	if(ret != SG_OK)
-	{
-		fprintf(stderr, "Warning: Cannot create font\n");
-		free(font);
-		return NULL;
-	}
-
-	if(psgmFontsFaceSetHeight != NULL)
-		psgmFontsFaceSetHeight(font->handle, height);
-
-	font->height = height;
+    if(ret != SG_OK)
+    {
+        fprintf(stderr, "Warning: Cannot create font\n");
+        free(font);
+        return NULL;
+    }
 
     font->conv[0] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_CHAR);
     font->conv[1] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_WCHAR_T);
     font->conv[2] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_UTF8);
     font->conv[3] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_UTF16);
 
-	font->numchars = preload;
-	font->chars = malloc(preload * sizeof(SGCharInfo));
+    font->npreload = preload;
 
-	font->numcache = 0;
-	font->cachechars = NULL;
-	font->cache = NULL;
+    _sgFontSetHeight(font, height, dpi);
+    _sgFontCreateCache(font);
 
-    font->cmap = sgMapCreate((SGMapCmp*)_sgFontMapCmp, NULL);
-
-	SGuint i;
-	SGdchar* prestr = malloc(preload * sizeof(SGdchar));
-	for(i = 0; i < preload; i++)
-		prestr[i] = i;
-
-	_sgFontLoad(font, prestr, preload, SG_TRUE);
-	free(prestr);
-	return font;
+    return font;
 }
 SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
 {
@@ -263,66 +375,37 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload)
         fprintf(stderr, "Warning: Cannot create font %s\n", fname);
         return NULL;
     }
-    return sgFontCreateStream(stream, SG_TRUE, height, preload);
+    return sgFontCreateStream(stream, SG_TRUE, height, 96, preload);
 }
 void SG_EXPORT sgFontDestroy(SGFont* font)
 {
-	if(font == NULL)
-		return;
+    if(font == NULL)
+        return;
 
-	size_t i;
-	for(i = 0; i < font->numchars; i++)
-		sgTextureDestroy(font->chars[i].texture);
-	for(i = 0; i < font->numcache; i++)
-		sgTextureDestroy(font->cache[i].texture);
+    size_t i;
+    for(i = 0; i < 4; i++)
+        sgConvDestroy(font->conv[i]);
 
-	if(psgmFontsFaceDestroy != NULL)
-		psgmFontsFaceDestroy(font->handle);
+    if(psgmFontsFaceDestroy != NULL)
+        psgmFontsFaceDestroy(font->handle);
 
-	for(i = 0; i < 4; i++)
-		sgConvDestroy(font->conv[i]);
-
-	free(font->chars);
-	free(font->cachechars);
-	free(font->cache);
-
-    SGMapNode* node;
-    SGdchar* key;
-    for(;;)
-    {
-        node = sgMapGetRoot(font->cmap);
-        if(!node) break;
-
-        key = node->key;
-        free(sgMapPopRoot(font->cmap));
-        free(key);
-    }
-    sgMapDestroy(font->cmap);
+    _sgFontDestroyCache(font);
 
     if(font->del)
         sgStreamDestroy(font->stream);
-	free(font);
+    free(font);
 }
 
-/*SGFont* SG_EXPORT sgFontResizeCopy(SGFont* font, float height)
+void SG_EXPORT sgFontClearCache(SGFont* font)
 {
-	if(font == NULL)
-		return NULL;
-
-	return sgFontCreate(font->fname, height, font->numchars);
+    _sgFontDestroyCache(font);
+    _sgFontCreateCache(font);
 }
-SGFont* SG_EXPORT sgFontResize(SGFont* font, float height)
+void SG_EXPORT sgFontSetHeight(SGFont* font, float height, SGuint dpi)
 {
-	if(font == NULL)
-		return NULL;
-
-	if(font->height == height)
-		return font;
-
-	SGFont* newFont = sgFontResizeCopy(font, height);
-	sgFontDestroy(font);
-	return newFont;
-}*/
+    _sgFontSetHeight(font, height, dpi);
+    sgFontClearCache(font);
+}
 
 void SG_EXPORT sgFontPrintfW(SGFont* font, float x, float y, const wchar_t* format, ...)
 {
@@ -352,43 +435,16 @@ void SG_EXPORT sgFontPrintfv(SGFont* font, float x, float y, const char* format,
     sgAPrintFree(buf);
 }
 
+static SGbool SG_EXPORT _printChar(SGFont* font, const SGdchar* text, const SGdchar* chr, SGCharInfo* cinfo, float xoffset, float yoffset, void* data)
+{
+    SGVec2* pos = data;
+    sgTextureDrawRads3f2f2f1f(cinfo->texture, pos->x + xoffset + cinfo->xpre, ((int)(pos->y + yoffset)) + cinfo->ypre, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
+    return SG_FALSE;
+}
 void SG_EXPORT sgFontPrintU32(SGFont* font, float x, float y, const SGdchar* text)
 {
-	if(font == NULL)
-		return;
-
-	float xoffset;
-	float yoffset;
-	float h = font->height / 0.63;
-
-	const SGdchar* start = text;
-	const SGdchar* end;
-	const SGdchar* chr;
-	size_t line = 0;
-	//SGuint numlines = sgNumLines(text);
-
-	SGCharInfo* info = NULL;
-	while(start != NULL)
-	{
-		end = sgLineEndU32(start);
-		info = realloc(info, (end - start) * sizeof(SGCharInfo));
-		if(!_sgFontGetChars(font, (SGdchar*)start, end - start, info) && ((end - start) != 0))
-		{
-			start = sgNextLineU32(start);
-			continue;
-		}
-		xoffset = x;
-		yoffset = y + h * line;
-		for(chr = start; chr < end; chr++)
-		{
-			sgTextureDrawRads3f2f2f1f(info[chr - start].texture, xoffset + info[chr - start].xpre, ((int)yoffset) + info[chr - start].ypre, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
-			xoffset += info[chr - start].xpost;
-			yoffset += info[chr - start].ypost;
-		}
-		line++;
-		start = sgNextLineU32(start);
-	}
-	free(info);
+    SGVec2 pos = sgVec2f(x, y);
+    _sgFontExecuteU32(font, text, NULL, _printChar, NULL, NULL, &pos);
 }
 void SG_EXPORT sgFontPrintU16(SGFont* font, float x, float y, const SGwchar* text)
 {
@@ -518,42 +574,25 @@ void SG_EXPORT sgFontStrSizefv(SGFont* font, float* x, float* y, const char* for
     sgAPrintFree(buf);
 }
 
+static SGbool SG_EXPORT _strSizeLineEnd(SGFont* font, const SGdchar* text, const SGdchar* start, const SGdchar* end, float xoffset, float yoffset, void* data)
+{
+    SGVec2* size = data;
+    if(size->x < xoffset)
+        size->x = xoffset;
+    return SG_FALSE;
+}
+static SGbool SG_EXPORT _strSizeDone(SGFont* font, float xoffset, float yoffset, void* data)
+{
+    SGVec2* size = data;
+    size->y = yoffset + font->ascent - font->descent;
+    return SG_TRUE;
+}
 void SG_EXPORT sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar* text)
 {
-	if(font == NULL)
-		return;
-
-	if(text[0] == 0xFEFF)
-		text++;
-
-	const SGdchar* start = text;
-	const SGdchar* end;
-	SGuint line = 0;
-	SGuint numlines = sgNumLinesU32(text);
-
-	*x = 0.0f;
-	*y = 0.0f;
-	const SGdchar* chr;
-	float w;
-	/*float h;*/
-	SGCharInfo* info = NULL;
-	while(start != NULL)
-	{
-		end = sgLineEndU32(start);
-		info = realloc(info, (end - start) * sizeof(SGCharInfo));
-		_sgFontGetChars(font, (SGdchar*)start, end - start, info);
-		w = 0.0f;
-		/*h = 0.0f;*/
-		for(chr = start; chr < end; chr++)
-			w += info[chr - start].width;
-		*x = (*x > w) ? *x : w;
-		if(line < numlines - 1)
-			*y += font->height / 0.63 - font->height;
-		*y += font->height / 0.63;
-		line++;
-		start = sgNextLineU32(start);
-	}
-	free(info);
+    SGVec2 size = sgVec2f(0.0, 0.0);
+    _sgFontExecuteU32(font, text, NULL, NULL, _strSizeLineEnd, _strSizeDone, &size);
+    *x = size.x;
+    *y = size.y;
 }
 void SG_EXPORT sgFontStrSizeU16(SGFont* font, float* x, float* y, const SGwchar* text)
 {
@@ -736,57 +775,44 @@ void SG_EXPORT SG_HINT_PRINTF(5, 0) sgFontGetPosfv(SGFont* font, float* x, float
     sgAPrintFree(buf);
 }
 
+typedef struct PosInfo
+{
+    SGVec2 pos;
+    size_t index;
+} PosInfo;
+
+static SGbool SG_EXPORT _getPosLineStart(SGFont* font, const SGdchar* text, const SGdchar* start, const SGdchar* end, void* data)
+{
+    PosInfo* pi = data;
+    if(start - text > pi->index)
+        return SG_TRUE;
+    return SG_FALSE;
+}
+static SGbool SG_EXPORT _getPosChar(SGFont* font, const SGdchar* text, const SGdchar* chr, SGCharInfo* cinfo, float xoffset, float yoffset, void* data)
+{
+    PosInfo* pi = data;
+    if(chr - text == pi->index)
+    {
+        pi->pos.x += cinfo->xpre;
+        return SG_TRUE;
+    }
+    return SG_FALSE;
+}
+static SGbool SG_EXPORT _getPosDone(SGFont* font, float xoffset, float yoffset, void* data)
+{
+    PosInfo* pi = data;
+    pi->pos.x += xoffset;
+    pi->pos.y += yoffset;
+    return SG_TRUE;
+}
 void SG_EXPORT sgFontGetPosU32(SGFont* font, float* x, float* y, size_t index, const SGdchar* text)
 {
-	if(font == NULL)
-		return;
-
-	float xoffset;
-	float yoffset;
-	float h = font->height / 0.63;
-
-	const SGdchar* start = text;
-	const SGdchar* end;
-	const SGdchar* chr;
-	size_t line = 0;
-	//SGuint numlines = sgNumLines(text);
-
-	SGCharInfo* info = NULL;
-	while(start != NULL)
-	{
-		end = sgLineEndU32(start);
-		info = realloc(info, (end - start) * sizeof(SGCharInfo));
-		if(!_sgFontGetChars(font, (SGdchar*)start, end - start, info) && ((end - start) != 0))
-		{
-			start = sgNextLineU32(start);
-			continue;
-		}
-		xoffset = 0.0;
-		yoffset = h * line;
-		for(chr = start; chr < end; chr++)
-		{
-			if(chr - text == index)
-			{
-				*x = xoffset;
-				*y = yoffset;
-				goto end;
-			}
-			//sgTextureDrawRads3f2f2f1f(info[chr - start].texture, xoffset + info[chr - start].xpre, ((int)yoffset) + info[chr - start].ypre, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
-			xoffset += info[chr - start].xpost;
-			yoffset += info[chr - start].ypost;
-		}
-		line++;
-		start = sgNextLineU32(start);
-		if(start == NULL || start - text > index) // if sgNextLineU32 skipped a line...
-		{
-			*x = xoffset;
-			*y = yoffset;
-			goto end;
-		}
-	}
-
-end:
-	free(info);
+    PosInfo pi;
+    pi.pos = sgVec2f(0.0, 0.0);
+    pi.index = index;
+    _sgFontExecuteU32(font, text, _getPosLineStart, _getPosChar, NULL, _getPosDone, &pi);
+    *x = pi.pos.x;
+    *y = pi.pos.y;
 }
 void SG_EXPORT sgFontGetPosU16(SGFont* font, float* x, float* y, size_t index, const SGwchar* text)
 {

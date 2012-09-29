@@ -20,7 +20,7 @@ typedef struct FontFace
 {
     stbtt_fontinfo info;
     void* buf;
-    float height;
+    float scale;
 } FontFace;
 
 SGenum SG_EXPORT sgmFontsFaceCreate(void** face, SGStream* stream)
@@ -50,6 +50,8 @@ SGenum SG_EXPORT sgmFontsFaceCreate(void** face, SGStream* stream)
         goto err;
     stbtt_InitFont(&fface->info, fface->buf, 0);
 
+    fface->scale = 1.0;
+
     return SG_OK;
 
 err:
@@ -64,50 +66,74 @@ SGenum SG_EXPORT sgmFontsFaceDestroy(void* face)
     free(fface);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmFontsFaceSetHeight(void* face, float height)
+
+SGenum SG_EXPORT sgmFontsFaceSetHeight(void* face, float height, SGuint dpi)
 {
     if(!face) return SG_INVALID_VALUE;
     FontFace* fface = face;
-    fface->height = height;
+    //fface->scale = stbtt_ScaleForPixelHeight(&fface->info, height);
+    fface->scale = stbtt_ScaleForMappingEmToPixels(&fface->info, height * dpi / 72.0);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmFontsCharsCreate(void* face, SGuint* chars, SGuint charnum, float* width, float* height, float* prex, float* prey, float* postx, float* posty, SGuint* datawidth, SGuint* dataheight, void** data)
+SGenum SG_EXPORT sgmFontsFaceGetMetrics(void* face, float* ascent, float* descent, float* linegap)
+{
+    if(!face) return SG_INVALID_VALUE;
+    FontFace* fface = face;
+
+    int iasc, idesc, igap;
+    stbtt_GetFontVMetrics(&fface->info, &iasc, &idesc, &igap);
+    *ascent = iasc * fface->scale;
+    *descent = idesc * fface->scale;
+    *linegap = igap * fface->scale;
+
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmFontsCharsCreate(void* face, const SGdchar* chars, size_t numchars, float* width, float* height, float* prex, float* prey, float* postx, float* posty, size_t* datawidth, size_t* dataheight, void** data)
 {
     if(!face) return SG_INVALID_VALUE;
 
     FontFace* fface = (FontFace*)face;
-    //float scale = stbtt_ScaleForPixelHeight(&fface->info, fface->height);
-    float scale = stbtt_ScaleForMappingEmToPixels(&fface->info, fface->height);
 
     int adv, left;
     int dw, dh;
     int xo, yo;
-    int kern = 0;
 
     int glyph;
     size_t i;
-    for(i = 0; i < charnum; i++)
+    for(i = 0; i < numchars; i++)
     {
         glyph = stbtt_FindGlyphIndex(&fface->info, chars[i]);
 
-        data[i] = stbtt_GetGlyphBitmap(&fface->info, scale, scale, glyph, &dw, &dh, &xo, &yo);
+        data[i] = stbtt_GetGlyphBitmap(&fface->info, fface->scale, fface->scale, glyph, &dw, &dh, &xo, &yo);
         datawidth[i] = dw;
         dataheight[i] = dh;
 
-        if(i) kern = stbtt_GetGlyphKernAdvance(&fface->info, chars[i-1], chars[i]);
-
         stbtt_GetGlyphHMetrics(&fface->info, glyph, &adv, &left);
-        prex[i] = (left + kern) * scale + xo;
+        prex[i] = /*-left * fface->scale * 0.5 + */xo;
         prey[i] = yo;
-        postx[i] = adv * scale;
+        postx[i] = adv * fface->scale;
         posty[i] = 0;
+        width[i] = adv * fface->scale;
+        height[i] = 0; /* TODO */
     }
 
     return SG_OK;
 }
-
 SGenum SG_EXPORT sgmFontsCharsFreeData(void* data)
 {
     stbtt_FreeBitmap(data, NULL);
+    return SG_OK;
+}
+
+SGenum SG_EXPORT sgmFontsCharsGetKerning(void* face, const SGdchar* chars, size_t numchars, float* kerning)
+{
+    if(!face) return SG_INVALID_VALUE;
+    FontFace* fface = face;
+
+    size_t i;
+    for(i = 1; i < numchars; i++)
+        kerning[i-1] = stbtt_GetCodepointKernAdvance(&fface->info, chars[i-1], chars[i]) * fface->scale;
+
     return SG_OK;
 }

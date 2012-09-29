@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -27,9 +27,9 @@ extern "C"
 {
 #endif
     SGenum SG_EXPORT SG_FPTR(sgmFontsFaceCreate)(void** face, SGStream* stream);
-    SGuint SG_EXPORT SG_FPTR(sgmFontsFaceDestroy)(void* face);
-    SGuint SG_EXPORT SG_FPTR(sgmFontsFaceSetHeight)(void* face, float height);
-    //SGuint SG_EXPORT sgmFontsFaceGetHeight(void* face, float* height);
+    SGenum SG_EXPORT SG_FPTR(sgmFontsFaceDestroy)(void* face);
+    SGenum SG_EXPORT SG_FPTR(sgmFontsFaceSetHeight)(void* face, float height, SGuint dpi);
+    SGenum SG_EXPORT SG_FPTR(sgmFontsFaceGetMetrics)(void* face, float* ascent, float* descent, float* linegap);
 #ifdef __cplusplus
 }
 #endif

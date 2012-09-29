@@ -74,8 +74,8 @@ typedef struct SGCharInfo
 	 * \name Bitmap size
 	 */
 	/// @{
-	SGuint dwidth;
-	SGuint dheight;
+	size_t dwidth;
+	size_t dheight;
 	/// @}
 
 	/**
@@ -116,7 +116,12 @@ typedef struct SGFont
 	 */
 	void* handle;
 	float height;	/// < Height of the font
+    SGuint dpi;
 	/// @}
+
+    float ascent;
+    float descent;
+    float linegap;
 
 	// char, wchar_t, utf8, utf16
 	SGConv* conv[4];
@@ -125,6 +130,7 @@ typedef struct SGFont
 	 * \name Preloaded characters
 	 */
 	/// @{
+    size_t npreload;
 	SGuint numchars;	/// < The number of characters
 	SGCharInfo* chars;	/// < The characters themselves
 	/// @}
@@ -156,7 +162,7 @@ SGdchar* SG_EXPORT _sgFontU8ToU32(SGFont* font, const SGchar* text);
 SGdchar* SG_EXPORT _sgFontWToU32(SGFont* font, const wchar_t* text);
 SGdchar* SG_EXPORT _sgFontToU32(SGFont* font, const char* text);
 
-SGFont* SG_EXPORT sgFontCreateStream(SGStream* stream, SGbool delstream, float height, SGuint preload);
+SGFont* SG_EXPORT sgFontCreateStream(SGStream* stream, SGbool delstream, float height, SGuint dpi, SGuint preload);
 /// @{
 /**
  * \brief Load a font
@@ -177,48 +183,8 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload);
 void SG_EXPORT sgFontDestroy(SGFont* font);
 /// @}
 
-/* resize functions temporarily removed */
-
-/**
- * \name Resizing
- */
-/// @{
-/**
- * \brief Resize the font, force duplication.
- *
- * \param font The font to resize
- * \param height New font height
- *
- * \return A copy of the font, with the height \a height.
- *
- * This resizes the font and forces for it to be duplicated even
- * if the character data for the new size has already been created.
- *
- * It is roughly equivalent to:
- * \code
- *	sgFontCreate(font->fname, font->height, font->preload);
- * \endcode
- *
- * \see sgFontResize
- */
-
-//SGFont* SG_EXPORT sgFontResizeCopy(SGFont* font, float height);
-/**
- * \brief Resize the font, duplicating only if necessarry.
- *
- * \param font The font to resize
- * \param height New font height
- *
- * \return A new font if one had to be created;
- * otherwise a previously-created font.
- *
- * This function is similar to sgFontResizeCopy(), only it
- * does not allocate a new font if it doesn't have to.
- *
- * \see	sgFontResizeCopy
- */
-//SGFont* SG_EXPORT sgFontResize(SGFont* font, float height);
-/// @}
+void SG_EXPORT sgFontClearCache(SGFont* font);
+void SG_EXPORT sgFontSetHeight(SGFont* font, float height, SGuint dpi);
 
 /**
  * \name Printing
