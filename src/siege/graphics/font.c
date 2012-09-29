@@ -362,7 +362,7 @@ SGFont* SG_EXPORT sgFontCreateStream(SGStream* stream, SGbool delstream, float h
 
     font->npreload = preload;
 
-    _sgFontSetHeight(font, height, dpi);
+    _sgFontSetHeight(font, height, dpi ? dpi : 96);
     _sgFontCreateCache(font);
 
     return font;
@@ -375,7 +375,7 @@ SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint dpi, SGui
         fprintf(stderr, "Warning: Cannot create font %s\n", fname);
         return NULL;
     }
-    return sgFontCreateStream(stream, SG_TRUE, height, dpi ? dpi : 96, preload);
+    return sgFontCreateStream(stream, SG_TRUE, height, dpi, preload);
 }
 void SG_EXPORT sgFontDestroy(SGFont* font)
 {
