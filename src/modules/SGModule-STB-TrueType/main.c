@@ -23,6 +23,7 @@ SGenum SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     (*minfo)->vminor = SG_VERSION_MINOR;
     (*minfo)->vpatch = SG_VERSION_PATCH;
 
+    (*minfo)->type = SG_MODULE_FONTLOAD;
     (*minfo)->name = "STB-TrueType";
 
     return SG_OK;
