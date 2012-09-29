@@ -213,7 +213,7 @@ int main(void)
     sprPacman = sgSpriteCreateFile("data/sprites/Pacman.png");
     sprStrongboxSmall = sgSpriteCreateFile("data/sprites/StrongboxSmall.png");
     sprSupportBar = sgSpriteCreateFile("data/sprites/SupportBar.png");
-    SGFont* font = sgFontCreate("data/fonts/DejaVuSans.ttf", 7.0, 127);
+    SGFont* font = sgFontCreate("data/fonts/DejaVuSans.ttf", 7.0, 0, 127);
 
     SGuint i;
     for(i = 32; i < 640; i += 64)

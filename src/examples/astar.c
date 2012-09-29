@@ -144,12 +144,7 @@ void recreateGrid(SGbool copy, SGbool refont)
 		sgNavGridDestroy(prev);
 
 	if(refont)
-	{
-        /* TODO: resize */
-		//score = sgFontResize(prevfont, cellw / 4.0);
-		//if(score != prevfont)
-			//sgFontDestroy(prevfont);
-	}
+        sgFontSetHeight(prevfont, cellw / 4.0, 0);
 
 	changed = SG_TRUE;
 }
@@ -254,10 +249,10 @@ int main(void)
 	sgWindowOpen(WIDTH, HEIGHT, 32, 0);
 	sgWindowSetTitle("SIEGE A-Star Demo - Hit 'F1' for instructions");
 
-	SGFont* head = sgFontCreate("data/fonts/DejaVuSans.ttf", 16, 127);
-	SGFont* text = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 127);
+	SGFont* head = sgFontCreate("data/fonts/DejaVuSans.ttf", 16, 0, 127);
+	SGFont* text = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 0, 127);
 
-	score = sgFontCreate("data/fonts/DejaVuSans.ttf", cellw / 4.0, 127);
+	score = sgFontCreate("data/fonts/DejaVuSans.ttf", cellw / 4.0, 0, 127);
 
 	SGNavGridData* data;
 	SGList* path = NULL;

@@ -20,9 +20,9 @@ int main(void)
 
 	SGuint i;
 	for(i = 0; i < numsizes; i++)
-		sizes[i] = sgFontCreate("data/fonts/DejaVuSans.ttf", 7 + i, 127);
+		sizes[i] = sgFontCreate("data/fonts/DejaVuSans.ttf", 7 + i, 0, 127);
 
-	font = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 127);
+	font = sgFontCreate("data/fonts/DejaVuSans.ttf", 10, 0, 127);
 
 	SGuint width = sgWindowGetWidth();
 	SGuint height = sgWindowGetHeight();
