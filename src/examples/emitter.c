@@ -55,7 +55,7 @@ int main(void)
 	/* necessary initialisations of siege */
 	sgLoadModule("SDL");
 	sgLoadModule("OpenGL");
-	sgLoadModule("DevIL");
+    sgLoadModule("STB-Image");
 	sgInit(0);
 	sgWindowOpen(640, 480, 32, 0);
 	sgWindowSetTitle("SIEGE Emitter Demo");

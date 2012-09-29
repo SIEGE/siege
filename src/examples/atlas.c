@@ -41,7 +41,7 @@ int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");
-    sgLoadModule("DevIL");
+    sgLoadModule("STB-Image");
 
     sgInit(0);
 

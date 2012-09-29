@@ -105,12 +105,13 @@ SGenum SG_EXPORT sgmFontsCharsCreate(void* face, const SGdchar* chars, size_t nu
     {
         glyph = stbtt_FindGlyphIndex(&fface->info, chars[i]);
 
+        //dw = dh = 0;
         data[i] = stbtt_GetGlyphBitmap(&fface->info, fface->scale, fface->scale, glyph, &dw, &dh, &xo, &yo);
         datawidth[i] = dw;
         dataheight[i] = dh;
 
         stbtt_GetGlyphHMetrics(&fface->info, glyph, &adv, &left);
-        prex[i] = /*-left * fface->scale * 0.5 + */xo;
+        prex[i] = xo;
         prey[i] = yo;
         postx[i] = adv * fface->scale;
         posty[i] = 0;

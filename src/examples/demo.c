@@ -441,7 +441,7 @@ int main(void)
 {
     sgLoadModule("SDL");
     sgLoadModule("OpenGL");
-    sgLoadModule("DevIL");
+    sgLoadModule("STB-Image");
     sgLoadModule("OpenAL");
     sgLoadModule("SndFile");
     sgLoadModule("Chipmunk");

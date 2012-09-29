@@ -111,7 +111,6 @@ SGbool wdiag = SG_FALSE;
 void recreateGrid(SGbool copy, SGbool refont)
 {
 	SGNavGrid* prev = grid;
-	SGFont* prevfont = score;
 
 	grid = sgNavGridCreate(GRIDW, GRIDH, diag, wdiag);
 
@@ -144,7 +143,7 @@ void recreateGrid(SGbool copy, SGbool refont)
 		sgNavGridDestroy(prev);
 
 	if(refont)
-        sgFontSetHeight(prevfont, cellw / 4.0, 0);
+        sgFontSetHeight(score, cellw / 4.0, 0);
 
 	changed = SG_TRUE;
 }
@@ -243,8 +242,8 @@ int main(void)
 {
 	sgLoadModule("SDL");
 	sgLoadModule("OpenGL");
-	sgLoadModule("Freetype");
-	//sgLoadModule("DevIL");
+    sgLoadModule("STB-TrueType");
+    //sgLoadModule("STB-Image");
 	sgInit(0);
 	sgWindowOpen(WIDTH, HEIGHT, 32, 0);
 	sgWindowSetTitle("SIEGE A-Star Demo - Hit 'F1' for instructions");

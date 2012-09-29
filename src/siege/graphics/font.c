@@ -259,9 +259,9 @@ static void SG_EXPORT _sgFontDestroyCache(SGFont* font)
 static void SG_EXPORT _sgFontSetHeight(SGFont* font, float height, SGuint dpi)
 {
     font->height = height;
-    font->dpi = dpi;
+    font->dpi = dpi ? dpi : 96;
     if(psgmFontsFaceSetHeight)
-        psgmFontsFaceSetHeight(font->handle, height, dpi);
+        psgmFontsFaceSetHeight(font->handle, height, font->dpi);
     if(psgmFontsFaceGetMetrics)
         psgmFontsFaceGetMetrics(font->handle, &font->ascent, &font->descent, &font->linegap);
     else
@@ -362,7 +362,7 @@ SGFont* SG_EXPORT sgFontCreateStream(SGStream* stream, SGbool delstream, float h
 
     font->npreload = preload;
 
-    _sgFontSetHeight(font, height, dpi ? dpi : 96);
+    _sgFontSetHeight(font, height, dpi);
     _sgFontCreateCache(font);
 
     return font;
