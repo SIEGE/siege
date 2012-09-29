@@ -23,14 +23,14 @@ int main(void)
 	sgLoadModule("SDL");
 	sgLoadModule("OpenGL");
     sgLoadModule("OpenAL");
-    sgLoadModule("SndFile");
+    sgLoadModule("STB-Vorbis");
     sgInit(0);
 	sgWindowOpen(640, 480, 32, 0);
 	sgWindowSetTitle("SIEGE Audio Demo");
 
     printf("Loading audio data...\n");
-    printf("data/audio/boom.flac..."); fflush(stdout);
-    bufBoom = sgAudioBufferCreateFile("data/audio/boom.flac");
+    printf("data/audio/boom.ogg..."); fflush(stdout);
+    bufBoom = sgAudioBufferCreateFile("data/audio/boom.ogg");
     printf(" Loaded!\n");
     printf("data/audio/WagnerRideOfTheValkyries.ogg..."); fflush(stdout);
     bufMusic = sgAudioBufferCreateFile("data/audio/WagnerRideOfTheValkyries.ogg");

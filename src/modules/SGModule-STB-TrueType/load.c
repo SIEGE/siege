@@ -44,6 +44,7 @@ SGenum SG_EXPORT sgmFontsFaceCreate(void** face, SGStream* stream)
     // "size < pos" is a sanity test
     if(size < 0 || size < pos)
         goto err;
+    size -= pos;
 
     fface->buf = malloc(size);
     if(stream->read(stream->data, fface->buf, 1, size) != size)
