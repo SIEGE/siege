@@ -173,7 +173,7 @@ SGFont* SG_EXPORT sgFontCreateStream(SGStream* stream, SGbool delstream, float h
  *
  * \return The newly created font info if successful, NULL otherwise.
  */
-SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint preload);
+SGFont* SG_EXPORT sgFontCreate(const char* fname, float height, SGuint dpi, SGuint preload);
 /**
  * \brief Destroy a font info
  *
