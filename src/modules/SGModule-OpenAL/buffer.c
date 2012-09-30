@@ -225,6 +225,8 @@ SGenum SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint for
             }
             datalen = datalen / 8 * 2;
             break;
+        default:
+            return SG_INVALID_ENUM;
     }
     data = toStereo(channels, data, &datalen, &alformat);
     alBufferData(*(ALuint*)buffer, alformat, data, datalen, frequency);
