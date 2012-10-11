@@ -63,6 +63,7 @@ SGSprite* SG_EXPORT sgSpriteCreateFile2f(const char* fname, float xoffset, float
     SGTexture* texture = sgTextureCreateFile(fname);
     if(texture == NULL)
         return NULL;
+    sgTextureSetWrap(texture, SG_WRAP_CLAMP_TO_EDGE, SG_WRAP_CLAMP_TO_EDGE);
     SGSprite* sprite = sgSpriteCreateTexture2f(texture, xoffset, yoffset);
     if(sprite == NULL)
     {
