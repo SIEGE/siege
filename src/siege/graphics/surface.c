@@ -57,30 +57,6 @@ SGSurface* SG_EXPORT sgSurfaceCreateStream(SGStream* stream, SGbool delstream)
 }
 SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname)
 {
-    /* DEPRECATED PART */
-    if(!psgmGraphicsLoad)
-    {
-        size_t width;
-        size_t height;
-        SGuint bpp;
-        void* data;
-
-        SGuint ret;
-        if(psgmGraphicsLoadFile != NULL)
-        {
-            ret = psgmGraphicsLoadFile(fname, &width, &height, &bpp, &data);
-            if(ret != SG_OK)
-                fprintf(stderr, "Could not load image %s\n", fname);
-        }
-        else
-            fprintf(stderr, "Could not load image %s\n", fname);
-
-        SGSurface* surface = sgSurfaceCreateData(width, height, bpp, data);
-        if(psgmGraphicsLoadFreeData != NULL)
-            psgmGraphicsLoadFreeData(data);
-        return surface;
-    }
-    /* END DEPRECATED PART */
     SGStream* stream = sgStreamCreateFile(fname, "r");
     if(!stream)
         fprintf(stderr, "Could not load image %s\n", fname);

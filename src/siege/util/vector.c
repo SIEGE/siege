@@ -18,64 +18,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-/* BEGIN DEPRECATED PARTS */
-SGVec2 SG_EXPORT SG_HINT_DEPRECATED sgVec2SetLength(SGVec2 vec, float length)
-{
-    return sgVec2Resize(vec, length);
-}
-float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetLength(SGVec2 vec)
-{
-    return sgVec2Length(vec);
-}
-float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetLength2(SGVec2 vec)
-{
-    return sgVec2Length2(vec);
-}
-
-SGVec2 SG_EXPORT SG_HINT_DEPRECATED sgVec2SetAngleRads(SGVec2 vec, float rads)
-{
-    return sgVec2RotateRads(vec, rads);
-}
-float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetAngleRads(SGVec2 vec)
-{
-    return sgVec2AngleRads(vec);
-}
-SGVec2 SG_EXPORT SG_HINT_DEPRECATED sgVec2SetAngleDegs(SGVec2 vec, float degs)
-{
-    return sgVec2RotateDegs(vec, degs);
-}
-float SG_EXPORT SG_HINT_DEPRECATED sgVec2GetAngleDegs(SGVec2 vec)
-{
-    return sgVec2AngleDegs(vec);
-}
-
-SGVec3 SG_EXPORT SG_HINT_DEPRECATED sgVec3SetLength(SGVec3 vec, float length)
-{
-    return sgVec3Resize(vec, length);
-}
-float SG_EXPORT SG_HINT_DEPRECATED sgVec3GetLength(SGVec3 vec)
-{
-    return sgVec3Length(vec);
-}
-float SG_EXPORT SG_HINT_DEPRECATED sgVec3GetLength2(SGVec3 vec)
-{
-    return sgVec3Length2(vec);
-}
-
-SGVec4 SG_EXPORT SG_HINT_DEPRECATED sgVec4SetLength(SGVec4 vec, float length)
-{
-    return sgVec4Resize(vec, length);
-}
-float SG_EXPORT SG_HINT_DEPRECATED sgVec4GetLength(SGVec4 vec)
-{
-    return sgVec4Length(vec);
-}
-float SG_EXPORT SG_HINT_DEPRECATED sgVec4GetLength2(SGVec4 vec)
-{
-    return sgVec4Length2(vec);
-}
-/* END DEPRECATED PARTS */
-
 SGVec2 SG_EXPORT sgVec2f(float x, float y)
 {
     SGVec2 vec;

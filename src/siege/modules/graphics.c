@@ -73,7 +73,6 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
     _SG_BIND(sgmGraphicsDrawArrays);
     _SG_BIND(sgmGraphicsDrawElements);
 
-	_SG_BIND(sgmGraphicsDrawPrimitive);
 	_SG_BIND(sgmGraphicsDrawSetColor);
 	_SG_BIND(sgmGraphicsDrawPointSetSize);
 	//bindFunc(sgmGraphicsDrawPointGetSize)("sgmGraphicsDrawPointGetSize", lib);
@@ -98,7 +97,6 @@ void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
     _SG_BIND(sgmGraphicsDrawSetPolygonSmooth);
 
 	/// Graphics Load
-	_SG_BIND(sgmGraphicsLoadFile);
     _SG_BIND(sgmGraphicsLoad);
 	_SG_BIND(sgmGraphicsLoadFreeData);
 }

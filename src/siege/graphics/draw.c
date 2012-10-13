@@ -235,8 +235,6 @@ void SG_EXPORT sgDrawEnd(void)
         psgmGraphicsSetIndexPointer(_sg_gfxHandle, SG_FLOAT, 0, NULL);
     if(psgmGraphicsDrawArrays)
         psgmGraphicsDrawArrays(_sg_gfxHandle, texture, ctx->mode, 0, ctx->numPoints);
-    else if(psgmGraphicsDrawPrimitive) /* DEPRECATED -- remove when appropriate! */
-        psgmGraphicsDrawPrimitive(_sg_gfxHandle, texture, ctx->mode, ctx->numPoints, ctx->points, ctx->texCoords, ctx->colors);
     ctx->numPoints = 0;
 }
 void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)

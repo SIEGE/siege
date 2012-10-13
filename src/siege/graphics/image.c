@@ -46,24 +46,6 @@ err:
 }
 SGImageData* SG_EXPORT sgImageDataCreateFile(const char* fname)
 {
-    /* DEPRECATED PART */
-    if(!psgmGraphicsLoad)
-    {
-        SGImageData* idata = malloc(sizeof(SGImageData));
-        if(!idata) return NULL;
-
-        SGenum ret;
-        if(psgmGraphicsLoadFile)
-        {
-            ret = psgmGraphicsLoadFile(fname, &idata->width, &idata->height, &idata->bpp, &idata->data);
-            if(ret != SG_OK)
-                fprintf(stderr, "Could not load image %s\n", fname);
-        }
-        else
-            fprintf(stderr, "Could not load image %s\n", fname);
-        return idata;
-    }
-    /* END DEPRECATED PART */
     SGStream* stream = sgStreamCreateFile(fname, "r");
     if(!stream)
         fprintf(stderr, "Could not load image %s\n", fname);

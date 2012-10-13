@@ -270,10 +270,6 @@ SGSetNode* SG_EXPORT sgSetSearch(SGSet* set, const void* item)
     }
     return node;
 }
-SGSetNode* SG_EXPORT SG_HINT_DEPRECATED sgSetFindItem(SGSet* set, const void* item)
-{
-    return sgSetSearch(set, item);
-}
 
 SGSetNode* SG_EXPORT sgSetInsert(SGSet* set, void* item)
 {

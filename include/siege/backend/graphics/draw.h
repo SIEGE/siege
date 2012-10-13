@@ -5,7 +5,7 @@
  * This file is part of libSIEGE.
  *
  * This software is copyrighted work licensed under the terms of the
- * 2-clause BSD license. Please consult the file "license.txt" for
+ * 2-clause BSD license. Please consult the file "COPYING.txt" for
  * details.
  *
  * If you did not recieve the file with this program, please email
@@ -32,18 +32,17 @@ extern "C"
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawArrays)(void* context, void* texture, SGenum mode, size_t first, size_t count);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawElements)(void* context, void* texture, SGenum mode, size_t count, SGenum type, const void* indices);
 
-    SGuint SG_EXPORT SG_HINT_DEPRECATED SG_FPTR(sgmGraphicsDrawPrimitive)(void* context, void* texture, SGenum type, size_t numverts, float* vertices, float* texcoords, float* colors);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawSetColor)(void* context, float* color);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPointSetSize)(void* context, float size);
-    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPointGetSize)(void* context, float* size);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawLineSetWidth)(void* context, float size);
-    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawLineGetWidth)(void* context, float* size);
-    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawLineSetStipple)(void* context, SGuint factor, SGuint pattern);
-    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawLineGetStipple)(void* context, SGuint* factor, SGuint* pattern);
-    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPolygonSetStipple)(void* context, SGubyte* pattern);
-    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawPolygonGetStipple)(void* context*, SGubyte** pattern);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawSetBlendFunc)(void* context, SGenum src, SGenum dst);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsDrawSetBlendEquation)(void* context, SGenum equation);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetColor)(void* context, float* color);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawPointSetSize)(void* context, float size);
+    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawPointGetSize)(void* context, float* size);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawLineSetWidth)(void* context, float size);
+    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawLineGetWidth)(void* context, float* size);
+    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawLineSetStipple)(void* context, SGuint factor, SGuint pattern);
+    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawLineGetStipple)(void* context, SGuint* factor, SGuint* pattern);
+    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawPolygonSetStipple)(void* context, SGubyte* pattern);
+    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawPolygonGetStipple)(void* context*, SGubyte** pattern);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetBlendFunc)(void* context, SGenum src, SGenum dst);
+    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetBlendEquation)(void* context, SGenum equation);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthFunc)(void* context, SGenum func);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthTest)(void* context, SGbool test);
     SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetAlphaFunc)(void* context, SGenum func, float ref);

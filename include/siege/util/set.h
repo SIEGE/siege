@@ -56,7 +56,6 @@ void SG_EXPORT sgSetDestroy(SGSet* set);
 //size_t SG_EXPORT sgSetNumNodes(SGSet* set);
 
 SGSetNode* SG_EXPORT sgSetSearch(SGSet* set, const void* item);
-SGSetNode* SG_EXPORT SG_HINT_DEPRECATED sgSetFindItem(SGSet* set, const void* item);
 
 SGSetNode* SG_EXPORT sgSetInsert(SGSet* set, void* item);
 
