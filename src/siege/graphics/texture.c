@@ -25,10 +25,10 @@ SGTexture* SG_EXPORT sgTextureCreateStream(SGStream* stream, SGbool delstream)
 {
     size_t width;
     size_t height;
-    SGuint bpp;
+    SGenum bpp;
     void* data;
 
-    SGuint ret;
+    SGenum ret;
     if(psgmGraphicsLoad)
     {
         ret = psgmGraphicsLoad(stream, &width, &height, &bpp, &data);
