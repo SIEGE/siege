@@ -19,22 +19,55 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-SGImageData* SG_EXPORT sgImageDataCreateFile(const char* fname)
+SGImageData* SG_EXPORT sgImageDataCreateStream(SGStream* stream, SGbool delstream)
 {
     SGImageData* idata = malloc(sizeof(SGImageData));
-    if(!idata) return NULL;
+    if(!idata) goto err;
 
     SGenum ret;
-    if(psgmGraphicsLoadFile)
+    if(psgmGraphicsLoad)
     {
-        ret = psgmGraphicsLoadFile(fname, &idata->width, &idata->height, &idata->bpp, &idata->data);
+        ret = psgmGraphicsLoad(stream, &idata->width, &idata->height, &idata->bpp, &idata->data);
         if(ret != SG_OK)
-            fprintf(stderr, "Could not load image %s\n", fname);
+            goto err;
     }
     else
-        fprintf(stderr, "Could not load image %s\n", fname);
-
+        goto err;
     return idata;
+err:
+    fprintf(stderr, "Could not load image\n");
+    if(idata)
+    {
+        if(idata->data)
+            free(idata->data);
+        free(idata);
+    }
+    return NULL;
+}
+SGImageData* SG_EXPORT sgImageDataCreateFile(const char* fname)
+{
+    /* DEPRECATED PART */
+    if(!psgmGraphicsLoad)
+    {
+        SGImageData* idata = malloc(sizeof(SGImageData));
+        if(!idata) return NULL;
+
+        SGenum ret;
+        if(psgmGraphicsLoadFile)
+        {
+            ret = psgmGraphicsLoadFile(fname, &idata->width, &idata->height, &idata->bpp, &idata->data);
+            if(ret != SG_OK)
+                fprintf(stderr, "Could not load image %s\n", fname);
+        }
+        else
+            fprintf(stderr, "Could not load image %s\n", fname);
+        return idata;
+    }
+    /* END DEPRECATED PART */
+    SGStream* stream = sgStreamCreateFile(fname, "r");
+    if(!stream)
+        fprintf(stderr, "Could not load image %s\n", fname);
+    return sgImageDataCreateStream(stream, SG_TRUE);
 }
 SGImageData* SG_EXPORT sgImageDataCreateData(size_t width, size_t height, SGenum bpp, void* data)
 {

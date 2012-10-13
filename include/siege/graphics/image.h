@@ -16,6 +16,7 @@
 #define __SIEGE_GRAPHICS_IMAGE_H__
 
 #include "../common.h"
+#include "../util/stream.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -30,6 +31,7 @@ typedef struct SGImageData
     void* data;
 } SGImageData;
 
+SGImageData* SG_EXPORT sgImageDataCreateStream(SGStream* stream, SGbool delstream);
 SGImageData* SG_EXPORT sgImageDataCreateFile(const char* fname);
 SGImageData* SG_EXPORT sgImageDataCreateData(size_t width, size_t height, SGenum bpp, void* data);
 SGImageData* SG_EXPORT sgImageDataCreate(size_t width, size_t height, SGenum bpp);
