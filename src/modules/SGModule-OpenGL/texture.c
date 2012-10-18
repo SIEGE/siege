@@ -15,6 +15,8 @@
 #include "common.h"
 #include "texture.h"
 
+#include <stdlib.h>
+
 SGenum SG_EXPORT sgmGraphicsTextureCreate(void** texture, void* context)
 {
     TextureData** tdata = (TextureData**)texture;
