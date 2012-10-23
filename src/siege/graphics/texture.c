@@ -33,10 +33,16 @@ SGTexture* SG_EXPORT sgTextureCreateStream(SGStream* stream, SGbool delstream)
     {
         ret = psgmGraphicsLoad(stream, &width, &height, &bpp, &data);
         if(ret != SG_OK)
+        {
             fprintf(stderr, "Could not load image\n");
+            return NULL;
+        }
     }
     else
+    {
         fprintf(stderr, "Could not load image\n");
+        return NULL;
+    }
 
     SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
     if(psgmGraphicsLoadFreeData != NULL)
@@ -49,7 +55,10 @@ SGTexture* SG_EXPORT sgTextureCreateFile(const char* fname)
 {
     SGStream* stream = sgStreamCreateFile(fname, "r");
     if(!stream)
+    {
         fprintf(stderr, "Could not load image %s\n", fname);
+        return NULL;
+    }
     return sgTextureCreateStream(stream, SG_TRUE);
 }
 SGTexture* SG_EXPORT sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data)

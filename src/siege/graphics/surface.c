@@ -43,10 +43,16 @@ SGSurface* SG_EXPORT sgSurfaceCreateStream(SGStream* stream, SGbool delstream)
     {
         ret = psgmGraphicsLoad(stream, &width, &height, &bpp, &data);
         if(ret != SG_OK)
+        {
             fprintf(stderr, "Could not load image\n");
+            return NULL;
+        }
     }
     else
+    {
         fprintf(stderr, "Could not load image\n");
+        return NULL;
+    }
 
     SGSurface* surface = sgSurfaceCreateData(width, height, bpp, data);
     if(psgmGraphicsLoadFreeData != NULL)
@@ -59,7 +65,10 @@ SGSurface* SG_EXPORT sgSurfaceCreateFile(const char* fname)
 {
     SGStream* stream = sgStreamCreateFile(fname, "r");
     if(!stream)
+    {
         fprintf(stderr, "Could not load image %s\n", fname);
+        return NULL;
+    }
     return sgSurfaceCreateStream(stream, SG_TRUE);
 }
 SGSurface* SG_EXPORT sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data)
