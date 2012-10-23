@@ -120,7 +120,7 @@ typedef double SGdouble;
 
 #ifndef SG_EXPORT
 #	if defined(__WIN32)
-#		define SG_EXPORT _cdecl
+#		define SG_EXPORT __cdecl
 #	else
 /**
  * \brief Exported in siege calling convention
