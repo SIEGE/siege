@@ -42,6 +42,22 @@ typedef struct SGBank
     SGBankUnload* cbUnload;
 } SGBank;
 
+/*
+ * Example:
+ * ---
+ *     // Try data/sprites/<name>.png and data/sprites/<name>.jpg> in sequence.
+ *     SGBank* sprites = sgBankCreate("data/sprites/%s.png|data/sprites/%s.jpg", loadSprite, unloadSprite);
+ *     // data/sprites/player.png or data/sprites/player.jpg
+ *     // NULL is an opaque data pointer, passed in to loadSprite
+ *     SGSprite* player1 = sgBankLoad(sprites, "player", NULL);
+ *     // ...
+ *     // "player" has already been loaded, so we return that sprite instead of loading again
+ *     SGSprite* player2 = sgBankLoad(sprites, "player", NULL);
+ *     // automatically calls unloadSprite for each loaded image
+ *     sgBankDestroy(sprites);
+ * ---
+ */
+
 /**
  * Format:
  *  %s => name
