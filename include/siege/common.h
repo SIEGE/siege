@@ -118,18 +118,24 @@ typedef double SGdouble;
  */
 #define SIEGE_TEST
 
-#ifndef SG_EXPORT
+#ifndef SG_CALL
 #	if defined(__WIN32)
-#		define SG_EXPORT __cdecl
+#       define SG_CALL __cdecl
 #	else
 /**
  * \brief Exported in siege calling convention
  *
  * This is used in all SIEGE functions. SIEGE currently uses the cdecl calling convention.
  */
-#		define SG_EXPORT
+#       define SG_CALL
 #	endif  // defined(__WIN32)
 #endif // defined(SG_EXPORT)
+
+/**
+ * WARNING: SG_EXPORT IS DEPRECATED*, USE SG_CALL INSTEAD
+ * (* will be reintroduced with a different meaning later on)
+ */
+#define SG_EXPORT SG_CALL
 
 /**
  * \name Version information
