@@ -38,6 +38,8 @@ static char* skipSpace(char* str)
 
 static SGint SG_EXPORT _setCmp(const void* a, const void* b, void* data)
 {
+    if(a == b)
+        return 0;
     return strcmp(a, b);
 }
 
@@ -56,7 +58,7 @@ static int removeItem(SGSet* set, const char* str)
     if(!node)
         return 0;
     char* nstr = node->item;
-    sgSetRemoveItem(set, (void*)str);
+    sgSetRemoveItem(set, nstr);
     free(nstr);
     return 1;
 }
