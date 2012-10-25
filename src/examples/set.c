@@ -52,9 +52,12 @@ static int insertItem(SGSet* set, const char* str)
 }
 static int removeItem(SGSet* set, const char* str)
 {
-    if(!sgSetSearch(set, (void*)str))
+    SGSetNode* node = sgSetSearch(set, (void*)str);
+    if(!node)
         return 0;
+    char* nstr = node->item;
     sgSetRemoveItem(set, (void*)str);
+    free(nstr);
     return 1;
 }
 static void printNode(SGSetNode* node)
