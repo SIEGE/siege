@@ -250,7 +250,7 @@ float SG_EXPORT sgVec3Dot(SGVec3 a, SGVec3 b)
 }
 SGVec3 SG_EXPORT sgVec3Cross(SGVec3 a, SGVec3 b)
 {
-    return sgVec3f(a.y * b.z - a.z * b.y, a.x * b.z - a.z * b.x, a.x * b.y - a.y * b.x);
+    return sgVec3f(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 }
 float SG_EXPORT sgVec3Triple(SGVec3 a, SGVec3 b, SGVec3 c)
 {
