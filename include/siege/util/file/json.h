@@ -12,6 +12,8 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
+#if 0 /* Currently broken */
+
 #ifndef __SIEGE_UTIL_FILE_JSON_H__
 #define __SIEGE_UTIL_FILE_JSON_H__
 
@@ -89,3 +91,5 @@ SGJSONValue* SG_EXPORT sgJSONObjectGetValue(SGJSONValue* object, const char* key
 #endif // __cplusplus
 
 #endif // __SIEGE_UTIL_FILE_JSON_H__
+
+#endif

@@ -1,3 +1,5 @@
+#if 0 /* Currently broken */
+
 #define SG_BUILD_LIBRARY
 #include <siege/util/file/json.h>
 #include <siege/util/string.h>
@@ -758,3 +760,5 @@ SGJSONValue* SG_EXPORT sgJSONObjectGetValue(SGJSONValue* object, const char* key
         return node->item;
     return NULL;
 }
+
+#endif
