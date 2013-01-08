@@ -150,16 +150,18 @@ void boxDrawDBG(SGEntity* entity)
     /*SGVec2 pos;
     sgEntityGetPos(entity, &pos.x, &pos.y);*/
 
+    sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
+
     size_t i, j;
     for(i = 0; i < SG_MIN(box->numcoll, MAXCOLLS); i++)
     {
         for(j = 0; j < box->numcontacts[i]; j++)
         {
-            sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
+            //sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
             sgDrawPoint(box->points[i][j].x, box->points[i][j].y);
 
-            sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
-            sgDrawLine(box->points[i][j].x, box->points[i][j].y, box->points[i][j].x + box->normals[i][j].x, box->points[i][j].y + box->normals[i][j].y);
+            //sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
+            //sgDrawLine(box->points[i][j].x, box->points[i][j].y, box->points[i][j].x + box->normals[i][j].x, box->points[i][j].y + box->normals[i][j].y);
 
             //sgDrawColor4f(0.0, 0.0, 1.0, 1.0);
             //sgDrawLine(pos.x, pos.y, pos.x + box->impulse[i][j].x, pos.y + box->impulse[i][j].y);
