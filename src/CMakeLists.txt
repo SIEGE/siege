@@ -38,5 +38,4 @@ OPTION(BUILD_SPLIT "Build the separated SIEGE build" OFF)
 
 ADD_SUBDIRECTORY(siege)
 ADD_SUBDIRECTORY(examples)
-ADD_SUBDIRECTORY(bindings)
 ADD_SUBDIRECTORY(modules)
