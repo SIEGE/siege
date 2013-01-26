@@ -102,6 +102,10 @@ void SG_EXPORT _sgLightSpaceRemoveShadowShape(SGLightSpace* space, SGShadowShape
 SGLightSpace* SG_EXPORT sgLightSpaceCreate(void);
 void SG_EXPORT sgLightSpaceDestroy(SGLightSpace* space);
 
+/*
+ * TODO: Should this set the ambience to 1.0f and premultiply the rest?
+ * The problem is that any other (= non-1.0f) setting makes the lights blow up.
+ */
 void SG_EXPORT sgLightSpaceSetAmbience4f(SGLightSpace* space, float r, float g, float b, float a);
 
 SGSurface* SG_EXPORT sgLightSpaceGetBuffer(SGLightSpace* space);
