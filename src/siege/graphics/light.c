@@ -163,7 +163,7 @@ void SG_EXPORT sgLightSpaceDraw(SGLightSpace* space, SGenum flags)
         else
             sgDrawSetBlendFunc(SG_FUNC_DST_COLOR, SG_FUNC_ZERO);
     }
-    else
+    else /* note to self: sgDrawSetBlendFunc(SG_FUNC_SRC_COLOR, SG_FUNC_ONE); makes for an interesting effect; I should prooly add an API for that */
         sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE);
     sgSurfaceDraw(space->buffer);
     sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE_MINUS_SRC_ALPHA);
