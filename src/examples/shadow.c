@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
-#include <time.h>
 
 #define NSHAPES 3
 #define NLIGHTS 4
@@ -29,8 +28,6 @@ SGbool multLights = SG_TRUE;
 SGbool sqrmult = SG_TRUE;
 
 SGbool overlayDBG = SG_FALSE;
-clock_t prev;
-clock_t curr;
 
 SGSprite* tile;
 SGSurface* tileset;
@@ -41,11 +38,6 @@ void evTick(SGEntity* ent)
 
     lights[0]->pos.x = sgMouseGetPosX();
     lights[0]->pos.y = sgMouseGetPosY();
-
-    curr = clock();
-    if(curr - prev >= 1000/60)
-        sgMSleep(curr - prev - 1000/60);
-    prev = curr;
 }
 void evDraw(SGEntity* ent)
 {
@@ -93,6 +85,8 @@ int main(void)
     sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitlef("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%u to toggle lights", NLIGHTS);
 
+    sgWindowSetFPSLimit(60.0);
+
     space = sgLightSpaceCreate();
     sgLightSpaceSetAmbience4f(space, 0.125, 0.0625, 0.0, 1.0);
 
@@ -133,8 +127,6 @@ int main(void)
     lights[1] = createLight((SGVec2){500, 300}, (SGColor){0.75, 1.0, 0.0, 0.5}, 256, 0, 360);
     lights[2] = createLight((SGVec2){200, 400}, (SGColor){1.0 , 0.5, 0.0, 1.0}, 128, 0, 360);
     lights[3] = createLight((SGVec2){50 , 50 }, (SGColor){1.0 , 1.0, 1.0, 1.0}, 320, 45, 60);
-
-    prev = clock();
 
     SGint ret = sgRun();
 

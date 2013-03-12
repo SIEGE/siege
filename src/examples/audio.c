@@ -5,7 +5,6 @@
 
 SGAudioBuffer* bufBoom;
 SGAudioBuffer* bufMusic;
-SGAudioSource* srcBoom;
 SGAudioSource* srcMusic;
 
 void SG_EXPORT evMouseButtonLeftPress(SGEntity* entity)
@@ -14,8 +13,6 @@ void SG_EXPORT evMouseButtonLeftPress(SGEntity* entity)
     sgAudioSourceQueueBuffer(source, bufBoom);
     sgAudioSourcePlay(source);
     sgAudioSourceDestroyLazy(source);
-
-    //sgAudioSourcePlay(srcBoom);
 }
 
 int main(void)
@@ -40,9 +37,6 @@ int main(void)
     sgAudioSourceQueueBuffer(srcMusic, bufMusic);
     sgAudioSourcePlay(srcMusic);
 
-    srcBoom = sgAudioSourceCreate(0.0, 1.0, 1.0, SG_FALSE);
-    sgAudioSourceQueueBuffer(srcBoom, bufBoom);
-
     SGEntity* handle = sgEntityCreate();
     handle->evMouseButtonLeftPress = evMouseButtonLeftPress;
 
@@ -52,7 +46,6 @@ int main(void)
 		sgDrawClear();
 	}
 
-    sgAudioSourceDestroy(srcBoom);
     sgAudioSourceDestroy(srcMusic);
     sgAudioBufferDestroy(bufBoom);
     sgAudioBufferDestroy(bufMusic);

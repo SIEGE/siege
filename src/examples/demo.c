@@ -453,7 +453,7 @@ int main(void)
 
     sgWindowSetFPSLimit(60.0);
 
-    bufBoom = sgAudioBufferCreateFile("data/audio/boom.flac");
+    bufBoom = sgAudioBufferCreateFile("data/audio/boom.ogg");
 
     space = sgPhysicsSpaceGetDefault();
 	sgPhysicsSpaceSetIterations(space, 10);
