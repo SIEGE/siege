@@ -29,26 +29,7 @@ extern "C"
 
 typedef void SG_CALL (SGErrorCallback)(SGenum reason, SGenum level, const char* msg, void* data);
 
-#ifdef SG_BUILD_LIBRARY
-void SG_CALL sgiRaisefv(SGenum reason, SGenum level, const char* format, va_list args);
-void SG_CALL sgiRaisef(SGenum reason, SGenum level, const char* format, ...);
-void SG_CALL sgiRaise(SGenum reason, SGenum level, const char* msg);
-
-void SG_CALL sgiWarningfv(SGenum reason, const char* format, va_list args);
-void SG_CALL sgiWarningf(SGenum reason, const char* format, ...);
-void SG_CALL sgiWarning(SGenum reason, const char* msg);
-
-void SG_CALL sgiErrorfv(SGenum reason, const char* format, va_list args);
-void SG_CALL sgiErrorf(SGenum reason, const char* format, ...);
-void SG_CALL sgiError(SGenum reason, const char* msg);
-
-void SG_CALL sgiFatalfv(SGenum reason, const char* format, va_list args);
-void SG_CALL sgiFatalf(SGenum reason, const char* format, ...);
-void SG_CALL sgiFatal(SGenum reason, const char* msg);
-#endif /* SG_BUILD_LIBRARY */
-
-void SG_CALL sgErrorSetIntCallback(SGErrorCallback* cb, void* data);
-void SG_CALL sgErrorSetUserCallback(SGErrorCallback* cb, void* data);
+void SG_CALL sgErrorSetCallback(SGErrorCallback* cb, void* data);
 
 void SG_CALL sgRaisefv(SGenum reason, SGenum level, const char* format, va_list args);
 void SG_CALL sgRaisef(SGenum reason, SGenum level, const char* format, ...);
