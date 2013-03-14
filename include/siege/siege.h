@@ -67,6 +67,7 @@
 #include "util/color.h"
 #include "util/conv.h"
 #include "util/directory.h"
+#include "util/error.h"
 #include "util/gradient.h"
 #include "util/link.h"
 #include "util/list.h"

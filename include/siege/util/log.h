@@ -36,28 +36,19 @@ extern "C"
 #define SG_LOGL_DEFAULT SG_LOGL_INIT
 
 /* TODO: Should these callbacks take the format/args pair directly? */
-typedef void SG_CALL (SGLogXCallback)(SGenum level, const char* file, const char* func, SGuint line, const char* msg, void* data);
 typedef void SG_CALL (SGLogCallback)(SGenum level, const char* msg, void* data);
 
-void SG_CALL sgLogSetXCallback(SGLogXCallback* xcb, void* data);
 void SG_CALL sgLogSetCallback(SGLogCallback* cb, void* data);
 
-char* SG_CALL sgLogLevelString(SGenum level, SGbool upper);
-
-void SG_CALL sgLogXfv(SGenum level, const char* file, const char* func, SGuint line, const char* format, va_list args);
-void SG_CALL sgLogXf(SGenum level, const char* file, const char* func, SGuint line, const char* format, ...);
-void SG_CALL sgLogX(SGenum level, const char* file, const char* func, SGuint line, const char* msg);
+char* SG_CALL sgLogGetLevelString(SGenum level, SGbool upper);
 
 void SG_CALL sgLogfv(SGenum level, const char* format, va_list args);
 void SG_CALL sgLogf(SGenum level, const char* format, ...);
 void SG_CALL sgLog(SGenum level, const char* msg);
 
-#define SG_LOGXF(level, ...) sgLogXf(level, __FILE__, __func__, __LINE__, __VA_ARGS__)
-#define SG_LOGX(level, msg) sgLogX(level, __FILE__, __func__, __LINE__, msg)
-
 #ifdef SG_DEBUG
-#define SG_LDEBUGF(...) SG_LOGXF(SG_LOGL_DEBUG, __VA_ARGS__)
-#define SG_LDEBUG(...) SG_LOGX(SG_LOGL_DEBUG, msg)
+#define SG_LDEBUGF(...) sgLogf(SG_LOGL_DEBUG, __VA_ARGS__)
+#define SG_LDEBUG(...) sgLog(SG_LOGL_DEBUG, msg)
 #else
 #define SG_LDEBUGF(...)
 #define SG_LDEBUG(msg)
