@@ -71,6 +71,21 @@ typedef float  SGfloat;
 typedef double SGdouble;
 /// @}
 
+#if defined(SG_DEBUG) && defined(SG_NDEBUG)
+#error "Both SG_DEBUG and SG_NDEBUG are defined!"
+#elif !defined(SG_DEBUG) && !defined(SG_NDEBUG)
+/*
+ * Neither SG_DEBUG nor SG_NDEBUG are defined, so attempt to figure out whether
+ * we are in a debug build or not.
+ */
+#ifdef NDEBUG
+#define SG_NDEBUG 1
+#else
+#define SG_DEBUG 1
+#endif /* NDEBUG */
+#endif /* SG_DEBUG, SG_NDEBUG */
+/* ^ Now we should have SG_NDEBUG xor SG_DEBUG defined. */
+
 /**
  * \brief Used for things like pasting together SG_INTERFACE_VSTRING
  */

@@ -70,6 +70,7 @@
 #include "util/gradient.h"
 #include "util/link.h"
 #include "util/list.h"
+#include "util/log.h"
 #include "util/map.h"
 #include "util/matrix.h"
 #include "util/rand.h"
