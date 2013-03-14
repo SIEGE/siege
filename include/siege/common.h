@@ -158,7 +158,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 7
-#define SG_VERSION_PATCH 11
+#define SG_VERSION_PATCH 12
 /**
  * \brief Version string
  *
