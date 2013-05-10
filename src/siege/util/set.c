@@ -234,21 +234,29 @@ SGSetNode* SG_EXPORT _sgSetNodeRemove(SGSet* set, SGSetNode* root, SGSetNode* no
     return root;
 }
 
-SGSet* SG_EXPORT sgSetCreate(SGSetCmp* cmp, void* data)
+SGSet* SG_CALL sgSetInit(SGSet* set, SGSetCmp* cmp, void* data)
 {
-    SGSet* set = malloc(sizeof(SGSet));
-    if(!set)
-        return NULL;
+    if(!set) return NULL;
+
     set->root = NULL;
     set->cmp = cmp;
     set->data = data;
     return set;
 }
+void SG_CALL sgSetDeinit(SGSet* set)
+{
+    if(!set) return;
+
+    _sgSetDestroyNode(set->root);
+}
+
+SGSet* SG_EXPORT sgSetCreate(SGSetCmp* cmp, void* data)
+{
+    return sgSetInit(malloc(sizeof(SGSet)), cmp, data);
+}
 void SG_EXPORT sgSetDestroy(SGSet* set)
 {
-    if(!set)
-        return;
-    _sgSetDestroyNode(set->root);
+    sgSetDeinit(set);
     free(set);
 }
 

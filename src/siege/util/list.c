@@ -18,23 +18,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGList* SG_EXPORT sgListCreate(void)
+SGList* SG_CALL sgListInit(SGList* list)
 {
-	SGList* list = malloc(sizeof(SGList));
     if(!list) return NULL;
 
-	list->head = NULL;
-	list->tail = NULL;
-	return list;
+    list->head = NULL;
+    list->tail = NULL;
+    return list;
 }
-void SG_EXPORT sgListDestroy(SGList* list)
+void SG_CALL sgListDeinit(SGList* list)
 {
     if(!list) return;
 
-	while(list->head != NULL)
-		sgListRemoveNode(list, list->head);
+    while(list->head)
+        sgListRemoveNode(list, list->head);
+}
 
-	free(list);
+SGList* SG_EXPORT sgListCreate(void)
+{
+    return sgListInit(malloc(sizeof(SGList)));
+}
+void SG_EXPORT sgListDestroy(SGList* list)
+{
+    sgListDestroy(list);
+    free(list);
 }
 
 size_t SG_EXPORT sgListLength(SGList* list)

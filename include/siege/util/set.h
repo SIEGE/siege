@@ -50,6 +50,9 @@ SGSetNode* SG_EXPORT _sgSetNodeSplit(SGSetNode* node);
 SGSetNode* SG_EXPORT _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node);
 SGSetNode* SG_EXPORT _sgSetNodeRemove(SGSet* set, SGSetNode* root, SGSetNode* node);
 
+SGSet* SG_CALL sgSetInit(SGSet* set, SGSetCmp* cmp, void* data);
+void SG_CALL sgSetDeinit(SGSet* set);
+
 SGSet* SG_EXPORT sgSetCreate(SGSetCmp* cmp, void* data);
 void SG_EXPORT sgSetDestroy(SGSet* set);
 

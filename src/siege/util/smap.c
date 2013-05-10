@@ -23,15 +23,25 @@ static SGint SG_EXPORT _sgSMapMapCmp(const char* a, const char* b, void* data)
     return strcmp(a, b);
 }
 
-SGSMap* SG_EXPORT sgSMapCreate(void)
+SGSMap* SG_CALL sgSMapInit(SGSMap* smap)
 {
-    return (SGSMap*)sgMapCreate((SGMapCmp*)_sgSMapMapCmp, NULL);
+    return (SGSMap*)sgMapInit(&smap->map, (SGMapCmp*)_sgSMapMapCmp, NULL);
 }
-void SG_EXPORT sgSMapDestroy(SGSMap* smap)
+void SG_CALL sgSMapDeinit(SGSMap* smap)
 {
     if(!smap) return;
 
-    sgMapDestroy((SGMap*)smap);
+    sgMapDeinit(&smap->map);
+}
+
+SGSMap* SG_EXPORT sgSMapCreate(void)
+{
+    return sgSMapInit(malloc(sizeof(SGSMap)));
+}
+void SG_EXPORT sgSMapDestroy(SGSMap* smap)
+{
+    sgSMapDeinit(smap);
+    free(smap);
 }
 
 void* SG_EXPORT sgSMapReplace(SGSMap* smap, const char* key, void* val)

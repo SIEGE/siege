@@ -44,6 +44,9 @@ typedef struct SGSMap
     SGMap map;
 } SGSMap;
 
+SGSMap* SG_CALL sgSMapInit(SGSMap* smap);
+void SG_CALL sgSMapDeinit(SGSMap* smap);
+
 SGSMap* SG_EXPORT sgSMapCreate(void);
 void SG_EXPORT sgSMapDestroy(SGSMap* smap);
 

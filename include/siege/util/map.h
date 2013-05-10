@@ -40,6 +40,9 @@ typedef struct SGMap
     void* data;
 } SGMap;
 
+SGMap* SG_CALL sgMapInit(SGMap* map, SGMapCmp* cmp, void* data);
+void SG_CALL sgMapDeinit(SGMap* map);
+
 SGMap* SG_EXPORT sgMapCreate(SGMapCmp* cmp, void* data);
 void SG_EXPORT sgMapDestroy(SGMap* map);
 

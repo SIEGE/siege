@@ -37,6 +37,9 @@ typedef struct SGList
 	struct SGListNode* tail;
 } SGList;
 
+SGList* SG_CALL sgListInit(SGList* list);
+void SG_CALL sgListDeinit(SGList* list);
+
 SGList* SG_EXPORT sgListCreate(void);
 void SG_EXPORT sgListDestroy(SGList* list);
 

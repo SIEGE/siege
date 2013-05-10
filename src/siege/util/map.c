@@ -24,29 +24,31 @@ static SGint _sgMapSetCmp(const SGMapNode* a, const SGMapNode* b, void* data)
     return map->cmp(a->key, b->key, map->data);
 }
 
-SGMap* SG_EXPORT sgMapCreate(SGMapCmp* cmp, void* data)
+SGMap* SG_CALL sgMapInit(SGMap* map, SGMapCmp* cmp, void* data)
 {
-    SGMap* map = malloc(sizeof(SGMap));
-    if(!map)
-        return NULL;
+    if(!map) return NULL;
 
     map->set = sgSetCreate((SGSetCmp*)_sgMapSetCmp, map);
     if(!map->set)
-    {
-        free(map);
         return NULL;
-    }
-
     map->cmp = cmp;
     map->data = data;
-
     return map;
 }
-void SG_EXPORT sgMapDestroy(SGMap* map)
+void SG_CALL sgMapDeinit(SGMap* map)
 {
     if(!map) return;
 
     sgSetDestroy(map->set);
+}
+
+SGMap* SG_EXPORT sgMapCreate(SGMapCmp* cmp, void* data)
+{
+    return sgMapInit(malloc(sizeof(SGMap)), cmp, data);
+}
+void SG_EXPORT sgMapDestroy(SGMap* map)
+{
+    sgMapDeinit(map);
     free(map);
 }
 
