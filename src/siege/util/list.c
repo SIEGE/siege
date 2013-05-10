@@ -40,7 +40,7 @@ SGList* SG_EXPORT sgListCreate(void)
 }
 void SG_EXPORT sgListDestroy(SGList* list)
 {
-    sgListDestroy(list);
+    sgListDeinit(list);
     free(list);
 }
 
