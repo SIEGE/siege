@@ -158,7 +158,7 @@ typedef double SGdouble;
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 7
-#define SG_VERSION_PATCH 12
+#define SG_VERSION_PATCH 13
 /**
  * \brief Version string
  *
@@ -233,15 +233,26 @@ typedef double SGdouble;
 #   define SG_PI 3.14159265358979323846
 #endif // PI defined
 
+/*
+ * Using this will allow me to set the epsilon, just in case some system doesn't
+ * define FLT_EPSILON
+ *
+ * TODO: Name this just `SG_EPSILON` instead?
+ */
+#define SG_FLT_EPSILON  FLT_EPSILON
+
 /**
  * \name Some commonly used macros
  * \warning
  *	These are macros - this means that their arguments may be evaluated more than once!
  */
 /// @{
-#define SG_MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define SG_MIN(x, y) (((x) < (y)) ? (x) : (y))
-#define SG_ABS(x) (((x) < 0) ? -(x) : (x))
+#define SG_MAX(x, y)                (((x) > (y)) ? (x) : (y))
+#define SG_MIN(x, y)                (((x) < (y)) ? (x) : (y))
+#define SG_ABS(x)                   (((x) < 0) ? -(x) : (x))
+#define SG_SIGN(x)                  (((x) > 0) - ((x) < 0))
+#define SG_PSIGN(x)                 (((x) >= 0) - ((x) < 0))
+#define SG_IN_RANGE(x, min, max)    ((min) <= (x) && (x) <= (max))
 /// @}
 
 #define SG_BYTE     0
