@@ -253,6 +253,7 @@ typedef double SGdouble;
 #define SG_SIGN(x)                  (((x) > 0) - ((x) < 0))
 #define SG_PSIGN(x)                 (((x) >= 0) - ((x) < 0))
 #define SG_IN_RANGE(x, min, max)    ((min) <= (x) && (x) <= (max))
+#define SG_IN_XRANGE(x, a, b)       SG_IN_RANGE(x, SG_MIN(a, b), SG_MAX(a, b))
 /// @}
 
 #define SG_BYTE     0
