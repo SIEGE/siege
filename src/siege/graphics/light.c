@@ -22,14 +22,9 @@
 
 #define OP <=
 
-/*
-    TODO: change the way shadows are extended;
-    currently, we use winw/winh, we should try getting some viewport info...
-*/
-
 static SGLightSpace* _sgLightGetSpace(void)
 {
-    if(!_sg_lightSpaceMain) _sg_lightSpaceMain = sgLightSpaceCreate();
+    if(!_sg_lightSpaceMain) _sg_lightSpaceMain = sgLightSpaceCreate(0, 0);
     return _sg_lightSpaceMain;
 }
 
@@ -67,12 +62,14 @@ void SG_EXPORT _sgLightSpaceRemoveShadowShape(SGLightSpace* space, SGShadowShape
     sgListRemoveNode(space->shapes, shape->node);
 }
 
-SGLightSpace* SG_EXPORT sgLightSpaceCreate(void)
+SGLightSpace* SG_CALL sgLightSpaceCreate(SGuint width, SGuint height)
 {
     SGLightSpace* space = malloc(sizeof(SGLightSpace));
 
-    SGuint width, height;
-    sgWindowGetSize(&width, &height);
+    if(!width)
+        width = sgWindowGetWidth();
+    if(!height)
+        height = sgWindowGetHeight();
 
     space->buffer = sgSurfaceCreate(width, height, 32);
     space->lbuffer = sgSurfaceCreate(width, height, 32);
@@ -121,6 +118,13 @@ SGSurface* SG_EXPORT sgLightSpaceGetBuffer(SGLightSpace* space)
     return space->buffer;
 }
 
+void SG_CALL sgLightSpaceResize(SGLightSpace* space, SGuint width, SGuint height)
+{
+    sgSurfaceDestroy(space->buffer);
+    sgSurfaceDestroy(space->lbuffer);
+    space->buffer = sgSurfaceCreate(width, height, 32);
+    space->lbuffer = sgSurfaceCreate(width, height, 32);
+}
 void SG_EXPORT sgLightSpaceUpdate(SGLightSpace* space)
 {
     SGListNode* lnode;
@@ -583,9 +587,6 @@ void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
     SGVec2 tmpc, tmpn;
     size_t i;
 
-    SGuint winw, winh;
-    sgWindowGetSize(&winw, &winh);
-
     if(shape->numverts > 0)
     {
         tcurr = sgVec2RotateRads(shape->verts[0], sgVec2AngleRads(shape->verts[0]) + shape->angle);
@@ -601,8 +602,8 @@ void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
 
         if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
         {
-            tmpc = sgVec2Add(tcurr, sgVec2Resize(sgVec2Sub(tcurr, light->pos), winw + winh));
-            tmpn = sgVec2Add(tnext, sgVec2Resize(sgVec2Sub(tnext, light->pos), winw + winh));
+            tmpc = sgVec2Add(tcurr, sgVec2Resize(sgVec2Sub(tcurr, light->pos), light->radius));
+            tmpn = sgVec2Add(tnext, sgVec2Resize(sgVec2Sub(tnext, light->pos), light->radius));
 
             sgDrawVertex2f(tcurr.x, tcurr.y);
             sgDrawVertex2f(tnext.x, tnext.y);
@@ -625,11 +626,7 @@ void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
     SGVec2 tmpc, tmpn;
     size_t i;
 
-    sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
     sgDrawBegin(SG_LINES);
-
-    SGuint winw, winh;
-    sgWindowGetSize(&winw, &winh);
 
     if(shape->numverts > 0)
     {
@@ -646,11 +643,12 @@ void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
 
         if(sgVec2PDot(sgVec2Sub(tnext, tcurr), sgVec2Sub(tnext, light->pos)) OP 0)
         {
+            sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
             sgDrawVertex2f(tcurr.x, tcurr.y);
             sgDrawVertex2f(tnext.x, tnext.y);
 
-            tmpc = sgVec2Add(tcurr, sgVec2Resize(sgVec2Sub(tcurr, light->pos), winw + winh));
-            tmpn = sgVec2Add(tnext, sgVec2Resize(sgVec2Sub(tnext, light->pos), winw + winh));
+            tmpc = sgVec2Add(tcurr, sgVec2Resize(sgVec2Sub(tcurr, light->pos), light->radius));
+            tmpn = sgVec2Add(tnext, sgVec2Resize(sgVec2Sub(tnext, light->pos), light->radius));
 
             sgDrawVertex2f(tcurr.x, tcurr.y);
             sgDrawVertex2f(tmpc.x, tmpc.y);
@@ -659,6 +657,10 @@ void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
             //sgDrawVertex2f(tmpc.x, tmpc.y);
             sgDrawVertex2f(tmpn.x, tmpn.y);
             sgDrawVertex2f(tnext.x, tnext.y);
+
+            sgDrawColor4f(1.0, 0.5, 0.0, 0.5);
+            sgDrawVertex2f(tmpc.x, tmpc.y);
+            sgDrawVertex2f(tmpn.x, tmpn.y);
         }
         tcurr = tnext;
     }

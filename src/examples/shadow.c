@@ -87,7 +87,7 @@ int main(void)
 
     sgWindowSetFPSLimit(60.0);
 
-    space = sgLightSpaceCreate();
+    space = sgLightSpaceCreate(0, 0);
     sgLightSpaceSetAmbience4f(space, 0.125, 0.0625, 0.0, 1.0);
 
     SGEntity* handler = sgEntityCreate();

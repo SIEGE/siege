@@ -98,8 +98,7 @@ void SG_EXPORT _sgLightSpaceRemoveLight(SGLightSpace* space, SGLight* light);
 void SG_EXPORT _sgLightSpaceRemoveShadowShape(SGLightSpace* space, SGShadowShape* shape);
 
 
-/* TODO: Have a size here */
-SGLightSpace* SG_EXPORT sgLightSpaceCreate(void);
+SGLightSpace* SG_CALL sgLightSpaceCreate(SGuint width, SGuint height);
 void SG_EXPORT sgLightSpaceDestroy(SGLightSpace* space);
 
 /*
@@ -110,7 +109,7 @@ void SG_EXPORT sgLightSpaceSetAmbience4f(SGLightSpace* space, float r, float g, 
 
 SGSurface* SG_EXPORT sgLightSpaceGetBuffer(SGLightSpace* space);
 
-/* TODO: sgLightSpaceResize() */
+void SG_CALL sgLightSpaceResize(SGLightSpace* space, SGuint width, SGuint height);
 /* TODO: Have an offset in the Update function, to track the camera */
 void SG_EXPORT sgLightSpaceUpdate(SGLightSpace* space);
 void SG_EXPORT sgLightSpaceDraw(SGLightSpace* space, SGenum flags);
