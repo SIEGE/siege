@@ -1,18 +1,17 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-SET(SG_VERSION_MAJOR "0")
-SET(SG_VERSION_MINOR "7")
-SET(SG_VERSION_PATCH "12")
-
-#ADD_DEFINITIONS(
-#    "-DSG_VERSION_MAJOR=${SG_VERSION_MAJOR}"
-#    "-DSG_VERSION_MINOR=${SG_VERSION_MINOR}
-#    "-DSG_VERSION_PATCH=${SG_VERSION_PATCH}"
-#    )
-
 IF(${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
     MESSAGE(FATAL_ERROR "In-source builds are not supported. Please delete the CMakeCache.txt file and the CMakeFiles directory and try building out-of-source:\n\tmkdir build && cd build && cmake ..")
 ENDIF(${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
+
+MACRO(READ_DEFINE fname define varname)
+    FILE(READ ${fname} text)
+    STRING(REGEX REPLACE ".*#define[ \t]+${define}[ \t]+([^\r\n]+).*" "\\1" ${varname} ${text})
+ENDMACRO(READ_DEFINE)
+
+READ_DEFINE("include/siege/common.h" SG_VERSION_MAJOR SG_VERSION_MAJOR)
+READ_DEFINE("include/siege/common.h" SG_VERSION_MINOR SG_VERSION_MINOR)
+READ_DEFINE("include/siege/common.h" SG_VERSION_PATCH SG_VERSION_PATCH)
 
 MACRO(CONFIGURE_FILES srcDir destDir)
     MAKE_DIRECTORY(${destDir})
