@@ -25,7 +25,11 @@ static SGint SG_EXPORT _sgSMapMapCmp(const char* a, const char* b, void* data)
 
 SGSMap* SG_CALL sgSMapInit(SGSMap* smap)
 {
-    return (SGSMap*)sgMapInit(&smap->map, (SGMapCmp*)_sgSMapMapCmp, NULL);
+    if(!smap) return NULL;
+
+    if(!sgMapInit(&smap->map, (SGMapCmp*)_sgSMapMapCmp, NULL))
+        return NULL;
+    return smap;
 }
 void SG_CALL sgSMapDeinit(SGSMap* smap)
 {
@@ -48,7 +52,7 @@ void* SG_EXPORT sgSMapReplace(SGSMap* smap, const char* key, void* val)
 {
     void* old;
 
-    SGMapNode* mnode = sgMapFindNode((SGMap*)smap, key);
+    SGMapNode* mnode = sgMapFindNode(&smap->map, key);
     if(mnode)
     {
         old = mnode->val;
@@ -62,7 +66,7 @@ void* SG_EXPORT sgSMapReplace(SGSMap* smap, const char* key, void* val)
         return NULL;
     memcpy(buf, key, len + 1);
 
-    sgMapAssign((SGMap*)smap, buf, val);
+    sgMapAssign(&smap->map, buf, val);
     return NULL;
 }
 void* SG_EXPORT sgSMapAssign(SGSMap* smap, const char* key, void* val)
@@ -72,7 +76,7 @@ void* SG_EXPORT sgSMapAssign(SGSMap* smap, const char* key, void* val)
 }
 void* SG_EXPORT sgSMapFind(SGSMap* smap, const char* key)
 {
-    return sgMapFind((SGMap*)smap, key);
+    return sgMapFind(&smap->map, key);
 }
 void* SG_EXPORT sgSMapRemove(SGSMap* smap, const char* key)
 {
@@ -80,14 +84,14 @@ void* SG_EXPORT sgSMapRemove(SGSMap* smap, const char* key)
     if(!node) return NULL;
 
     char* str = node->key;
-    void* rem = sgMapRemove((SGMap*)smap, str);
+    void* rem = sgMapRemove(&smap->map, str);
     free(str);
     return rem;
 }
 
 SGSMapNode* SG_EXPORT sgSMapAssignNode(SGSMap* smap, const char* key, void* val)
 {
-    SGMapNode* node = sgMapFindNode((SGMap*)smap, key);
+    SGMapNode* node = sgMapFindNode(&smap->map, key);
     if(node)
     {
         node->val = val;
@@ -100,35 +104,35 @@ SGSMapNode* SG_EXPORT sgSMapAssignNode(SGSMap* smap, const char* key, void* val)
         return NULL;
     memcpy(buf, key, len + 1);
 
-    return sgMapAssignNode((SGMap*)smap, buf, val);
+    return sgMapAssignNode(&smap->map, buf, val);
 }
 SGSMapNode* SG_EXPORT sgSMapFindNode(SGSMap* smap, const char* key)
 {
-    return sgMapFindNode((SGMap*)smap, key);
+    return sgMapFindNode(&smap->map, key);
 }
 
 SGSMapNode* SG_EXPORT sgSMapGetRoot(SGSMap* smap)
 {
-    return sgMapGetRoot((SGMap*)smap);
+    return sgMapGetRoot(&smap->map);
 }
 SGSMapNode* SG_EXPORT sgSMapGetFirst(SGSMap* smap)
 {
-    return sgMapGetFirst((SGMap*)smap);
+    return sgMapGetFirst(&smap->map);
 }
 SGSMapNode* SG_EXPORT sgSMapGetLast(SGSMap* smap)
 {
-    return sgMapGetLast((SGMap*)smap);
+    return sgMapGetLast(&smap->map);
 }
 
 void* SG_EXPORT sgSMapPopRoot(SGSMap* smap)
 {
-    return sgMapPopRoot((SGMap*)smap);
+    return sgMapPopRoot(&smap->map);
 }
 void* SG_EXPORT sgSMapPopFirst(SGSMap* smap)
 {
-    return sgMapPopFirst((SGMap*)smap);
+    return sgMapPopFirst(&smap->map);
 }
 void* SG_EXPORT sgSMapPopLast(SGSMap* smap)
 {
-    return sgMapPopLast((SGMap*)smap);
+    return sgMapPopLast(&smap->map);
 }

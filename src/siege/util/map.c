@@ -28,8 +28,7 @@ SGMap* SG_CALL sgMapInit(SGMap* map, SGMapCmp* cmp, void* data)
 {
     if(!map) return NULL;
 
-    map->set = sgSetCreate((SGSetCmp*)_sgMapSetCmp, map);
-    if(!map->set)
+    if(!sgSetInit(&map->set, (SGSetCmp*)_sgMapSetCmp, map))
         return NULL;
     map->cmp = cmp;
     map->data = data;
@@ -39,7 +38,7 @@ void SG_CALL sgMapDeinit(SGMap* map)
 {
     if(!map) return;
 
-    sgSetDestroy(map->set);
+    sgSetDeinit(&map->set);
 }
 
 SGMap* SG_EXPORT sgMapCreate(SGMapCmp* cmp, void* data)
@@ -60,7 +59,7 @@ void* SG_EXPORT sgMapReplace(SGMap* map, void* key, void* val)
     void* old;
 
     SGMapNode* mnode;
-    SGSetNode* snode = sgSetSearch(map->set, &search);
+    SGSetNode* snode = sgSetSearch(&map->set, &search);
     if(snode)
     {
         mnode = snode->item;
@@ -78,7 +77,7 @@ void* SG_EXPORT sgMapReplace(SGMap* map, void* key, void* val)
     mnode->key = key;
     mnode->val = val;
 
-    sgSetInsert(map->set, mnode);
+    sgSetInsert(&map->set, mnode);
     return NULL;
 }
 void* SG_EXPORT sgMapAssign(SGMap* map, void* key, void* val)
@@ -99,12 +98,12 @@ void* SG_EXPORT sgMapRemove(SGMap* map, const void* key)
     search.key = (void*)key;
 
     SGMapNode* mnode;
-    SGSetNode* snode = sgSetSearch(map->set, &search);
+    SGSetNode* snode = sgSetSearch(&map->set, &search);
     if(!snode)
         return NULL;
 
     mnode = snode->item;
-    sgSetRemoveNode(map->set, snode);
+    sgSetRemoveNode(&map->set, snode);
 
     void* val = mnode->val;
     free(mnode);
@@ -117,7 +116,7 @@ SGMapNode* SG_EXPORT sgMapAssignNode(SGMap* map, void* key, void* val)
     search.key = key;
 
     SGMapNode* mnode;
-    SGSetNode* snode = sgSetSearch(map->set, &search);
+    SGSetNode* snode = sgSetSearch(&map->set, &search);
     if(snode)
     {
         mnode = snode->item;
@@ -134,7 +133,7 @@ SGMapNode* SG_EXPORT sgMapAssignNode(SGMap* map, void* key, void* val)
     mnode->key = key;
     mnode->val = val;
 
-    sgSetInsert(map->set, mnode);
+    sgSetInsert(&map->set, mnode);
     return mnode;
 }
 SGMapNode* SG_EXPORT sgMapFindNode(SGMap* map, const void* key)
@@ -142,7 +141,7 @@ SGMapNode* SG_EXPORT sgMapFindNode(SGMap* map, const void* key)
     SGMapNode search;
     search.key = (void*)key;
 
-    SGSetNode* snode = sgSetSearch(map->set, &search);
+    SGSetNode* snode = sgSetSearch(&map->set, &search);
     if(snode)
         return snode->item;
     return NULL;
@@ -150,21 +149,21 @@ SGMapNode* SG_EXPORT sgMapFindNode(SGMap* map, const void* key)
 
 SGMapNode* SG_EXPORT sgMapGetRoot(SGMap* map)
 {
-    SGSetNode* snode = sgSetGetRoot(map->set);
+    SGSetNode* snode = sgSetGetRoot(&map->set);
     if(!snode)
         return NULL;
     return snode->item;
 }
 SGMapNode* SG_EXPORT sgMapGetFirst(SGMap* map)
 {
-    SGSetNode* snode = sgSetGetFirst(map->set);
+    SGSetNode* snode = sgSetGetFirst(&map->set);
     if(!snode)
         return NULL;
     return snode->item;
 }
 SGMapNode* SG_EXPORT sgMapGetLast(SGMap* map)
 {
-    SGSetNode* snode = sgSetGetLast(map->set);
+    SGSetNode* snode = sgSetGetLast(&map->set);
     if(!snode)
         return NULL;
     return snode->item;
@@ -172,21 +171,21 @@ SGMapNode* SG_EXPORT sgMapGetLast(SGMap* map)
 
 void* SG_EXPORT sgMapPopRoot(SGMap* map)
 {
-    SGMapNode* mnode = sgSetPopRoot(map->set);
+    SGMapNode* mnode = sgSetPopRoot(&map->set);
     if(!mnode)
         return NULL;
     return mnode->val;
 }
 void* SG_EXPORT sgMapPopFirst(SGMap* map)
 {
-    SGMapNode* mnode = sgSetPopFirst(map->set);
+    SGMapNode* mnode = sgSetPopFirst(&map->set);
     if(!mnode)
         return NULL;
     return mnode->val;
 }
 void* SG_EXPORT sgMapPopLast(SGMap* map)
 {
-    SGMapNode* mnode = sgSetPopLast(map->set);
+    SGMapNode* mnode = sgSetPopLast(&map->set);
     if(!mnode)
         return NULL;
     return mnode->val;

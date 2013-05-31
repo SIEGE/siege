@@ -33,7 +33,6 @@ typedef SGMapNode SGSMapNode;
  * TODO: Should this be renamed to SGDictionary or similar?
  *
  * Implementation note:
- *  SGMap is simply cast to this structure on creation.
  *  The only reason we're not direcly doing "typedef SGSMap SGMap" is to enable
  *  the compiler to warn the user if he uses SMap functions with Map and
  *  vice-versa, as there are some subtle differences, mostly regarding key

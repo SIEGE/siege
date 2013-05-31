@@ -35,7 +35,7 @@ typedef struct SGMapNode
 
 typedef struct SGMap
 {
-    SGSet* set;
+    SGSet set;
     SGMapCmp* cmp;
     void* data;
 } SGMap;
