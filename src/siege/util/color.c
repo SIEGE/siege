@@ -646,18 +646,18 @@ SGColor SG_CALL sgColorDiv(SGColor a, SGColor b)
 
 void SG_CALL sgColorTo4ub(SGColor c, SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a)
 {
-	SGubyte tmp;
-	if(!r) r = &tmp;
-	if(!g) g = &tmp;
-	if(!b) b = &tmp;
-	if(!a) a = &tmp;
+    SGubyte tmp;
+    if(!r) r = &tmp;
+    if(!g) g = &tmp;
+    if(!b) b = &tmp;
+    if(!a) a = &tmp;
 
-	*r = (SGubyte)(c.r * 255.0);
-	*g = (SGubyte)(c.g * 255.0);
-	*b = (SGubyte)(c.b * 255.0);
-	*a = (SGubyte)(c.a * 255.0);
+    *r = (SGubyte)(c.r * 255.0);
+    *g = (SGubyte)(c.g * 255.0);
+    *b = (SGubyte)(c.b * 255.0);
+    *a = (SGubyte)(c.a * 255.0);
 }
 void SG_CALL sgColorTo4ubv(SGColor c, SGubyte* rgba)
 {
-	sgColorTo4ub(c, &rgba[0], &rgba[1], &rgba[2], &rgba[3]);
+    sgColorTo4ub(c, &rgba[0], &rgba[1], &rgba[2], &rgba[3]);
 }

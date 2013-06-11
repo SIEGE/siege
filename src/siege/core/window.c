@@ -50,26 +50,26 @@ void SG_CALL _sg_cbWindowResize(void* window, SGuint width, SGuint height)
 
 SGbool SG_CALL _sgWindowInit(void)
 {
-	_sg_winTitle = NULL;
-	_sg_winCallbacks.open = NULL;//_sg_cbWindowOpen;
-	_sg_winCallbacks.close = _sg_cbWindowClose;
-	_sg_winCallbacks.resize = NULL;//_sg_cbWindowResize;
+    _sg_winTitle = NULL;
+    _sg_winCallbacks.open = NULL;//_sg_cbWindowOpen;
+    _sg_winCallbacks.close = _sg_cbWindowClose;
+    _sg_winCallbacks.resize = NULL;//_sg_cbWindowResize;
 
-	if(psgmCoreWindowCreate != NULL)
-		psgmCoreWindowCreate(&_sg_winHandle);
+    if(psgmCoreWindowCreate != NULL)
+        psgmCoreWindowCreate(&_sg_winHandle);
 
-	if(psgmCoreWindowSetCallbacks != NULL)
-		psgmCoreWindowSetCallbacks(_sg_winHandle, &_sg_winCallbacks);
+    if(psgmCoreWindowSetCallbacks != NULL)
+        psgmCoreWindowSetCallbacks(_sg_winHandle, &_sg_winCallbacks);
 
-	return SG_TRUE;
+    return SG_TRUE;
 }
 
 SGbool SG_CALL _sgWindowDeinit(void)
 {
-	if(psgmCoreWindowDestroy != NULL)
-		psgmCoreWindowDestroy(_sg_winHandle);
-	free(_sg_winTitle);
-	return SG_TRUE;
+    if(psgmCoreWindowDestroy != NULL)
+        psgmCoreWindowDestroy(_sg_winHandle);
+    free(_sg_winTitle);
+    return SG_TRUE;
 }
 
 SGbool SG_CALL sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flags)
@@ -78,37 +78,37 @@ SGbool SG_CALL sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flag
     if(!height) height = 480;
     if(!bpp)    bpp = 32;
 
-	if(sgWindowIsOpened())
-		sgWindowClose();
+    if(sgWindowIsOpened())
+        sgWindowClose();
 
-	if(psgmCoreWindowOpen != NULL)
-		psgmCoreWindowOpen(_sg_winHandle, width, height, bpp, flags);
+    if(psgmCoreWindowOpen != NULL)
+        psgmCoreWindowOpen(_sg_winHandle, width, height, bpp, flags);
 
-	sgWindowSetTitle("SIEGE Window");
+    sgWindowSetTitle("SIEGE Window");
 
-	sgWindowGetSize(&width, &height);
-	if(psgmGraphicsContextCreate != NULL)
-		psgmGraphicsContextCreate(&_sg_gfxHandle, width, height, bpp);
+    sgWindowGetSize(&width, &height);
+    if(psgmGraphicsContextCreate != NULL)
+        psgmGraphicsContextCreate(&_sg_gfxHandle, width, height, bpp);
 
-	_sg_viewMain = sgViewportCreate4i(0, 0, width, height);
+    _sg_viewMain = sgViewportCreate4i(0, 0, width, height);
 
-	_sg_cbWindowOpen(_sg_winHandle);
-	_sg_cbWindowResize(_sg_winHandle, width, height);
-	return SG_TRUE;
+    _sg_cbWindowOpen(_sg_winHandle);
+    _sg_cbWindowResize(_sg_winHandle, width, height);
+    return SG_TRUE;
 }
 SGbool SG_CALL sgWindowIsOpened(void)
 {
-	SGbool opened = SG_FALSE;
-	if(psgmCoreWindowIsOpened != NULL)
-		psgmCoreWindowIsOpened(_sg_winHandle, &opened);
-	return opened;
+    SGbool opened = SG_FALSE;
+    if(psgmCoreWindowIsOpened != NULL)
+        psgmCoreWindowIsOpened(_sg_winHandle, &opened);
+    return opened;
 }
 void SG_CALL sgWindowClose(void)
 {
-	if(psgmGraphicsContextDestroy != NULL)
-		psgmGraphicsContextDestroy(_sg_gfxHandle);
-	if(psgmCoreWindowClose != NULL)
-		psgmCoreWindowClose(_sg_winHandle);
+    if(psgmGraphicsContextDestroy != NULL)
+        psgmGraphicsContextDestroy(_sg_gfxHandle);
+    if(psgmCoreWindowClose != NULL)
+        psgmCoreWindowClose(_sg_winHandle);
 }
 void SG_CALL sgWindowSetIcon(SGImageData* idata)
 {
@@ -117,16 +117,16 @@ void SG_CALL sgWindowSetIcon(SGImageData* idata)
 }
 void SG_CALL sgWindowSetTitlef(const char* format, ...)
 {
-	va_list args;
-	va_start(args, format);
-	sgWindowSetTitlefv(format, args);
-	va_end(args);
+    va_list args;
+    va_start(args, format);
+    sgWindowSetTitlefv(format, args);
+    va_end(args);
 }
 void SG_CALL sgWindowSetTitlefv(const char* format, va_list args)
 {
-	char* title = sgAPrintfv(format, args);
-	sgWindowSetTitle(title);
-	sgAPrintFree(title);
+    char* title = sgAPrintfv(format, args);
+    sgWindowSetTitle(title);
+    sgAPrintFree(title);
 }
 void SG_CALL sgWindowSetTitle(const char* title)
 {
@@ -134,18 +134,18 @@ void SG_CALL sgWindowSetTitle(const char* title)
     _sg_winTitle = realloc(_sg_winTitle, len + 1);
     memcpy(_sg_winTitle, title, len + 1);
     if(psgmCoreWindowSetTitle)
-		psgmCoreWindowSetTitle(_sg_winHandle, _sg_winTitle);
+        psgmCoreWindowSetTitle(_sg_winHandle, _sg_winTitle);
 }
 char* SG_CALL sgWindowGetTitle(void)
 {
-	return _sg_winTitle;
+    return _sg_winTitle;
 }
 void SG_CALL sgWindowSetSize(SGuint width, SGuint height)
 {
-	if(psgmCoreWindowSetSize != NULL)
-		psgmCoreWindowSetSize(_sg_winHandle, width, height);
-	if(psgmGraphicsContextResize != NULL)
-		psgmGraphicsContextResize(_sg_gfxHandle, width, height);
+    if(psgmCoreWindowSetSize != NULL)
+        psgmCoreWindowSetSize(_sg_winHandle, width, height);
+    if(psgmGraphicsContextResize != NULL)
+        psgmGraphicsContextResize(_sg_gfxHandle, width, height);
 }
 void SG_CALL sgWindowGetSize(SGuint* width, SGuint* height)
 {
@@ -162,9 +162,9 @@ void SG_CALL sgWindowSetWidth(SGuint width)
 }
 SGuint SG_CALL sgWindowGetWidth(void)
 {
-	SGuint width;
-	sgWindowGetSize(&width, NULL);
-	return width;
+    SGuint width;
+    sgWindowGetSize(&width, NULL);
+    return width;
 }
 void SG_CALL sgWindowSetHeight(SGuint height)
 {
@@ -172,9 +172,9 @@ void SG_CALL sgWindowSetHeight(SGuint height)
 }
 SGuint SG_CALL sgWindowGetHeight(void)
 {
-	SGuint height;
-	sgWindowGetSize(NULL, &height);
-	return height;
+    SGuint height;
+    sgWindowGetSize(NULL, &height);
+    return height;
 }
 void SG_CALL sgWindowSwapBuffers(void)
 {

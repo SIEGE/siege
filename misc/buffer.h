@@ -33,11 +33,11 @@ extern "C"
  * Future directions:
  * - Audio buffers could be merged with other types of buffers.
  * - There is currently no way to create a buffer without specifying a filename
- * 	 to load it from.
+ *      to load it from.
  */
 typedef struct SGAudioBuffer
 {
-	void* handle;
+    void* handle;
 } SGAudioBuffer;
 
 SGbool SG_CALL _sgAudioBufferInit(void);

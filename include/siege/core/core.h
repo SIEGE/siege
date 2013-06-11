@@ -56,16 +56,16 @@ char* SG_CALL sgGetCompileTime(void);
  * In debug builds, SIEGE tries to find the ".debug." versions first.
  *
  * Warning:
- * 	This function should be called *before* sgInit()!
+ *     This function should be called *before* sgInit()!
  *
  * Parameters:
- * 	n    - The number of modules to load
- * 	args - The va_list of modules to load
- * 	...  - List of modules to load (n items)
+ *     n    - The number of modules to load
+ *     args - The va_list of modules to load
+ *     ...  - List of modules to load (n items)
  *  name - Name of the module to load
  *
  * Returns:
- * 	The number of successfully loaded modules.
+ *     The number of successfully loaded modules.
  */
 SGuint SG_CALL sgLoadModulesv(size_t n, va_list args);
 SGuint SG_CALL sgLoadModules(size_t n, ...);
@@ -76,17 +76,17 @@ SGbool SG_CALL sgLoadModule(const char* name);
  * Initialize SIEGE.
  *
  * Warning:
- * 	This function should be called *after* sgLoadModule() or
- * 	sgLoadModules()!
+ *     This function should be called *after* sgLoadModule() or
+ *     sgLoadModules()!
  *
  * Parameters:
- * 	flags         - Init flags (can be zero)
+ *     flags         - Init flags (can be zero)
  *
  * Returns:
- * 	SG_TRUE on success, SG_FALSE otherwise.
+ *     SG_TRUE on success, SG_FALSE otherwise.
  *
  * See Also:
- *	- <sgDeinit>
+ *    - <sgDeinit>
  */
 SGbool SG_CALL sgInit(SGenum flags);
 /**
@@ -97,11 +97,11 @@ SGbool SG_CALL sgInit(SGenum flags);
  * Warning: This should *always* be the last SIEGE function you call!
  *
  * Returns:
- * 	SG_TRUE on success, SG_FALSE otherwise (which would leave the app
- * 	in a messy state).
+ *     SG_TRUE on success, SG_FALSE otherwise (which would leave the app
+ *     in a messy state).
  *
  * See Also:
- *	- <sgInit>
+ *    - <sgInit>
  */
 SGbool SG_CALL sgDeinit(void);
 /**
@@ -110,10 +110,10 @@ SGbool SG_CALL sgDeinit(void);
  * Start the SIEGE main loop.
  *
  * Returns:
- * 	A value meant to be returned from the main() function.
+ *     A value meant to be returned from the main() function.
  *
  * See Also:
- * 	- <sgLoop>
+ *     - <sgLoop>
  *  - <sgStop>
  */
 SGint SG_CALL sgRun(void);
@@ -123,36 +123,36 @@ SGint SG_CALL sgRun(void);
  * Run a single SIEGE iteration.
  *
  * Parameters:
- * 	code - The return code, which can be passed to the "return" from
+ *     code - The return code, which can be passed to the "return" from
  *         main() function
  *
  * Returns:
- * 	- SG_TRUE if the program is to continue running,
- * 	- SG_FALSE if an exit has been requested (either via sgStop() or
- * 	  the window closed).
+ *     - SG_TRUE if the program is to continue running,
+ *     - SG_FALSE if an exit has been requested (either via sgStop() or
+ *       the window closed).
  *
  * Example:
  * (begin code)
  *
- *	int main()
- *	{
- *		// ... init here ...
- *		SGint ret;
- *		while(sgLoop(&ret))
- *		{
- *			// drawing goes here
+ *    int main()
+ *    {
+ *        // ... init here ...
+ *        SGint ret;
+ *        while(sgLoop(&ret))
+ *        {
+ *            // drawing goes here
  *
- *			sgWindowSwapBuffers();
- *			sgDrawClear();
- *		}
- *		// ... deinit here ...
- *		return ret;
- *	}
+ *            sgWindowSwapBuffers();
+ *            sgDrawClear();
+ *        }
+ *        // ... deinit here ...
+ *        return ret;
+ *    }
  *
  * (end code)
  *
  * See Also:
- * 	- <sgRun>
+ *     - <sgRun>
  *  - <sgStop>
  */
 SGbool SG_CALL sgLoop(SGint* code);
@@ -162,15 +162,15 @@ SGbool SG_CALL sgLoop(SGint* code);
  * Stop the program main loop.
  *
  * Warning:
- * 	The loop SIEGE is currently in will
- * 	(until the implementation is changed otherwise)
- * 	run to the end before quitting!
+ *     The loop SIEGE is currently in will
+ *     (until the implementation is changed otherwise)
+ *     run to the end before quitting!
  *
  * Parameters:
- * 	ret - The value to ultimately return from the main() function
+ *     ret - The value to ultimately return from the main() function
  *
  * See Also:
- * 	- <sgRun>
+ *     - <sgRun>
  *  - <sgLoop>
  */
 void SG_CALL sgStop(SGint ret);
@@ -180,7 +180,7 @@ void SG_CALL sgStop(SGint ret);
  * Get the current tick (number of loops passed).
  *
  * Returns:
- * 	The number of loops SIEGE has ran for since the start
+ *     The number of loops SIEGE has ran for since the start
  */
 SGulong SG_CALL sgGetTick(void);
 

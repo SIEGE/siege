@@ -80,26 +80,26 @@ char* SG_CALL sgGetCompileTime(void)
 
 SGuint SG_CALL sgLoadModulesv(size_t n, va_list args)
 {
-	SGuint loaded = 0;
-	size_t i;
-	for(i = 0; i < n; i++)
-		loaded += sgLoadModule(va_arg(args, char*));
-	return loaded;
+    SGuint loaded = 0;
+    size_t i;
+    for(i = 0; i < n; i++)
+        loaded += sgLoadModule(va_arg(args, char*));
+    return loaded;
 }
 SGuint SG_CALL sgLoadModules(size_t n, ...)
 {
-	va_list args;
-	va_start(args, n);
-	SGuint ret = sgLoadModulesv(n, args);
-	va_end(args);
-	return ret;
+    va_list args;
+    va_start(args, n);
+    SGuint ret = sgLoadModulesv(n, args);
+    va_end(args);
+    return ret;
 }
 SGbool SG_CALL sgLoadModule(const char* name)
 {
-	SGModule* module = sgModuleLoad(name);
-	if(module == NULL)
-		return SG_FALSE;
-	return SG_TRUE;
+    SGModule* module = sgModuleLoad(name);
+    if(module == NULL)
+        return SG_FALSE;
+    return SG_TRUE;
 }
 
 SGbool SG_CALL sgInit(SGenum flags)
@@ -118,60 +118,60 @@ SGbool SG_CALL sgInit(SGenum flags)
 
     SGList* modList = sgModuleGetList();
 
-	size_t i;
-	size_t nmodules = modList ? sgListLength(modList) : 0;
-	SGListNode* node;
-	SGModuleInfo** infos = malloc(nmodules * sizeof(SGModuleInfo*));
-	SGModule* module;
-	for(i = 0, node = modList ? modList->head : NULL; node != NULL; node = node->next, i++)
-	{
-		module = node->item;
-		infos[i] = module->minfo;
-	}
-	SGbool ok = SG_TRUE;
-	SGbool mok;
-	for(node = modList ? modList->head : NULL; node != NULL; node = node->next)
-	{
-		module = node->item;
-		mok = SG_TRUE;
-		if(module->sgmModuleMatch != NULL)
-			module->sgmModuleMatch(infos, nmodules, &mok);
-		if(!mok)
-		{
-			fprintf(stderr, "Could not load module %s: Incompatible with other modules\n", module->minfo->name);
-			ok = SG_FALSE;
-		}
-	}
-	free(infos);
-	if(!ok)
-		return SG_FALSE;
+    size_t i;
+    size_t nmodules = modList ? sgListLength(modList) : 0;
+    SGListNode* node;
+    SGModuleInfo** infos = malloc(nmodules * sizeof(SGModuleInfo*));
+    SGModule* module;
+    for(i = 0, node = modList ? modList->head : NULL; node != NULL; node = node->next, i++)
+    {
+        module = node->item;
+        infos[i] = module->minfo;
+    }
+    SGbool ok = SG_TRUE;
+    SGbool mok;
+    for(node = modList ? modList->head : NULL; node != NULL; node = node->next)
+    {
+        module = node->item;
+        mok = SG_TRUE;
+        if(module->sgmModuleMatch != NULL)
+            module->sgmModuleMatch(infos, nmodules, &mok);
+        if(!mok)
+        {
+            fprintf(stderr, "Could not load module %s: Incompatible with other modules\n", module->minfo->name);
+            ok = SG_FALSE;
+        }
+    }
+    free(infos);
+    if(!ok)
+        return SG_FALSE;
 
     _sgEntityInit();
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_INIT);
-	_sg_hasInited = SG_TRUE;
+    _sg_hasInited = SG_TRUE;
 
-	_sgWindowInit();
-	_sgViewportInit();
-	_sgTurtleInit();
-	_sgSurfaceInit();
+    _sgWindowInit();
+    _sgViewportInit();
+    _sgTurtleInit();
+    _sgSurfaceInit();
 
-	_sgAudioSourceInit();
+    _sgAudioSourceInit();
 
-	_sgKeyboardInit();
-	_sgMouseInit();
-	_sgJoystickInit();
+    _sgKeyboardInit();
+    _sgMouseInit();
+    _sgJoystickInit();
 
-	_sgConsoleInit();
+    _sgConsoleInit();
 
-	_sgDrawInit();
+    _sgDrawInit();
 
-	_sgPhysicsSpaceInit();
+    _sgPhysicsSpaceInit();
     _sgPhysicsCollisionInit();
 
     _sgLightInit();
 
-	return SG_TRUE;
+    return SG_TRUE;
 }
 
 SGbool SG_CALL sgDeinit(void)
@@ -182,7 +182,7 @@ SGbool SG_CALL sgDeinit(void)
     sgStop(0);
     sgThreadDestroy(_sg_renderThread);
 
-	_sg_hasInited = SG_FALSE;
+    _sg_hasInited = SG_FALSE;
     sgEntityEventSignal(1, (SGenum)SG_EVF_DEINIT);
 
     sgEntityDestroyAll();
@@ -190,22 +190,22 @@ SGbool SG_CALL sgDeinit(void)
     _sgLightDeinit();
 
     _sgPhysicsCollisionDeinit();
-	_sgPhysicsSpaceDeinit();
+    _sgPhysicsSpaceDeinit();
 
-	_sgDrawDeinit();
+    _sgDrawDeinit();
 
-	_sgConsoleDeinit();
+    _sgConsoleDeinit();
 
-	_sgJoystickDeinit();
-	_sgMouseDeinit();
-	_sgKeyboardDeinit();
+    _sgJoystickDeinit();
+    _sgMouseDeinit();
+    _sgKeyboardDeinit();
 
-	_sgAudioSourceDeinit();
+    _sgAudioSourceDeinit();
 
-	_sgSurfaceDeinit();
-	_sgTurtleDeinit();
-	_sgViewportDeinit();
-	_sgWindowDeinit();
+    _sgSurfaceDeinit();
+    _sgTurtleDeinit();
+    _sgViewportDeinit();
+    _sgWindowDeinit();
 
     _sgEntityDeinit();
 
@@ -213,52 +213,52 @@ SGbool SG_CALL sgDeinit(void)
     while((modList = sgModuleGetList()))
         sgModuleUnload(modList->head->item);
 
-	return SG_TRUE;
+    return SG_TRUE;
 }
 
 SGint SG_CALL sgRun(void)
 {
-	_sg_firstLoop = SG_TRUE;
-	if(_sg_exitNow)
-		return _sg_exitVal;
-	while(sgLoop(&_sg_exitVal))
-	{
+    _sg_firstLoop = SG_TRUE;
+    if(_sg_exitNow)
+        return _sg_exitVal;
+    while(sgLoop(&_sg_exitVal))
+    {
         if(!_sg_renderThread)
         {
             sgWindowSwapBuffers();
             sgDrawClear();
         }
-	}
-	return _sg_exitVal;
+    }
+    return _sg_exitVal;
 }
 
 SGbool SG_CALL sgLoop(SGint* code)
 {
-	_sg_curTick++;
+    _sg_curTick++;
 
-	if(_sg_firstLoop)
-	{
+    if(_sg_firstLoop)
+    {
         sgEntityEventSignal(1, (SGenum)SG_EVF_START);
-		if(_sg_renderThread)
+        if(_sg_renderThread)
             sgThreadStart(_sg_renderThread);
-		_sg_firstLoop = SG_FALSE;
-	}
+        _sg_firstLoop = SG_FALSE;
+    }
 
     sgTimerUpdateAll(SG_FALSE, SG_TRUE);
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICKB);
 
-	sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
+    sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
 
     SGList* modList = sgModuleGetList();
-	SGListNode* node;
-	SGModule* module;
-	for(node = modList ? modList->head : NULL; node != NULL; node = node->next)
-	{
-		module = node->item;
-		if(module->sgmModuleTick)
-			module->sgmModuleTick(_sg_curTick);
-	}
+    SGListNode* node;
+    SGModule* module;
+    for(node = modList ? modList->head : NULL; node != NULL; node = node->next)
+    {
+        module = node->item;
+        if(module->sgmModuleTick)
+            module->sgmModuleTick(_sg_curTick);
+    }
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICK);
 
@@ -267,14 +267,14 @@ SGbool SG_CALL sgLoop(SGint* code)
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICKE);
 
-	if(code != NULL)
-		*code = _sg_exitVal;
-	if(_sg_exitNow)
-	{
+    if(code != NULL)
+        *code = _sg_exitVal;
+    if(_sg_exitNow)
+    {
         sgEntityEventSignal(1, (SGenum)SG_EVF_EXIT);
-		return SG_FALSE;
-	}
-	return SG_TRUE;
+        return SG_FALSE;
+    }
+    return SG_TRUE;
 }
 
 void SG_CALL sgStop(SGint ret)
@@ -287,5 +287,5 @@ void SG_CALL sgStop(SGint ret)
 
 SGulong SG_CALL sgGetTick(void)
 {
-	return _sg_curTick;
+    return _sg_curTick;
 }

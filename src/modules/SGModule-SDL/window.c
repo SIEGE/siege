@@ -223,7 +223,7 @@ SGenum SG_CALL sgmCoreWindowSwapBuffers(void* window)
     {
         switch(event.type)
         {
-			// commented out to fix a bug with the mouse!
+            // commented out to fix a bug with the mouse!
             /*case SDL_ACTIVEEVENT:
                 //SDL_PollEvent(&event); // next one is SDL_KEYUP
                 break;*/

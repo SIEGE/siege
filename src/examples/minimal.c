@@ -2,13 +2,13 @@
 
 int main(void)
 {
-	sgLoadModules(2, "SDL", "OpenGL");
-	sgInit(0);
-	sgWindowOpen(640, 480, 32, 0);
+    sgLoadModules(2, "SDL", "OpenGL");
+    sgInit(0);
+    sgWindowOpen(640, 480, 32, 0);
 
-	SGint ret = sgRun();
+    SGint ret = sgRun();
 
-	sgDeinit();
+    sgDeinit();
 
-	return ret;
+    return ret;
 }

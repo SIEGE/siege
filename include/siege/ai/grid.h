@@ -30,25 +30,25 @@ extern "C"
 
 typedef struct SGNavGridData
 {
-	SGuint x;
-	SGuint y;
-	SGenum type;
-	float cost;
+    SGuint x;
+    SGuint y;
+    SGenum type;
+    float cost;
 } SGNavGridData;
 
 typedef struct SGNavGrid
 {
-	SGAStar* search;
-	SGAStarNode*** grid;
-	SGuint width;
-	SGuint height;
+    SGAStar* search;
+    SGAStarNode*** grid;
+    SGuint width;
+    SGuint height;
 
-	SGList* path;
-	SGAStarNode* start;
-	SGAStarNode* goal;
+    SGList* path;
+    SGAStarNode* start;
+    SGAStarNode* goal;
 
-	SGbool diag;
-	SGbool wdiag;
+    SGbool diag;
+    SGbool wdiag;
 } SGNavGrid;
 
 float SG_CALL _sgNavGridG(SGAStarNode* from, SGAStarNode* to);

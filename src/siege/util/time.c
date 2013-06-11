@@ -66,13 +66,13 @@ void SG_CALL sgNSleep(SGulong nseconds)
 }
 void SG_CALL sgUSleep(SGulong useconds)
 {
-	sgNSleep(useconds * 1000U);
+    sgNSleep(useconds * 1000U);
 }
 void SG_CALL sgMSleep(SGulong mseconds)
 {
-	sgUSleep(mseconds * 1000U);
+    sgUSleep(mseconds * 1000U);
 }
 void SG_CALL sgSleep(SGulong seconds)
 {
-	sgMSleep(seconds * 1000U);
+    sgMSleep(seconds * 1000U);
 }

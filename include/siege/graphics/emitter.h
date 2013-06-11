@@ -31,32 +31,32 @@ extern "C"
 
 typedef struct SGParticle
 {
-	float x, y, angle, speed, age, width, height, rotation, alpha;
+    float x, y, angle, speed, age, width, height, rotation, alpha;
 } SGParticle;
 
 typedef void SG_CALL (SGParticleUpdate)(SGParticle* particle, float time, float friction);
 
 typedef struct SGEmitter
 {
-	float x, y, angle, delta_angle, initial_speed, duration, rate, friction, time_accumulator;
-	size_t nb_particles;
-	SGTexture* texture;
-	SGParticle* particles;
-	SGbool silent;
-	SGParticleUpdate* cbUpdate;
+    float x, y, angle, delta_angle, initial_speed, duration, rate, friction, time_accumulator;
+    size_t nb_particles;
+    SGTexture* texture;
+    SGParticle* particles;
+    SGbool silent;
+    SGParticleUpdate* cbUpdate;
 } SGEmitter;
 
 SGEmitter* SG_CALL sgEmitterCreate(
-		float x,              /* initial x of particles */
-		float y,              /* initial y of particles */
-		float angle,          /* direction of particles */
-		float delta_angle,    /* variation in direction */
-		float initial_speed,  /* initial speed of particles */
-		float duration,       /* lifetime of particles */
-		float rate,           /* production rate of particles */
-		float friction,       /* environmental friction to particles */
-		size_t nb_particles,  /* size of particles pool */
-		SGTexture* texture);  /* texture used by particles */
+        float x,              /* initial x of particles */
+        float y,              /* initial y of particles */
+        float angle,          /* direction of particles */
+        float delta_angle,    /* variation in direction */
+        float initial_speed,  /* initial speed of particles */
+        float duration,       /* lifetime of particles */
+        float rate,           /* production rate of particles */
+        float friction,       /* environmental friction to particles */
+        size_t nb_particles,  /* size of particles pool */
+        SGTexture* texture);  /* texture used by particles */
 
 void SG_CALL sgEmitterUpdate(SGEmitter* emitter, float time);
 

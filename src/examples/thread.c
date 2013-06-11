@@ -35,18 +35,18 @@ SGMutex* mut;
  */
 int mvprintf(const char* format, va_list args)
 {
-	sgMutexLock(mut);
-	int ret = vprintf(format, args);
-	sgMutexUnlock(mut);
-	return ret;
+    sgMutexLock(mut);
+    int ret = vprintf(format, args);
+    sgMutexUnlock(mut);
+    return ret;
 }
 int mprintf(const char* format, ...)
 {
-	va_list args;
-	va_start(args, format);
-	int ret = mvprintf(format, args);
-	va_end(args);
-	return ret;
+    va_list args;
+    va_start(args, format);
+    int ret = mvprintf(format, args);
+    va_end(args);
+    return ret;
 }
 
 /*
@@ -57,42 +57,42 @@ int mprintf(const char* format, ...)
  */
 SGint SG_CALL client(void* data)
 {
-	unsigned int* i = data;
-	srand(*i);
+    unsigned int* i = data;
+    srand(*i);
 
-	mprintf("%*u [%p]: Waiting for printer...\n", numdigits(NUMTHREADS, 10), *i, sgThreadGetCurrent());
-	sgSemaphoreWait(sem);
-	mprintf("%*u [%p]: Printing...\n", numdigits(NUMTHREADS, 10), *i, sgThreadGetCurrent());
-	sgMSleep(1000 * (rand() % 10));
-	mprintf("%*u [%p]: Done printing\n", numdigits(NUMTHREADS, 10), *i, sgThreadGetCurrent());
-	sgSemaphorePost(sem);
-	return 0;
+    mprintf("%*u [%p]: Waiting for printer...\n", numdigits(NUMTHREADS, 10), *i, sgThreadGetCurrent());
+    sgSemaphoreWait(sem);
+    mprintf("%*u [%p]: Printing...\n", numdigits(NUMTHREADS, 10), *i, sgThreadGetCurrent());
+    sgMSleep(1000 * (rand() % 10));
+    mprintf("%*u [%p]: Done printing\n", numdigits(NUMTHREADS, 10), *i, sgThreadGetCurrent());
+    sgSemaphorePost(sem);
+    return 0;
 }
 
 int main(void)
 {
-	// note the lack of sgInit or sgLoadModule(s)
+    // note the lack of sgInit or sgLoadModule(s)
 
-	sem = sgSemaphoreCreate(NUMPRINTERS, NUMPRINTERS);
-	mut = sgMutexCreate();
+    sem = sgSemaphoreCreate(NUMPRINTERS, NUMPRINTERS);
+    mut = sgMutexCreate();
 
-	SGThread* threads[NUMTHREADS];
-	unsigned int tdata[NUMTHREADS]; // I didn't bother with thread-local storage - this'll do
-	size_t i;
-	for(i = 0; i < NUMTHREADS; i++)
-	{
-		tdata[i] = i + 1;
-		// note that this does not start the thread!
-		threads[i] = sgThreadCreate(0, client, &tdata[i]);
-		// we have to start each thread explicitly
-		sgThreadStart(threads[i]);
-	}
+    SGThread* threads[NUMTHREADS];
+    unsigned int tdata[NUMTHREADS]; // I didn't bother with thread-local storage - this'll do
+    size_t i;
+    for(i = 0; i < NUMTHREADS; i++)
+    {
+        tdata[i] = i + 1;
+        // note that this does not start the thread!
+        threads[i] = sgThreadCreate(0, client, &tdata[i]);
+        // we have to start each thread explicitly
+        sgThreadStart(threads[i]);
+    }
 
-	for(i = 0; i < NUMTHREADS; i++)
-		sgThreadJoin(threads[i]); // we wait for each thread to finish
+    for(i = 0; i < NUMTHREADS; i++)
+        sgThreadJoin(threads[i]); // we wait for each thread to finish
 
-	sgMutexDestroy(mut);
-	sgSemaphoreDestroy(sem);
+    sgMutexDestroy(mut);
+    sgSemaphoreDestroy(sem);
 
-	return 0;
+    return 0;
 }

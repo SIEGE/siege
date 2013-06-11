@@ -27,12 +27,12 @@ extern "C"
  */
 typedef struct SGTrail
 {
-	SGuint numpoints;	/// < The number of points in the trail
+    SGuint numpoints;    /// < The number of points in the trail
 
-	float* xpoints;		/// < X point positions
-	float* ypoints;		/// < Y point positions
+    float* xpoints;        /// < X point positions
+    float* ypoints;        /// < Y point positions
 
-	SGuint maxpoints;	/// < The maximum number of points in the trail
+    SGuint maxpoints;    /// < The maximum number of points in the trail
 } SGTrail;
 
 void SG_CALL sgTrailPopPoint(SGTrail* trail);
@@ -68,7 +68,7 @@ void SG_CALL sgTrailDestroy(SGTrail* trail);
  * \param y Y position
  *
  * \sa
- *	sgTrailAddBreak
+ *    sgTrailAddBreak
  */
 void SG_CALL sgTrailAddPoint2f(SGTrail* trail, float x, float y);
 /**
@@ -81,7 +81,7 @@ void SG_CALL sgTrailAddPoint2f(SGTrail* trail, float x, float y);
  * the next, without drawing a line in between.
  *
  * \sa
- *	sgTrailAddPoint2f
+ *    sgTrailAddPoint2f
  */
 void SG_CALL sgTrailAddBreak(SGTrail* trail);
 /// @}

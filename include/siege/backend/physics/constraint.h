@@ -18,7 +18,7 @@
 #include "../../common.h"
 
 #ifndef SG_FPTR
-#define SG_FPTR(name)	name
+#define SG_FPTR(name)    name
 #endif // SG_FPTR
 
 #ifdef __cplusplus
@@ -43,8 +43,8 @@ extern "C"
     SGenum SG_CALL SG_FPTR(sgmPhysicsConstraintSetRate)(void* constr, float rate);
 
     SGenum SG_CALL SG_FPTR(sgmPhysicsConstraintSetMaxForce)(void* constr, float max);
-	SGenum SG_CALL SG_FPTR(sgmPhysicsConstraintSetErrorBias)(void* constr, float bias);
-	SGenum SG_CALL SG_FPTR(sgmPhysicsConstraintSetMaxBias)(void* constr, float max);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsConstraintSetErrorBias)(void* constr, float bias);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsConstraintSetMaxBias)(void* constr, float max);
 
     SGenum SG_CALL SG_FPTR(sgmPhysicsConstraintSetData)(void* constr, void* data);
     SGenum SG_CALL SG_FPTR(sgmPhysicsConstraintGetData)(void* constr, void** data);

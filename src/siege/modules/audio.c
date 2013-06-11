@@ -29,7 +29,7 @@ void SG_CALL _sgModuleLoadAudio(SGLibrary* lib)
     //_SG_BIND(sgmAudioBufferFreeData);
     _SG_BIND(sgmAudioBufferSetHandle);
 
-	_SG_BIND(sgmAudioSourceMaxSources);
+    _SG_BIND(sgmAudioSourceMaxSources);
 
     _SG_BIND(sgmAudioSourceCreate);
     //_SG_BIND(sgmAudioSourceCreateData);

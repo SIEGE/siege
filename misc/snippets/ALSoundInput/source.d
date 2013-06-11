@@ -38,13 +38,13 @@ class Source
         _loop = loop;
 
         alGenSources(1, &id);
-    	alSource3f(id, AL_POSITION, 0.0, 0.0, 0.0);
-    	alSource3f(id, AL_VELOCITY, 0.0, 0.0, 0.0);
-    	alSourcef(id, AL_PITCH, pitch);
-    	alSourcef(id, AL_GAIN, gain);
-    	alSourcei(id, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+        alSource3f(id, AL_POSITION, 0.0, 0.0, 0.0);
+        alSource3f(id, AL_VELOCITY, 0.0, 0.0, 0.0);
+        alSourcef(id, AL_PITCH, pitch);
+        alSourcef(id, AL_GAIN, gain);
+        alSourcei(id, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
 
-    	//alSourcei(id, AL_BUFFER, buffer);
+        //alSourcei(id, AL_BUFFER, buffer);
     }
 
     ~this()
@@ -115,7 +115,7 @@ class Source
     void pitch(float p)
     {
         _pitch = p;
-    	alSourcef(id, AL_PITCH, p);
+        alSourcef(id, AL_PITCH, p);
     }
     float pitch()
     {

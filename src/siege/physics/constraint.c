@@ -189,18 +189,18 @@ void SG_CALL sgPhysicsConstraintSetRate(SGPhysicsConstraint* constr, float rate)
 
 void SG_CALL sgPhysicsConstraintSetMaxForce(SGPhysicsConstraint* constr, float max)
 {
-	if(psgmPhysicsConstraintSetMaxForce)
-		psgmPhysicsConstraintSetMaxForce(constr->handle, max);
+    if(psgmPhysicsConstraintSetMaxForce)
+        psgmPhysicsConstraintSetMaxForce(constr->handle, max);
 }
 void SG_CALL sgPhysicsConstraintSetErrorBias(SGPhysicsConstraint* constr, float bias)
 {
-	if(psgmPhysicsConstraintSetErrorBias)
-		psgmPhysicsConstraintSetErrorBias(constr->handle, bias);
+    if(psgmPhysicsConstraintSetErrorBias)
+        psgmPhysicsConstraintSetErrorBias(constr->handle, bias);
 }
 void SG_CALL sgPhysicsConstraintSetMaxBias(SGPhysicsConstraint* constr, float max)
 {
-	if(psgmPhysicsConstraintSetMaxBias)
-		psgmPhysicsConstraintSetMaxBias(constr->handle, max);
+    if(psgmPhysicsConstraintSetMaxBias)
+        psgmPhysicsConstraintSetMaxBias(constr->handle, max);
 }
 
 void SG_CALL sgPhysicsConstraintSetData(SGPhysicsConstraint* constr, void* data)

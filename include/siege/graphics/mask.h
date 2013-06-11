@@ -33,14 +33,14 @@ extern "C"
  */
 typedef struct SGMask
 {
-	SGuint width;
-	SGuint height;
+    SGuint width;
+    SGuint height;
 
-	SGint xoffset;
-	SGint yoffset;
+    SGint xoffset;
+    SGint yoffset;
 
-	SGbool precise;
-	SGbool** field;
+    SGbool precise;
+    SGbool** field;
 } SGMask;
 
 SGMask* SG_CALL sgMaskCreateSprite(SGSprite* sprite);

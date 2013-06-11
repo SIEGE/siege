@@ -39,13 +39,13 @@ SGThreadKey* SG_CALL sgThreadKeyCreate(void)
         return NULL;
     }
 #else
-	key->handle = malloc(sizeof(pthread_key_t));
-	if(pthread_key_create(key->handle, NULL))
-	{
-		free(key->handle);
-		free(key);
-		return NULL;
-	}
+    key->handle = malloc(sizeof(pthread_key_t));
+    if(pthread_key_create(key->handle, NULL))
+    {
+        free(key->handle);
+        free(key);
+        return NULL;
+    }
 #endif
 
     return key;
@@ -57,9 +57,9 @@ void SG_CALL sgThreadKeyDestroy(SGThreadKey* key)
 #ifdef __WIN32__
     TlsFree(*(DWORD*)key->handle);
 #else
-	pthread_key_delete(*(pthread_key_t*)key->handle);
+    pthread_key_delete(*(pthread_key_t*)key->handle);
 #endif
-	free(key->handle);
+    free(key->handle);
     free(key);
 }
 

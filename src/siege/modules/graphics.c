@@ -23,45 +23,45 @@
 
 void SG_CALL _sgModuleLoadGraphics(SGLibrary* lib)
 {
-	void* fptr;
-	/// Graphics
-	_SG_BIND(sgmGraphicsContextCreate);
-	_SG_BIND(sgmGraphicsContextDestroy);
-	_SG_BIND(sgmGraphicsContextResize);
-	_SG_BIND(sgmGraphicsContextClear);
+    void* fptr;
+    /// Graphics
+    _SG_BIND(sgmGraphicsContextCreate);
+    _SG_BIND(sgmGraphicsContextDestroy);
+    _SG_BIND(sgmGraphicsContextResize);
+    _SG_BIND(sgmGraphicsContextClear);
 
-	_SG_BIND(sgmGraphicsViewportCreate);
-	//_SG_BIND(sgmGraphicsViewportCreateView);
-	_SG_BIND(sgmGraphicsViewportDestroy);
-	_SG_BIND(sgmGraphicsViewportSetView);
-	//_SG_BIND(sgmGraphicsViewportGetView);
+    _SG_BIND(sgmGraphicsViewportCreate);
+    //_SG_BIND(sgmGraphicsViewportCreateView);
+    _SG_BIND(sgmGraphicsViewportDestroy);
+    _SG_BIND(sgmGraphicsViewportSetView);
+    //_SG_BIND(sgmGraphicsViewportGetView);
 
-	_SG_BIND(sgmGraphicsSurfaceCreate);
-	//_SG_BIND(sgmGraphicsSurfaceCreateTexture);
-	//_SG_BIND(sgmGraphicsSurfaceCreateData);
-	_SG_BIND(sgmGraphicsSurfaceDestroy);
-	_SG_BIND(sgmGraphicsSurfaceSetTexture);
-	_SG_BIND(sgmGraphicsSurfaceGetTexture);
-	_SG_BIND(sgmGraphicsSurfaceSetData);
+    _SG_BIND(sgmGraphicsSurfaceCreate);
+    //_SG_BIND(sgmGraphicsSurfaceCreateTexture);
+    //_SG_BIND(sgmGraphicsSurfaceCreateData);
+    _SG_BIND(sgmGraphicsSurfaceDestroy);
+    _SG_BIND(sgmGraphicsSurfaceSetTexture);
+    _SG_BIND(sgmGraphicsSurfaceGetTexture);
+    _SG_BIND(sgmGraphicsSurfaceSetData);
     _SG_BIND(sgmGraphicsSurfaceSetSubData);
-	_SG_BIND(sgmGraphicsSurfaceGetData);
-	_SG_BIND(sgmGraphicsSurfaceFreeData);
-	_SG_BIND(sgmGraphicsSurfaceGetSize);
+    _SG_BIND(sgmGraphicsSurfaceGetData);
+    _SG_BIND(sgmGraphicsSurfaceFreeData);
+    _SG_BIND(sgmGraphicsSurfaceGetSize);
     _SG_BIND(sgmGraphicsSurfaceGetBPP);
-	_SG_BIND(sgmGraphicsSurfaceDraw);
-	_SG_BIND(sgmGraphicsSurfaceTarget);
-	_SG_BIND(sgmGraphicsSurfaceUntarget);
+    _SG_BIND(sgmGraphicsSurfaceDraw);
+    _SG_BIND(sgmGraphicsSurfaceTarget);
+    _SG_BIND(sgmGraphicsSurfaceUntarget);
 
-	_SG_BIND(sgmGraphicsTextureCreate);
-	//_SG_BIND(sgmGraphicsTextureCreateData);
-	_SG_BIND(sgmGraphicsTextureDestroy);
-	_SG_BIND(sgmGraphicsTextureSetData);
+    _SG_BIND(sgmGraphicsTextureCreate);
+    //_SG_BIND(sgmGraphicsTextureCreateData);
+    _SG_BIND(sgmGraphicsTextureDestroy);
+    _SG_BIND(sgmGraphicsTextureSetData);
     _SG_BIND(sgmGraphicsTextureSetSubData);
-	_SG_BIND(sgmGraphicsTextureGetData);
-	_SG_BIND(sgmGraphicsTextureFreeData);
-	_SG_BIND(sgmGraphicsTextureGetSize);
+    _SG_BIND(sgmGraphicsTextureGetData);
+    _SG_BIND(sgmGraphicsTextureFreeData);
+    _SG_BIND(sgmGraphicsTextureGetSize);
     _SG_BIND(sgmGraphicsTextureGetBPP);
-	_SG_BIND(sgmGraphicsTextureDraw);
+    _SG_BIND(sgmGraphicsTextureDraw);
 
     _SG_BIND(sgmGraphicsTextureSetWrap);
     _SG_BIND(sgmGraphicsTextureSetInterpolation);
@@ -73,15 +73,15 @@ void SG_CALL _sgModuleLoadGraphics(SGLibrary* lib)
     _SG_BIND(sgmGraphicsDrawArrays);
     _SG_BIND(sgmGraphicsDrawElements);
 
-	_SG_BIND(sgmGraphicsDrawSetColor);
-	_SG_BIND(sgmGraphicsDrawPointSetSize);
-	//bindFunc(sgmGraphicsDrawPointGetSize)("sgmGraphicsDrawPointGetSize", lib);
-	_SG_BIND(sgmGraphicsDrawLineSetWidth);
-	//bindFunc(sgmGraphicsDrawLineGetWidth)("sgmGraphicsDrawLineGetWidth", lib);
-	//bindFunc(sgmGraphicsDrawLineSetStipple)("sgmGraphicsDrawLineSetStipple", lib);
-	//bindFunc(sgmGraphicsDrawLineGetStipple)("sgmGraphicsDrawLineGetStipple", lib);
-	//bindFunc(sgmGraphicsDrawPolygonSetStipple)("sgmGraphicsDrawPolygonSetStipple", lib);
-	//bindFunc(sgmGraphicsDrawPolygonGetStipple)("sgmGraphicsDrawPolygonGetStipple", lib);
+    _SG_BIND(sgmGraphicsDrawSetColor);
+    _SG_BIND(sgmGraphicsDrawPointSetSize);
+    //bindFunc(sgmGraphicsDrawPointGetSize)("sgmGraphicsDrawPointGetSize", lib);
+    _SG_BIND(sgmGraphicsDrawLineSetWidth);
+    //bindFunc(sgmGraphicsDrawLineGetWidth)("sgmGraphicsDrawLineGetWidth", lib);
+    //bindFunc(sgmGraphicsDrawLineSetStipple)("sgmGraphicsDrawLineSetStipple", lib);
+    //bindFunc(sgmGraphicsDrawLineGetStipple)("sgmGraphicsDrawLineGetStipple", lib);
+    //bindFunc(sgmGraphicsDrawPolygonSetStipple)("sgmGraphicsDrawPolygonSetStipple", lib);
+    //bindFunc(sgmGraphicsDrawPolygonGetStipple)("sgmGraphicsDrawPolygonGetStipple", lib);
 
     _SG_BIND(sgmGraphicsDrawSetBlendFunc);
     _SG_BIND(sgmGraphicsDrawSetBlendEquation);
@@ -96,8 +96,8 @@ void SG_CALL _sgModuleLoadGraphics(SGLibrary* lib)
     _SG_BIND(sgmGraphicsDrawSetLineSmooth);
     _SG_BIND(sgmGraphicsDrawSetPolygonSmooth);
 
-	/// Graphics Load
+    /// Graphics Load
     _SG_BIND(sgmGraphicsLoad);
-	_SG_BIND(sgmGraphicsLoadFreeData);
+    _SG_BIND(sgmGraphicsLoadFreeData);
 }
 

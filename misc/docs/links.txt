@@ -10,14 +10,14 @@ http://dsource.org
 
 IRC:
 irc.freenode.net:
-	#siege
-	#d
-	##opengl
+    #siege
+    #d
+    ##opengl
 
 Reference:
-	Phobos: http://www.digitalmars.com/d/1.0/phobos/phobos.html
-	OpenGL: http://www.opengl.org/sdk/docs/man/
-	GLFW: http://glfw.sourceforge.net/GLFWReference26.pdf
-	Chipmunk: http://code.google.com/p/chipmunk-physics/w/list
-	DevIL: http://openil.sourceforge.net/docs/DevIL%20Reference%20Guide.pdf
-	FreeType: http://www.freetype.org/freetype2/docs/reference/ft2-base_interface.html
+    Phobos: http://www.digitalmars.com/d/1.0/phobos/phobos.html
+    OpenGL: http://www.opengl.org/sdk/docs/man/
+    GLFW: http://glfw.sourceforge.net/GLFWReference26.pdf
+    Chipmunk: http://code.google.com/p/chipmunk-physics/w/list
+    DevIL: http://openil.sourceforge.net/docs/DevIL%20Reference%20Guide.pdf
+    FreeType: http://www.freetype.org/freetype2/docs/reference/ft2-base_interface.html

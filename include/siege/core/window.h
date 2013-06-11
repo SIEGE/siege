@@ -57,7 +57,7 @@ SGbool SG_CALL _sgWindowDeinit(void);
  * \param flags Window open flags
  * \return SG_TRUE if successful, SG_FALSE otherwise
  * \note
- *	If a window was already opened, it closes the "old" window and reopens a new one
+ *    If a window was already opened, it closes the "old" window and reopens a new one
  */
 SGbool SG_CALL sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flags);
 /**
@@ -117,9 +117,9 @@ char* SG_CALL sgWindowGetTitle(void);
  * \param[in] height New window height
  *
  * \sa
- *	sgWindowGetSize
- *	sgWindowSetWidth
- *	sgWindowSetHeight
+ *    sgWindowGetSize
+ *    sgWindowSetWidth
+ *    sgWindowSetHeight
  */
 void SG_CALL sgWindowSetSize(SGuint width, SGuint height);
 /**
@@ -129,9 +129,9 @@ void SG_CALL sgWindowSetSize(SGuint width, SGuint height);
  * \param[out] height Pointer to the window height
  *
  * \sa
- *	sgWindowSetSize
- *	sgWindowGetWidth
- *	sgWindowGetHeight
+ *    sgWindowSetSize
+ *    sgWindowGetWidth
+ *    sgWindowGetHeight
  */
 void SG_CALL sgWindowGetSize(SGuint* width, SGuint* height);
 
@@ -143,12 +143,12 @@ void SG_CALL sgWindowGetSize(SGuint* width, SGuint* height);
  * This function preserves the window height, setting its width only.
  *
  * \note
- *	If both width and height are required to be set, consider \ref sgWindowSetSize "sgWindowSetSize".
+ *    If both width and height are required to be set, consider \ref sgWindowSetSize "sgWindowSetSize".
  *
  * \sa
- *	sgWindowGetWidth
- *	sgWindowSetSize
- *	sgWindowSetHeight
+ *    sgWindowGetWidth
+ *    sgWindowSetSize
+ *    sgWindowSetHeight
  */
 void SG_CALL sgWindowSetWidth(SGuint width);
 /**
@@ -157,12 +157,12 @@ void SG_CALL sgWindowSetWidth(SGuint width);
  * \return The window width or 0 if not opened
  *
  * \note
- *	If both width and height are required, consider \ref sgWindowGetSize "sgWindowGetSize".
+ *    If both width and height are required, consider \ref sgWindowGetSize "sgWindowGetSize".
  *
  * \sa
- *	sgWindowSetWidth
- *	sgWindowGetSize
- *	sgWindowGetHeight
+ *    sgWindowSetWidth
+ *    sgWindowGetSize
+ *    sgWindowGetHeight
  */
 SGuint SG_CALL sgWindowGetWidth(void);
 /**
@@ -173,12 +173,12 @@ SGuint SG_CALL sgWindowGetWidth(void);
  * This function preserves the window width, setting its height only.
  *
  * \note
- *	If both width and height are required to be set, consider \ref sgWindowSetSize "sgWindowSetSize".
+ *    If both width and height are required to be set, consider \ref sgWindowSetSize "sgWindowSetSize".
  *
  * \sa
- *	sgWindowGetHeight
- *	sgWindowSetSize
- *	sgWindowSetWidth
+ *    sgWindowGetHeight
+ *    sgWindowSetSize
+ *    sgWindowSetWidth
  */
 void SG_CALL sgWindowSetHeight(SGuint height);
 /**
@@ -187,12 +187,12 @@ void SG_CALL sgWindowSetHeight(SGuint height);
  * \return The window height or 0 if not opened
  *
  * \note
- *	If both width and height are required, consider \ref sgWindowGetSize "sgWindowGetSize".
+ *    If both width and height are required, consider \ref sgWindowGetSize "sgWindowGetSize".
  *
  * \sa
- *	sgWindowSetHeight
- *	sgWindowGetSize
- *	sgWindowGetWidth
+ *    sgWindowSetHeight
+ *    sgWindowGetSize
+ *    sgWindowGetWidth
  */
 SGuint SG_CALL sgWindowGetHeight(void);
 /// @}

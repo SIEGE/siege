@@ -55,7 +55,7 @@ typedef uint32_t SGdchar;
  * - SG[u]long: 64 bits
  */
 /// @{
-typedef int8_t	 SGbyte;
+typedef int8_t     SGbyte;
 typedef uint8_t  SGubyte;
 typedef int16_t  SGshort;
 typedef uint16_t SGushort;
@@ -101,18 +101,18 @@ typedef double SGdouble;
  */
 /// @{
 #ifdef __GNUC__
-#	define SG_HINT_DEPRECATED __attribute__((deprecated))
-#	define SG_HINT_PRINTF(str, chk) __attribute__((format(printf, str, chk)))
+#    define SG_HINT_DEPRECATED __attribute__((deprecated))
+#    define SG_HINT_PRINTF(str, chk) __attribute__((format(printf, str, chk)))
 #elif defined(_MSC_VER)
-#	define SG_HINT_DEPRECATED __declspec(deprecated)
-#	define SG_HINT_PRINTF(str, chk)
+#    define SG_HINT_DEPRECATED __declspec(deprecated)
+#    define SG_HINT_PRINTF(str, chk)
 #else
 /**
  * \brief Deprecated function hint
  *
  * Indicates that the function is deprecated and thus scheduled for removal. Usage of deprecated functions is not recommended.
  */
-#	define SG_HINT_DEPRECATED
+#    define SG_HINT_DEPRECATED
 /**
  * \brief Printf-like syntax hint
  * \param str Index of the format string (starting with 1)
@@ -120,30 +120,30 @@ typedef double SGdouble;
  *
  * Indicates that the syntax of the function resembles that of printf.
  */
-#	define SG_HINT_PRINTF(str, chk)
+#    define SG_HINT_PRINTF(str, chk)
 #endif // __GCC__
 /// @}
 
 /**
  * \brief Use test functionality
  * \deprecated
- *	This is included for testing purposes and therefore may be removed in the future.
+ *    This is included for testing purposes and therefore may be removed in the future.
  *
  * Defined to indicate that some "test" functionality should be used in the modules.
  */
 #define SIEGE_TEST
 
 #ifndef SG_CALL
-#	if defined(__WIN32)
+#    if defined(__WIN32)
 #       define SG_CALL __cdecl
-#	else
+#    else
 /**
  * \brief Exported in siege calling convention
  *
  * This is used in all SIEGE functions. SIEGE currently uses the cdecl calling convention.
  */
 #       define SG_CALL
-#	endif  // defined(__WIN32)
+#    endif  // defined(__WIN32)
 #endif // defined(SG_CALL)
 
 /**
@@ -176,46 +176,46 @@ typedef double SGdouble;
  */
 /// @{
 #ifndef NAN
-#	ifdef __GNUC__
-#		define SG_NAN __builtin_nanf("0")
-#	elif defined(_MSC_VER)
-		union _SG_MSVC_NAN_HACK
-		{
-			unsigned char bytes[4];
-			float value;
-		} ;
-		/// \todo Get this to the proper value and test
-		static union _SG_MSVC_NAN_HACK _sg_msvc_nanHack = {{0x01 , 0x00, 0xC0, 0x7F}};
-#		define SG_NAN (_sg_msvc_nanHack.value)
-#	else
-#		define SG_NAN 0.0f/0.0f
-#	endif // __GNUC__ / _MSC_VER / other
+#    ifdef __GNUC__
+#        define SG_NAN __builtin_nanf("0")
+#    elif defined(_MSC_VER)
+        union _SG_MSVC_NAN_HACK
+        {
+            unsigned char bytes[4];
+            float value;
+        } ;
+        /// \todo Get this to the proper value and test
+        static union _SG_MSVC_NAN_HACK _sg_msvc_nanHack = {{0x01 , 0x00, 0xC0, 0x7F}};
+#        define SG_NAN (_sg_msvc_nanHack.value)
+#    else
+#        define SG_NAN 0.0f/0.0f
+#    endif // __GNUC__ / _MSC_VER / other
 #else
 /**
  * Used by some functions to indicate "invalid value" when returning.
  */
-#	define SG_NAN NAN
+#    define SG_NAN NAN
 #endif // NAN
 
 #ifndef INFINITY
-#	ifdef __GNUC__
-#		define SG_INF __builtin_inff()
-#	elif defined(_MSC_VER)
-		union _SG_MSVC_INF_HACK
-		{
-			unsigned char bytes[4];
-			float value;
-		} ;
-		static union _SG_MSVC_INF_HACK _sg_msvc_infHack = {{0x00, 0x00, 0x80, 0x7F}};
-#		define SG_INF (_sg_msvc_infHack.value)
-#	else
-#		define SG_INF 1e1000f
-#	endif // __GNUC__ / _MSC_VER / other
+#    ifdef __GNUC__
+#        define SG_INF __builtin_inff()
+#    elif defined(_MSC_VER)
+        union _SG_MSVC_INF_HACK
+        {
+            unsigned char bytes[4];
+            float value;
+        } ;
+        static union _SG_MSVC_INF_HACK _sg_msvc_infHack = {{0x00, 0x00, 0x80, 0x7F}};
+#        define SG_INF (_sg_msvc_infHack.value)
+#    else
+#        define SG_INF 1e1000f
+#    endif // __GNUC__ / _MSC_VER / other
 #else
 /**
  * Currently used with physics, to indicate infinite mass (or moment of inertia).
  */
-#	define SG_INF INFINITY
+#    define SG_INF INFINITY
 #endif // INFINITY
 /// @}
 
@@ -238,7 +238,7 @@ typedef double SGdouble;
 /**
  * \name Some commonly used macros
  * \warning
- *	These are macros - this means that their arguments may be evaluated more than once!
+ *    These are macros - this means that their arguments may be evaluated more than once!
  */
 /// @{
 #define SG_MAX(x, y)                (((x) > (y)) ? (x) : (y))
@@ -280,16 +280,16 @@ typedef double SGdouble;
  * Used in modules, to indicate which interface groups they implement. These are \b not used in SIEGE frontend - they are merely used in other modules, for checking module compatibility.
  */
 /// @{
-#define SG_MODULE_WINDOW	   0x0001
-#define SG_MODULE_INPUT		   0x0002
-#define SG_MODULE_CORE		   (SG_MODULE_WINDOW | SG_MODULE_INPUT)
-#define SG_MODULE_GRAPHICS	   0x0004
+#define SG_MODULE_WINDOW       0x0001
+#define SG_MODULE_INPUT           0x0002
+#define SG_MODULE_CORE           (SG_MODULE_WINDOW | SG_MODULE_INPUT)
+#define SG_MODULE_GRAPHICS       0x0004
 #define SG_MODULE_GRAPHICSLOAD 0x0008
-#define SG_MODULE_AUDIO		   0x0010
+#define SG_MODULE_AUDIO           0x0010
 #define SG_MODULE_AUDIOLOAD    0x0020
-#define SG_MODULE_FONTLOAD	   0x0040
-#define SG_MODULE_FONTCONV	   0x0080
-#define SG_MODULE_PHYSICS	   0x0100
+#define SG_MODULE_FONTLOAD       0x0040
+#define SG_MODULE_FONTCONV       0x0080
+#define SG_MODULE_PHYSICS       0x0100
 /// @}
 
 /**
@@ -298,18 +298,18 @@ typedef double SGdouble;
  * These are used to indicate the format of the data passed to audio buffers.
  */
 /// @{
-#define SG_AUDIO_FORMAT_S8	0x01
+#define SG_AUDIO_FORMAT_S8    0x01
 #define SG_AUDIO_FORMAT_S16 0x02
 #define SG_AUDIO_FORMAT_S24 0x03
 #define SG_AUDIO_FORMAT_S32 0x04
 
-#define SG_AUDIO_FORMAT_U8	0x05
+#define SG_AUDIO_FORMAT_U8    0x05
 #define SG_AUDIO_FORMAT_U16 0x06
 #define SG_AUDIO_FORMAT_U24 0x07
 #define SG_AUDIO_FORMAT_U32 0x08
 
-#define SG_AUDIO_FORMAT_F	0x0A
-#define SG_AUDIO_FORMAT_D	0x0B
+#define SG_AUDIO_FORMAT_F    0x0A
+#define SG_AUDIO_FORMAT_D    0x0B
 /// @}
 
 /**
@@ -327,20 +327,20 @@ typedef double SGdouble;
 /**
  * Last vertex of previous line becomes the first vertex of the next one, drawing a connected line defined by the set of vertices.
  * \sa
- *	SG_TRIANGLE_STRIP
- *	SG_QUAD_STRIP
+ *    SG_TRIANGLE_STRIP
+ *    SG_QUAD_STRIP
  */
 #define SG_LINE_STRIP       0x03
 /**
  * The first vertex is the "origin" for all the lines.
  * \sa
- *	SG_TRIANGLE_FAN
+ *    SG_TRIANGLE_FAN
  */
 #define SG_LINE_FAN         0x04
 /**
  * Lines are created in a loop. This is similar to \ref SG_LINE_STRIP "SG_LINE_STRIP", except that the last and first vertex become connected by a line.
  * \sa
- *	SG_LINE_STRIP
+ *    SG_LINE_STRIP
  */
 #define SG_LINE_LOOP        0x05
 /**
@@ -350,13 +350,13 @@ typedef double SGdouble;
 /**
  * Last 2 vertices of the previous triangle become the first two vertices of the next one, making a connected hull. This is analogous to \ref SG_LINE_STRIP "SG_LINE_STRIP".
  * \sa
- *	SG_LINE_STRIP
+ *    SG_LINE_STRIP
  */
 #define SG_TRIANGLE_STRIP   0x07
 /**
  * The first vertex becomes a "common point" between all the triangles. This is analogous to \ref SG_LINE_FAN "SG_LINE_FAN".
  * \sa
- *	SG_LINE_FAN
+ *    SG_LINE_FAN
  */
 #define SG_TRIANGLE_FAN     0x08
 //#define SG_TRIANGLE_LOOP        0x09
@@ -367,8 +367,8 @@ typedef double SGdouble;
 /**
  * Last 2 vertices of the previous quad become the first two vertices of the next one. This is analogous to \ref SG_LINE_STRIP "SG_LINE_STRIP" and \ref SG_TRIANGLE_STRIP "SG_TRIANGLE_STRIP".
  * \sa
- *	SG_LINE_STRIP
- *	SG_TRIANGLE_STRIP
+ *    SG_LINE_STRIP
+ *    SG_TRIANGLE_STRIP
  */
 #define SG_QUAD_STRIP           0x0B
 //#define SG_QUAD_FAN             0x0C
@@ -381,17 +381,17 @@ typedef double SGdouble;
 /**
  * Create polygon that is possibly concave (but not self-intersecting).
  * \note
- *	The vertices passed may be implicitly converted to a series of convex polygons.
+ *    The vertices passed may be implicitly converted to a series of convex polygons.
  * \note
- *	It is perfectly fine (if not best for performance) to pass a convex polygon as a concave one.
+ *    It is perfectly fine (if not best for performance) to pass a convex polygon as a concave one.
  */
 #define SG_CONCAVE_POLYGON      0x20
 /**
  * Create a polygon that is possibly self-intersecting.
  * \note
- *	The vertices passed may be implicitly converted to a series of convex polygons.
+ *    The vertices passed may be implicitly converted to a series of convex polygons.
  * \note
- *	It is perfectly fine (if not best for performance) to pass non-intersecting polygon as an intersecting one.
+ *    It is perfectly fine (if not best for performance) to pass non-intersecting polygon as an intersecting one.
  */
 #define SG_INTERSECTING_POLYGON 0x30
 /// @}
@@ -476,7 +476,7 @@ typedef double SGdouble;
 /**
  * A body type with seemingly infinite mass, but still movable (usually through user interaction).
  * \note
- *	May be deprecated in the future.
+ *    May be deprecated in the future.
  */
 #define SG_BODY_SEMISTATIC  0x03
 /**
@@ -586,30 +586,30 @@ typedef void SG_CALL SGFree(void* ptr);
  */
 typedef struct SGModuleInfo
 {
-	/**
-	 * \name SIEGE version
-	 */
-	/// @{
-	SGushort vmajor;
-	SGushort vminor;
-	SGushort vpatch;
-	/// @}
+    /**
+     * \name SIEGE version
+     */
+    /// @{
+    SGushort vmajor;
+    SGushort vminor;
+    SGushort vpatch;
+    /// @}
 
-	/**
-	 * \name Module version
-	 */
-	/// @{
-	SGushort mmajor;
-	SGushort mminor;
-	SGushort mpatch;
-	/// @}
+    /**
+     * \name Module version
+     */
+    /// @{
+    SGushort mmajor;
+    SGushort mminor;
+    SGushort mpatch;
+    /// @}
 
-	SGuint type;
-	char* name;
-	//char* longname;
-	//char* description;
+    SGuint type;
+    char* name;
+    //char* longname;
+    //char* description;
 
-	void* data;
+    void* data;
 } SGModuleInfo;
 
 #ifdef __cplusplus

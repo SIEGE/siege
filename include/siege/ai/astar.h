@@ -30,36 +30,36 @@ typedef SGbool SG_CALL (*SGAStarIsGoal)(struct SGAStarNode*, struct SGAStarNode*
 
 typedef struct SGAStarNode
 {
-	struct SGAStarNode* from;
-	SGList* links;
-	void* data; // userdata
+    struct SGAStarNode* from;
+    SGList* links;
+    void* data; // userdata
 
-	struct
-	{
-		float g;
-		float h;
-		float f;
-	} score;
+    struct
+    {
+        float g;
+        float h;
+        float f;
+    } score;
 } SGAStarNode;
 
 typedef struct SGAStar
 {
-	struct
-	{
-		SGList* open;
-		SGList* closed;
-	} set;
-	SGList* path;
-	struct SGAStarNode* current;
-	struct SGAStarNode* goal;
-	SGbool gfound;
+    struct
+    {
+        SGList* open;
+        SGList* closed;
+    } set;
+    SGList* path;
+    struct SGAStarNode* current;
+    struct SGAStarNode* goal;
+    SGbool gfound;
 
-	struct
-	{
-		SGAStarScore g;
-		SGAStarScore h;
-		SGAStarIsGoal isgoal;
-	} cb;
+    struct
+    {
+        SGAStarScore g;
+        SGAStarScore h;
+        SGAStarIsGoal isgoal;
+    } cb;
 } SGAStar;
 
 SGAStar* SG_CALL sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);

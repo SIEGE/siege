@@ -21,85 +21,85 @@
 
 SGbool SG_CALL _sgViewportInit(void)
 {
-	_sg_viewList = sgListCreate();
-	if(_sg_viewList == NULL)
-		return SG_FALSE;
-	return SG_TRUE;
+    _sg_viewList = sgListCreate();
+    if(_sg_viewList == NULL)
+        return SG_FALSE;
+    return SG_TRUE;
 }
 
 SGbool SG_CALL _sgViewportDeinit(void)
 {
-	//sgViewportDestroy(_sg_viewMain);
-	SGListNode* node;
-	SGListNode* next;
-	for(node = _sg_viewList->head; node != NULL; node = next)
-	{
-		next = node->next;
-		sgViewportDestroy(node->item);
-	}
-	sgListDestroy(_sg_viewList);
-	return SG_TRUE;
+    //sgViewportDestroy(_sg_viewMain);
+    SGListNode* node;
+    SGListNode* next;
+    for(node = _sg_viewList->head; node != NULL; node = next)
+    {
+        next = node->next;
+        sgViewportDestroy(node->item);
+    }
+    sgListDestroy(_sg_viewList);
+    return SG_TRUE;
 }
 
 SGViewport* SG_CALL sgViewportCreate4i4f(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)
 {
-	SGViewport* viewport = sgViewportCreate();
-	if(viewport == NULL)
-		return NULL;
+    SGViewport* viewport = sgViewportCreate();
+    if(viewport == NULL)
+        return NULL;
 
-	sgViewportSet4i4f(viewport, wposx, wposy, wsizex, wsizey, posx, posy, sizex, sizey);
-	return viewport;
+    sgViewportSet4i4f(viewport, wposx, wposy, wsizex, wsizey, posx, posy, sizex, sizey);
+    return viewport;
 }
 SGViewport* SG_CALL sgViewportCreate4i(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey)
 {
-	return sgViewportCreate4i4f(wposx, wposy, wsizex, wsizey, wposx, wposy, wsizex, wsizey);
+    return sgViewportCreate4i4f(wposx, wposy, wsizex, wsizey, wposx, wposy, wsizex, wsizey);
 }
 SGViewport* SG_CALL sgViewportCreate(void)
 {
-	SGViewport* viewport = malloc(sizeof(SGViewport));
-	if(viewport == NULL)
-		return NULL;
+    SGViewport* viewport = malloc(sizeof(SGViewport));
+    if(viewport == NULL)
+        return NULL;
 
-	if(psgmGraphicsViewportCreate != NULL)
-		psgmGraphicsViewportCreate(&viewport->handle, _sg_gfxHandle);
-	sgListAppend(_sg_viewList, viewport);
-	return viewport;
+    if(psgmGraphicsViewportCreate != NULL)
+        psgmGraphicsViewportCreate(&viewport->handle, _sg_gfxHandle);
+    sgListAppend(_sg_viewList, viewport);
+    return viewport;
 }
 void SG_CALL sgViewportDestroy(SGViewport* viewport)
 {
-	if(viewport == NULL)
-		return;
+    if(viewport == NULL)
+        return;
 
-	if(psgmGraphicsViewportDestroy != NULL)
-		psgmGraphicsViewportDestroy(viewport->handle);
-	sgListRemoveItem(_sg_viewList, viewport);
-	free(viewport);
+    if(psgmGraphicsViewportDestroy != NULL)
+        psgmGraphicsViewportDestroy(viewport->handle);
+    sgListRemoveItem(_sg_viewList, viewport);
+    free(viewport);
 }
 void SG_CALL sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)
 {
-	if(viewport == NULL)
-		return;
+    if(viewport == NULL)
+        return;
 
-	viewport->wposx = wposx;
-	viewport->wposy = wposy;
-	viewport->wsizex = wsizex;
-	viewport->wsizey = wsizey;
-	viewport->posx = posx;
-	viewport->posy = posy;
-	viewport->sizex = sizex;
-	viewport->sizey = sizey;
-	sgViewportReset(viewport);
+    viewport->wposx = wposx;
+    viewport->wposy = wposy;
+    viewport->wsizex = wsizex;
+    viewport->wsizey = wsizey;
+    viewport->posx = posx;
+    viewport->posy = posy;
+    viewport->sizex = sizex;
+    viewport->sizey = sizey;
+    sgViewportReset(viewport);
 }
 void SG_CALL sgViewportSet4i(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey)
 {
-	sgViewportSet4i4f(viewport, wposx, wposy, wsizex, wsizey, wposx, wposy, wsizex, wsizey);
+    sgViewportSet4i4f(viewport, wposx, wposy, wsizex, wsizey, wposx, wposy, wsizex, wsizey);
 }
 void SG_CALL sgViewportReset(SGViewport* viewport)
 {
-	if(viewport == NULL)
-		return;
-	if(psgmGraphicsViewportSetView != NULL)
-		psgmGraphicsViewportSetView(viewport->handle, viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey, viewport->posx, viewport->posy, viewport->sizex, viewport->sizey);
+    if(viewport == NULL)
+        return;
+    if(psgmGraphicsViewportSetView != NULL)
+        psgmGraphicsViewportSetView(viewport->handle, viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey, viewport->posx, viewport->posy, viewport->sizex, viewport->sizey);
 }
 
 void SG_CALL sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy)

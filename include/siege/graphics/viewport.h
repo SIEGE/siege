@@ -24,16 +24,16 @@ extern "C"
 
 typedef struct SGViewport
 {
-	void* handle;
+    void* handle;
 
-	SGuint wposx;
-	SGuint wposy;
-	SGuint wsizex;
-	SGuint wsizey;
-	float posx;
-	float posy;
-	float sizex;
-	float sizey;
+    SGuint wposx;
+    SGuint wposy;
+    SGuint wsizex;
+    SGuint wsizey;
+    float posx;
+    float posy;
+    float sizex;
+    float sizey;
 } SGViewport;
 
 #ifdef SG_BUILD_LIBRARY

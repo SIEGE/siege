@@ -119,15 +119,15 @@ SGenum SG_CALL sgmGraphicsSurfaceSetSubData(void* surface, SGuint x, SGuint y, S
 }
 SGenum SG_CALL sgmGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data)
 {
-	if(surface == NULL)
-		return SG_OK; // SG_INVALID_VALUE
-	SurfaceData* sdata = surface;
+    if(surface == NULL)
+        return SG_OK; // SG_INVALID_VALUE
+    SurfaceData* sdata = surface;
 
-	return sgmGraphicsTextureGetData(sdata->texture, width, height, bpp, data);
+    return sgmGraphicsTextureGetData(sdata->texture, width, height, bpp, data);
 }
 SGenum SG_CALL sgmGraphicsSurfaceFreeData(void* data)
 {
-	return sgmGraphicsTextureFreeData(data);
+    return sgmGraphicsTextureFreeData(data);
 }
 SGenum SG_CALL sgmGraphicsSurfaceGetSize(void* surface, SGuint* width, SGuint* height)
 {

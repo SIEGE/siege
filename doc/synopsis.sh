@@ -21,13 +21,13 @@ mkdir -p $TMPDIR
 echo 'Parsing...'
 TMPFILES=''
 for header in $HEADERS; do
-	tmpfile=`echo $header | cut -c"$START-"`
-	tmpfile=$TMPDIR/$tmpfile.syn
-	tmpdir=`echo "$tmpfile" | sed 's/\/[^\/]*$//'`
-	echo "$header => $tmpfile"
-	mkdir -p "$tmpdir"
-	python synopsis.py c_sg --output="$tmpfile" $header
-	TMPFILES=`echo $TMPFILES $tmpfile`
+    tmpfile=`echo $header | cut -c"$START-"`
+    tmpfile=$TMPDIR/$tmpfile.syn
+    tmpdir=`echo "$tmpfile" | sed 's/\/[^\/]*$//'`
+    echo "$header => $tmpfile"
+    mkdir -p "$tmpdir"
+    python synopsis.py c_sg --output="$tmpfile" $header
+    TMPFILES=`echo $TMPFILES $tmpfile`
 done
 echo 'Linking...'
 python synopsis.py link --output=$TMPDIR/$OUTNAME.link $TMPFILES

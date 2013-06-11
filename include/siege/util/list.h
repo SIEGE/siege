@@ -26,15 +26,15 @@ extern "C"
 
 typedef struct SGListNode
 {
-	struct SGListNode* prev;
-	struct SGListNode* next;
-	void* item;
+    struct SGListNode* prev;
+    struct SGListNode* next;
+    void* item;
 } SGListNode;
 
 typedef struct SGList
 {
-	struct SGListNode* head;
-	struct SGListNode* tail;
+    struct SGListNode* head;
+    struct SGListNode* tail;
 } SGList;
 
 SGList* SG_CALL sgListInit(SGList* list);

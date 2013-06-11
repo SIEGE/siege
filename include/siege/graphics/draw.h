@@ -103,9 +103,9 @@ void SG_CALL sgDrawGetColor4ubv(SGubyte* rgba);
  * \param t Vertical (y) coordinate
  *
  * \note
- *	Texture coordinates generally span from 0.0 to 1.0 - values
- *	outside this range can sometimes (depending on the texture
- *	clipping mode) indicate flipping or tiling.
+ *    Texture coordinates generally span from 0.0 to 1.0 - values
+ *    outside this range can sometimes (depending on the texture
+ *    clipping mode) indicate flipping or tiling.
  */
 void SG_CALL sgDrawTexCoord2f(float s, float t);
 void SG_CALL sgDrawTexCoord2fv(const float* st);

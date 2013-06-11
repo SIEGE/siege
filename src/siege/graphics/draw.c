@@ -136,7 +136,7 @@ static void enablePointers(void)
 SGbool SG_CALL _sgDrawInit(void)
 {
     _sg_drawKey = sgThreadKeyCreate();
-	return SG_TRUE;
+    return SG_TRUE;
 }
 SGbool SG_CALL _sgDrawDeinit(void)
 {
@@ -244,68 +244,68 @@ void SG_CALL sgDrawColor4f(float r, float g, float b, float a)
     ctx->color[1] = g;
     ctx->color[2] = b;
     ctx->color[3] = a;
-	if(psgmGraphicsDrawSetColor != NULL)
-		psgmGraphicsDrawSetColor(_sg_gfxHandle, ctx->color);
+    if(psgmGraphicsDrawSetColor != NULL)
+        psgmGraphicsDrawSetColor(_sg_gfxHandle, ctx->color);
 }
 void SG_CALL sgDrawColor3f(float r, float g, float b)
 {
-	sgDrawColor4f(r, g, b, 1.0);
+    sgDrawColor4f(r, g, b, 1.0);
 }
 void SG_CALL sgDrawColor2f(float g, float a)
 {
-	sgDrawColor4f(g, g, g, a);
+    sgDrawColor4f(g, g, g, a);
 }
 void SG_CALL sgDrawColor1f(float g)
 {
-	sgDrawColor4f(g, g, g, 1.0);
+    sgDrawColor4f(g, g, g, 1.0);
 }
 void SG_CALL sgDrawColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
 {
-	sgDrawColor4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+    sgDrawColor4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 }
 void SG_CALL sgDrawColor3ub(SGubyte r, SGubyte g, SGubyte b)
 {
-	sgDrawColor4ub(r, g, b, 255);
+    sgDrawColor4ub(r, g, b, 255);
 }
 void SG_CALL sgDrawColor2ub(SGubyte g, SGubyte a)
 {
-	sgDrawColor4ub(g, g, g, a);
+    sgDrawColor4ub(g, g, g, a);
 }
 void SG_CALL sgDrawColor1ub(SGubyte g)
 {
-	sgDrawColor4ub(g, g, g, 255);
+    sgDrawColor4ub(g, g, g, 255);
 }
 void SG_CALL sgDrawColor4fv(const float* rgba)
 {
-	sgDrawColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+    sgDrawColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
 void SG_CALL sgDrawColor3fv(const float* rgb)
 {
-	sgDrawColor3f(rgb[0], rgb[1], rgb[2]);
+    sgDrawColor3f(rgb[0], rgb[1], rgb[2]);
 }
 void SG_CALL sgDrawColor2fv(const float* ga)
 {
-	sgDrawColor2f(ga[0], ga[1]);
+    sgDrawColor2f(ga[0], ga[1]);
 }
 void SG_CALL sgDrawColor1fv(const float* g)
 {
-	sgDrawColor1f(g[0]);
+    sgDrawColor1f(g[0]);
 }
 void SG_CALL sgDrawColor4ubv(const SGubyte* rgba)
 {
-	sgDrawColor4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
+    sgDrawColor4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
 void SG_CALL sgDrawColor3ubv(const SGubyte* rgb)
 {
-	sgDrawColor3ub(rgb[0], rgb[1], rgb[2]);
+    sgDrawColor3ub(rgb[0], rgb[1], rgb[2]);
 }
 void SG_CALL sgDrawColor2ubv(const SGubyte* ga)
 {
-	sgDrawColor2ub(ga[0], ga[1]);
+    sgDrawColor2ub(ga[0], ga[1]);
 }
 void SG_CALL sgDrawColor1ubv(const SGubyte* g)
 {
-	sgDrawColor1ub(g[0]);
+    sgDrawColor1ub(g[0]);
 }
 
 void SG_CALL sgDrawGetColor4f(float* r, float* g, float* b, float* a)
@@ -342,7 +342,7 @@ void SG_CALL sgDrawTexCoord2f(float s, float t)
 }
 void SG_CALL sgDrawTexCoord2fv(const float* st)
 {
-	sgDrawTexCoord2f(st[0], st[1]);
+    sgDrawTexCoord2f(st[0], st[1]);
 }
 void SG_CALL sgDrawVertex3f(float x, float y, float z)
 {
@@ -352,98 +352,98 @@ void SG_CALL sgDrawVertex3f(float x, float y, float z)
     ctx->point[2] = z;
 
     ctx->numPoints++;
-	ctx->points = realloc(ctx->points, ctx->numPoints * sizeof(ctx->point));
-	ctx->texCoords = realloc(ctx->texCoords, ctx->numPoints * sizeof(ctx->texCoord));
-	ctx->colors = realloc(ctx->colors, ctx->numPoints * sizeof(ctx->color));
-	memcpy(&ctx->points[(ctx->numPoints - 1) * 3], ctx->point, sizeof(ctx->point));
-	memcpy(&ctx->texCoords[(ctx->numPoints - 1) * 2], ctx->texCoord, sizeof(ctx->texCoord));
-	memcpy(&ctx->colors[(ctx->numPoints - 1) * 4], ctx->color, sizeof(ctx->color));
+    ctx->points = realloc(ctx->points, ctx->numPoints * sizeof(ctx->point));
+    ctx->texCoords = realloc(ctx->texCoords, ctx->numPoints * sizeof(ctx->texCoord));
+    ctx->colors = realloc(ctx->colors, ctx->numPoints * sizeof(ctx->color));
+    memcpy(&ctx->points[(ctx->numPoints - 1) * 3], ctx->point, sizeof(ctx->point));
+    memcpy(&ctx->texCoords[(ctx->numPoints - 1) * 2], ctx->texCoord, sizeof(ctx->texCoord));
+    memcpy(&ctx->colors[(ctx->numPoints - 1) * 4], ctx->color, sizeof(ctx->color));
 }
 void SG_CALL sgDrawVertex2f(float x, float y)
 {
-	sgDrawVertex3f(x, y, 0.0f);
+    sgDrawVertex3f(x, y, 0.0f);
 }
 void SG_CALL sgDrawVertex3fv(const float* xyz)
 {
-	sgDrawVertex3f(xyz[0], xyz[1], xyz[2]);
+    sgDrawVertex3f(xyz[0], xyz[1], xyz[2]);
 }
 void SG_CALL sgDrawVertex2fv(const float* xy)
 {
-	sgDrawVertex2f(xy[0], xy[1]);
+    sgDrawVertex2f(xy[0], xy[1]);
 }
 void SG_CALL sgDrawClear4f(float r, float g, float b, float a)
 {
-	float col[4];
-	col[0] = r;
-	col[1] = g;
-	col[2] = b;
-	col[3] = a;
-	if(psgmGraphicsContextClear != NULL)
-		psgmGraphicsContextClear(_sg_gfxHandle, col);
+    float col[4];
+    col[0] = r;
+    col[1] = g;
+    col[2] = b;
+    col[3] = a;
+    if(psgmGraphicsContextClear != NULL)
+        psgmGraphicsContextClear(_sg_gfxHandle, col);
 }
 void SG_CALL sgDrawClear3f(float r, float g, float b)
 {
-	sgDrawClear4f(r, g, b, 1.0);
+    sgDrawClear4f(r, g, b, 1.0);
 }
 void SG_CALL sgDrawClear2f(float g, float a)
 {
-	sgDrawClear4f(g, g, g, a);
+    sgDrawClear4f(g, g, g, a);
 }
 void SG_CALL sgDrawClear1f(float g)
 {
-	sgDrawClear4f(g, g, g, 1.0);
+    sgDrawClear4f(g, g, g, 1.0);
 }
 void SG_CALL sgDrawClear4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
 {
-	sgDrawClear4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+    sgDrawClear4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 }
 void SG_CALL sgDrawClear3ub(SGubyte r, SGubyte g, SGubyte b)
 {
-	sgDrawClear4ub(r, g, b, 255);
+    sgDrawClear4ub(r, g, b, 255);
 }
 void SG_CALL sgDrawClear2ub(SGubyte g, SGubyte a)
 {
-	sgDrawClear4ub(g, g, g, a);
+    sgDrawClear4ub(g, g, g, a);
 }
 void SG_CALL sgDrawClear1ub(SGubyte g)
 {
-	sgDrawClear4ub(g, g, g, 255);
+    sgDrawClear4ub(g, g, g, 255);
 }
 void SG_CALL sgDrawClear4fv(const float* rgba)
 {
-	sgDrawClear4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+    sgDrawClear4f(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
 void SG_CALL sgDrawClear3fv(const float* rgb)
 {
-	sgDrawClear3f(rgb[0], rgb[1], rgb[2]);
+    sgDrawClear3f(rgb[0], rgb[1], rgb[2]);
 }
 void SG_CALL sgDrawClear2fv(const float* ga)
 {
-	sgDrawClear2f(ga[0], ga[1]);
+    sgDrawClear2f(ga[0], ga[1]);
 }
 void SG_CALL sgDrawClear1fv(const float* g)
 {
-	sgDrawClear1f(g[0]);
+    sgDrawClear1f(g[0]);
 }
 void SG_CALL sgDrawClear4ubv(const SGubyte* rgba)
 {
-	sgDrawClear4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
+    sgDrawClear4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
 void SG_CALL sgDrawClear3ubv(const SGubyte* rgb)
 {
-	sgDrawClear3ub(rgb[0], rgb[1], rgb[2]);
+    sgDrawClear3ub(rgb[0], rgb[1], rgb[2]);
 }
 void SG_CALL sgDrawClear2ubv(const SGubyte* ga)
 {
-	sgDrawClear2ub(ga[0], ga[1]);
+    sgDrawClear2ub(ga[0], ga[1]);
 }
 void SG_CALL sgDrawClear1ubv(const SGubyte* g)
 {
-	sgDrawClear1ub(g[0]);
+    sgDrawClear1ub(g[0]);
 }
 void SG_CALL sgDrawClear(void)
 {
-	sgDrawClear4f(0.0f, 0.0f, 0.0f, 0.0f);
+    sgDrawClear4f(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void SG_CALL sgDrawSetBlendFunc(SGenum src, SGenum dst)
@@ -498,64 +498,64 @@ void SG_CALL sgDrawSetPolygonSmooth(SGbool smooth)
 void SG_CALL sgDrawPoint(float x, float y)
 {
     sgDrawBegin(SG_POINTS);
-		sgDrawVertex2f(x, y);
-	sgDrawEnd();
+        sgDrawVertex2f(x, y);
+    sgDrawEnd();
 }
 void SG_CALL sgDrawPointSetSize(float size)
 {
-	if(psgmGraphicsDrawPointSetSize != NULL)
-		psgmGraphicsDrawPointSetSize(_sg_gfxHandle, size);
+    if(psgmGraphicsDrawPointSetSize != NULL)
+        psgmGraphicsDrawPointSetSize(_sg_gfxHandle, size);
 }
 //float SG_CALL sgDrawPointGetSize(void);
 
 void SG_CALL sgDrawLine(float x1, float y1, float x2, float y2)
 {
     sgDrawBegin(SG_LINES);
-		sgDrawVertex2f(x1, y1);
-		sgDrawVertex2f(x2, y2);
-	sgDrawEnd();
+        sgDrawVertex2f(x1, y1);
+        sgDrawVertex2f(x2, y2);
+    sgDrawEnd();
 }
 void SG_CALL sgDrawLineSetWidth(float width)
 {
-	if(psgmGraphicsDrawLineSetWidth != NULL)
-		psgmGraphicsDrawLineSetWidth(_sg_gfxHandle, width);
+    if(psgmGraphicsDrawLineSetWidth != NULL)
+        psgmGraphicsDrawLineSetWidth(_sg_gfxHandle, width);
 }
 //float SG_CALL sgDrawLineGetWidth(void);
 
 void SG_CALL sgDrawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, SGbool fill)
 {
-	if(fill)
+    if(fill)
         sgDrawBegin(SG_TRIANGLES);
-	else
+    else
         sgDrawBegin(SG_LINE_LOOP);
 
-		sgDrawVertex2f(x1, y1);
-		sgDrawVertex2f(x2, y2);
-		sgDrawVertex2f(x3, y3);
-	sgDrawEnd();
+        sgDrawVertex2f(x1, y1);
+        sgDrawVertex2f(x2, y2);
+        sgDrawVertex2f(x3, y3);
+    sgDrawEnd();
 }
 
 void SG_CALL sgDrawQuad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, SGbool fill)
 {
-	if(fill)
+    if(fill)
         sgDrawBegin(SG_QUADS);
-	else
+    else
         sgDrawBegin(SG_LINE_LOOP);
 
-	sgDrawVertex2f(x1, y1);
-	sgDrawVertex2f(x2, y2);
-	sgDrawVertex2f(x3, y3);
-	sgDrawVertex2f(x4, y4);
-	sgDrawEnd();
+    sgDrawVertex2f(x1, y1);
+    sgDrawVertex2f(x2, y2);
+    sgDrawVertex2f(x3, y3);
+    sgDrawVertex2f(x4, y4);
+    sgDrawEnd();
 }
 
 void SG_CALL sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fill)
 {
-	sgDrawQuad(x1, y1, x2, y1, x2, y2, x1, y2, fill);
+    sgDrawQuad(x1, y1, x2, y1, x2, y2, x1, y2, fill);
 }
 void SG_CALL sgDrawRectangleWH(float x, float y, float w, float h, SGbool fill)
 {
-	sgDrawRectangle(x, y, x + w, y + h, fill);
+    sgDrawRectangle(x, y, x + w, y + h, fill);
 }
 
 void SG_CALL sgDrawRectangleRound(float x1, float y1, float x2, float y2, float rx, float ry, SGbool fill)
@@ -599,54 +599,54 @@ void SG_CALL sgDrawRectangleRoundWH(float x1, float y1, float w, float h, float 
 
 void SG_CALL sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill)
 {
-	sgDrawEArcRads(x, y, rx, ry, 0, 2 * SG_PI, SG_FALSE, fill);
+    sgDrawEArcRads(x, y, rx, ry, 0, 2 * SG_PI, SG_FALSE, fill);
 }
 
 void SG_CALL sgDrawCircle(float x, float y, float radius, SGbool fill)
 {
-	sgDrawEllipse2R(x, y, radius, radius, fill);
+    sgDrawEllipse2R(x, y, radius, radius, fill);
 }
 
 void SG_CALL sgDrawEArcRads(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
 {
-	float adiff = a2 - a1;
+    float adiff = a2 - a1;
 
-	if(!ccw && adiff < 0)
-		adiff = adiff + 2 * SG_PI;
-	else if(ccw && adiff > 0)
-		adiff = adiff - 2 * SG_PI;
+    if(!ccw && adiff < 0)
+        adiff = adiff + 2 * SG_PI;
+    else if(ccw && adiff > 0)
+        adiff = adiff - 2 * SG_PI;
 
-	float ra = (rx + ry) / 2.0;
-	SGuint numsides = (SGuint)(ra * SG_ABS(adiff) / 2 / SG_PI * 4);
-	adiff /= numsides;
-	SGuint i;
+    float ra = (rx + ry) / 2.0;
+    SGuint numsides = (SGuint)(ra * SG_ABS(adiff) / 2 / SG_PI * 4);
+    adiff /= numsides;
+    SGuint i;
 
-	if(fill)
-	{
+    if(fill)
+    {
         sgDrawBegin(SG_TRIANGLE_FAN);
-		sgDrawVertex2f(x, y);
-	}
-	else
+        sgDrawVertex2f(x, y);
+    }
+    else
         sgDrawBegin(SG_LINE_STRIP);
 
-	for(i = 0; i <= numsides; i++)
-	{
-		float a = a1 + i * adiff;
-		sgDrawVertex2f(x + cos(a) * rx, y + sin(a) * ry);
-	}
+    for(i = 0; i <= numsides; i++)
+    {
+        float a = a1 + i * adiff;
+        sgDrawVertex2f(x + cos(a) * rx, y + sin(a) * ry);
+    }
 
-	sgDrawEnd();
+    sgDrawEnd();
 }
 void SG_CALL sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
 {
-	sgDrawEArcRads(x, y, rx, ry, a1 * SG_PI / 180.0, a2 * SG_PI / 180.0, ccw, fill);
+    sgDrawEArcRads(x, y, rx, ry, a1 * SG_PI / 180.0, a2 * SG_PI / 180.0, ccw, fill);
 }
 
 void SG_CALL sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
 {
-	sgDrawEArcRads(x, y, r, r, a1, a2, ccw, fill);
+    sgDrawEArcRads(x, y, r, r, a1, a2, ccw, fill);
 }
 void SG_CALL sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
 {
-	sgDrawEArcDegs(x, y, r, r, a1, a2, ccw, fill);
+    sgDrawEArcDegs(x, y, r, r, a1, a2, ccw, fill);
 }

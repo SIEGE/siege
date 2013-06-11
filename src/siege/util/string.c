@@ -200,10 +200,10 @@ wchar_t* SG_CALL sgAPrintfvW(const wchar_t* format, va_list args)
 size_t SG_CALL SG_HINT_PRINTF(3, 4) sgSPrintf(char* buf, size_t buflen, const char* format, ...)
 {
     size_t ret;
-	va_list args;
-	va_start(args, format);
+    va_list args;
+    va_start(args, format);
     ret = sgSPrintfv(buf, buflen, format, args);
-	va_end(args);
+    va_end(args);
     return ret;
 }
 size_t SG_CALL SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const char* format, va_list args)
@@ -217,10 +217,10 @@ size_t SG_CALL SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const c
 char* SG_CALL SG_HINT_PRINTF(1, 2) sgAPrintf(const char* format, ...)
 {
     char* str;
-	va_list args;
-	va_start(args, format);
+    va_list args;
+    va_start(args, format);
     str = sgAPrintfv(format, args);
-	va_end(args);
+    va_end(args);
     return str;
 }
 char* SG_CALL SG_HINT_PRINTF(1, 0) sgAPrintfv(const char* format, va_list args)
@@ -265,30 +265,30 @@ char* SG_CALL sgLineEnd(const char* text)
 }
 SGuint SG_CALL sgLineLength(const char* text)
 {
-	return sgLineEnd(text) - text;
+    return sgLineEnd(text) - text;
 }
 char* SG_CALL sgNextLine(const char* text)
 {
     if(!text) return NULL;
 
-	char* brk = strpbrk(text, "\r\n");
+    char* brk = strpbrk(text, "\r\n");
     if(!brk)
-		return NULL;
-	if((brk[0] == '\r') && (brk[1] == '\n'))
-		return brk + 2;
-	return brk + 1;
+        return NULL;
+    if((brk[0] == '\r') && (brk[1] == '\n'))
+        return brk + 2;
+    return brk + 1;
 }
 SGuint SG_CALL sgNumLines(const char* text)
 {
-	SGuint numlines = 0;
+    SGuint numlines = 0;
 
-	const char* ptr = text;
+    const char* ptr = text;
     while(ptr)
-	{
-		ptr = sgNextLine(ptr);
-		numlines++;
-	}
-	return numlines;
+    {
+        ptr = sgNextLine(ptr);
+        numlines++;
+    }
+    return numlines;
 }
 
 /*size_t SG_CALL sgStrcspnU32(const SGdchar* text, const SGdchar* sel)
@@ -302,40 +302,40 @@ SGuint SG_CALL sgNumLines(const char* text)
 }*/
 SGdchar* SG_CALL sgLineEndU32(const SGdchar* text)
 {
-	if(text == NULL)
-		return NULL;
+    if(text == NULL)
+        return NULL;
 
-	while(*text != '\r' && *text != '\n' && *text != '\0')
-		text++;
+    while(*text != '\r' && *text != '\n' && *text != '\0')
+        text++;
 
-	return (SGdchar*)text;
+    return (SGdchar*)text;
 }
 SGuint SG_CALL sgLineLengthU32(const SGdchar* text)
 {
-	return sgLineEndU32(text) - text;
+    return sgLineEndU32(text) - text;
 }
 SGdchar* SG_CALL sgNextLineU32(const SGdchar* text)
 {
-	if(text == NULL)
-		return NULL;
+    if(text == NULL)
+        return NULL;
 
-	SGdchar* end = sgLineEndU32(text);
-	if(end[0] == 0)
-		return NULL;
+    SGdchar* end = sgLineEndU32(text);
+    if(end[0] == 0)
+        return NULL;
 
-	if(end[0] == '\r' && end[1] == '\n')
-		return end + 2;
-	return end + 1;
+    if(end[0] == '\r' && end[1] == '\n')
+        return end + 2;
+    return end + 1;
 }
 SGuint SG_CALL sgNumLinesU32(const SGdchar* text)
 {
-	SGuint numlines = 0;
+    SGuint numlines = 0;
 
-	const SGdchar* ptr = text;
-	while(ptr != NULL)
-	{
-		ptr = sgNextLineU32(ptr);
-		numlines++;
-	}
-	return numlines;
+    const SGdchar* ptr = text;
+    while(ptr != NULL)
+    {
+        ptr = sgNextLineU32(ptr);
+        numlines++;
+    }
+    return numlines;
 }

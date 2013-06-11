@@ -163,19 +163,19 @@ SGVec3 SG_CALL sgVec3CylindricalRads(float rads, float radius, float z)
 }
 SGVec3 SG_CALL sgVec3CylindricalDegs(float degs, float radius, float z)
 {
-	return sgVec3CylindricalRads(degs * SG_PI / 180.0, radius, z);
+    return sgVec3CylindricalRads(degs * SG_PI / 180.0, radius, z);
 }
 SGVec3 SG_CALL sgVec3SphericalRads(float azimuth, float zenith, float radius)
 {
-	float ca = cos(azimuth);
-	float sa = sin(azimuth);
-	float cz = cos(zenith);
-	float sz = sin(zenith);
-	return sgVec3f(radius * ca * sz, radius * sa * sz, radius * cz);
+    float ca = cos(azimuth);
+    float sa = sin(azimuth);
+    float cz = cos(zenith);
+    float sz = sin(zenith);
+    return sgVec3f(radius * ca * sz, radius * sa * sz, radius * cz);
 }
 SGVec3 SG_CALL sgVec3SphericalDegs(float azimuth, float zenith, float radius)
 {
-	return sgVec3SphericalRads(azimuth * SG_PI / 180.0, zenith * SG_PI / 180.0, radius);
+    return sgVec3SphericalRads(azimuth * SG_PI / 180.0, zenith * SG_PI / 180.0, radius);
 }
 SGVec3 SG_CALL sgVec3Nan(void)
 {

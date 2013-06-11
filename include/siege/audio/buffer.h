@@ -31,14 +31,14 @@ extern "C"
  */
 typedef struct SGAudioBuffer
 {
-	/**
-	 * \brief Internal handle
-	 * \private
-	 *
-	 * \warning
-	 *	For internal use only.
-	 */
-	void* handle;
+    /**
+     * \brief Internal handle
+     * \private
+     *
+     * \warning
+     *    For internal use only.
+     */
+    void* handle;
 
     SGStream* stream;
     SGbool del;

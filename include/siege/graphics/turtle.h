@@ -29,24 +29,24 @@ extern "C"
  * \private
  *
  * \warning
- *	For internal use only.
+ *    For internal use only.
  */
 typedef struct SGTurtleState
 {
-	/**
-	 * \privatesection
-	 */
+    /**
+     * \privatesection
+     */
 
-	/**
-	 * \name Position
-	 */
-	/// @{
-	float x;		/// < Horizontal position
-	float y;		/// < Vertical position
-	/// @}
+    /**
+     * \name Position
+     */
+    /// @{
+    float x;        /// < Horizontal position
+    float y;        /// < Vertical position
+    /// @}
 
-	float angle;	/// < Angle in radians
-	SGbool draw;	/// < Pen state
+    float angle;    /// < Angle in radians
+    SGbool draw;    /// < Pen state
 } SGTurtleState;
 
 /**
@@ -54,21 +54,21 @@ typedef struct SGTurtleState
  */
 typedef struct SGTurtle
 {
-	/**
-	 * \privatesection
-	 */
+    /**
+     * \privatesection
+     */
 
-	SGTurtleState* stack;	/// < Internal position stack
-	size_t stacklen;		/// < The size of the turtle's stack
+    SGTurtleState* stack;    /// < Internal position stack
+    size_t stacklen;        /// < The size of the turtle's stack
 
-	/**
-	 * \name States
-	 */
-	/// @{
-	SGTurtleState start;	/// < The state at turtle's creation
-	SGTurtleState prev;		/// < Previous state
-	SGTurtleState curr;		/// < Current state
-	/// @}
+    /**
+     * \name States
+     */
+    /// @{
+    SGTurtleState start;    /// < The state at turtle's creation
+    SGTurtleState prev;        /// < Previous state
+    SGTurtleState curr;        /// < Current state
+    /// @}
 } SGTurtle;
 
 SGbool SG_CALL _sgTurtleInit(void);
@@ -83,8 +83,8 @@ SGbool SG_CALL _sgTurtleDeinit(void);
  * \param y Start y position
  * \param rads Start angle in radians
  * \param draw The initial pen position,
- *	SG_TRUE to draw (down),
- *	SG_FALSE otherwise (up)
+ *    SG_TRUE to draw (down),
+ *    SG_FALSE otherwise (up)
  *
  * \return The newly created turtle if successful, NULL otherwise.
  */
@@ -134,7 +134,7 @@ void SG_CALL sgTurtleReset(SGTurtle* turtle);
  * onto its stack, making it available for later.
  *
  * \sa
- * 	sgTurtlePop
+ *     sgTurtlePop
  */
 void SG_CALL sgTurtlePush(SGTurtle* turtle);
 /**
@@ -147,7 +147,7 @@ void SG_CALL sgTurtlePush(SGTurtle* turtle);
  * removes it and then sets it as the current state.
  *
  * \sa
- * 	sgTurtlePush
+ *     sgTurtlePush
  */
 void SG_CALL sgTurtlePop(SGTurtle* turtle);
 /// @}
@@ -179,7 +179,7 @@ void SG_CALL sgTurtleStep(SGTurtle* turtle, float dist);
  * drawing a line in between if the pen is down.
  *
  * \sa
- * 	sgTurtleJump
+ *     sgTurtleJump
  */
 void SG_CALL sgTurtleMove(SGTurtle* turtle, float x, float y);
 /**
@@ -193,8 +193,8 @@ void SG_CALL sgTurtleMove(SGTurtle* turtle, float x, float y);
  * This function is similar to \ref sgTurtleMove "sgTurtleMove", only it doesn't do any drawing even if the pen is down.
  *
  * \sa
- * 	sgTurtleMove
- * 	sgTurtleSetPos
+ *     sgTurtleMove
+ *     sgTurtleSetPos
  */
 void SG_CALL sgTurtleJump(SGTurtle* turtle, float x, float y);
 /// @}
@@ -213,8 +213,8 @@ void SG_CALL sgTurtleJump(SGTurtle* turtle, float x, float y);
  * \ref sgTurtleSetPen "sgTurtleSetPen"(turtle, SG_FALSE).
  *
  * \sa
- * 	sgTurtlePenDown
- * 	sgTurtleSetPen
+ *     sgTurtlePenDown
+ *     sgTurtleSetPen
  */
 void SG_CALL sgTurtlePenUp(SGTurtle* turtle);
 /**
@@ -227,8 +227,8 @@ void SG_CALL sgTurtlePenUp(SGTurtle* turtle);
  * \ref sgTurtleSetPen "sgTurtleSetPen"(turtle, SG_TRUE).
  *
  * \sa
- * 	sgTurtlePenUp
- * 	sgTurtleSetPen
+ *     sgTurtlePenUp
+ *     sgTurtleSetPen
  */
 void SG_CALL sgTurtlePenDown(SGTurtle* turtle);
 
@@ -242,8 +242,8 @@ void SG_CALL sgTurtlePenDown(SGTurtle* turtle);
  * Sets the turtle's pen state, thus enabling or disabling drawing.
  *
  * \sa
- * 	sgTurtlePenUp
- * 	sgTurtlePenDown
+ *     sgTurtlePenUp
+ *     sgTurtlePenDown
  */
 void SG_CALL sgTurtleSetPen(SGTurtle* turtle, SGbool pen);
 /**
@@ -270,8 +270,8 @@ SGbool SG_CALL sgTurtleGetPen(SGTurtle* turtle);
  * \param[in] y New y position
  *
  * \note
- *	Alias for \ref sgTurtleJump "sgTurtleJump",
- *	added for consistency and completeness.
+ *    Alias for \ref sgTurtleJump "sgTurtleJump",
+ *    added for consistency and completeness.
  */
 void SG_CALL sgTurtleSetPos(SGTurtle* turtle, float x, float y);
 /**
@@ -308,8 +308,8 @@ void SG_CALL sgTurtleGetPos(SGTurtle* turtle, float* x, float* y);
  * \return Turtle's x position
  *
  * \note
- *	If both x and y coordinates are required,
- *	consider \ref sgTurtleGetPos "sgTurtleGetPos".
+ *    If both x and y coordinates are required,
+ *    consider \ref sgTurtleGetPos "sgTurtleGetPos".
  */
 float SG_CALL sgTurtleGetPosX(SGTurtle* turtle);
 /**
@@ -321,8 +321,8 @@ float SG_CALL sgTurtleGetPosX(SGTurtle* turtle);
  * \return Turtle's y position
  *
  * \note
- *	If both x and y coordinates are required,
- *	consider \ref sgTurtleGetPos "sgTurtleGetPos".
+ *    If both x and y coordinates are required,
+ *    consider \ref sgTurtleGetPos "sgTurtleGetPos".
  */
 float SG_CALL sgTurtleGetPosY(SGTurtle* turtle);
 /// @}

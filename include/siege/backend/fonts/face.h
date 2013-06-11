@@ -19,7 +19,7 @@
 #include "../util/stream.h"
 
 #ifndef SG_FPTR
-#define SG_FPTR(name)	name
+#define SG_FPTR(name)    name
 #endif // SG_FPTR
 
 #ifdef __cplusplus

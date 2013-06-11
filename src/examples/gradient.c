@@ -8,11 +8,11 @@
 
 int main(void)
 {
-	sgLoadModule("SDL");
-	sgLoadModule("OpenGL");
-	sgInit(0);
-	sgWindowOpen(640, 480, 32, 0);
-	sgWindowSetTitle("SIEGE Gradient Demo");
+    sgLoadModule("SDL");
+    sgLoadModule("OpenGL");
+    sgInit(0);
+    sgWindowOpen(640, 480, 32, 0);
+    sgWindowSetTitle("SIEGE Gradient Demo");
 
     SGGradient* grad = sgGradientCreate();
 
@@ -25,8 +25,8 @@ int main(void)
     sgGradientSetStopKey(grad, 1.00, 1.0);
 
     size_t i;
-	while(sgLoop(NULL))
-	{
+    while(sgLoop(NULL))
+    {
         for(i = 0; i < 640; i += STEP)
         {
             grad->interp = _sgGradientInterpNearest;
@@ -49,13 +49,13 @@ int main(void)
         for(i = 0; i < grad->numvals; i++)
             sgDrawLine(grad->vals[i].x * 640, 0, grad->vals[i].x * 640, 480);
 
-		sgWindowSwapBuffers();
-		sgDrawClear();
-	}
+        sgWindowSwapBuffers();
+        sgDrawClear();
+    }
 
     sgGradientDestroy(grad);
 
-	sgDeinit();
+    sgDeinit();
 
-	return 0;
+    return 0;
 }

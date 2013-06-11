@@ -42,12 +42,12 @@ extern "C"
  */
 typedef struct SGAudioSourceDispatch
 {
-	/**
-	 * \privatesection
-	 */
+    /**
+     * \privatesection
+     */
 
-    struct SGAudioSource* source;	/// < The source that this dispatch handles.
-    void* handle;					/// < Internal handle.
+    struct SGAudioSource* source;    /// < The source that this dispatch handles.
+    void* handle;                    /// < Internal handle.
 } SGAudioSourceDispatch;
 
 /**
@@ -58,20 +58,20 @@ typedef struct SGAudioSourceDispatch
  */
 typedef struct SGAudioSource
 {
-	/**
-	 * \privatesection
-	 */
+    /**
+     * \privatesection
+     */
 
     SGAudioSourceDispatch* dispatch; /// < Pointer to the dispatch.
 
-	/**
-	 * \brief Priority of the source.
-	 *
-	 * If no more sources can be created in the backend for play, the higher priority
-	 * sources will have precedence over lower priority sources.
-	 *
-	 * That way you can, for example, make the explosion near you "override" a bird
-	 * tweeting on a tree.
+    /**
+     * \brief Priority of the source.
+     *
+     * If no more sources can be created in the backend for play, the higher priority
+     * sources will have precedence over lower priority sources.
+     *
+     * That way you can, for example, make the explosion near you "override" a bird
+     * tweeting on a tree.
      */
     float priority;
 } SGAudioSource;
@@ -219,9 +219,9 @@ void SG_CALL sgAudioSourceUnqueueBuffer(SGAudioSource* source);
  * \param[in] y Y position
  * \param[in] z Z position
  *
- * \see	sgAudioSourceSetPosition2f
- * \see	sgAudioSourceGetPosition3f
- * \see	sgAudioSourceSetVelocity3f
+ * \see    sgAudioSourceSetPosition2f
+ * \see    sgAudioSourceGetPosition3f
+ * \see    sgAudioSourceSetVelocity3f
  */
 void SG_CALL sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y, float z);
 /**
@@ -231,9 +231,9 @@ void SG_CALL sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y,
  * \param[in] x X position
  * \param[in] y Y position
  *
- * \see	sgAudioSourceSetPosition3f
- * \see	sgAudioSourceGetPosition2f
- * \see	sgAudioSourceSetVelocity2f
+ * \see    sgAudioSourceSetPosition3f
+ * \see    sgAudioSourceGetPosition2f
+ * \see    sgAudioSourceSetVelocity2f
  */
 void SG_CALL sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float y);
 /**
@@ -244,9 +244,9 @@ void SG_CALL sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float y)
  * \param[out] y Y position
  * \param[out] z Z position
  *
- * \see	sgAudioSourceSetPosition3f
- * \see	sgAudioSourceGetPosition2f
- * \see	sgAudioSourceGetVelocity3f
+ * \see    sgAudioSourceSetPosition3f
+ * \see    sgAudioSourceGetPosition2f
+ * \see    sgAudioSourceGetVelocity3f
  */
 void SG_CALL sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float* y, float* z);
 /**
@@ -256,9 +256,9 @@ void SG_CALL sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float* 
  * \param[out] x X position
  * \param[out] y Y position
  *
- * \see	sgAudioSourceSetPosition2f
- * \see	sgAudioSourceGetPosition3f
- * \see	sgAudioSourceGetVelocity2f
+ * \see    sgAudioSourceSetPosition2f
+ * \see    sgAudioSourceGetPosition3f
+ * \see    sgAudioSourceGetVelocity2f
  */
 void SG_CALL sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float* y);
 /// @}
@@ -275,9 +275,9 @@ void SG_CALL sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float* 
  * \param[in] y Y velocity
  * \param[in] z Z velocity
  *
- * \see	sgAudioSourceSetVelocity2f
- * \see	sgAudioSourceGetVelocity3f
- * \see	sgAudioSourceSetPosition3f
+ * \see    sgAudioSourceSetVelocity2f
+ * \see    sgAudioSourceGetVelocity3f
+ * \see    sgAudioSourceSetPosition3f
  */
 void SG_CALL sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float y, float z);
 /**
@@ -287,9 +287,9 @@ void SG_CALL sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float y,
  * \param[in] x X velocity
  * \param[in] y Y velocity
  *
- * \see	sgAudioSourceSetVelocity3f
- * \see	sgAudioSourceGetVelocity2f
- * \see	sgAudioSourceSetPosition2f
+ * \see    sgAudioSourceSetVelocity3f
+ * \see    sgAudioSourceGetVelocity2f
+ * \see    sgAudioSourceSetPosition2f
  */
 void SG_CALL sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float y);
 /**
@@ -300,9 +300,9 @@ void SG_CALL sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float y)
  * \param[out] y Y velocity
  * \param[out] z Z velocity
  *
- * \see	sgAudioSourceSetVelocity3f
- * \see	sgAudioSourceGetVelocity2f
- * \see	sgAudioSourceGetPosition3f
+ * \see    sgAudioSourceSetVelocity3f
+ * \see    sgAudioSourceGetVelocity2f
+ * \see    sgAudioSourceGetPosition3f
  */
 void SG_CALL sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float* y, float* z);
 /**
@@ -312,9 +312,9 @@ void SG_CALL sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float* 
  * \param[out] x X velocity
  * \param[out] y Y velocity
  *
- * \see	sgAudioSourceSetVelocity2f
- * \see	sgAudioSourceGetVelocity3f
- * \see	sgAudioSourceGetPosition2f
+ * \see    sgAudioSourceSetVelocity2f
+ * \see    sgAudioSourceGetVelocity3f
+ * \see    sgAudioSourceGetPosition2f
  */
 void SG_CALL sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float* y);
 /// @}
@@ -334,9 +334,9 @@ void SG_CALL sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float* 
  *
  * Pitch 1.0 leaves the buffer to play as it is in the "original".
  *
- * \see	sgAudioSourceGetPitch
- * \see	sgAudioSourceSetVolume
- * \see	sgAudioSourceSetLooping
+ * \see    sgAudioSourceGetPitch
+ * \see    sgAudioSourceSetVolume
+ * \see    sgAudioSourceSetLooping
  */
 void SG_CALL sgAudioSourceSetPitch(SGAudioSource* source, float pitch);
 /**
@@ -346,9 +346,9 @@ void SG_CALL sgAudioSourceSetPitch(SGAudioSource* source, float pitch);
  *
  * \return The pitch
  *
- * \see	sgAudioSourceSetPitch
- * \see	sgAudioSourceGetVolume
- * \see	sgAudioSourceGetLooping
+ * \see    sgAudioSourceSetPitch
+ * \see    sgAudioSourceGetVolume
+ * \see    sgAudioSourceGetLooping
  */
 float SG_CALL sgAudioSourceGetPitch(SGAudioSource* source);
 /// @}
@@ -365,9 +365,9 @@ float SG_CALL sgAudioSourceGetPitch(SGAudioSource* source);
  *
  * Volume 1.0 leaves the buffer to play as it is in the "original".
  *
- * \see	sgAudioSourceGetVolume
- * \see	sgAudioSourceSetPitch
- * \see	sgAudioSourceSetLooping
+ * \see    sgAudioSourceGetVolume
+ * \see    sgAudioSourceSetPitch
+ * \see    sgAudioSourceSetLooping
  */
 void SG_CALL sgAudioSourceSetVolume(SGAudioSource* source, float volume);
 /**
@@ -377,9 +377,9 @@ void SG_CALL sgAudioSourceSetVolume(SGAudioSource* source, float volume);
  *
  * \return The volume
  *
- * \see	sgAudioSourceSetVolume
- * \see	sgAudioSourceGetPitch
- * \see	sgAudioSourceGetLooping
+ * \see    sgAudioSourceSetVolume
+ * \see    sgAudioSourceGetPitch
+ * \see    sgAudioSourceGetLooping
  */
 float SG_CALL sgAudioSourceGetVolume(SGAudioSource* source);
 /// @}
@@ -396,9 +396,9 @@ float SG_CALL sgAudioSourceGetVolume(SGAudioSource* source);
  *
  * Pitch 1.0 leaves the buffer to play as it is in the "original".
  *
- * \see	sgAudioSourceGetLooping
- * \see	sgAudioSourceSetPitch
- * \see	sgAudioSourceSetVolume
+ * \see    sgAudioSourceGetLooping
+ * \see    sgAudioSourceSetPitch
+ * \see    sgAudioSourceSetVolume
  */
 void SG_CALL sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping);
 /**
@@ -408,9 +408,9 @@ void SG_CALL sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping);
  *
  * \return SG_TRUE if the source is in a loop, SG_FALSE otherwise
  *
- * \see	sgAudioSourceSetLooping
- * \see	sgAudioSourceGetPitch
- * \see	sgAudioSourceGetVolume
+ * \see    sgAudioSourceSetLooping
+ * \see    sgAudioSourceGetPitch
+ * \see    sgAudioSourceGetVolume
  */
 SGbool SG_CALL sgAudioSourceGetLooping(SGAudioSource* source);
 /// @}

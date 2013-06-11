@@ -25,7 +25,7 @@ extern "C"
 
 typedef struct SGSurface
 {
-	void* handle;
+    void* handle;
 } SGSurface;
 
 #ifdef SG_BUILD_LIBRARY

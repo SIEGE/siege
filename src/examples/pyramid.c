@@ -228,9 +228,9 @@ int main(void)
     sgDrawSetLineSmooth(SG_TRUE);
 
     space = sgPhysicsSpaceCreate();
-	//space = sgPhysicsSpaceGetDefault();
-	sgPhysicsSpaceSetIterations(space, 100);
-	sgPhysicsSpaceSetDamping(space, 1.0);
+    //space = sgPhysicsSpaceGetDefault();
+    sgPhysicsSpaceSetIterations(space, 100);
+    sgPhysicsSpaceSetDamping(space, 1.0);
     sgPhysicsSpaceSetGravity(space, 0.0, 9.81/*0.5*/);
 
     controller = sgEntityCreate();

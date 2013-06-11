@@ -26,9 +26,9 @@ extern "C"
 #endif // __cplusplus
 
 #define _SG_BIND(name) \
-	fptr = sgGetProcAddress(lib, #name);   \
-	if(fptr != NULL)    \
-		(p##name) = fptr; // not completely valid C99, but blame POSIX for that
+    fptr = sgGetProcAddress(lib, #name);   \
+    if(fptr != NULL)    \
+        (p##name) = fptr; // not completely valid C99, but blame POSIX for that
 
 typedef SGuint SG_CALL SGMModuleInitFunction(SGModuleInfo** minfo);
 typedef SGuint SG_CALL SGMModuleExitFunction(SGModuleInfo* minfo);
@@ -37,10 +37,10 @@ typedef SGuint SG_CALL SGMModuleMatchFunction(SGModuleInfo** minfos, SGuint numi
 
 typedef struct SGModule
 {
-	char* name;
-	SGLibrary* lib;
-	SGModuleInfo* minfo;
-	SGListNode* node;
+    char* name;
+    SGLibrary* lib;
+    SGModuleInfo* minfo;
+    SGListNode* node;
 
     SGMModuleInitFunction* sgmModuleInit;
     SGMModuleExitFunction* sgmModuleExit;

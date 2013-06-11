@@ -56,30 +56,30 @@ static DWORD WINAPI _sgThreadEntry(LPVOID param)
 /*#include <string.h>
 static void _sgThreadSuspended(int sig)
 {
-	SGThread* thread = pthread_getspecific(0);
-	thread->status = SG_THREAD_SUSPENDED;
-	sem_wait(thread->sem);
-	thread->status = SG_THREAD_RUNNING;
+    SGThread* thread = pthread_getspecific(0);
+    thread->status = SG_THREAD_SUSPENDED;
+    sem_wait(thread->sem);
+    thread->status = SG_THREAD_RUNNING;
 }*/
 static void* _sgThreadEntry(void* param)
 {
-	/*pthread_setspecific(0, param);
+    /*pthread_setspecific(0, param);
 
-	struct sigaction sa;
-	memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = _sgThreadSuspended;
-	//sa.sa_mask = SIGRTMAX;
-	sa.sa_flags = 0;
+    struct sigaction sa;
+    memset(&sa, 0, sizeof(sa));
+    sa.sa_handler = _sgThreadSuspended;
+    //sa.sa_mask = SIGRTMAX;
+    sa.sa_flags = 0;
 
-	sigaction(SIGRTMAX, &sa, NULL);*/
+    sigaction(SIGRTMAX, &sa, NULL);*/
 
     sgThreadKeySetVal(&_sg_thrKey, param);
-	SGThread* thread = param;
-	sem_wait(thread->sem);
-	thread->ret = thread->func(thread->data);
+    SGThread* thread = param;
+    sem_wait(thread->sem);
+    thread->ret = thread->func(thread->data);
     _sgThreadAtExit();
-	thread->status = SG_THREAD_EXITED;
-	return &thread->ret;
+    thread->status = SG_THREAD_EXITED;
+    return &thread->ret;
 }
 #endif
 
@@ -131,9 +131,9 @@ SGThread* SG_CALL sgThreadCreate(size_t ssize, SGThreadFunction* func, void* dat
     pthread_attr_t attr;
     pthread_attr_init(&attr);
     if(ssize)
-		pthread_attr_setstacksize(&attr, ssize);
+        pthread_attr_setstacksize(&attr, ssize);
 
-	thread->sem = malloc(sizeof(sem_t));
+    thread->sem = malloc(sizeof(sem_t));
     sem_init(thread->sem, 0, 0);
 
     thread->handle = malloc(sizeof(pthread_t));
@@ -149,7 +149,7 @@ void SG_CALL sgThreadDestroy(SGThread* thread)
 #ifdef __WIN32__
     CloseHandle(thread->handle);
 #else
-	pthread_join(*(pthread_t*)thread->handle, NULL);
+    pthread_join(*(pthread_t*)thread->handle, NULL);
     free(thread->handle);
     sem_destroy(thread->sem);
     free(thread->sem);
@@ -171,15 +171,15 @@ void SG_CALL sgThreadStart(SGThread* thread)
 }
 SGuint SG_CALL sgThreadResume(SGThread* thread)
 {
-	if(thread->status == SG_THREAD_INITIAL)
-		return -1;
-	SGuint ret;
+    if(thread->status == SG_THREAD_INITIAL)
+        return -1;
+    SGuint ret;
 #ifdef __WIN32__
     ret = ResumeThread(thread->handle);
 #else
-	if(thread->susp)
-		pthread_kill(*(pthread_t*)thread->handle, SIGCONT);
-	ret = thread->susp--;
+    if(thread->susp)
+        pthread_kill(*(pthread_t*)thread->handle, SIGCONT);
+    ret = thread->susp--;
     //pthread_kill(thread->handle, SIGRTMAX);
 #endif
     if(ret <= 1)
@@ -188,15 +188,15 @@ SGuint SG_CALL sgThreadResume(SGThread* thread)
 }
 SGuint SG_CALL sgThreadSuspend(SGThread* thread)
 {
-	SGuint ret;
+    SGuint ret;
 #ifdef __WIN32__
     ret = SuspendThread(thread->handle);
 #else
-	pthread_kill(*(pthread_t*)thread->handle, SIGSTOP);
-	ret = thread->susp++;
+    pthread_kill(*(pthread_t*)thread->handle, SIGSTOP);
+    ret = thread->susp++;
 #endif
-	thread->status = SG_THREAD_SUSPENDED;
-	return ret;
+    thread->status = SG_THREAD_SUSPENDED;
+    return ret;
 }
 
 void SG_CALL sgThreadAtExit(SGThreadDestroy* dtor)
@@ -255,25 +255,25 @@ SGThread* SG_CALL sgThreadGetCurrent(void)
 
 SGint SG_CALL sgThreadJoin(SGThread* thread)
 {
-	SGint ret;
+    SGint ret;
 #ifdef __WIN32__
     WaitForSingleObject(thread->handle, INFINITE);
     DWORD dret;
     GetExitCodeThread(thread->handle, &dret);
     ret = dret;
 #else
-	//SGint* pret;
+    //SGint* pret;
     //pthread_join(thread->handle, (void**)&pret);
     //ret = *pret;
     pthread_join(*(pthread_t*)thread->handle, NULL);
     ret = thread->ret;
 #endif
-	thread->status = SG_THREAD_EXITED;
-	return ret;
+    thread->status = SG_THREAD_EXITED;
+    return ret;
 }
 void SG_CALL sgThreadKill(SGThread* thread, SGint ret)
 {
-	thread->status = SG_THREAD_EXITED;
+    thread->status = SG_THREAD_EXITED;
 #ifdef __WIN32__
     TerminateThread(thread->handle, ret);
 #else

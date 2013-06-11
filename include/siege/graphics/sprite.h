@@ -24,15 +24,15 @@ extern "C"
 #endif // __cplusplus
 typedef struct SGSprite
 {
-	SGulong tick;
+    SGulong tick;
 
-	float xoffset;
-	float yoffset;
-	SGbool extimages;
-	SGuint numimages;
-	SGTexture** subimages;
-	float image;
-	float speed;
+    float xoffset;
+    float yoffset;
+    SGbool extimages;
+    SGuint numimages;
+    SGTexture** subimages;
+    float image;
+    float speed;
 } SGSprite;
 
 void SG_CALL _sgSpriteUpdateTick(SGSprite* sprite);

@@ -137,15 +137,15 @@ void SG_CALL sgPhysicsShapeDestroy(SGPhysicsShape* shape)
 
 void SG_CALL sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group)
 {
-	if(psgmPhysicsShapeSetGroup)
-		psgmPhysicsShapeSetGroup(shape->handle, group);
+    if(psgmPhysicsShapeSetGroup)
+        psgmPhysicsShapeSetGroup(shape->handle, group);
 }
 SGuint SG_CALL sgPhysicsShapeGetGroup(SGPhysicsShape* shape)
 {
-	SGuint group = 0;
-	if(psgmPhysicsShapeGetGroup)
-		psgmPhysicsShapeGetGroup(shape->handle, &group);
-	return group;
+    SGuint group = 0;
+    if(psgmPhysicsShapeGetGroup)
+        psgmPhysicsShapeGetGroup(shape->handle, &group);
+    return group;
 }
 void SG_CALL sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction)
 {
@@ -296,16 +296,16 @@ float SG_CALL sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float densit
 
 void SG_CALL sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, float* b, float* r)
 {
-	float tmp;
-	if(!t) t = &tmp;
-	if(!l) l = &tmp;
-	if(!b) b = &tmp;
-	if(!r) r = &tmp;
+    float tmp;
+    if(!t) t = &tmp;
+    if(!l) l = &tmp;
+    if(!b) b = &tmp;
+    if(!r) r = &tmp;
 
-	*t = *l = *b = *r = SG_NAN;
+    *t = *l = *b = *r = SG_NAN;
 
-	if(psgmPhysicsShapeGetBBox)
-		psgmPhysicsShapeGetBBox(shape->handle, t, l, b, r);
+    if(psgmPhysicsShapeGetBBox)
+        psgmPhysicsShapeGetBBox(shape->handle, t, l, b, r);
 }
 void SG_CALL sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
 {

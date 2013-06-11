@@ -74,8 +74,8 @@ void SG_CALL _sgModuleLoadPhysics(SGLibrary* lib)
     _SG_BIND(sgmPhysicsConstraintSetRate);
 
     _SG_BIND(sgmPhysicsConstraintSetMaxForce);
-	_SG_BIND(sgmPhysicsConstraintSetErrorBias);
-	_SG_BIND(sgmPhysicsConstraintSetMaxBias);
+    _SG_BIND(sgmPhysicsConstraintSetErrorBias);
+    _SG_BIND(sgmPhysicsConstraintSetMaxBias);
 
     _SG_BIND(sgmPhysicsConstraintSetData);
     _SG_BIND(sgmPhysicsConstraintGetData);

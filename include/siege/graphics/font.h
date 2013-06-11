@@ -54,51 +54,51 @@ extern "C"
  */
 typedef struct SGCharInfo
 {
-	/**
-	 * \brief Character's texture.
-	 *
-	 * \todo
-	 *	Should multiple characters be put into a single texture?
-	 */
-	SGTexture* texture;
+    /**
+     * \brief Character's texture.
+     *
+     * \todo
+     *    Should multiple characters be put into a single texture?
+     */
+    SGTexture* texture;
 
-	/**
-	 * \name Actual size
-	 */
-	/// @{
-	float width;
-	float height;
-	/// @}
+    /**
+     * \name Actual size
+     */
+    /// @{
+    float width;
+    float height;
+    /// @}
 
-	/**
-	 * \name Bitmap size
-	 */
-	/// @{
-	size_t dwidth;
-	size_t dheight;
-	/// @}
+    /**
+     * \name Bitmap size
+     */
+    /// @{
+    size_t dwidth;
+    size_t dheight;
+    /// @}
 
-	/**
-	 * \name Local offset
-	 *
-	 * This is not cumulative with other characters - thus,
-	 * it does not affect the position of other characters.
-	 */
-	/// @{
-	float xpre;
-	float ypre;
-	/// @}
+    /**
+     * \name Local offset
+     *
+     * This is not cumulative with other characters - thus,
+     * it does not affect the position of other characters.
+     */
+    /// @{
+    float xpre;
+    float ypre;
+    /// @}
 
-	/**
-	 * \name Global offset
-	 *
-	 * This \em is (unlike the local offset) cumulative with
-	 * other characters and does affect their position.
-	 */
-	/// @{
-	float xpost;
-	float ypost;
-	/// @}
+    /**
+     * \name Global offset
+     *
+     * This \em is (unlike the local offset) cumulative with
+     * other characters and does affect their position.
+     */
+    /// @{
+    float xpost;
+    float ypost;
+    /// @}
 } SGCharInfo;
 
 /**
@@ -109,41 +109,41 @@ typedef struct SGCharInfo
  */
 typedef struct SGFont
 {
-	/// @{
-	/**
-	 * \brief Internal handle
-	 * \private
-	 */
-	void* handle;
-	float height;	/// < Height of the font
+    /// @{
+    /**
+     * \brief Internal handle
+     * \private
+     */
+    void* handle;
+    float height;    /// < Height of the font
     SGuint dpi;
-	/// @}
+    /// @}
 
     float ascent;
     float descent;
     float linegap;
 
-	// char, wchar_t, utf8, utf16
-	SGConv* conv[4];
+    // char, wchar_t, utf8, utf16
+    SGConv* conv[4];
 
-	/**
-	 * \name Preloaded characters
-	 */
-	/// @{
+    /**
+     * \name Preloaded characters
+     */
+    /// @{
     size_t npreload;
-	SGuint numchars;	/// < The number of characters
-	SGCharInfo* chars;	/// < The characters themselves
-	/// @}
+    SGuint numchars;    /// < The number of characters
+    SGCharInfo* chars;    /// < The characters themselves
+    /// @}
 
-	/**
-	 * \name On-demand loaded characters
-	 */
-	/// @{
-	SGuint numcache;		/// < Length of the arrays
-	SGdchar* cachechars;	/// < The character UTF-32 values (keys)
-	SGCharInfo* cache;		/// < Character infos (values)
+    /**
+     * \name On-demand loaded characters
+     */
+    /// @{
+    SGuint numcache;        /// < Length of the arrays
+    SGdchar* cachechars;    /// < The character UTF-32 values (keys)
+    SGCharInfo* cache;        /// < Character infos (values)
     SGMap* cmap;          ///< SGdchar->SGCharInfo mapping
-	/// @}
+    /// @}
 
     SGStream* stream;
     SGbool del;

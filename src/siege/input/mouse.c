@@ -88,33 +88,33 @@ void SG_CALL _sg_cbMouseWheel(void* mouse, SGint w)
 void SG_CALL _sgMouseUpdate(void)
 {
     size_t numevents;
-	SGenum events[2];
-	SGuint i;
-	for(i = 0; i < _sg_mouseButtonNum; i++)
-	{
-		if(_sg_mouseButtonCurr[i])
-		{
-			numevents = 2;
-			events[0] = SG_EVF_MOUSEBUTH;
-			switch(i + 1)
-			{
-				case SG_MOUSE_BUTTON_LEFT:
-					events[1] = SG_EVF_MOUSEBUTLH;
-					break;
-				case SG_MOUSE_BUTTON_RIGHT:
-					events[1] = SG_EVF_MOUSEBUTRH;
-					break;
-				case SG_MOUSE_BUTTON_MIDDLE:
-					events[1] = SG_EVF_MOUSEBUTMH;
-					break;
-				default:
+    SGenum events[2];
+    SGuint i;
+    for(i = 0; i < _sg_mouseButtonNum; i++)
+    {
+        if(_sg_mouseButtonCurr[i])
+        {
+            numevents = 2;
+            events[0] = SG_EVF_MOUSEBUTH;
+            switch(i + 1)
+            {
+                case SG_MOUSE_BUTTON_LEFT:
+                    events[1] = SG_EVF_MOUSEBUTLH;
+                    break;
+                case SG_MOUSE_BUTTON_RIGHT:
+                    events[1] = SG_EVF_MOUSEBUTRH;
+                    break;
+                case SG_MOUSE_BUTTON_MIDDLE:
+                    events[1] = SG_EVF_MOUSEBUTMH;
+                    break;
+                default:
                     events[1] = 0;
-					numevents--;
-					break;
-			}
+                    numevents--;
+                    break;
+            }
             sgEntityEventSignal(numevents, events[0], i + 1, events[1]);
-		}
-	}
+        }
+    }
     memcpy(_sg_mouseButtonPrev, _sg_mouseButtonBuff, _sg_mouseButtonNum * sizeof(SGbool));
     memcpy(_sg_mouseButtonBuff, _sg_mouseButtonCurr, _sg_mouseButtonNum * sizeof(SGbool));
 }

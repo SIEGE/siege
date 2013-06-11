@@ -204,9 +204,9 @@ int main(void)
     sgWindowSetTitle("SIEGE Physics Demo - Press F1 for debug overlay");
     sgWindowSetFPSLimit(60.0f);
 
-	space = sgPhysicsSpaceGetDefault();
-	sgPhysicsSpaceSetIterations(space, 10);
-	sgPhysicsSpaceSetDamping(space, 0.75);
+    space = sgPhysicsSpaceGetDefault();
+    sgPhysicsSpaceSetIterations(space, 10);
+    sgPhysicsSpaceSetDamping(space, 0.75);
     sgPhysicsSpaceSetGravity(space, 0.0, 25.0);
 
     sprCrateSmall = sgSpriteCreateFile("data/sprites/CrateSmall.png");

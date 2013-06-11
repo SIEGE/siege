@@ -18,23 +18,23 @@
 #include "../../common.h"
 
 #ifndef SG_FPTR
-#define SG_FPTR(name)	name
+#define SG_FPTR(name)    name
 #endif // SG_FPTR
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-	SGuint SG_CALL SG_FPTR(sgmGraphicsTextureCreate)(void** texture, void* context);
-	//SGuint SG_CALL SG_FPTR(sgmGraphicsTextureCreateData)(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
-	SGuint SG_CALL SG_FPTR(sgmGraphicsTextureDestroy)(void* texture);
-	SGuint SG_CALL SG_FPTR(sgmGraphicsTextureSetData)(void* texture, SGuint width, SGuint height, SGuint bpp, void* data);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsTextureCreate)(void** texture, void* context);
+    //SGuint SG_CALL SG_FPTR(sgmGraphicsTextureCreateData)(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsTextureDestroy)(void* texture);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsTextureSetData)(void* texture, SGuint width, SGuint height, SGuint bpp, void* data);
     SGenum SG_CALL SG_FPTR(sgmGraphicsTextureSetSubData)(void* texture, SGuint x, SGuint y, SGuint width, SGuint height, SGenum bpp, void* data);
-	SGuint SG_CALL SG_FPTR(sgmGraphicsTextureGetData)(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data);
-	SGuint SG_CALL SG_FPTR(sgmGraphicsTextureFreeData)(void* data);
-	SGuint SG_CALL SG_FPTR(sgmGraphicsTextureGetSize)(void* texture, SGuint* width, SGuint* height);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsTextureGetData)(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsTextureFreeData)(void* data);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsTextureGetSize)(void* texture, SGuint* width, SGuint* height);
     SGenum SG_CALL SG_FPTR(sgmGraphicsTextureGetBPP)(void* texture, SGenum* bpp);
-	SGuint SG_CALL SG_FPTR(sgmGraphicsTextureDraw)(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsTextureDraw)(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
 
     SGenum SG_CALL SG_FPTR(sgmGraphicsTextureSetWrap)(void* texture, SGenum swrap, SGenum twrap);
     SGenum SG_CALL SG_FPTR(sgmGraphicsTextureSetInterpolation)(void* texture, SGenum interp);

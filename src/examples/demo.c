@@ -98,7 +98,7 @@ void destroyPoly(Polygon* poly)
 
 void destroyPolyEntity(SGEntity* ent)
 {
-	Polygon* poly = ent->data;
+    Polygon* poly = ent->data;
 
     free(poly->points);
     sgPhysicsShapeDestroy(poly->shape);
@@ -237,7 +237,7 @@ void destroyLight(Light* light)
 
 void destroyLightEntity(SGEntity* ent)
 {
-	Light* light = ent->data;
+    Light* light = ent->data;
 
     sgSurfaceDestroy(light->surface);
     free(light);
@@ -456,8 +456,8 @@ int main(void)
     bufBoom = sgAudioBufferCreateFile("data/audio/boom.ogg");
 
     space = sgPhysicsSpaceGetDefault();
-	sgPhysicsSpaceSetIterations(space, 10);
-	sgPhysicsSpaceSetDamping(space, 0.75);
+    sgPhysicsSpaceSetIterations(space, 10);
+    sgPhysicsSpaceSetDamping(space, 0.75);
 
     SGEntity* handler = sgEntityCreate();
     handler->evMouseButtonPress = evMouseButtonPress;

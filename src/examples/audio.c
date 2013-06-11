@@ -17,13 +17,13 @@ void SG_CALL evMouseButtonLeftPress(SGEntity* entity)
 
 int main(void)
 {
-	sgLoadModule("SDL");
-	sgLoadModule("OpenGL");
+    sgLoadModule("SDL");
+    sgLoadModule("OpenGL");
     sgLoadModule("OpenAL");
     sgLoadModule("STB-Vorbis");
     sgInit(0);
-	sgWindowOpen(640, 480, 32, 0);
-	sgWindowSetTitle("SIEGE Audio Demo");
+    sgWindowOpen(640, 480, 32, 0);
+    sgWindowSetTitle("SIEGE Audio Demo");
 
     printf("Loading audio data...\n");
     printf("data/audio/boom.ogg..."); fflush(stdout);
@@ -40,17 +40,17 @@ int main(void)
     SGEntity* handle = sgEntityCreate();
     handle->evMouseButtonLeftPress = evMouseButtonLeftPress;
 
-	while(sgLoop(NULL))
-	{
-		sgWindowSwapBuffers();
-		sgDrawClear();
-	}
+    while(sgLoop(NULL))
+    {
+        sgWindowSwapBuffers();
+        sgDrawClear();
+    }
 
     sgAudioSourceDestroy(srcMusic);
     sgAudioBufferDestroy(bufBoom);
     sgAudioBufferDestroy(bufMusic);
 
-	sgDeinit();
+    sgDeinit();
 
-	return 0;
+    return 0;
 }

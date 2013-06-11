@@ -27,7 +27,7 @@ void SG_CALL _sgModuleLoadFonts(SGLibrary* lib)
     _SG_BIND(sgmFontsFaceSetHeight);
     _SG_BIND(sgmFontsFaceGetMetrics);
 
-	_SG_BIND(sgmFontsCharsCreate);
+    _SG_BIND(sgmFontsCharsCreate);
     _SG_BIND(sgmFontsCharsFreeData);
     _SG_BIND(sgmFontsCharsGetKerning);
 }

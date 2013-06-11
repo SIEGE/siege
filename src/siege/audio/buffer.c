@@ -39,51 +39,51 @@ SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstr
     if(psgmAudioFileCreate)
         psgmAudioFileCreate(&file, stream, &channels, &format, &frequency);
 
-	if(psgmAudioFileGetHandle
-	&& psgmAudioFileGetHandle(file, &handle) == SG_OK
+    if(psgmAudioFileGetHandle
+    && psgmAudioFileGetHandle(file, &handle) == SG_OK
     && psgmAudioBufferSetHandle
-	&& psgmAudioBufferSetHandle(buffer->handle, handle) == SG_OK)
-	{
-	}
-	else
-	{
-		if(psgmAudioFileNumSamples)
-			psgmAudioFileNumSamples(file, &nsamples);
-		switch(format)
-		{
-			case SG_AUDIO_FORMAT_S8:
-			case SG_AUDIO_FORMAT_U8:
-				datalen = nsamples * channels;
-				break;
-			case SG_AUDIO_FORMAT_S16:
-			case SG_AUDIO_FORMAT_U16:
-				datalen = 2 * nsamples * channels;
-				break;
-			case SG_AUDIO_FORMAT_S24:
-			case SG_AUDIO_FORMAT_U24:
-				datalen = 3 * nsamples * channels;
-				break;
-			case SG_AUDIO_FORMAT_S32:
-			case SG_AUDIO_FORMAT_U32:
-				datalen = 4 * nsamples * channels;
-				break;
-			case SG_AUDIO_FORMAT_F:
-				datalen = 4 * nsamples * channels;
-				break;
-			case SG_AUDIO_FORMAT_D:
-				datalen = 8 * nsamples * channels;
-				break;
-		}
-		data = malloc(datalen);
-		if(psgmAudioFileRead)
-			psgmAudioFileRead(file, data, &datalen);
-		if(psgmAudioBufferSetData != NULL)
-			psgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
-		free(data);
-	}
+    && psgmAudioBufferSetHandle(buffer->handle, handle) == SG_OK)
+    {
+    }
+    else
+    {
+        if(psgmAudioFileNumSamples)
+            psgmAudioFileNumSamples(file, &nsamples);
+        switch(format)
+        {
+            case SG_AUDIO_FORMAT_S8:
+            case SG_AUDIO_FORMAT_U8:
+                datalen = nsamples * channels;
+                break;
+            case SG_AUDIO_FORMAT_S16:
+            case SG_AUDIO_FORMAT_U16:
+                datalen = 2 * nsamples * channels;
+                break;
+            case SG_AUDIO_FORMAT_S24:
+            case SG_AUDIO_FORMAT_U24:
+                datalen = 3 * nsamples * channels;
+                break;
+            case SG_AUDIO_FORMAT_S32:
+            case SG_AUDIO_FORMAT_U32:
+                datalen = 4 * nsamples * channels;
+                break;
+            case SG_AUDIO_FORMAT_F:
+                datalen = 4 * nsamples * channels;
+                break;
+            case SG_AUDIO_FORMAT_D:
+                datalen = 8 * nsamples * channels;
+                break;
+        }
+        data = malloc(datalen);
+        if(psgmAudioFileRead)
+            psgmAudioFileRead(file, data, &datalen);
+        if(psgmAudioBufferSetData != NULL)
+            psgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
+        free(data);
+    }
 
-	if(psgmAudioFileDestroy)
-		psgmAudioFileDestroy(file);
+    if(psgmAudioFileDestroy)
+        psgmAudioFileDestroy(file);
 
     return buffer;
 }

@@ -310,17 +310,17 @@ float SG_CALL sgPhysicsBodyGetMoment(SGPhysicsBody* body)
 
 void SG_CALL sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry)
 {
-	if(!body)
-		return;
+    if(!body)
+        return;
 
-	if(psgmPhysicsBodyApplyImpulse)
-		psgmPhysicsBodyApplyImpulse(body->handle, jx, jy, rx, ry);
+    if(psgmPhysicsBodyApplyImpulse)
+        psgmPhysicsBodyApplyImpulse(body->handle, jx, jy, rx, ry);
 }
 void SG_CALL sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry)
 {
-	if(!body)
-		return;
+    if(!body)
+        return;
 
-	if(psgmPhysicsBodyApplyForce)
-		psgmPhysicsBodyApplyForce(body->handle, jx, jy, rx, ry);
+    if(psgmPhysicsBodyApplyForce)
+        psgmPhysicsBodyApplyForce(body->handle, jx, jy, rx, ry);
 }
