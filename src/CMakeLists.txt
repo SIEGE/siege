@@ -28,7 +28,8 @@ MACRO(SHARED_STATIC name dir ext)
     TARGET_LINK_LIBRARIES(${name}.static ${ARGN})
 
     SET_TARGET_PROPERTIES(${name} ${name}.static PROPERTIES OUTPUT_NAME ${name}
-                                                            ENABLE_EXPORTS ON)
+                                                            ENABLE_EXPORTS ON
+                                                            VERSION "${SG_VERSION_MAJOR}.${SG_VERSION_MINOR}.${SG_VERSION_PATCH}")
 
     INSTALL(TARGETS ${name} DESTINATION lib)
     INSTALL(TARGETS ${name}.static DESTINATION lib)
