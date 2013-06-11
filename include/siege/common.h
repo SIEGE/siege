@@ -147,12 +147,6 @@ typedef double SGdouble;
 #endif // defined(SG_CALL)
 
 /**
- * WARNING: SG_EXPORT IS DEPRECATED*, USE SG_CALL INSTEAD
- * (* will be reintroduced with a different meaning later on)
- */
-#define SG_EXPORT SG_CALL
-
-/**
  * \name Version information
  */
 /// @{
