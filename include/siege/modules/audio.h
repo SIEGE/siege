@@ -32,7 +32,7 @@ extern "C"
 
 #endif // SG_BUILD_LIBRARY
 
-void SG_EXPORT _sgModuleLoadAudio(SGLibrary* lib);
+void SG_CALL _sgModuleLoadAudio(SGLibrary* lib);
 
 #ifdef __cplusplus
 }

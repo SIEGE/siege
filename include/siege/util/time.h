@@ -29,23 +29,23 @@ extern "C" {
  *
  * Returns: nanoseconds from a fixed, unspecified, origin.
  */
-SGlong SG_EXPORT sgGetTime(void);
+SGlong SG_CALL sgGetTime(void);
 
 /**
  * Functions: sgNSleep, sgUSleep, sgMSleep
  *
  * Sleep for the given amount of {nano/micro/milli}seconds.
  */
-void SG_EXPORT sgNSleep(SGulong nseconds);
-void SG_EXPORT sgUSleep(SGulong useconds);
-void SG_EXPORT sgMSleep(SGulong mseconds);
+void SG_CALL sgNSleep(SGulong nseconds);
+void SG_CALL sgUSleep(SGulong useconds);
+void SG_CALL sgMSleep(SGulong mseconds);
 
 /**
  * Function: sgSleep
  *
  * Sleep for the given amount of seconds.
  */
-void SG_EXPORT sgSleep(SGulong seconds);
+void SG_CALL sgSleep(SGulong seconds);
 
 #ifdef __cplusplus
 }

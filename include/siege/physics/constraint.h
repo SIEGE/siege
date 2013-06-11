@@ -33,41 +33,41 @@ typedef struct SGPhysicsConstraint
     SGenum type;
 } SGPhysicsConstraint;
 
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreate(SGPhysicsBody* body1, SGPhysicsBody* body2, SGenum type, float* vdata);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreatePin(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateSlide(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float min, float max);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreatePivot(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateGroove(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float xa, float ya);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateLinSpring(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float rest, float st, float damp);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRotSpringRads(SGPhysicsBody* body1, SGPhysicsBody* body2, float rads, float st, float damp);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRotSpringDegs(SGPhysicsBody* body1, SGPhysicsBody* body2, float degs, float st, float damp);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRotLimitRads(SGPhysicsBody* body1, SGPhysicsBody* body2, float min, float max);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRotLimitDegs(SGPhysicsBody* body1, SGPhysicsBody* body2, float min, float max);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateRatchet(SGPhysicsBody* body1, SGPhysicsBody* body2, float phase, float ratchet);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateGear(SGPhysicsBody* body1, SGPhysicsBody* body2, float phase, float ratio);
-SGPhysicsConstraint* SG_EXPORT sgPhysicsConstraintCreateMotor(SGPhysicsBody* body1, SGPhysicsBody* body2, float rate);
-void SG_EXPORT sgPhysicsConstraintDestroy(SGPhysicsConstraint* constr);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreate(SGPhysicsBody* body1, SGPhysicsBody* body2, SGenum type, float* vdata);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreatePin(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateSlide(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float min, float max);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreatePivot(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateGroove(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float xa, float ya);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateLinSpring(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float rest, float st, float damp);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateRotSpringRads(SGPhysicsBody* body1, SGPhysicsBody* body2, float rads, float st, float damp);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateRotSpringDegs(SGPhysicsBody* body1, SGPhysicsBody* body2, float degs, float st, float damp);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateRotLimitRads(SGPhysicsBody* body1, SGPhysicsBody* body2, float min, float max);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateRotLimitDegs(SGPhysicsBody* body1, SGPhysicsBody* body2, float min, float max);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateRatchet(SGPhysicsBody* body1, SGPhysicsBody* body2, float phase, float ratchet);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateGear(SGPhysicsBody* body1, SGPhysicsBody* body2, float phase, float ratio);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateMotor(SGPhysicsBody* body1, SGPhysicsBody* body2, float rate);
+void SG_CALL sgPhysicsConstraintDestroy(SGPhysicsConstraint* constr);
 
-void SG_EXPORT sgPhysicsConstraintSetAnchorOne(SGPhysicsConstraint* constr, float x, float y);
-void SG_EXPORT sgPhysicsConstraintSetAnchorTwo(SGPhysicsConstraint* constr, float x, float y);
-void SG_EXPORT sgPhysicsConstraintSetMin(SGPhysicsConstraint* constr, float min);
-void SG_EXPORT sgPhysicsConstraintSetMax(SGPhysicsConstraint* constr, float max);
-void SG_EXPORT sgPhysicsConstraintSetLength(SGPhysicsConstraint* constr, float length);
-void SG_EXPORT sgPhysicsConstraintSetAngleRads(SGPhysicsConstraint* constr, float rads);
-void SG_EXPORT sgPhysicsConstraintSetAngleDegs(SGPhysicsConstraint* constr, float degs);
-void SG_EXPORT sgPhysicsConstraintSetStiffness(SGPhysicsConstraint* constr, float stiffness);
-void SG_EXPORT sgPhysicsConstraintSetDamping(SGPhysicsConstraint* constr, float damping);
-void SG_EXPORT sgPhysicsConstraintSetPhase(SGPhysicsConstraint* constr, float phase);
-void SG_EXPORT sgPhysicsConstraintSetRatchet(SGPhysicsConstraint* constr, float ratchet);
-void SG_EXPORT sgPhysicsConstraintSetRatio(SGPhysicsConstraint* constr, float ratio);
-void SG_EXPORT sgPhysicsConstraintSetRate(SGPhysicsConstraint* constr, float rate);
+void SG_CALL sgPhysicsConstraintSetAnchorOne(SGPhysicsConstraint* constr, float x, float y);
+void SG_CALL sgPhysicsConstraintSetAnchorTwo(SGPhysicsConstraint* constr, float x, float y);
+void SG_CALL sgPhysicsConstraintSetMin(SGPhysicsConstraint* constr, float min);
+void SG_CALL sgPhysicsConstraintSetMax(SGPhysicsConstraint* constr, float max);
+void SG_CALL sgPhysicsConstraintSetLength(SGPhysicsConstraint* constr, float length);
+void SG_CALL sgPhysicsConstraintSetAngleRads(SGPhysicsConstraint* constr, float rads);
+void SG_CALL sgPhysicsConstraintSetAngleDegs(SGPhysicsConstraint* constr, float degs);
+void SG_CALL sgPhysicsConstraintSetStiffness(SGPhysicsConstraint* constr, float stiffness);
+void SG_CALL sgPhysicsConstraintSetDamping(SGPhysicsConstraint* constr, float damping);
+void SG_CALL sgPhysicsConstraintSetPhase(SGPhysicsConstraint* constr, float phase);
+void SG_CALL sgPhysicsConstraintSetRatchet(SGPhysicsConstraint* constr, float ratchet);
+void SG_CALL sgPhysicsConstraintSetRatio(SGPhysicsConstraint* constr, float ratio);
+void SG_CALL sgPhysicsConstraintSetRate(SGPhysicsConstraint* constr, float rate);
 
-void SG_EXPORT sgPhysicsConstraintSetMaxForce(SGPhysicsConstraint* constr, float max);
-void SG_EXPORT sgPhysicsConstraintSetErrorBias(SGPhysicsConstraint* constr, float bias);
-void SG_EXPORT sgPhysicsConstraintSetMaxBias(SGPhysicsConstraint* constr, float max);
+void SG_CALL sgPhysicsConstraintSetMaxForce(SGPhysicsConstraint* constr, float max);
+void SG_CALL sgPhysicsConstraintSetErrorBias(SGPhysicsConstraint* constr, float bias);
+void SG_CALL sgPhysicsConstraintSetMaxBias(SGPhysicsConstraint* constr, float max);
 
-void SG_EXPORT sgPhysicsConstraintSetData(SGPhysicsConstraint* constr, void* data);
-void* SG_EXPORT sgPhysicsConstraintGetData(SGPhysicsConstraint* constr);
+void SG_CALL sgPhysicsConstraintSetData(SGPhysicsConstraint* constr, void* data);
+void* SG_CALL sgPhysicsConstraintGetData(SGPhysicsConstraint* constr);
 
 #ifdef __cplusplus
 }

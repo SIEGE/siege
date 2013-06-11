@@ -30,7 +30,7 @@ extern "C"
 
 #endif // SG_BUILD_LIBRARY
 
-void SG_EXPORT _sgModuleLoadWindow(SGLibrary* lib);
+void SG_CALL _sgModuleLoadWindow(SGLibrary* lib);
 
 #ifdef __cplusplus
 }

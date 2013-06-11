@@ -49,43 +49,43 @@ static size_t getfactor(SGenum type)
     return 0;
 }*/
 
-static size_t SG_EXPORT _sgConvCToC(char* out, const char* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvCToW(wchar_t* out, const char* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvCToU8(SGchar* out, const char* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvCToU16(SGwchar* out, const char* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvCToU32(SGdchar* out, const char* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvCToC(char* out, const char* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvCToW(wchar_t* out, const char* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvCToU8(SGchar* out, const char* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvCToU16(SGwchar* out, const char* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvCToU32(SGdchar* out, const char* in, size_t* inlen, SGbool strict);
 
-static size_t SG_EXPORT _sgConvWToC(char* out, const wchar_t* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvWToW(wchar_t* out, const wchar_t* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvWToU8(SGchar* out, const wchar_t* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvWToU16(SGwchar* out, const wchar_t* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvWToU32(SGdchar* out, const wchar_t* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvWToC(char* out, const wchar_t* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvWToW(wchar_t* out, const wchar_t* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvWToU8(SGchar* out, const wchar_t* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvWToU16(SGwchar* out, const wchar_t* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvWToU32(SGdchar* out, const wchar_t* in, size_t* inlen, SGbool strict);
 
-static size_t SG_EXPORT _sgConvU8ToC(char* out, const SGchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU8ToW(wchar_t* out, const SGchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU8ToU8(SGchar* out, const SGchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU8ToU16(SGwchar* out, const SGchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU8ToU32(SGdchar* out, const SGchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU8ToC(char* out, const SGchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU8ToW(wchar_t* out, const SGchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU8ToU8(SGchar* out, const SGchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU8ToU16(SGwchar* out, const SGchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU8ToU32(SGdchar* out, const SGchar* in, size_t* inlen, SGbool strict);
 
-static size_t SG_EXPORT _sgConvU16ToC(char* out, const SGwchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU16ToW(wchar_t* out, const SGwchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU16ToU8(SGchar* out, const SGwchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU16ToU16(SGwchar* out, const SGwchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU16ToU32(SGdchar* out, const SGwchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU16ToC(char* out, const SGwchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU16ToW(wchar_t* out, const SGwchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU16ToU8(SGchar* out, const SGwchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU16ToU16(SGwchar* out, const SGwchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU16ToU32(SGdchar* out, const SGwchar* in, size_t* inlen, SGbool strict);
 
-static size_t SG_EXPORT _sgConvU32ToC(char* out, const SGdchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU32ToW(wchar_t* out, const SGdchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU32ToU8(SGchar* out, const SGdchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU32ToU16(SGwchar* out, const SGdchar* in, size_t* inlen, SGbool strict);
-static size_t SG_EXPORT _sgConvU32ToU32(SGdchar* out, const SGdchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU32ToC(char* out, const SGdchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU32ToW(wchar_t* out, const SGdchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU32ToU8(SGchar* out, const SGdchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU32ToU16(SGwchar* out, const SGdchar* in, size_t* inlen, SGbool strict);
+static size_t SG_CALL _sgConvU32ToU32(SGdchar* out, const SGdchar* in, size_t* inlen, SGbool strict);
 
-static size_t SG_EXPORT _sgConvCToC(char* out, const char* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvCToC(char* out, const char* in, size_t* inlen, SGbool strict)
 {
     (*inlen)--;
     *out = *in;
     return 1;
 }
-static size_t SG_EXPORT _sgConvCToW(wchar_t* out, const char* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvCToW(wchar_t* out, const char* in, size_t* inlen, SGbool strict)
 {
     mbtowc(NULL, NULL, 0);
     int sz = mbtowc(out, in, *inlen);
@@ -94,7 +94,7 @@ static size_t SG_EXPORT _sgConvCToW(wchar_t* out, const char* in, size_t* inlen,
     *inlen -= sz;
     return 1;
 }
-static size_t SG_EXPORT _sgConvCToU8(SGchar* out, const char* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvCToU8(SGchar* out, const char* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     wchar_t buf;
@@ -103,7 +103,7 @@ static size_t SG_EXPORT _sgConvCToU8(SGchar* out, const char* in, size_t* inlen,
         return 0;
     return _sgConvWToU8(out, &buf, &ilen, strict);
 }
-static size_t SG_EXPORT _sgConvCToU16(SGwchar* out, const char* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvCToU16(SGwchar* out, const char* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     wchar_t buf;
@@ -112,7 +112,7 @@ static size_t SG_EXPORT _sgConvCToU16(SGwchar* out, const char* in, size_t* inle
         return 0;
     return _sgConvWToU16(out, &buf, &ilen, strict);
 }
-static size_t SG_EXPORT _sgConvCToU32(SGdchar* out, const char* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvCToU32(SGdchar* out, const char* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     wchar_t buf;
@@ -122,7 +122,7 @@ static size_t SG_EXPORT _sgConvCToU32(SGdchar* out, const char* in, size_t* inle
     return _sgConvWToU32(out, &buf, &ilen, strict);
 }
 
-static size_t SG_EXPORT _sgConvWToC(char* out, const wchar_t* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvWToC(char* out, const wchar_t* in, size_t* inlen, SGbool strict)
 {
     wctomb(NULL, 0);
     int sz = wctomb(out, *in);
@@ -131,13 +131,13 @@ static size_t SG_EXPORT _sgConvWToC(char* out, const wchar_t* in, size_t* inlen,
     (*inlen)--;
     return sz;
 }
-static size_t SG_EXPORT _sgConvWToW(wchar_t* out, const wchar_t* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvWToW(wchar_t* out, const wchar_t* in, size_t* inlen, SGbool strict)
 {
     (*inlen)--;
     *out = *in;
     return 1;
 }
-static size_t SG_EXPORT _sgConvWToU8(SGchar* out, const wchar_t* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvWToU8(SGchar* out, const wchar_t* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     SGdchar buf;
@@ -146,7 +146,7 @@ static size_t SG_EXPORT _sgConvWToU8(SGchar* out, const wchar_t* in, size_t* inl
         return 0;
     return _sgConvU32ToU8(out, &buf, &ilen, strict);
 }
-static size_t SG_EXPORT _sgConvWToU16(SGwchar* out, const wchar_t* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvWToU16(SGwchar* out, const wchar_t* in, size_t* inlen, SGbool strict)
 {
 //#ifdef __STDC_ISO_10646__
     if(sizeof(wchar_t) == sizeof(SGwchar))
@@ -166,7 +166,7 @@ static size_t SG_EXPORT _sgConvWToU16(SGwchar* out, const wchar_t* in, size_t* i
 //    #error TODO
 //#endif /* __STDC_ISO_10646__ */
 }
-static size_t SG_EXPORT _sgConvWToU32(SGdchar* out, const wchar_t* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvWToU32(SGdchar* out, const wchar_t* in, size_t* inlen, SGbool strict)
 {
 //#ifdef __STDC_ISO_10646__
     if(sizeof(wchar_t) == sizeof(SGdchar))
@@ -187,7 +187,7 @@ static size_t SG_EXPORT _sgConvWToU32(SGdchar* out, const wchar_t* in, size_t* i
 //#endif /* __STDC_ISO_10646__ */
 }
 
-static size_t SG_EXPORT _sgConvU8ToC(char* out, const SGchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU8ToC(char* out, const SGchar* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     SGdchar buf;
@@ -196,7 +196,7 @@ static size_t SG_EXPORT _sgConvU8ToC(char* out, const SGchar* in, size_t* inlen,
         return 0;
     return _sgConvU32ToC(out, &buf, &ilen, strict);
 }
-static size_t SG_EXPORT _sgConvU8ToW(wchar_t* out, const SGchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU8ToW(wchar_t* out, const SGchar* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     SGdchar buf;
@@ -205,13 +205,13 @@ static size_t SG_EXPORT _sgConvU8ToW(wchar_t* out, const SGchar* in, size_t* inl
         return 0;
     return _sgConvU32ToW(out, &buf, &ilen, strict);
 }
-static size_t SG_EXPORT _sgConvU8ToU8(SGchar* out, const SGchar* in, size_t* inlen, SGbool strict) /* TODO: Normalize */
+static size_t SG_CALL _sgConvU8ToU8(SGchar* out, const SGchar* in, size_t* inlen, SGbool strict) /* TODO: Normalize */
 {
     (*inlen)--;
     *out = *in;
     return 1;
 }
-static size_t SG_EXPORT _sgConvU8ToU16(SGwchar* out, const SGchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU8ToU16(SGwchar* out, const SGchar* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     SGdchar buf;
@@ -220,7 +220,7 @@ static size_t SG_EXPORT _sgConvU8ToU16(SGwchar* out, const SGchar* in, size_t* i
         return 0;
     return _sgConvU32ToU16(out, &buf, &ilen, strict);
 }
-static size_t SG_EXPORT _sgConvU8ToU32(SGdchar* out, const SGchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU8ToU32(SGdchar* out, const SGchar* in, size_t* inlen, SGbool strict)
 {
     (*inlen)--;
 
@@ -316,7 +316,7 @@ static size_t SG_EXPORT _sgConvU8ToU32(SGdchar* out, const SGchar* in, size_t* i
     return 1;
 }
 
-static size_t SG_EXPORT _sgConvU16ToC(char* out, const SGwchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU16ToC(char* out, const SGwchar* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     SGdchar buf;
@@ -325,7 +325,7 @@ static size_t SG_EXPORT _sgConvU16ToC(char* out, const SGwchar* in, size_t* inle
         return 0;
     return _sgConvU32ToC(out, &buf, &ilen, strict);
 }
-static size_t SG_EXPORT _sgConvU16ToW(wchar_t* out, const SGwchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU16ToW(wchar_t* out, const SGwchar* in, size_t* inlen, SGbool strict)
 {
 //#ifdef __STDC_ISO_10646__
     if(sizeof(wchar_t) == sizeof(SGwchar))
@@ -345,7 +345,7 @@ static size_t SG_EXPORT _sgConvU16ToW(wchar_t* out, const SGwchar* in, size_t* i
 //    #error TODO
 //#endif /* __STDC_ISO_10646__ */
 }
-static size_t SG_EXPORT _sgConvU16ToU8(SGchar* out, const SGwchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU16ToU8(SGchar* out, const SGwchar* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     SGdchar buf;
@@ -354,13 +354,13 @@ static size_t SG_EXPORT _sgConvU16ToU8(SGchar* out, const SGwchar* in, size_t* i
         return 0;
     return _sgConvU32ToU8(out, &buf, &ilen, strict);
 }
-static size_t SG_EXPORT _sgConvU16ToU16(SGwchar* out, const SGwchar* in, size_t* inlen, SGbool strict) /* TODO: Normalize */
+static size_t SG_CALL _sgConvU16ToU16(SGwchar* out, const SGwchar* in, size_t* inlen, SGbool strict) /* TODO: Normalize */
 {
     (*inlen)--;
     *out = *in;
     return 1;
 }
-static size_t SG_EXPORT _sgConvU16ToU32(SGdchar* out, const SGwchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU16ToU32(SGdchar* out, const SGwchar* in, size_t* inlen, SGbool strict)
 {
     (*inlen)--;
 
@@ -388,7 +388,7 @@ static size_t SG_EXPORT _sgConvU16ToU32(SGdchar* out, const SGwchar* in, size_t*
     return 0;
 }
 
-static size_t SG_EXPORT _sgConvU32ToC(char* out, const SGdchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU32ToC(char* out, const SGdchar* in, size_t* inlen, SGbool strict)
 {
     size_t ilen = 1;
     wchar_t buf;
@@ -397,7 +397,7 @@ static size_t SG_EXPORT _sgConvU32ToC(char* out, const SGdchar* in, size_t* inle
         return 0;
     return _sgConvWToC(out, &buf, &ilen, strict);
 }
-static size_t SG_EXPORT _sgConvU32ToW(wchar_t* out, const SGdchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU32ToW(wchar_t* out, const SGdchar* in, size_t* inlen, SGbool strict)
 {
 //#ifdef __STDC_ISO_10646__
     if(sizeof(wchar_t) == sizeof(SGdchar))
@@ -417,7 +417,7 @@ static size_t SG_EXPORT _sgConvU32ToW(wchar_t* out, const SGdchar* in, size_t* i
 //    #error TODO
 //#endif /* __STDC_ISO_10646__ */
 }
-static size_t SG_EXPORT _sgConvU32ToU8(SGchar* out, const SGdchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU32ToU8(SGchar* out, const SGdchar* in, size_t* inlen, SGbool strict)
 {
     (*inlen)--;
 
@@ -452,7 +452,7 @@ static size_t SG_EXPORT _sgConvU32ToU8(SGchar* out, const SGdchar* in, size_t* i
     //tcode_error_raisef("Cannot encode value %.8X into UTF-8 (it is larger than 0x10FFFF)", in[0]);
     return 0;
 }
-static size_t SG_EXPORT _sgConvU32ToU16(SGwchar* out, const SGdchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU32ToU16(SGwchar* out, const SGdchar* in, size_t* inlen, SGbool strict)
 {
     (*inlen)--;
 
@@ -478,7 +478,7 @@ static size_t SG_EXPORT _sgConvU32ToU16(SGwchar* out, const SGdchar* in, size_t*
     //tcode_error_raisef("Cannot encode value %.8X into UTF-16 (it is larger than 0x10FFFF)", in[0]);
     return 0;
 }
-static size_t SG_EXPORT _sgConvU32ToU32(SGdchar* out, const SGdchar* in, size_t* inlen, SGbool strict)
+static size_t SG_CALL _sgConvU32ToU32(SGdchar* out, const SGdchar* in, size_t* inlen, SGbool strict)
 {
     (*inlen)--;
     *out = *in;
@@ -519,7 +519,7 @@ static size_t _sgConvSize(SGenum type)
     return 0;
 }
 
-SGConv* SG_EXPORT sgConvCreate(SGenum dst, SGenum src)
+SGConv* SG_CALL sgConvCreate(SGenum dst, SGenum src)
 {
     SGConvFunction* func = _sgConvFunction(dst, src);
     if(!func) return NULL;
@@ -533,14 +533,14 @@ SGConv* SG_EXPORT sgConvCreate(SGenum dst, SGenum src)
 
     return conv;
 }
-void SG_EXPORT sgConvDestroy(SGConv* conv)
+void SG_CALL sgConvDestroy(SGConv* conv)
 {
     if(!conv) return;
 
     free(conv);
 }
 
-size_t SG_EXPORT sgConvEstimate(SGConv* conv, size_t inlen)
+size_t SG_CALL sgConvEstimate(SGConv* conv, size_t inlen)
 {
     static size_t mat[SG_CONV_TYPE_LAST][SG_CONV_TYPE_LAST] = {
                      /* UNKNOWN CHAR WCHAR_T              UTF8 UTF16LE UTF16BE UTF32LE UTF32BE */
@@ -558,7 +558,7 @@ size_t SG_EXPORT sgConvEstimate(SGConv* conv, size_t inlen)
     return mat[conv->src][conv->dst];
 }
 
-size_t SG_EXPORT sgConv(SGConv* conv, void* out, size_t outlen, const void* in, size_t inlen, SGbool strict)
+size_t SG_CALL sgConv(SGConv* conv, void* out, size_t outlen, const void* in, size_t inlen, SGbool strict)
 {
     size_t outsize = _sgConvSize(conv->dst);
     size_t insize = _sgConvSize(conv->src);
@@ -587,7 +587,7 @@ error:
         memset(((char*)out) + SG_MIN(num, outlen-1) * outsize, 0, outsize); /* 0-terminate */
     return 0;
 }
-size_t SG_EXPORT sgConv2s(SGenum dst, SGenum src, void* out, size_t outlen, const void* in, size_t inlen, SGbool strict)
+size_t SG_CALL sgConv2s(SGenum dst, SGenum src, void* out, size_t outlen, const void* in, size_t inlen, SGbool strict)
 {
     SGConv* conv = sgConvCreate(dst, src);
     if(!conv) return 0;

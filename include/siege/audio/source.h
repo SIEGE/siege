@@ -82,10 +82,10 @@ SGuint _sg_srcDisLength;
 SGList* _sg_srcDestroy;
 #endif // SG_BUILD_LIBRARY
 
-SGbool SG_EXPORT _sgAudioSourceInit(void);
-SGbool SG_EXPORT _sgAudioSourceDeinit(void);
+SGbool SG_CALL _sgAudioSourceInit(void);
+SGbool SG_CALL _sgAudioSourceDeinit(void);
 
-SGAudioSourceDispatch* SG_EXPORT _sgAudioSourceGetFreeDispatch(SGAudioSource* source);
+SGAudioSourceDispatch* SG_CALL _sgAudioSourceGetFreeDispatch(SGAudioSource* source);
 
 /**
  * \brief Create an audio source.
@@ -97,14 +97,14 @@ SGAudioSourceDispatch* SG_EXPORT _sgAudioSourceGetFreeDispatch(SGAudioSource* so
  *
  * \return The newly created source if successful, NULL otherwise.
  */
-SGAudioSource* SG_EXPORT sgAudioSourceCreate(float priority, float volume, float pitch, SGbool looping);
+SGAudioSource* SG_CALL sgAudioSourceCreate(float priority, float volume, float pitch, SGbool looping);
 /**
  * \brief Destroy an audio source.
  *
  * \param source The source to destroy - it should not be used anymore after this call
  */
-void SG_EXPORT sgAudioSourceDestroy(SGAudioSource* source);
-void SG_EXPORT sgAudioSourceDestroyLazy(SGAudioSource* source); /// < destroy when done playing
+void SG_CALL sgAudioSourceDestroy(SGAudioSource* source);
+void SG_CALL sgAudioSourceDestroyLazy(SGAudioSource* source); /// < destroy when done playing
 
 /**
  * \name Basic functions
@@ -117,7 +117,7 @@ void SG_EXPORT sgAudioSourceDestroyLazy(SGAudioSource* source); /// < destroy wh
  *
  * \param source The source to play
  */
-void SG_EXPORT sgAudioSourcePlay(SGAudioSource* source);
+void SG_CALL sgAudioSourcePlay(SGAudioSource* source);
 /**
  * \brief Is an audio source playing?
  *
@@ -125,13 +125,13 @@ void SG_EXPORT sgAudioSourcePlay(SGAudioSource* source);
  *
  * \return SG_TRUE if it is playing, SG_FALSE otherwise
  */
-SGbool SG_EXPORT sgAudioSourceIsPlaying(SGAudioSource* source);
+SGbool SG_CALL sgAudioSourceIsPlaying(SGAudioSource* source);
 /**
  * \brief Pause an audio source.
  *
  * \param source The source to pause
  */
-void SG_EXPORT sgAudioSourcePause(SGAudioSource* source);
+void SG_CALL sgAudioSourcePause(SGAudioSource* source);
 /**
  * \brief Is an audio source paused?
  *
@@ -139,20 +139,20 @@ void SG_EXPORT sgAudioSourcePause(SGAudioSource* source);
  *
  * \return SG_TRUE if it is paused, SG_FALSE otherwise
  */
-SGbool SG_EXPORT sgAudioSourceIsPaused(SGAudioSource* source);
+SGbool SG_CALL sgAudioSourceIsPaused(SGAudioSource* source);
 /**
  * \brief Rewind an audio source.
  *
  * \param source The source to rewind
  */
-void SG_EXPORT sgAudioSourceRewind(SGAudioSource* source);
-//SGbool SG_EXPORT sgAudioSourceIsRewinded(SGAudioSource* source);
+void SG_CALL sgAudioSourceRewind(SGAudioSource* source);
+//SGbool SG_CALL sgAudioSourceIsRewinded(SGAudioSource* source);
 /**
  * \brief Stop an audio source.
  *
  * \param source The source to stop
  */
-void SG_EXPORT sgAudioSourceStop(SGAudioSource* source);
+void SG_CALL sgAudioSourceStop(SGAudioSource* source);
 /**
  * \brief Is an audio source stopped?
  *
@@ -160,7 +160,7 @@ void SG_EXPORT sgAudioSourceStop(SGAudioSource* source);
  *
  * \return SG_TRUE if it is stopped, SG_FALSE otherwise
  */
-SGbool SG_EXPORT sgAudioSourceIsStopped(SGAudioSource* source);
+SGbool SG_CALL sgAudioSourceIsStopped(SGAudioSource* source);
 /**
  * \brief Is an audio source active (in use)?
  *
@@ -168,7 +168,7 @@ SGbool SG_EXPORT sgAudioSourceIsStopped(SGAudioSource* source);
  *
  * \return SG_TRUE if it is active, SG_FALSE otherwise
  */
-SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source);
+SGbool SG_CALL sgAudioSourceIsActive(SGAudioSource* source);
 /// @}
 
 /**
@@ -177,8 +177,8 @@ SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source);
  * Queueing buffers (as opposed to simply putting in one large buffer) can be used for things like smooth streaming of large audio data such as music.
  */
 /// @{
-size_t SG_EXPORT sgAudioSourceGetNumProcessedBuffers(SGAudioSource* source);
-size_t SG_EXPORT sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source);
+size_t SG_CALL sgAudioSourceGetNumProcessedBuffers(SGAudioSource* source);
+size_t SG_CALL sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source);
 /**
  * \brief Queue multiple buffers into a source
  *
@@ -190,7 +190,7 @@ size_t SG_EXPORT sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source);
  *
  * \see sgAudioSourceQueueBuffer
  */
-void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, size_t numbuffers);
+void SG_CALL sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, size_t numbuffers);
 /**
  * \brief Queue a single buffer into a source
  *
@@ -201,11 +201,11 @@ void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** 
  *
  * \see sgAudioSourceQueueBuffers
  */
-void SG_EXPORT sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* buffer);
+void SG_CALL sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* buffer);
 /// @}
 
-void SG_EXPORT sgAudioSourceUnqueueBuffers(SGAudioSource* source, size_t numbuffers);
-void SG_EXPORT sgAudioSourceUnqueueBuffer(SGAudioSource* source);
+void SG_CALL sgAudioSourceUnqueueBuffers(SGAudioSource* source, size_t numbuffers);
+void SG_CALL sgAudioSourceUnqueueBuffer(SGAudioSource* source);
 
 /**
  * \name Position
@@ -223,7 +223,7 @@ void SG_EXPORT sgAudioSourceUnqueueBuffer(SGAudioSource* source);
  * \see	sgAudioSourceGetPosition3f
  * \see	sgAudioSourceSetVelocity3f
  */
-void SG_EXPORT sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y, float z);
+void SG_CALL sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y, float z);
 /**
  * \brief Set the x,y position, and z implicitly to 0
  *
@@ -235,7 +235,7 @@ void SG_EXPORT sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float 
  * \see	sgAudioSourceGetPosition2f
  * \see	sgAudioSourceSetVelocity2f
  */
-void SG_EXPORT sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float y);
+void SG_CALL sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float y);
 /**
  * \brief Get the x,y,z position
  *
@@ -248,7 +248,7 @@ void SG_EXPORT sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float 
  * \see	sgAudioSourceGetPosition2f
  * \see	sgAudioSourceGetVelocity3f
  */
-void SG_EXPORT sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float* y, float* z);
+void SG_CALL sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float* y, float* z);
 /**
  * \brief Get the x,y position
  *
@@ -260,7 +260,7 @@ void SG_EXPORT sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float
  * \see	sgAudioSourceGetPosition3f
  * \see	sgAudioSourceGetVelocity2f
  */
-void SG_EXPORT sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float* y);
+void SG_CALL sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float* y);
 /// @}
 
 /**
@@ -279,7 +279,7 @@ void SG_EXPORT sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float
  * \see	sgAudioSourceGetVelocity3f
  * \see	sgAudioSourceSetPosition3f
  */
-void SG_EXPORT sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float y, float z);
+void SG_CALL sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float y, float z);
 /**
  * \brief Set the x,y velocity, and z implicitly to 0
  *
@@ -291,7 +291,7 @@ void SG_EXPORT sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float 
  * \see	sgAudioSourceGetVelocity2f
  * \see	sgAudioSourceSetPosition2f
  */
-void SG_EXPORT sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float y);
+void SG_CALL sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float y);
 /**
  * \brief Get the x,y,z velocity
  *
@@ -304,7 +304,7 @@ void SG_EXPORT sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float 
  * \see	sgAudioSourceGetVelocity2f
  * \see	sgAudioSourceGetPosition3f
  */
-void SG_EXPORT sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float* y, float* z);
+void SG_CALL sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float* y, float* z);
 /**
  * \brief Get the x,y velocity
  *
@@ -316,11 +316,11 @@ void SG_EXPORT sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float
  * \see	sgAudioSourceGetVelocity3f
  * \see	sgAudioSourceGetPosition2f
  */
-void SG_EXPORT sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float* y);
+void SG_CALL sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float* y);
 /// @}
 
-//void SG_EXPORT sgAudioSourceSetFalloff(SGAudioSource* source, float falloff);
-//float SG_EXPORT sgAudioSourceGetFalloff(SGAudioSource* source);
+//void SG_CALL sgAudioSourceSetFalloff(SGAudioSource* source, float falloff);
+//float SG_CALL sgAudioSourceGetFalloff(SGAudioSource* source);
 
 /**
  * \name Pitch
@@ -338,7 +338,7 @@ void SG_EXPORT sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float
  * \see	sgAudioSourceSetVolume
  * \see	sgAudioSourceSetLooping
  */
-void SG_EXPORT sgAudioSourceSetPitch(SGAudioSource* source, float pitch);
+void SG_CALL sgAudioSourceSetPitch(SGAudioSource* source, float pitch);
 /**
  * \brief Get the pitch
  *
@@ -350,7 +350,7 @@ void SG_EXPORT sgAudioSourceSetPitch(SGAudioSource* source, float pitch);
  * \see	sgAudioSourceGetVolume
  * \see	sgAudioSourceGetLooping
  */
-float SG_EXPORT sgAudioSourceGetPitch(SGAudioSource* source);
+float SG_CALL sgAudioSourceGetPitch(SGAudioSource* source);
 /// @}
 
 /**
@@ -369,7 +369,7 @@ float SG_EXPORT sgAudioSourceGetPitch(SGAudioSource* source);
  * \see	sgAudioSourceSetPitch
  * \see	sgAudioSourceSetLooping
  */
-void SG_EXPORT sgAudioSourceSetVolume(SGAudioSource* source, float volume);
+void SG_CALL sgAudioSourceSetVolume(SGAudioSource* source, float volume);
 /**
  * \brief Get the volume
  *
@@ -381,7 +381,7 @@ void SG_EXPORT sgAudioSourceSetVolume(SGAudioSource* source, float volume);
  * \see	sgAudioSourceGetPitch
  * \see	sgAudioSourceGetLooping
  */
-float SG_EXPORT sgAudioSourceGetVolume(SGAudioSource* source);
+float SG_CALL sgAudioSourceGetVolume(SGAudioSource* source);
 /// @}
 
 /**
@@ -400,7 +400,7 @@ float SG_EXPORT sgAudioSourceGetVolume(SGAudioSource* source);
  * \see	sgAudioSourceSetPitch
  * \see	sgAudioSourceSetVolume
  */
-void SG_EXPORT sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping);
+void SG_CALL sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping);
 /**
  * \brief Is the source looping?
  *
@@ -412,7 +412,7 @@ void SG_EXPORT sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping);
  * \see	sgAudioSourceGetPitch
  * \see	sgAudioSourceGetVolume
  */
-SGbool SG_EXPORT sgAudioSourceGetLooping(SGAudioSource* source);
+SGbool SG_CALL sgAudioSourceGetLooping(SGAudioSource* source);
 /// @}
 
 #ifdef __cplusplus

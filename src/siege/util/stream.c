@@ -19,7 +19,7 @@
 #include <string.h>
 #include <stdio.h>
 
-static SGbool SG_EXPORT cbFileSeek(void* stream, SGlong offset, SGenum origin)
+static SGbool SG_CALL cbFileSeek(void* stream, SGlong offset, SGenum origin)
 {
     int corigin;
     switch(origin)
@@ -31,23 +31,23 @@ static SGbool SG_EXPORT cbFileSeek(void* stream, SGlong offset, SGenum origin)
     }
     return !fseek((FILE*)stream, offset, corigin);
 }
-static SGlong SG_EXPORT cbFileTell(void* stream)
+static SGlong SG_CALL cbFileTell(void* stream)
 {
     return ftell((FILE*)stream);
 }
-static SGulong SG_EXPORT cbFileRead(void* stream, void* ptr, size_t size, size_t count)
+static SGulong SG_CALL cbFileRead(void* stream, void* ptr, size_t size, size_t count)
 {
     return fread(ptr, size, count, (FILE*)stream);
 }
-static SGulong SG_EXPORT cbFileWrite(void* stream, const void* ptr, size_t size, size_t count)
+static SGulong SG_CALL cbFileWrite(void* stream, const void* ptr, size_t size, size_t count)
 {
     return fwrite(ptr, size, count, (FILE*)stream);
 }
-static SGbool SG_EXPORT cbFileClose(void* stream)
+static SGbool SG_CALL cbFileClose(void* stream)
 {
     return !fclose((FILE*)stream);
 }
-static SGbool SG_EXPORT cbFileEOF(void* stream)
+static SGbool SG_CALL cbFileEOF(void* stream)
 {
     return feof((FILE*)stream);
 }
@@ -61,7 +61,7 @@ typedef struct MemoryInfo
     SGFree* free;
 } MemoryInfo;
 
-static SGbool SG_EXPORT cbMemorySeek(void* stream, SGlong offset, SGenum origin)
+static SGbool SG_CALL cbMemorySeek(void* stream, SGlong offset, SGenum origin)
 {
     MemoryInfo* minfo = stream;
     SGlong pos;
@@ -79,12 +79,12 @@ static SGbool SG_EXPORT cbMemorySeek(void* stream, SGlong offset, SGenum origin)
     minfo->cur = minfo->ptr + pos;
     return SG_TRUE;
 }
-static SGlong SG_EXPORT cbMemoryTell(void* stream)
+static SGlong SG_CALL cbMemoryTell(void* stream)
 {
     MemoryInfo* minfo = stream;
     return minfo->cur - minfo->ptr;
 }
-static SGulong SG_EXPORT cbMemoryRead(void* stream, void* ptr, size_t size, size_t count)
+static SGulong SG_CALL cbMemoryRead(void* stream, void* ptr, size_t size, size_t count)
 {
     MemoryInfo* minfo = stream;
     size_t avail = minfo->end - minfo->cur;
@@ -95,7 +95,7 @@ static SGulong SG_EXPORT cbMemoryRead(void* stream, void* ptr, size_t size, size
     minfo->cur += size * count;
     return count;
 }
-static SGulong SG_EXPORT cbMemoryWrite(void* stream, const void* ptr, size_t size, size_t count)
+static SGulong SG_CALL cbMemoryWrite(void* stream, const void* ptr, size_t size, size_t count)
 {
     MemoryInfo* minfo = stream;
     size_t avail = minfo->end - minfo->cur;
@@ -106,7 +106,7 @@ static SGulong SG_EXPORT cbMemoryWrite(void* stream, const void* ptr, size_t siz
     minfo->cur += size * count;
     return count;
 }
-static SGbool SG_EXPORT cbMemoryClose(void* stream)
+static SGbool SG_CALL cbMemoryClose(void* stream)
 {
     MemoryInfo* minfo = stream;
     if(minfo->free)
@@ -114,18 +114,18 @@ static SGbool SG_EXPORT cbMemoryClose(void* stream)
     free(minfo);
     return SG_TRUE;
 }
-static SGbool SG_EXPORT cbMemoryEOF(void* stream)
+static SGbool SG_CALL cbMemoryEOF(void* stream)
 {
     MemoryInfo* minfo = stream;
     return minfo->cur == minfo->end;
 }
 
-static void SG_EXPORT cbBufferFree(void* ptr)
+static void SG_CALL cbBufferFree(void* ptr)
 {
     free(ptr);
 }
 
-SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data)
+SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data)
 {
     SGStream* stream = malloc(sizeof(SGStream));
     if(!stream) return NULL;
@@ -141,7 +141,7 @@ SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStr
 
     return stream;
 }
-SGStream* SG_EXPORT sgStreamCreateFile(const char* fname, const char* mode)
+SGStream* SG_CALL sgStreamCreateFile(const char* fname, const char* mode)
 {
     char mbuf[256];
     mbuf[0] = 0;
@@ -167,7 +167,7 @@ SGStream* SG_EXPORT sgStreamCreateFile(const char* fname, const char* mode)
     }
     return stream;
 }
-SGStream* SG_EXPORT sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree)
+SGStream* SG_CALL sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree)
 {
     MemoryInfo* minfo = malloc(sizeof(MemoryInfo));
     if(!minfo) return NULL;
@@ -186,7 +186,7 @@ SGStream* SG_EXPORT sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree)
     }
     return stream;
 }
-SGStream* SG_EXPORT sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbfree)
+SGStream* SG_CALL sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbfree)
 {
     MemoryInfo* minfo = malloc(sizeof(MemoryInfo));
     if(!minfo) return NULL;
@@ -205,7 +205,7 @@ SGStream* SG_EXPORT sgStreamCreateCMemory(const void* mem, size_t size, SGFree* 
     }
     return stream;
 }
-SGStream* SG_EXPORT sgStreamCreateBuffer(size_t size)
+SGStream* SG_CALL sgStreamCreateBuffer(size_t size)
 {
     void* mem = malloc(size);
     if(!mem) return NULL;
@@ -218,7 +218,7 @@ SGStream* SG_EXPORT sgStreamCreateBuffer(size_t size)
     }
     return stream;
 }
-void SG_EXPORT sgStreamDestroy(SGStream* stream)
+void SG_CALL sgStreamDestroy(SGStream* stream)
 {
     if(!stream) return;
     if(stream->close)
@@ -226,7 +226,7 @@ void SG_EXPORT sgStreamDestroy(SGStream* stream)
     free(stream);
 }
 
-SGlong SG_EXPORT sgStreamTellSize(SGStream* stream)
+SGlong SG_CALL sgStreamTellSize(SGStream* stream)
 {
     SGlong pos = sgStreamTell(stream);
     if(pos < 0)
@@ -236,31 +236,31 @@ SGlong SG_EXPORT sgStreamTellSize(SGStream* stream)
     sgStreamSeek(stream, pos, SG_SEEK_SET);
     return size;
 }
-SGbool SG_EXPORT sgStreamSeek(SGStream* stream, SGlong offset, SGenum origin)
+SGbool SG_CALL sgStreamSeek(SGStream* stream, SGlong offset, SGenum origin)
 {
     if(!stream->seek)
         return SG_FALSE;
     return stream->seek(stream->data, offset, origin);
 }
-SGlong SG_EXPORT sgStreamTell(SGStream* stream)
+SGlong SG_CALL sgStreamTell(SGStream* stream)
 {
     if(!stream->tell)
         return -1;
     return stream->tell(stream->data);
 }
-SGulong SG_EXPORT sgStreamRead(SGStream* stream, void* ptr, size_t size, size_t count)
+SGulong SG_CALL sgStreamRead(SGStream* stream, void* ptr, size_t size, size_t count)
 {
     if(!stream->read)
         return 0;
     return stream->read(stream->data, ptr, size, count);
 }
-SGulong SG_EXPORT sgStreamWrite(SGStream* stream, const void* ptr, size_t size, size_t count)
+SGulong SG_CALL sgStreamWrite(SGStream* stream, const void* ptr, size_t size, size_t count)
 {
     if(!stream->write)
         return 0;
     return stream->write(stream->data, ptr, size, count);
 }
-SGbool SG_EXPORT sgStreamClose(SGStream* stream)
+SGbool SG_CALL sgStreamClose(SGStream* stream)
 {
     SGbool ret = SG_TRUE;
     if(stream->close)

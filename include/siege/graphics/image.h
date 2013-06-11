@@ -31,22 +31,22 @@ typedef struct SGImageData
     void* data;
 } SGImageData;
 
-SGImageData* SG_EXPORT sgImageDataCreateStream(SGStream* stream, SGbool delstream);
-SGImageData* SG_EXPORT sgImageDataCreateFile(const char* fname);
-SGImageData* SG_EXPORT sgImageDataCreateData(size_t width, size_t height, SGenum bpp, void* data);
-SGImageData* SG_EXPORT sgImageDataCreate(size_t width, size_t height, SGenum bpp);
-void SG_EXPORT sgImageDataDestroy(SGImageData* idata);
+SGImageData* SG_CALL sgImageDataCreateStream(SGStream* stream, SGbool delstream);
+SGImageData* SG_CALL sgImageDataCreateFile(const char* fname);
+SGImageData* SG_CALL sgImageDataCreateData(size_t width, size_t height, SGenum bpp, void* data);
+SGImageData* SG_CALL sgImageDataCreate(size_t width, size_t height, SGenum bpp);
+void SG_CALL sgImageDataDestroy(SGImageData* idata);
 
-//SGbool SG_EXPORT sgImageDataConvert(SGImageData* idata, SGenum bpp);
+//SGbool SG_CALL sgImageDataConvert(SGImageData* idata, SGenum bpp);
 
-//void SG_EXPORT sgImageDataSetData(SGImageData* idata, size_t width, size_t height, SGenum bpp, void* data);
-void SG_EXPORT sgImageDataGetData(SGImageData* idata, size_t* width, size_t* height, SGenum* bpp, void** data);
+//void SG_CALL sgImageDataSetData(SGImageData* idata, size_t width, size_t height, SGenum bpp, void* data);
+void SG_CALL sgImageDataGetData(SGImageData* idata, size_t* width, size_t* height, SGenum* bpp, void** data);
 
-void SG_EXPORT sgImageDataGetSize(SGImageData* idata, size_t* width, size_t* height);
-size_t SG_EXPORT sgImageDataGetWidth(SGImageData* idata);
-size_t SG_EXPORT sgImageDataGetHeight(SGImageData* idata);
+void SG_CALL sgImageDataGetSize(SGImageData* idata, size_t* width, size_t* height);
+size_t SG_CALL sgImageDataGetWidth(SGImageData* idata);
+size_t SG_CALL sgImageDataGetHeight(SGImageData* idata);
 
-SGenum SG_EXPORT sgImageDataGetBpp(SGImageData* idata);
+SGenum SG_CALL sgImageDataGetBpp(SGImageData* idata);
 
 #ifdef __cplusplus
 }

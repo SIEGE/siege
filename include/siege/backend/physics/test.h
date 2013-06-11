@@ -27,10 +27,10 @@ extern "C"
 #endif
 
 #ifdef SIEGE_TEST
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyWorldToLocal_TEST)(void* body, float* x, float* y);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyLocalToWorld_TEST)(void* body, float* x, float* y);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsShapeGetPoints_TEST)(void* shape, SGuint* pnum, float** points);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsShapeFreePoints_TEST)(float* points);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyWorldToLocal_TEST)(void* body, float* x, float* y);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyLocalToWorld_TEST)(void* body, float* x, float* y);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsShapeGetPoints_TEST)(void* shape, SGuint* pnum, float** points);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsShapeFreePoints_TEST)(float* points);
 #endif // SIEGE_TEST
 
 #ifdef __cplusplus

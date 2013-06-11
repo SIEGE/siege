@@ -40,29 +40,29 @@ typedef struct SGList
 SGList* SG_CALL sgListInit(SGList* list);
 void SG_CALL sgListDeinit(SGList* list);
 
-SGList* SG_EXPORT sgListCreate(void);
-void SG_EXPORT sgListDestroy(SGList* list);
+SGList* SG_CALL sgListCreate(void);
+void SG_CALL sgListDestroy(SGList* list);
 
-size_t SG_EXPORT sgListLength(SGList* list);
+size_t SG_CALL sgListLength(SGList* list);
 
-SGListNode* SG_EXPORT sgListFindItem(SGList* list, void* item);
-SGListNode* SG_EXPORT sgListFindIndex(SGList* list, size_t index);
+SGListNode* SG_CALL sgListFindItem(SGList* list, void* item);
+SGListNode* SG_CALL sgListFindIndex(SGList* list, size_t index);
 
-SGListNode* SG_EXPORT sgListInsertNode(SGList* list, SGListNode* after, void* item);
-SGListNode* SG_EXPORT sgListInsertItem(SGList* list, void* after, void* item);
-SGListNode* SG_EXPORT sgListInsertIndex(SGList* list, size_t after, void* item);
-SGListNode* SG_EXPORT sgListPrepend(SGList* list, void* item);
-SGListNode* SG_EXPORT sgListAppend(SGList* list, void* item);
+SGListNode* SG_CALL sgListInsertNode(SGList* list, SGListNode* after, void* item);
+SGListNode* SG_CALL sgListInsertItem(SGList* list, void* after, void* item);
+SGListNode* SG_CALL sgListInsertIndex(SGList* list, size_t after, void* item);
+SGListNode* SG_CALL sgListPrepend(SGList* list, void* item);
+SGListNode* SG_CALL sgListAppend(SGList* list, void* item);
 
-void SG_EXPORT sgListRemoveNode(SGList* list, SGListNode* node);
-void SG_EXPORT sgListRemoveItem(SGList* list, void* item);
-void SG_EXPORT sgListRemoveIndex(SGList* list, size_t index);
+void SG_CALL sgListRemoveNode(SGList* list, SGListNode* node);
+void SG_CALL sgListRemoveItem(SGList* list, void* item);
+void SG_CALL sgListRemoveIndex(SGList* list, size_t index);
 
-SGListNode* SG_EXPORT sgListGetFirst(SGList* list);
-SGListNode* SG_EXPORT sgListGetLast(SGList* list);
+SGListNode* SG_CALL sgListGetFirst(SGList* list);
+SGListNode* SG_CALL sgListGetLast(SGList* list);
 
-void* SG_EXPORT sgListPopFirst(SGList* list);
-void* SG_EXPORT sgListPopLast(SGList* list);
+void* SG_CALL sgListPopFirst(SGList* list);
+void* SG_CALL sgListPopLast(SGList* list);
 
 #ifdef __cplusplus
 }

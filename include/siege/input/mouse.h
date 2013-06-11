@@ -38,45 +38,45 @@ void* _sg_mouseHandle;
 SGCoreMouseCallbacks _sg_mouseCallbacks;
 #endif // SG_BUILD_LIBRARY
 
-void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool action);
-void SG_EXPORT _sg_cbMouseMove(void* mouse, SGint x, SGint y);
-void SG_EXPORT _sg_cbMouseWheel(void* mouse, SGint w);
+void SG_CALL _sg_cbMouseButton(void* mouse, SGuint button, SGbool action);
+void SG_CALL _sg_cbMouseMove(void* mouse, SGint x, SGint y);
+void SG_CALL _sg_cbMouseWheel(void* mouse, SGint w);
 
-void SG_EXPORT _sgMouseUpdate(void);
+void SG_CALL _sgMouseUpdate(void);
 
-SGbool SG_EXPORT _sgMouseInit(void);
-SGbool SG_EXPORT _sgMouseDeinit(void);
+SGbool SG_CALL _sgMouseInit(void);
+SGbool SG_CALL _sgMouseDeinit(void);
 
-void SG_EXPORT sgMouseGetPosPrev(SGint* x, SGint* y);
-SGint SG_EXPORT sgMouseGetPosPrevX(void);
-SGint SG_EXPORT sgMouseGetPosPrevY(void);
+void SG_CALL sgMouseGetPosPrev(SGint* x, SGint* y);
+SGint SG_CALL sgMouseGetPosPrevX(void);
+SGint SG_CALL sgMouseGetPosPrevY(void);
 
-void SG_EXPORT sgMouseGetPos(SGint* x, SGint* y);
-SGint SG_EXPORT sgMouseGetPosX(void);
-SGint SG_EXPORT sgMouseGetPosY(void);
+void SG_CALL sgMouseGetPos(SGint* x, SGint* y);
+SGint SG_CALL sgMouseGetPosX(void);
+SGint SG_CALL sgMouseGetPosY(void);
 
-SGint SG_EXPORT sgMouseGetWheelPrev(void);
-SGint SG_EXPORT sgMouseGetWheel(void);
+SGint SG_CALL sgMouseGetWheelPrev(void);
+SGint SG_CALL sgMouseGetWheel(void);
 
-SGbool SG_EXPORT sgMouseGetButtonPrev(SGuint button);
-SGbool SG_EXPORT sgMouseGetButton(SGuint button);
-SGbool SG_EXPORT sgMouseGetButtonPress(SGuint button);
-SGbool SG_EXPORT sgMouseGetButtonRelease(SGuint button);
+SGbool SG_CALL sgMouseGetButtonPrev(SGuint button);
+SGbool SG_CALL sgMouseGetButton(SGuint button);
+SGbool SG_CALL sgMouseGetButtonPress(SGuint button);
+SGbool SG_CALL sgMouseGetButtonRelease(SGuint button);
 
-SGbool SG_EXPORT sgMouseGetButtonLeftPrev(void);
-SGbool SG_EXPORT sgMouseGetButtonLeft(void);
-SGbool SG_EXPORT sgMouseGetButtonLeftPress(void);
-SGbool SG_EXPORT sgMouseGetButtonLeftRelease(void);
+SGbool SG_CALL sgMouseGetButtonLeftPrev(void);
+SGbool SG_CALL sgMouseGetButtonLeft(void);
+SGbool SG_CALL sgMouseGetButtonLeftPress(void);
+SGbool SG_CALL sgMouseGetButtonLeftRelease(void);
 
-SGbool SG_EXPORT sgMouseGetButtonRightPrev(void);
-SGbool SG_EXPORT sgMouseGetButtonRight(void);
-SGbool SG_EXPORT sgMouseGetButtonRightPress(void);
-SGbool SG_EXPORT sgMouseGetButtonRightRelease(void);
+SGbool SG_CALL sgMouseGetButtonRightPrev(void);
+SGbool SG_CALL sgMouseGetButtonRight(void);
+SGbool SG_CALL sgMouseGetButtonRightPress(void);
+SGbool SG_CALL sgMouseGetButtonRightRelease(void);
 
-SGbool SG_EXPORT sgMouseGetButtonMiddlePrev(void);
-SGbool SG_EXPORT sgMouseGetButtonMiddle(void);
-SGbool SG_EXPORT sgMouseGetButtonMiddlePress(void);
-SGbool SG_EXPORT sgMouseGetButtonMiddleRelease(void);
+SGbool SG_CALL sgMouseGetButtonMiddlePrev(void);
+SGbool SG_CALL sgMouseGetButtonMiddle(void);
+SGbool SG_CALL sgMouseGetButtonMiddlePress(void);
+SGbool SG_CALL sgMouseGetButtonMiddleRelease(void);
 
 #ifdef __cplusplus
 }

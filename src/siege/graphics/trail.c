@@ -20,7 +20,7 @@
 #include <string.h>
 #include <math.h>
 
-void SG_EXPORT sgTrailPopPoint(SGTrail* trail)
+void SG_CALL sgTrailPopPoint(SGTrail* trail)
 {
     if(trail == NULL)
         return;
@@ -34,7 +34,7 @@ void SG_EXPORT sgTrailPopPoint(SGTrail* trail)
     trail->ypoints = realloc(trail->ypoints, trail->numpoints * sizeof(float));
 }
 
-SGTrail* SG_EXPORT sgTrailCreate(SGuint maxpoints)
+SGTrail* SG_CALL sgTrailCreate(SGuint maxpoints)
 {
     SGTrail* trail = malloc(sizeof(SGTrail));
     if(trail == NULL)
@@ -46,7 +46,7 @@ SGTrail* SG_EXPORT sgTrailCreate(SGuint maxpoints)
     trail->maxpoints = maxpoints;
     return trail;
 }
-void SG_EXPORT sgTrailDestroy(SGTrail* trail)
+void SG_CALL sgTrailDestroy(SGTrail* trail)
 {
     if(trail == NULL)
         return;
@@ -56,9 +56,9 @@ void SG_EXPORT sgTrailDestroy(SGTrail* trail)
     free(trail);
 }
 
-//void SG_EXPORT sgTrailSetGradient(SGGradient* grad);
+//void SG_CALL sgTrailSetGradient(SGGradient* grad);
 
-void SG_EXPORT sgTrailAddPoint2f(SGTrail* trail, float x, float y)
+void SG_CALL sgTrailAddPoint2f(SGTrail* trail, float x, float y)
 {
     if(trail == NULL)
         return;
@@ -71,11 +71,11 @@ void SG_EXPORT sgTrailAddPoint2f(SGTrail* trail, float x, float y)
     if(trail->numpoints > trail->maxpoints && trail->maxpoints)
         sgTrailPopPoint(trail);
 }
-void SG_EXPORT sgTrailAddBreak(SGTrail* trail)
+void SG_CALL sgTrailAddBreak(SGTrail* trail)
 {
     sgTrailAddPoint2f(trail, SG_NAN, SG_NAN);
 }
-void SG_EXPORT sgTrailDraw(SGTrail* trail)
+void SG_CALL sgTrailDraw(SGTrail* trail)
 {
     if(trail == NULL)
         return;

@@ -25,11 +25,11 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportCreate)(void** viewport, void* context);
-    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportCreateView)(void** viewport, void* context, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportDestroy)(void* viewport);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportSetView)(void* viewport, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height);
-    //SGuint SG_EXPORT SG_FPTR(sgmGraphicsViewportGetView)(void* viewport, SGuint* wx, SGuint* wy, SGuint* wwidth, SGuint* wheight, float* x, float* y, float* width, float* height);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsViewportCreate)(void** viewport, void* context);
+    //SGuint SG_CALL SG_FPTR(sgmGraphicsViewportCreateView)(void** viewport, void* context, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsViewportDestroy)(void* viewport);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsViewportSetView)(void* viewport, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height);
+    //SGuint SG_CALL SG_FPTR(sgmGraphicsViewportGetView)(void* viewport, SGuint* wx, SGuint* wy, SGuint* wwidth, SGuint* wheight, float* x, float* y, float* width, float* height);
 #ifdef __cplusplus
 }
 #endif

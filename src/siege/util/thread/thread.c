@@ -103,7 +103,7 @@ static void _sgThreadInit(void)
     atexit(_sgThreadAtExit);
 }
 
-SGThread* SG_EXPORT sgThreadCreate(size_t ssize, SGThreadFunction* func, void* data)
+SGThread* SG_CALL sgThreadCreate(size_t ssize, SGThreadFunction* func, void* data)
 {
     if(!_sg_thrInited)
     {
@@ -142,7 +142,7 @@ SGThread* SG_EXPORT sgThreadCreate(size_t ssize, SGThreadFunction* func, void* d
 
     return thread;
 }
-void SG_EXPORT sgThreadDestroy(SGThread* thread)
+void SG_CALL sgThreadDestroy(SGThread* thread)
 {
     if(!thread)
         return;
@@ -157,7 +157,7 @@ void SG_EXPORT sgThreadDestroy(SGThread* thread)
     free(thread);
 }
 
-void SG_EXPORT sgThreadStart(SGThread* thread)
+void SG_CALL sgThreadStart(SGThread* thread)
 {
     if(thread->status != SG_THREAD_INITIAL)
         return;
@@ -169,7 +169,7 @@ void SG_EXPORT sgThreadStart(SGThread* thread)
     sem_post(thread->sem);
 #endif
 }
-SGuint SG_EXPORT sgThreadResume(SGThread* thread)
+SGuint SG_CALL sgThreadResume(SGThread* thread)
 {
 	if(thread->status == SG_THREAD_INITIAL)
 		return -1;
@@ -186,7 +186,7 @@ SGuint SG_EXPORT sgThreadResume(SGThread* thread)
         thread->status = SG_THREAD_RUNNING;
     return ret;
 }
-SGuint SG_EXPORT sgThreadSuspend(SGThread* thread)
+SGuint SG_CALL sgThreadSuspend(SGThread* thread)
 {
 	SGuint ret;
 #ifdef __WIN32__
@@ -199,7 +199,7 @@ SGuint SG_EXPORT sgThreadSuspend(SGThread* thread)
 	return ret;
 }
 
-void SG_EXPORT sgThreadAtExit(SGThreadDestroy* dtor)
+void SG_CALL sgThreadAtExit(SGThreadDestroy* dtor)
 {
     SGThread* thread = sgThreadGetCurrent();
     if(!thread)
@@ -207,7 +207,7 @@ void SG_EXPORT sgThreadAtExit(SGThreadDestroy* dtor)
     thread->dtors = realloc(thread->dtors, (thread->numdtors + 1) * sizeof(SGThreadDestroy*));
     thread->dtors[thread->numdtors++] = dtor;
 }
-/*void SG_EXPORT sgThreadYield(void)
+/*void SG_CALL sgThreadYield(void)
 {
 #ifdef __WIN32__
     SwitchToThread();
@@ -215,7 +215,7 @@ void SG_EXPORT sgThreadAtExit(SGThreadDestroy* dtor)
     sched_yeild();
 #endif
 }*/
-void SG_EXPORT sgThreadExit(SGint ret)
+void SG_CALL sgThreadExit(SGint ret)
 {
     SGThread* thread = sgThreadGetCurrent();
     _sgThreadAtExit();
@@ -233,7 +233,7 @@ void SG_EXPORT sgThreadExit(SGint ret)
         pthread_exit(NULL);
 #endif
 }
-SGThread* SG_EXPORT sgThreadGetMain(void)
+SGThread* SG_CALL sgThreadGetMain(void)
 {
     if(!_sg_thrInited)
     {
@@ -242,7 +242,7 @@ SGThread* SG_EXPORT sgThreadGetMain(void)
     }
     return &_sg_thrMain;
 }
-SGThread* SG_EXPORT sgThreadGetCurrent(void)
+SGThread* SG_CALL sgThreadGetCurrent(void)
 {
     if(!_sg_thrInited)
     {
@@ -253,7 +253,7 @@ SGThread* SG_EXPORT sgThreadGetCurrent(void)
     return sgThreadKeyGetVal(&_sg_thrKey);
 }
 
-SGint SG_EXPORT sgThreadJoin(SGThread* thread)
+SGint SG_CALL sgThreadJoin(SGThread* thread)
 {
 	SGint ret;
 #ifdef __WIN32__
@@ -271,7 +271,7 @@ SGint SG_EXPORT sgThreadJoin(SGThread* thread)
 	thread->status = SG_THREAD_EXITED;
 	return ret;
 }
-void SG_EXPORT sgThreadKill(SGThread* thread, SGint ret)
+void SG_CALL sgThreadKill(SGThread* thread, SGint ret)
 {
 	thread->status = SG_THREAD_EXITED;
 #ifdef __WIN32__
@@ -282,7 +282,7 @@ void SG_EXPORT sgThreadKill(SGThread* thread, SGint ret)
 #endif
 }
 
-SGenum SG_EXPORT sgThreadGetStatus(SGThread* thread)
+SGenum SG_CALL sgThreadGetStatus(SGThread* thread)
 {
     return thread->status;
 }

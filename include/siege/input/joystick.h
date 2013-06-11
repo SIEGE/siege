@@ -44,32 +44,32 @@ _SGJoystick** _sg_joyJoys;
 SGCoreJoystickCallbacks _sg_joyCallbacks;
 #endif // SG_BUILD_LIBRARY
 
-void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down);
-void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis);
+void SG_CALL _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down);
+void SG_CALL _sg_cbJoystickMove(void* joystick, float* axis);
 
-void SG_EXPORT _sgJoystickUpdate(void);
+void SG_CALL _sgJoystickUpdate(void);
 
-SGbool SG_EXPORT _sgJoystickInit(void);
-SGbool SG_EXPORT _sgJoystickDeinit(void);
+SGbool SG_CALL _sgJoystickInit(void);
+SGbool SG_CALL _sgJoystickDeinit(void);
 
-_SGJoystick* SG_EXPORT _sgJoystickCreate(SGuint id);
-void SG_EXPORT _sgJoystickDestroy(_SGJoystick* joy);
+_SGJoystick* SG_CALL _sgJoystickCreate(SGuint id);
+void SG_CALL _sgJoystickDestroy(_SGJoystick* joy);
 
-size_t SG_EXPORT sgJoystickGetNumJoysticks(void);
-size_t SG_EXPORT sgJoystickGetNumButtons(SGuint joy);
-size_t SG_EXPORT sgJoystickGetNumAxis(SGuint joy);
+size_t SG_CALL sgJoystickGetNumJoysticks(void);
+size_t SG_CALL sgJoystickGetNumButtons(SGuint joy);
+size_t SG_CALL sgJoystickGetNumAxis(SGuint joy);
 
-SGbool SG_EXPORT sgJoystickGetButtonPrev(SGuint joy, SGuint button);
-SGbool SG_EXPORT sgJoystickGetButton(SGuint joy, SGuint button);
-SGbool SG_EXPORT sgJoystickGetButtonPress(SGuint joy, SGuint button);
-SGbool SG_EXPORT sgJoystickGetButtonRelease(SGuint joy, SGuint button);
+SGbool SG_CALL sgJoystickGetButtonPrev(SGuint joy, SGuint button);
+SGbool SG_CALL sgJoystickGetButton(SGuint joy, SGuint button);
+SGbool SG_CALL sgJoystickGetButtonPress(SGuint joy, SGuint button);
+SGbool SG_CALL sgJoystickGetButtonRelease(SGuint joy, SGuint button);
 
-float* SG_EXPORT sgJoystickGetAxisPrev(SGuint joy);
-float SG_EXPORT sgJoystickGetAxisIndexPrev(SGuint joy, SGuint axis);
-float* SG_EXPORT sgJoystickGetAxis(SGuint joy);
-float SG_EXPORT sgJoystickGetAxisIndex(SGuint joy, SGuint axis);
-float* SG_EXPORT sgJoystickGetAxisDelta(SGuint joy);
-float SG_EXPORT sgJoystickGetAxisIndexDelta(SGuint joy, SGuint axis);
+float* SG_CALL sgJoystickGetAxisPrev(SGuint joy);
+float SG_CALL sgJoystickGetAxisIndexPrev(SGuint joy, SGuint axis);
+float* SG_CALL sgJoystickGetAxis(SGuint joy);
+float SG_CALL sgJoystickGetAxisIndex(SGuint joy, SGuint axis);
+float* SG_CALL sgJoystickGetAxisDelta(SGuint joy);
+float SG_CALL sgJoystickGetAxisIndexDelta(SGuint joy, SGuint axis);
 
 #ifdef __cplusplus
 }

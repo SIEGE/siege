@@ -44,7 +44,7 @@ typedef struct SGAudioBuffer
     SGbool del;
 } SGAudioBuffer;
 
-SGAudioBuffer* SG_EXPORT sgAudioBufferCreateStream(SGStream* stream, SGbool delstream);
+SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstream);
 /// @{
 /**
  * \memberof SGAudioBuffer
@@ -54,7 +54,7 @@ SGAudioBuffer* SG_EXPORT sgAudioBufferCreateStream(SGStream* stream, SGbool dels
  *
  * \return The newly created buffer if successful, NULL otherwise.
  */
-SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname);
+SGAudioBuffer* SG_CALL sgAudioBufferCreateFile(const char* fname);
 /**
  * \memberof SGAudioBuffer
  * \brief Destroy an audio buffer
@@ -62,7 +62,7 @@ SGAudioBuffer* SG_EXPORT sgAudioBufferCreateFile(const char* fname);
  * \param buffer The buffer to destroy.
  * It should not be used anymore after this call.
  */
-void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer);
+void SG_CALL sgAudioBufferDestroy(SGAudioBuffer* buffer);
 /// @}
 
 /// @{
@@ -76,7 +76,7 @@ void SG_EXPORT sgAudioBufferDestroy(SGAudioBuffer* buffer);
  * \param data Audio data to pass to the buffer
  * \param datalen Length of the audio data in bytes
  */
-void SG_EXPORT sgAudioBufferSetData(SGAudioBuffer* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, size_t datalen);
+void SG_CALL sgAudioBufferSetData(SGAudioBuffer* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, size_t datalen);
 /// @}
 
 #ifdef __cplusplus

@@ -25,26 +25,26 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceCreate)(void** space);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceDestroy)(void* space);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceStep)(void* space, float time);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceSetIterations)(void* space, SGuint iterations);
-    //SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceGetIterations)(void* space, SGuint* iterations);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceSetGravity)(void* space, float x, float y);
-    //SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceGetGravity)(void* space, float* x, float* y);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceSetDamping)(void* space, float damping);
-    //SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceGetDamping)(void* space, float* damping);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceCreate)(void** space);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceDestroy)(void* space);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceStep)(void* space, float time);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsSpaceSetIterations)(void* space, SGuint iterations);
+    //SGenum SG_CALL SG_FPTR(sgmPhysicsSpaceGetIterations)(void* space, SGuint* iterations);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceSetGravity)(void* space, float x, float y);
+    //SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceGetGravity)(void* space, float* x, float* y);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsSpaceSetDamping)(void* space, float damping);
+    //SGenum SG_CALL SG_FPTR(sgmPhysicsSpaceGetDamping)(void* space, float* damping);
 
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddShape)(void* space, void* shape);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveShape)(void* space, void* shape);
-    //SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddStaticShape)(void* space, void* shape);
-    //SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveStaticShape)(void* space, void* shape);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddBody)(void* space, void* body);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveBody)(void* space, void* body);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceAddConstraint)(void* space, void* constraint);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsSpaceRemoveConstraint)(void* space, void* constraint);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceAddShape)(void* space, void* shape);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceRemoveShape)(void* space, void* shape);
+    //SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceAddStaticShape)(void* space, void* shape);
+    //SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceRemoveStaticShape)(void* space, void* shape);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceAddBody)(void* space, void* body);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceRemoveBody)(void* space, void* body);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceAddConstraint)(void* space, void* constraint);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsSpaceRemoveConstraint)(void* space, void* constraint);
 
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsSpaceGetStaticBody)(void* space, void** body);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsSpaceGetStaticBody)(void* space, void** body);
 #ifdef __cplusplus
 }
 #endif

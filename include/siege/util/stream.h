@@ -26,12 +26,12 @@ extern "C"
 #define SG_SEEK_CUR 1
 #define SG_SEEK_END 2
 
-typedef SGbool  SG_EXPORT SGStreamSeek(void* stream, SGlong offset, SGenum origin);
-typedef SGlong  SG_EXPORT SGStreamTell(void* stream);
-typedef SGulong SG_EXPORT SGStreamRead(void* stream, void* ptr, size_t size, size_t count);
-typedef SGulong SG_EXPORT SGStreamWrite(void* stream, const void* ptr, size_t size, size_t count);
-typedef SGbool  SG_EXPORT SGStreamClose(void* stream);
-typedef SGbool  SG_EXPORT SGStreamEOF(void* stream);
+typedef SGbool  SG_CALL SGStreamSeek(void* stream, SGlong offset, SGenum origin);
+typedef SGlong  SG_CALL SGStreamTell(void* stream);
+typedef SGulong SG_CALL SGStreamRead(void* stream, void* ptr, size_t size, size_t count);
+typedef SGulong SG_CALL SGStreamWrite(void* stream, const void* ptr, size_t size, size_t count);
+typedef SGbool  SG_CALL SGStreamClose(void* stream);
+typedef SGbool  SG_CALL SGStreamEOF(void* stream);
 
 typedef struct SGStream
 {
@@ -47,19 +47,19 @@ typedef struct SGStream
 
 /* these are not available for backend modules */
 #ifndef SG_BUILD_BACKEND
-SGStream* SG_EXPORT sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data);
-SGStream* SG_EXPORT sgStreamCreateFile(const char* fname, const char* mode);
-SGStream* SG_EXPORT sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree);
-SGStream* SG_EXPORT sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbfree);
-SGStream* SG_EXPORT sgStreamCreateBuffer(size_t size);
-void SG_EXPORT sgStreamDestroy(SGStream* stream);
+SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data);
+SGStream* SG_CALL sgStreamCreateFile(const char* fname, const char* mode);
+SGStream* SG_CALL sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree);
+SGStream* SG_CALL sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbfree);
+SGStream* SG_CALL sgStreamCreateBuffer(size_t size);
+void SG_CALL sgStreamDestroy(SGStream* stream);
 
-SGlong SG_EXPORT sgStreamTellSize(SGStream* stream);
-SGbool SG_EXPORT sgStreamSeek(SGStream* stream, SGlong offset, SGenum origin);
-SGlong SG_EXPORT sgStreamTell(SGStream* stream);
-SGulong SG_EXPORT sgStreamRead(SGStream* stream, void* ptr, size_t size, size_t count);
-SGulong SG_EXPORT sgStreamWrite(SGStream* stream, const void* ptr, size_t size, size_t count);
-SGbool SG_EXPORT sgStreamClose(SGStream* stream);
+SGlong SG_CALL sgStreamTellSize(SGStream* stream);
+SGbool SG_CALL sgStreamSeek(SGStream* stream, SGlong offset, SGenum origin);
+SGlong SG_CALL sgStreamTell(SGStream* stream);
+SGulong SG_CALL sgStreamRead(SGStream* stream, void* ptr, size_t size, size_t count);
+SGulong SG_CALL sgStreamWrite(SGStream* stream, const void* ptr, size_t size, size_t count);
+SGbool SG_CALL sgStreamClose(SGStream* stream);
 #endif /* SG_BUILD_BACKEND */
 
 #ifdef __cplusplus

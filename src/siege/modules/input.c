@@ -16,7 +16,7 @@
 #include <siege/modules/modules.h>
 #include <siege/modules/input.h>
 
-void SG_EXPORT _sgModuleLoadInput(SGLibrary* lib)
+void SG_CALL _sgModuleLoadInput(SGLibrary* lib)
 {
     void* fptr;
 

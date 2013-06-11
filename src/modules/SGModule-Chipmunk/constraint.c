@@ -16,7 +16,7 @@
 
 #include <stdlib.h>
 
-SGenum SG_EXPORT sgmPhysicsConstraintCreate(void** constr, void* body1, void* body2, SGenum type, float* vdata)
+SGenum SG_CALL sgmPhysicsConstraintCreate(void** constr, void* body1, void* body2, SGenum type, float* vdata)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
@@ -40,7 +40,7 @@ SGenum SG_EXPORT sgmPhysicsConstraintCreate(void** constr, void* body1, void* bo
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsConstraintDestroy(void* constr)
+SGenum SG_CALL sgmPhysicsConstraintDestroy(void* constr)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
@@ -48,34 +48,34 @@ SGenum SG_EXPORT sgmPhysicsConstraintDestroy(void* constr)
     return SG_OK;
 }
 
-//SGenum SG_EXPORT sgmPhysicsConstraintSetAnchorOne(void* constr, float x, float y)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetAnchorTwo(void* constr, float x, float y)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetMin(void* constr, float min)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetMax(void* constr, float max)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetLength(void* constr, float length)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetAngle(void* constr, float angle)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetStiffness(void* constr, float stiffness)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetDamping(void* constr, float damping)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetPhase(void* constr, float phase)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetRatchet(void* constr, float ratchet)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetRatio(void* constr, float ratio)
-//SGenum SG_EXPORT sgmPhysicsConstraintSetRate(void* constr, float rate)
+//SGenum SG_CALL sgmPhysicsConstraintSetAnchorOne(void* constr, float x, float y)
+//SGenum SG_CALL sgmPhysicsConstraintSetAnchorTwo(void* constr, float x, float y)
+//SGenum SG_CALL sgmPhysicsConstraintSetMin(void* constr, float min)
+//SGenum SG_CALL sgmPhysicsConstraintSetMax(void* constr, float max)
+//SGenum SG_CALL sgmPhysicsConstraintSetLength(void* constr, float length)
+//SGenum SG_CALL sgmPhysicsConstraintSetAngle(void* constr, float angle)
+//SGenum SG_CALL sgmPhysicsConstraintSetStiffness(void* constr, float stiffness)
+//SGenum SG_CALL sgmPhysicsConstraintSetDamping(void* constr, float damping)
+//SGenum SG_CALL sgmPhysicsConstraintSetPhase(void* constr, float phase)
+//SGenum SG_CALL sgmPhysicsConstraintSetRatchet(void* constr, float ratchet)
+//SGenum SG_CALL sgmPhysicsConstraintSetRatio(void* constr, float ratio)
+//SGenum SG_CALL sgmPhysicsConstraintSetRate(void* constr, float rate)
 
-SGenum SG_EXPORT sgmPhysicsConstraintSetMaxForce(void* constr, float max)
+SGenum SG_CALL sgmPhysicsConstraintSetMaxForce(void* constr, float max)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
     cpConstraintSetMaxForce(constr, max);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsConstraintSetErrorBias(void* constr, float bias)
+SGenum SG_CALL sgmPhysicsConstraintSetErrorBias(void* constr, float bias)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
     cpConstraintSetErrorBias(constr, bias);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsConstraintSetMaxBias(void* constr, float max)
+SGenum SG_CALL sgmPhysicsConstraintSetMaxBias(void* constr, float max)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
@@ -83,7 +83,7 @@ SGenum SG_EXPORT sgmPhysicsConstraintSetMaxBias(void* constr, float max)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsConstraintSetData(void* constr, void* data)
+SGenum SG_CALL sgmPhysicsConstraintSetData(void* constr, void* data)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE
@@ -91,7 +91,7 @@ SGenum SG_EXPORT sgmPhysicsConstraintSetData(void* constr, void* data)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsConstraintGetData(void* constr, void** data)
+SGenum SG_CALL sgmPhysicsConstraintGetData(void* constr, void** data)
 {
     if(!constr)
         return SG_OK; // SG_INVALID_VALUE

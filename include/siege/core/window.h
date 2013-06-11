@@ -36,12 +36,12 @@ void* _sg_gfxHandle;
 SGCoreWindowCallbacks _sg_winCallbacks;
 #endif // SG_BUILD_LIBRARY
 
-void SG_EXPORT _sg_cbWindowOpen(void* window);
-void SG_EXPORT _sg_cbWindowClose(void* window);
-void SG_EXPORT _sg_cbWindowResize(void* window, SGuint width, SGuint height);
+void SG_CALL _sg_cbWindowOpen(void* window);
+void SG_CALL _sg_cbWindowClose(void* window);
+void SG_CALL _sg_cbWindowResize(void* window, SGuint width, SGuint height);
 
-SGbool SG_EXPORT _sgWindowInit(void);
-SGbool SG_EXPORT _sgWindowDeinit(void);
+SGbool SG_CALL _sgWindowInit(void);
+SGbool SG_CALL _sgWindowDeinit(void);
 
 /**
  * \defgroup Window
@@ -59,20 +59,20 @@ SGbool SG_EXPORT _sgWindowDeinit(void);
  * \note
  *	If a window was already opened, it closes the "old" window and reopens a new one
  */
-SGbool SG_EXPORT sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flags);
+SGbool SG_CALL sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flags);
 /**
  * \ingroup Window
  * \brief Is the window opened?
  * \return SG_TRUE if it is, SG_FALSE otherwise
  */
-SGbool SG_EXPORT sgWindowIsOpened(void);
+SGbool SG_CALL sgWindowIsOpened(void);
 /**
  * \ingroup Window
  * \brief Close the window
  */
-void SG_EXPORT sgWindowClose(void);
+void SG_CALL sgWindowClose(void);
 
-void SG_EXPORT sgWindowSetIcon(SGImageData* idata);
+void SG_CALL sgWindowSetIcon(SGImageData* idata);
 
 /**
  * \name Title
@@ -82,14 +82,14 @@ void SG_EXPORT sgWindowSetIcon(SGImageData* idata);
  * \ingroup Window
  * \brief Set the window title with printf-like formatting
  */
-void SG_EXPORT sgWindowSetTitlef(const char* format, ...);
+void SG_CALL sgWindowSetTitlef(const char* format, ...);
 /**
  * \ingroup Window
  * \brief Set the window title with vprintf-like formatting
  * \param format The format, equivalent to format in vprintf
  * \param args The va_list of arguments, equivalent to the arguments in vprintf
  */
-void SG_EXPORT sgWindowSetTitlefv(const char* format, va_list args);
+void SG_CALL sgWindowSetTitlefv(const char* format, va_list args);
 /**
  * \ingroup Window
  * \brief Set the window title
@@ -97,13 +97,13 @@ void SG_EXPORT sgWindowSetTitlefv(const char* format, va_list args);
  *
  * This function takes a normal string and sets it as the title. It is called by the \ref sgWindowSetTitlef "f" and \ref sgWindowSetTitlefv "fv" functions.
  */
-void SG_EXPORT sgWindowSetTitle(const char* title);
+void SG_CALL sgWindowSetTitle(const char* title);
 /**
  * \ingroup Window
  * \brief Get the window title
  * \return The window title - this value should \b not be freed!
  */
-char* SG_EXPORT sgWindowGetTitle(void);
+char* SG_CALL sgWindowGetTitle(void);
 /// @}
 
 /**
@@ -121,7 +121,7 @@ char* SG_EXPORT sgWindowGetTitle(void);
  *	sgWindowSetWidth
  *	sgWindowSetHeight
  */
-void SG_EXPORT sgWindowSetSize(SGuint width, SGuint height);
+void SG_CALL sgWindowSetSize(SGuint width, SGuint height);
 /**
  * \ingroup Window
  * \brief Get the window size
@@ -133,7 +133,7 @@ void SG_EXPORT sgWindowSetSize(SGuint width, SGuint height);
  *	sgWindowGetWidth
  *	sgWindowGetHeight
  */
-void SG_EXPORT sgWindowGetSize(SGuint* width, SGuint* height);
+void SG_CALL sgWindowGetSize(SGuint* width, SGuint* height);
 
 /**
  * \ingroup Window
@@ -150,7 +150,7 @@ void SG_EXPORT sgWindowGetSize(SGuint* width, SGuint* height);
  *	sgWindowSetSize
  *	sgWindowSetHeight
  */
-void SG_EXPORT sgWindowSetWidth(SGuint width);
+void SG_CALL sgWindowSetWidth(SGuint width);
 /**
  * \ingroup Window
  * \brief Get the width of the window
@@ -164,7 +164,7 @@ void SG_EXPORT sgWindowSetWidth(SGuint width);
  *	sgWindowGetSize
  *	sgWindowGetHeight
  */
-SGuint SG_EXPORT sgWindowGetWidth(void);
+SGuint SG_CALL sgWindowGetWidth(void);
 /**
  * \ingroup Window
  * \brief Change the height of the window
@@ -180,7 +180,7 @@ SGuint SG_EXPORT sgWindowGetWidth(void);
  *	sgWindowSetSize
  *	sgWindowSetWidth
  */
-void SG_EXPORT sgWindowSetHeight(SGuint height);
+void SG_CALL sgWindowSetHeight(SGuint height);
 /**
  * \ingroup Window
  * \brief Get the height of the window
@@ -194,19 +194,19 @@ void SG_EXPORT sgWindowSetHeight(SGuint height);
  *	sgWindowGetSize
  *	sgWindowGetWidth
  */
-SGuint SG_EXPORT sgWindowGetHeight(void);
+SGuint SG_CALL sgWindowGetHeight(void);
 /// @}
 
-SGfloat SG_EXPORT sgWindowGetFPSLimit(void);
-void SG_EXPORT sgWindowSetFPSLimit(SGfloat limit);
-SGfloat SG_EXPORT sgWindowGetFPS(void);
+SGfloat SG_CALL sgWindowGetFPSLimit(void);
+void SG_CALL sgWindowSetFPSLimit(SGfloat limit);
+SGfloat SG_CALL sgWindowGetFPS(void);
 
 /// @{
 /**
  * \ingroup Window
  * \brief Swap the window front and back buffers
  */
-void SG_EXPORT sgWindowSwapBuffers(void);
+void SG_CALL sgWindowSwapBuffers(void);
 /// @}
 #ifdef __cplusplus
 }

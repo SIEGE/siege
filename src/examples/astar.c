@@ -148,7 +148,7 @@ void recreateGrid(SGbool copy, SGbool refont)
 	changed = SG_TRUE;
 }
 
-void SG_EXPORT evKeyboardKeyPress(SGEntity* entity, SGenum key)
+void SG_CALL evKeyboardKeyPress(SGEntity* entity, SGenum key)
 {
 	if(key == SG_KEY_F1)
 	{

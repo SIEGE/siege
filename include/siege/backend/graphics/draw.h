@@ -25,31 +25,31 @@
 extern "C"
 {
 #endif
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSetVertexPointer)(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSetColorPointer)(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSetTexCoordPointer)(void* context, SGenum type, size_t stride, const void* ptr);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSetIndexPointer)(void* context, SGenum type, size_t stride, const void* ptr);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawArrays)(void* context, void* texture, SGenum mode, size_t first, size_t count);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawElements)(void* context, void* texture, SGenum mode, size_t count, SGenum type, const void* indices);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsSetVertexPointer)(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsSetColorPointer)(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsSetTexCoordPointer)(void* context, SGenum type, size_t stride, const void* ptr);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsSetIndexPointer)(void* context, SGenum type, size_t stride, const void* ptr);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawArrays)(void* context, void* texture, SGenum mode, size_t first, size_t count);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawElements)(void* context, void* texture, SGenum mode, size_t count, SGenum type, const void* indices);
 
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetColor)(void* context, float* color);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawPointSetSize)(void* context, float size);
-    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawPointGetSize)(void* context, float* size);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawLineSetWidth)(void* context, float size);
-    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawLineGetWidth)(void* context, float* size);
-    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawLineSetStipple)(void* context, SGuint factor, SGuint pattern);
-    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawLineGetStipple)(void* context, SGuint* factor, SGuint* pattern);
-    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawPolygonSetStipple)(void* context, SGubyte* pattern);
-    //SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawPolygonGetStipple)(void* context*, SGubyte** pattern);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetBlendFunc)(void* context, SGenum src, SGenum dst);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetBlendEquation)(void* context, SGenum equation);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthFunc)(void* context, SGenum func);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetDepthTest)(void* context, SGbool test);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetAlphaFunc)(void* context, SGenum func, float ref);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetAlphaTest)(void* context, SGbool test);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetPointSmooth)(void* context, SGbool smooth);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetLineSmooth)(void* context, SGbool smooth);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsDrawSetPolygonSmooth)(void* context, SGbool smooth);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetColor)(void* context, float* color);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawPointSetSize)(void* context, float size);
+    //SGenum SG_CALL SG_FPTR(sgmGraphicsDrawPointGetSize)(void* context, float* size);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawLineSetWidth)(void* context, float size);
+    //SGenum SG_CALL SG_FPTR(sgmGraphicsDrawLineGetWidth)(void* context, float* size);
+    //SGenum SG_CALL SG_FPTR(sgmGraphicsDrawLineSetStipple)(void* context, SGuint factor, SGuint pattern);
+    //SGenum SG_CALL SG_FPTR(sgmGraphicsDrawLineGetStipple)(void* context, SGuint* factor, SGuint* pattern);
+    //SGenum SG_CALL SG_FPTR(sgmGraphicsDrawPolygonSetStipple)(void* context, SGubyte* pattern);
+    //SGenum SG_CALL SG_FPTR(sgmGraphicsDrawPolygonGetStipple)(void* context*, SGubyte** pattern);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetBlendFunc)(void* context, SGenum src, SGenum dst);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetBlendEquation)(void* context, SGenum equation);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetDepthFunc)(void* context, SGenum func);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetDepthTest)(void* context, SGbool test);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetAlphaFunc)(void* context, SGenum func, float ref);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetAlphaTest)(void* context, SGbool test);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetPointSmooth)(void* context, SGbool smooth);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetLineSmooth)(void* context, SGbool smooth);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsDrawSetPolygonSmooth)(void* context, SGbool smooth);
 #ifdef __cplusplus
 }
 #endif

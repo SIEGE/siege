@@ -25,21 +25,21 @@
 extern "C"
 {
 #endif
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceCreate)(void** surface, void* context);
-	//SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceCreateTexture)(void** surface, void* context, void* texture);
-	//SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceCreateData)(void** surface, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceDestroy)(void* surface);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceSetTexture)(void* surface, void* texture);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceGetTexture)(void* surface, void** texture);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceSetData)(void* surface, SGuint width, SGuint height, SGuint bpp, void* data);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSurfaceSetSubData)(void* surface, SGuint x, SGuint y, SGuint width, SGuint height, SGenum bpp, void* data);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceGetData)(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceFreeData)(void* data);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceGetSize)(void* surface, SGuint* width, SGuint* height);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsSurfaceGetBPP)(void* surface, SGenum* bpp);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceDraw)(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceTarget)(void* surface);
-	SGuint SG_EXPORT SG_FPTR(sgmGraphicsSurfaceUntarget)(void* surface);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceCreate)(void** surface, void* context);
+	//SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceCreateTexture)(void** surface, void* context, void* texture);
+	//SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceCreateData)(void** surface, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceDestroy)(void* surface);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceSetTexture)(void* surface, void* texture);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceGetTexture)(void* surface, void** texture);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceSetData)(void* surface, SGuint width, SGuint height, SGuint bpp, void* data);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsSurfaceSetSubData)(void* surface, SGuint x, SGuint y, SGuint width, SGuint height, SGenum bpp, void* data);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceGetData)(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceFreeData)(void* data);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceGetSize)(void* surface, SGuint* width, SGuint* height);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsSurfaceGetBPP)(void* surface, SGenum* bpp);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceDraw)(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceTarget)(void* surface);
+	SGuint SG_CALL SG_FPTR(sgmGraphicsSurfaceUntarget)(void* surface);
 #ifdef __cplusplus
 }
 #endif

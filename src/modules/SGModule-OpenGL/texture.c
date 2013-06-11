@@ -17,7 +17,7 @@
 
 #include <stdlib.h>
 
-SGenum SG_EXPORT sgmGraphicsTextureCreate(void** texture, void* context)
+SGenum SG_CALL sgmGraphicsTextureCreate(void** texture, void* context)
 {
     TextureData** tdata = (TextureData**)texture;
     *tdata = calloc(1, sizeof(TextureData));
@@ -37,8 +37,8 @@ SGenum SG_EXPORT sgmGraphicsTextureCreate(void** texture, void* context)
 
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmGraphicsTextureCreateData(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data)
-SGenum SG_EXPORT sgmGraphicsTextureDestroy(void* texture)
+//SGenum SG_CALL sgmGraphicsTextureCreateData(void** texture, void* context, SGuint width, SGuint height, SGuint bpp, void* data)
+SGenum SG_CALL sgmGraphicsTextureDestroy(void* texture)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -49,7 +49,7 @@ SGenum SG_EXPORT sgmGraphicsTextureDestroy(void* texture)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint height, SGuint bpp, void* data)
+SGenum SG_CALL sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint height, SGuint bpp, void* data)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -113,7 +113,7 @@ SGenum SG_EXPORT sgmGraphicsTextureSetData(void* texture, SGuint width, SGuint h
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsTextureSetSubData(void* texture, SGuint x, SGuint y, SGuint width, SGuint height, SGenum bpp, void* data)
+SGenum SG_CALL sgmGraphicsTextureSetSubData(void* texture, SGuint x, SGuint y, SGuint width, SGuint height, SGenum bpp, void* data)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -162,7 +162,7 @@ SGenum SG_EXPORT sgmGraphicsTextureSetSubData(void* texture, SGuint x, SGuint y,
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data)
+SGenum SG_CALL sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint* height, SGuint* bpp, void** data)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -179,13 +179,13 @@ SGenum SG_EXPORT sgmGraphicsTextureGetData(void* texture, SGuint* width, SGuint*
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsTextureFreeData(void* data)
+SGenum SG_CALL sgmGraphicsTextureFreeData(void* data)
 {
     free(data);
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsTextureGetSize(void* texture, SGuint* width, SGuint* height)
+SGenum SG_CALL sgmGraphicsTextureGetSize(void* texture, SGuint* width, SGuint* height)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -195,7 +195,7 @@ SGenum SG_EXPORT sgmGraphicsTextureGetSize(void* texture, SGuint* width, SGuint*
     *height = tdata->height;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsTextureGetBPP(void* texture, SGenum* bpp)
+SGenum SG_CALL sgmGraphicsTextureGetBPP(void* texture, SGenum* bpp)
 {
     if(!texture)
         return SG_OK; // SG_INVALID_VALUE
@@ -205,7 +205,7 @@ SGenum SG_EXPORT sgmGraphicsTextureGetBPP(void* texture, SGenum* bpp)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
+SGenum SG_CALL sgmGraphicsTextureDraw(void* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -251,7 +251,7 @@ SGenum SG_EXPORT sgmGraphicsTextureDraw(void* texture, float x, float y, float z
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsTextureSetWrap(void* texture, SGenum swrap, SGenum twrap)
+SGenum SG_CALL sgmGraphicsTextureSetWrap(void* texture, SGenum swrap, SGenum twrap)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -289,7 +289,7 @@ SGenum SG_EXPORT sgmGraphicsTextureSetWrap(void* texture, SGenum swrap, SGenum t
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsTextureSetInterpolation(void* texture, SGenum interp)
+SGenum SG_CALL sgmGraphicsTextureSetInterpolation(void* texture, SGenum interp)
 {
     if(texture == NULL)
         return SG_OK; // SG_INVALID_VALUE

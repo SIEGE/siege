@@ -27,7 +27,7 @@
     #endif /* NAME_MAX */
 #endif
 
-SGDirectory* SG_EXPORT sgDirectoryOpen(const char* fname)
+SGDirectory* SG_CALL sgDirectoryOpen(const char* fname)
 {
     SGDirectory* dir = malloc(sizeof(SGDirectory));
 
@@ -72,7 +72,7 @@ SGDirectory* SG_EXPORT sgDirectoryOpen(const char* fname)
 
     return dir;
 }
-void SG_EXPORT sgDirectoryClose(SGDirectory* dir)
+void SG_CALL sgDirectoryClose(SGDirectory* dir)
 {
     if(!dir)
         return;
@@ -88,7 +88,7 @@ void SG_EXPORT sgDirectoryClose(SGDirectory* dir)
     free(dir);
 }
 
-char* SG_EXPORT sgDirectoryNext(SGDirectory* dir, char* buf, size_t len)
+char* SG_CALL sgDirectoryNext(SGDirectory* dir, char* buf, size_t len)
 {
     if(!buf || !len)
     {
@@ -120,7 +120,7 @@ char* SG_EXPORT sgDirectoryNext(SGDirectory* dir, char* buf, size_t len)
 
     return buf;
 }
-void SG_EXPORT sgDirectoryRewind(SGDirectory* dir)
+void SG_CALL sgDirectoryRewind(SGDirectory* dir)
 {
 #ifdef __WIN32__
     if(dir->handle)

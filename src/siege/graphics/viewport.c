@@ -19,7 +19,7 @@
 
 #include <stdlib.h>
 
-SGbool SG_EXPORT _sgViewportInit(void)
+SGbool SG_CALL _sgViewportInit(void)
 {
 	_sg_viewList = sgListCreate();
 	if(_sg_viewList == NULL)
@@ -27,7 +27,7 @@ SGbool SG_EXPORT _sgViewportInit(void)
 	return SG_TRUE;
 }
 
-SGbool SG_EXPORT _sgViewportDeinit(void)
+SGbool SG_CALL _sgViewportDeinit(void)
 {
 	//sgViewportDestroy(_sg_viewMain);
 	SGListNode* node;
@@ -41,7 +41,7 @@ SGbool SG_EXPORT _sgViewportDeinit(void)
 	return SG_TRUE;
 }
 
-SGViewport* SG_EXPORT sgViewportCreate4i4f(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)
+SGViewport* SG_CALL sgViewportCreate4i4f(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)
 {
 	SGViewport* viewport = sgViewportCreate();
 	if(viewport == NULL)
@@ -50,11 +50,11 @@ SGViewport* SG_EXPORT sgViewportCreate4i4f(SGuint wposx, SGuint wposy, SGuint ws
 	sgViewportSet4i4f(viewport, wposx, wposy, wsizex, wsizey, posx, posy, sizex, sizey);
 	return viewport;
 }
-SGViewport* SG_EXPORT sgViewportCreate4i(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey)
+SGViewport* SG_CALL sgViewportCreate4i(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey)
 {
 	return sgViewportCreate4i4f(wposx, wposy, wsizex, wsizey, wposx, wposy, wsizex, wsizey);
 }
-SGViewport* SG_EXPORT sgViewportCreate(void)
+SGViewport* SG_CALL sgViewportCreate(void)
 {
 	SGViewport* viewport = malloc(sizeof(SGViewport));
 	if(viewport == NULL)
@@ -65,7 +65,7 @@ SGViewport* SG_EXPORT sgViewportCreate(void)
 	sgListAppend(_sg_viewList, viewport);
 	return viewport;
 }
-void SG_EXPORT sgViewportDestroy(SGViewport* viewport)
+void SG_CALL sgViewportDestroy(SGViewport* viewport)
 {
 	if(viewport == NULL)
 		return;
@@ -75,7 +75,7 @@ void SG_EXPORT sgViewportDestroy(SGViewport* viewport)
 	sgListRemoveItem(_sg_viewList, viewport);
 	free(viewport);
 }
-void SG_EXPORT sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)
+void SG_CALL sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)
 {
 	if(viewport == NULL)
 		return;
@@ -90,11 +90,11 @@ void SG_EXPORT sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wpos
 	viewport->sizey = sizey;
 	sgViewportReset(viewport);
 }
-void SG_EXPORT sgViewportSet4i(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey)
+void SG_CALL sgViewportSet4i(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey)
 {
 	sgViewportSet4i4f(viewport, wposx, wposy, wsizex, wsizey, wposx, wposy, wsizex, wsizey);
 }
-void SG_EXPORT sgViewportReset(SGViewport* viewport)
+void SG_CALL sgViewportReset(SGViewport* viewport)
 {
 	if(viewport == NULL)
 		return;
@@ -102,31 +102,31 @@ void SG_EXPORT sgViewportReset(SGViewport* viewport)
 		psgmGraphicsViewportSetView(viewport->handle, viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey, viewport->posx, viewport->posy, viewport->sizex, viewport->sizey);
 }
 
-void SG_EXPORT sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy)
+void SG_CALL sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy)
 {
     viewport->wposx = wposx;
     viewport->wposy = wposy;
     sgViewportReset(viewport);
 }
-void SG_EXPORT sgViewportSetWSize(SGViewport* viewport, SGuint wsizex, SGuint wsizey)
+void SG_CALL sgViewportSetWSize(SGViewport* viewport, SGuint wsizex, SGuint wsizey)
 {
     viewport->wsizex = wsizex;
     viewport->wsizey = wsizey;
     sgViewportReset(viewport);
 }
-void SG_EXPORT sgViewportSetPos(SGViewport* viewport, float posx, float posy)
+void SG_CALL sgViewportSetPos(SGViewport* viewport, float posx, float posy)
 {
     viewport->posx = posx;
     viewport->posy = posy;
     sgViewportReset(viewport);
 }
-void SG_EXPORT sgViewportSetSize(SGViewport* viewport, float sizex, float sizey)
+void SG_CALL sgViewportSetSize(SGViewport* viewport, float sizex, float sizey)
 {
     viewport->sizex = sizex;
     viewport->sizey = sizey;
     sgViewportReset(viewport);
 }
-void SG_EXPORT sgViewportZoomCentered(SGViewport* viewport, float factor)
+void SG_CALL sgViewportZoomCentered(SGViewport* viewport, float factor)
 {
     float ox = viewport->sizex;
     float oy = viewport->sizey;
@@ -137,18 +137,18 @@ void SG_EXPORT sgViewportZoomCentered(SGViewport* viewport, float factor)
     sgViewportReset(viewport);
 }
 
-SGbool SG_EXPORT sgViewportInsideWindow(SGViewport* viewport, float x, float y)
+SGbool SG_CALL sgViewportInsideWindow(SGViewport* viewport, float x, float y)
 {
     return viewport->wposx <= x && viewport->wposx + viewport->wsizex <= x
         && viewport->wposy <= y && viewport->wposy + viewport->wsizey <= y;
 }
-SGbool SG_EXPORT sgViewportInsideLocal(SGViewport* viewport, float x, float y)
+SGbool SG_CALL sgViewportInsideLocal(SGViewport* viewport, float x, float y)
 {
     return viewport->posx <= x && viewport->posx + viewport->sizex <= x
         && viewport->posy <= y && viewport->posy + viewport->sizey <= y;
 }
 
-void SG_EXPORT sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* wy, float lx, float ly)
+void SG_CALL sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* wy, float lx, float ly)
 {
     float tmp;
     if(!wx) wx = &tmp;
@@ -157,7 +157,7 @@ void SG_EXPORT sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* w
     *wx = (lx + viewport->posx) * viewport->wsizex / viewport->sizex;
     *wy = (ly + viewport->posy) * viewport->wsizey / viewport->sizey;
 }
-void SG_EXPORT sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly, float wx, float wy)
+void SG_CALL sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly, float wx, float wy)
 {
     float tmp;
     if(!lx) lx = &tmp;

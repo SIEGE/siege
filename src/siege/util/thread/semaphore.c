@@ -25,7 +25,7 @@
 #include <semaphore.h>
 #endif
 
-SGSemaphore* SG_EXPORT sgSemaphoreCreate(SGuint init, SGuint max)
+SGSemaphore* SG_CALL sgSemaphoreCreate(SGuint init, SGuint max)
 {
     SGSemaphore* sem = malloc(sizeof(SGSemaphore));
     if(!sem)
@@ -40,7 +40,7 @@ SGSemaphore* SG_EXPORT sgSemaphoreCreate(SGuint init, SGuint max)
 
     return sem;
 }
-void SG_EXPORT sgSemaphoreDestroy(SGSemaphore* sem)
+void SG_CALL sgSemaphoreDestroy(SGSemaphore* sem)
 {
     if(!sem)
         return;
@@ -53,7 +53,7 @@ void SG_EXPORT sgSemaphoreDestroy(SGSemaphore* sem)
     free(sem);
 }
 
-SGbool SG_EXPORT sgSemaphoreTryWait(SGSemaphore* sem)
+SGbool SG_CALL sgSemaphoreTryWait(SGSemaphore* sem)
 {
 #ifdef __WIN32__
     return !WaitForSingleObject(sem->handle, 0);
@@ -61,7 +61,7 @@ SGbool SG_EXPORT sgSemaphoreTryWait(SGSemaphore* sem)
     return !sem_trywait(sem->handle);
 #endif
 }
-void SG_EXPORT sgSemaphoreWait(SGSemaphore* sem)
+void SG_CALL sgSemaphoreWait(SGSemaphore* sem)
 {
 #ifdef __WIN32__
     WaitForSingleObject(sem->handle, INFINITE);
@@ -69,7 +69,7 @@ void SG_EXPORT sgSemaphoreWait(SGSemaphore* sem)
     sem_wait(sem->handle);
 #endif
 }
-void SG_EXPORT sgSemaphorePost(SGSemaphore* sem)
+void SG_CALL sgSemaphorePost(SGSemaphore* sem)
 {
 #ifdef __WIN32__
     ReleaseSemaphore(sem->handle, 1, NULL);
@@ -77,7 +77,7 @@ void SG_EXPORT sgSemaphorePost(SGSemaphore* sem)
     sem_post(sem->handle);
 #endif
 }
-void SG_EXPORT sgSemaphoreSignal(SGSemaphore* sem)
+void SG_CALL sgSemaphoreSignal(SGSemaphore* sem)
 {
     sgSemaphorePost(sem);
 }

@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
+void SG_CALL _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
 {
     if(button - 1 >= _sg_mouseButtonNum)
         return;
@@ -68,7 +68,7 @@ void SG_EXPORT _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
 
     sgEntityEventSignal(numevents, events[0], button, events[1]);
 }
-void SG_EXPORT _sg_cbMouseMove(void* mouse, SGint x, SGint y)
+void SG_CALL _sg_cbMouseMove(void* mouse, SGint x, SGint y)
 {
     _sg_mouseXPrev = _sg_mouseX;
     _sg_mouseYPrev = _sg_mouseY;
@@ -77,7 +77,7 @@ void SG_EXPORT _sg_cbMouseMove(void* mouse, SGint x, SGint y)
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEMOVE, x, y);
 }
-void SG_EXPORT _sg_cbMouseWheel(void* mouse, SGint w)
+void SG_CALL _sg_cbMouseWheel(void* mouse, SGint w)
 {
     _sg_mouseWheelPrev = _sg_mouseWheel;
     _sg_mouseWheel = w;
@@ -85,7 +85,7 @@ void SG_EXPORT _sg_cbMouseWheel(void* mouse, SGint w)
     sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEWHEEL, w);
 }
 
-void SG_EXPORT _sgMouseUpdate(void)
+void SG_CALL _sgMouseUpdate(void)
 {
     size_t numevents;
 	SGenum events[2];
@@ -119,7 +119,7 @@ void SG_EXPORT _sgMouseUpdate(void)
     memcpy(_sg_mouseButtonBuff, _sg_mouseButtonCurr, _sg_mouseButtonNum * sizeof(SGbool));
 }
 
-SGbool SG_EXPORT _sgMouseInit(void)
+SGbool SG_CALL _sgMouseInit(void)
 {
     _sg_mouseCallbacks.button = _sg_cbMouseButton;
     _sg_mouseCallbacks.move = _sg_cbMouseMove;
@@ -150,7 +150,7 @@ SGbool SG_EXPORT _sgMouseInit(void)
 
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgMouseDeinit(void)
+SGbool SG_CALL _sgMouseDeinit(void)
 {
     free(_sg_mouseButtonPrev);
     free(_sg_mouseButtonBuff);
@@ -163,119 +163,119 @@ SGbool SG_EXPORT _sgMouseDeinit(void)
     return SG_TRUE;
 }
 
-void SG_EXPORT sgMouseGetPosPrev(SGint* x, SGint* y)
+void SG_CALL sgMouseGetPosPrev(SGint* x, SGint* y)
 {
     if(x != NULL)
         *x = _sg_mouseXPrev;
     if(y != NULL)
         *y = _sg_mouseYPrev;
 }
-SGint SG_EXPORT sgMouseGetPosPrevX(void)
+SGint SG_CALL sgMouseGetPosPrevX(void)
 {
     return _sg_mouseXPrev;
 }
-SGint SG_EXPORT sgMouseGetPosPrevY(void)
+SGint SG_CALL sgMouseGetPosPrevY(void)
 {
     return _sg_mouseYPrev;
 }
 
-void SG_EXPORT sgMouseGetPos(SGint* x, SGint* y)
+void SG_CALL sgMouseGetPos(SGint* x, SGint* y)
 {
     if(x != NULL)
         *x = _sg_mouseX;
     if(y != NULL)
         *y = _sg_mouseY;
 }
-SGint SG_EXPORT sgMouseGetPosX(void)
+SGint SG_CALL sgMouseGetPosX(void)
 {
     return _sg_mouseX;
 }
-SGint SG_EXPORT sgMouseGetPosY(void)
+SGint SG_CALL sgMouseGetPosY(void)
 {
     return _sg_mouseY;
 }
 
-SGint SG_EXPORT sgMouseGetWheelPrev(void)
+SGint SG_CALL sgMouseGetWheelPrev(void)
 {
     return _sg_mouseWheelPrev;
 }
-SGint SG_EXPORT sgMouseGetWheel(void)
+SGint SG_CALL sgMouseGetWheel(void)
 {
     return _sg_mouseWheel;
 }
 
-SGbool SG_EXPORT sgMouseGetButtonPrev(SGuint button)
+SGbool SG_CALL sgMouseGetButtonPrev(SGuint button)
 {
     if(button - 1 < _sg_mouseButtonNum)
         return _sg_mouseButtonPrev[button - 1];
     return SG_FALSE;
 }
-SGbool SG_EXPORT sgMouseGetButton(SGuint button)
+SGbool SG_CALL sgMouseGetButton(SGuint button)
 {
     if(button - 1 < _sg_mouseButtonNum)
         return _sg_mouseButtonCurr[button - 1];
     return SG_FALSE;
 }
-SGbool SG_EXPORT sgMouseGetButtonPress(SGuint button)
+SGbool SG_CALL sgMouseGetButtonPress(SGuint button)
 {
     if(button - 1 < _sg_mouseButtonNum)
         return !_sg_mouseButtonPrev[button - 1] && _sg_mouseButtonCurr[button - 1];
     return SG_FALSE;
 }
-SGbool SG_EXPORT sgMouseGetButtonRelease(SGuint button)
+SGbool SG_CALL sgMouseGetButtonRelease(SGuint button)
 {
     if(button - 1 < _sg_mouseButtonNum)
         return _sg_mouseButtonPrev[button - 1] && !_sg_mouseButtonCurr[button - 1];
     return SG_FALSE;
 }
 
-SGbool SG_EXPORT sgMouseGetButtonLeftPrev(void)
+SGbool SG_CALL sgMouseGetButtonLeftPrev(void)
 {
     return sgMouseGetButtonPrev(SG_MOUSE_BUTTON_LEFT);
 }
-SGbool SG_EXPORT sgMouseGetButtonLeft(void)
+SGbool SG_CALL sgMouseGetButtonLeft(void)
 {
     return sgMouseGetButton(SG_MOUSE_BUTTON_LEFT);
 }
-SGbool SG_EXPORT sgMouseGetButtonLeftPress(void)
+SGbool SG_CALL sgMouseGetButtonLeftPress(void)
 {
     return sgMouseGetButtonPress(SG_MOUSE_BUTTON_LEFT);
 }
-SGbool SG_EXPORT sgMouseGetButtonLeftRelease(void)
+SGbool SG_CALL sgMouseGetButtonLeftRelease(void)
 {
     return sgMouseGetButtonRelease(SG_MOUSE_BUTTON_LEFT);
 }
 
-SGbool SG_EXPORT sgMouseGetButtonRightPrev(void)
+SGbool SG_CALL sgMouseGetButtonRightPrev(void)
 {
     return sgMouseGetButtonPrev(SG_MOUSE_BUTTON_RIGHT);
 }
-SGbool SG_EXPORT sgMouseGetButtonRight(void)
+SGbool SG_CALL sgMouseGetButtonRight(void)
 {
     return sgMouseGetButton(SG_MOUSE_BUTTON_RIGHT);
 }
-SGbool SG_EXPORT sgMouseGetButtonRightPress(void)
+SGbool SG_CALL sgMouseGetButtonRightPress(void)
 {
     return sgMouseGetButtonPress(SG_MOUSE_BUTTON_RIGHT);
 }
-SGbool SG_EXPORT sgMouseGetButtonRightRelease(void)
+SGbool SG_CALL sgMouseGetButtonRightRelease(void)
 {
     return sgMouseGetButtonRelease(SG_MOUSE_BUTTON_RIGHT);
 }
 
-SGbool SG_EXPORT sgMouseGetButtonMiddlePrev(void)
+SGbool SG_CALL sgMouseGetButtonMiddlePrev(void)
 {
     return sgMouseGetButtonPrev(SG_MOUSE_BUTTON_MIDDLE);
 }
-SGbool SG_EXPORT sgMouseGetButtonMiddle(void)
+SGbool SG_CALL sgMouseGetButtonMiddle(void)
 {
     return sgMouseGetButton(SG_MOUSE_BUTTON_MIDDLE);
 }
-SGbool SG_EXPORT sgMouseGetButtonMiddlePress(void)
+SGbool SG_CALL sgMouseGetButtonMiddlePress(void)
 {
     return sgMouseGetButtonPress(SG_MOUSE_BUTTON_MIDDLE);
 }
-SGbool SG_EXPORT sgMouseGetButtonMiddleRelease(void)
+SGbool SG_CALL sgMouseGetButtonMiddleRelease(void)
 {
     return sgMouseGetButtonRelease(SG_MOUSE_BUTTON_MIDDLE);
 }

@@ -32,41 +32,41 @@ extern "C"
 
 char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what);
 
-size_t SG_EXPORT _sgStrbufAppend(size_t sz, size_t pos, void* out, size_t outlen, const void* in, size_t inlen);
+size_t SG_CALL _sgStrbufAppend(size_t sz, size_t pos, void* out, size_t outlen, const void* in, size_t inlen);
 
 // wprintf, locked with a mutex for thread-safety
-size_t SG_EXPORT sgPrintfW(const wchar_t* format, ...);
-size_t SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args);
+size_t SG_CALL sgPrintfW(const wchar_t* format, ...);
+size_t SG_CALL sgPrintfvW(const wchar_t* format, va_list args);
 
 // printf, locked with a mutex for thread-safety
-size_t SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...);
-size_t SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args);
+size_t SG_CALL SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...);
+size_t SG_CALL SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args);
 
-size_t SG_EXPORT sgSPrintfW(wchar_t* buf, size_t buflen, const wchar_t* format, ...);
-size_t SG_EXPORT sgSPrintfvW(wchar_t* buf, size_t buflen, const wchar_t* format, va_list args);
+size_t SG_CALL sgSPrintfW(wchar_t* buf, size_t buflen, const wchar_t* format, ...);
+size_t SG_CALL sgSPrintfvW(wchar_t* buf, size_t buflen, const wchar_t* format, va_list args);
 
-wchar_t* SG_EXPORT sgAPrintfW(const wchar_t* format, ...);
-wchar_t* SG_EXPORT sgAPrintfvW(const wchar_t* format, va_list args);
+wchar_t* SG_CALL sgAPrintfW(const wchar_t* format, ...);
+wchar_t* SG_CALL sgAPrintfvW(const wchar_t* format, va_list args);
 
-size_t SG_EXPORT SG_HINT_PRINTF(3, 4) sgSPrintf(char* buf, size_t buflen, const char* format, ...);
-size_t SG_EXPORT SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const char* format, va_list args);
+size_t SG_CALL SG_HINT_PRINTF(3, 4) sgSPrintf(char* buf, size_t buflen, const char* format, ...);
+size_t SG_CALL SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const char* format, va_list args);
 
-char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgAPrintf(const char* format, ...);
-char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgAPrintfv(const char* format, va_list args);
+char* SG_CALL SG_HINT_PRINTF(1, 2) sgAPrintf(const char* format, ...);
+char* SG_CALL SG_HINT_PRINTF(1, 0) sgAPrintfv(const char* format, va_list args);
 
-void SG_EXPORT sgAPrintFree(void* str);
+void SG_CALL sgAPrintFree(void* str);
 
-SGbool SG_EXPORT sgStartsWith(const char* text, const char* what);
-char* SG_EXPORT sgSpaceEnd(const char* text);
-char* SG_EXPORT sgLineEnd(const char* text);
-SGuint SG_EXPORT sgLineLength(const char* text);
-char* SG_EXPORT sgNextLine(const char* text);
-SGuint SG_EXPORT sgNumLines(const char* text);
+SGbool SG_CALL sgStartsWith(const char* text, const char* what);
+char* SG_CALL sgSpaceEnd(const char* text);
+char* SG_CALL sgLineEnd(const char* text);
+SGuint SG_CALL sgLineLength(const char* text);
+char* SG_CALL sgNextLine(const char* text);
+SGuint SG_CALL sgNumLines(const char* text);
 
-SGdchar* SG_EXPORT sgLineEndU32(const SGdchar* text);
-SGuint SG_EXPORT sgLineLengthU32(const SGdchar* text);
-SGdchar* SG_EXPORT sgNextLineU32(const SGdchar* text);
-SGuint SG_EXPORT sgNumLinesU32(const SGdchar* text);
+SGdchar* SG_CALL sgLineEndU32(const SGdchar* text);
+SGuint SG_CALL sgLineLengthU32(const SGdchar* text);
+SGdchar* SG_CALL sgNextLineU32(const SGdchar* text);
+SGuint SG_CALL sgNumLinesU32(const SGdchar* text);
 
 #ifdef __cplusplus
 }

@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void SG_EXPORT _sg_cbKeyboardKey(void* keyboard, SGenum key, SGbool down)
+void SG_CALL _sg_cbKeyboardKey(void* keyboard, SGenum key, SGbool down)
 {
     _sgKeyboardKeyUpdate(key, down);
     SGbool pressed = sgKeyboardKeyPress(key);
@@ -35,12 +35,12 @@ void SG_EXPORT _sg_cbKeyboardKey(void* keyboard, SGenum key, SGbool down)
 
     sgEntityEventSignal(1, evt, key);
 }
-void SG_EXPORT _sg_cbKeyboardChar(void* keyboard, SGdchar chr)
+void SG_CALL _sg_cbKeyboardChar(void* keyboard, SGdchar chr)
 {
     sgEntityEventSignal(1, (SGenum)SG_EVF_KEYCHARP, chr);
 }
 
-void SG_EXPORT _sgKeyboardUpdate(void)
+void SG_CALL _sgKeyboardUpdate(void)
 {
     SGenum i;
     for(i = 0; i < SG_KEY_NUM; i++)
@@ -48,7 +48,7 @@ void SG_EXPORT _sgKeyboardUpdate(void)
             sgEntityEventSignal(1, (SGenum)SG_EVF_KEYKEYH, i);
 }
 
-SGbool SG_EXPORT _sgKeyboardInit(void)
+SGbool SG_CALL _sgKeyboardInit(void)
 {
     memset(_sg_keyPrev, 0, SG_KEY_NUM * sizeof(SGbool));
     memset(_sg_keyCurr, 0, SG_KEY_NUM * sizeof(SGbool));
@@ -62,31 +62,31 @@ SGbool SG_EXPORT _sgKeyboardInit(void)
         psgmCoreKeyboardSetCallbacks(_sg_keyHandle, &_sg_keyCallbacks);
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgKeyboardDeinit(void)
+SGbool SG_CALL _sgKeyboardDeinit(void)
 {
     if(psgmCoreKeyboardDestroy != NULL)
         psgmCoreKeyboardDestroy(_sg_keyHandle);
     return SG_TRUE;
 }
 
-void SG_EXPORT _sgKeyboardKeyUpdate(SGenum key, SGbool down)
+void SG_CALL _sgKeyboardKeyUpdate(SGenum key, SGbool down)
 {
     if(key >= SG_KEY_NUM) return;
     _sg_keyPrev[key] = _sg_keyCurr[key];
     _sg_keyCurr[key] = down;
 }
 
-SGbool SG_EXPORT sgKeyboardKey(SGenum key)
+SGbool SG_CALL sgKeyboardKey(SGenum key)
 {
     if(key >= SG_KEY_NUM) return SG_FALSE;
     return _sg_keyCurr[key];
 }
-SGbool SG_EXPORT sgKeyboardKeyPress(SGenum key)
+SGbool SG_CALL sgKeyboardKeyPress(SGenum key)
 {
     if(key >= SG_KEY_NUM) return SG_FALSE;
     return !_sg_keyPrev[key] && _sg_keyCurr[key];
 }
-SGbool SG_EXPORT sgKeyboardKeyRelease(SGenum key)
+SGbool SG_CALL sgKeyboardKeyRelease(SGenum key)
 {
     if(key >= SG_KEY_NUM) return SG_FALSE;
     return _sg_keyPrev[key] && !_sg_keyCurr[key];

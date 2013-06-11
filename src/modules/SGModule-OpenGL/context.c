@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGenum SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp)
+SGenum SG_CALL sgmGraphicsContextCreate(void** context, SGuint width, SGuint height, SGuint bpp)
 {
     ContextData** cdata = (ContextData**)context;
     *context = calloc(1, sizeof(ContextData));
@@ -52,7 +52,7 @@ SGenum SG_EXPORT sgmGraphicsContextCreate(void** context, SGuint width, SGuint h
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsContextDestroy(void* context)
+SGenum SG_CALL sgmGraphicsContextDestroy(void* context)
 {
     if(!context) return SG_INVALID_VALUE;
     ContextData* cdata = context;
@@ -67,7 +67,7 @@ SGenum SG_EXPORT sgmGraphicsContextDestroy(void* context)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint height)
+SGenum SG_CALL sgmGraphicsContextResize(void* context, SGuint width, SGuint height)
 {
     if(context == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -89,7 +89,7 @@ SGenum SG_EXPORT sgmGraphicsContextResize(void* context, SGuint width, SGuint he
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsContextClear(void* context, float* color)
+SGenum SG_CALL sgmGraphicsContextClear(void* context, float* color)
 {
     if(context == NULL)
         return SG_OK; // SG_INVALID_VALUE

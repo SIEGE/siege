@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGenum SG_EXPORT sgmPhysicsBodyWorldToLocal_TEST(void* body, float* x, float* y)
+SGenum SG_CALL sgmPhysicsBodyWorldToLocal_TEST(void* body, float* x, float* y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -26,7 +26,7 @@ SGenum SG_EXPORT sgmPhysicsBodyWorldToLocal_TEST(void* body, float* x, float* y)
     *y = vect.y;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsBodyLocalToWorld_TEST(void* body, float* x, float* y)
+SGenum SG_CALL sgmPhysicsBodyLocalToWorld_TEST(void* body, float* x, float* y)
 {
     if(body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -35,7 +35,7 @@ SGenum SG_EXPORT sgmPhysicsBodyLocalToWorld_TEST(void* body, float* x, float* y)
     *y = vect.y;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsShapeGetPoints_TEST(void* shape, SGuint* pnum, float** points)
+SGenum SG_CALL sgmPhysicsShapeGetPoints_TEST(void* shape, SGuint* pnum, float** points)
 {
     if(shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -85,7 +85,7 @@ SGenum SG_EXPORT sgmPhysicsShapeGetPoints_TEST(void* shape, SGuint* pnum, float*
     }*/
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsShapeFreePoints_TEST(float* points)
+SGenum SG_CALL sgmPhysicsShapeFreePoints_TEST(float* points)
 {
     free(points);
     return SG_OK;

@@ -25,7 +25,7 @@
 #include <pthread.h>
 #endif
 
-SGMutex* SG_EXPORT sgMutexCreate(void)
+SGMutex* SG_CALL sgMutexCreate(void)
 {
     SGMutex* mutex = malloc(sizeof(SGMutex));
     if(!mutex)
@@ -40,7 +40,7 @@ SGMutex* SG_EXPORT sgMutexCreate(void)
 
     return mutex;
 }
-void SG_EXPORT sgMutexDestroy(SGMutex* mutex)
+void SG_CALL sgMutexDestroy(SGMutex* mutex)
 {
     if(!mutex)
         return;
@@ -53,7 +53,7 @@ void SG_EXPORT sgMutexDestroy(SGMutex* mutex)
     free(mutex);
 }
 
-SGbool SG_EXPORT sgMutexTryLock(SGMutex* mutex)
+SGbool SG_CALL sgMutexTryLock(SGMutex* mutex)
 {
 #ifdef __WIN32__
     return !WaitForSingleObject(mutex->handle, 0);
@@ -61,7 +61,7 @@ SGbool SG_EXPORT sgMutexTryLock(SGMutex* mutex)
     return !pthread_mutex_trylock(mutex->handle);
 #endif
 }
-void SG_EXPORT sgMutexLock(SGMutex* mutex)
+void SG_CALL sgMutexLock(SGMutex* mutex)
 {
 #ifdef __WIN32__
     WaitForSingleObject(mutex->handle, INFINITE);
@@ -69,7 +69,7 @@ void SG_EXPORT sgMutexLock(SGMutex* mutex)
     pthread_mutex_lock(mutex->handle);
 #endif
 }
-void SG_EXPORT sgMutexUnlock(SGMutex* mutex)
+void SG_CALL sgMutexUnlock(SGMutex* mutex)
 {
 #ifdef __WIN32__
     ReleaseMutex(mutex->handle);

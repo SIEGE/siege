@@ -58,33 +58,33 @@ typedef struct SGJSONSetItem
     SGJSONValue* val;
 } SGJSONSetItem;
 
-void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value);
-void SG_EXPORT _sgJSONDumpSetItem(SGSetNode* node, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent);
-void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent);
+void SG_CALL _sgJSONFreeValue(SGJSONValue* value);
+void SG_CALL _sgJSONDumpSetItem(SGSetNode* node, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent);
+void SG_CALL _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent);
 
-char* SG_EXPORT _sgJSONSkipComments(char* input, char** error);
-char* SG_EXPORT _sgJSONEscapeString(const char* input, char** str, size_t* len, size_t* mem);
-SGbool SG_EXPORT _sgJSONGetSymbol(char** input);
+char* SG_CALL _sgJSONSkipComments(char* input, char** error);
+char* SG_CALL _sgJSONEscapeString(const char* input, char** str, size_t* len, size_t* mem);
+SGbool SG_CALL _sgJSONGetSymbol(char** input);
 
-char* SG_EXPORT _sgJSONParseNull(SGJSONValue* into, char* input, char** error);
-char* SG_EXPORT _sgJSONParseBoolean(SGJSONValue* into, char* input, char** error);
-char* SG_EXPORT _sgJSONParseNumber(SGJSONValue* into, char* input, char** error);
-char* SG_EXPORT _sgJSONParseString(SGJSONValue* into, char* input, char** error);
-char* SG_EXPORT _sgJSONParseSymbol(SGJSONValue* into, char* input, char** error); // extensions
-char* SG_EXPORT _sgJSONParseComment(SGJSONValue* into, char* input, char** error); // extension
-char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error);
-char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error);
-char* SG_EXPORT _sgJSONParseValue(SGJSONValue* into, char* input, char** error);
+char* SG_CALL _sgJSONParseNull(SGJSONValue* into, char* input, char** error);
+char* SG_CALL _sgJSONParseBoolean(SGJSONValue* into, char* input, char** error);
+char* SG_CALL _sgJSONParseNumber(SGJSONValue* into, char* input, char** error);
+char* SG_CALL _sgJSONParseString(SGJSONValue* into, char* input, char** error);
+char* SG_CALL _sgJSONParseSymbol(SGJSONValue* into, char* input, char** error); // extensions
+char* SG_CALL _sgJSONParseComment(SGJSONValue* into, char* input, char** error); // extension
+char* SG_CALL _sgJSONParseArray(SGJSONValue* into, char* input, char** error);
+char* SG_CALL _sgJSONParseObject(SGJSONValue* into, char* input, char** error);
+char* SG_CALL _sgJSONParseValue(SGJSONValue* into, char* input, char** error);
 
-SGJSONValue* SG_EXPORT sgJSONValueCreateString(const char* str);
-SGJSONValue* SG_EXPORT sgJSONValueCreateFile(const char* fname);
-void SG_EXPORT sgJSONValueDestroy(SGJSONValue* value);
+SGJSONValue* SG_CALL sgJSONValueCreateString(const char* str);
+SGJSONValue* SG_CALL sgJSONValueCreateFile(const char* fname);
+void SG_CALL sgJSONValueDestroy(SGJSONValue* value);
 
-char* SG_EXPORT sgJSONToString(SGJSONValue* value, SGbool pretty);
-void SG_EXPORT sgJSONArrayRemoveValue(SGJSONValue* array, SGJSONValue* value);
-void SG_EXPORT sgJSONObjectSetValue(SGJSONValue* object, const char* key, SGJSONValue* value);
-void SG_EXPORT sgJSONObjectRemoveValue(SGJSONValue* object, const char* key);
-SGJSONValue* SG_EXPORT sgJSONObjectGetValue(SGJSONValue* object, const char* key);
+char* SG_CALL sgJSONToString(SGJSONValue* value, SGbool pretty);
+void SG_CALL sgJSONArrayRemoveValue(SGJSONValue* array, SGJSONValue* value);
+void SG_CALL sgJSONObjectSetValue(SGJSONValue* object, const char* key, SGJSONValue* value);
+void SG_CALL sgJSONObjectRemoveValue(SGJSONValue* object, const char* key);
+SGJSONValue* SG_CALL sgJSONObjectGetValue(SGJSONValue* object, const char* key);
 
 #ifdef __cplusplus
 }

@@ -34,21 +34,21 @@ static SGfloat _sg_FPS = -1.0f;
 static SGlong _sg_FrameLength = -1L;
 static SGfloat _sg_achievedFramerate = -1.0f;
 
-void SG_EXPORT _sg_cbWindowOpen(void* window)
+void SG_CALL _sg_cbWindowOpen(void* window)
 {
     sgEntityEventSignal(1, (SGenum)SG_EVF_WINOPEN);
 }
-void SG_EXPORT _sg_cbWindowClose(void* window)
+void SG_CALL _sg_cbWindowClose(void* window)
 {
     sgEntityEventSignal(1, (SGenum)SG_EVF_WINCLOSE);
     sgStop(0);
 }
-void SG_EXPORT _sg_cbWindowResize(void* window, SGuint width, SGuint height)
+void SG_CALL _sg_cbWindowResize(void* window, SGuint width, SGuint height)
 {
     sgEntityEventSignal(1, (SGenum)SG_EVF_WINRESIZE, width, height);
 }
 
-SGbool SG_EXPORT _sgWindowInit(void)
+SGbool SG_CALL _sgWindowInit(void)
 {
 	_sg_winTitle = NULL;
 	_sg_winCallbacks.open = NULL;//_sg_cbWindowOpen;
@@ -64,7 +64,7 @@ SGbool SG_EXPORT _sgWindowInit(void)
 	return SG_TRUE;
 }
 
-SGbool SG_EXPORT _sgWindowDeinit(void)
+SGbool SG_CALL _sgWindowDeinit(void)
 {
 	if(psgmCoreWindowDestroy != NULL)
 		psgmCoreWindowDestroy(_sg_winHandle);
@@ -72,7 +72,7 @@ SGbool SG_EXPORT _sgWindowDeinit(void)
 	return SG_TRUE;
 }
 
-SGbool SG_EXPORT sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flags)
+SGbool SG_CALL sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flags)
 {
     if(!width)  width = 640;
     if(!height) height = 480;
@@ -96,39 +96,39 @@ SGbool SG_EXPORT sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum fl
 	_sg_cbWindowResize(_sg_winHandle, width, height);
 	return SG_TRUE;
 }
-SGbool SG_EXPORT sgWindowIsOpened(void)
+SGbool SG_CALL sgWindowIsOpened(void)
 {
 	SGbool opened = SG_FALSE;
 	if(psgmCoreWindowIsOpened != NULL)
 		psgmCoreWindowIsOpened(_sg_winHandle, &opened);
 	return opened;
 }
-void SG_EXPORT sgWindowClose(void)
+void SG_CALL sgWindowClose(void)
 {
 	if(psgmGraphicsContextDestroy != NULL)
 		psgmGraphicsContextDestroy(_sg_gfxHandle);
 	if(psgmCoreWindowClose != NULL)
 		psgmCoreWindowClose(_sg_winHandle);
 }
-void SG_EXPORT sgWindowSetIcon(SGImageData* idata)
+void SG_CALL sgWindowSetIcon(SGImageData* idata)
 {
     if(psgmCoreWindowSetIcon)
         psgmCoreWindowSetIcon(_sg_winHandle, idata->width, idata->height, idata->bpp, idata->data);
 }
-void SG_EXPORT sgWindowSetTitlef(const char* format, ...)
+void SG_CALL sgWindowSetTitlef(const char* format, ...)
 {
 	va_list args;
 	va_start(args, format);
 	sgWindowSetTitlefv(format, args);
 	va_end(args);
 }
-void SG_EXPORT sgWindowSetTitlefv(const char* format, va_list args)
+void SG_CALL sgWindowSetTitlefv(const char* format, va_list args)
 {
 	char* title = sgAPrintfv(format, args);
 	sgWindowSetTitle(title);
 	sgAPrintFree(title);
 }
-void SG_EXPORT sgWindowSetTitle(const char* title)
+void SG_CALL sgWindowSetTitle(const char* title)
 {
     size_t len = strlen(title);
     _sg_winTitle = realloc(_sg_winTitle, len + 1);
@@ -136,18 +136,18 @@ void SG_EXPORT sgWindowSetTitle(const char* title)
     if(psgmCoreWindowSetTitle)
 		psgmCoreWindowSetTitle(_sg_winHandle, _sg_winTitle);
 }
-char* SG_EXPORT sgWindowGetTitle(void)
+char* SG_CALL sgWindowGetTitle(void)
 {
 	return _sg_winTitle;
 }
-void SG_EXPORT sgWindowSetSize(SGuint width, SGuint height)
+void SG_CALL sgWindowSetSize(SGuint width, SGuint height)
 {
 	if(psgmCoreWindowSetSize != NULL)
 		psgmCoreWindowSetSize(_sg_winHandle, width, height);
 	if(psgmGraphicsContextResize != NULL)
 		psgmGraphicsContextResize(_sg_gfxHandle, width, height);
 }
-void SG_EXPORT sgWindowGetSize(SGuint* width, SGuint* height)
+void SG_CALL sgWindowGetSize(SGuint* width, SGuint* height)
 {
     SGuint tmp;
     if(!width)  width = &tmp;
@@ -156,27 +156,27 @@ void SG_EXPORT sgWindowGetSize(SGuint* width, SGuint* height)
     if(psgmCoreWindowGetSize)
         psgmCoreWindowGetSize(_sg_winHandle, width, height);
 }
-void SG_EXPORT sgWindowSetWidth(SGuint width)
+void SG_CALL sgWindowSetWidth(SGuint width)
 {
     sgWindowSetSize(width, sgWindowGetHeight());
 }
-SGuint SG_EXPORT sgWindowGetWidth(void)
+SGuint SG_CALL sgWindowGetWidth(void)
 {
 	SGuint width;
 	sgWindowGetSize(&width, NULL);
 	return width;
 }
-void SG_EXPORT sgWindowSetHeight(SGuint height)
+void SG_CALL sgWindowSetHeight(SGuint height)
 {
     sgWindowSetSize(sgWindowGetWidth(), height);
 }
-SGuint SG_EXPORT sgWindowGetHeight(void)
+SGuint SG_CALL sgWindowGetHeight(void)
 {
 	SGuint height;
 	sgWindowGetSize(NULL, &height);
 	return height;
 }
-void SG_EXPORT sgWindowSwapBuffers(void)
+void SG_CALL sgWindowSwapBuffers(void)
 {
     SGlong origin = sgGetTime();
 
@@ -200,16 +200,16 @@ void SG_EXPORT sgWindowSwapBuffers(void)
     SGlong frameLength = updateLength + (sgGetTime() - time);
     _sg_achievedFramerate = (SGfloat) SG_NANOSECONDS_IN_A_SECOND / frameLength;
 }
-SGfloat SG_EXPORT sgWindowGetFPSLimit(void)
+SGfloat SG_CALL sgWindowGetFPSLimit(void)
 {
     return _sg_FPS;
 }
-void SG_EXPORT sgWindowSetFPSLimit(SGfloat limit)
+void SG_CALL sgWindowSetFPSLimit(SGfloat limit)
 {
     _sg_FPS = limit;
     _sg_FrameLength = (1 / _sg_FPS) * SG_NANOSECONDS_IN_A_SECOND;
 }
-SGfloat SG_EXPORT sgWindowGetFPS(void)
+SGfloat SG_CALL sgWindowGetFPS(void)
 {
     return _sg_achievedFramerate;
 }

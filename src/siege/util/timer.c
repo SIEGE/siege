@@ -32,7 +32,7 @@ static void remTimer(SGList** list, SGListNode* node)
     }
 }
 
-SGTimer* SG_EXPORT sgTimerCreate(SGbool pausable)
+SGTimer* SG_CALL sgTimerCreate(SGbool pausable)
 {
     SGTimer* timer = malloc(sizeof(SGTimer));
     if(!timer) return NULL;
@@ -50,7 +50,7 @@ SGTimer* SG_EXPORT sgTimerCreate(SGbool pausable)
 
     return timer;
 }
-void SG_EXPORT sgTimerDestroy(SGTimer* timer)
+void SG_CALL sgTimerDestroy(SGTimer* timer)
 {
     if(timer->snode)
         remTimer(&_sg_stimerList, timer->tnode);
@@ -59,13 +59,13 @@ void SG_EXPORT sgTimerDestroy(SGTimer* timer)
     free(timer);
 }
 
-void SG_EXPORT sgTimerSetFunction(SGTimer* timer, SGTimerFunction* func, void* data)
+void SG_CALL sgTimerSetFunction(SGTimer* timer, SGTimerFunction* func, void* data)
 {
     timer->func = func;
     timer->data = data;
 }
 
-void SG_EXPORT sgTimerPause(SGTimer* timer, SGbool pause)
+void SG_CALL sgTimerPause(SGTimer* timer, SGbool pause)
 {
     if(pause && timer->tnode)
     {
@@ -78,25 +78,25 @@ void SG_EXPORT sgTimerPause(SGTimer* timer, SGbool pause)
         timer->prev = sgGetTime();
     }
 }
-void SG_EXPORT sgTimerStop(SGTimer* timer)
+void SG_CALL sgTimerStop(SGTimer* timer)
 {
     sgTimerPause(timer, SG_TRUE);
     timer->age = 0;
 }
 
-void SG_EXPORT sgTimerStart(SGTimer* timer, SGulong secs)
+void SG_CALL sgTimerStart(SGTimer* timer, SGulong secs)
 {
     sgTimerStart(timer, secs * 1000);
 }
-void SG_EXPORT sgTimerMStart(SGTimer* timer, SGulong msecs)
+void SG_CALL sgTimerMStart(SGTimer* timer, SGulong msecs)
 {
     sgTimerUStart(timer, msecs * 1000);
 }
-void SG_EXPORT sgTimerUStart(SGTimer* timer, SGulong usecs)
+void SG_CALL sgTimerUStart(SGTimer* timer, SGulong usecs)
 {
     sgTimerNStart(timer, usecs * 1000);
 }
-void SG_EXPORT sgTimerNStart(SGTimer* timer, SGulong nsecs)
+void SG_CALL sgTimerNStart(SGTimer* timer, SGulong nsecs)
 {
     timer->interval = nsecs;
     timer->age = 0;
@@ -105,7 +105,7 @@ void SG_EXPORT sgTimerNStart(SGTimer* timer, SGulong nsecs)
 
     sgTimerPause(timer, SG_FALSE);
 }
-void SG_EXPORT sgTimerTickStart(SGTimer* timer, SGulong ticks)
+void SG_CALL sgTimerTickStart(SGTimer* timer, SGulong ticks)
 {
     timer->interval = ticks;
     timer->age = 0;
@@ -114,19 +114,19 @@ void SG_EXPORT sgTimerTickStart(SGTimer* timer, SGulong ticks)
     sgTimerPause(timer, SG_FALSE);
 }
 
-void SG_EXPORT sgTimerSingle(SGulong secs, SGTimerFunction* func, void* data, SGbool pausable)
+void SG_CALL sgTimerSingle(SGulong secs, SGTimerFunction* func, void* data, SGbool pausable)
 {
     sgTimerMSingle(secs * 1000, func, data, pausable);
 }
-void SG_EXPORT sgTimerMSingle(SGulong msecs, SGTimerFunction* func, void* data, SGbool pausable)
+void SG_CALL sgTimerMSingle(SGulong msecs, SGTimerFunction* func, void* data, SGbool pausable)
 {
     sgTimerUSingle(msecs * 1000, func, data, pausable);
 }
-void SG_EXPORT sgTimerUSingle(SGulong usecs, SGTimerFunction* func, void* data, SGbool pausable)
+void SG_CALL sgTimerUSingle(SGulong usecs, SGTimerFunction* func, void* data, SGbool pausable)
 {
     sgTimerNSingle(usecs * 1000, func, data, pausable);
 }
-void SG_EXPORT sgTimerNSingle(SGulong nsecs, SGTimerFunction* func, void* data, SGbool pausable)
+void SG_CALL sgTimerNSingle(SGulong nsecs, SGTimerFunction* func, void* data, SGbool pausable)
 {
     SGTimer* timer = sgTimerCreate(pausable);
     if(!timer) return;
@@ -135,7 +135,7 @@ void SG_EXPORT sgTimerNSingle(SGulong nsecs, SGTimerFunction* func, void* data, 
     sgTimerSetFunction(timer, func, data);
     sgTimerNStart(timer, nsecs);
 }
-void SG_EXPORT sgTimerTickSingle(SGulong ticks, SGTimerFunction* func, void* data, SGbool pausable)
+void SG_CALL sgTimerTickSingle(SGulong ticks, SGTimerFunction* func, void* data, SGbool pausable)
 {
     SGTimer* timer = sgTimerCreate(pausable);
     if(!timer) return;
@@ -145,7 +145,7 @@ void SG_EXPORT sgTimerTickSingle(SGulong ticks, SGTimerFunction* func, void* dat
     sgTimerTickStart(timer, ticks);
 }
 
-void SG_EXPORT sgTimerUpdate(SGTimer* timer, SGbool paused, SGbool tick)
+void SG_CALL sgTimerUpdate(SGTimer* timer, SGbool paused, SGbool tick)
 {
     SGulong time = sgGetTime();
 
@@ -176,7 +176,7 @@ void SG_EXPORT sgTimerUpdate(SGTimer* timer, SGbool paused, SGbool tick)
             timer->age = timer->age % timer->interval;
     }
 }
-void SG_EXPORT sgTimerUpdateAll(SGbool paused, SGbool tick)
+void SG_CALL sgTimerUpdateAll(SGbool paused, SGbool tick)
 {
     if(!_sg_timerList)
         return;

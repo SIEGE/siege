@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void SG_EXPORT _sgModuleLoadGraphics(SGLibrary* lib)
+void SG_CALL _sgModuleLoadGraphics(SGLibrary* lib)
 {
 	void* fptr;
 	/// Graphics

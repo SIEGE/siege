@@ -31,22 +31,22 @@ void* _sg_keyHandle;
 SGCoreKeyboardCallbacks _sg_keyCallbacks;
 #endif // SG_BUILD_LIBRARY
 
-void SG_EXPORT _sg_cbKeyboardKey(void* keyboard, SGuint key, SGbool down);
-void SG_EXPORT _sg_cbKeyboardChar(void* keyboard, SGdchar chr);
+void SG_CALL _sg_cbKeyboardKey(void* keyboard, SGuint key, SGbool down);
+void SG_CALL _sg_cbKeyboardChar(void* keyboard, SGdchar chr);
 
-void SG_EXPORT _sgKeyboardUpdate(void);
+void SG_CALL _sgKeyboardUpdate(void);
 
-SGbool SG_EXPORT _sgKeyboardInit(void);
-SGbool SG_EXPORT _sgKeyboardDeinit(void);
+SGbool SG_CALL _sgKeyboardInit(void);
+SGbool SG_CALL _sgKeyboardDeinit(void);
 
-void SG_EXPORT _sgKeyboardKeyUpdate(SGenum key, SGbool down);
+void SG_CALL _sgKeyboardKeyUpdate(SGenum key, SGbool down);
 
-SGbool SG_EXPORT sgKeyboardKey(SGenum key);
-SGbool SG_EXPORT sgKeyboardKeyPress(SGenum key);
-SGbool SG_EXPORT sgKeyboardKeyRelease(SGenum key);
+SGbool SG_CALL sgKeyboardKey(SGenum key);
+SGbool SG_CALL sgKeyboardKeyPress(SGenum key);
+SGbool SG_CALL sgKeyboardKeyRelease(SGenum key);
 
 // might re-add this in the future; probably not
-// SGbool SG_EXPORT sgKeyboardCharPress(SGdchar chr);
+// SGbool SG_CALL sgKeyboardCharPress(SGdchar chr);
 
 #ifdef __cplusplus
 }

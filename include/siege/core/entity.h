@@ -295,7 +295,7 @@ typedef struct SGEntity
 	 * Returns:
 	 * 	SG_TRUE if the point is inside and SG_FALSE otherwise.
 	 */
-	SGbool SG_EXPORT (*cbInside)(struct SGEntity* entity, float x, float y);
+	SGbool SG_CALL (*cbInside)(struct SGEntity* entity, float x, float y);
 
 	/**
 	 * Group: Local events
@@ -306,7 +306,7 @@ typedef struct SGEntity
 	 *
 	 * The entity is about to be destroyed.
 	 */
-	void SG_EXPORT (*lcDestroy)(struct SGEntity* entity);
+	void SG_CALL (*lcDestroy)(struct SGEntity* entity);
 
 	/**
 	 * Variables: lcCollision*
@@ -331,17 +331,17 @@ typedef struct SGEntity
 	 *  coll - Collision handler
 	 */
 
-	void SG_EXPORT (*lcCollision)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	void SG_EXPORT (*lcCollisionOne)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	void SG_EXPORT (*lcCollisionTwo)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_CALL (*lcCollision)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_CALL (*lcCollisionOne)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_CALL (*lcCollisionTwo)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
 
-	void SG_EXPORT (*lcCollisionBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	void SG_EXPORT (*lcCollisionOneBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	void SG_EXPORT (*lcCollisionTwoBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_CALL (*lcCollisionBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_CALL (*lcCollisionOneBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_CALL (*lcCollisionTwoBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
 
-	void SG_EXPORT (*lcCollisionEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	void SG_EXPORT (*lcCollisionOneEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-	void SG_EXPORT (*lcCollisionTwoEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_CALL (*lcCollisionEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_CALL (*lcCollisionOneEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+	void SG_CALL (*lcCollisionTwoEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
 
 	/**
 	 * Group: Global events
@@ -358,8 +358,8 @@ typedef struct SGEntity
 	 * Parameters:
 	 * 	entity - The entity which is receiving the message
 	 */
-	void SG_EXPORT (*evInit)(struct SGEntity* entity);
-	void SG_EXPORT (*evDeinit)(struct SGEntity* entity);
+	void SG_CALL (*evInit)(struct SGEntity* entity);
+	void SG_CALL (*evDeinit)(struct SGEntity* entity);
 
 	/**
 	 * Variables: Looping
@@ -377,13 +377,13 @@ typedef struct SGEntity
 	 * Parameters:
 	 * 	entity - The entity which is receiving the message
 	 */
-	void SG_EXPORT (*evStart)(struct SGEntity* entity);
-	void SG_EXPORT (*evExit)(struct SGEntity* entity);
+	void SG_CALL (*evStart)(struct SGEntity* entity);
+	void SG_CALL (*evExit)(struct SGEntity* entity);
 
-	void SG_EXPORT (*evTick)(struct SGEntity* entity);
-	void SG_EXPORT (*evTickBegin)(struct SGEntity* entity);
-	void SG_EXPORT (*evTickEnd)(struct SGEntity* entity);
-	void SG_EXPORT (*evDraw)(struct SGEntity* entity);
+	void SG_CALL (*evTick)(struct SGEntity* entity);
+	void SG_CALL (*evTickBegin)(struct SGEntity* entity);
+	void SG_CALL (*evTickEnd)(struct SGEntity* entity);
+	void SG_CALL (*evDraw)(struct SGEntity* entity);
 
 	/**
 	 * Variables: evWindow*
@@ -398,9 +398,9 @@ typedef struct SGEntity
 	 * 	entity - The entity which is receiving the message
 	 *  width, height - The new window size
 	 */
-	void SG_EXPORT (*evWindowOpen)(struct SGEntity* entity);
-	void SG_EXPORT (*evWindowClose)(struct SGEntity* entity);
-	void SG_EXPORT (*evWindowResize)(struct SGEntity* entity, SGuint width, SGuint height);
+	void SG_CALL (*evWindowOpen)(struct SGEntity* entity);
+	void SG_CALL (*evWindowClose)(struct SGEntity* entity);
+	void SG_CALL (*evWindowResize)(struct SGEntity* entity, SGuint width, SGuint height);
 
 	/**
 	 * Variables: evMouse*
@@ -432,24 +432,24 @@ typedef struct SGEntity
 	 *  x, y   - New mouse position
 	 *  wheel  - New mouse wheel position
 	 */
-	void SG_EXPORT (*evMouseButton)(struct SGEntity* entity, SGuint button);
-	void SG_EXPORT (*evMouseButtonPress)(struct SGEntity* entity, SGuint button);
-	void SG_EXPORT (*evMouseButtonRelease)(struct SGEntity* entity, SGuint button);
+	void SG_CALL (*evMouseButton)(struct SGEntity* entity, SGuint button);
+	void SG_CALL (*evMouseButtonPress)(struct SGEntity* entity, SGuint button);
+	void SG_CALL (*evMouseButtonRelease)(struct SGEntity* entity, SGuint button);
 
-	void SG_EXPORT (*evMouseButtonLeft)(struct SGEntity* entity);
-	void SG_EXPORT (*evMouseButtonLeftPress)(struct SGEntity* entity);
-	void SG_EXPORT (*evMouseButtonLeftRelease)(struct SGEntity* entity);
+	void SG_CALL (*evMouseButtonLeft)(struct SGEntity* entity);
+	void SG_CALL (*evMouseButtonLeftPress)(struct SGEntity* entity);
+	void SG_CALL (*evMouseButtonLeftRelease)(struct SGEntity* entity);
 
-	void SG_EXPORT (*evMouseButtonRight)(struct SGEntity* entity);
-	void SG_EXPORT (*evMouseButtonRightPress)(struct SGEntity* entity);
-	void SG_EXPORT (*evMouseButtonRightRelease)(struct SGEntity* entity);
+	void SG_CALL (*evMouseButtonRight)(struct SGEntity* entity);
+	void SG_CALL (*evMouseButtonRightPress)(struct SGEntity* entity);
+	void SG_CALL (*evMouseButtonRightRelease)(struct SGEntity* entity);
 
-	void SG_EXPORT (*evMouseButtonMiddle)(struct SGEntity* entity);
-	void SG_EXPORT (*evMouseButtonMiddlePress)(struct SGEntity* entity);
-	void SG_EXPORT (*evMouseButtonMiddleRelease)(struct SGEntity* entity);
+	void SG_CALL (*evMouseButtonMiddle)(struct SGEntity* entity);
+	void SG_CALL (*evMouseButtonMiddlePress)(struct SGEntity* entity);
+	void SG_CALL (*evMouseButtonMiddleRelease)(struct SGEntity* entity);
 
-	void SG_EXPORT (*evMouseMove)(struct SGEntity* entity, SGint x, SGint y);
-	void SG_EXPORT (*evMouseWheel)(struct SGEntity* entity, SGint wheel);
+	void SG_CALL (*evMouseMove)(struct SGEntity* entity, SGint x, SGint y);
+	void SG_CALL (*evMouseWheel)(struct SGEntity* entity, SGint wheel);
 
 	/**
 	 * Variables: evKeyboard*
@@ -469,12 +469,12 @@ typedef struct SGEntity
 	 *  key    - The key that triggered the event
 	 *  chr    - The UTF-32 character that triggered the event
 	 */
-	void SG_EXPORT (*evKeyboardKey)(struct SGEntity* entity, SGuint key);
-	void SG_EXPORT (*evKeyboardKeyPress)(struct SGEntity* entity, SGuint key);
-	void SG_EXPORT (*evKeyboardKeyRelease)(struct SGEntity* entity, SGuint key);
-	void SG_EXPORT (*evKeyboardKeyRepeat)(struct SGEntity* entity, SGuint key);
+	void SG_CALL (*evKeyboardKey)(struct SGEntity* entity, SGuint key);
+	void SG_CALL (*evKeyboardKeyPress)(struct SGEntity* entity, SGuint key);
+	void SG_CALL (*evKeyboardKeyRelease)(struct SGEntity* entity, SGuint key);
+	void SG_CALL (*evKeyboardKeyRepeat)(struct SGEntity* entity, SGuint key);
 
-	void SG_EXPORT (*evKeyboardCharPress)(struct SGEntity* entity, SGdchar chr);
+	void SG_CALL (*evKeyboardCharPress)(struct SGEntity* entity, SGdchar chr);
 
 	/**
 	 * Variables: evJoystick*
@@ -493,10 +493,10 @@ typedef struct SGEntity
 	 *  axis    - The axis positions
 	 *  numaxis - The number of axis
 	 */
-	void SG_EXPORT (*evJoystickButton)(struct SGEntity* entity, SGuint joy, SGuint button);
-	void SG_EXPORT (*evJoystickButtonPress)(struct SGEntity* entity, SGuint joy, SGuint button);
-	void SG_EXPORT (*evJoystickButtonRelease)(struct SGEntity* entity, SGuint joy, SGuint button);
-	void SG_EXPORT (*evJoystickMove)(struct SGEntity* entity, SGuint joy, SGfloat* axis, size_t numaxis);
+	void SG_CALL (*evJoystickButton)(struct SGEntity* entity, SGuint joy, SGuint button);
+	void SG_CALL (*evJoystickButtonPress)(struct SGEntity* entity, SGuint joy, SGuint button);
+	void SG_CALL (*evJoystickButtonRelease)(struct SGEntity* entity, SGuint joy, SGuint button);
+	void SG_CALL (*evJoystickMove)(struct SGEntity* entity, SGuint joy, SGfloat* axis, size_t numaxis);
 
 	// networking goes here
 
@@ -511,10 +511,10 @@ typedef struct SGEntity
 	 * Parameters:
 	 * 	entity  - The entity which is receiving the message
 	 */
-	void SG_EXPORT (*evLevelStart)(struct SGEntity* entity);
-	void SG_EXPORT (*evLevelEnd)(struct SGEntity* entity);
+	void SG_CALL (*evLevelStart)(struct SGEntity* entity);
+	void SG_CALL (*evLevelEnd)(struct SGEntity* entity);
 
-    void SG_EXPORT (*evUser)(struct SGEntity* entity, SGuint id, va_list args);
+    void SG_CALL (*evUser)(struct SGEntity* entity, SGuint id, va_list args);
 } SGEntity;
 
 #ifdef SG_BUILD_LIBRARY
@@ -527,8 +527,8 @@ SGbool _sg_entStop;
  * Group: Functions
  */
 
-SGbool SG_EXPORT _sgEntityInit(void);
-SGbool SG_EXPORT _sgEntityDeinit(void);
+SGbool SG_CALL _sgEntityInit(void);
+SGbool SG_CALL _sgEntityDeinit(void);
 
 /**
  * Function: sgEntityCreate
@@ -538,7 +538,7 @@ SGbool SG_EXPORT _sgEntityDeinit(void);
  * Returns:
  * 	The newly created entity if successful, NULL otherwise
  */
-SGEntity* SG_EXPORT sgEntityCreate(void);
+SGEntity* SG_CALL sgEntityCreate(void);
 /**
  * Function: sgEntityDestroy
  *
@@ -549,11 +549,11 @@ SGEntity* SG_EXPORT sgEntityCreate(void);
  * Parameters:
  * 	entity - The entity to destroy. It should not be used anymore after this call.
  */
-void SG_EXPORT sgEntityDestroy(SGEntity* entity);
-void SG_EXPORT sgEntityDestroyAll(void);
+void SG_CALL sgEntityDestroy(SGEntity* entity);
+void SG_CALL sgEntityDestroyAll(void);
 
-void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name);
-char* SG_EXPORT sgEntityGetName(SGEntity* entity);
+void SG_CALL sgEntitySetName(SGEntity* entity, const char* name);
+char* SG_CALL sgEntityGetName(SGEntity* entity);
 
 /**
  * Functions: sgEntity*Sprite
@@ -570,8 +570,8 @@ char* SG_EXPORT sgEntityGetName(SGEntity* entity);
  * Returns:
  * 	The getter returns the currently attached sprite, or NULL if none.
  */
-void SG_EXPORT sgEntitySetSprite(SGEntity* entity, struct SGSprite* sprite);
-struct SGSprite* SG_EXPORT sgEntityGetSprite(SGEntity* entity);
+void SG_CALL sgEntitySetSprite(SGEntity* entity, struct SGSprite* sprite);
+struct SGSprite* SG_CALL sgEntityGetSprite(SGEntity* entity);
 
 /**
  * Functions: sgEntity*Mask
@@ -591,8 +591,8 @@ struct SGSprite* SG_EXPORT sgEntityGetSprite(SGEntity* entity);
  * Returns:
  * 	The getter returns the currently attached mask, or NULL if none.
  */
-void SG_EXPORT sgEntitySetMask(SGEntity* entity, struct SGMask* mask);
-struct SGMask* SG_EXPORT sgEntityGetMask(SGEntity* entity);
+void SG_CALL sgEntitySetMask(SGEntity* entity, struct SGMask* mask);
+struct SGMask* SG_CALL sgEntityGetMask(SGEntity* entity);
 
 /**
  * Functions: sgEntity*PhysicsBody
@@ -609,8 +609,8 @@ struct SGMask* SG_EXPORT sgEntityGetMask(SGEntity* entity);
  * Returns:
  * 	The getter returns the currently attached body, or NULL if none.
  */
-void SG_EXPORT sgEntitySetPhysicsBody(SGEntity* entity, struct SGPhysicsBody* body);
-struct SGPhysicsBody* SG_EXPORT sgEntityGetPhysicsBody(SGEntity* entity);
+void SG_CALL sgEntitySetPhysicsBody(SGEntity* entity, struct SGPhysicsBody* body);
+struct SGPhysicsBody* SG_CALL sgEntityGetPhysicsBody(SGEntity* entity);
 
 /**
  * Functions: sgEntity*AudioSource
@@ -627,8 +627,8 @@ struct SGPhysicsBody* SG_EXPORT sgEntityGetPhysicsBody(SGEntity* entity);
  * Returns:
  * 	The getter returns the currently attached source, or NULL if none.
  */
-void SG_EXPORT sgEntitySetAudioSource(SGEntity* entity, struct SGAudioSource* source);
-struct SGAudioSource* SG_EXPORT sgEntityGetAudioSource(SGEntity* entity);
+void SG_CALL sgEntitySetAudioSource(SGEntity* entity, struct SGAudioSource* source);
+struct SGAudioSource* SG_CALL sgEntityGetAudioSource(SGEntity* entity);
 
 /**
  * Functions: sgEntity*Pos*
@@ -655,14 +655,14 @@ struct SGAudioSource* SG_EXPORT sgEntityGetAudioSource(SGEntity* entity);
  * Returns:
  * 	PosX/PosY variants return the current x and y position, respectively.
  */
-void SG_EXPORT sgEntitySetPos(SGEntity* entity, float x, float y);
-void SG_EXPORT sgEntityGetPos(SGEntity* entity, float* x, float* y);
+void SG_CALL sgEntitySetPos(SGEntity* entity, float x, float y);
+void SG_CALL sgEntityGetPos(SGEntity* entity, float* x, float* y);
 
-void SG_EXPORT sgEntitySetPosX(SGEntity* entity, float x);
-float SG_EXPORT sgEntityGetPosX(SGEntity* entity);
+void SG_CALL sgEntitySetPosX(SGEntity* entity, float x);
+float SG_CALL sgEntityGetPosX(SGEntity* entity);
 
-void SG_EXPORT sgEntitySetPosY(SGEntity* entity, float y);
-float SG_EXPORT sgEntityGetPosY(SGEntity* entity);
+void SG_CALL sgEntitySetPosY(SGEntity* entity, float y);
+float SG_CALL sgEntityGetPosY(SGEntity* entity);
 
 /**
  * Functions: sgEntity*Depth
@@ -683,8 +683,8 @@ float SG_EXPORT sgEntityGetPosY(SGEntity* entity);
  * Returns:
  * 	The getter returns the current entity depth.
  */
-void SG_EXPORT sgEntitySetDepth(SGEntity* entity, float depth);
-float SG_EXPORT sgEntityGetDepth(SGEntity* entity);
+void SG_CALL sgEntitySetDepth(SGEntity* entity, float depth);
+float SG_CALL sgEntityGetDepth(SGEntity* entity);
 
 /**
  * Functions: sgEntity*Angle*
@@ -709,11 +709,11 @@ float SG_EXPORT sgEntityGetDepth(SGEntity* entity);
  * 	The getters return the current angle in its respective units.
  */
 
-void SG_EXPORT sgEntitySetAngleRads(SGEntity* entity, float rads);
-float SG_EXPORT sgEntityGetAngleRads(SGEntity* entity);
+void SG_CALL sgEntitySetAngleRads(SGEntity* entity, float rads);
+float SG_CALL sgEntityGetAngleRads(SGEntity* entity);
 
-void SG_EXPORT sgEntitySetAngleDegs(SGEntity* entity, float degs);
-float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity);
+void SG_CALL sgEntitySetAngleDegs(SGEntity* entity, float degs);
+float SG_CALL sgEntityGetAngleDegs(SGEntity* entity);
 
 /**
  * Function: sgEntityDraw
@@ -726,13 +726,13 @@ float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity);
  * Parameters:
  * 	entity - The entity to draw.
  */
-void SG_EXPORT sgEntityDraw(SGEntity* entity);
+void SG_CALL sgEntityDraw(SGEntity* entity);
 
-SGList* SG_EXPORT sgEntityFind(const char* name);
+SGList* SG_CALL sgEntityFind(const char* name);
 
-void SG_EXPORT sgEntityEventSignalv(size_t num, va_list args);
-void SG_EXPORT sgEntityEventSignal(size_t num, ...);
-void SG_EXPORT sgEntityEventStop(void);
+void SG_CALL sgEntityEventSignalv(size_t num, va_list args);
+void SG_CALL sgEntityEventSignal(size_t num, ...);
+void SG_CALL sgEntityEventStop(void);
 
 #ifdef __cplusplus
 }

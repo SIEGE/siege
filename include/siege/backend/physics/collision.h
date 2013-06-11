@@ -27,19 +27,19 @@ extern "C"
 #endif
     typedef struct SGPhysicsCollisionCallbacks
     {
-        void SG_EXPORT (*begin)(void* shandle1, void* shandle2, void* handle);
-        void SG_EXPORT (*step)(void* shandle1, void* shandle2, void* handle);
-        void SG_EXPORT (*post)(void* shandle1, void* shandle2, void* handle);
-        void SG_EXPORT (*end)(void* shandle1, void* shandle2, void* handle);
+        void SG_CALL (*begin)(void* shandle1, void* shandle2, void* handle);
+        void SG_CALL (*step)(void* shandle1, void* shandle2, void* handle);
+        void SG_CALL (*post)(void* shandle1, void* shandle2, void* handle);
+        void SG_CALL (*end)(void* shandle1, void* shandle2, void* handle);
     } SGPhysicsCollisionCallbacks;
 
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsCollisionIgnore)(void* handle);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsCollisionGetNumContacts)(void* handle, size_t* numpoints);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsCollisionGetPoint)(void* handle, size_t index, float* x, float* y);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsCollisionGetNormal)(void* handle, size_t index, float* x, float* y);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsCollisionGetDistance)(void* handle, size_t index, float* distance);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsCollisionGetImpulse)(void* handle, float* x, float* y, SGbool friction);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsCollisionSetCallbacks)(SGPhysicsCollisionCallbacks* callbacks);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsCollisionIgnore)(void* handle);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsCollisionGetNumContacts)(void* handle, size_t* numpoints);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsCollisionGetPoint)(void* handle, size_t index, float* x, float* y);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsCollisionGetNormal)(void* handle, size_t index, float* x, float* y);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsCollisionGetDistance)(void* handle, size_t index, float* distance);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsCollisionGetImpulse)(void* handle, float* x, float* y, SGbool friction);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsCollisionSetCallbacks)(SGPhysicsCollisionCallbacks* callbacks);
 #ifdef __cplusplus
 }
 #endif

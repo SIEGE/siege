@@ -36,7 +36,7 @@ static char* skipSpace(char* str)
     return skip(str, WHITESPACE);
 }
 
-static SGint SG_EXPORT _setCmp(const void* a, const void* b, void* data)
+static SGint SG_CALL _setCmp(const void* a, const void* b, void* data)
 {
     if(a == b)
         return 0;

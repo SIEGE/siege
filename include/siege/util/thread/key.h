@@ -27,11 +27,11 @@ typedef struct SGThreadKey
     void* handle;
 } SGThreadKey;
 
-SGThreadKey* SG_EXPORT sgThreadKeyCreate(void);
-void SG_EXPORT sgThreadKeyDestroy(SGThreadKey* key);
+SGThreadKey* SG_CALL sgThreadKeyCreate(void);
+void SG_CALL sgThreadKeyDestroy(SGThreadKey* key);
 
-void SG_EXPORT sgThreadKeySetVal(SGThreadKey* key, void* val);
-void* SG_EXPORT sgThreadKeyGetVal(SGThreadKey* key);
+void SG_CALL sgThreadKeySetVal(SGThreadKey* key, void* val);
+void* SG_CALL sgThreadKeyGetVal(SGThreadKey* key);
 
 #ifdef __cplusplus
 }

@@ -18,7 +18,7 @@
 
 #include <stdlib.h>
 
-SGbool SG_EXPORT _sgPhysicsCollisionInit(void)
+SGbool SG_CALL _sgPhysicsCollisionInit(void)
 {
     _sg_colCallbacks.begin = _sg_cbPhysicsCollisionBegin;
     _sg_colCallbacks.step = _sg_cbPhysicsCollision;
@@ -31,7 +31,7 @@ SGbool SG_EXPORT _sgPhysicsCollisionInit(void)
     return SG_TRUE;
 }
 
-SGbool SG_EXPORT _sgPhysicsCollisionDeinit(void)
+SGbool SG_CALL _sgPhysicsCollisionDeinit(void)
 {
     if(psgmPhysicsCollisionSetCallbacks)
         psgmPhysicsCollisionSetCallbacks(NULL);
@@ -39,7 +39,7 @@ SGbool SG_EXPORT _sgPhysicsCollisionDeinit(void)
     return SG_TRUE;
 }
 
-void SG_EXPORT _sg_cbPhysicsCollisionBegin(void* shandle1, void* shandle2, void* handle)
+void SG_CALL _sg_cbPhysicsCollisionBegin(void* shandle1, void* shandle2, void* handle)
 {
     SGPhysicsCollision coll;
     coll.shandle1 = shandle1;
@@ -69,7 +69,7 @@ void SG_EXPORT _sg_cbPhysicsCollisionBegin(void* shandle1, void* shandle2, void*
             coll.shape2->body->entity->lcCollisionTwoBegin(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
     }
 }
-void SG_EXPORT _sg_cbPhysicsCollision(void* shandle1, void* shandle2, void* handle)
+void SG_CALL _sg_cbPhysicsCollision(void* shandle1, void* shandle2, void* handle)
 {
     SGPhysicsCollision coll;
     coll.shandle1 = shandle1;
@@ -99,10 +99,10 @@ void SG_EXPORT _sg_cbPhysicsCollision(void* shandle1, void* shandle2, void* hand
             coll.shape2->body->entity->lcCollisionTwo(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
     }
 }
-void SG_EXPORT _sg_cbPhysicsCollisionPost(void* shandle1, void* shandle2, void* handle) /// \TODO TODO
+void SG_CALL _sg_cbPhysicsCollisionPost(void* shandle1, void* shandle2, void* handle) /// \TODO TODO
 {
 }
-void SG_EXPORT _sg_cbPhysicsCollisionEnd(void* shandle1, void* shandle2, void* handle)
+void SG_CALL _sg_cbPhysicsCollisionEnd(void* shandle1, void* shandle2, void* handle)
 {
     SGPhysicsCollision coll;
     coll.shandle1 = shandle1;
@@ -133,20 +133,20 @@ void SG_EXPORT _sg_cbPhysicsCollisionEnd(void* shandle1, void* shandle2, void* h
     }
 }
 
-void SG_EXPORT sgPhysicsCollisionIgnore(SGPhysicsCollision* coll)
+void SG_CALL sgPhysicsCollisionIgnore(SGPhysicsCollision* coll)
 {
     if(psgmPhysicsCollisionIgnore)
         psgmPhysicsCollisionIgnore(coll->handle);
 }
 
-size_t SG_EXPORT sgPhysicsCollisionGetNumContacts(SGPhysicsCollision* coll)
+size_t SG_CALL sgPhysicsCollisionGetNumContacts(SGPhysicsCollision* coll)
 {
     size_t num = 0;
     if(psgmPhysicsCollisionGetNumContacts)
         psgmPhysicsCollisionGetNumContacts(coll->handle, &num);
     return num;
 }
-void SG_EXPORT sgPhysicsCollisionGetPoint(SGPhysicsCollision* coll, size_t index, float* x, float* y)
+void SG_CALL sgPhysicsCollisionGetPoint(SGPhysicsCollision* coll, size_t index, float* x, float* y)
 {
     float tmp;
     if(x == NULL)
@@ -158,7 +158,7 @@ void SG_EXPORT sgPhysicsCollisionGetPoint(SGPhysicsCollision* coll, size_t index
     if(psgmPhysicsCollisionGetPoint)
         psgmPhysicsCollisionGetPoint(coll->handle, index, x, y);
 }
-void SG_EXPORT sgPhysicsCollisionGetNormal(SGPhysicsCollision* coll, size_t index, float* x, float* y)
+void SG_CALL sgPhysicsCollisionGetNormal(SGPhysicsCollision* coll, size_t index, float* x, float* y)
 {
     float tmp;
     if(x == NULL)
@@ -170,14 +170,14 @@ void SG_EXPORT sgPhysicsCollisionGetNormal(SGPhysicsCollision* coll, size_t inde
     if(psgmPhysicsCollisionGetNormal)
         psgmPhysicsCollisionGetNormal(coll->handle, index, x, y);
 }
-float SG_EXPORT sgPhysicsCollisionGetDistance(SGPhysicsCollision* coll, size_t index)
+float SG_CALL sgPhysicsCollisionGetDistance(SGPhysicsCollision* coll, size_t index)
 {
     float dist = SG_NAN;
     if(psgmPhysicsCollisionGetDistance)
         psgmPhysicsCollisionGetDistance(coll->handle, index, &dist);
     return dist;
 }
-void SG_EXPORT sgPhysicsCollisionGetImpulse(SGPhysicsCollision* coll, float* x, float* y, SGbool friction)
+void SG_CALL sgPhysicsCollisionGetImpulse(SGPhysicsCollision* coll, float* x, float* y, SGbool friction)
 {
     float tmp;
     if(x == NULL)
@@ -189,11 +189,11 @@ void SG_EXPORT sgPhysicsCollisionGetImpulse(SGPhysicsCollision* coll, float* x, 
     if(psgmPhysicsCollisionGetImpulse)
         psgmPhysicsCollisionGetImpulse(coll->handle, x, y, friction);
 }
-SGPhysicsShape* SG_EXPORT sgPhysicsCollisionGetShapeOne(SGPhysicsCollision* coll)
+SGPhysicsShape* SG_CALL sgPhysicsCollisionGetShapeOne(SGPhysicsCollision* coll)
 {
     return coll->shape1;
 }
-SGPhysicsShape* SG_EXPORT sgPhysicsCollisionGetShapeTwo(SGPhysicsCollision* coll)
+SGPhysicsShape* SG_CALL sgPhysicsCollisionGetShapeTwo(SGPhysicsCollision* coll)
 {
     return coll->shape2;
 }

@@ -31,7 +31,7 @@ extern "C"
 
 #endif // SG_BUILD_LIBRARY
 
-void SG_EXPORT _sgModuleLoadFonts(SGLibrary* lib);
+void SG_CALL _sgModuleLoadFonts(SGLibrary* lib);
 
 #ifdef __cplusplus
 }

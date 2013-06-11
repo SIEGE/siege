@@ -17,7 +17,7 @@
 
 #include <stdlib.h>
 
-SGAStar* SG_EXPORT sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal)
+SGAStar* SG_CALL sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal)
 {
 	SGAStar* search = malloc(sizeof(SGAStar));
 	search->set.open = sgListCreate();
@@ -38,7 +38,7 @@ SGAStar* SG_EXPORT sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarS
 
 	return search;
 }
-void SG_EXPORT sgAStarDestroy(SGAStar* search)
+void SG_CALL sgAStarDestroy(SGAStar* search)
 {
 	sgListDestroy(search->set.open);
 	sgListDestroy(search->set.closed);
@@ -47,7 +47,7 @@ void SG_EXPORT sgAStarDestroy(SGAStar* search)
 }
 
 // returns TRUE if done, FALSE if not done
-SGbool SG_EXPORT sgAStarStep(SGAStar* search)
+SGbool SG_CALL sgAStarStep(SGAStar* search)
 {
 	// if the goal was already found, do nothing
 	if(search->gfound == SG_TRUE)
@@ -151,11 +151,11 @@ SGbool SG_EXPORT sgAStarStep(SGAStar* search)
 
 	return SG_FALSE; // CONTINUE - didn't find the finish, we have to continue
 }
-SGbool SG_EXPORT sgAStarGoalFound(SGAStar* search)
+SGbool SG_CALL sgAStarGoalFound(SGAStar* search)
 {
 	return search->gfound;
 }
-SGList* SG_EXPORT sgAStarPath(SGAStar* search, size_t* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
+SGList* SG_CALL sgAStarPath(SGAStar* search, size_t* pathlen) // reconstruct the path from the current node to the start; current node need not be the goal
 {
 	// sgListClear(search->path);
 	sgListDestroy(search->path);
@@ -177,7 +177,7 @@ SGList* SG_EXPORT sgAStarPath(SGAStar* search, size_t* pathlen) // reconstruct t
 	return search->path;
 }
 
-SGAStarNode* SG_EXPORT sgAStarNodeCreate(void* data)
+SGAStarNode* SG_CALL sgAStarNodeCreate(void* data)
 {
 	SGAStarNode* node = malloc(sizeof(SGAStarNode));
 	node->from = NULL;
@@ -188,26 +188,26 @@ SGAStarNode* SG_EXPORT sgAStarNodeCreate(void* data)
 	node->score.f = SG_INF;
 	return node;
 }
-void SG_EXPORT sgAStarNodeDestroy(SGAStarNode* node)
+void SG_CALL sgAStarNodeDestroy(SGAStarNode* node)
 {
 	sgListDestroy(node->links);
 	free(node);
 }
-void SG_EXPORT sgAStarNodeLink(SGAStarNode* from, SGAStarNode* to)
+void SG_CALL sgAStarNodeLink(SGAStarNode* from, SGAStarNode* to)
 {
 	sgAStarNodeUnlink(from, to); // to prevent duplication
 	sgListAppend(from->links, to);
 }
-void SG_EXPORT sgAStarNodeDLink(SGAStarNode* one, SGAStarNode* two)
+void SG_CALL sgAStarNodeDLink(SGAStarNode* one, SGAStarNode* two)
 {
 	sgAStarNodeLink(one, two);
 	sgAStarNodeLink(two, one);
 }
-void SG_EXPORT sgAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to)
+void SG_CALL sgAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to)
 {
 	sgListRemoveItem(from->links, to);
 }
-void SG_EXPORT sgAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two)
+void SG_CALL sgAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two)
 {
 	sgAStarNodeUnlink(one, two);
 	sgAStarNodeUnlink(two, one);

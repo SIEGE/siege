@@ -43,12 +43,12 @@ typedef struct SGMask
 	SGbool** field;
 } SGMask;
 
-SGMask* SG_EXPORT sgMaskCreateSprite(SGSprite* sprite);
-SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint yoffset);
-SGMask* SG_EXPORT sgMaskCreateTexture(SGTexture* texture);
-SGMask* SG_EXPORT sgMaskCreateFile2i(const char* fname, SGint xoffset, SGint yoffset);
-SGMask* SG_EXPORT sgMaskCreateFile(const char* fname);
-void SG_EXPORT sgMaskDestroy(SGMask* mask);
+SGMask* SG_CALL sgMaskCreateSprite(SGSprite* sprite);
+SGMask* SG_CALL sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint yoffset);
+SGMask* SG_CALL sgMaskCreateTexture(SGTexture* texture);
+SGMask* SG_CALL sgMaskCreateFile2i(const char* fname, SGint xoffset, SGint yoffset);
+SGMask* SG_CALL sgMaskCreateFile(const char* fname);
+void SG_CALL sgMaskDestroy(SGMask* mask);
 
 /**
  * \brief Check the collision between two masks
@@ -66,11 +66,11 @@ void SG_EXPORT sgMaskDestroy(SGMask* mask);
  * \todo Use the \c precise field
  * \todo Use bounding box info once BB's are added
  */
-SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
+SGbool SG_CALL sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
 
-void SG_EXPORT sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height);
-SGuint SG_EXPORT sgMaskGetWidth(SGMask* mask);
-SGuint SG_EXPORT sgMaskGetHeight(SGMask* mask);
+void SG_CALL sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height);
+SGuint SG_CALL sgMaskGetWidth(SGMask* mask);
+SGuint SG_CALL sgMaskGetHeight(SGMask* mask);
 
 /**
  * \brief A function used for debugging the mask
@@ -80,7 +80,7 @@ SGuint SG_EXPORT sgMaskGetHeight(SGMask* mask);
  *
  * \todo sg[Sprite|Texture|Surface]CreateMask(SGMask* mask)
  */
-void SG_EXPORT sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent);
+void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent);
 
 #ifdef __cplusplus
 }

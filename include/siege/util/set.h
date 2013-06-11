@@ -24,7 +24,7 @@ extern "C"
 {
 #endif // __cplusplus
 
-typedef SGint SG_EXPORT (SGSetCmp)(const void* a, const void* b, void* data);
+typedef SGint SG_CALL (SGSetCmp)(const void* a, const void* b, void* data);
 
 typedef struct SGSetNode
 {
@@ -42,36 +42,36 @@ typedef struct SGSet
     void* data;
 } SGSet;
 
-void SG_EXPORT _sgSetDestroyNode(SGSetNode* node);
+void SG_CALL _sgSetDestroyNode(SGSetNode* node);
 
-SGSetNode* SG_EXPORT _sgSetNodeSkew(SGSetNode* node);
-SGSetNode* SG_EXPORT _sgSetNodeSplit(SGSetNode* node);
+SGSetNode* SG_CALL _sgSetNodeSkew(SGSetNode* node);
+SGSetNode* SG_CALL _sgSetNodeSplit(SGSetNode* node);
 
-SGSetNode* SG_EXPORT _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node);
-SGSetNode* SG_EXPORT _sgSetNodeRemove(SGSet* set, SGSetNode* root, SGSetNode* node);
+SGSetNode* SG_CALL _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node);
+SGSetNode* SG_CALL _sgSetNodeRemove(SGSet* set, SGSetNode* root, SGSetNode* node);
 
 SGSet* SG_CALL sgSetInit(SGSet* set, SGSetCmp* cmp, void* data);
 void SG_CALL sgSetDeinit(SGSet* set);
 
-SGSet* SG_EXPORT sgSetCreate(SGSetCmp* cmp, void* data);
-void SG_EXPORT sgSetDestroy(SGSet* set);
+SGSet* SG_CALL sgSetCreate(SGSetCmp* cmp, void* data);
+void SG_CALL sgSetDestroy(SGSet* set);
 
-//size_t SG_EXPORT sgSetNumNodes(SGSet* set);
+//size_t SG_CALL sgSetNumNodes(SGSet* set);
 
-SGSetNode* SG_EXPORT sgSetSearch(SGSet* set, const void* item);
+SGSetNode* SG_CALL sgSetSearch(SGSet* set, const void* item);
 
-SGSetNode* SG_EXPORT sgSetInsert(SGSet* set, void* item);
+SGSetNode* SG_CALL sgSetInsert(SGSet* set, void* item);
 
-void SG_EXPORT sgSetRemoveNode(SGSet* set, SGSetNode* node);
-void SG_EXPORT sgSetRemoveItem(SGSet* set, void* item);
+void SG_CALL sgSetRemoveNode(SGSet* set, SGSetNode* node);
+void SG_CALL sgSetRemoveItem(SGSet* set, void* item);
 
-SGSetNode* SG_EXPORT sgSetGetRoot(SGSet* set);
-SGSetNode* SG_EXPORT sgSetGetFirst(SGSet* set);
-SGSetNode* SG_EXPORT sgSetGetLast(SGSet* set);
+SGSetNode* SG_CALL sgSetGetRoot(SGSet* set);
+SGSetNode* SG_CALL sgSetGetFirst(SGSet* set);
+SGSetNode* SG_CALL sgSetGetLast(SGSet* set);
 
-void* SG_EXPORT sgSetPopRoot(SGSet* set);
-void* SG_EXPORT sgSetPopFirst(SGSet* set);
-void* SG_EXPORT sgSetPopLast(SGSet* set);
+void* SG_CALL sgSetPopRoot(SGSet* set);
+void* SG_CALL sgSetPopFirst(SGSet* set);
+void* SG_CALL sgSetPopLast(SGSet* set);
 
 #ifdef __cplusplus
 }

@@ -71,8 +71,8 @@ typedef struct SGTurtle
 	/// @}
 } SGTurtle;
 
-SGbool SG_EXPORT _sgTurtleInit(void);
-SGbool SG_EXPORT _sgTurtleDeinit(void);
+SGbool SG_CALL _sgTurtleInit(void);
+SGbool SG_CALL _sgTurtleDeinit(void);
 
 /// @{
 /**
@@ -88,7 +88,7 @@ SGbool SG_EXPORT _sgTurtleDeinit(void);
  *
  * \return The newly created turtle if successful, NULL otherwise.
  */
-SGTurtle* SG_EXPORT sgTurtleCreateRads(float x, float y, float rads, SGbool draw);
+SGTurtle* SG_CALL sgTurtleCreateRads(float x, float y, float rads, SGbool draw);
 /**
  * \brief Create a turtle with angle in degrees
  * \memberof SGTurtle
@@ -100,14 +100,14 @@ SGTurtle* SG_EXPORT sgTurtleCreateRads(float x, float y, float rads, SGbool draw
  *
  * \return The newly created turtle if successful, NULL otherwise.
  */
-SGTurtle* SG_EXPORT sgTurtleCreateDegs(float x, float y, float degs, SGbool draw);
+SGTurtle* SG_CALL sgTurtleCreateDegs(float x, float y, float degs, SGbool draw);
 /**
  * \brief Destroy a turtle
  * \memberof SGTurtle
  *
  * \param turtle The turtle to destroy
  */
-void SG_EXPORT sgTurtleDestroy(SGTurtle* turtle);
+void SG_CALL sgTurtleDestroy(SGTurtle* turtle);
 /// @}
 
 /**
@@ -123,7 +123,7 @@ void SG_EXPORT sgTurtleDestroy(SGTurtle* turtle);
  * This function sets the turtle's state (position, angle, pen state)
  * to what it was when the turtle was first created.
  */
-void SG_EXPORT sgTurtleReset(SGTurtle* turtle);
+void SG_CALL sgTurtleReset(SGTurtle* turtle);
 /**
  * \brief Push the turtle's state to the stack
  * \memberof SGTurtle
@@ -136,7 +136,7 @@ void SG_EXPORT sgTurtleReset(SGTurtle* turtle);
  * \sa
  * 	sgTurtlePop
  */
-void SG_EXPORT sgTurtlePush(SGTurtle* turtle);
+void SG_CALL sgTurtlePush(SGTurtle* turtle);
 /**
  * \brief Pop the turtle's state off the stack and set it
  * \memberof SGTurtle
@@ -149,7 +149,7 @@ void SG_EXPORT sgTurtlePush(SGTurtle* turtle);
  * \sa
  * 	sgTurtlePush
  */
-void SG_EXPORT sgTurtlePop(SGTurtle* turtle);
+void SG_CALL sgTurtlePop(SGTurtle* turtle);
 /// @}
 
 /**
@@ -166,7 +166,7 @@ void SG_EXPORT sgTurtlePop(SGTurtle* turtle);
  * This function makes the turtle go \a dist steps ahead,
  * drawing a line in between if the pen is down.
  */
-void SG_EXPORT sgTurtleStep(SGTurtle* turtle, float dist);
+void SG_CALL sgTurtleStep(SGTurtle* turtle, float dist);
 /**
  * \brief Move the turtle to the absolute coordinates
  * \memberof SGTurtle
@@ -181,7 +181,7 @@ void SG_EXPORT sgTurtleStep(SGTurtle* turtle, float dist);
  * \sa
  * 	sgTurtleJump
  */
-void SG_EXPORT sgTurtleMove(SGTurtle* turtle, float x, float y);
+void SG_CALL sgTurtleMove(SGTurtle* turtle, float x, float y);
 /**
  * \brief Teleport the turtle to a new position without drawing
  * \memberof SGTurtle
@@ -196,7 +196,7 @@ void SG_EXPORT sgTurtleMove(SGTurtle* turtle, float x, float y);
  * 	sgTurtleMove
  * 	sgTurtleSetPos
  */
-void SG_EXPORT sgTurtleJump(SGTurtle* turtle, float x, float y);
+void SG_CALL sgTurtleJump(SGTurtle* turtle, float x, float y);
 /// @}
 
 /**
@@ -216,7 +216,7 @@ void SG_EXPORT sgTurtleJump(SGTurtle* turtle, float x, float y);
  * 	sgTurtlePenDown
  * 	sgTurtleSetPen
  */
-void SG_EXPORT sgTurtlePenUp(SGTurtle* turtle);
+void SG_CALL sgTurtlePenUp(SGTurtle* turtle);
 /**
  * \brief Put the pen down (enable drawing)
  * \memberof SGTurtle
@@ -230,7 +230,7 @@ void SG_EXPORT sgTurtlePenUp(SGTurtle* turtle);
  * 	sgTurtlePenUp
  * 	sgTurtleSetPen
  */
-void SG_EXPORT sgTurtlePenDown(SGTurtle* turtle);
+void SG_CALL sgTurtlePenDown(SGTurtle* turtle);
 
 /**
  * \brief Change the pen state
@@ -245,7 +245,7 @@ void SG_EXPORT sgTurtlePenDown(SGTurtle* turtle);
  * 	sgTurtlePenUp
  * 	sgTurtlePenDown
  */
-void SG_EXPORT sgTurtleSetPen(SGTurtle* turtle, SGbool pen);
+void SG_CALL sgTurtleSetPen(SGTurtle* turtle, SGbool pen);
 /**
  * \brief Get the turtle's pen state
  * \memberof SGTurtle
@@ -254,7 +254,7 @@ void SG_EXPORT sgTurtleSetPen(SGTurtle* turtle, SGbool pen);
  *
  * \return SG_TRUE if pen is down (drawing is enabled), SG_FALSE otherwise.
  */
-SGbool SG_EXPORT sgTurtleGetPen(SGTurtle* turtle);
+SGbool SG_CALL sgTurtleGetPen(SGTurtle* turtle);
 /// @}
 
 /**
@@ -273,7 +273,7 @@ SGbool SG_EXPORT sgTurtleGetPen(SGTurtle* turtle);
  *	Alias for \ref sgTurtleJump "sgTurtleJump",
  *	added for consistency and completeness.
  */
-void SG_EXPORT sgTurtleSetPos(SGTurtle* turtle, float x, float y);
+void SG_CALL sgTurtleSetPos(SGTurtle* turtle, float x, float y);
 /**
  * \brief Set the turtle's x position, preserving y
  * \memberof SGTurtle
@@ -281,7 +281,7 @@ void SG_EXPORT sgTurtleSetPos(SGTurtle* turtle, float x, float y);
  * \param turtle The turtle of which position to change
  * \param[in] x New x position
  */
-void SG_EXPORT sgTurtleSetPosX(SGTurtle* turtle, float x);
+void SG_CALL sgTurtleSetPosX(SGTurtle* turtle, float x);
 /**
  * \brief Set the turtle's y position, preserving x
  * \memberof SGTurtle
@@ -289,7 +289,7 @@ void SG_EXPORT sgTurtleSetPosX(SGTurtle* turtle, float x);
  * \param turtle The turtle of which position to change
  * \param[in] y New y position
  */
-void SG_EXPORT sgTurtleSetPosY(SGTurtle* turtle, float y);
+void SG_CALL sgTurtleSetPosY(SGTurtle* turtle, float y);
 /**
  * \brief Get the turtle's current position
  * \memberof SGTurtle
@@ -298,7 +298,7 @@ void SG_EXPORT sgTurtleSetPosY(SGTurtle* turtle, float y);
  * \param[out] x X position pointer
  * \param[out] y Y position pointer
  */
-void SG_EXPORT sgTurtleGetPos(SGTurtle* turtle, float* x, float* y);
+void SG_CALL sgTurtleGetPos(SGTurtle* turtle, float* x, float* y);
 /**
  * \brief Get the turtle's x position
  * \memberof SGTurtle
@@ -311,7 +311,7 @@ void SG_EXPORT sgTurtleGetPos(SGTurtle* turtle, float* x, float* y);
  *	If both x and y coordinates are required,
  *	consider \ref sgTurtleGetPos "sgTurtleGetPos".
  */
-float SG_EXPORT sgTurtleGetPosX(SGTurtle* turtle);
+float SG_CALL sgTurtleGetPosX(SGTurtle* turtle);
 /**
  * \brief Get the turtle's y position
  * \memberof SGTurtle
@@ -324,7 +324,7 @@ float SG_EXPORT sgTurtleGetPosX(SGTurtle* turtle);
  *	If both x and y coordinates are required,
  *	consider \ref sgTurtleGetPos "sgTurtleGetPos".
  */
-float SG_EXPORT sgTurtleGetPosY(SGTurtle* turtle);
+float SG_CALL sgTurtleGetPosY(SGTurtle* turtle);
 /// @}
 
 /**
@@ -338,7 +338,7 @@ float SG_EXPORT sgTurtleGetPosY(SGTurtle* turtle);
  * \param turtle The turtle to turn
  * \param rads The angle in radians
  */
-void SG_EXPORT sgTurtleTurnLeftRads(SGTurtle* turtle, float rads);
+void SG_CALL sgTurtleTurnLeftRads(SGTurtle* turtle, float rads);
 /**
  * \brief Turn the turtle left by angle in degrees
  * \memberof SGTurtle
@@ -346,7 +346,7 @@ void SG_EXPORT sgTurtleTurnLeftRads(SGTurtle* turtle, float rads);
  * \param turtle The turtle to turn
  * \param degs The angle in degrees
  */
-void SG_EXPORT sgTurtleTurnLeftDegs(SGTurtle* turtle, float degs);
+void SG_CALL sgTurtleTurnLeftDegs(SGTurtle* turtle, float degs);
 /**
  * \brief Turn the turtle right by angle in radians
  * \memberof SGTurtle
@@ -354,7 +354,7 @@ void SG_EXPORT sgTurtleTurnLeftDegs(SGTurtle* turtle, float degs);
  * \param turtle The turtle to turn
  * \param rads The angle in radians
  */
-void SG_EXPORT sgTurtleTurnRightRads(SGTurtle* turtle, float rads);
+void SG_CALL sgTurtleTurnRightRads(SGTurtle* turtle, float rads);
 /**
  * \brief Turn the turtle right by angle in degrees
  * \memberof SGTurtle
@@ -362,7 +362,7 @@ void SG_EXPORT sgTurtleTurnRightRads(SGTurtle* turtle, float rads);
  * \param turtle The turtle to turn
  * \param degs The angle in degrees
  */
-void SG_EXPORT sgTurtleTurnRightDegs(SGTurtle* turtle, float degs);
+void SG_CALL sgTurtleTurnRightDegs(SGTurtle* turtle, float degs);
 
 /**
  * \brief Set the turtle's angle in radians
@@ -371,7 +371,7 @@ void SG_EXPORT sgTurtleTurnRightDegs(SGTurtle* turtle, float degs);
  * \param turtle The turtle of which angle to set
  * \param[in] rads The angle in radians
  */
-void SG_EXPORT sgTurtleSetAngleRads(SGTurtle* turtle, float rads);
+void SG_CALL sgTurtleSetAngleRads(SGTurtle* turtle, float rads);
 /**
  * \brief Get the turtle's angle in radians
  * \memberof SGTurtle
@@ -380,7 +380,7 @@ void SG_EXPORT sgTurtleSetAngleRads(SGTurtle* turtle, float rads);
  *
  * \return Turtle's angle in radians
  */
-float SG_EXPORT sgTurtleGetAngleRads(SGTurtle* turtle);
+float SG_CALL sgTurtleGetAngleRads(SGTurtle* turtle);
 
 /**
  * \brief Set the turtle's angle in degrees
@@ -389,7 +389,7 @@ float SG_EXPORT sgTurtleGetAngleRads(SGTurtle* turtle);
  * \param turtle The turtle of which angle to set
  * \param[in] degs The angle in degrees
  */
-void SG_EXPORT sgTurtleSetAngleDegs(SGTurtle* turtle, float degs);
+void SG_CALL sgTurtleSetAngleDegs(SGTurtle* turtle, float degs);
 /**
  * \brief Get the turtle's angle in degrees
  * \memberof SGTurtle
@@ -398,7 +398,7 @@ void SG_EXPORT sgTurtleSetAngleDegs(SGTurtle* turtle, float degs);
  *
  * \return Turtle's angle in degrees
  */
-float SG_EXPORT sgTurtleGetAngleDegs(SGTurtle* turtle);
+float SG_CALL sgTurtleGetAngleDegs(SGTurtle* turtle);
 /// @}
 
 #ifdef __cplusplus

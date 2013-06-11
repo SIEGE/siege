@@ -25,7 +25,7 @@
 #include <pthread.h>
 #endif
 
-SGThreadKey* SG_EXPORT sgThreadKeyCreate(void)
+SGThreadKey* SG_CALL sgThreadKeyCreate(void)
 {
     SGThreadKey* key = malloc(sizeof(SGThreadKey));
 
@@ -50,7 +50,7 @@ SGThreadKey* SG_EXPORT sgThreadKeyCreate(void)
 
     return key;
 }
-void SG_EXPORT sgThreadKeyDestroy(SGThreadKey* key)
+void SG_CALL sgThreadKeyDestroy(SGThreadKey* key)
 {
     if(!key)
         return;
@@ -63,7 +63,7 @@ void SG_EXPORT sgThreadKeyDestroy(SGThreadKey* key)
     free(key);
 }
 
-void SG_EXPORT sgThreadKeySetVal(SGThreadKey* key, void* val)
+void SG_CALL sgThreadKeySetVal(SGThreadKey* key, void* val)
 {
 #ifdef __WIN32__
     TlsSetValue(*(DWORD*)key->handle, val);
@@ -71,7 +71,7 @@ void SG_EXPORT sgThreadKeySetVal(SGThreadKey* key, void* val)
     pthread_setspecific(*(pthread_key_t*)key->handle, val);
 #endif
 }
-void* SG_EXPORT sgThreadKeyGetVal(SGThreadKey* key)
+void* SG_CALL sgThreadKeyGetVal(SGThreadKey* key)
 {
 #ifdef __WIN32__
     return TlsGetValue(*(DWORD*)key->handle);

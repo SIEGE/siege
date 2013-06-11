@@ -46,24 +46,24 @@ typedef struct SGSMap
 SGSMap* SG_CALL sgSMapInit(SGSMap* smap);
 void SG_CALL sgSMapDeinit(SGSMap* smap);
 
-SGSMap* SG_EXPORT sgSMapCreate(void);
-void SG_EXPORT sgSMapDestroy(SGSMap* smap);
+SGSMap* SG_CALL sgSMapCreate(void);
+void SG_CALL sgSMapDestroy(SGSMap* smap);
 
-void* SG_EXPORT sgSMapReplace(SGSMap* smap, const char* key, void* val);
-void* SG_EXPORT sgSMapAssign(SGSMap* smap, const char* key, void* val);
-void* SG_EXPORT sgSMapFind(SGSMap* smap, const char* key);
-void* SG_EXPORT sgSMapRemove(SGSMap* smap, const char* key);
+void* SG_CALL sgSMapReplace(SGSMap* smap, const char* key, void* val);
+void* SG_CALL sgSMapAssign(SGSMap* smap, const char* key, void* val);
+void* SG_CALL sgSMapFind(SGSMap* smap, const char* key);
+void* SG_CALL sgSMapRemove(SGSMap* smap, const char* key);
 
-SGSMapNode* SG_EXPORT sgSMapAssignNode(SGSMap* smap, const char* key, void* val);
-SGSMapNode* SG_EXPORT sgSMapFindNode(SGSMap* smap, const char* key);
+SGSMapNode* SG_CALL sgSMapAssignNode(SGSMap* smap, const char* key, void* val);
+SGSMapNode* SG_CALL sgSMapFindNode(SGSMap* smap, const char* key);
 
-SGSMapNode* SG_EXPORT sgSMapGetRoot(SGSMap* smap);
-SGSMapNode* SG_EXPORT sgSMapGetFirst(SGSMap* smap);
-SGSMapNode* SG_EXPORT sgSMapGetLast(SGSMap* smap);
+SGSMapNode* SG_CALL sgSMapGetRoot(SGSMap* smap);
+SGSMapNode* SG_CALL sgSMapGetFirst(SGSMap* smap);
+SGSMapNode* SG_CALL sgSMapGetLast(SGSMap* smap);
 
-void* SG_EXPORT sgSMapPopRoot(SGSMap* smap);
-void* SG_EXPORT sgSMapPopFirst(SGSMap* smap);
-void* SG_EXPORT sgSMapPopLast(SGSMap* smap);
+void* SG_CALL sgSMapPopRoot(SGSMap* smap);
+void* SG_CALL sgSMapPopFirst(SGSMap* smap);
+void* SG_CALL sgSMapPopLast(SGSMap* smap);
 
 #ifdef __cplusplus
 }

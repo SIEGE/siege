@@ -23,7 +23,7 @@ typedef struct FontFace
     float scale;
 } FontFace;
 
-SGenum SG_EXPORT sgmFontsFaceCreate(void** face, SGStream* stream)
+SGenum SG_CALL sgmFontsFaceCreate(void** face, SGStream* stream)
 {
     if(!stream || !stream->read || !stream->seek || !stream->tell)
         return SG_INVALID_VALUE;
@@ -59,7 +59,7 @@ err:
     free(*face);
     return SG_UNKNOWN_ERROR;
 }
-SGenum SG_EXPORT sgmFontsFaceDestroy(void* face)
+SGenum SG_CALL sgmFontsFaceDestroy(void* face)
 {
     if(!face) return SG_OK; // SG_INVALID_VALUE
     FontFace* fface = face;
@@ -68,7 +68,7 @@ SGenum SG_EXPORT sgmFontsFaceDestroy(void* face)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmFontsFaceSetHeight(void* face, float height, SGuint dpi)
+SGenum SG_CALL sgmFontsFaceSetHeight(void* face, float height, SGuint dpi)
 {
     if(!face) return SG_INVALID_VALUE;
     FontFace* fface = face;
@@ -76,7 +76,7 @@ SGenum SG_EXPORT sgmFontsFaceSetHeight(void* face, float height, SGuint dpi)
     fface->scale = stbtt_ScaleForMappingEmToPixels(&fface->info, height * dpi / 72.0);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmFontsFaceGetMetrics(void* face, float* ascent, float* descent, float* linegap)
+SGenum SG_CALL sgmFontsFaceGetMetrics(void* face, float* ascent, float* descent, float* linegap)
 {
     if(!face) return SG_INVALID_VALUE;
     FontFace* fface = face;
@@ -90,7 +90,7 @@ SGenum SG_EXPORT sgmFontsFaceGetMetrics(void* face, float* ascent, float* descen
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmFontsCharsCreate(void* face, const SGdchar* chars, size_t numchars, float* width, float* height, float* prex, float* prey, float* postx, float* posty, size_t* datawidth, size_t* dataheight, void** data)
+SGenum SG_CALL sgmFontsCharsCreate(void* face, const SGdchar* chars, size_t numchars, float* width, float* height, float* prex, float* prey, float* postx, float* posty, size_t* datawidth, size_t* dataheight, void** data)
 {
     if(!face) return SG_INVALID_VALUE;
 
@@ -122,13 +122,13 @@ SGenum SG_EXPORT sgmFontsCharsCreate(void* face, const SGdchar* chars, size_t nu
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmFontsCharsFreeData(void* data)
+SGenum SG_CALL sgmFontsCharsFreeData(void* data)
 {
     stbtt_FreeBitmap(data, NULL);
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmFontsCharsGetKerning(void* face, const SGdchar* chars, size_t numchars, float* kerning)
+SGenum SG_CALL sgmFontsCharsGetKerning(void* face, const SGdchar* chars, size_t numchars, float* kerning)
 {
     if(!face) return SG_INVALID_VALUE;
     FontFace* fface = face;

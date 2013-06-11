@@ -14,18 +14,18 @@
 
 #include "common.h"
 
-SGenum SG_EXPORT sgmGraphicsViewportCreate(void** viewport, void* context)
+SGenum SG_CALL sgmGraphicsViewportCreate(void** viewport, void* context)
 {
     // OpenGL doesn't need this
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmGraphicsViewportCreateView(void** viewport, void* context, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height)
-SGenum SG_EXPORT sgmGraphicsViewportDestroy(void* viewport)
+//SGenum SG_CALL sgmGraphicsViewportCreateView(void** viewport, void* context, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height)
+SGenum SG_CALL sgmGraphicsViewportDestroy(void* viewport)
 {
     // neither does it need this
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsViewportSetView(void* viewport, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height)
+SGenum SG_CALL sgmGraphicsViewportSetView(void* viewport, SGuint wx, SGuint wy, SGuint wwidth, SGuint wheight, float x, float y, float width, float height)
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -37,4 +37,4 @@ SGenum SG_EXPORT sgmGraphicsViewportSetView(void* viewport, SGuint wx, SGuint wy
     glLoadIdentity();
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmGraphicsViewportGetView(void* viewport, SGuint* wx, SGuint* wy, SGuint* wwidth, SGuint* wheight, float* x, float* y, float* width, float* height)
+//SGenum SG_CALL sgmGraphicsViewportGetView(void* viewport, SGuint* wx, SGuint* wy, SGuint* wwidth, SGuint* wheight, float* x, float* y, float* width, float* height)

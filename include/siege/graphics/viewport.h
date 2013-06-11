@@ -41,28 +41,28 @@ SGList* _sg_viewList;
 SGViewport* _sg_viewMain;
 #endif // SG_BUILD_LIBRARY
 
-SGbool SG_EXPORT _sgViewportInit(void);
-SGbool SG_EXPORT _sgViewportDeinit(void);
+SGbool SG_CALL _sgViewportInit(void);
+SGbool SG_CALL _sgViewportDeinit(void);
 
-SGViewport* SG_EXPORT sgViewportCreate4i4f(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey);
-SGViewport* SG_EXPORT sgViewportCreate4i(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey);
-SGViewport* SG_EXPORT sgViewportCreate(void);
-void SG_EXPORT sgViewportDestroy(SGViewport* viewport);
-void SG_EXPORT sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey);
-void SG_EXPORT sgViewportSet4i(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey);
-void SG_EXPORT sgViewportReset(SGViewport* viewport);
+SGViewport* SG_CALL sgViewportCreate4i4f(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey);
+SGViewport* SG_CALL sgViewportCreate4i(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey);
+SGViewport* SG_CALL sgViewportCreate(void);
+void SG_CALL sgViewportDestroy(SGViewport* viewport);
+void SG_CALL sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey);
+void SG_CALL sgViewportSet4i(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey);
+void SG_CALL sgViewportReset(SGViewport* viewport);
 
-void SG_EXPORT sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy);
-void SG_EXPORT sgViewportSetWSize(SGViewport* viewport, SGuint wsizex, SGuint wsizey);
-void SG_EXPORT sgViewportSetPos(SGViewport* viewport, float posx, float posy);
-void SG_EXPORT sgViewportSetSize(SGViewport* viewport, float sizex, float sizey);
-void SG_EXPORT sgViewportZoomCentered(SGViewport* viewport, float factor);
+void SG_CALL sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy);
+void SG_CALL sgViewportSetWSize(SGViewport* viewport, SGuint wsizex, SGuint wsizey);
+void SG_CALL sgViewportSetPos(SGViewport* viewport, float posx, float posy);
+void SG_CALL sgViewportSetSize(SGViewport* viewport, float sizex, float sizey);
+void SG_CALL sgViewportZoomCentered(SGViewport* viewport, float factor);
 
-SGbool SG_EXPORT sgViewportInsideWindow(SGViewport* viewport, float x, float y);
-SGbool SG_EXPORT sgViewportInsideLocal(SGViewport* viewport, float x, float y);
+SGbool SG_CALL sgViewportInsideWindow(SGViewport* viewport, float x, float y);
+SGbool SG_CALL sgViewportInsideLocal(SGViewport* viewport, float x, float y);
 
-void SG_EXPORT sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* wy, float lx, float ly);
-void SG_EXPORT sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly, float wx, float wy);
+void SG_CALL sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* wy, float lx, float ly);
+void SG_CALL sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly, float wx, float wy);
 
 #ifdef __cplusplus
 }

@@ -35,25 +35,25 @@ typedef struct SGPhysicsSpace
 SGPhysicsSpace* _sg_physSpaceMain;
 #endif // SG_BUILD_LIBRARY
 
-SGbool SG_EXPORT _sgPhysicsSpaceInit(void);
-SGbool SG_EXPORT _sgPhysicsSpaceDeinit(void);
+SGbool SG_CALL _sgPhysicsSpaceInit(void);
+SGbool SG_CALL _sgPhysicsSpaceDeinit(void);
 
-SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceCreate(void);
-void SG_EXPORT sgPhysicsSpaceDestroy(SGPhysicsSpace* space);
+SGPhysicsSpace* SG_CALL sgPhysicsSpaceCreate(void);
+void SG_CALL sgPhysicsSpaceDestroy(SGPhysicsSpace* space);
 
-void SG_EXPORT sgPhysicsSpaceStep(SGPhysicsSpace* space, float time);
+void SG_CALL sgPhysicsSpaceStep(SGPhysicsSpace* space, float time);
 
-void SG_EXPORT sgPhysicsSpaceSetIterations(SGPhysicsSpace* space, SGuint iterations);
-void SG_EXPORT sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y);
-//void SG_EXPORT sgPhysicsSpaceGetGravity(SGPhysicsSpace* space, float* x, float* y);
-void SG_EXPORT sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping);
-//float SG_EXPORT sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
+void SG_CALL sgPhysicsSpaceSetIterations(SGPhysicsSpace* space, SGuint iterations);
+void SG_CALL sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y);
+//void SG_CALL sgPhysicsSpaceGetGravity(SGPhysicsSpace* space, float* x, float* y);
+void SG_CALL sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping);
+//float SG_CALL sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
 
-void SG_EXPORT sgPhysicsSpaceSetData(SGPhysicsSpace* space, void* data);
-void* SG_EXPORT sgPhysicsSpaceGetData(SGPhysicsSpace* space);
+void SG_CALL sgPhysicsSpaceSetData(SGPhysicsSpace* space, void* data);
+void* SG_CALL sgPhysicsSpaceGetData(SGPhysicsSpace* space);
 
-struct SGPhysicsBody* SG_EXPORT sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space);
-SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceGetDefault(void);
+struct SGPhysicsBody* SG_CALL sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space);
+SGPhysicsSpace* SG_CALL sgPhysicsSpaceGetDefault(void);
 
 #ifdef __cplusplus
 }

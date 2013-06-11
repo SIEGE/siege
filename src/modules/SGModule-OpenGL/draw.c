@@ -113,7 +113,7 @@ static void disableAll(ContextData* cdata, TextureData* tdata)
     }
 }
 
-SGenum SG_EXPORT sgmGraphicsSetVertexPointer(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr)
+SGenum SG_CALL sgmGraphicsSetVertexPointer(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr)
 {
     GLenum gltype = typeSGtoGL(type);
     if(!gltype) return SG_INVALID_ENUM;
@@ -124,7 +124,7 @@ SGenum SG_EXPORT sgmGraphicsSetVertexPointer(void* context, SGubyte size, SGenum
     glVertexPointer(size, gltype, stride, ptr);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsSetColorPointer(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr)
+SGenum SG_CALL sgmGraphicsSetColorPointer(void* context, SGubyte size, SGenum type, size_t stride, const void* ptr)
 {
     GLenum gltype = typeSGtoGL(type);
     if(!gltype) return SG_INVALID_ENUM;
@@ -135,7 +135,7 @@ SGenum SG_EXPORT sgmGraphicsSetColorPointer(void* context, SGubyte size, SGenum 
     glColorPointer(size, gltype, stride, ptr);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsSetTexCoordPointer(void* context, SGenum type, size_t stride, const void* ptr)
+SGenum SG_CALL sgmGraphicsSetTexCoordPointer(void* context, SGenum type, size_t stride, const void* ptr)
 {
     GLenum gltype = typeSGtoGL(type);
     if(!gltype) return SG_INVALID_ENUM;
@@ -146,7 +146,7 @@ SGenum SG_EXPORT sgmGraphicsSetTexCoordPointer(void* context, SGenum type, size_
     glTexCoordPointer(2, gltype, stride, ptr);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsSetIndexPointer(void* context, SGenum type, size_t stride, const void* ptr)
+SGenum SG_CALL sgmGraphicsSetIndexPointer(void* context, SGenum type, size_t stride, const void* ptr)
 {
     GLenum gltype = typeSGtoGL(type);
     if(!gltype) return SG_INVALID_ENUM;
@@ -157,7 +157,7 @@ SGenum SG_EXPORT sgmGraphicsSetIndexPointer(void* context, SGenum type, size_t s
     glIndexPointer(gltype, stride, ptr);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsDrawArrays(void* context, void* texture, SGenum mode, size_t first, size_t count)
+SGenum SG_CALL sgmGraphicsDrawArrays(void* context, void* texture, SGenum mode, size_t first, size_t count)
 {
     GLenum glmode = modeSGtoGL(mode);
     if(!glmode) return SG_INVALID_ENUM;
@@ -168,7 +168,7 @@ SGenum SG_EXPORT sgmGraphicsDrawArrays(void* context, void* texture, SGenum mode
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsDrawElements(void* context, void* texture, SGenum mode, size_t count, SGenum type, const void* indices)
+SGenum SG_CALL sgmGraphicsDrawElements(void* context, void* texture, SGenum mode, size_t count, SGenum type, const void* indices)
 {
     GLenum glmode = modeSGtoGL(mode);
     if(!glmode) return SG_INVALID_ENUM;
@@ -183,7 +183,7 @@ SGenum SG_EXPORT sgmGraphicsDrawElements(void* context, void* texture, SGenum mo
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum mode, size_t numverts, float* vertices, float* texcoords, float* colors)
+SGenum SG_CALL sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum mode, size_t numverts, float* vertices, float* texcoords, float* colors)
 {
     sgmGraphicsSetVertexPointer(context, 3, SG_FLOAT, 0, vertices);
     if(texcoords)
@@ -200,23 +200,23 @@ SGenum SG_EXPORT sgmGraphicsDrawPrimitive(void* context, void* texture, SGenum m
 
     return ret;
 }
-SGenum SG_EXPORT sgmGraphicsDrawSetColor(void* context, float* color)
+SGenum SG_CALL sgmGraphicsDrawSetColor(void* context, float* color)
 {
     glColor4fv(color);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsDrawPointSetSize(void* context, float size)
+SGenum SG_CALL sgmGraphicsDrawPointSetSize(void* context, float size)
 {
     glPointSize(size);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsDrawLineSetWidth(void* context, float size)
+SGenum SG_CALL sgmGraphicsDrawLineSetWidth(void* context, float size)
 {
     glLineWidth(size);
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum dst)
+SGenum SG_CALL sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum dst)
 {
     static const GLenum table[] = {
             GL_ZERO, GL_ONE,
@@ -241,7 +241,7 @@ SGenum SG_EXPORT sgmGraphicsDrawSetBlendFunc(void* context, SGenum src, SGenum d
 #define SG_GRAPHICS_EQUATION_MIN                0x03
 #define SG_GRAPHICS_EQUATION_MAX                0x04*/
 // todo
-SGenum SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
+SGenum SG_CALL sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
 {
     static const GLenum table[] = {
             GL_FUNC_ADD,
@@ -258,7 +258,7 @@ SGenum SG_EXPORT sgmGraphicsDrawSetBlendEquation(void* context, SGenum equation)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsDrawSetDepthFunc(void* context, SGenum func)
+SGenum SG_CALL sgmGraphicsDrawSetDepthFunc(void* context, SGenum func)
 {
     GLenum glfunc = 0;
     switch(func)
@@ -278,7 +278,7 @@ SGenum SG_EXPORT sgmGraphicsDrawSetDepthFunc(void* context, SGenum func)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsDrawSetDepthTest(void* context, SGbool test)
+SGenum SG_CALL sgmGraphicsDrawSetDepthTest(void* context, SGbool test)
 {
     if(test)
         glEnable(GL_DEPTH_TEST);
@@ -287,7 +287,7 @@ SGenum SG_EXPORT sgmGraphicsDrawSetDepthTest(void* context, SGbool test)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsDrawSetAlphaFunc(void* context, SGenum func, float ref)
+SGenum SG_CALL sgmGraphicsDrawSetAlphaFunc(void* context, SGenum func, float ref)
 {
     GLenum glfunc = 0;
     switch(func)
@@ -307,7 +307,7 @@ SGenum SG_EXPORT sgmGraphicsDrawSetAlphaFunc(void* context, SGenum func, float r
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsDrawSetAlphaTest(void* context, SGbool test)
+SGenum SG_CALL sgmGraphicsDrawSetAlphaTest(void* context, SGbool test)
 {
     if(test)
         glEnable(GL_ALPHA_TEST);
@@ -316,7 +316,7 @@ SGenum SG_EXPORT sgmGraphicsDrawSetAlphaTest(void* context, SGbool test)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmGraphicsDrawSetPointSmooth(void* context, SGbool smooth)
+SGenum SG_CALL sgmGraphicsDrawSetPointSmooth(void* context, SGbool smooth)
 {
     GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
 
@@ -329,7 +329,7 @@ SGenum SG_EXPORT sgmGraphicsDrawSetPointSmooth(void* context, SGbool smooth)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsDrawSetLineSmooth(void* context, SGbool smooth)
+SGenum SG_CALL sgmGraphicsDrawSetLineSmooth(void* context, SGbool smooth)
 {
     GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
 
@@ -342,7 +342,7 @@ SGenum SG_EXPORT sgmGraphicsDrawSetLineSmooth(void* context, SGbool smooth)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsDrawSetPolygonSmooth(void* context, SGbool smooth)
+SGenum SG_CALL sgmGraphicsDrawSetPolygonSmooth(void* context, SGbool smooth)
 {
     GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
 

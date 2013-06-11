@@ -31,10 +31,10 @@ extern "C"
 
 struct SGRand;
 
-typedef void SG_EXPORT (SGRandCreateFunction)(struct SGRand* rand);
-typedef void SG_EXPORT (SGRandDestroyFunction)(struct SGRand* rand);
-typedef void SG_EXPORT (SGRandSeedFunction)(struct SGRand* rand, SGulong seed, SGulong index);
-typedef SGulong SG_EXPORT (SGRandGenFunction)(struct SGRand* rand);
+typedef void SG_CALL (SGRandCreateFunction)(struct SGRand* rand);
+typedef void SG_CALL (SGRandDestroyFunction)(struct SGRand* rand);
+typedef void SG_CALL (SGRandSeedFunction)(struct SGRand* rand, SGulong seed, SGulong index);
+typedef SGulong SG_CALL (SGRandGenFunction)(struct SGRand* rand);
 
 typedef struct SGRandCallbacks
 {
@@ -53,16 +53,16 @@ typedef struct SGRand
     SGulong max;
 } SGRand;
 
-SGRand* SG_EXPORT sgRandCreate(SGenum type);
-SGRand* SG_EXPORT sgRandCreateCB(SGRandCallbacks* cbs, SGulong max);
-void SG_EXPORT sgRandDestroy(SGRand* rand);
+SGRand* SG_CALL sgRandCreate(SGenum type);
+SGRand* SG_CALL sgRandCreateCB(SGRandCallbacks* cbs, SGulong max);
+void SG_CALL sgRandDestroy(SGRand* rand);
 
-void SG_EXPORT sgRandSeed(SGRand* rand, SGulong seed, SGulong index);
+void SG_CALL sgRandSeed(SGRand* rand, SGulong seed, SGulong index);
 
-SGulong SG_EXPORT sgRandGen(SGRand* rand);
-float SG_EXPORT sgRandGenf(SGRand* rand);
-float SG_EXPORT sgRandGen1f(SGRand* rand, float max);
-float SG_EXPORT sgRandGen2f(SGRand* rand, float min, float max);
+SGulong SG_CALL sgRandGen(SGRand* rand);
+float SG_CALL sgRandGenf(SGRand* rand);
+float SG_CALL sgRandGen1f(SGRand* rand, float max);
+float SG_CALL sgRandGen2f(SGRand* rand, float min, float max);
 
 #ifdef __cplusplus
 }

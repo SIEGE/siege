@@ -30,10 +30,10 @@ extern "C"
 	if(fptr != NULL)    \
 		(p##name) = fptr; // not completely valid C99, but blame POSIX for that
 
-typedef SGuint SG_EXPORT SGMModuleInitFunction(SGModuleInfo** minfo);
-typedef SGuint SG_EXPORT SGMModuleExitFunction(SGModuleInfo* minfo);
-typedef SGuint SG_EXPORT SGMModuleTickFunction(SGulong tick);
-typedef SGuint SG_EXPORT SGMModuleMatchFunction(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
+typedef SGuint SG_CALL SGMModuleInitFunction(SGModuleInfo** minfo);
+typedef SGuint SG_CALL SGMModuleExitFunction(SGModuleInfo* minfo);
+typedef SGuint SG_CALL SGMModuleTickFunction(SGulong tick);
+typedef SGuint SG_CALL SGMModuleMatchFunction(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
 
 typedef struct SGModule
 {
@@ -48,22 +48,22 @@ typedef struct SGModule
     SGMModuleMatchFunction* sgmModuleMatch;
 } SGModule;
 
-char* SG_EXPORT _sgModuleGetFile(const char* module);
+char* SG_CALL _sgModuleGetFile(const char* module);
 
-SGModule* SG_EXPORT sgModuleLoad(const char* name);
-void SG_EXPORT sgModuleUnload(SGModule* module);
+SGModule* SG_CALL sgModuleLoad(const char* name);
+void SG_CALL sgModuleUnload(SGModule* module);
 
-void SG_EXPORT sgModuleSetLoadDirsv(size_t ndirs, va_list args);
-void SG_EXPORT sgModuleSetLoadDirs(size_t ndirs, ...);
-void SG_EXPORT sgModuleSetLoadDir(const char* dir);
-char** SG_EXPORT sgModuleGetLoadDirs(size_t* ndirs);
+void SG_CALL sgModuleSetLoadDirsv(size_t ndirs, va_list args);
+void SG_CALL sgModuleSetLoadDirs(size_t ndirs, ...);
+void SG_CALL sgModuleSetLoadDir(const char* dir);
+char** SG_CALL sgModuleGetLoadDirs(size_t* ndirs);
 
-void SG_EXPORT sgModuleSetLoadPrefixesv(size_t nprefs, va_list args);
-void SG_EXPORT sgModuleSetLoadPrefixes(size_t nprefs, ...);
-void SG_EXPORT sgModuleSetLoadPrefix(const char* prefix);
-char** SG_EXPORT sgModuleGetLoadPrefixes(size_t* nprefs);
+void SG_CALL sgModuleSetLoadPrefixesv(size_t nprefs, va_list args);
+void SG_CALL sgModuleSetLoadPrefixes(size_t nprefs, ...);
+void SG_CALL sgModuleSetLoadPrefix(const char* prefix);
+char** SG_CALL sgModuleGetLoadPrefixes(size_t* nprefs);
 
-SGList* SG_EXPORT sgModuleGetList(void);
+SGList* SG_CALL sgModuleGetList(void);
 
 #ifdef __cplusplus
 }

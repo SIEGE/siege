@@ -27,13 +27,13 @@ typedef struct SGSemaphore
     void* handle;
 } SGSemaphore;
 
-SGSemaphore* SG_EXPORT sgSemaphoreCreate(SGuint init, SGuint max);
-void SG_EXPORT sgSemaphoreDestroy(SGSemaphore* sem);
+SGSemaphore* SG_CALL sgSemaphoreCreate(SGuint init, SGuint max);
+void SG_CALL sgSemaphoreDestroy(SGSemaphore* sem);
 
-SGbool SG_EXPORT sgSemaphoreTryWait(SGSemaphore* sem);
-void SG_EXPORT sgSemaphoreWait(SGSemaphore* sem);
-void SG_EXPORT sgSemaphorePost(SGSemaphore* sem);
-void SG_EXPORT sgSemaphoreSignal(SGSemaphore* sem);
+SGbool SG_CALL sgSemaphoreTryWait(SGSemaphore* sem);
+void SG_CALL sgSemaphoreWait(SGSemaphore* sem);
+void SG_CALL sgSemaphorePost(SGSemaphore* sem);
+void SG_CALL sgSemaphoreSignal(SGSemaphore* sem);
 
 #ifdef __cplusplus
 }

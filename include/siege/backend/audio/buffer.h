@@ -25,14 +25,14 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_FPTR(sgmAudioBufferCreate)(void** buffer);
-    //SGuint SG_EXPORT SG_FPTR(sgmAudioBufferCreateData)(void** buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen);
-    SGuint SG_EXPORT SG_FPTR(sgmAudioBufferDestroy)(void* buffer);
-    SGuint SG_EXPORT SG_FPTR(sgmAudioBufferSetData)(void* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen);
-    //SGuint SG_EXPORT SG_FPTR(sgmAudioBufferGetData)(void* buffer, SGuint* channels, SGuint* format, SGuint* frequency, void* data, SGuint* datalen);
-    //SGuint SG_EXPORT SG_FPTR(sgmAudioBufferFreeData)(void* data);
+    SGuint SG_CALL SG_FPTR(sgmAudioBufferCreate)(void** buffer);
+    //SGuint SG_CALL SG_FPTR(sgmAudioBufferCreateData)(void** buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen);
+    SGuint SG_CALL SG_FPTR(sgmAudioBufferDestroy)(void* buffer);
+    SGuint SG_CALL SG_FPTR(sgmAudioBufferSetData)(void* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen);
+    //SGuint SG_CALL SG_FPTR(sgmAudioBufferGetData)(void* buffer, SGuint* channels, SGuint* format, SGuint* frequency, void* data, SGuint* datalen);
+    //SGuint SG_CALL SG_FPTR(sgmAudioBufferFreeData)(void* data);
 
-    SGuint SG_EXPORT SG_FPTR(sgmAudioBufferSetHandle)(void* buffer, void* handle);
+    SGuint SG_CALL SG_FPTR(sgmAudioBufferSetHandle)(void* buffer, void* handle);
 #ifdef __cplusplus
 }
 #endif

@@ -26,8 +26,8 @@
 extern "C"
 {
 #endif
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsLoad)(SGStream* stream, size_t* width, size_t* height, SGenum* bpp, void** data);
-    SGenum SG_EXPORT SG_FPTR(sgmGraphicsLoadFreeData)(void* data);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsLoad)(SGStream* stream, size_t* width, size_t* height, SGenum* bpp, void** data);
+    SGenum SG_CALL SG_FPTR(sgmGraphicsLoadFreeData)(void* data);
 #ifdef __cplusplus
 }
 #endif

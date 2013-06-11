@@ -26,12 +26,12 @@
 extern "C"
 {
 #endif
-    SGenum SG_EXPORT SG_FPTR(sgmAudioFileCreate)(void** file, SGStream* stream, SGuint* channels, SGuint* format, SGuint* frequency);
-    SGenum SG_EXPORT SG_FPTR(sgmAudioFileDestroy)(void* file);
-    SGenum SG_EXPORT SG_FPTR(sgmAudioFileNumSamples)(void* file, SGuint* samples);
-    SGenum SG_EXPORT SG_FPTR(sgmAudioFileRead)(void* file, void* data, SGuint* datalen);
+    SGenum SG_CALL SG_FPTR(sgmAudioFileCreate)(void** file, SGStream* stream, SGuint* channels, SGuint* format, SGuint* frequency);
+    SGenum SG_CALL SG_FPTR(sgmAudioFileDestroy)(void* file);
+    SGenum SG_CALL SG_FPTR(sgmAudioFileNumSamples)(void* file, SGuint* samples);
+    SGenum SG_CALL SG_FPTR(sgmAudioFileRead)(void* file, void* data, SGuint* datalen);
 
-    SGenum SG_EXPORT SG_FPTR(sgmAudioFileGetHandle)(void* file, void** handle);
+    SGenum SG_CALL SG_FPTR(sgmAudioFileGetHandle)(void* file, void** handle);
 #ifdef __cplusplus
 }
 #endif

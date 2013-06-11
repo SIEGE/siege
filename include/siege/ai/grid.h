@@ -51,22 +51,22 @@ typedef struct SGNavGrid
 	SGbool wdiag;
 } SGNavGrid;
 
-float SG_EXPORT _sgNavGridG(SGAStarNode* from, SGAStarNode* to);
-float SG_EXPORT _sgNavGridH(SGAStarNode* from, SGAStarNode* to);
-SGbool SG_EXPORT _sgNavGridGoal(SGAStarNode* from, SGAStarNode* to);
+float SG_CALL _sgNavGridG(SGAStarNode* from, SGAStarNode* to);
+float SG_CALL _sgNavGridH(SGAStarNode* from, SGAStarNode* to);
+SGbool SG_CALL _sgNavGridGoal(SGAStarNode* from, SGAStarNode* to);
 
-SGNavGrid* SG_EXPORT sgNavGridCreate(SGuint width, SGuint height, SGbool diag, SGbool wdiag);
-void SG_EXPORT sgNavGridDestroy(SGNavGrid* grid);
-SGAStarNode* SG_EXPORT sgNavGridGetNode(SGNavGrid* grid, SGuint x, SGuint y);
-SGNavGridData* SG_EXPORT sgNavGridGetData(SGNavGrid* grid, SGuint x, SGuint y);
-void SG_EXPORT sgNavGridAddClear(SGNavGrid* grid, SGuint x, SGuint y);
-void SG_EXPORT sgNavGridAddWall(SGNavGrid* grid, SGuint x, SGuint y);
-void SG_EXPORT sgNavGridAddStart(SGNavGrid* grid, SGuint x, SGuint y);
-void SG_EXPORT sgNavGridAddGoal(SGNavGrid* grid, SGuint x, SGuint y);
-void SG_EXPORT sgNavGridSearchCreate(SGNavGrid* grid);
-SGbool SG_EXPORT sgNavGridSearchStep(SGNavGrid* grid);
-SGbool SG_EXPORT sgNavGridGoalFound(SGNavGrid* grid);
-SGList* SG_EXPORT sgNavGridSearchPath(SGNavGrid* grid, size_t* pathlen);
+SGNavGrid* SG_CALL sgNavGridCreate(SGuint width, SGuint height, SGbool diag, SGbool wdiag);
+void SG_CALL sgNavGridDestroy(SGNavGrid* grid);
+SGAStarNode* SG_CALL sgNavGridGetNode(SGNavGrid* grid, SGuint x, SGuint y);
+SGNavGridData* SG_CALL sgNavGridGetData(SGNavGrid* grid, SGuint x, SGuint y);
+void SG_CALL sgNavGridAddClear(SGNavGrid* grid, SGuint x, SGuint y);
+void SG_CALL sgNavGridAddWall(SGNavGrid* grid, SGuint x, SGuint y);
+void SG_CALL sgNavGridAddStart(SGNavGrid* grid, SGuint x, SGuint y);
+void SG_CALL sgNavGridAddGoal(SGNavGrid* grid, SGuint x, SGuint y);
+void SG_CALL sgNavGridSearchCreate(SGNavGrid* grid);
+SGbool SG_CALL sgNavGridSearchStep(SGNavGrid* grid);
+SGbool SG_CALL sgNavGridGoalFound(SGNavGrid* grid);
+SGList* SG_CALL sgNavGridSearchPath(SGNavGrid* grid, size_t* pathlen);
 
 #ifdef __cplusplus
 }

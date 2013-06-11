@@ -27,15 +27,15 @@ extern "C"
 #endif
     typedef struct SGCoreKeyboardCallbacks
     {
-        void SG_EXPORT (*key)(void* keyboard, SGuint key, SGbool down);
-        void SG_EXPORT (*chr)(void* keyboard, SGuint chr);
+        void SG_CALL (*key)(void* keyboard, SGuint key, SGbool down);
+        void SG_CALL (*chr)(void* keyboard, SGuint chr);
     } SGCoreKeyboardCallbacks;
 
-    SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardCreate)(void** keyboard, void* window);
-    SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardDestroy)(void* keyboard);
+    SGuint SG_CALL SG_FPTR(sgmCoreKeyboardCreate)(void** keyboard, void* window);
+    SGuint SG_CALL SG_FPTR(sgmCoreKeyboardDestroy)(void* keyboard);
 
-    SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardSetCallbacks)(void* keyboard, SGCoreKeyboardCallbacks* callbacks);
-    //SGuint SG_EXPORT SG_FPTR(sgmCoreKeyboardGetCallbacks)(void* keyboard, SGCoreKeyboardCallbacks** callbacks);
+    SGuint SG_CALL SG_FPTR(sgmCoreKeyboardSetCallbacks)(void* keyboard, SGCoreKeyboardCallbacks* callbacks);
+    //SGuint SG_CALL SG_FPTR(sgmCoreKeyboardGetCallbacks)(void* keyboard, SGCoreKeyboardCallbacks** callbacks);
 #ifdef __cplusplus
 }
 #endif

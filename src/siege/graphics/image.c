@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-SGImageData* SG_EXPORT sgImageDataCreateStream(SGStream* stream, SGbool delstream)
+SGImageData* SG_CALL sgImageDataCreateStream(SGStream* stream, SGbool delstream)
 {
     SGImageData* idata = malloc(sizeof(SGImageData));
     if(!idata) goto err;
@@ -44,14 +44,14 @@ err:
     }
     return NULL;
 }
-SGImageData* SG_EXPORT sgImageDataCreateFile(const char* fname)
+SGImageData* SG_CALL sgImageDataCreateFile(const char* fname)
 {
     SGStream* stream = sgStreamCreateFile(fname, "r");
     if(!stream)
         fprintf(stderr, "Could not load image %s\n", fname);
     return sgImageDataCreateStream(stream, SG_TRUE);
 }
-SGImageData* SG_EXPORT sgImageDataCreateData(size_t width, size_t height, SGenum bpp, void* data)
+SGImageData* SG_CALL sgImageDataCreateData(size_t width, size_t height, SGenum bpp, void* data)
 {
     SGImageData* idata = malloc(sizeof(SGImageData));
     idata->width = width;
@@ -61,11 +61,11 @@ SGImageData* SG_EXPORT sgImageDataCreateData(size_t width, size_t height, SGenum
 
     return idata;
 }
-SGImageData* SG_EXPORT sgImageDataCreate(size_t width, size_t height, SGenum bpp)
+SGImageData* SG_CALL sgImageDataCreate(size_t width, size_t height, SGenum bpp)
 {
     return sgImageDataCreateData(width, height, bpp, NULL);
 }
-void SG_EXPORT sgImageDataDestroy(SGImageData* idata)
+void SG_CALL sgImageDataDestroy(SGImageData* idata)
 {
     if(!idata) return;
 
@@ -74,10 +74,10 @@ void SG_EXPORT sgImageDataDestroy(SGImageData* idata)
     free(idata);
 }
 
-//SGbool SG_EXPORT sgImageDataConvert(SGImageData* idata, SGenum bpp);
+//SGbool SG_CALL sgImageDataConvert(SGImageData* idata, SGenum bpp);
 
-//void SG_EXPORT sgImageDataSetData(SGImageData* idata, size_t width, size_t height, SGenum bpp, void* data);
-void SG_EXPORT sgImageDataGetData(SGImageData* idata, size_t* width, size_t* height, SGenum* bpp, void** data)
+//void SG_CALL sgImageDataSetData(SGImageData* idata, size_t width, size_t height, SGenum bpp, void* data);
+void SG_CALL sgImageDataGetData(SGImageData* idata, size_t* width, size_t* height, SGenum* bpp, void** data)
 {
     if(width) *width = idata->width;
     if(height) *height = idata->height;
@@ -85,21 +85,21 @@ void SG_EXPORT sgImageDataGetData(SGImageData* idata, size_t* width, size_t* hei
     if(data) *data = idata->data;
 }
 
-void SG_EXPORT sgImageDataGetSize(SGImageData* idata, size_t* width, size_t* height)
+void SG_CALL sgImageDataGetSize(SGImageData* idata, size_t* width, size_t* height)
 {
     if(width) *width = idata->width;
     if(height) *height = idata->height;
 }
-size_t SG_EXPORT sgImageDataGetWidth(SGImageData* idata)
+size_t SG_CALL sgImageDataGetWidth(SGImageData* idata)
 {
     return idata->width;
 }
-size_t SG_EXPORT sgImageDataGetHeight(SGImageData* idata)
+size_t SG_CALL sgImageDataGetHeight(SGImageData* idata)
 {
     return idata->height;
 }
 
-SGenum SG_EXPORT sgImageDataGetBpp(SGImageData* idata)
+SGenum SG_CALL sgImageDataGetBpp(SGImageData* idata)
 {
     return idata->bpp;
 }

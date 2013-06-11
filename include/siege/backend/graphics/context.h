@@ -25,10 +25,10 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsContextCreate)(void** context, SGuint width, SGuint height, SGuint bpp);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsContextDestroy)(void* context);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsContextResize)(void* context, SGuint width, SGuint height);
-    SGuint SG_EXPORT SG_FPTR(sgmGraphicsContextClear)(void* context, float* color);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsContextCreate)(void** context, SGuint width, SGuint height, SGuint bpp);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsContextDestroy)(void* context);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsContextResize)(void* context, SGuint width, SGuint height);
+    SGuint SG_CALL SG_FPTR(sgmGraphicsContextClear)(void* context, float* color);
 #ifdef __cplusplus
 }
 #endif

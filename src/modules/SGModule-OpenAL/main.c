@@ -18,7 +18,7 @@
 #include <string.h>
 #include <stdio.h>
 
-SGenum SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
+SGenum SG_CALL sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*) calloc(1, sizeof(SGModuleInfo));
     (*minfo)->vmajor = SG_VERSION_MAJOR;
@@ -55,7 +55,7 @@ SGenum SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
+SGenum SG_CALL sgmModuleExit(SGModuleInfo* minfo)
 {
     alcDestroyContext(context);
     alcCloseDevice(device);
@@ -65,7 +65,7 @@ SGenum SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
+SGenum SG_CALL sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
 {
     *ok = SG_TRUE; // we're independent of other modules
     return SG_OK;

@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
+void SG_CALL _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
 {
     SGuint joy = 0;
     if(psgmCoreJoystickGetID != NULL)
@@ -41,7 +41,7 @@ void SG_EXPORT _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
 
     sgEntityEventSignal(1, evt, joy, button);
 }
-void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
+void SG_CALL _sg_cbJoystickMove(void* joystick, float* axis)
 {
     SGuint joy = 0;
     if(psgmCoreJoystickGetID != NULL)
@@ -56,7 +56,7 @@ void SG_EXPORT _sg_cbJoystickMove(void* joystick, float* axis)
     sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, axis, _sg_joyJoys[joy]->numaxis);
 }
 
-void SG_EXPORT _sgJoystickUpdate(void)
+void SG_CALL _sgJoystickUpdate(void)
 {
     SGenum i, j;
     for(i = 0; i < _sg_joyNum; i++)
@@ -65,7 +65,7 @@ void SG_EXPORT _sgJoystickUpdate(void)
                 sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKBUTH, i, j);
 }
 
-SGbool SG_EXPORT _sgJoystickInit(void)
+SGbool SG_CALL _sgJoystickInit(void)
 {
     _sg_joyCallbacks.button = _sg_cbJoystickButton;
     _sg_joyCallbacks.move = _sg_cbJoystickMove;
@@ -82,7 +82,7 @@ SGbool SG_EXPORT _sgJoystickInit(void)
 
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgJoystickDeinit(void)
+SGbool SG_CALL _sgJoystickDeinit(void)
 {
     SGuint i;
     for(i = 0; i < _sg_joyNum; i++)
@@ -92,7 +92,7 @@ SGbool SG_EXPORT _sgJoystickDeinit(void)
     return SG_TRUE;
 }
 
-_SGJoystick* SG_EXPORT _sgJoystickCreate(SGuint id)
+_SGJoystick* SG_CALL _sgJoystickCreate(SGuint id)
 {
     _SGJoystick* joy = malloc(sizeof(_SGJoystick));
     if(joy == NULL)
@@ -125,7 +125,7 @@ _SGJoystick* SG_EXPORT _sgJoystickCreate(SGuint id)
 
     return joy;
 }
-void SG_EXPORT _sgJoystickDestroy(_SGJoystick* joy)
+void SG_CALL _sgJoystickDestroy(_SGJoystick* joy)
 {
     if(joy == NULL)
         return;
@@ -142,22 +142,22 @@ void SG_EXPORT _sgJoystickDestroy(_SGJoystick* joy)
     free(joy);
 }
 
-size_t SG_EXPORT sgJoystickGetNumJoysticks(void)
+size_t SG_CALL sgJoystickGetNumJoysticks(void)
 {
     return _sg_joyNum;
 }
-size_t SG_EXPORT sgJoystickGetNumButtons(SGuint joy)
+size_t SG_CALL sgJoystickGetNumButtons(SGuint joy)
 {
     if(joy > _sg_joyNum) return 0;
     return _sg_joyJoys[joy]->numbuttons;
 }
-size_t SG_EXPORT sgJoystickGetNumAxis(SGuint joy)
+size_t SG_CALL sgJoystickGetNumAxis(SGuint joy)
 {
     if(joy > _sg_joyNum) return 0;
     return _sg_joyJoys[joy]->numaxis;
 }
 
-SGbool SG_EXPORT sgJoystickGetButtonPrev(SGuint joy, SGuint button)
+SGbool SG_CALL sgJoystickGetButtonPrev(SGuint joy, SGuint button)
 {
     if(joy >= _sg_joyNum)
         return SG_FALSE;
@@ -166,7 +166,7 @@ SGbool SG_EXPORT sgJoystickGetButtonPrev(SGuint joy, SGuint button)
 
     return _sg_joyJoys[joy]->bprev[button];
 }
-SGbool SG_EXPORT sgJoystickGetButton(SGuint joy, SGuint button)
+SGbool SG_CALL sgJoystickGetButton(SGuint joy, SGuint button)
 {
     if(joy >= _sg_joyNum)
         return SG_FALSE;
@@ -175,7 +175,7 @@ SGbool SG_EXPORT sgJoystickGetButton(SGuint joy, SGuint button)
 
     return _sg_joyJoys[joy]->bcurr[button];
 }
-SGbool SG_EXPORT sgJoystickGetButtonPress(SGuint joy, SGuint button)
+SGbool SG_CALL sgJoystickGetButtonPress(SGuint joy, SGuint button)
 {
     if(joy >= _sg_joyNum)
         return SG_FALSE;
@@ -184,7 +184,7 @@ SGbool SG_EXPORT sgJoystickGetButtonPress(SGuint joy, SGuint button)
 
     return _sg_joyJoys[joy]->bcurr[button] && !_sg_joyJoys[joy]->bprev[button];
 }
-SGbool SG_EXPORT sgJoystickGetButtonRelease(SGuint joy, SGuint button)
+SGbool SG_CALL sgJoystickGetButtonRelease(SGuint joy, SGuint button)
 {
     if(joy >= _sg_joyNum)
         return SG_FALSE;
@@ -194,14 +194,14 @@ SGbool SG_EXPORT sgJoystickGetButtonRelease(SGuint joy, SGuint button)
     return _sg_joyJoys[joy]->bprev[button] && !_sg_joyJoys[joy]->bcurr[button];
 }
 
-float* SG_EXPORT sgJoystickGetAxisPrev(SGuint joy)
+float* SG_CALL sgJoystickGetAxisPrev(SGuint joy)
 {
     if(joy >= _sg_joyNum)
         return NULL;
 
     return _sg_joyJoys[joy]->aprev;
 }
-float SG_EXPORT sgJoystickGetAxisIndexPrev(SGuint joy, SGuint axis)
+float SG_CALL sgJoystickGetAxisIndexPrev(SGuint joy, SGuint axis)
 {
     if(joy >= _sg_joyNum)
         return SG_NAN;
@@ -211,14 +211,14 @@ float SG_EXPORT sgJoystickGetAxisIndexPrev(SGuint joy, SGuint axis)
     return _sg_joyJoys[joy]->aprev[axis];
 }
 
-float* SG_EXPORT sgJoystickGetAxis(SGuint joy)
+float* SG_CALL sgJoystickGetAxis(SGuint joy)
 {
     if(joy >= _sg_joyNum)
         return NULL;
 
     return _sg_joyJoys[joy]->acurr;
 }
-float SG_EXPORT sgJoystickGetAxisIndex(SGuint joy, SGuint axis)
+float SG_CALL sgJoystickGetAxisIndex(SGuint joy, SGuint axis)
 {
     if(joy >= _sg_joyNum)
         return SG_NAN;
@@ -228,14 +228,14 @@ float SG_EXPORT sgJoystickGetAxisIndex(SGuint joy, SGuint axis)
     return _sg_joyJoys[joy]->acurr[axis];
 }
 
-float* SG_EXPORT sgJoystickGetAxisDelta(SGuint joy)
+float* SG_CALL sgJoystickGetAxisDelta(SGuint joy)
 {
     if(joy >= _sg_joyNum)
         return NULL;
 
     return _sg_joyJoys[joy]->adelt;
 }
-float SG_EXPORT sgJoystickGetAxisIndexDelta(SGuint joy, SGuint axis)
+float SG_CALL sgJoystickGetAxisIndexDelta(SGuint joy, SGuint axis)
 {
     if(joy >= _sg_joyNum)
         return SG_NAN;

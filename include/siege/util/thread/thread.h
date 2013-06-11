@@ -29,8 +29,8 @@ extern "C"
 
 struct SGThread;
 
-typedef void SG_EXPORT (SGThreadDestroy)(void);
-typedef SGint SG_EXPORT (SGThreadFunction)(void* data);
+typedef void SG_CALL (SGThreadDestroy)(void);
+typedef SGint SG_CALL (SGThreadFunction)(void* data);
 typedef struct SGThread
 {
     void* handle;
@@ -45,23 +45,23 @@ typedef struct SGThread
     SGuint susp;
 } SGThread;
 
-SGThread* SG_EXPORT sgThreadCreate(size_t ssize, SGThreadFunction* func, void* data);
-void SG_EXPORT sgThreadDestroy(SGThread* thread);
+SGThread* SG_CALL sgThreadCreate(size_t ssize, SGThreadFunction* func, void* data);
+void SG_CALL sgThreadDestroy(SGThread* thread);
 
-void SG_EXPORT sgThreadStart(SGThread* thread);
-SGuint SG_EXPORT sgThreadResume(SGThread* thread); /* TODO: make suspend/resume work properly in POSIX systems */
-SGuint SG_EXPORT sgThreadSuspend(SGThread* thread);
+void SG_CALL sgThreadStart(SGThread* thread);
+SGuint SG_CALL sgThreadResume(SGThread* thread); /* TODO: make suspend/resume work properly in POSIX systems */
+SGuint SG_CALL sgThreadSuspend(SGThread* thread);
 
-void SG_EXPORT sgThreadAtExit(SGThreadDestroy* dtor);
-//void SG_EXPORT sgThreadYield(void);
-void SG_EXPORT sgThreadExit(SGint ret);
-SGThread* SG_EXPORT sgThreadGetMain(void);
-SGThread* SG_EXPORT sgThreadGetCurrent(void);
+void SG_CALL sgThreadAtExit(SGThreadDestroy* dtor);
+//void SG_CALL sgThreadYield(void);
+void SG_CALL sgThreadExit(SGint ret);
+SGThread* SG_CALL sgThreadGetMain(void);
+SGThread* SG_CALL sgThreadGetCurrent(void);
 
-SGint SG_EXPORT sgThreadJoin(SGThread* thread);
-void SG_EXPORT sgThreadKill(SGThread* thread, SGint ret);
+SGint SG_CALL sgThreadJoin(SGThread* thread);
+void SG_CALL sgThreadKill(SGThread* thread, SGint ret);
 
-SGenum SG_EXPORT sgThreadGetStatus(SGThread* thread);
+SGenum SG_CALL sgThreadGetStatus(SGThread* thread);
 
 #ifdef __cplusplus
 }

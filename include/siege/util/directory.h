@@ -31,11 +31,11 @@ typedef struct SGDirectory
     void* ibuf;
 } SGDirectory;
 
-SGDirectory* SG_EXPORT sgDirectoryOpen(const char* fname);
-void SG_EXPORT sgDirectoryClose(SGDirectory* dir);
+SGDirectory* SG_CALL sgDirectoryOpen(const char* fname);
+void SG_CALL sgDirectoryClose(SGDirectory* dir);
 
-char* SG_EXPORT sgDirectoryNext(SGDirectory* dir, char* buf, size_t buflen);
-void SG_EXPORT sgDirectoryRewind(SGDirectory* dir);
+char* SG_CALL sgDirectoryNext(SGDirectory* dir, char* buf, size_t buflen);
+void SG_CALL sgDirectoryRewind(SGDirectory* dir);
 
 #ifdef __cplusplus
 }

@@ -38,7 +38,7 @@ extern "C"
 #define SG_CONV_TYPE_LAST    8
 
 //typedef size_t (SGNormalizeFunction)(void* out, const void* in, size_t* inlen);
-typedef size_t SG_EXPORT (SGConvFunction)(void* out, const void* in, size_t* inlen, SGbool strict);
+typedef size_t SG_CALL (SGConvFunction)(void* out, const void* in, size_t* inlen, SGbool strict);
 
 typedef struct SGConv
 {
@@ -47,13 +47,13 @@ typedef struct SGConv
     SGenum src;
 } SGConv;
 
-SGConv* SG_EXPORT sgConvCreate(SGenum dst, SGenum src);
-void SG_EXPORT sgConvDestroy(SGConv* conv);
+SGConv* SG_CALL sgConvCreate(SGenum dst, SGenum src);
+void SG_CALL sgConvDestroy(SGConv* conv);
 
-size_t SG_EXPORT sgConvEstimate(SGConv* conv, size_t inlen);
+size_t SG_CALL sgConvEstimate(SGConv* conv, size_t inlen);
 
-size_t SG_EXPORT sgConv(SGConv* conv, void* out, size_t outlen, const void* in, size_t inlen, SGbool strict);
-size_t SG_EXPORT sgConv2s(SGenum dst, SGenum src, void* out, size_t outlen, const void* in, size_t inlen, SGbool strict);
+size_t SG_CALL sgConv(SGConv* conv, void* out, size_t outlen, const void* in, size_t inlen, SGbool strict);
+size_t SG_CALL sgConv2s(SGenum dst, SGenum src, void* out, size_t outlen, const void* in, size_t inlen, SGbool strict);
 
 #ifdef __cplusplus
 }

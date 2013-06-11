@@ -27,12 +27,12 @@ typedef struct SGMutex
     void* handle;
 } SGMutex;
 
-SGMutex* SG_EXPORT sgMutexCreate(void);
-void SG_EXPORT sgMutexDestroy(SGMutex* mutex);
+SGMutex* SG_CALL sgMutexCreate(void);
+void SG_CALL sgMutexDestroy(SGMutex* mutex);
 
-SGbool SG_EXPORT sgMutexTryLock(SGMutex* mutex);
-void SG_EXPORT sgMutexLock(SGMutex* mutex);
-void SG_EXPORT sgMutexUnlock(SGMutex* mutex);
+SGbool SG_CALL sgMutexTryLock(SGMutex* mutex);
+void SG_CALL sgMutexLock(SGMutex* mutex);
+void SG_CALL sgMutexUnlock(SGMutex* mutex);
 
 #ifdef __cplusplus
 }

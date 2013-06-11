@@ -28,7 +28,7 @@
  * add function pointer methods and registration to allow custom update of particles
  */
 
-void SG_EXPORT _sgParticleInit(SGParticle* particle, float x, float y, float angle, float speed, float alpha, float width, float height, float rotation)
+void SG_CALL _sgParticleInit(SGParticle* particle, float x, float y, float angle, float speed, float alpha, float width, float height, float rotation)
 {
 	particle->x = x;
 	particle->y = y;
@@ -41,14 +41,14 @@ void SG_EXPORT _sgParticleInit(SGParticle* particle, float x, float y, float ang
 	particle->rotation = rotation;
 }
 
-SGParticle* SG_EXPORT _sgParticleCreate(float x, float y, float angle, float speed)
+SGParticle* SG_CALL _sgParticleCreate(float x, float y, float angle, float speed)
 {
 	SGParticle* particle = malloc(sizeof(SGParticle));
 	_sgParticleInit(particle, x, y, angle, speed, 1.0, 16, 16, 0);
 	return particle;
 }
 
-SGEmitter* SG_EXPORT sgEmitterCreate(
+SGEmitter* SG_CALL sgEmitterCreate(
 		float x,              /* initial x of particles */
 		float y,              /* initial y of particles */
 		float angle,          /* direction of particles */
@@ -86,7 +86,7 @@ SGEmitter* SG_EXPORT sgEmitterCreate(
 	return emitter;
 }
 
-void SG_EXPORT _sgParticleUpdate(SGParticle* particle, float time, float friction)
+void SG_CALL _sgParticleUpdate(SGParticle* particle, float time, float friction)
 {
 	particle->speed -= friction * time;
 	if (particle->speed < 0)
@@ -96,7 +96,7 @@ void SG_EXPORT _sgParticleUpdate(SGParticle* particle, float time, float frictio
 	particle->age += time;
 }
 
-void SG_EXPORT sgEmitterUpdate(SGEmitter* emitter, float time)
+void SG_CALL sgEmitterUpdate(SGEmitter* emitter, float time)
 {
 	int i;
 	SGbool condition;
@@ -148,7 +148,7 @@ void SG_EXPORT sgEmitterUpdate(SGEmitter* emitter, float time)
 	}
 }
 
-void SG_EXPORT sgEmitterDraw(SGEmitter* emitter)
+void SG_CALL sgEmitterDraw(SGEmitter* emitter)
 {
 	int i;
 	float angle;
@@ -180,11 +180,11 @@ void SG_EXPORT sgEmitterDraw(SGEmitter* emitter)
 	sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
-void SG_EXPORT sgEmitterSetUpdateFunc(SGEmitter* emitter, SGParticleUpdate* cbUpdate)
+void SG_CALL sgEmitterSetUpdateFunc(SGEmitter* emitter, SGParticleUpdate* cbUpdate)
 {
 	emitter->cbUpdate = cbUpdate;
 }
-void SG_EXPORT sgEmitterSetSilent(SGEmitter* emitter, SGbool boolean)
+void SG_CALL sgEmitterSetSilent(SGEmitter* emitter, SGbool boolean)
 {
 	emitter->silent = boolean;
 }

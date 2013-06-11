@@ -100,7 +100,7 @@ size_t _sgStrbufAppend(size_t sz, size_t pos, void* out, size_t outlen, const vo
 
 static SGMutex* _sg_strMutex;
 
-static void SG_EXPORT _sgStringDeinit(void)
+static void SG_CALL _sgStringDeinit(void)
 {
     sgMutexDestroy(_sg_strMutex);
 }
@@ -110,13 +110,13 @@ static void SG_EXPORT _sgStringDeinit(void)
  *
  * Maybe a global mutex for just this purpose?
  */
-static void SG_EXPORT _sgStringInit(void)
+static void SG_CALL _sgStringInit(void)
 {
     sgThreadAtExit(_sgStringDeinit);
     _sg_strMutex = sgMutexCreate();
 }
 
-size_t SG_EXPORT sgPrintfW(const wchar_t* format, ...)
+size_t SG_CALL sgPrintfW(const wchar_t* format, ...)
 {
     size_t ret;
     va_list args;
@@ -125,7 +125,7 @@ size_t SG_EXPORT sgPrintfW(const wchar_t* format, ...)
     va_end(args);
     return ret;
 }
-size_t SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args)
+size_t SG_CALL sgPrintfvW(const wchar_t* format, va_list args)
 {
     if(!_sg_strMutex)
         _sgStringInit();
@@ -134,7 +134,7 @@ size_t SG_EXPORT sgPrintfvW(const wchar_t* format, va_list args)
     sgMutexUnlock(_sg_strMutex);
     return ret;
 }
-size_t SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...)
+size_t SG_CALL SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...)
 {
     size_t ret;
     va_list args;
@@ -143,7 +143,7 @@ size_t SG_EXPORT SG_HINT_PRINTF(1, 2) sgPrintf(const char* format, ...)
     va_end(args);
     return ret;
 }
-size_t SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args)
+size_t SG_CALL SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args)
 {
     if(!_sg_strMutex)
         _sgStringInit();
@@ -153,7 +153,7 @@ size_t SG_EXPORT SG_HINT_PRINTF(1, 0) sgPrintfv(const char* format, va_list args
     return ret;
 }
 
-size_t SG_EXPORT sgSPrintfW(wchar_t* buf, size_t buflen, const wchar_t* format, ...)
+size_t SG_CALL sgSPrintfW(wchar_t* buf, size_t buflen, const wchar_t* format, ...)
 {
     size_t ret;
     va_list args;
@@ -162,7 +162,7 @@ size_t SG_EXPORT sgSPrintfW(wchar_t* buf, size_t buflen, const wchar_t* format, 
     va_end(args);
     return ret;
 }
-size_t SG_EXPORT sgSPrintfvW(wchar_t* buf, size_t buflen, const wchar_t* format, va_list args)
+size_t SG_CALL sgSPrintfvW(wchar_t* buf, size_t buflen, const wchar_t* format, va_list args)
 {
     int ret = vswprintf(buf, buflen, format, args);
     if(ret < 0)
@@ -170,7 +170,7 @@ size_t SG_EXPORT sgSPrintfvW(wchar_t* buf, size_t buflen, const wchar_t* format,
     return ret;
 }
 
-wchar_t* SG_EXPORT sgAPrintfW(const wchar_t* format, ...)
+wchar_t* SG_CALL sgAPrintfW(const wchar_t* format, ...)
 {
     wchar_t* str;
     va_list args;
@@ -179,7 +179,7 @@ wchar_t* SG_EXPORT sgAPrintfW(const wchar_t* format, ...)
     va_end(args);
     return str;
 }
-wchar_t* SG_EXPORT sgAPrintfvW(const wchar_t* format, va_list args)
+wchar_t* SG_CALL sgAPrintfvW(const wchar_t* format, va_list args)
 {
     wchar_t buf;
     size_t len;
@@ -197,7 +197,7 @@ wchar_t* SG_EXPORT sgAPrintfvW(const wchar_t* format, va_list args)
     return str;
 }
 
-size_t SG_EXPORT SG_HINT_PRINTF(3, 4) sgSPrintf(char* buf, size_t buflen, const char* format, ...)
+size_t SG_CALL SG_HINT_PRINTF(3, 4) sgSPrintf(char* buf, size_t buflen, const char* format, ...)
 {
     size_t ret;
 	va_list args;
@@ -206,7 +206,7 @@ size_t SG_EXPORT SG_HINT_PRINTF(3, 4) sgSPrintf(char* buf, size_t buflen, const 
 	va_end(args);
     return ret;
 }
-size_t SG_EXPORT SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const char* format, va_list args)
+size_t SG_CALL SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const char* format, va_list args)
 {
     int ret = vsnprintf(buf, buflen, format, args);
     if(ret < 0)
@@ -214,7 +214,7 @@ size_t SG_EXPORT SG_HINT_PRINTF(3, 0) sgSPrintfv(char* buf, size_t buflen, const
     return ret;
 }
 
-char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgAPrintf(const char* format, ...)
+char* SG_CALL SG_HINT_PRINTF(1, 2) sgAPrintf(const char* format, ...)
 {
     char* str;
 	va_list args;
@@ -223,7 +223,7 @@ char* SG_EXPORT SG_HINT_PRINTF(1, 2) sgAPrintf(const char* format, ...)
 	va_end(args);
     return str;
 }
-char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgAPrintfv(const char* format, va_list args)
+char* SG_CALL SG_HINT_PRINTF(1, 0) sgAPrintfv(const char* format, va_list args)
 {
     char buf;
 
@@ -240,16 +240,16 @@ char* SG_EXPORT SG_HINT_PRINTF(1, 0) sgAPrintfv(const char* format, va_list args
     return str;
 }
 
-void SG_EXPORT sgAPrintFree(void* str)
+void SG_CALL sgAPrintFree(void* str)
 {
     free(str);
 }
 
-SGbool SG_EXPORT sgStartsWith(const char* text, const char* what)
+SGbool SG_CALL sgStartsWith(const char* text, const char* what)
 {
     return !strncmp(text, what, strlen(what));
 }
-char* SG_EXPORT sgSpaceEnd(const char* text)
+char* SG_CALL sgSpaceEnd(const char* text)
 {
     if(!text)
         return NULL;
@@ -258,16 +258,16 @@ char* SG_EXPORT sgSpaceEnd(const char* text)
         text++;
     return (char*)text;
 }
-char* SG_EXPORT sgLineEnd(const char* text)
+char* SG_CALL sgLineEnd(const char* text)
 {
     if(!text) return NULL;
     return (char*)text + strcspn(text, "\r\n");
 }
-SGuint SG_EXPORT sgLineLength(const char* text)
+SGuint SG_CALL sgLineLength(const char* text)
 {
 	return sgLineEnd(text) - text;
 }
-char* SG_EXPORT sgNextLine(const char* text)
+char* SG_CALL sgNextLine(const char* text)
 {
     if(!text) return NULL;
 
@@ -278,7 +278,7 @@ char* SG_EXPORT sgNextLine(const char* text)
 		return brk + 2;
 	return brk + 1;
 }
-SGuint SG_EXPORT sgNumLines(const char* text)
+SGuint SG_CALL sgNumLines(const char* text)
 {
 	SGuint numlines = 0;
 
@@ -291,7 +291,7 @@ SGuint SG_EXPORT sgNumLines(const char* text)
 	return numlines;
 }
 
-/*size_t SG_EXPORT sgStrcspnU32(const SGdchar* text, const SGdchar* sel)
+/*size_t SG_CALL sgStrcspnU32(const SGdchar* text, const SGdchar* sel)
 {
     size_t i, j;
     for(i = 0; text[i]; i++)
@@ -300,7 +300,7 @@ SGuint SG_EXPORT sgNumLines(const char* text)
                 return i;
     return i;
 }*/
-SGdchar* SG_EXPORT sgLineEndU32(const SGdchar* text)
+SGdchar* SG_CALL sgLineEndU32(const SGdchar* text)
 {
 	if(text == NULL)
 		return NULL;
@@ -310,11 +310,11 @@ SGdchar* SG_EXPORT sgLineEndU32(const SGdchar* text)
 
 	return (SGdchar*)text;
 }
-SGuint SG_EXPORT sgLineLengthU32(const SGdchar* text)
+SGuint SG_CALL sgLineLengthU32(const SGdchar* text)
 {
 	return sgLineEndU32(text) - text;
 }
-SGdchar* SG_EXPORT sgNextLineU32(const SGdchar* text)
+SGdchar* SG_CALL sgNextLineU32(const SGdchar* text)
 {
 	if(text == NULL)
 		return NULL;
@@ -327,7 +327,7 @@ SGdchar* SG_EXPORT sgNextLineU32(const SGdchar* text)
 		return end + 2;
 	return end + 1;
 }
-SGuint SG_EXPORT sgNumLinesU32(const SGdchar* text)
+SGuint SG_CALL sgNumLinesU32(const SGdchar* text)
 {
 	SGuint numlines = 0;
 

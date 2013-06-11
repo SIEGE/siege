@@ -81,19 +81,19 @@ void GLFWCALL keyboardChar(int chr, int down)
         main_window->cbKeyboard->chr(&dummyKeyboard, chr);
 }
 
-SGenum SG_EXPORT sgmCoreKeyboardCreate(void** keyboard, void* window)
+SGenum SG_CALL sgmCoreKeyboardCreate(void** keyboard, void* window)
 {
     *keyboard = &dummyKeyboard;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmCoreKeyboardDestroy(void* keyboard)
+SGenum SG_CALL sgmCoreKeyboardDestroy(void* keyboard)
 {
     if(keyboard == NULL)
         return SG_INVALID_VALUE;
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallbacks* callbacks)
+SGenum SG_CALL sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallbacks* callbacks)
 {
     if(keyboard == NULL)
         return SG_INVALID_VALUE;
@@ -105,4 +105,4 @@ SGenum SG_EXPORT sgmCoreKeyboardSetCallbacks(void* keyboard, SGCoreKeyboardCallb
 
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmCoreKeyboardGetCallbacks(void* keyboard, SGCoreKeyboardCallbacks** callbacks);
+//SGenum SG_CALL sgmCoreKeyboardGetCallbacks(void* keyboard, SGCoreKeyboardCallbacks** callbacks);

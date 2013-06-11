@@ -27,7 +27,7 @@ extern "C"
 
 struct SGTimer;
 
-typedef void SG_EXPORT SGTimerFunction(struct SGTimer* timer, void* data);
+typedef void SG_CALL SGTimerFunction(struct SGTimer* timer, void* data);
 
 typedef struct SGTimer
 {
@@ -47,25 +47,25 @@ SGList* _sg_stimerList;
 SGList* _sg_timerList;
 #endif /* SG_BUILD_LIBRARY */
 
-SGTimer* SG_EXPORT sgTimerCreate(SGbool pausable); //< pausable not related to sgTimerPause() down below
-void SG_EXPORT sgTimerDestroy(SGTimer* timer);
+SGTimer* SG_CALL sgTimerCreate(SGbool pausable); //< pausable not related to sgTimerPause() down below
+void SG_CALL sgTimerDestroy(SGTimer* timer);
 
-void SG_EXPORT sgTimerSetFunction(SGTimer* timer, SGTimerFunction* func, void* data);
+void SG_CALL sgTimerSetFunction(SGTimer* timer, SGTimerFunction* func, void* data);
 
-void SG_EXPORT sgTimerPause(SGTimer* timer, SGbool pause);
-void SG_EXPORT sgTimerStop(SGTimer* timer);
+void SG_CALL sgTimerPause(SGTimer* timer, SGbool pause);
+void SG_CALL sgTimerStop(SGTimer* timer);
 
-void SG_EXPORT sgTimerStart(SGTimer* timer, SGulong secs);
-void SG_EXPORT sgTimerMStart(SGTimer* timer, SGulong msecs);
-void SG_EXPORT sgTimerUStart(SGTimer* timer, SGulong usecs);
-void SG_EXPORT sgTimerNStart(SGTimer* timer, SGulong nsecs);
-void SG_EXPORT sgTimerTickStart(SGTimer* timer, SGulong ticks);
+void SG_CALL sgTimerStart(SGTimer* timer, SGulong secs);
+void SG_CALL sgTimerMStart(SGTimer* timer, SGulong msecs);
+void SG_CALL sgTimerUStart(SGTimer* timer, SGulong usecs);
+void SG_CALL sgTimerNStart(SGTimer* timer, SGulong nsecs);
+void SG_CALL sgTimerTickStart(SGTimer* timer, SGulong ticks);
 
-void SG_EXPORT sgTimerSingle(SGulong secs, SGTimerFunction* func, void* data, SGbool pausable);
-void SG_EXPORT sgTimerMSingle(SGulong msecs, SGTimerFunction* func, void* data, SGbool pausable);
-void SG_EXPORT sgTimerUSingle(SGulong usecs, SGTimerFunction* func, void* data, SGbool pausable);
-void SG_EXPORT sgTimerNSingle(SGulong nsecs, SGTimerFunction* func, void* data, SGbool pausable);
-void SG_EXPORT sgTimerTickSingle(SGulong ticks, SGTimerFunction* func, void* data, SGbool pausable);
+void SG_CALL sgTimerSingle(SGulong secs, SGTimerFunction* func, void* data, SGbool pausable);
+void SG_CALL sgTimerMSingle(SGulong msecs, SGTimerFunction* func, void* data, SGbool pausable);
+void SG_CALL sgTimerUSingle(SGulong usecs, SGTimerFunction* func, void* data, SGbool pausable);
+void SG_CALL sgTimerNSingle(SGulong nsecs, SGTimerFunction* func, void* data, SGbool pausable);
+void SG_CALL sgTimerTickSingle(SGulong ticks, SGTimerFunction* func, void* data, SGbool pausable);
 
 /*
  * TODO: Invoke timer->func(...) on their respective threads.
@@ -74,8 +74,8 @@ void SG_EXPORT sgTimerTickSingle(SGulong ticks, SGTimerFunction* func, void* dat
  * times or only once? In other words, should it attempt to "catch up"?
  * Currently, it does NOT attempt to do so.
  */
-void SG_EXPORT sgTimerUpdate(SGTimer* timer, SGbool paused, SGbool tick);
-void SG_EXPORT sgTimerUpdateAll(SGbool paused, SGbool tick);
+void SG_CALL sgTimerUpdate(SGTimer* timer, SGbool paused, SGbool tick);
+void SG_CALL sgTimerUpdateAll(SGbool paused, SGbool tick);
 
 #ifdef __cplusplus
 }

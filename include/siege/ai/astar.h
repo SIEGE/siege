@@ -25,8 +25,8 @@ extern "C"
 
 struct SGAStarNode;
 
-typedef float  SG_EXPORT (*SGAStarScore)(struct SGAStarNode*, struct SGAStarNode*);
-typedef SGbool SG_EXPORT (*SGAStarIsGoal)(struct SGAStarNode*, struct SGAStarNode*);
+typedef float  SG_CALL (*SGAStarScore)(struct SGAStarNode*, struct SGAStarNode*);
+typedef SGbool SG_CALL (*SGAStarIsGoal)(struct SGAStarNode*, struct SGAStarNode*);
 
 typedef struct SGAStarNode
 {
@@ -62,18 +62,18 @@ typedef struct SGAStar
 	} cb;
 } SGAStar;
 
-SGAStar* SG_EXPORT sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);
-void SG_EXPORT sgAStarDestroy(SGAStar* search);
-SGbool SG_EXPORT sgAStarStep(SGAStar* search);
-SGbool SG_EXPORT sgAStarGoalFound(SGAStar* search);
-SGList* SG_EXPORT sgAStarPath(SGAStar* search, size_t* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
+SGAStar* SG_CALL sgAStarCreate(SGAStarNode* start, SGAStarNode* goal, SGAStarScore g, SGAStarScore h, SGAStarIsGoal isgoal);
+void SG_CALL sgAStarDestroy(SGAStar* search);
+SGbool SG_CALL sgAStarStep(SGAStar* search);
+SGbool SG_CALL sgAStarGoalFound(SGAStar* search);
+SGList* SG_CALL sgAStarPath(SGAStar* search, size_t* pathlen); // reconstruct the path from the current node to the start; current node need not be the goal
 
-SGAStarNode* SG_EXPORT sgAStarNodeCreate(void* data);
-void SG_EXPORT sgAStarNodeDestroy(SGAStarNode* node);
-void SG_EXPORT sgAStarNodeLink(SGAStarNode* from, SGAStarNode* to);
-void SG_EXPORT sgAStarNodeDLink(SGAStarNode* one, SGAStarNode* two);
-void SG_EXPORT sgAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to);
-void SG_EXPORT sgAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two);
+SGAStarNode* SG_CALL sgAStarNodeCreate(void* data);
+void SG_CALL sgAStarNodeDestroy(SGAStarNode* node);
+void SG_CALL sgAStarNodeLink(SGAStarNode* from, SGAStarNode* to);
+void SG_CALL sgAStarNodeDLink(SGAStarNode* one, SGAStarNode* two);
+void SG_CALL sgAStarNodeUnlink(SGAStarNode* from, SGAStarNode* to);
+void SG_CALL sgAStarNodeDUnlink(SGAStarNode* one, SGAStarNode* two);
 
 #ifdef __cplusplus
 }

@@ -85,7 +85,7 @@ static SGAtlasNode* _sgAtlasNodeInsert(SGAtlasNode* node, SGushort w, SGushort h
     return _sgAtlasNodeInsert(node->child[0], w, h, index);
 }
 
-static void SG_EXPORT _sgAtlasNodeDrawDBG(SGAtlasNode* node, float x, float y)
+static void SG_CALL _sgAtlasNodeDrawDBG(SGAtlasNode* node, float x, float y)
 {
     if(!node) return;
     _sgAtlasNodeDrawDBG(node->child[0], x, y);
@@ -109,11 +109,11 @@ static SGTexture* _sgAtlasAddTexture(SGAtlas* atlas, SGTexture* texture, SGbool 
     return texture;
 }
 
-SGAtlas* SG_EXPORT sgAtlasCreate(size_t width, size_t height, SGenum bpp)
+SGAtlas* SG_CALL sgAtlasCreate(size_t width, size_t height, SGenum bpp)
 {
     return sgAtlasCreateData(width, height, bpp, NULL);
 }
-SGAtlas* SG_EXPORT sgAtlasCreateData(size_t width, size_t height, SGenum bpp, void* data)
+SGAtlas* SG_CALL sgAtlasCreateData(size_t width, size_t height, SGenum bpp, void* data)
 {
     SGAtlas* atlas = malloc(sizeof(SGAtlas));
     if(!atlas) return NULL;
@@ -128,7 +128,7 @@ SGAtlas* SG_EXPORT sgAtlasCreateData(size_t width, size_t height, SGenum bpp, vo
 
     return atlas;
 }
-SGAtlas* SG_EXPORT sgAtlasCreateTexture(SGTexture* texture, SGbool owner)
+SGAtlas* SG_CALL sgAtlasCreateTexture(SGTexture* texture, SGbool owner)
 {
     SGAtlas* atlas = sgAtlasCreate(sgTextureGetWidth(texture), sgTextureGetHeight(texture), sgTextureGetBPP(texture));
     if(!atlas) return NULL;
@@ -137,11 +137,11 @@ SGAtlas* SG_EXPORT sgAtlasCreateTexture(SGTexture* texture, SGbool owner)
 
     return atlas;
 }
-SGAtlas* SG_EXPORT sgAtlasCreateFile(const char* fname)
+SGAtlas* SG_CALL sgAtlasCreateFile(const char* fname)
 {
     return sgAtlasCreateTexture(sgTextureCreateFile(fname), SG_TRUE);
 }
-void SG_EXPORT sgAtlasDestroy(SGAtlas* atlas)
+void SG_CALL sgAtlasDestroy(SGAtlas* atlas)
 {
     if(!atlas)
         return;
@@ -157,7 +157,7 @@ void SG_EXPORT sgAtlasDestroy(SGAtlas* atlas)
     free(atlas);
 }
 
-SGAtlasArea* SG_EXPORT sgAtlasAreaReserve(SGAtlas* atlas, size_t width, size_t height, SGbool overflow)
+SGAtlasArea* SG_CALL sgAtlasAreaReserve(SGAtlas* atlas, size_t width, size_t height, SGbool overflow)
 {
     if(width > atlas->width || height > atlas->height)
         return NULL;
@@ -174,7 +174,7 @@ SGAtlasArea* SG_EXPORT sgAtlasAreaReserve(SGAtlas* atlas, size_t width, size_t h
 
     return NULL;
 }
-void SG_EXPORT sgAtlasAreaSetData(SGAtlas* atlas, SGAtlasArea* area, size_t width, size_t height, SGenum bpp, void* data)
+void SG_CALL sgAtlasAreaSetData(SGAtlas* atlas, SGAtlasArea* area, size_t width, size_t height, SGenum bpp, void* data)
 {
     if(area->index >= atlas->numtextures)
         return;
@@ -183,7 +183,7 @@ void SG_EXPORT sgAtlasAreaSetData(SGAtlas* atlas, SGAtlasArea* area, size_t widt
     sgTextureSetSubData(atlas->textures[area->index].texture, area->x, area->y, width, height, bpp, data);
 }
 
-void SG_EXPORT sgAtlasAreaDrawRads3f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
+void SG_CALL sgAtlasAreaDrawRads3f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     float s0, t0, s1, t1;
     sgAtlasGetTexCoordsA(atlas, area, &s0, &t0, &s1, &t1);
@@ -217,121 +217,121 @@ void SG_EXPORT sgAtlasAreaDrawRads3f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, fl
         sgDrawVertex3f(p2.x, p3.y, z);
     sgDrawEnd();
 }
-void SG_EXPORT sgAtlasAreaDrawDegs3f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
+void SG_CALL sgAtlasAreaDrawDegs3f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, z, xscale, yscale, xoffset, yoffset, angle * SG_PI / 180.0);
 }
-void SG_EXPORT sgAtlasAreaDrawRads2f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle)
+void SG_CALL sgAtlasAreaDrawRads2f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, 0.0, xscale, yscale, xoffset, yoffset, angle);
 }
-void SG_EXPORT sgAtlasAreaDrawDegs2f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle)
+void SG_CALL sgAtlasAreaDrawDegs2f2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     sgAtlasAreaDrawDegs3f2f2f1f(atlas, area, x, y, 0.0, xscale, yscale, xoffset, yoffset, angle);
 }
-void SG_EXPORT sgAtlasAreaDrawRads3f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float angle)
+void SG_CALL sgAtlasAreaDrawRads3f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float angle)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, z, xscale, yscale, 0.0, 0.0, angle);
 }
-void SG_EXPORT sgAtlasAreaDrawDegs3f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float angle)
+void SG_CALL sgAtlasAreaDrawDegs3f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float angle)
 {
     sgAtlasAreaDrawDegs3f2f2f1f(atlas, area, x, y, z, xscale, yscale, 0.0, 0.0, angle);
 }
-void SG_EXPORT sgAtlasAreaDrawRads2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float angle)
+void SG_CALL sgAtlasAreaDrawRads2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float angle)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, 0.0, xscale, yscale, 0.0, 0.0, angle);
 }
-void SG_EXPORT sgAtlasAreaDrawDegs2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float angle)
+void SG_CALL sgAtlasAreaDrawDegs2f2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float angle)
 {
     sgAtlasAreaDrawDegs3f2f2f1f(atlas, area, x, y, 0.0, xscale, yscale, 0.0, 0.0, angle);
 }
-void SG_EXPORT sgAtlasAreaDrawRads3f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float angle)
+void SG_CALL sgAtlasAreaDrawRads3f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float angle)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, z, 1.0, 1.0, 0.0, 0.0, angle);
 }
-void SG_EXPORT sgAtlasAreaDrawDegs3f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float angle)
+void SG_CALL sgAtlasAreaDrawDegs3f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float angle)
 {
     sgAtlasAreaDrawDegs3f2f2f1f(atlas, area, x, y, z, 1.0, 1.0, 0.0, 0.0, angle);
 }
-void SG_EXPORT sgAtlasAreaDrawRads2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float angle)
+void SG_CALL sgAtlasAreaDrawRads2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float angle)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, 0.0, 1.0, 1.0, 0.0, 0.0, angle);
 }
-void SG_EXPORT sgAtlasAreaDrawDegs2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float angle)
+void SG_CALL sgAtlasAreaDrawDegs2f1f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float angle)
 {
     sgAtlasAreaDrawDegs3f2f2f1f(atlas, area, x, y, 0.0, 1.0, 1.0, 0.0, 0.0, angle);
 }
-void SG_EXPORT sgAtlasAreaDraw3f2f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset)
+void SG_CALL sgAtlasAreaDraw3f2f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, z, xscale, yscale, xoffset, yoffset, 0.0);
 }
-void SG_EXPORT sgAtlasAreaDraw2f2f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float xoffset, float yoffset)
+void SG_CALL sgAtlasAreaDraw2f2f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale, float xoffset, float yoffset)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, 0.0, xscale, yscale, xoffset, yoffset, 0.0);
 }
-void SG_EXPORT sgAtlasAreaDraw3f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale)
+void SG_CALL sgAtlasAreaDraw3f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z, float xscale, float yscale)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, z, xscale, yscale, 0.0, 0.0, 0.0);
 }
-void SG_EXPORT sgAtlasAreaDraw2f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale)
+void SG_CALL sgAtlasAreaDraw2f2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float xscale, float yscale)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, 0.0, xscale, yscale, 0.0, 0.0, 0.0);
 }
-void SG_EXPORT sgAtlasAreaDraw3f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z)
+void SG_CALL sgAtlasAreaDraw3f(SGAtlas* atlas, SGAtlasArea* area, float x, float y, float z)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, z, 1.0, 1.0, 0.0, 0.0, 0.0);
 }
-void SG_EXPORT sgAtlasAreaDraw2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y)
+void SG_CALL sgAtlasAreaDraw2f(SGAtlas* atlas, SGAtlasArea* area, float x, float y)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, x, y, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
 }
-void SG_EXPORT sgAtlasAreaDraw(SGAtlas* atlas, SGAtlasArea* area)
+void SG_CALL sgAtlasAreaDraw(SGAtlas* atlas, SGAtlasArea* area)
 {
     sgAtlasAreaDrawRads3f2f2f1f(atlas, area, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
 }
 
-void SG_EXPORT sgAtlasGetTexCoords4i(SGAtlas* atlas, SGint x, SGint y, SGint w, SGint h, float* s0, float* t0, float* s1, float* t1)
+void SG_CALL sgAtlasGetTexCoords4i(SGAtlas* atlas, SGint x, SGint y, SGint w, SGint h, float* s0, float* t0, float* s1, float* t1)
 {
     *s0 = x / (float)atlas->width;
     *t0 = y / (float)atlas->height;
     *s1 = (x + w) / (float)atlas->width;
     *t1 = (y + h) / (float)atlas->width;
 }
-void SG_EXPORT sgAtlasGetTexCoordsA(SGAtlas* atlas, SGAtlasArea* area, float* s0, float* t0, float* s1, float* t1)
+void SG_CALL sgAtlasGetTexCoordsA(SGAtlas* atlas, SGAtlasArea* area, float* s0, float* t0, float* s1, float* t1)
 {
     sgAtlasGetTexCoords4i(atlas, area->x, area->y, area->w, area->h, s0, t0, s1, t1);
 }
 
-size_t SG_EXPORT sgAtlasGetNumTextures(SGAtlas* atlas)
+size_t SG_CALL sgAtlasGetNumTextures(SGAtlas* atlas)
 {
     return atlas->numtextures;
 }
-SGTexture* SG_EXPORT sgAtlasGetTexture(SGAtlas* atlas, size_t index)
+SGTexture* SG_CALL sgAtlasGetTexture(SGAtlas* atlas, size_t index)
 {
     if(index >= atlas->numtextures)
         return NULL;
     return atlas->textures[index].texture;
 }
-SGTexture* SG_EXPORT sgAtlasGetTextureA(SGAtlas* atlas, SGAtlasArea* area)
+SGTexture* SG_CALL sgAtlasGetTextureA(SGAtlas* atlas, SGAtlasArea* area)
 {
     return sgAtlasGetTexture(atlas, area->index);
 }
 
-void SG_EXPORT sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height)
+void SG_CALL sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height)
 {
     if(width) *width = atlas->width;
     if(height) *height = atlas->height;
 }
-size_t SG_EXPORT sgAtlasGetWidth(SGAtlas* atlas)
+size_t SG_CALL sgAtlasGetWidth(SGAtlas* atlas)
 {
     return atlas->width;
 }
-size_t SG_EXPORT sgAtlasGetHeight(SGAtlas* atlas)
+size_t SG_CALL sgAtlasGetHeight(SGAtlas* atlas)
 {
     return atlas->height;
 }
 
-void SG_EXPORT sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbool wires)
+void SG_CALL sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbool wires)
 {
     if(index > atlas->numtextures)
     {

@@ -16,7 +16,7 @@
 
 #include <stdlib.h>
 
-SGenum SG_EXPORT sgmAudioBufferCreate(void** buffer)
+SGenum SG_CALL sgmAudioBufferCreate(void** buffer)
 {
     *buffer = malloc(sizeof(ALuint));
 
@@ -24,7 +24,7 @@ SGenum SG_EXPORT sgmAudioBufferCreate(void** buffer)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmAudioBufferDestroy(void* buffer)
+SGenum SG_CALL sgmAudioBufferDestroy(void* buffer)
 {
     alDeleteBuffers(1, buffer);
     free(buffer);
@@ -131,7 +131,7 @@ static void* toStereo(SGuint channels, void* data, SGuint* datalen, ALuint* alfo
     return data;
 }
 
-SGenum SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
+SGenum SG_CALL sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
 {
     //AL_FORMAT_[MONO, STEREO][8, 16]
     ALuint alformat;
@@ -232,8 +232,8 @@ SGenum SG_EXPORT sgmAudioBufferSetData(void* buffer, SGuint channels, SGuint for
     alBufferData(*(ALuint*)buffer, alformat, data, datalen, frequency);
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmAudioBufferGetData(void* buffer, SGuint* channels, SGuint* format, SGuint* frequency, SGPointer* data, SGuint* datalen);
-/*SGenum SG_EXPORT sgmAudioBufferCreateData(void** buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
+//SGenum SG_CALL sgmAudioBufferGetData(void* buffer, SGuint* channels, SGuint* format, SGuint* frequency, SGPointer* data, SGuint* datalen);
+/*SGenum SG_CALL sgmAudioBufferCreateData(void** buffer, SGuint channels, SGuint format, SGuint frequency, void* data, SGuint datalen)
 {
     SGuint ret = sgmAudioBufferCreate(buffer);
     if(ret != SG_OK)

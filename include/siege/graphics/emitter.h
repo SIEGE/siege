@@ -34,7 +34,7 @@ typedef struct SGParticle
 	float x, y, angle, speed, age, width, height, rotation, alpha;
 } SGParticle;
 
-typedef void SG_EXPORT (SGParticleUpdate)(SGParticle* particle, float time, float friction);
+typedef void SG_CALL (SGParticleUpdate)(SGParticle* particle, float time, float friction);
 
 typedef struct SGEmitter
 {
@@ -46,7 +46,7 @@ typedef struct SGEmitter
 	SGParticleUpdate* cbUpdate;
 } SGEmitter;
 
-SGEmitter* SG_EXPORT sgEmitterCreate(
+SGEmitter* SG_CALL sgEmitterCreate(
 		float x,              /* initial x of particles */
 		float y,              /* initial y of particles */
 		float angle,          /* direction of particles */
@@ -58,17 +58,17 @@ SGEmitter* SG_EXPORT sgEmitterCreate(
 		size_t nb_particles,  /* size of particles pool */
 		SGTexture* texture);  /* texture used by particles */
 
-void SG_EXPORT sgEmitterUpdate(SGEmitter* emitter, float time);
+void SG_CALL sgEmitterUpdate(SGEmitter* emitter, float time);
 
-SGParticle* SG_EXPORT _sgParticleCreate(float x, float y, float angle, float speed);
+SGParticle* SG_CALL _sgParticleCreate(float x, float y, float angle, float speed);
 
-void SG_EXPORT _sgParticleUpdate(SGParticle* particle, float time, float friction);
+void SG_CALL _sgParticleUpdate(SGParticle* particle, float time, float friction);
 
-void SG_EXPORT sgEmitterDraw(SGEmitter* emitter);
+void SG_CALL sgEmitterDraw(SGEmitter* emitter);
 
-void SG_EXPORT sgEmitterSetUpdateFunc(SGEmitter* emitter, SGParticleUpdate* cbUpdate);
+void SG_CALL sgEmitterSetUpdateFunc(SGEmitter* emitter, SGParticleUpdate* cbUpdate);
 
-void SG_EXPORT sgEmitterSetSilent(SGEmitter*, SGbool);
+void SG_CALL sgEmitterSetSilent(SGEmitter*, SGbool);
 
 #ifdef __cplusplus
 }

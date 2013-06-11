@@ -23,7 +23,7 @@ static ALint state(ALuint source)
     return s;
 }
 
-SGenum SG_EXPORT sgmAudioSourceMaxSources(SGuint* max)
+SGenum SG_CALL sgmAudioSourceMaxSources(SGuint* max)
 {
     if(max == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -45,7 +45,7 @@ SGenum SG_EXPORT sgmAudioSourceMaxSources(SGuint* max)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmAudioSourceCreate(void** source)
+SGenum SG_CALL sgmAudioSourceCreate(void** source)
 {
     *source = malloc(sizeof(ALuint));
 
@@ -53,7 +53,7 @@ SGenum SG_EXPORT sgmAudioSourceCreate(void** source)
 
     return SG_OK;
 }
-/*SGenum SG_EXPORT sgmAudioSourceCreateData(void** source, void* buffer, float pitch, float gain, SGbool looping)
+/*SGenum SG_CALL sgmAudioSourceCreateData(void** source, void* buffer, float pitch, float gain, SGbool looping)
 {
     SGuint ret;
     SGuint fret = SG_OK;
@@ -75,62 +75,62 @@ SGenum SG_EXPORT sgmAudioSourceCreate(void** source)
         fret = ret;
     return fret;
 }*/
-SGenum SG_EXPORT sgmAudioSourceDestroy(void* source)
+SGenum SG_CALL sgmAudioSourceDestroy(void* source)
 {
     alDeleteSources(1, (ALuint*)source);
     free(source);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourcePlay(void* source)
+SGenum SG_CALL sgmAudioSourcePlay(void* source)
 {
     alSourcePlay(*(ALuint*)source);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceIsPlaying(void* source, SGbool* playing)
+SGenum SG_CALL sgmAudioSourceIsPlaying(void* source, SGbool* playing)
 {
     *playing = state(*(ALuint*)source) == AL_PLAYING;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourcePause(void* source)
+SGenum SG_CALL sgmAudioSourcePause(void* source)
 {
     alSourcePause(*(ALuint*)source);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceIsPaused(void* source, SGbool* paused)
+SGenum SG_CALL sgmAudioSourceIsPaused(void* source, SGbool* paused)
 {
     *paused = state(*(ALuint*)source) == AL_PAUSED;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceRewind(void* source)
+SGenum SG_CALL sgmAudioSourceRewind(void* source)
 {
     alSourceRewind(*(ALuint*)source);
     return SG_OK;
 }
-/*SGenum SG_EXPORT sgmAudioSourceIsRewinded(void* source, SGbool* rewinded)
+/*SGenum SG_CALL sgmAudioSourceIsRewinded(void* source, SGbool* rewinded)
 {
     *rewinded = state(source) == AL_REWINDED;
     return SG_OK;
 }*/
-SGenum SG_EXPORT sgmAudioSourceStop(void* source)
+SGenum SG_CALL sgmAudioSourceStop(void* source)
 {
     alSourceStop(*(ALuint*)source);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceIsStopped(void* source, SGbool* stopped)
+SGenum SG_CALL sgmAudioSourceIsStopped(void* source, SGbool* stopped)
 {
     *stopped = state(*(ALuint*)source) == AL_STOPPED;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceSetBuffer(void* source, void* buffer)
+SGenum SG_CALL sgmAudioSourceSetBuffer(void* source, void* buffer)
 {
     alSourcei(*(ALuint*)source, AL_BUFFER, *(ALuint*)buffer);
     return SG_OK;
 }
-/*SGenum SG_EXPORT sgmAudioSourceGetBuffer(void* source, void** buffer)
+/*SGenum SG_CALL sgmAudioSourceGetBuffer(void* source, void** buffer)
 {
     return SG_OK;
 }*/
-SGenum SG_EXPORT sgmAudioSourceQueueBuffers(void* source, void** buffers, SGuint numbuffers)
+SGenum SG_CALL sgmAudioSourceQueueBuffers(void* source, void** buffers, SGuint numbuffers)
 {
     ALuint* arr = malloc(numbuffers * sizeof(ALuint));
     size_t i;
@@ -140,7 +140,7 @@ SGenum SG_EXPORT sgmAudioSourceQueueBuffers(void* source, void** buffers, SGuint
     free(arr);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceUnqueueBuffers(void* source, SGuint numbuffers)
+SGenum SG_CALL sgmAudioSourceUnqueueBuffers(void* source, SGuint numbuffers)
 {
     ALuint* arr = malloc(numbuffers * sizeof(ALuint));
     alSourceUnqueueBuffers(*(ALuint*)source, numbuffers, arr);
@@ -161,62 +161,62 @@ SGenum sgmAudioSourceGetNumQueuedBuffers(void* source, SGuint* queued)
     *queued = q;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceSetPosition(void* source, float x, float y, float z)
+SGenum SG_CALL sgmAudioSourceSetPosition(void* source, float x, float y, float z)
 {
     alSource3f(*(ALuint*)source, AL_POSITION, x, y, z);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceGetPosition(void* source, float* x, float* y, float* z)
+SGenum SG_CALL sgmAudioSourceGetPosition(void* source, float* x, float* y, float* z)
 {
     alGetSource3f(*(ALuint*)source, AL_POSITION, x, y, z);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceSetVelocity(void* source, float x, float y, float z)
+SGenum SG_CALL sgmAudioSourceSetVelocity(void* source, float x, float y, float z)
 {
     alSource3f(*(ALuint*)source, AL_VELOCITY, x, y, z);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceGetVelocity(void* source, float* x, float* y, float* z)
+SGenum SG_CALL sgmAudioSourceGetVelocity(void* source, float* x, float* y, float* z)
 {
     alGetSource3f(*(ALuint*)source, AL_VELOCITY, x, y, z);
     return SG_OK;
 }
-/*SGenum SG_EXPORT sgmAudioSourceSetFalloff(void* source, float falloff)
+/*SGenum SG_CALL sgmAudioSourceSetFalloff(void* source, float falloff)
 {
     alSourcef(*(ALuint*)&source, AL_GAIN, falloff);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceGetFalloff(void* source, float* falloff)
+SGenum SG_CALL sgmAudioSourceGetFalloff(void* source, float* falloff)
 {
     alGetSourcef(*(ALuint*)&source, AL_GAIN, falloff);
     return SG_OK;
 }*/
-SGenum SG_EXPORT sgmAudioSourceSetPitch(void* source, float pitch)
+SGenum SG_CALL sgmAudioSourceSetPitch(void* source, float pitch)
 {
     alSourcef(*(ALuint*)source, AL_PITCH, pitch);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceGetPitch(void* source, float* pitch)
+SGenum SG_CALL sgmAudioSourceGetPitch(void* source, float* pitch)
 {
     alGetSourcef(*(ALuint*)source, AL_PITCH, pitch);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceSetVolume(void* source, float volume)
+SGenum SG_CALL sgmAudioSourceSetVolume(void* source, float volume)
 {
     alSourcef(*(ALuint*)source, AL_GAIN, volume);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceGetVolume(void* source, float* volume)
+SGenum SG_CALL sgmAudioSourceGetVolume(void* source, float* volume)
 {
     alGetSourcef(*(ALuint*)source, AL_GAIN, volume);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceSetLooping(void* source, SGbool looping)
+SGenum SG_CALL sgmAudioSourceSetLooping(void* source, SGbool looping)
 {
     alSourcei(*(ALuint*)source, AL_LOOPING, looping);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioSourceGetLooping(void* source, SGbool* looping)
+SGenum SG_CALL sgmAudioSourceGetLooping(void* source, SGbool* looping)
 {
     ALint allooping;
     alGetSourcei(*(ALuint*)source, AL_LOOPING, &allooping);

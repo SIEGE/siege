@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static SGint SG_EXPORT _sgSMapMapCmp(const char* a, const char* b, void* data)
+static SGint SG_CALL _sgSMapMapCmp(const char* a, const char* b, void* data)
 {
     return strcmp(a, b);
 }
@@ -38,17 +38,17 @@ void SG_CALL sgSMapDeinit(SGSMap* smap)
     sgMapDeinit(&smap->map);
 }
 
-SGSMap* SG_EXPORT sgSMapCreate(void)
+SGSMap* SG_CALL sgSMapCreate(void)
 {
     return sgSMapInit(malloc(sizeof(SGSMap)));
 }
-void SG_EXPORT sgSMapDestroy(SGSMap* smap)
+void SG_CALL sgSMapDestroy(SGSMap* smap)
 {
     sgSMapDeinit(smap);
     free(smap);
 }
 
-void* SG_EXPORT sgSMapReplace(SGSMap* smap, const char* key, void* val)
+void* SG_CALL sgSMapReplace(SGSMap* smap, const char* key, void* val)
 {
     void* old;
 
@@ -69,16 +69,16 @@ void* SG_EXPORT sgSMapReplace(SGSMap* smap, const char* key, void* val)
     sgMapAssign(&smap->map, buf, val);
     return NULL;
 }
-void* SG_EXPORT sgSMapAssign(SGSMap* smap, const char* key, void* val)
+void* SG_CALL sgSMapAssign(SGSMap* smap, const char* key, void* val)
 {
     sgSMapReplace(smap, key, val);
     return val;
 }
-void* SG_EXPORT sgSMapFind(SGSMap* smap, const char* key)
+void* SG_CALL sgSMapFind(SGSMap* smap, const char* key)
 {
     return sgMapFind(&smap->map, key);
 }
-void* SG_EXPORT sgSMapRemove(SGSMap* smap, const char* key)
+void* SG_CALL sgSMapRemove(SGSMap* smap, const char* key)
 {
     SGSMapNode* node = sgSMapFindNode(smap, key);
     if(!node) return NULL;
@@ -89,7 +89,7 @@ void* SG_EXPORT sgSMapRemove(SGSMap* smap, const char* key)
     return rem;
 }
 
-SGSMapNode* SG_EXPORT sgSMapAssignNode(SGSMap* smap, const char* key, void* val)
+SGSMapNode* SG_CALL sgSMapAssignNode(SGSMap* smap, const char* key, void* val)
 {
     SGMapNode* node = sgMapFindNode(&smap->map, key);
     if(node)
@@ -106,33 +106,33 @@ SGSMapNode* SG_EXPORT sgSMapAssignNode(SGSMap* smap, const char* key, void* val)
 
     return sgMapAssignNode(&smap->map, buf, val);
 }
-SGSMapNode* SG_EXPORT sgSMapFindNode(SGSMap* smap, const char* key)
+SGSMapNode* SG_CALL sgSMapFindNode(SGSMap* smap, const char* key)
 {
     return sgMapFindNode(&smap->map, key);
 }
 
-SGSMapNode* SG_EXPORT sgSMapGetRoot(SGSMap* smap)
+SGSMapNode* SG_CALL sgSMapGetRoot(SGSMap* smap)
 {
     return sgMapGetRoot(&smap->map);
 }
-SGSMapNode* SG_EXPORT sgSMapGetFirst(SGSMap* smap)
+SGSMapNode* SG_CALL sgSMapGetFirst(SGSMap* smap)
 {
     return sgMapGetFirst(&smap->map);
 }
-SGSMapNode* SG_EXPORT sgSMapGetLast(SGSMap* smap)
+SGSMapNode* SG_CALL sgSMapGetLast(SGSMap* smap)
 {
     return sgMapGetLast(&smap->map);
 }
 
-void* SG_EXPORT sgSMapPopRoot(SGSMap* smap)
+void* SG_CALL sgSMapPopRoot(SGSMap* smap)
 {
     return sgMapPopRoot(&smap->map);
 }
-void* SG_EXPORT sgSMapPopFirst(SGSMap* smap)
+void* SG_CALL sgSMapPopFirst(SGSMap* smap)
 {
     return sgMapPopFirst(&smap->map);
 }
-void* SG_EXPORT sgSMapPopLast(SGSMap* smap)
+void* SG_CALL sgSMapPopLast(SGSMap* smap)
 {
     return sgMapPopLast(&smap->map);
 }

@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-void SG_EXPORT func(SGTimer* timer, void* data)
+void SG_CALL func(SGTimer* timer, void* data)
 {
     printf("%s\n", (char*)data);
 }

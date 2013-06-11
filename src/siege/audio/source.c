@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-SGbool SG_EXPORT _sgAudioSourceInit(void)
+SGbool SG_CALL _sgAudioSourceInit(void)
 {
     _sg_srcDisLength = 16;
     if(psgmAudioSourceMaxSources != NULL)
@@ -39,7 +39,7 @@ SGbool SG_EXPORT _sgAudioSourceInit(void)
 
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgAudioSourceDeinit(void)
+SGbool SG_CALL _sgAudioSourceDeinit(void)
 {
     while(_sg_srcDestroy->head)
         sgAudioSourceDestroy(sgListPopFirst(_sg_srcDestroy));
@@ -57,7 +57,7 @@ SGbool SG_EXPORT _sgAudioSourceDeinit(void)
     return SG_TRUE;
 }
 
-SGAudioSourceDispatch* SG_EXPORT _sgAudioSourceGetFreeDispatch(SGAudioSource* source)
+SGAudioSourceDispatch* SG_CALL _sgAudioSourceGetFreeDispatch(SGAudioSource* source)
 {
     SGlong mini = -1;
     float minf = HUGE_VAL;
@@ -105,7 +105,7 @@ SGAudioSourceDispatch* SG_EXPORT _sgAudioSourceGetFreeDispatch(SGAudioSource* so
     return NULL;
 }
 
-SGAudioSource* SG_EXPORT sgAudioSourceCreate(float priority, float volume, float pitch, SGbool looping)
+SGAudioSource* SG_CALL sgAudioSourceCreate(float priority, float volume, float pitch, SGbool looping)
 {
     SGListNode* node;
     SGListNode* next;
@@ -136,7 +136,7 @@ SGAudioSource* SG_EXPORT sgAudioSourceCreate(float priority, float volume, float
 
     return source;
 }
-void SG_EXPORT sgAudioSourceDestroy(SGAudioSource* source)
+void SG_CALL sgAudioSourceDestroy(SGAudioSource* source)
 {
     if(source == NULL)
         return;
@@ -148,13 +148,13 @@ void SG_EXPORT sgAudioSourceDestroy(SGAudioSource* source)
         source->dispatch->source = NULL;
     free(source);
 }
-void SG_EXPORT sgAudioSourceDestroyLazy(SGAudioSource* source)
+void SG_CALL sgAudioSourceDestroyLazy(SGAudioSource* source)
 {
     sgAudioSourceSetLooping(source, SG_FALSE);
     sgListAppend(_sg_srcDestroy, source);
 }
 
-void SG_EXPORT sgAudioSourcePlay(SGAudioSource* source)
+void SG_CALL sgAudioSourcePlay(SGAudioSource* source)
 {
     if(source == NULL)
         return;
@@ -164,7 +164,7 @@ void SG_EXPORT sgAudioSourcePlay(SGAudioSource* source)
     if(psgmAudioSourcePlay != NULL)
         psgmAudioSourcePlay(source->dispatch->handle);
 }
-SGbool SG_EXPORT sgAudioSourceIsPlaying(SGAudioSource* source)
+SGbool SG_CALL sgAudioSourceIsPlaying(SGAudioSource* source)
 {
     if(source == NULL)
         return SG_FALSE;
@@ -176,7 +176,7 @@ SGbool SG_EXPORT sgAudioSourceIsPlaying(SGAudioSource* source)
         psgmAudioSourceIsPlaying(source->dispatch->handle, &playing);
     return playing;
 }
-void SG_EXPORT sgAudioSourcePause(SGAudioSource* source)
+void SG_CALL sgAudioSourcePause(SGAudioSource* source)
 {
     if(source == NULL)
         return;
@@ -186,7 +186,7 @@ void SG_EXPORT sgAudioSourcePause(SGAudioSource* source)
     if(psgmAudioSourcePause != NULL)
         psgmAudioSourcePause(source->dispatch->handle);
 }
-SGbool SG_EXPORT sgAudioSourceIsPaused(SGAudioSource* source)
+SGbool SG_CALL sgAudioSourceIsPaused(SGAudioSource* source)
 {
     if(source == NULL)
         return SG_FALSE;
@@ -198,7 +198,7 @@ SGbool SG_EXPORT sgAudioSourceIsPaused(SGAudioSource* source)
         psgmAudioSourceIsPaused(source->dispatch->handle, &paused);
     return paused;
 }
-void SG_EXPORT sgAudioSourceRewind(SGAudioSource* source)
+void SG_CALL sgAudioSourceRewind(SGAudioSource* source)
 {
     if(source == NULL)
         return;
@@ -208,7 +208,7 @@ void SG_EXPORT sgAudioSourceRewind(SGAudioSource* source)
     if(psgmAudioSourceRewind != NULL)
         psgmAudioSourceRewind(source->dispatch->handle);
 }
-/*SGbool SG_EXPORT sgAudioSourceIsRewinded(SGAudioSource* source)
+/*SGbool SG_CALL sgAudioSourceIsRewinded(SGAudioSource* source)
 {
     if(source == NULL)
         return SG_FALSE;
@@ -220,7 +220,7 @@ void SG_EXPORT sgAudioSourceRewind(SGAudioSource* source)
         psgmAudioSourceIsRewinded(source->dispatch->handle, &rewinded);
     return rewinded;
 }*/
-void SG_EXPORT sgAudioSourceStop(SGAudioSource* source)
+void SG_CALL sgAudioSourceStop(SGAudioSource* source)
 {
     if(source == NULL)
         return;
@@ -230,7 +230,7 @@ void SG_EXPORT sgAudioSourceStop(SGAudioSource* source)
     if(psgmAudioSourceStop != NULL)
         psgmAudioSourceStop(source->dispatch->handle);
 }
-SGbool SG_EXPORT sgAudioSourceIsStopped(SGAudioSource* source)
+SGbool SG_CALL sgAudioSourceIsStopped(SGAudioSource* source)
 {
     if(source == NULL)
         return SG_FALSE;
@@ -242,7 +242,7 @@ SGbool SG_EXPORT sgAudioSourceIsStopped(SGAudioSource* source)
         psgmAudioSourceIsStopped(source->dispatch->handle, &stopped);
     return stopped;
 }
-SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source)
+SGbool SG_CALL sgAudioSourceIsActive(SGAudioSource* source)
 {
     if(source == NULL)
         return SG_FALSE;
@@ -259,7 +259,7 @@ SGbool SG_EXPORT sgAudioSourceIsActive(SGAudioSource* source)
     return processed != queued;
 }
 
-size_t SG_EXPORT sgAudioSourceGetNumProcessedBuffers(SGAudioSource* source)
+size_t SG_CALL sgAudioSourceGetNumProcessedBuffers(SGAudioSource* source)
 {
     if(source == NULL)
         return 0;
@@ -271,7 +271,7 @@ size_t SG_EXPORT sgAudioSourceGetNumProcessedBuffers(SGAudioSource* source)
         psgmAudioSourceGetNumProcessedBuffers(source->dispatch->handle, &processed);
     return processed;
 }
-size_t SG_EXPORT sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source)
+size_t SG_CALL sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source)
 {
     if(source == NULL)
         return 0;
@@ -284,7 +284,7 @@ size_t SG_EXPORT sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source)
     return queued;
 }
 
-void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, size_t numbuffers)
+void SG_CALL sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, size_t numbuffers)
 {
     if(source == NULL)
         return;
@@ -295,7 +295,7 @@ void SG_EXPORT sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** 
     for(i = 0; i < numbuffers; i++)
         sgAudioSourceQueueBuffer(source, buffers[i]);
 }
-void SG_EXPORT sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* buffer)
+void SG_CALL sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* buffer)
 {
     if(source == NULL)
         return;
@@ -305,7 +305,7 @@ void SG_EXPORT sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* bu
     if(psgmAudioSourceQueueBuffers != NULL)
         psgmAudioSourceQueueBuffers(source->dispatch->handle, &buffer->handle, 1);
 }
-void SG_EXPORT sgAudioSourceUnqueueBuffer(SGAudioSource* source)
+void SG_CALL sgAudioSourceUnqueueBuffer(SGAudioSource* source)
 {
     if(source == NULL)
         return;
@@ -315,7 +315,7 @@ void SG_EXPORT sgAudioSourceUnqueueBuffer(SGAudioSource* source)
     if(psgmAudioSourceUnqueueBuffers)
         psgmAudioSourceUnqueueBuffers(source->dispatch->handle, 1);
 }
-void SG_EXPORT sgAudioSourceUnqueueBuffers(SGAudioSource* source, size_t numbuffers)
+void SG_CALL sgAudioSourceUnqueueBuffers(SGAudioSource* source, size_t numbuffers)
 {
     if(source == NULL)
         return;
@@ -326,7 +326,7 @@ void SG_EXPORT sgAudioSourceUnqueueBuffers(SGAudioSource* source, size_t numbuff
         psgmAudioSourceUnqueueBuffers(source->dispatch->handle, numbuffers);
 }
 
-void SG_EXPORT sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y, float z)
+void SG_CALL sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y, float z)
 {
     if(source == NULL)
         return;
@@ -336,11 +336,11 @@ void SG_EXPORT sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float 
     if(psgmAudioSourceSetPosition != NULL)
         psgmAudioSourceSetPosition(source->dispatch->handle, x, y, z);
 }
-void SG_EXPORT sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float y)
+void SG_CALL sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float y)
 {
     sgAudioSourceSetPosition3f(source, x, y, 0.0f);
 }
-void SG_EXPORT sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float* y, float* z)
+void SG_CALL sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float* y, float* z)
 {
     if(source == NULL)
         return;
@@ -358,12 +358,12 @@ void SG_EXPORT sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float
     if(psgmAudioSourceGetPosition != NULL)
         psgmAudioSourceGetPosition(source->dispatch->handle, x, y, z);
 }
-void SG_EXPORT sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float* y)
+void SG_CALL sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float* y)
 {
     sgAudioSourceGetPosition3f(source, x, y, NULL);
 }
 
-void SG_EXPORT sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float y, float z)
+void SG_CALL sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float y, float z)
 {
     if(source == NULL)
         return;
@@ -373,11 +373,11 @@ void SG_EXPORT sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float 
     if(psgmAudioSourceSetVelocity != NULL)
         psgmAudioSourceSetVelocity(source->dispatch->handle, x, y, z);
 }
-void SG_EXPORT sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float y)
+void SG_CALL sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float y)
 {
     sgAudioSourceSetVelocity3f(source, x, y, 0.0f);
 }
-void SG_EXPORT sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float* y, float* z)
+void SG_CALL sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float* y, float* z)
 {
     if(source == NULL)
         return;
@@ -395,15 +395,15 @@ void SG_EXPORT sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float
     if(psgmAudioSourceGetVelocity != NULL)
         psgmAudioSourceGetVelocity(source->dispatch->handle, x, y, z);
 }
-void SG_EXPORT sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float* y)
+void SG_CALL sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float* y)
 {
     sgAudioSourceGetVelocity3f(source, x, y, NULL);
 }
 
-//void SG_EXPORT sgAudioSourceSetFalloff(SGAudioSource* source, float falloff);
-//float SG_EXPORT sgAudioSourceGetFalloff(SGAudioSource* source);
+//void SG_CALL sgAudioSourceSetFalloff(SGAudioSource* source, float falloff);
+//float SG_CALL sgAudioSourceGetFalloff(SGAudioSource* source);
 
-void SG_EXPORT sgAudioSourceSetPitch(SGAudioSource* source, float pitch)
+void SG_CALL sgAudioSourceSetPitch(SGAudioSource* source, float pitch)
 {
     if(source == NULL)
         return;
@@ -413,7 +413,7 @@ void SG_EXPORT sgAudioSourceSetPitch(SGAudioSource* source, float pitch)
     if(psgmAudioSourceSetPitch != NULL)
         psgmAudioSourceSetPitch(source->dispatch->handle, pitch);
 }
-float SG_EXPORT sgAudioSourceGetPitch(SGAudioSource* source)
+float SG_CALL sgAudioSourceGetPitch(SGAudioSource* source)
 {
     if(source == NULL)
         return SG_NAN;
@@ -426,7 +426,7 @@ float SG_EXPORT sgAudioSourceGetPitch(SGAudioSource* source)
     return pitch;
 }
 
-void SG_EXPORT sgAudioSourceSetVolume(SGAudioSource* source, float volume)
+void SG_CALL sgAudioSourceSetVolume(SGAudioSource* source, float volume)
 {
     if(source == NULL)
         return;
@@ -436,7 +436,7 @@ void SG_EXPORT sgAudioSourceSetVolume(SGAudioSource* source, float volume)
     if(psgmAudioSourceSetVolume != NULL)
         psgmAudioSourceSetVolume(source->dispatch->handle, volume);
 }
-float SG_EXPORT sgAudioSourceGetVolume(SGAudioSource* source)
+float SG_CALL sgAudioSourceGetVolume(SGAudioSource* source)
 {
     if(source == NULL)
         return SG_NAN;
@@ -449,7 +449,7 @@ float SG_EXPORT sgAudioSourceGetVolume(SGAudioSource* source)
     return volume;
 }
 
-void SG_EXPORT sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping)
+void SG_CALL sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping)
 {
     if(source == NULL)
         return;
@@ -459,7 +459,7 @@ void SG_EXPORT sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping)
     if(psgmAudioSourceSetLooping != NULL)
         psgmAudioSourceSetLooping(source->dispatch->handle, looping);
 }
-SGbool SG_EXPORT sgAudioSourceGetLooping(SGAudioSource* source)
+SGbool SG_CALL sgAudioSourceGetLooping(SGAudioSource* source)
 {
     if(source == NULL)
         return SG_FALSE;

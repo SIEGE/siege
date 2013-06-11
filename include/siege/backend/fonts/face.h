@@ -26,10 +26,10 @@
 extern "C"
 {
 #endif
-    SGenum SG_EXPORT SG_FPTR(sgmFontsFaceCreate)(void** face, SGStream* stream);
-    SGenum SG_EXPORT SG_FPTR(sgmFontsFaceDestroy)(void* face);
-    SGenum SG_EXPORT SG_FPTR(sgmFontsFaceSetHeight)(void* face, float height, SGuint dpi);
-    SGenum SG_EXPORT SG_FPTR(sgmFontsFaceGetMetrics)(void* face, float* ascent, float* descent, float* linegap);
+    SGenum SG_CALL SG_FPTR(sgmFontsFaceCreate)(void** face, SGStream* stream);
+    SGenum SG_CALL SG_FPTR(sgmFontsFaceDestroy)(void* face);
+    SGenum SG_CALL SG_FPTR(sgmFontsFaceSetHeight)(void* face, float height, SGuint dpi);
+    SGenum SG_CALL SG_FPTR(sgmFontsFaceGetMetrics)(void* face, float* ascent, float* descent, float* linegap);
 #ifdef __cplusplus
 }
 #endif

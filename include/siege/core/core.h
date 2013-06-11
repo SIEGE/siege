@@ -27,12 +27,12 @@ extern "C"
 {
 #endif // __cplusplus
 
-void SG_EXPORT sgGetVersionv(SGushort* version);
-void SG_EXPORT sgGetVersion(SGushort* vmajor, SGushort* vminor, SGushort* vpatch);
-char* SG_EXPORT sgGetVersionString(void);
+void SG_CALL sgGetVersionv(SGushort* version);
+void SG_CALL sgGetVersion(SGushort* vmajor, SGushort* vminor, SGushort* vpatch);
+char* SG_CALL sgGetVersionString(void);
 
-char* SG_EXPORT sgGetCompileDate(void);
-char* SG_EXPORT sgGetCompileTime(void);
+char* SG_CALL sgGetCompileDate(void);
+char* SG_CALL sgGetCompileTime(void);
 
 /**
  * Functions: sgLoadModule*
@@ -67,9 +67,9 @@ char* SG_EXPORT sgGetCompileTime(void);
  * Returns:
  * 	The number of successfully loaded modules.
  */
-SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args);
-SGuint SG_EXPORT sgLoadModules(size_t n, ...);
-SGbool SG_EXPORT sgLoadModule(const char* name);
+SGuint SG_CALL sgLoadModulesv(size_t n, va_list args);
+SGuint SG_CALL sgLoadModules(size_t n, ...);
+SGbool SG_CALL sgLoadModule(const char* name);
 /**
  * Function: sgInit
  *
@@ -88,7 +88,7 @@ SGbool SG_EXPORT sgLoadModule(const char* name);
  * See Also:
  *	- <sgDeinit>
  */
-SGbool SG_EXPORT sgInit(SGenum flags);
+SGbool SG_CALL sgInit(SGenum flags);
 /**
  * Function: sgDeinit
  *
@@ -103,7 +103,7 @@ SGbool SG_EXPORT sgInit(SGenum flags);
  * See Also:
  *	- <sgInit>
  */
-SGbool SG_EXPORT sgDeinit(void);
+SGbool SG_CALL sgDeinit(void);
 /**
  * Function: sgRun
  *
@@ -116,7 +116,7 @@ SGbool SG_EXPORT sgDeinit(void);
  * 	- <sgLoop>
  *  - <sgStop>
  */
-SGint SG_EXPORT sgRun(void);
+SGint SG_CALL sgRun(void);
 /**
  * Function: sgLoop
  *
@@ -155,7 +155,7 @@ SGint SG_EXPORT sgRun(void);
  * 	- <sgRun>
  *  - <sgStop>
  */
-SGbool SG_EXPORT sgLoop(SGint* code);
+SGbool SG_CALL sgLoop(SGint* code);
 /**
  * Function: sgStop
  *
@@ -173,7 +173,7 @@ SGbool SG_EXPORT sgLoop(SGint* code);
  * 	- <sgRun>
  *  - <sgLoop>
  */
-void SG_EXPORT sgStop(SGint ret);
+void SG_CALL sgStop(SGint ret);
 /**
  * Function: sgGetTick
  *
@@ -182,7 +182,7 @@ void SG_EXPORT sgStop(SGint ret);
  * Returns:
  * 	The number of loops SIEGE has ran for since the start
  */
-SGulong SG_EXPORT sgGetTick(void);
+SGulong SG_CALL sgGetTick(void);
 
 #ifdef __cplusplus
 }

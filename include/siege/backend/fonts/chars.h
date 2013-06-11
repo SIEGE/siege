@@ -25,9 +25,9 @@
 extern "C"
 {
 #endif
-    SGenum SG_EXPORT SG_FPTR(sgmFontsCharsCreate)(void* face, const SGdchar* chars, size_t numchars, float* width, float* height, float* prex, float* prey, float* postx, float* posty, size_t* datawidth, size_t* dataheight, void** data);
-    SGenum SG_EXPORT SG_FPTR(sgmFontsCharsFreeData)(void* data);
-    SGenum SG_EXPORT SG_FPTR(sgmFontsCharsGetKerning)(void* face, const SGdchar* chars, size_t numchars, float* kerning);
+    SGenum SG_CALL SG_FPTR(sgmFontsCharsCreate)(void* face, const SGdchar* chars, size_t numchars, float* width, float* height, float* prex, float* prey, float* postx, float* posty, size_t* datawidth, size_t* dataheight, void** data);
+    SGenum SG_CALL SG_FPTR(sgmFontsCharsFreeData)(void* data);
+    SGenum SG_CALL SG_FPTR(sgmFontsCharsGetKerning)(void* face, const SGdchar* chars, size_t numchars, float* kerning);
 #ifdef __cplusplus
 }
 #endif

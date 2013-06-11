@@ -41,7 +41,7 @@ void GLFWCALL windowResize(int x, int y)
         main_window->cbWindow->resize(main_window, x, y);
 }
 
-SGenum SG_EXPORT sgmCoreWindowCreate(void** window)
+SGenum SG_CALL sgmCoreWindowCreate(void** window)
 {
     *window = calloc(1, sizeof(Window));
     Window** cwindow = (Window**)window;
@@ -55,7 +55,7 @@ SGenum SG_EXPORT sgmCoreWindowCreate(void** window)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmCoreWindowDestroy(void* window)
+SGenum SG_CALL sgmCoreWindowDestroy(void* window)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -70,7 +70,7 @@ SGenum SG_EXPORT sgmCoreWindowDestroy(void* window)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmCoreWindowOpen(void* window, SGuint width, SGuint height, SGubyte bpp, SGenum flags)
+SGenum SG_CALL sgmCoreWindowOpen(void* window, SGuint width, SGuint height, SGubyte bpp, SGenum flags)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -179,7 +179,7 @@ SGenum SG_EXPORT sgmCoreWindowOpen(void* window, SGuint width, SGuint height, SG
 
     return SG_OK;
 }
-SGuint SG_EXPORT sgmCoreWindowIsOpened(void* window, SGbool* opened)
+SGuint SG_CALL sgmCoreWindowIsOpened(void* window, SGbool* opened)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -187,7 +187,7 @@ SGuint SG_EXPORT sgmCoreWindowIsOpened(void* window, SGbool* opened)
     *opened = (SGbool)glfwGetWindowParam(GLFW_OPENED);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmCoreWindowClose(void* window)
+SGenum SG_CALL sgmCoreWindowClose(void* window)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -195,8 +195,8 @@ SGenum SG_EXPORT sgmCoreWindowClose(void* window)
     glfwCloseWindow();
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmCoreWindowIsClosed(void* window, SGbool* closed);
-SGenum SG_EXPORT sgmCoreWindowSetTitle(void* window, const char* title)
+//SGenum SG_CALL sgmCoreWindowIsClosed(void* window, SGbool* closed);
+SGenum SG_CALL sgmCoreWindowSetTitle(void* window, const char* title)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -204,9 +204,9 @@ SGenum SG_EXPORT sgmCoreWindowSetTitle(void* window, const char* title)
     glfwSetWindowTitle(title);
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmCoreWindowGetTitle(void* window, char** title);
-//SGenum SG_EXPORT sgmCoreWindowFreeTitle(char* title);
-SGenum SG_EXPORT sgmCoreWindowSetSize(void* window, SGuint width, SGuint height)
+//SGenum SG_CALL sgmCoreWindowGetTitle(void* window, char** title);
+//SGenum SG_CALL sgmCoreWindowFreeTitle(char* title);
+SGenum SG_CALL sgmCoreWindowSetSize(void* window, SGuint width, SGuint height)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -215,7 +215,7 @@ SGenum SG_EXPORT sgmCoreWindowSetSize(void* window, SGuint width, SGuint height)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmCoreWindowGetSize(void* window, SGuint* width, SGuint* height)
+SGenum SG_CALL sgmCoreWindowGetSize(void* window, SGuint* width, SGuint* height)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -227,8 +227,8 @@ SGenum SG_EXPORT sgmCoreWindowGetSize(void* window, SGuint* width, SGuint* heigh
 
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmCoreWindowPollEvents(void* window);
-SGenum SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
+//SGenum SG_CALL sgmCoreWindowPollEvents(void* window);
+SGenum SG_CALL sgmCoreWindowSwapBuffers(void* window)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -263,7 +263,7 @@ SGenum SG_EXPORT sgmCoreWindowSwapBuffers(void* window)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmCoreWindowSetCallbacks(void* window, SGCoreWindowCallbacks* callbacks)
+SGenum SG_CALL sgmCoreWindowSetCallbacks(void* window, SGCoreWindowCallbacks* callbacks)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -276,4 +276,4 @@ SGenum SG_EXPORT sgmCoreWindowSetCallbacks(void* window, SGCoreWindowCallbacks* 
 
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmCoreWindowGetCallbacks(void* window, SGCoreWindowCallbacks** callbacks);
+//SGenum SG_CALL sgmCoreWindowGetCallbacks(void* window, SGCoreWindowCallbacks** callbacks);

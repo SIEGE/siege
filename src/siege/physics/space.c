@@ -19,19 +19,19 @@
 
 #include <stdlib.h>
 
-SGbool SG_EXPORT _sgPhysicsSpaceInit(void)
+SGbool SG_CALL _sgPhysicsSpaceInit(void)
 {
     _sg_physSpaceMain = sgPhysicsSpaceCreate();
     sgPhysicsSpaceSetGravity(_sg_physSpaceMain, 0, 10);
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgPhysicsSpaceDeinit(void)
+SGbool SG_CALL _sgPhysicsSpaceDeinit(void)
 {
     sgPhysicsSpaceDestroy(_sg_physSpaceMain);
     return SG_TRUE;
 }
 
-SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceCreate(void)
+SGPhysicsSpace* SG_CALL sgPhysicsSpaceCreate(void)
 {
     SGPhysicsSpace* space = malloc(sizeof(SGPhysicsSpace));
     if(!space)
@@ -56,7 +56,7 @@ SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceCreate(void)
 
     return space;
 }
-void SG_EXPORT sgPhysicsSpaceDestroy(SGPhysicsSpace* space)
+void SG_CALL sgPhysicsSpaceDestroy(SGPhysicsSpace* space)
 {
     if(!space)
         return;
@@ -69,44 +69,44 @@ void SG_EXPORT sgPhysicsSpaceDestroy(SGPhysicsSpace* space)
     free(space);
 }
 
-void SG_EXPORT sgPhysicsSpaceStep(SGPhysicsSpace* space, float time)
+void SG_CALL sgPhysicsSpaceStep(SGPhysicsSpace* space, float time)
 {
     if(psgmPhysicsSpaceStep != NULL)
         psgmPhysicsSpaceStep(space->handle, time);
 }
 
-void SG_EXPORT sgPhysicsSpaceSetIterations(SGPhysicsSpace* space, SGuint iterations)
+void SG_CALL sgPhysicsSpaceSetIterations(SGPhysicsSpace* space, SGuint iterations)
 {
 	if(psgmPhysicsSpaceSetIterations)
 		psgmPhysicsSpaceSetIterations(space->handle, iterations);
 }
-void SG_EXPORT sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y)
+void SG_CALL sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y)
 {
     if(psgmPhysicsSpaceSetGravity != NULL)
         psgmPhysicsSpaceSetGravity(space->handle, x, y);
 }
-//void SG_EXPORT sgPhysicsSpaceGetGravity(SGPhysicsSpace* space, float* x, float* y);
-void SG_EXPORT sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping)
+//void SG_CALL sgPhysicsSpaceGetGravity(SGPhysicsSpace* space, float* x, float* y);
+void SG_CALL sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping)
 {
 	if(psgmPhysicsSpaceSetDamping)
 		psgmPhysicsSpaceSetDamping(space->handle, damping);
 }
-//float SG_EXPORT sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
+//float SG_CALL sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
 
-void SG_EXPORT sgPhysicsSpaceSetData(SGPhysicsSpace* space, void* data)
+void SG_CALL sgPhysicsSpaceSetData(SGPhysicsSpace* space, void* data)
 {
 	space->data = data;
 }
-void* SG_EXPORT sgPhysicsSpaceGetData(SGPhysicsSpace* space)
+void* SG_CALL sgPhysicsSpaceGetData(SGPhysicsSpace* space)
 {
 	return space->data;
 }
 
-SGPhysicsBody* SG_EXPORT sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space)
+SGPhysicsBody* SG_CALL sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space)
 {
 	return space->sbody;
 }
-SGPhysicsSpace* SG_EXPORT sgPhysicsSpaceGetDefault(void)
+SGPhysicsSpace* SG_CALL sgPhysicsSpaceGetDefault(void)
 {
 	return _sg_physSpaceMain;
 }

@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-float SG_EXPORT _sgNavGridG(SGAStarNode* from, SGAStarNode* to)
+float SG_CALL _sgNavGridG(SGAStarNode* from, SGAStarNode* to)
 {
 	SGNavGridData* fdata = from->data;
 	SGNavGridData* tdata = to->data;
@@ -27,7 +27,7 @@ float SG_EXPORT _sgNavGridG(SGAStarNode* from, SGAStarNode* to)
 	float dy = tdata->y - (float)fdata->y;
 	return from->score.g + sqrt(dx*dx + dy*dy) * tdata->cost;
 }
-float SG_EXPORT _sgNavGridH(SGAStarNode* from, SGAStarNode* to)
+float SG_CALL _sgNavGridH(SGAStarNode* from, SGAStarNode* to)
 {
 	SGNavGridData* fdata = from->data;
 	SGNavGridData* tdata = to->data;
@@ -36,12 +36,12 @@ float SG_EXPORT _sgNavGridH(SGAStarNode* from, SGAStarNode* to)
 	float dy = tdata->y - (float)fdata->y;
 	return sqrt(dx*dx + dy*dy);
 }
-SGbool SG_EXPORT _sgNavGridGoal(SGAStarNode* from, SGAStarNode* to)
+SGbool SG_CALL _sgNavGridGoal(SGAStarNode* from, SGAStarNode* to)
 {
 	return from == to;
 }
 
-SGNavGrid* SG_EXPORT sgNavGridCreate(SGuint width, SGuint height, SGbool diag, SGbool wdiag)
+SGNavGrid* SG_CALL sgNavGridCreate(SGuint width, SGuint height, SGbool diag, SGbool wdiag)
 {
 	SGuint x, y;
 	SGNavGridData* data;
@@ -114,7 +114,7 @@ SGNavGrid* SG_EXPORT sgNavGridCreate(SGuint width, SGuint height, SGbool diag, S
 
 	return grid;
 }
-void SG_EXPORT sgNavGridDestroy(SGNavGrid* grid)
+void SG_CALL sgNavGridDestroy(SGNavGrid* grid)
 {
 	sgListDestroy(grid->path);
 	size_t x, y;
@@ -132,20 +132,20 @@ void SG_EXPORT sgNavGridDestroy(SGNavGrid* grid)
 		sgAStarDestroy(grid->search);
 	free(grid);
 }
-SGAStarNode* SG_EXPORT sgNavGridGetNode(SGNavGrid* grid, SGuint x, SGuint y)
+SGAStarNode* SG_CALL sgNavGridGetNode(SGNavGrid* grid, SGuint x, SGuint y)
 {
 	if(x >= grid->width || y >= grid->height)
 		return NULL;
 	return grid->grid[x+1][y+1];
 }
-SGNavGridData* SG_EXPORT sgNavGridGetData(SGNavGrid* grid, SGuint x, SGuint y)
+SGNavGridData* SG_CALL sgNavGridGetData(SGNavGrid* grid, SGuint x, SGuint y)
 {
 	SGAStarNode* node = sgNavGridGetNode(grid, x, y);
 	if(node == NULL)
 		return NULL;
 	return node->data;
 }
-void SG_EXPORT sgNavGridAddClear(SGNavGrid* grid, SGuint x, SGuint y)
+void SG_CALL sgNavGridAddClear(SGNavGrid* grid, SGuint x, SGuint y)
 {
 	SGAStarNode* node = sgNavGridGetNode(grid, x, y);
 	if(node != NULL)
@@ -205,7 +205,7 @@ void SG_EXPORT sgNavGridAddClear(SGNavGrid* grid, SGuint x, SGuint y)
 		}
 	}
 }
-void SG_EXPORT sgNavGridAddWall(SGNavGrid* grid, SGuint x, SGuint y)
+void SG_CALL sgNavGridAddWall(SGNavGrid* grid, SGuint x, SGuint y)
 {
 	SGAStarNode* node = sgNavGridGetNode(grid, x, y);
 	if(node != NULL)
@@ -237,7 +237,7 @@ void SG_EXPORT sgNavGridAddWall(SGNavGrid* grid, SGuint x, SGuint y)
 		}
 	}
 }
-void SG_EXPORT sgNavGridAddStart(SGNavGrid* grid, SGuint x, SGuint y)
+void SG_CALL sgNavGridAddStart(SGNavGrid* grid, SGuint x, SGuint y)
 {
 	SGAStarNode* node = sgNavGridGetNode(grid, x, y);
 	if(node != NULL)
@@ -246,7 +246,7 @@ void SG_EXPORT sgNavGridAddStart(SGNavGrid* grid, SGuint x, SGuint y)
 		grid->start = node;
 	}
 }
-void SG_EXPORT sgNavGridAddGoal(SGNavGrid* grid, SGuint x, SGuint y)
+void SG_CALL sgNavGridAddGoal(SGNavGrid* grid, SGuint x, SGuint y)
 {
 	SGAStarNode* node = sgNavGridGetNode(grid, x, y);
 	if(node != NULL)
@@ -255,7 +255,7 @@ void SG_EXPORT sgNavGridAddGoal(SGNavGrid* grid, SGuint x, SGuint y)
 		grid->goal = node;
 	}
 }
-void SG_EXPORT sgNavGridSearchCreate(SGNavGrid* grid)
+void SG_CALL sgNavGridSearchCreate(SGNavGrid* grid)
 {
     if(grid->search != NULL)
         sgAStarDestroy(grid->search);
@@ -265,15 +265,15 @@ void SG_EXPORT sgNavGridSearchCreate(SGNavGrid* grid)
 			grid->grid[x][y]->from = NULL;
 	grid->search = sgAStarCreate(grid->start, grid->goal, _sgNavGridG, _sgNavGridH, _sgNavGridGoal);
 }
-SGbool SG_EXPORT sgNavGridSearchStep(SGNavGrid* grid)
+SGbool SG_CALL sgNavGridSearchStep(SGNavGrid* grid)
 {
 	return sgAStarStep(grid->search);
 }
-SGbool SG_EXPORT sgNavGridGoalFound(SGNavGrid* grid)
+SGbool SG_CALL sgNavGridGoalFound(SGNavGrid* grid)
 {
 	return sgAStarGoalFound(grid->search);
 }
-SGList* SG_EXPORT sgNavGridSearchPath(SGNavGrid* grid, size_t* pathlen)
+SGList* SG_CALL sgNavGridSearchPath(SGNavGrid* grid, size_t* pathlen)
 {
 	sgListDestroy(grid->path);
 	grid->path = sgListCreate();

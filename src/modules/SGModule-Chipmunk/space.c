@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-SGenum SG_EXPORT sgmPhysicsSpaceCreate(void** space)
+SGenum SG_CALL sgmPhysicsSpaceCreate(void** space)
 {
     *space = cpSpaceNew();
 
@@ -32,7 +32,7 @@ SGenum SG_EXPORT sgmPhysicsSpaceCreate(void** space)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsSpaceDestroy(void* space)
+SGenum SG_CALL sgmPhysicsSpaceDestroy(void* space)
 {
     if(space == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -44,7 +44,7 @@ SGenum SG_EXPORT sgmPhysicsSpaceDestroy(void* space)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsSpaceStep(void* space, float time)
+SGenum SG_CALL sgmPhysicsSpaceStep(void* space, float time)
 {
     if(space == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -53,25 +53,25 @@ SGenum SG_EXPORT sgmPhysicsSpaceStep(void* space, float time)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsSpaceSetIterations(void* space, SGuint iterations)
+SGenum SG_CALL sgmPhysicsSpaceSetIterations(void* space, SGuint iterations)
 {
     if(!space)
         return SG_OK; // SG_INVALID_VALUE
     cpSpaceSetIterations(space, iterations);
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmPhysicsSpaceGetIterations(void* space, SGuint* iterations, SGuint* eiterations);
+//SGenum SG_CALL sgmPhysicsSpaceGetIterations(void* space, SGuint* iterations, SGuint* eiterations);
 
-SGenum SG_EXPORT sgmPhysicsSpaceSetGravity(void* space, float x, float y)
+SGenum SG_CALL sgmPhysicsSpaceSetGravity(void* space, float x, float y)
 {
     if(!space)
         return SG_OK; // SG_INVALID_VALUE
     cpSpaceSetGravity(space, cpv(x, y));
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmPhysicsSpaceGetGravity(void* space, float* x, float* y);
+//SGenum SG_CALL sgmPhysicsSpaceGetGravity(void* space, float* x, float* y);
 
-SGenum SG_EXPORT sgmPhysicsSpaceSetDamping(void* space, float damping)
+SGenum SG_CALL sgmPhysicsSpaceSetDamping(void* space, float damping)
 {
     if(!space)
         return SG_OK; // SG_INVALID_VALUE
@@ -79,9 +79,9 @@ SGenum SG_EXPORT sgmPhysicsSpaceSetDamping(void* space, float damping)
     cspace->damping = damping;
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmPhysicsSpaceGetDamping(void* space, float* damping);
+//SGenum SG_CALL sgmPhysicsSpaceGetDamping(void* space, float* damping);
 
-SGenum SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape)
+SGenum SG_CALL sgmPhysicsSpaceAddShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -91,7 +91,7 @@ SGenum SG_EXPORT sgmPhysicsSpaceAddShape(void* space, void* shape)
         cpSpaceAddStaticShape(space, shape);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape)
+SGenum SG_CALL sgmPhysicsSpaceRemoveShape(void* space, void* shape)
 {
     if(space == NULL || shape == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -101,9 +101,9 @@ SGenum SG_EXPORT sgmPhysicsSpaceRemoveShape(void* space, void* shape)
         cpSpaceRemoveStaticShape(space, shape);
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmPhysicsSpaceAddStaticShape(void* space, void* shape);
-//SGenum SG_EXPORT sgmPhysicsSpaceRemoveStaticShape(void* space, void* shape);
-SGenum SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body)
+//SGenum SG_CALL sgmPhysicsSpaceAddStaticShape(void* space, void* shape);
+//SGenum SG_CALL sgmPhysicsSpaceRemoveStaticShape(void* space, void* shape);
+SGenum SG_CALL sgmPhysicsSpaceAddBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -111,7 +111,7 @@ SGenum SG_EXPORT sgmPhysicsSpaceAddBody(void* space, void* body)
         cpSpaceAddBody(space, body);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body)
+SGenum SG_CALL sgmPhysicsSpaceRemoveBody(void* space, void* body)
 {
     if(space == NULL || body == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -119,14 +119,14 @@ SGenum SG_EXPORT sgmPhysicsSpaceRemoveBody(void* space, void* body)
         cpSpaceRemoveBody(space, body);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsSpaceAddConstraint(void* space, void* constraint)
+SGenum SG_CALL sgmPhysicsSpaceAddConstraint(void* space, void* constraint)
 {
     if(space == NULL || constraint == NULL)
         return SG_OK; // SG_INVALID_VALUE
     cpSpaceAddConstraint(space, constraint);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint)
+SGenum SG_CALL sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint)
 {
     if(space == NULL || constraint == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -134,7 +134,7 @@ SGenum SG_EXPORT sgmPhysicsSpaceRemoveConstraint(void* space, void* constraint)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsSpaceGetStaticBody(void* space, void** body)
+SGenum SG_CALL sgmPhysicsSpaceGetStaticBody(void* space, void** body)
 {
     if(!space || !body)
         return SG_OK; // SG_INVALID_VALUE

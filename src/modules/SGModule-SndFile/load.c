@@ -81,7 +81,7 @@ static sf_count_t vio_tell(void* data)
     return stream->tell(stream->data);
 }
 
-SGenum SG_EXPORT sgmAudioFileCreate(void** file, SGStream* stream, SGuint* channels, SGuint* format, SGuint* frequency)
+SGenum SG_CALL sgmAudioFileCreate(void** file, SGStream* stream, SGuint* channels, SGuint* format, SGuint* frequency)
 {
     *file = malloc(sizeof(LFile));
     if(!*file) return SG_UNKNOWN_ERROR;
@@ -127,7 +127,7 @@ SGenum SG_EXPORT sgmAudioFileCreate(void** file, SGStream* stream, SGuint* chann
     *frequency = lfile->info.samplerate;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioFileDestroy(void* file)
+SGenum SG_CALL sgmAudioFileDestroy(void* file)
 {
     LFile* lfile = (LFile*)file;
 
@@ -136,13 +136,13 @@ SGenum SG_EXPORT sgmAudioFileDestroy(void* file)
     free(file);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioFileNumSamples(void* file, SGuint* samples)
+SGenum SG_CALL sgmAudioFileNumSamples(void* file, SGuint* samples)
 {
     LFile* lfile = (LFile*)file;
     *samples = lfile->info.frames;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioFileRead(void* file, void* data, SGuint* datalen)
+SGenum SG_CALL sgmAudioFileRead(void* file, void* data, SGuint* datalen)
 {
     LFile* lfile = (LFile*)file;
 

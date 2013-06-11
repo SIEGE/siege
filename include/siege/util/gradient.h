@@ -30,7 +30,7 @@ extern "C"
 
 struct SGGradient;
 
-typedef float SG_EXPORT (SGGradientInterp)(struct SGGradient* grad, float x);
+typedef float SG_CALL (SGGradientInterp)(struct SGGradient* grad, float x);
 
 typedef struct SGGradient
 {
@@ -42,26 +42,26 @@ typedef struct SGGradient
 /*#ifdef SG_BUILD_LIBRARY
 #endif // SG_BUILD_LIBRARY*/
 
-SGVec2* SG_EXPORT _sgGradientFindMin(SGGradient* grad, float val);
+SGVec2* SG_CALL _sgGradientFindMin(SGGradient* grad, float val);
 
-float SG_EXPORT _sgGradientInterpNearest(SGGradient* grad, float x);
-float SG_EXPORT _sgGradientInterpLinear(SGGradient* grad, float x);
-float SG_EXPORT _sgGradientInterpCosine(SGGradient* grad, float x);
-float SG_EXPORT _sgGradientInterpCubic(SGGradient* grad, float x);
+float SG_CALL _sgGradientInterpNearest(SGGradient* grad, float x);
+float SG_CALL _sgGradientInterpLinear(SGGradient* grad, float x);
+float SG_CALL _sgGradientInterpCosine(SGGradient* grad, float x);
+float SG_CALL _sgGradientInterpCubic(SGGradient* grad, float x);
 
-SGGradient* SG_EXPORT sgGradientCreate(void);
-void SG_EXPORT sgGradientDestroy(SGGradient* grad);
+SGGradient* SG_CALL sgGradientCreate(void);
+void SG_CALL sgGradientDestroy(SGGradient* grad);
 
-void SG_EXPORT sgGradientSetInterp(SGGradient* grad, SGenum interp);
-void SG_EXPORT sgGradientSetInterpFunc(SGGradient* grad, SGGradientInterp* interp);
+void SG_CALL sgGradientSetInterp(SGGradient* grad, SGenum interp);
+void SG_CALL sgGradientSetInterpFunc(SGGradient* grad, SGGradientInterp* interp);
 
-void SG_EXPORT sgGradientSetStopIndex(SGGradient* grad, size_t i, float y);
-void SG_EXPORT sgGradientSetStopKey(SGGradient* grad, float x, float y);
+void SG_CALL sgGradientSetStopIndex(SGGradient* grad, size_t i, float y);
+void SG_CALL sgGradientSetStopKey(SGGradient* grad, float x, float y);
 
-void SG_EXPORT sgGradientRemoveStopIndex(SGGradient* grad, size_t i);
-void SG_EXPORT sgGradientRemoveStopKey(SGGradient* grad, float x);
+void SG_CALL sgGradientRemoveStopIndex(SGGradient* grad, size_t i);
+void SG_CALL sgGradientRemoveStopKey(SGGradient* grad, float x);
 
-float SG_EXPORT sgGradientGetValue(SGGradient* grad, float x);
+float SG_CALL sgGradientGetValue(SGGradient* grad, float x);
 
 #ifdef __cplusplus
 }

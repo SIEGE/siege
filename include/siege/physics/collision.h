@@ -38,22 +38,22 @@ typedef struct SGPhysicsCollision
 SGPhysicsCollisionCallbacks _sg_colCallbacks;
 #endif // SG_BUILD_LIBRARY
 
-SGbool SG_EXPORT _sgPhysicsCollisionInit(void);
-SGbool SG_EXPORT _sgPhysicsCollisionDeinit(void);
+SGbool SG_CALL _sgPhysicsCollisionInit(void);
+SGbool SG_CALL _sgPhysicsCollisionDeinit(void);
 
-void SG_EXPORT _sg_cbPhysicsCollisionBegin(void* shandle1, void* shandle2, void* handle);
-void SG_EXPORT _sg_cbPhysicsCollision(void* shandle1, void* shandle2, void* handle);
-void SG_EXPORT _sg_cbPhysicsCollisionPost(void* shandle1, void* shandle2, void* handle);
-void SG_EXPORT _sg_cbPhysicsCollisionEnd(void* shandle1, void* shandle2, void* handle);
+void SG_CALL _sg_cbPhysicsCollisionBegin(void* shandle1, void* shandle2, void* handle);
+void SG_CALL _sg_cbPhysicsCollision(void* shandle1, void* shandle2, void* handle);
+void SG_CALL _sg_cbPhysicsCollisionPost(void* shandle1, void* shandle2, void* handle);
+void SG_CALL _sg_cbPhysicsCollisionEnd(void* shandle1, void* shandle2, void* handle);
 
-void SG_EXPORT sgPhysicsCollisionIgnore(SGPhysicsCollision* coll);
-size_t SG_EXPORT sgPhysicsCollisionGetNumContacts(SGPhysicsCollision* coll);
-void SG_EXPORT sgPhysicsCollisionGetPoint(SGPhysicsCollision* coll, size_t index, float* x, float* y);
-void SG_EXPORT sgPhysicsCollisionGetNormal(SGPhysicsCollision* coll, size_t index, float* x, float* y);
-float SG_EXPORT sgPhysicsCollisionGetDistance(SGPhysicsCollision* coll, size_t index);
-void SG_EXPORT sgPhysicsCollisionGetImpulse(SGPhysicsCollision* coll, float* x, float* y, SGbool friction);
-SGPhysicsShape* SG_EXPORT sgPhysicsCollisionGetShapeOne(SGPhysicsCollision* coll);
-SGPhysicsShape* SG_EXPORT sgPhysicsCollisionGetShapeTwo(SGPhysicsCollision* coll);
+void SG_CALL sgPhysicsCollisionIgnore(SGPhysicsCollision* coll);
+size_t SG_CALL sgPhysicsCollisionGetNumContacts(SGPhysicsCollision* coll);
+void SG_CALL sgPhysicsCollisionGetPoint(SGPhysicsCollision* coll, size_t index, float* x, float* y);
+void SG_CALL sgPhysicsCollisionGetNormal(SGPhysicsCollision* coll, size_t index, float* x, float* y);
+float SG_CALL sgPhysicsCollisionGetDistance(SGPhysicsCollision* coll, size_t index);
+void SG_CALL sgPhysicsCollisionGetImpulse(SGPhysicsCollision* coll, float* x, float* y, SGbool friction);
+SGPhysicsShape* SG_CALL sgPhysicsCollisionGetShapeOne(SGPhysicsCollision* coll);
+SGPhysicsShape* SG_CALL sgPhysicsCollisionGetShapeTwo(SGPhysicsCollision* coll);
 
 #ifdef __cplusplus
 }

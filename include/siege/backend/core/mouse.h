@@ -27,30 +27,30 @@ extern "C"
 #endif
     typedef struct SGCoreMouseCallbacks
     {
-        void SG_EXPORT (*button)(void* mouse, SGuint button, SGbool action);
-        void SG_EXPORT (*move)(void* mouse, SGint x, SGint y);
-        void SG_EXPORT (*wheel)(void* mouse, SGint w);
+        void SG_CALL (*button)(void* mouse, SGuint button, SGbool action);
+        void SG_CALL (*move)(void* mouse, SGint x, SGint y);
+        void SG_CALL (*wheel)(void* mouse, SGint w);
     } SGCoreMouseCallbacks;
     /**
         WARNING: Subject to change
     */
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseCreate)(void** mouse, void* window);
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseDestroy)(void* mouse);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseCreate)(void** mouse, void* window);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseDestroy)(void* mouse);
     // should these two [sgCoreMouseShow,sgCoreMouseHide] be put into a single function?
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseShow)(void* mouse);
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseHide)(void* mouse);
-    //SGuint SG_EXPORT SG_FPTR(sgmCoreMouseIsShown)(void* mouse, SGbool* shown);
-    //SGuint SG_EXPORT SG_FPTR(sgmCoreMouseIsHidden)(void* mouse, SGbool* hidden);
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseGetNumButtons)(void* mouse, size_t* numbuttons);
-    //SGuint SG_EXPORT SG_FPTR(sgmCoreMouseSetButtons)(void* mouse, SGbool* state);
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseGetButtons)(void* mouse, SGbool* state);
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseSetPosition)(void* mouse, SGint x, SGint y);
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseGetPosition)(void* mouse, SGint* x, SGint* y);
-    //SGuint SG_EXPORT SG_FPTR(sgmCoreMouseSetWheel)(void* mouse, SGint w);
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseGetWheel)(void* mouse, SGint* w);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseShow)(void* mouse);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseHide)(void* mouse);
+    //SGuint SG_CALL SG_FPTR(sgmCoreMouseIsShown)(void* mouse, SGbool* shown);
+    //SGuint SG_CALL SG_FPTR(sgmCoreMouseIsHidden)(void* mouse, SGbool* hidden);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseGetNumButtons)(void* mouse, size_t* numbuttons);
+    //SGuint SG_CALL SG_FPTR(sgmCoreMouseSetButtons)(void* mouse, SGbool* state);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseGetButtons)(void* mouse, SGbool* state);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseSetPosition)(void* mouse, SGint x, SGint y);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseGetPosition)(void* mouse, SGint* x, SGint* y);
+    //SGuint SG_CALL SG_FPTR(sgmCoreMouseSetWheel)(void* mouse, SGint w);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseGetWheel)(void* mouse, SGint* w);
 
-    SGuint SG_EXPORT SG_FPTR(sgmCoreMouseSetCallbacks)(void* mouse, SGCoreMouseCallbacks* callbacks);
-    //SGuint SG_EXPORT SG_FPTR(sgmCoreMouseGetCallbacks)(void* mouse, SGCoreMouseCallbacks** callbacks);
+    SGuint SG_CALL SG_FPTR(sgmCoreMouseSetCallbacks)(void* mouse, SGCoreMouseCallbacks* callbacks);
+    //SGuint SG_CALL SG_FPTR(sgmCoreMouseGetCallbacks)(void* mouse, SGCoreMouseCallbacks** callbacks);
 #ifdef __cplusplus
 }
 #endif

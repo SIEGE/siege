@@ -6,7 +6,7 @@ srcdir = '../include/siege'
 tabwidth = 4
 private_start = ['_sg', '_SG', '__']
 ignore_index = ['_sg', 'sg', 'SG']
-repl = {'SG_EXPORT': ''}
+repl = {'SG_EXPORT': '', 'SG_CALL': ''}
 
 sources = []
 source = None

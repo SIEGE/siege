@@ -17,7 +17,7 @@
 #include <siege/modules/modules.h>
 #include <siege/modules/physics.h>
 
-void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib)
+void SG_CALL _sgModuleLoadPhysics(SGLibrary* lib)
 {
     void* fptr;
 

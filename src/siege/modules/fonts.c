@@ -17,7 +17,7 @@
 #include <siege/modules/modules.h>
 #include <siege/modules/fonts.h>
 
-void SG_EXPORT _sgModuleLoadFonts(SGLibrary* lib)
+void SG_CALL _sgModuleLoadFonts(SGLibrary* lib)
 {
     void* fptr;
 

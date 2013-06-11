@@ -37,29 +37,29 @@ typedef struct SGPhysicsShape
     float* verts;
 } SGPhysicsShape;
 
-SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreate(SGPhysicsBody* body, SGenum type);
-SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float x1, float y1, float x2, float y2, float width);
-SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x, float y, float* verts, size_t numverts);
-SGPhysicsShape* SG_EXPORT sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float x, float y, float r1, float r2);
-void SG_EXPORT sgPhysicsShapeDestroy(SGPhysicsShape* shape);
+SGPhysicsShape* SG_CALL sgPhysicsShapeCreate(SGPhysicsBody* body, SGenum type);
+SGPhysicsShape* SG_CALL sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float x1, float y1, float x2, float y2, float width);
+SGPhysicsShape* SG_CALL sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x, float y, float* verts, size_t numverts);
+SGPhysicsShape* SG_CALL sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float x, float y, float r1, float r2);
+void SG_CALL sgPhysicsShapeDestroy(SGPhysicsShape* shape);
 
-void SG_EXPORT sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group);
-SGuint SG_EXPORT sgPhysicsShapeGetGroup(SGPhysicsShape* shape);
-void SG_EXPORT sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction);
-float SG_EXPORT sgPhysicsShapeGetFriction(SGPhysicsShape* shape);
-void SG_EXPORT sgPhysicsShapeSetRestitution(SGPhysicsShape* shape, float restitution);
-float SG_EXPORT sgPhysicsShapeGetRestitution(SGPhysicsShape* shape);
-void SG_EXPORT sgPhysicsShapeSetData(SGPhysicsShape* shape, void* data);
-void* SG_EXPORT sgPhysicsShapeGetData(SGPhysicsShape* shape);
+void SG_CALL sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group);
+SGuint SG_CALL sgPhysicsShapeGetGroup(SGPhysicsShape* shape);
+void SG_CALL sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction);
+float SG_CALL sgPhysicsShapeGetFriction(SGPhysicsShape* shape);
+void SG_CALL sgPhysicsShapeSetRestitution(SGPhysicsShape* shape, float restitution);
+float SG_CALL sgPhysicsShapeGetRestitution(SGPhysicsShape* shape);
+void SG_CALL sgPhysicsShapeSetData(SGPhysicsShape* shape, void* data);
+void* SG_CALL sgPhysicsShapeGetData(SGPhysicsShape* shape);
 
-float SG_EXPORT sgPhysicsShapeGetAreaS(SGPhysicsShape* shape);
-float SG_EXPORT sgPhysicsShapeGetAreaU(SGPhysicsShape* shape);
-float SG_EXPORT sgPhysicsShapeGetMass(SGPhysicsShape* shape, float density);
-float SG_EXPORT sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass);
-float SG_EXPORT sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float density);
+float SG_CALL sgPhysicsShapeGetAreaS(SGPhysicsShape* shape);
+float SG_CALL sgPhysicsShapeGetAreaU(SGPhysicsShape* shape);
+float SG_CALL sgPhysicsShapeGetMass(SGPhysicsShape* shape, float density);
+float SG_CALL sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass);
+float SG_CALL sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float density);
 
-void SG_EXPORT sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, float* b, float* r);
-void SG_EXPORT sgPhysicsShapeDrawDBG(SGPhysicsShape* shape);
+void SG_CALL sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, float* b, float* r);
+void SG_CALL sgPhysicsShapeDrawDBG(SGPhysicsShape* shape);
 
 #ifdef __cplusplus
 }

@@ -23,11 +23,11 @@
 // for fprintf
 #include <stdio.h>
 
-SGMask* SG_EXPORT sgMaskCreateSprite(SGSprite* sprite)
+SGMask* SG_CALL sgMaskCreateSprite(SGSprite* sprite)
 {
 	return sgMaskCreateTexture2i(sprite->subimages[0], sprite->xoffset, sprite->yoffset);
 }
-SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint yoffset)
+SGMask* SG_CALL sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint yoffset)
 {
 	SGMask* mask = malloc(sizeof(SGMask));
 	if(mask == NULL)
@@ -140,7 +140,7 @@ SGMask* SG_EXPORT sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint
 
 	return mask;
 }
-SGMask* SG_EXPORT sgMaskCreateTexture(SGTexture* texture)
+SGMask* SG_CALL sgMaskCreateTexture(SGTexture* texture)
 {
 	SGMask* mask = sgMaskCreateTexture2i(texture, 0, 0);
 	if(mask == NULL)
@@ -149,7 +149,7 @@ SGMask* SG_EXPORT sgMaskCreateTexture(SGTexture* texture)
 	mask->yoffset = mask->height / 2;
 	return mask;
 }
-SGMask* SG_EXPORT sgMaskCreateFile2i(const char* fname, SGint xoffset, SGint yoffset)
+SGMask* SG_CALL sgMaskCreateFile2i(const char* fname, SGint xoffset, SGint yoffset)
 {
 	SGTexture* texture = sgTextureCreateFile(fname);
 	if(texture == NULL)
@@ -160,7 +160,7 @@ SGMask* SG_EXPORT sgMaskCreateFile2i(const char* fname, SGint xoffset, SGint yof
 
 	return mask;
 }
-SGMask* SG_EXPORT sgMaskCreateFile(const char* fname)
+SGMask* SG_CALL sgMaskCreateFile(const char* fname)
 {
 	SGMask* mask = sgMaskCreateFile2i(fname, 0, 0);
 	if(mask == NULL)
@@ -169,7 +169,7 @@ SGMask* SG_EXPORT sgMaskCreateFile(const char* fname)
 	mask->yoffset = mask->height / 2;
 	return mask;
 }
-void SG_EXPORT sgMaskDestroy(SGMask* mask)
+void SG_CALL sgMaskDestroy(SGMask* mask)
 {
 	if(mask == NULL)
 		return;
@@ -181,7 +181,7 @@ void SG_EXPORT sgMaskDestroy(SGMask* mask)
 	free(mask);
 }
 
-SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
+SGbool SG_CALL sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
 {
 	x1 -= m1->xoffset;
 	y1 -= m1->yoffset;
@@ -222,7 +222,7 @@ SGbool SG_EXPORT sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2
 	return SG_FALSE;
 }
 
-void SG_EXPORT sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height)
+void SG_CALL sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height)
 {
 	if(mask == NULL)
 		return;
@@ -232,20 +232,20 @@ void SG_EXPORT sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height)
 	if(height != NULL)
 		*height = mask->height;
 }
-SGuint SG_EXPORT sgMaskGetWidth(SGMask* mask)
+SGuint SG_CALL sgMaskGetWidth(SGMask* mask)
 {
 	if(mask == NULL)
 		return 0;
 	return mask->width;
 }
-SGuint SG_EXPORT sgMaskGetHeight(SGMask* mask)
+SGuint SG_CALL sgMaskGetHeight(SGMask* mask)
 {
 	if(mask == NULL)
 		return 0;
 	return mask->height;
 }
 
-void SG_EXPORT sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent)
+void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent)
 {
 	if(mask == NULL)
 		return;

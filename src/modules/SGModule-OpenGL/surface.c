@@ -18,7 +18,7 @@
 
 #include <stdlib.h>
 
-SGenum SG_EXPORT sgmGraphicsSurfaceCreate(void** surface, void* context)
+SGenum SG_CALL sgmGraphicsSurfaceCreate(void** surface, void* context)
 {
     if(context == NULL)
         return SG_INVALID_VALUE;
@@ -39,9 +39,9 @@ SGenum SG_EXPORT sgmGraphicsSurfaceCreate(void** surface, void* context)
     }
     return sgmGraphicsSurfaceSetTexture(*sdata, (*sdata)->texture);
 }
-//SGenum SG_EXPORT sgmGraphicsSurfaceCreateTexture(void** surface, void* context, void* texture);
-//SGenum SG_EXPORT sgmGraphicsSurfaceCreateData(void** surface, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
-SGenum SG_EXPORT sgmGraphicsSurfaceDestroy(void* surface)
+//SGenum SG_CALL sgmGraphicsSurfaceCreateTexture(void** surface, void* context, void* texture);
+//SGenum SG_CALL sgmGraphicsSurfaceCreateData(void** surface, void* context, SGuint width, SGuint height, SGuint bpp, void* data);
+SGenum SG_CALL sgmGraphicsSurfaceDestroy(void* surface)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -55,7 +55,7 @@ SGenum SG_EXPORT sgmGraphicsSurfaceDestroy(void* surface)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceSetTexture(void* surface, void* texture)
+SGenum SG_CALL sgmGraphicsSurfaceSetTexture(void* surface, void* texture)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -85,7 +85,7 @@ SGenum SG_EXPORT sgmGraphicsSurfaceSetTexture(void* surface, void* texture)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceGetTexture(void* surface, void** texture)
+SGenum SG_CALL sgmGraphicsSurfaceGetTexture(void* surface, void** texture)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -95,7 +95,7 @@ SGenum SG_EXPORT sgmGraphicsSurfaceGetTexture(void* surface, void** texture)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceSetData(void* surface, SGuint width, SGuint height, SGuint bpp, void* data)
+SGenum SG_CALL sgmGraphicsSurfaceSetData(void* surface, SGuint width, SGuint height, SGuint bpp, void* data)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -107,7 +107,7 @@ SGenum SG_EXPORT sgmGraphicsSurfaceSetData(void* surface, SGuint width, SGuint h
         sgmGraphicsSurfaceSetTexture(sdata, sdata->texture);
     return ret;
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceSetSubData(void* surface, SGuint x, SGuint y, SGuint width, SGuint height, SGenum bpp, void* data)
+SGenum SG_CALL sgmGraphicsSurfaceSetSubData(void* surface, SGuint x, SGuint y, SGuint width, SGuint height, SGenum bpp, void* data)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -117,7 +117,7 @@ SGenum SG_EXPORT sgmGraphicsSurfaceSetSubData(void* surface, SGuint x, SGuint y,
     SGuint ret = sgmGraphicsTextureSetSubData(sdata->texture, x, y, width, height, bpp, data);
     return ret;
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data)
+SGenum SG_CALL sgmGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint* height, SGuint* bpp, void** data)
 {
 	if(surface == NULL)
 		return SG_OK; // SG_INVALID_VALUE
@@ -125,11 +125,11 @@ SGenum SG_EXPORT sgmGraphicsSurfaceGetData(void* surface, SGuint* width, SGuint*
 
 	return sgmGraphicsTextureGetData(sdata->texture, width, height, bpp, data);
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceFreeData(void* data)
+SGenum SG_CALL sgmGraphicsSurfaceFreeData(void* data)
 {
 	return sgmGraphicsTextureFreeData(data);
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceGetSize(void* surface, SGuint* width, SGuint* height)
+SGenum SG_CALL sgmGraphicsSurfaceGetSize(void* surface, SGuint* width, SGuint* height)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -137,7 +137,7 @@ SGenum SG_EXPORT sgmGraphicsSurfaceGetSize(void* surface, SGuint* width, SGuint*
     SurfaceData* sdata = (SurfaceData*)surface;
     return sgmGraphicsTextureGetSize(sdata->texture, width, height);
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceGetBPP(void* surface, SGenum* bpp)
+SGenum SG_CALL sgmGraphicsSurfaceGetBPP(void* surface, SGenum* bpp)
 {
     if(!surface)
         return SG_OK; // SG_INVALID_VALUE
@@ -145,7 +145,7 @@ SGenum SG_EXPORT sgmGraphicsSurfaceGetBPP(void* surface, SGenum* bpp)
     SurfaceData* sdata = (SurfaceData*)surface;
     return sgmGraphicsTextureGetBPP(sdata->texture, bpp);
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceDraw(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
+SGenum SG_CALL sgmGraphicsSurfaceDraw(void* surface, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -153,7 +153,7 @@ SGenum SG_EXPORT sgmGraphicsSurfaceDraw(void* surface, float x, float y, float z
 
     return sgmGraphicsTextureDraw(sdata->texture, x, y, z, xscale, yscale, xoffset, yoffset, angle);
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceTarget(void* surface)
+SGenum SG_CALL sgmGraphicsSurfaceTarget(void* surface)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -173,7 +173,7 @@ SGenum SG_EXPORT sgmGraphicsSurfaceTarget(void* surface)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmGraphicsSurfaceUntarget(void* surface)
+SGenum SG_CALL sgmGraphicsSurfaceUntarget(void* surface)
 {
     if(surface == NULL)
         return SG_OK; // SG_INVALID_VALUE

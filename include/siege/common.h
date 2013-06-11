@@ -144,7 +144,7 @@ typedef double SGdouble;
  */
 #       define SG_CALL
 #	endif  // defined(__WIN32)
-#endif // defined(SG_EXPORT)
+#endif // defined(SG_CALL)
 
 /**
  * WARNING: SG_EXPORT IS DEPRECATED*, USE SG_CALL INSTEAD
@@ -583,7 +583,7 @@ typedef double SGdouble;
 #define SG_MOUSE_BUTTON_MIDDLE 3
 /// @}
 
-typedef void SG_EXPORT SGFree(void* ptr);
+typedef void SG_CALL SGFree(void* ptr);
 
 /**
  * \brief Module info

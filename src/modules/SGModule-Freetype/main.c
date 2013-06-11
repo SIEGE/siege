@@ -16,7 +16,7 @@
 
 #include <stdlib.h>
 
-SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
+SGuint SG_CALL sgmModuleInit(SGModuleInfo** minfo)
 {
     *minfo = (SGModuleInfo*) calloc(1, sizeof(SGModuleInfo));
     (*minfo)->vmajor = SG_VERSION_MAJOR;
@@ -38,7 +38,7 @@ SGuint SG_EXPORT sgmModuleInit(SGModuleInfo** minfo)
     return SG_OK;
 }
 
-SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
+SGuint SG_CALL sgmModuleExit(SGModuleInfo* minfo)
 {
     FT_Done_FreeType(library);
 
@@ -46,9 +46,9 @@ SGuint SG_EXPORT sgmModuleExit(SGModuleInfo* minfo)
 
     return SG_OK;
 }
-//SGuint SG_EXPORT sgmModuleFree(void* data)
+//SGuint SG_CALL sgmModuleFree(void* data)
 
-SGuint SG_EXPORT sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
+SGuint SG_CALL sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
 {
     *ok = SG_TRUE; // we're independent of modules...
     return SG_OK;

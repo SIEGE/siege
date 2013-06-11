@@ -17,7 +17,7 @@
 #include <siege/modules/modules.h>
 #include <siege/modules/window.h>
 
-void SG_EXPORT _sgModuleLoadWindow(SGLibrary* lib)
+void SG_CALL _sgModuleLoadWindow(SGLibrary* lib)
 {
     void* fptr;
 

@@ -28,8 +28,8 @@ extern "C"
 {
 #endif // __cplusplus
 
-SGbool SG_EXPORT _sgConsoleInit(void);
-SGbool SG_EXPORT _sgConsoleDeinit(void);
+SGbool SG_CALL _sgConsoleInit(void);
+SGbool SG_CALL _sgConsoleDeinit(void);
 
 /// \todo TODO
 

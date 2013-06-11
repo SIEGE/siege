@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGenum SG_EXPORT sgmGraphicsLoad(SGStream* stream, size_t* width, size_t* height, SGenum* bpp, void** data)
+SGenum SG_CALL sgmGraphicsLoad(SGStream* stream, size_t* width, size_t* height, SGenum* bpp, void** data)
 {
     if(!stream)
     {

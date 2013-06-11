@@ -17,7 +17,7 @@
 #include <siege/modules/modules.h>
 #include <siege/modules/audio.h>
 
-void SG_EXPORT _sgModuleLoadAudio(SGLibrary* lib)
+void SG_CALL _sgModuleLoadAudio(SGLibrary* lib)
 {
     void* fptr;
     /// Audio

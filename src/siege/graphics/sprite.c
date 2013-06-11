@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-void SG_EXPORT _sgSpriteUpdateTick(SGSprite* sprite)
+void SG_CALL _sgSpriteUpdateTick(SGSprite* sprite)
 {
     SGulong tick = sgGetTick();
     sprite->image += sprite->speed * (tick - sprite->tick);
@@ -29,7 +29,7 @@ void SG_EXPORT _sgSpriteUpdateTick(SGSprite* sprite)
         sprite->image -= sprite->numimages;
 }
 
-SGSprite* SG_EXPORT sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, float yoffset)
+SGSprite* SG_CALL sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, float yoffset)
 {
     SGSprite* sprite = malloc(sizeof(SGSprite));
     if(sprite == NULL)
@@ -54,11 +54,11 @@ SGSprite* SG_EXPORT sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, f
 
     return sprite;
 }
-SGSprite* SG_EXPORT sgSpriteCreateTexture(SGTexture* texture)
+SGSprite* SG_CALL sgSpriteCreateTexture(SGTexture* texture)
 {
     return sgSpriteCreateTexture2f(texture, SG_NAN, SG_NAN);
 }
-SGSprite* SG_EXPORT sgSpriteCreateFile2f(const char* fname, float xoffset, float yoffset)
+SGSprite* SG_CALL sgSpriteCreateFile2f(const char* fname, float xoffset, float yoffset)
 {
     SGTexture* texture = sgTextureCreateFile(fname);
     if(texture == NULL)
@@ -73,11 +73,11 @@ SGSprite* SG_EXPORT sgSpriteCreateFile2f(const char* fname, float xoffset, float
     sprite->extimages = SG_FALSE;
     return sprite;
 }
-SGSprite* SG_EXPORT sgSpriteCreateFile(const char* fname)
+SGSprite* SG_CALL sgSpriteCreateFile(const char* fname)
 {
     return sgSpriteCreateFile2f(fname, SG_NAN, SG_NAN);
 }
-void SG_EXPORT sgSpriteDestroy(SGSprite* sprite)
+void SG_CALL sgSpriteDestroy(SGSprite* sprite)
 {
     if(sprite == NULL)
         return;
@@ -92,7 +92,7 @@ void SG_EXPORT sgSpriteDestroy(SGSprite* sprite)
     free(sprite);
 }
 
-SGbool SG_EXPORT sgSpriteAddFrameFile(SGSprite* sprite, const char* fname)
+SGbool SG_CALL sgSpriteAddFrameFile(SGSprite* sprite, const char* fname)
 {
     sprite->numimages++;
     sprite->subimages = realloc(sprite->subimages, sprite->numimages * sizeof(SGTexture*));
@@ -105,24 +105,24 @@ SGbool SG_EXPORT sgSpriteAddFrameFile(SGSprite* sprite, const char* fname)
     return SG_TRUE;
 }
 
-void SG_EXPORT sgSpriteSetImage(SGSprite* sprite, float image)
+void SG_CALL sgSpriteSetImage(SGSprite* sprite, float image)
 {
     sprite->image = image;
 }
-float SG_EXPORT sgSpriteGetImage(SGSprite* sprite)
+float SG_CALL sgSpriteGetImage(SGSprite* sprite)
 {
     return sprite->image;
 }
-void SG_EXPORT sgSpriteSetSpeed(SGSprite* sprite, float speed)
+void SG_CALL sgSpriteSetSpeed(SGSprite* sprite, float speed)
 {
     sprite->speed = speed;
 }
-float SG_EXPORT sgSpriteGetSpeed(SGSprite* sprite)
+float SG_CALL sgSpriteGetSpeed(SGSprite* sprite)
 {
     return sprite->speed;
 }
 
-void SG_EXPORT sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle)
+void SG_CALL sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle)
 {
     if(sprite == NULL)
         return;
@@ -131,68 +131,68 @@ void SG_EXPORT sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float 
 
     sgTextureDrawRads3f2f2f1f(sprite->subimages[(SGuint)sprite->image], x, y, z, xscale, yscale, sprite->xoffset, sprite->yoffset, angle);
 }
-void SG_EXPORT sgSpriteDrawRads2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle)
+void SG_CALL sgSpriteDrawRads2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, xscale, yscale, angle);
 }
-void SG_EXPORT sgSpriteDrawRads3f1f(SGSprite* sprite, float x, float y, float z, float angle)
+void SG_CALL sgSpriteDrawRads3f1f(SGSprite* sprite, float x, float y, float z, float angle)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, z, 1.0, 1.0, angle);
 }
-void SG_EXPORT sgSpriteDrawRads2f1f(SGSprite* sprite, float x, float y, float angle)
+void SG_CALL sgSpriteDrawRads2f1f(SGSprite* sprite, float x, float y, float angle)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, 1.0, 1.0, angle);
 }
 
-void SG_EXPORT sgSpriteDrawDegs3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle)
+void SG_CALL sgSpriteDrawDegs3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, z, xscale, yscale, angle * SG_PI / 180.0);
 }
-void SG_EXPORT sgSpriteDrawDegs2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle)
+void SG_CALL sgSpriteDrawDegs2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, xscale, yscale, angle * SG_PI / 180.0);
 }
-void SG_EXPORT sgSpriteDrawDegs3f1f(SGSprite* sprite, float x, float y, float z, float angle)
+void SG_CALL sgSpriteDrawDegs3f1f(SGSprite* sprite, float x, float y, float z, float angle)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, z, 1.0, 1.0, angle * SG_PI / 180.0);
 }
-void SG_EXPORT sgSpriteDrawDegs2f1f(SGSprite* sprite, float x, float y, float angle)
+void SG_CALL sgSpriteDrawDegs2f1f(SGSprite* sprite, float x, float y, float angle)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, 1.0, 1.0, angle * SG_PI / 180.0);
 }
 
-void SG_EXPORT sgSpriteDraw3f2f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale)
+void SG_CALL sgSpriteDraw3f2f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, z, xscale, yscale, 0.0);
 }
-void SG_EXPORT sgSpriteDraw2f2f(SGSprite* sprite, float x, float y, float xscale, float yscale)
+void SG_CALL sgSpriteDraw2f2f(SGSprite* sprite, float x, float y, float xscale, float yscale)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, xscale, yscale, 0.0);
 }
-void SG_EXPORT sgSpriteDraw3f(SGSprite* sprite, float x, float y, float z)
+void SG_CALL sgSpriteDraw3f(SGSprite* sprite, float x, float y, float z)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, z, 1.0, 1.0, 0.0);
 }
-void SG_EXPORT sgSpriteDraw2f(SGSprite* sprite, float x, float y)
+void SG_CALL sgSpriteDraw2f(SGSprite* sprite, float x, float y)
 {
     sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, 1.0, 1.0, 0.0);
 }
 
-void SG_EXPORT sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height)
+void SG_CALL sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height)
 {
     if(sprite == NULL)
         return;
 
     sgTextureGetSize(sprite->subimages[0], width, height);
 }
-SGuint SG_EXPORT sgSpriteGetWidth(SGSprite* sprite)
+SGuint SG_CALL sgSpriteGetWidth(SGSprite* sprite)
 {
     if(sprite == NULL)
         return 0;
 
     return sgTextureGetWidth(sprite->subimages[0]);
 }
-SGuint SG_EXPORT sgSpriteGetHeight(SGSprite* sprite)
+SGuint SG_CALL sgSpriteGetHeight(SGSprite* sprite)
 {
     if(sprite == NULL)
         return 0;

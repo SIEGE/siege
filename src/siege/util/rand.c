@@ -17,15 +17,15 @@
 
 #include <stdlib.h>
 
-void SG_EXPORT _sgRandMersenne32Create(SGRand* rand)
+void SG_CALL _sgRandMersenne32Create(SGRand* rand)
 {
     rand->data = malloc(sizeof(SGuint) * 625);
 }
-void SG_EXPORT _sgRandMersenne32Destroy(SGRand* rand)
+void SG_CALL _sgRandMersenne32Destroy(SGRand* rand)
 {
     free(rand->data);
 }
-void SG_EXPORT _sgRandMersenne32Seed(SGRand* rand, SGulong seed, SGulong index)
+void SG_CALL _sgRandMersenne32Seed(SGRand* rand, SGulong seed, SGulong index)
 {
     SGuint* ind = &((SGuint*)rand->data)[0];
     SGuint* mt = &((SGuint*)rand->data)[1];
@@ -36,7 +36,7 @@ void SG_EXPORT _sgRandMersenne32Seed(SGRand* rand, SGulong seed, SGulong index)
     for(i = 1; i < 624; i++)
         mt[i] = (0x6C078965 * (mt[i-1] ^ (mt[i-1] >> 30))) & 0xFFFFFFFF;
 }
-void SG_EXPORT _sgRandMersenne32GenNumbers(SGRand* rand)
+void SG_CALL _sgRandMersenne32GenNumbers(SGRand* rand)
 {
     //SGuint* ind = &((SGuint*)rand->data)[0];
     SGuint* mt = &((SGuint*)rand->data)[1];
@@ -50,7 +50,7 @@ void SG_EXPORT _sgRandMersenne32GenNumbers(SGRand* rand)
             mt[i] = mt[i] ^ 0x9908B0DF;
     }
 }
-SGulong SG_EXPORT _sgRandMersenne32Gen(SGRand* rand)
+SGulong SG_CALL _sgRandMersenne32Gen(SGRand* rand)
 {
     SGuint* ind = &((SGuint*)rand->data)[0];
     SGuint* mt = &((SGuint*)rand->data)[1];
@@ -68,7 +68,7 @@ SGulong SG_EXPORT _sgRandMersenne32Gen(SGRand* rand)
     return y;
 }
 
-SGRand* SG_EXPORT sgRandCreate(SGenum type)
+SGRand* SG_CALL sgRandCreate(SGenum type)
 {
     static SGRandCallbacks cbsMersenne32 = {
         _sgRandMersenne32Create, _sgRandMersenne32Destroy,
@@ -90,7 +90,7 @@ SGRand* SG_EXPORT sgRandCreate(SGenum type)
 
     return rand;
 }
-SGRand* SG_EXPORT sgRandCreateCB(SGRandCallbacks* cbs, SGulong max)
+SGRand* SG_CALL sgRandCreateCB(SGRandCallbacks* cbs, SGulong max)
 {
     SGRand* rand = malloc(sizeof(SGRand));
     if(rand == NULL)
@@ -109,7 +109,7 @@ SGRand* SG_EXPORT sgRandCreateCB(SGRandCallbacks* cbs, SGulong max)
 
     return rand;
 }
-void SG_EXPORT sgRandDestroy(SGRand* rand)
+void SG_CALL sgRandDestroy(SGRand* rand)
 {
     if(rand == NULL)
         return;
@@ -119,7 +119,7 @@ void SG_EXPORT sgRandDestroy(SGRand* rand)
     free(rand);
 }
 
-void SG_EXPORT sgRandSeed(SGRand* rand, SGulong seed, SGulong index)
+void SG_CALL sgRandSeed(SGRand* rand, SGulong seed, SGulong index)
 {
     if(rand == NULL)
         return;
@@ -131,7 +131,7 @@ void SG_EXPORT sgRandSeed(SGRand* rand, SGulong seed, SGulong index)
         rand->cbs.seed(rand, seed, index);
 }
 
-SGulong SG_EXPORT sgRandGen(SGRand* rand)
+SGulong SG_CALL sgRandGen(SGRand* rand)
 {
     if(rand == NULL)
         return 0;
@@ -140,15 +140,15 @@ SGulong SG_EXPORT sgRandGen(SGRand* rand)
         return rand->cbs.gen(rand);
     return 0;
 }
-float SG_EXPORT sgRandGenf(SGRand* rand)
+float SG_CALL sgRandGenf(SGRand* rand)
 {
     return sgRandGen(rand) / (float)rand->max;
 }
-float SG_EXPORT sgRandGen1f(SGRand* rand, float max)
+float SG_CALL sgRandGen1f(SGRand* rand, float max)
 {
     return sgRandGenf(rand) * max;
 }
-float SG_EXPORT sgRandGen2f(SGRand* rand, float min, float max)
+float SG_CALL sgRandGen2f(SGRand* rand, float min, float max)
 {
     return min + sgRandGen1f(rand, max - min);
 }

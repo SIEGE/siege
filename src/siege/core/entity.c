@@ -23,7 +23,7 @@
 #include <string.h>
 #include <math.h>
 
-SGbool SG_EXPORT _sgEntityInit(void)
+SGbool SG_CALL _sgEntityInit(void)
 {
     _sg_entList = sgListCreate();
     if(!_sg_entList)
@@ -31,7 +31,7 @@ SGbool SG_EXPORT _sgEntityInit(void)
     _sg_entSMap = sgSMapCreate();
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgEntityDeinit(void)
+SGbool SG_CALL _sgEntityDeinit(void)
 {
     sgEntityDestroyAll();
     sgListDestroy(_sg_entList);
@@ -39,7 +39,7 @@ SGbool SG_EXPORT _sgEntityDeinit(void)
     return SG_TRUE;
 }
 
-static void SG_EXPORT _sg_evCall(SGEntity* entity, size_t num, va_list args)
+static void SG_CALL _sg_evCall(SGEntity* entity, size_t num, va_list args)
 {
     if(!entity->active) return;
 
@@ -244,13 +244,13 @@ static void SG_EXPORT _sg_evCall(SGEntity* entity, size_t num, va_list args)
 		}
 	}
 }
-static void SG_EXPORT _sg_evDraw(SGEntity* entity)
+static void SG_CALL _sg_evDraw(SGEntity* entity)
 {
 	if(entity->visible)
 		sgEntityDraw(entity);
 }
 
-SGEntity* SG_EXPORT sgEntityCreate(void)
+SGEntity* SG_CALL sgEntityCreate(void)
 {
     static const SGEntity DefaultEntity = { 0 };
 
@@ -273,7 +273,7 @@ SGEntity* SG_EXPORT sgEntityCreate(void)
     entity->mnode = NULL;
 	return entity;
 }
-void SG_EXPORT sgEntityDestroy(SGEntity* entity)
+void SG_CALL sgEntityDestroy(SGEntity* entity)
 {
 	if(entity == NULL)
 		return;
@@ -286,13 +286,13 @@ void SG_EXPORT sgEntityDestroy(SGEntity* entity)
 
 	free(entity);
 }
-void SG_EXPORT sgEntityDestroyAll(void)
+void SG_CALL sgEntityDestroyAll(void)
 {
     while(_sg_entList->head)
         sgEntityDestroy(_sg_entList->head->item);
 }
 
-void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name)
+void SG_CALL sgEntitySetName(SGEntity* entity, const char* name)
 {
     SGList* list;
     if(entity->mnode)
@@ -317,21 +317,21 @@ void SG_EXPORT sgEntitySetName(SGEntity* entity, const char* name)
     entity->mnode = mnode;
     entity->mlnode = sgListAppend(mnode->val, entity);
 }
-char* SG_EXPORT sgEntityGetName(SGEntity* entity)
+char* SG_CALL sgEntityGetName(SGEntity* entity)
 {
     if(!entity->mnode) return NULL;
 
     return entity->mnode->key;
 }
 
-void SG_EXPORT sgEntitySetSprite(SGEntity* entity, SGSprite* sprite)
+void SG_CALL sgEntitySetSprite(SGEntity* entity, SGSprite* sprite)
 {
 	if(entity == NULL)
 		return;
 
 	entity->sprite = sprite;
 }
-SGSprite* SG_EXPORT sgEntityGetSprite(SGEntity* entity)
+SGSprite* SG_CALL sgEntityGetSprite(SGEntity* entity)
 {
 	if(entity == NULL)
 		return NULL;
@@ -339,14 +339,14 @@ SGSprite* SG_EXPORT sgEntityGetSprite(SGEntity* entity)
 	return entity->sprite;
 }
 
-void SG_EXPORT sgEntitySetMask(SGEntity* entity, SGMask* mask)
+void SG_CALL sgEntitySetMask(SGEntity* entity, SGMask* mask)
 {
 	if(entity == NULL)
 		return;
 
 	entity->mask = mask;
 }
-SGMask* SG_EXPORT sgEntityGetMask(SGEntity* entity)
+SGMask* SG_CALL sgEntityGetMask(SGEntity* entity)
 {
 	if(entity == NULL)
 		return NULL;
@@ -354,7 +354,7 @@ SGMask* SG_EXPORT sgEntityGetMask(SGEntity* entity)
 	return entity->mask;
 }
 
-void SG_EXPORT sgEntitySetPhysicsBody(SGEntity* entity, SGPhysicsBody* body)
+void SG_CALL sgEntitySetPhysicsBody(SGEntity* entity, SGPhysicsBody* body)
 {
 	if(entity == NULL)
 		return;
@@ -364,7 +364,7 @@ void SG_EXPORT sgEntitySetPhysicsBody(SGEntity* entity, SGPhysicsBody* body)
         body->entity = entity;
 	entity->body = body;
 }
-SGPhysicsBody* SG_EXPORT sgEntityGetPhysicsBody(SGEntity* entity)
+SGPhysicsBody* SG_CALL sgEntityGetPhysicsBody(SGEntity* entity)
 {
 	if(entity == NULL)
 		return NULL;
@@ -372,14 +372,14 @@ SGPhysicsBody* SG_EXPORT sgEntityGetPhysicsBody(SGEntity* entity)
 	return entity->body;
 }
 
-void SG_EXPORT sgEntitySetAudioSource(SGEntity* entity, SGAudioSource* source)
+void SG_CALL sgEntitySetAudioSource(SGEntity* entity, SGAudioSource* source)
 {
 	if(entity == NULL)
 		return;
 
 	entity->source = source;
 }
-SGAudioSource* SG_EXPORT sgEntityGetAudioSource(SGEntity* entity)
+SGAudioSource* SG_CALL sgEntityGetAudioSource(SGEntity* entity)
 {
 	if(entity == NULL)
 		return NULL;
@@ -387,7 +387,7 @@ SGAudioSource* SG_EXPORT sgEntityGetAudioSource(SGEntity* entity)
 	return entity->source;
 }
 
-void SG_EXPORT sgEntitySetPos(SGEntity* entity, float x, float y)
+void SG_CALL sgEntitySetPos(SGEntity* entity, float x, float y)
 {
 	if(entity == NULL)
 		return;
@@ -397,7 +397,7 @@ void SG_EXPORT sgEntitySetPos(SGEntity* entity, float x, float y)
 	if(entity->body != NULL)
 		sgPhysicsBodySetPos(entity->body, x, y);
 }
-void SG_EXPORT sgEntityGetPos(SGEntity* entity, float* x, float* y)
+void SG_CALL sgEntityGetPos(SGEntity* entity, float* x, float* y)
 {
 	if(entity == NULL)
 		return;
@@ -410,7 +410,7 @@ void SG_EXPORT sgEntityGetPos(SGEntity* entity, float* x, float* y)
 		sgPhysicsBodyGetPos(entity->body, x, y);
 }
 
-void SG_EXPORT sgEntitySetPosX(SGEntity* entity, float x)
+void SG_CALL sgEntitySetPosX(SGEntity* entity, float x)
 {
 	if(entity == NULL)
 		return;
@@ -419,7 +419,7 @@ void SG_EXPORT sgEntitySetPosX(SGEntity* entity, float x)
 	if(entity->body != NULL)
 		sgPhysicsBodySetPosX(entity->body, x);
 }
-float SG_EXPORT sgEntityGetPosX(SGEntity* entity)
+float SG_CALL sgEntityGetPosX(SGEntity* entity)
 {
 	if(entity == NULL)
 		return SG_NAN;
@@ -428,7 +428,7 @@ float SG_EXPORT sgEntityGetPosX(SGEntity* entity)
 		return sgPhysicsBodyGetPosX(entity->body);
 	return entity->x;
 }
-void SG_EXPORT sgEntitySetPosY(SGEntity* entity, float y)
+void SG_CALL sgEntitySetPosY(SGEntity* entity, float y)
 {
 	if(entity == NULL)
 		return;
@@ -437,7 +437,7 @@ void SG_EXPORT sgEntitySetPosY(SGEntity* entity, float y)
 	if(entity->body != NULL)
 		sgPhysicsBodySetPosY(entity->body, y);
 }
-float SG_EXPORT sgEntityGetPosY(SGEntity* entity)
+float SG_CALL sgEntityGetPosY(SGEntity* entity)
 {
 	if(entity == NULL)
 		return SG_NAN;
@@ -447,14 +447,14 @@ float SG_EXPORT sgEntityGetPosY(SGEntity* entity)
 	return entity->y;
 }
 
-void SG_EXPORT sgEntitySetDepth(SGEntity* entity, float depth)
+void SG_CALL sgEntitySetDepth(SGEntity* entity, float depth)
 {
 	if(entity == NULL)
 		return;
 
 	entity->depth = depth;
 }
-float SG_EXPORT sgEntityGetDepth(SGEntity* entity)
+float SG_CALL sgEntityGetDepth(SGEntity* entity)
 {
 	if(entity == NULL)
 		return SG_NAN;
@@ -462,7 +462,7 @@ float SG_EXPORT sgEntityGetDepth(SGEntity* entity)
 	return entity->depth;
 }
 
-void SG_EXPORT sgEntitySetAngleRads(SGEntity* entity, float rads)
+void SG_CALL sgEntitySetAngleRads(SGEntity* entity, float rads)
 {
 	if(entity == NULL)
 		return;
@@ -471,7 +471,7 @@ void SG_EXPORT sgEntitySetAngleRads(SGEntity* entity, float rads)
 	if(entity->body != NULL)
 		sgPhysicsBodySetAngleRads(entity->body, rads);
 }
-float SG_EXPORT sgEntityGetAngleRads(SGEntity* entity)
+float SG_CALL sgEntityGetAngleRads(SGEntity* entity)
 {
 	if(entity == NULL)
 		return SG_NAN;
@@ -480,16 +480,16 @@ float SG_EXPORT sgEntityGetAngleRads(SGEntity* entity)
 		return sgPhysicsBodyGetAngleRads(entity->body);
 	return entity->angle;
 }
-void SG_EXPORT sgEntitySetAngleDegs(SGEntity* entity, float degs)
+void SG_CALL sgEntitySetAngleDegs(SGEntity* entity, float degs)
 {
 	sgEntitySetAngleRads(entity, degs * SG_PI / 180.0);
 }
-float SG_EXPORT sgEntityGetAngleDegs(SGEntity* entity)
+float SG_CALL sgEntityGetAngleDegs(SGEntity* entity)
 {
 	return sgEntityGetAngleRads(entity) * 180.0 / SG_PI;
 }
 
-void SG_EXPORT sgEntityDraw(SGEntity* entity)
+void SG_CALL sgEntityDraw(SGEntity* entity)
 {
 	if(entity == NULL)
 		return;
@@ -505,12 +505,12 @@ void SG_EXPORT sgEntityDraw(SGEntity* entity)
 	sgSpriteDrawRads3f1f(entity->sprite, entity->x, entity->y, entity->depth, entity->angle);
 }
 
-SGList* SG_EXPORT sgEntityFind(const char* name)
+SGList* SG_CALL sgEntityFind(const char* name)
 {
     return sgSMapFind(_sg_entSMap, name);
 }
 
-void SG_EXPORT sgEntityEventSignalv(size_t num, va_list args)
+void SG_CALL sgEntityEventSignalv(size_t num, va_list args)
 {
     _sg_entStop = SG_FALSE;
     SGEntity* entity;
@@ -530,14 +530,14 @@ void SG_EXPORT sgEntityEventSignalv(size_t num, va_list args)
         va_end(curarg);
     }
 }
-void SG_EXPORT sgEntityEventSignal(size_t num, ...)
+void SG_CALL sgEntityEventSignal(size_t num, ...)
 {
     va_list args;
     va_start(args, num);
     sgEntityEventSignalv(num, args);
     va_end(args);
 }
-void SG_EXPORT sgEntityEventStop(void)
+void SG_CALL sgEntityEventStop(void)
 {
     _sg_entStop = SG_TRUE;
 }

@@ -28,12 +28,12 @@ static SGLightSpace* _sgLightGetSpace(void)
     return _sg_lightSpaceMain;
 }
 
-SGbool SG_EXPORT _sgLightInit(void)
+SGbool SG_CALL _sgLightInit(void)
 {
     _sg_lightSpaceMain = NULL;
     return SG_TRUE;
 }
-SGbool SG_EXPORT _sgLightDeinit(void)
+SGbool SG_CALL _sgLightDeinit(void)
 {
     sgLightSpaceDestroy(_sg_lightSpaceMain);
     _sg_lightSpaceMain = NULL;
@@ -41,23 +41,23 @@ SGbool SG_EXPORT _sgLightDeinit(void)
     return SG_TRUE;
 }
 
-void SG_EXPORT _sgLightSpaceAddLight(SGLightSpace* space, SGLight* light)
+void SG_CALL _sgLightSpaceAddLight(SGLightSpace* space, SGLight* light)
 {
     if(space == NULL) space = _sgLightGetSpace();
     light->space = space;
     light->node = sgListAppend(space->lights, light);
 }
-void SG_EXPORT _sgLightSpaceAddShadowShape(SGLightSpace* space, SGShadowShape* shape)
+void SG_CALL _sgLightSpaceAddShadowShape(SGLightSpace* space, SGShadowShape* shape)
 {
     if(space == NULL) space = _sgLightGetSpace();
     shape->space = space;
     shape->node = sgListAppend(space->shapes, shape);
 }
-void SG_EXPORT _sgLightSpaceRemoveLight(SGLightSpace* space, SGLight* light)
+void SG_CALL _sgLightSpaceRemoveLight(SGLightSpace* space, SGLight* light)
 {
     sgListRemoveNode(space->lights, light->node);
 }
-void SG_EXPORT _sgLightSpaceRemoveShadowShape(SGLightSpace* space, SGShadowShape* shape)
+void SG_CALL _sgLightSpaceRemoveShadowShape(SGLightSpace* space, SGShadowShape* shape)
 {
     sgListRemoveNode(space->shapes, shape->node);
 }
@@ -84,7 +84,7 @@ SGLightSpace* SG_CALL sgLightSpaceCreate(SGuint width, SGuint height)
 
     return space;
 }
-void SG_EXPORT sgLightSpaceDestroy(SGLightSpace* space)
+void SG_CALL sgLightSpaceDestroy(SGLightSpace* space)
 {
     if(!space)
         return;
@@ -105,7 +105,7 @@ void SG_EXPORT sgLightSpaceDestroy(SGLightSpace* space)
     free(space);
 }
 
-void SG_EXPORT sgLightSpaceSetAmbience4f(SGLightSpace* space, float r, float g, float b, float a)
+void SG_CALL sgLightSpaceSetAmbience4f(SGLightSpace* space, float r, float g, float b, float a)
 {
     space->ambience.r = r;
     space->ambience.g = g;
@@ -113,7 +113,7 @@ void SG_EXPORT sgLightSpaceSetAmbience4f(SGLightSpace* space, float r, float g, 
     space->ambience.a = a;
 }
 
-SGSurface* SG_EXPORT sgLightSpaceGetBuffer(SGLightSpace* space)
+SGSurface* SG_CALL sgLightSpaceGetBuffer(SGLightSpace* space)
 {
     return space->buffer;
 }
@@ -125,7 +125,7 @@ void SG_CALL sgLightSpaceResize(SGLightSpace* space, SGuint width, SGuint height
     space->buffer = sgSurfaceCreate(width, height, 32);
     space->lbuffer = sgSurfaceCreate(width, height, 32);
 }
-void SG_EXPORT sgLightSpaceUpdate(SGLightSpace* space)
+void SG_CALL sgLightSpaceUpdate(SGLightSpace* space)
 {
     SGListNode* lnode;
     SGListNode* snode;
@@ -158,7 +158,7 @@ void SG_EXPORT sgLightSpaceUpdate(SGLightSpace* space)
     }
     sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE_MINUS_SRC_ALPHA);
 }
-void SG_EXPORT sgLightSpaceDraw(SGLightSpace* space, SGenum flags)
+void SG_CALL sgLightSpaceDraw(SGLightSpace* space, SGenum flags)
 {
     if(flags & SG_SHADOW_DRAW_MUL)
     {
@@ -172,7 +172,7 @@ void SG_EXPORT sgLightSpaceDraw(SGLightSpace* space, SGenum flags)
     sgSurfaceDraw(space->buffer);
     sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE_MINUS_SRC_ALPHA);
 }
-void SG_EXPORT sgLightSpaceDrawDBG(SGLightSpace* space, SGenum flags)
+void SG_CALL sgLightSpaceDrawDBG(SGLightSpace* space, SGenum flags)
 {
     SGListNode* lnode;
     SGListNode* snode;
@@ -205,7 +205,7 @@ void SG_EXPORT sgLightSpaceDrawDBG(SGLightSpace* space, SGenum flags)
     }
 }
 
-SGLight* SG_EXPORT sgLightCreate(SGLightSpace* space, float x, float y, float radius)
+SGLight* SG_CALL sgLightCreate(SGLightSpace* space, float x, float y, float radius)
 {
     SGLight* light = malloc(sizeof(SGLight));
     if(light == NULL)
@@ -230,7 +230,7 @@ SGLight* SG_EXPORT sgLightCreate(SGLightSpace* space, float x, float y, float ra
 
     return light;
 }
-void SG_EXPORT sgLightDestroy(SGLight* light)
+void SG_CALL sgLightDestroy(SGLight* light)
 {
     if(light == NULL)
         return;
@@ -242,160 +242,160 @@ void SG_EXPORT sgLightDestroy(SGLight* light)
     free(light);
 }
 
-void SG_EXPORT sgLightSetPos(SGLight* light, float x, float y)
+void SG_CALL sgLightSetPos(SGLight* light, float x, float y)
 {
     light->pos = sgVec2f(x, y);
 }
-void SG_EXPORT sgLightSetPosX(SGLight* light, float x)
+void SG_CALL sgLightSetPosX(SGLight* light, float x)
 {
     light->pos.x = x;
 }
-void SG_EXPORT sgLightSetPosY(SGLight* light, float y)
+void SG_CALL sgLightSetPosY(SGLight* light, float y)
 {
     light->pos.y = y;
 }
 
-void SG_EXPORT sgLightGetPos(SGLight* light, float* x, float* y)
+void SG_CALL sgLightGetPos(SGLight* light, float* x, float* y)
 {
     if(x != NULL)
         *x = light->pos.x;
     if(y != NULL)
         *y = light->pos.y;
 }
-float SG_EXPORT sgLightGetPosX(SGLight* light)
+float SG_CALL sgLightGetPosX(SGLight* light)
 {
     return light->pos.x;
 }
-float SG_EXPORT sgLightGetPosY(SGLight* light)
+float SG_CALL sgLightGetPosY(SGLight* light)
 {
     return light->pos.y;
 }
 
-void SG_EXPORT sgLightSetRadius(SGLight* light, float radius)
+void SG_CALL sgLightSetRadius(SGLight* light, float radius)
 {
     light->radius = radius;
 }
-float SG_EXPORT sgLightGetRadius(SGLight* light)
+float SG_CALL sgLightGetRadius(SGLight* light)
 {
     return light->radius;
 }
 
-void SG_EXPORT sgLightSetColor4f(SGLight* light, float r, float g, float b, float a)
+void SG_CALL sgLightSetColor4f(SGLight* light, float r, float g, float b, float a)
 {
     light->color = sgColor4f(r, g, b, a);
 }
-void SG_EXPORT sgLightSetColor3f(SGLight* light, float r, float g, float b)
+void SG_CALL sgLightSetColor3f(SGLight* light, float r, float g, float b)
 {
     sgLightSetColor4f(light, r, g, b, 1.0);
 }
-void SG_EXPORT sgLightSetColor2f(SGLight* light, float g, float a)
+void SG_CALL sgLightSetColor2f(SGLight* light, float g, float a)
 {
     sgLightSetColor4f(light, g, g, g, a);
 }
-void SG_EXPORT sgLightSetColor1f(SGLight* light, float g)
+void SG_CALL sgLightSetColor1f(SGLight* light, float g)
 {
     sgLightSetColor4f(light, g, g, g, 1.0);
 }
 
-void SG_EXPORT sgLightSetColor4ub(SGLight* light, SGubyte r, SGubyte g, SGubyte b, SGubyte a)
+void SG_CALL sgLightSetColor4ub(SGLight* light, SGubyte r, SGubyte g, SGubyte b, SGubyte a)
 {
     light->color = sgColor4ub(r, g, b, a);
 }
-void SG_EXPORT sgLightSetColor3ub(SGLight* light, SGubyte r, SGubyte g, SGubyte b)
+void SG_CALL sgLightSetColor3ub(SGLight* light, SGubyte r, SGubyte g, SGubyte b)
 {
     sgLightSetColor4ub(light, r, g, b, 255);
 }
-void SG_EXPORT sgLightSetColor2ub(SGLight* light, SGubyte g, SGubyte a)
+void SG_CALL sgLightSetColor2ub(SGLight* light, SGubyte g, SGubyte a)
 {
     sgLightSetColor4ub(light, g, g, g, a);
 }
-void SG_EXPORT sgLightSetColor1ub(SGLight* light, SGubyte g)
+void SG_CALL sgLightSetColor1ub(SGLight* light, SGubyte g)
 {
     sgLightSetColor4ub(light, g, g, g, 255);
 }
 
-void SG_EXPORT sgLightSetDepth(SGLight* light, float depth)
+void SG_CALL sgLightSetDepth(SGLight* light, float depth)
 {
     light->depth = depth;
 }
-float SG_EXPORT sgLightGetDepth(SGLight* light)
+float SG_CALL sgLightGetDepth(SGLight* light)
 {
     return light->depth;
 }
 
-void SG_EXPORT sgLightSetHeight(SGLight* light, float height)
+void SG_CALL sgLightSetHeight(SGLight* light, float height)
 {
     light->height = height;
 }
-float SG_EXPORT sgLightGetHeight(SGLight* light)
+float SG_CALL sgLightGetHeight(SGLight* light)
 {
     return light->height;
 }
 
-void SG_EXPORT sgLightSetActive(SGLight* light, SGbool active)
+void SG_CALL sgLightSetActive(SGLight* light, SGbool active)
 {
     light->active = active;
 }
-SGbool SG_EXPORT sgLightGetActive(SGLight* light)
+SGbool SG_CALL sgLightGetActive(SGLight* light)
 {
     return light->active;
 }
 
-void SG_EXPORT sgLightSetStatic(SGLight* light, SGbool stat)
+void SG_CALL sgLightSetStatic(SGLight* light, SGbool stat)
 {
     light->stat = stat;
 }
-SGbool SG_EXPORT sgLightGetStatic(SGLight* light)
+SGbool SG_CALL sgLightGetStatic(SGLight* light)
 {
     return light->stat;
 }
 
-void SG_EXPORT sgLightSetShadow(SGLight* light, SGbool shadow)
+void SG_CALL sgLightSetShadow(SGLight* light, SGbool shadow)
 {
     light->shadow = shadow;
 }
-SGbool SG_EXPORT sgLightGetShadow(SGLight* light)
+SGbool SG_CALL sgLightGetShadow(SGLight* light)
 {
     return light->shadow;
 }
 
-void SG_EXPORT sgLightSetAngleRads(SGLight* light, float rads)
+void SG_CALL sgLightSetAngleRads(SGLight* light, float rads)
 {
     light->angle = rads;
 }
-float SG_EXPORT sgLightGetAngleRads(SGLight* light)
+float SG_CALL sgLightGetAngleRads(SGLight* light)
 {
     return light->angle;
 }
 
-void SG_EXPORT sgLightSetAngleDegs(SGLight* light, float degs)
+void SG_CALL sgLightSetAngleDegs(SGLight* light, float degs)
 {
     light->angle = degs * SG_PI / 180.0;
 }
-float SG_EXPORT sgLightGetAngleDegs(SGLight* light)
+float SG_CALL sgLightGetAngleDegs(SGLight* light)
 {
     return light->angle * 180.0 / SG_PI;
 }
 
-void SG_EXPORT sgLightSetConeRads(SGLight* light, float rads)
+void SG_CALL sgLightSetConeRads(SGLight* light, float rads)
 {
     light->cone = rads;
 }
-float SG_EXPORT sgLightGetConeRads(SGLight* light)
+float SG_CALL sgLightGetConeRads(SGLight* light)
 {
     return light->cone;
 }
 
-void SG_EXPORT sgLightSetConeDegs(SGLight* light, float degs)
+void SG_CALL sgLightSetConeDegs(SGLight* light, float degs)
 {
     light->cone = degs * SG_PI / 180.0;
 }
-float SG_EXPORT sgLightGetConeDegs(SGLight* light)
+float SG_CALL sgLightGetConeDegs(SGLight* light)
 {
     return light->cone * 180.0 / SG_PI;
 }
 
-void SG_EXPORT sgLightDraw(SGLight* light)
+void SG_CALL sgLightDraw(SGLight* light)
 {
     sgDrawColor4f(light->color.r, light->color.g, light->color.b, light->color.a);
     if(light->sprite)
@@ -419,13 +419,13 @@ void SG_EXPORT sgLightDraw(SGLight* light)
     }
 }
 
-void SG_EXPORT sgLightDrawDBG(SGLight* light)
+void SG_CALL sgLightDrawDBG(SGLight* light)
 {
     sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
     sgDrawCircle(light->pos.x, light->pos.y, light->radius, SG_FALSE);
 }
 
-SGShadowShape* SG_EXPORT sgShadowShapeCreate(SGLightSpace* space, SGenum type)
+SGShadowShape* SG_CALL sgShadowShapeCreate(SGLightSpace* space, SGenum type)
 {
     SGShadowShape* shape = malloc(sizeof(SGShadowShape));
     if(shape == NULL)
@@ -448,7 +448,7 @@ SGShadowShape* SG_EXPORT sgShadowShapeCreate(SGLightSpace* space, SGenum type)
 
     return shape;
 }
-SGShadowShape* SG_EXPORT sgShadowShapeCreateSegment(SGLightSpace* space, float x1, float y1, float x2, float y2)
+SGShadowShape* SG_CALL sgShadowShapeCreateSegment(SGLightSpace* space, float x1, float y1, float x2, float y2)
 {
     SGShadowShape* shape = sgShadowShapeCreate(space, SG_SHAPE_SEGMENT);
     if(shape == NULL)
@@ -466,7 +466,7 @@ SGShadowShape* SG_EXPORT sgShadowShapeCreateSegment(SGLightSpace* space, float x
 
     return shape;
 }
-SGShadowShape* SG_EXPORT sgShadowShapeCreatePoly(SGLightSpace* space, float x, float y, float* verts, size_t numverts)
+SGShadowShape* SG_CALL sgShadowShapeCreatePoly(SGLightSpace* space, float x, float y, float* verts, size_t numverts)
 {
     SGShadowShape* shape = sgShadowShapeCreate(space, SG_SHAPE_POLYGON);
     if(shape == NULL)
@@ -484,7 +484,7 @@ SGShadowShape* SG_EXPORT sgShadowShapeCreatePoly(SGLightSpace* space, float x, f
 
     return shape;
 }
-SGShadowShape* SG_EXPORT sgShadowShapeCreateCircle(SGLightSpace* space, float x, float y, float radius)
+SGShadowShape* SG_CALL sgShadowShapeCreateCircle(SGLightSpace* space, float x, float y, float radius)
 {
     SGShadowShape* shape = sgShadowShapeCreate(space, SG_SHAPE_SEGMENT);
     if(shape == NULL)
@@ -498,7 +498,7 @@ SGShadowShape* SG_EXPORT sgShadowShapeCreateCircle(SGLightSpace* space, float x,
 
     return shape;
 }
-void SG_EXPORT sgShadowShapeDestroy(SGShadowShape* shape)
+void SG_CALL sgShadowShapeDestroy(SGShadowShape* shape)
 {
     if(shape == NULL)
         return;
@@ -509,34 +509,34 @@ void SG_EXPORT sgShadowShapeDestroy(SGShadowShape* shape)
     free(shape);
 }
 
-void SG_EXPORT sgShadowShapeSetDepth(SGShadowShape* shape, float depth)
+void SG_CALL sgShadowShapeSetDepth(SGShadowShape* shape, float depth)
 {
     shape->depth = depth;
 }
-float SG_EXPORT sgShadowShapeGetDepth(SGShadowShape* shape)
+float SG_CALL sgShadowShapeGetDepth(SGShadowShape* shape)
 {
     return shape->depth;
 }
 
-void SG_EXPORT sgShadowShapeSetActive(SGShadowShape* shape, SGbool active)
+void SG_CALL sgShadowShapeSetActive(SGShadowShape* shape, SGbool active)
 {
     shape->active = active;
 }
-SGbool SG_EXPORT sgShadowShapeGetActive(SGShadowShape* shape)
+SGbool SG_CALL sgShadowShapeGetActive(SGShadowShape* shape)
 {
     return shape->active;
 }
 
-void SG_EXPORT sgShadowShapeSetStatic(SGShadowShape* shape, SGbool stat)
+void SG_CALL sgShadowShapeSetStatic(SGShadowShape* shape, SGbool stat)
 {
     shape->stat = stat;
 }
-SGbool SG_EXPORT sgShadowShapeGetStatic(SGShadowShape* shape)
+SGbool SG_CALL sgShadowShapeGetStatic(SGShadowShape* shape)
 {
     return shape->stat;
 }
 
-void SG_EXPORT sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
+void SG_CALL sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
 {
     if(shape == NULL)
         return;
@@ -576,7 +576,7 @@ void SG_EXPORT sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
     }
 }
 
-void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
+void SG_CALL sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
 {
     sgDrawColor4f(0.0, 0.0, 0.0, 1.0);
     sgDrawBegin(SG_TRIANGLES);
@@ -618,7 +618,7 @@ void SG_EXPORT sgShadowShapeCast(SGShadowShape* shape, SGLight* light)
     sgDrawEnd();
 }
 
-void SG_EXPORT sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
+void SG_CALL sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
 {
     /*SGVec2* curr;*/
     SGVec2* next;

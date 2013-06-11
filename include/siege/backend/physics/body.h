@@ -25,32 +25,32 @@
 extern "C"
 {
 #endif
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyCreate)(void** body, SGenum type);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyDestroy)(void* body);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyCreate)(void** body, SGenum type);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyDestroy)(void* body);
 
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodySetSleeping)(void* body, SGbool sleeping);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodyGetSleeping)(void* body, SGbool* sleeping);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetMass)(void* body, float mass);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetMass)(void* body, float* mass);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetMoment)(void* body, float moment);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetMoment)(void* body, float* moment);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetPosition)(void* body, float x, float y);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetPosition)(void* body, float* x, float* y);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetVelocity)(void* body, float x, float y);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetVelocity)(void* body, float* x, float* y);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetForce)(void* body, float x, float y);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetForce)(void* body, float* x, float* y);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetAngle)(void* body, float angle);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetAngle)(void* body, float* angle);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetAngularVelocity)(void* body, float angvel);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetAngularVelocity)(void* body, float* angvel);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetTorque)(void* body, float torque);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetTorque)(void* body, float* torque);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodySetData)(void* body, void* data);
-    SGuint SG_EXPORT SG_FPTR(sgmPhysicsBodyGetData)(void* body, void** data);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsBodySetSleeping)(void* body, SGbool sleeping);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsBodyGetSleeping)(void* body, SGbool* sleeping);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodySetMass)(void* body, float mass);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyGetMass)(void* body, float* mass);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodySetMoment)(void* body, float moment);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyGetMoment)(void* body, float* moment);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodySetPosition)(void* body, float x, float y);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyGetPosition)(void* body, float* x, float* y);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodySetVelocity)(void* body, float x, float y);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyGetVelocity)(void* body, float* x, float* y);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodySetForce)(void* body, float x, float y);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyGetForce)(void* body, float* x, float* y);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodySetAngle)(void* body, float angle);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyGetAngle)(void* body, float* angle);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodySetAngularVelocity)(void* body, float angvel);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyGetAngularVelocity)(void* body, float* angvel);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodySetTorque)(void* body, float torque);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyGetTorque)(void* body, float* torque);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodySetData)(void* body, void* data);
+    SGuint SG_CALL SG_FPTR(sgmPhysicsBodyGetData)(void* body, void** data);
 
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodyApplyImpulse)(void* body, float jx, float jy, float rx, float ry);
-    SGenum SG_EXPORT SG_FPTR(sgmPhysicsBodyApplyForce)(void* body, float jx, float jy, float rx, float ry);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsBodyApplyImpulse)(void* body, float jx, float jy, float rx, float ry);
+    SGenum SG_CALL SG_FPTR(sgmPhysicsBodyApplyForce)(void* body, float jx, float jy, float rx, float ry);
 #ifdef __cplusplus
 }
 #endif

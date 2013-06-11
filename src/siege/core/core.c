@@ -43,7 +43,7 @@ static SGbool _sg_hasInited = SG_FALSE;
 static SGulong _sg_curTick = 0;
 
 static SGThread* _sg_renderThread;
-static SGint SG_EXPORT _sgRenderThread(void* data)
+static SGint SG_CALL _sgRenderThread(void* data)
 {
     while(!_sg_exitNow)
     {
@@ -54,31 +54,31 @@ static SGint SG_EXPORT _sgRenderThread(void* data)
     return 0;
 }
 
-void SG_EXPORT sgGetVersionv(SGushort* version)
+void SG_CALL sgGetVersionv(SGushort* version)
 {
     sgGetVersion(&version[0], &version[1], &version[2]);
 }
-void SG_EXPORT sgGetVersion(SGushort* vmajor, SGushort* vminor, SGushort* vpatch)
+void SG_CALL sgGetVersion(SGushort* vmajor, SGushort* vminor, SGushort* vpatch)
 {
     if(vmajor) *vmajor = SG_VERSION_MAJOR;
     if(vminor) *vminor = SG_VERSION_MINOR;
     if(vpatch) *vpatch = SG_VERSION_PATCH;
 }
-char* SG_EXPORT sgGetVersionString(void)
+char* SG_CALL sgGetVersionString(void)
 {
     return SG_VERSION_STRING;
 }
 
-char* SG_EXPORT sgGetCompileDate(void)
+char* SG_CALL sgGetCompileDate(void)
 {
     return __DATE__;
 }
-char* SG_EXPORT sgGetCompileTime(void)
+char* SG_CALL sgGetCompileTime(void)
 {
     return __TIME__;
 }
 
-SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args)
+SGuint SG_CALL sgLoadModulesv(size_t n, va_list args)
 {
 	SGuint loaded = 0;
 	size_t i;
@@ -86,7 +86,7 @@ SGuint SG_EXPORT sgLoadModulesv(size_t n, va_list args)
 		loaded += sgLoadModule(va_arg(args, char*));
 	return loaded;
 }
-SGuint SG_EXPORT sgLoadModules(size_t n, ...)
+SGuint SG_CALL sgLoadModules(size_t n, ...)
 {
 	va_list args;
 	va_start(args, n);
@@ -94,7 +94,7 @@ SGuint SG_EXPORT sgLoadModules(size_t n, ...)
 	va_end(args);
 	return ret;
 }
-SGbool SG_EXPORT sgLoadModule(const char* name)
+SGbool SG_CALL sgLoadModule(const char* name)
 {
 	SGModule* module = sgModuleLoad(name);
 	if(module == NULL)
@@ -102,7 +102,7 @@ SGbool SG_EXPORT sgLoadModule(const char* name)
 	return SG_TRUE;
 }
 
-SGbool SG_EXPORT sgInit(SGenum flags)
+SGbool SG_CALL sgInit(SGenum flags)
 {
     if(_sg_hasInited)
         return SG_TRUE;
@@ -174,7 +174,7 @@ SGbool SG_EXPORT sgInit(SGenum flags)
 	return SG_TRUE;
 }
 
-SGbool SG_EXPORT sgDeinit(void)
+SGbool SG_CALL sgDeinit(void)
 {
     if(!_sg_hasInited)
         return SG_TRUE;
@@ -216,7 +216,7 @@ SGbool SG_EXPORT sgDeinit(void)
 	return SG_TRUE;
 }
 
-SGint SG_EXPORT sgRun(void)
+SGint SG_CALL sgRun(void)
 {
 	_sg_firstLoop = SG_TRUE;
 	if(_sg_exitNow)
@@ -232,7 +232,7 @@ SGint SG_EXPORT sgRun(void)
 	return _sg_exitVal;
 }
 
-SGbool SG_EXPORT sgLoop(SGint* code)
+SGbool SG_CALL sgLoop(SGint* code)
 {
 	_sg_curTick++;
 
@@ -277,7 +277,7 @@ SGbool SG_EXPORT sgLoop(SGint* code)
 	return SG_TRUE;
 }
 
-void SG_EXPORT sgStop(SGint ret)
+void SG_CALL sgStop(SGint ret)
 {
     _sg_exitNow = SG_TRUE;
     _sg_exitVal = ret;
@@ -285,7 +285,7 @@ void SG_EXPORT sgStop(SGint ret)
         sgThreadJoin(_sg_renderThread);
 }
 
-SGulong SG_EXPORT sgGetTick(void)
+SGulong SG_CALL sgGetTick(void)
 {
 	return _sg_curTick;
 }

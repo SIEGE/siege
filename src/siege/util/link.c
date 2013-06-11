@@ -24,7 +24,7 @@
     #include <dlfcn.h>
 #endif
 
-SGLibrary* SG_EXPORT sgLibraryLoad(const char* fname)
+SGLibrary* SG_CALL sgLibraryLoad(const char* fname)
 {
 #ifdef __WIN32__
     HMODULE handle = LoadLibrary(fname);
@@ -44,7 +44,7 @@ SGLibrary* SG_EXPORT sgLibraryLoad(const char* fname)
     lib->handle = (void*)handle;
     return lib;
 }
-void SG_EXPORT sgLibraryUnload(SGLibrary* lib)
+void SG_CALL sgLibraryUnload(SGLibrary* lib)
 {
     if(lib == NULL)
         return;
@@ -56,7 +56,7 @@ void SG_EXPORT sgLibraryUnload(SGLibrary* lib)
     free(lib->fname);
     free(lib);
 }
-SGLibraryFunction* SG_EXPORT sgGetProcAddress(SGLibrary* lib, const char* proc)
+SGLibraryFunction* SG_CALL sgGetProcAddress(SGLibrary* lib, const char* proc)
 {
     if(lib == NULL)
         return NULL;
@@ -72,7 +72,7 @@ SGLibraryFunction* SG_EXPORT sgGetProcAddress(SGLibrary* lib, const char* proc)
     return tmp.fptr;
 #endif
 }
-void* SG_EXPORT sgGetVarAddress(SGLibrary* lib, const char* var)
+void* SG_CALL sgGetVarAddress(SGLibrary* lib, const char* var)
 {
     if(lib == NULL)
         return NULL;

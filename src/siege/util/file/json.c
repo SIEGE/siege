@@ -9,12 +9,12 @@
 #include <stdio.h>
 #include <ctype.h>
 
-static SGint SG_EXPORT _sgJSONSetCmp(const SGJSONSetItem* a, const SGJSONSetItem* b)
+static SGint SG_CALL _sgJSONSetCmp(const SGJSONSetItem* a, const SGJSONSetItem* b)
 {
     return strcmp(a->key, b->key);
 }
 
-void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value)
+void SG_CALL _sgJSONFreeValue(SGJSONValue* value)
 {
     if(!value)
         return;
@@ -51,7 +51,7 @@ void SG_EXPORT _sgJSONFreeValue(SGJSONValue* value)
     free(value);
 }
 
-void SG_EXPORT _sgJSONDumpSetItem(SGSetNode* node, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent)
+void SG_CALL _sgJSONDumpSetItem(SGSetNode* node, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent)
 {
     if(!node)
         return;
@@ -86,7 +86,7 @@ void SG_EXPORT _sgJSONDumpSetItem(SGSetNode* node, char** str, size_t* len, size
     }
 }
 
-void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent)
+void SG_CALL _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, size_t* mem, SGbool pretty, size_t indent, size_t cindent)
 {
     if(!value)
         return;
@@ -154,7 +154,7 @@ void SG_EXPORT _sgJSONDumpValue(SGJSONValue* value, char** str, size_t* len, siz
     }
 }
 
-char* SG_EXPORT _sgJSONSkipComments(char* input, char** error)
+char* SG_CALL _sgJSONSkipComments(char* input, char** error)
 {
     char* end;
     SGJSONValue val;
@@ -175,7 +175,7 @@ char* SG_EXPORT _sgJSONSkipComments(char* input, char** error)
     }
     return input;
 }
-char* SG_EXPORT _sgJSONEscapeString(const char* input, char** str, size_t* len, size_t* mem)
+char* SG_CALL _sgJSONEscapeString(const char* input, char** str, size_t* len, size_t* mem)
 {
     size_t i;
     for(i = 0; input[i]; i++)
@@ -215,7 +215,7 @@ char* SG_EXPORT _sgJSONEscapeString(const char* input, char** str, size_t* len, 
     (*str)[*len] = 0;
     return *str;
 }
-SGbool SG_EXPORT _sgJSONGetSymbol(char** input)
+SGbool SG_CALL _sgJSONGetSymbol(char** input)
 {
     char* start = *input;
 
@@ -229,7 +229,7 @@ SGbool SG_EXPORT _sgJSONGetSymbol(char** input)
     return start != *input;
 }
 
-char* SG_EXPORT _sgJSONParseNull(SGJSONValue* into, char* input, char** error)
+char* SG_CALL _sgJSONParseNull(SGJSONValue* into, char* input, char** error)
 {
     char* start = input;
     into->type = SG_JSON_TYPE_NULL;
@@ -240,7 +240,7 @@ char* SG_EXPORT _sgJSONParseNull(SGJSONValue* into, char* input, char** error)
 
     return strncmp(start, "null", input - start) ? start : input;
 }
-char* SG_EXPORT _sgJSONParseBoolean(SGJSONValue* into, char* input, char** error)
+char* SG_CALL _sgJSONParseBoolean(SGJSONValue* into, char* input, char** error)
 {
     char* start = input;
     into->type = SG_JSON_TYPE_BOOLEAN;
@@ -261,7 +261,7 @@ char* SG_EXPORT _sgJSONParseBoolean(SGJSONValue* into, char* input, char** error
     }
     return start;
 }
-char* SG_EXPORT _sgJSONParseNumber(SGJSONValue* into, char* input, char** error)
+char* SG_CALL _sgJSONParseNumber(SGJSONValue* into, char* input, char** error)
 {
     char* start = input;
     into->type = SG_JSON_TYPE_NUMBER;
@@ -269,7 +269,7 @@ char* SG_EXPORT _sgJSONParseNumber(SGJSONValue* into, char* input, char** error)
 
     return input;
 }
-char* SG_EXPORT _sgJSONParseString(SGJSONValue* into, char* input, char** error)
+char* SG_CALL _sgJSONParseString(SGJSONValue* into, char* input, char** error)
 {
     char startc;
     into->type = SG_JSON_TYPE_STRING;
@@ -385,7 +385,7 @@ char* SG_EXPORT _sgJSONParseString(SGJSONValue* into, char* input, char** error)
     *error = "Unterminated string literal!";
     return NULL;
 }
-char* SG_EXPORT _sgJSONParseSymbol(SGJSONValue* into, char* input, char** error) // extensions
+char* SG_CALL _sgJSONParseSymbol(SGJSONValue* into, char* input, char** error) // extensions
 {
     char* start = input;
     into->type = SG_JSON_TYPE_STRING;
@@ -399,7 +399,7 @@ char* SG_EXPORT _sgJSONParseSymbol(SGJSONValue* into, char* input, char** error)
 
     return input;
 }
-char* SG_EXPORT _sgJSONParseComment(SGJSONValue* into, char* input, char** error) // extension
+char* SG_CALL _sgJSONParseComment(SGJSONValue* into, char* input, char** error) // extension
 {
     char* start = input;
     into->type = SG_JSON_TYPE_COMMENT;
@@ -429,7 +429,7 @@ char* SG_EXPORT _sgJSONParseComment(SGJSONValue* into, char* input, char** error
     return input;
 }
 
-char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
+char* SG_CALL _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
 {
     char* end;
     SGJSONValue* val;
@@ -496,7 +496,7 @@ char* SG_EXPORT _sgJSONParseArray(SGJSONValue* into, char* input, char** error)
     input++;
     return input;
 }
-char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
+char* SG_CALL _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
 {
     char* end;
     SGJSONSetItem* titem;
@@ -606,7 +606,7 @@ char* SG_EXPORT _sgJSONParseObject(SGJSONValue* into, char* input, char** error)
     return input;
 }
 
-char* SG_EXPORT _sgJSONParseValue(SGJSONValue* into, char* input, char** error)
+char* SG_CALL _sgJSONParseValue(SGJSONValue* into, char* input, char** error)
 {
     char* end;
 
@@ -641,7 +641,7 @@ char* SG_EXPORT _sgJSONParseValue(SGJSONValue* into, char* input, char** error)
     return NULL;
 }
 
-SGJSONValue* SG_EXPORT sgJSONValueCreateString(const char* str)
+SGJSONValue* SG_CALL sgJSONValueCreateString(const char* str)
 {
     SGJSONValue* root = malloc(sizeof(SGJSONValue));
     root->strbuf = NULL;
@@ -659,7 +659,7 @@ SGJSONValue* SG_EXPORT sgJSONValueCreateString(const char* str)
     }
     return root;
 }
-SGJSONValue* SG_EXPORT sgJSONValueCreateFile(const char* fname)
+SGJSONValue* SG_CALL sgJSONValueCreateFile(const char* fname)
 {
     FILE* file = fopen(fname, "rb");
     if(!file)
@@ -677,14 +677,14 @@ SGJSONValue* SG_EXPORT sgJSONValueCreateFile(const char* fname)
     free(str);
     return val;
 }
-void SG_EXPORT sgJSONValueDestroy(SGJSONValue* value)
+void SG_CALL sgJSONValueDestroy(SGJSONValue* value)
 {
     if(!value)
         return;
     _sgJSONFreeValue(value);
 }
 
-char* SG_EXPORT sgJSONToString(SGJSONValue* value, SGbool pretty)
+char* SG_CALL sgJSONToString(SGJSONValue* value, SGbool pretty)
 {
     size_t len = 0;
     size_t mem = 32;
@@ -695,7 +695,7 @@ char* SG_EXPORT sgJSONToString(SGJSONValue* value, SGbool pretty)
     value->strbuf = str;
     return str;
 }
-void SG_EXPORT sgJSONArrayRemoveValue(SGJSONValue* array, SGJSONValue* value)
+void SG_CALL sgJSONArrayRemoveValue(SGJSONValue* array, SGJSONValue* value)
 {
     if(array->type != SG_JSON_TYPE_ARRAY)
         return;
@@ -711,7 +711,7 @@ void SG_EXPORT sgJSONArrayRemoveValue(SGJSONValue* array, SGJSONValue* value)
         }
     }
 }
-void SG_EXPORT sgJSONObjectSetValue(SGJSONValue* object, const char* key, SGJSONValue* value)
+void SG_CALL sgJSONObjectSetValue(SGJSONValue* object, const char* key, SGJSONValue* value)
 {
     if(object->type != SG_JSON_TYPE_OBJECT)
         return;
@@ -729,7 +729,7 @@ void SG_EXPORT sgJSONObjectSetValue(SGJSONValue* object, const char* key, SGJSON
         titem->val = value;
     }
 }
-void SG_EXPORT sgJSONObjectRemoveValue(SGJSONValue* object, const char* key)
+void SG_CALL sgJSONObjectRemoveValue(SGJSONValue* object, const char* key)
 {
     if(object->type != SG_JSON_TYPE_OBJECT)
         return;
@@ -747,7 +747,7 @@ void SG_EXPORT sgJSONObjectRemoveValue(SGJSONValue* object, const char* key)
         sgSetRemoveNode(object->v.object, node);
     }
 }
-SGJSONValue* SG_EXPORT sgJSONObjectGetValue(SGJSONValue* object, const char* key)
+SGJSONValue* SG_CALL sgJSONObjectGetValue(SGJSONValue* object, const char* key)
 {
     if(object->type != SG_JSON_TYPE_OBJECT)
         return NULL;

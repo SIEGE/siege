@@ -7,7 +7,7 @@ SGAudioBuffer* bufBoom;
 SGAudioBuffer* bufMusic;
 SGAudioSource* srcMusic;
 
-void SG_EXPORT evMouseButtonLeftPress(SGEntity* entity)
+void SG_CALL evMouseButtonLeftPress(SGEntity* entity)
 {
     SGAudioSource* source = sgAudioSourceCreate(0.0, 1.0, 1.0, SG_FALSE);
     sgAudioSourceQueueBuffer(source, bufBoom);

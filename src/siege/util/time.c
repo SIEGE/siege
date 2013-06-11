@@ -22,7 +22,7 @@
     #include <unistd.h>
 #endif
 
-SGlong SG_EXPORT sgGetTime(void)
+SGlong SG_CALL sgGetTime(void)
 {
 #ifdef __WIN32__
     LARGE_INTEGER freq;
@@ -44,7 +44,7 @@ SGlong SG_EXPORT sgGetTime(void)
 #endif
 }
 
-void SG_EXPORT sgNSleep(SGulong nseconds)
+void SG_CALL sgNSleep(SGulong nseconds)
 {
 #ifdef __WIN32__
     // TODO: use select() for a bit more precise sleep (us instead of ms)
@@ -64,15 +64,15 @@ void SG_EXPORT sgNSleep(SGulong nseconds)
     }
 #endif
 }
-void SG_EXPORT sgUSleep(SGulong useconds)
+void SG_CALL sgUSleep(SGulong useconds)
 {
 	sgNSleep(useconds * 1000U);
 }
-void SG_EXPORT sgMSleep(SGulong mseconds)
+void SG_CALL sgMSleep(SGulong mseconds)
 {
 	sgUSleep(mseconds * 1000U);
 }
-void SG_EXPORT sgSleep(SGulong seconds)
+void SG_CALL sgSleep(SGulong seconds)
 {
 	sgMSleep(seconds * 1000U);
 }

@@ -68,7 +68,7 @@ typedef struct SGDrawContext
 static SGThreadKey* _sg_drawKey;
 static SGDrawContext* _sg_drawCtx;
 
-static void SG_EXPORT _sgDrawThreadDeinit(void)
+static void SG_CALL _sgDrawThreadDeinit(void)
 {
     SGDrawContext* ctx;
     if(sgThreadGetCurrent() == sgThreadGetMain())
@@ -82,7 +82,7 @@ static void SG_EXPORT _sgDrawThreadDeinit(void)
     free(ctx->colors);
     free(ctx);
 }
-static void SG_EXPORT _sgDrawThreadInit(void)
+static void SG_CALL _sgDrawThreadInit(void)
 {
     sgThreadAtExit(_sgDrawThreadDeinit);
 
@@ -109,7 +109,7 @@ static void SG_EXPORT _sgDrawThreadInit(void)
     ctx->tdata.ptr = NULL;
     ctx->idata.ptr = NULL;
 }
-static SGDrawContext* SG_EXPORT _sgDrawGetContext(void)
+static SGDrawContext* SG_CALL _sgDrawGetContext(void)
 {
     SGDrawContext* ctx = sgThreadKeyGetVal(_sg_drawKey);
     if(!ctx)
@@ -133,18 +133,18 @@ static void enablePointers(void)
         psgmGraphicsSetIndexPointer(_sg_gfxHandle, ctx->idata.type, ctx->idata.stride, ctx->idata.ptr);
 }
 
-SGbool SG_EXPORT _sgDrawInit(void)
+SGbool SG_CALL _sgDrawInit(void)
 {
     _sg_drawKey = sgThreadKeyCreate();
 	return SG_TRUE;
 }
-SGbool SG_EXPORT _sgDrawDeinit(void)
+SGbool SG_CALL _sgDrawDeinit(void)
 {
     sgThreadKeyDestroy(_sg_drawKey);
     return SG_TRUE;
 }
 
-void SG_EXPORT sgVertexPointer(SGubyte size, SGenum type, size_t stride, const void* ptr)
+void SG_CALL sgVertexPointer(SGubyte size, SGenum type, size_t stride, const void* ptr)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     ctx->vdata.size = size;
@@ -152,7 +152,7 @@ void SG_EXPORT sgVertexPointer(SGubyte size, SGenum type, size_t stride, const v
     ctx->vdata.stride = stride;
     ctx->vdata.ptr = ptr;
 }
-void SG_EXPORT sgColorPointer(SGubyte size, SGenum type, size_t stride, const void* ptr)
+void SG_CALL sgColorPointer(SGubyte size, SGenum type, size_t stride, const void* ptr)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     ctx->cdata.size = size;
@@ -160,14 +160,14 @@ void SG_EXPORT sgColorPointer(SGubyte size, SGenum type, size_t stride, const vo
     ctx->cdata.stride = stride;
     ctx->cdata.ptr = ptr;
 }
-void SG_EXPORT sgTexCoordPointer(SGenum type, size_t stride, const void* ptr)
+void SG_CALL sgTexCoordPointer(SGenum type, size_t stride, const void* ptr)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     ctx->tdata.type = type;
     ctx->tdata.stride = stride;
     ctx->tdata.ptr = ptr;
 }
-void SG_EXPORT sgIndexPointer(SGenum type, size_t stride, const void* ptr)
+void SG_CALL sgIndexPointer(SGenum type, size_t stride, const void* ptr)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     ctx->idata.type = type;
@@ -175,7 +175,7 @@ void SG_EXPORT sgIndexPointer(SGenum type, size_t stride, const void* ptr)
     ctx->idata.ptr = ptr;
 }
 
-void SG_EXPORT sgResetPointers(SGbool color, SGbool texcoord, SGbool index)
+void SG_CALL sgResetPointers(SGbool color, SGbool texcoord, SGbool index)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     if(color)    ctx->cdata.ptr = NULL;
@@ -183,28 +183,28 @@ void SG_EXPORT sgResetPointers(SGbool color, SGbool texcoord, SGbool index)
     if(index)    ctx->idata.ptr = NULL;
 }
 
-void SG_EXPORT sgDrawArraysT(SGenum mode, SGTexture* texture, size_t first, size_t count)
+void SG_CALL sgDrawArraysT(SGenum mode, SGTexture* texture, size_t first, size_t count)
 {
     enablePointers();
     if(psgmGraphicsDrawArrays)
         psgmGraphicsDrawArrays(_sg_gfxHandle, texture ? texture->handle : NULL, mode, first, count);
 }
-void SG_EXPORT sgDrawElementsT(SGenum mode, SGTexture* texture, size_t count, SGenum type, const void* indices)
+void SG_CALL sgDrawElementsT(SGenum mode, SGTexture* texture, size_t count, SGenum type, const void* indices)
 {
     enablePointers();
     if(psgmGraphicsDrawElements)
         psgmGraphicsDrawElements(_sg_gfxHandle, texture ? texture->handle : NULL, mode, count, type, indices);
 }
-void SG_EXPORT sgDrawArrays(SGenum mode, size_t first, size_t count)
+void SG_CALL sgDrawArrays(SGenum mode, size_t first, size_t count)
 {
     sgDrawArraysT(mode, NULL, first, count);
 }
-void SG_EXPORT sgDrawElements(SGenum mode, size_t count, SGenum type, const void* indices)
+void SG_CALL sgDrawElements(SGenum mode, size_t count, SGenum type, const void* indices)
 {
     sgDrawElementsT(mode, NULL, count, type, indices);
 }
 
-void SG_EXPORT sgDrawBeginT(SGenum mode, SGTexture* texture)
+void SG_CALL sgDrawBeginT(SGenum mode, SGTexture* texture)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     if(ctx->numPoints)
@@ -216,11 +216,11 @@ void SG_EXPORT sgDrawBeginT(SGenum mode, SGTexture* texture)
     ctx->mode = mode;
     ctx->texture = texture;
 }
-void SG_EXPORT sgDrawBegin(SGenum mode)
+void SG_CALL sgDrawBegin(SGenum mode)
 {
     sgDrawBeginT(mode, NULL);
 }
-void SG_EXPORT sgDrawEnd(void)
+void SG_CALL sgDrawEnd(void)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     void* texture = ctx->texture ? ctx->texture->handle : NULL;
@@ -237,7 +237,7 @@ void SG_EXPORT sgDrawEnd(void)
         psgmGraphicsDrawArrays(_sg_gfxHandle, texture, ctx->mode, 0, ctx->numPoints);
     ctx->numPoints = 0;
 }
-void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
+void SG_CALL sgDrawColor4f(float r, float g, float b, float a)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     ctx->color[0] = r;
@@ -247,68 +247,68 @@ void SG_EXPORT sgDrawColor4f(float r, float g, float b, float a)
 	if(psgmGraphicsDrawSetColor != NULL)
 		psgmGraphicsDrawSetColor(_sg_gfxHandle, ctx->color);
 }
-void SG_EXPORT sgDrawColor3f(float r, float g, float b)
+void SG_CALL sgDrawColor3f(float r, float g, float b)
 {
 	sgDrawColor4f(r, g, b, 1.0);
 }
-void SG_EXPORT sgDrawColor2f(float g, float a)
+void SG_CALL sgDrawColor2f(float g, float a)
 {
 	sgDrawColor4f(g, g, g, a);
 }
-void SG_EXPORT sgDrawColor1f(float g)
+void SG_CALL sgDrawColor1f(float g)
 {
 	sgDrawColor4f(g, g, g, 1.0);
 }
-void SG_EXPORT sgDrawColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
+void SG_CALL sgDrawColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
 {
 	sgDrawColor4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 }
-void SG_EXPORT sgDrawColor3ub(SGubyte r, SGubyte g, SGubyte b)
+void SG_CALL sgDrawColor3ub(SGubyte r, SGubyte g, SGubyte b)
 {
 	sgDrawColor4ub(r, g, b, 255);
 }
-void SG_EXPORT sgDrawColor2ub(SGubyte g, SGubyte a)
+void SG_CALL sgDrawColor2ub(SGubyte g, SGubyte a)
 {
 	sgDrawColor4ub(g, g, g, a);
 }
-void SG_EXPORT sgDrawColor1ub(SGubyte g)
+void SG_CALL sgDrawColor1ub(SGubyte g)
 {
 	sgDrawColor4ub(g, g, g, 255);
 }
-void SG_EXPORT sgDrawColor4fv(const float* rgba)
+void SG_CALL sgDrawColor4fv(const float* rgba)
 {
 	sgDrawColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-void SG_EXPORT sgDrawColor3fv(const float* rgb)
+void SG_CALL sgDrawColor3fv(const float* rgb)
 {
 	sgDrawColor3f(rgb[0], rgb[1], rgb[2]);
 }
-void SG_EXPORT sgDrawColor2fv(const float* ga)
+void SG_CALL sgDrawColor2fv(const float* ga)
 {
 	sgDrawColor2f(ga[0], ga[1]);
 }
-void SG_EXPORT sgDrawColor1fv(const float* g)
+void SG_CALL sgDrawColor1fv(const float* g)
 {
 	sgDrawColor1f(g[0]);
 }
-void SG_EXPORT sgDrawColor4ubv(const SGubyte* rgba)
+void SG_CALL sgDrawColor4ubv(const SGubyte* rgba)
 {
 	sgDrawColor4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-void SG_EXPORT sgDrawColor3ubv(const SGubyte* rgb)
+void SG_CALL sgDrawColor3ubv(const SGubyte* rgb)
 {
 	sgDrawColor3ub(rgb[0], rgb[1], rgb[2]);
 }
-void SG_EXPORT sgDrawColor2ubv(const SGubyte* ga)
+void SG_CALL sgDrawColor2ubv(const SGubyte* ga)
 {
 	sgDrawColor2ub(ga[0], ga[1]);
 }
-void SG_EXPORT sgDrawColor1ubv(const SGubyte* g)
+void SG_CALL sgDrawColor1ubv(const SGubyte* g)
 {
 	sgDrawColor1ub(g[0]);
 }
 
-void SG_EXPORT sgDrawGetColor4f(float* r, float* g, float* b, float* a)
+void SG_CALL sgDrawGetColor4f(float* r, float* g, float* b, float* a)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     if(r) *r = ctx->color[0];
@@ -316,7 +316,7 @@ void SG_EXPORT sgDrawGetColor4f(float* r, float* g, float* b, float* a)
     if(b) *b = ctx->color[2];
     if(a) *a = ctx->color[3];
 }
-void SG_EXPORT sgDrawGetColor4ub(SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a)
+void SG_CALL sgDrawGetColor4ub(SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a)
 {
     float fr, fg, fb, fa;
     sgDrawGetColor4f(&fr, &fg, &fb, &fa);
@@ -325,26 +325,26 @@ void SG_EXPORT sgDrawGetColor4ub(SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a)
     if(b) *b = (SGubyte)fb * 255.0;
     if(a) *a = (SGubyte)fa * 255.0;
 }
-void SG_EXPORT sgDrawGetColor4fv(float* rgba)
+void SG_CALL sgDrawGetColor4fv(float* rgba)
 {
     sgDrawGetColor4f(&rgba[0], &rgba[1], &rgba[2], &rgba[3]);
 }
-void SG_EXPORT sgDrawGetColor4ubv(SGubyte* rgba)
+void SG_CALL sgDrawGetColor4ubv(SGubyte* rgba)
 {
     sgDrawGetColor4ub(&rgba[0], &rgba[1], &rgba[2], &rgba[3]);
 }
 
-void SG_EXPORT sgDrawTexCoord2f(float s, float t)
+void SG_CALL sgDrawTexCoord2f(float s, float t)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     ctx->texCoord[0] = s;
     ctx->texCoord[1] = t;
 }
-void SG_EXPORT sgDrawTexCoord2fv(const float* st)
+void SG_CALL sgDrawTexCoord2fv(const float* st)
 {
 	sgDrawTexCoord2f(st[0], st[1]);
 }
-void SG_EXPORT sgDrawVertex3f(float x, float y, float z)
+void SG_CALL sgDrawVertex3f(float x, float y, float z)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
     ctx->point[0] = x;
@@ -359,19 +359,19 @@ void SG_EXPORT sgDrawVertex3f(float x, float y, float z)
 	memcpy(&ctx->texCoords[(ctx->numPoints - 1) * 2], ctx->texCoord, sizeof(ctx->texCoord));
 	memcpy(&ctx->colors[(ctx->numPoints - 1) * 4], ctx->color, sizeof(ctx->color));
 }
-void SG_EXPORT sgDrawVertex2f(float x, float y)
+void SG_CALL sgDrawVertex2f(float x, float y)
 {
 	sgDrawVertex3f(x, y, 0.0f);
 }
-void SG_EXPORT sgDrawVertex3fv(const float* xyz)
+void SG_CALL sgDrawVertex3fv(const float* xyz)
 {
 	sgDrawVertex3f(xyz[0], xyz[1], xyz[2]);
 }
-void SG_EXPORT sgDrawVertex2fv(const float* xy)
+void SG_CALL sgDrawVertex2fv(const float* xy)
 {
 	sgDrawVertex2f(xy[0], xy[1]);
 }
-void SG_EXPORT sgDrawClear4f(float r, float g, float b, float a)
+void SG_CALL sgDrawClear4f(float r, float g, float b, float a)
 {
 	float col[4];
 	col[0] = r;
@@ -381,148 +381,148 @@ void SG_EXPORT sgDrawClear4f(float r, float g, float b, float a)
 	if(psgmGraphicsContextClear != NULL)
 		psgmGraphicsContextClear(_sg_gfxHandle, col);
 }
-void SG_EXPORT sgDrawClear3f(float r, float g, float b)
+void SG_CALL sgDrawClear3f(float r, float g, float b)
 {
 	sgDrawClear4f(r, g, b, 1.0);
 }
-void SG_EXPORT sgDrawClear2f(float g, float a)
+void SG_CALL sgDrawClear2f(float g, float a)
 {
 	sgDrawClear4f(g, g, g, a);
 }
-void SG_EXPORT sgDrawClear1f(float g)
+void SG_CALL sgDrawClear1f(float g)
 {
 	sgDrawClear4f(g, g, g, 1.0);
 }
-void SG_EXPORT sgDrawClear4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
+void SG_CALL sgDrawClear4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a)
 {
 	sgDrawClear4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 }
-void SG_EXPORT sgDrawClear3ub(SGubyte r, SGubyte g, SGubyte b)
+void SG_CALL sgDrawClear3ub(SGubyte r, SGubyte g, SGubyte b)
 {
 	sgDrawClear4ub(r, g, b, 255);
 }
-void SG_EXPORT sgDrawClear2ub(SGubyte g, SGubyte a)
+void SG_CALL sgDrawClear2ub(SGubyte g, SGubyte a)
 {
 	sgDrawClear4ub(g, g, g, a);
 }
-void SG_EXPORT sgDrawClear1ub(SGubyte g)
+void SG_CALL sgDrawClear1ub(SGubyte g)
 {
 	sgDrawClear4ub(g, g, g, 255);
 }
-void SG_EXPORT sgDrawClear4fv(const float* rgba)
+void SG_CALL sgDrawClear4fv(const float* rgba)
 {
 	sgDrawClear4f(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-void SG_EXPORT sgDrawClear3fv(const float* rgb)
+void SG_CALL sgDrawClear3fv(const float* rgb)
 {
 	sgDrawClear3f(rgb[0], rgb[1], rgb[2]);
 }
-void SG_EXPORT sgDrawClear2fv(const float* ga)
+void SG_CALL sgDrawClear2fv(const float* ga)
 {
 	sgDrawClear2f(ga[0], ga[1]);
 }
-void SG_EXPORT sgDrawClear1fv(const float* g)
+void SG_CALL sgDrawClear1fv(const float* g)
 {
 	sgDrawClear1f(g[0]);
 }
-void SG_EXPORT sgDrawClear4ubv(const SGubyte* rgba)
+void SG_CALL sgDrawClear4ubv(const SGubyte* rgba)
 {
 	sgDrawClear4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-void SG_EXPORT sgDrawClear3ubv(const SGubyte* rgb)
+void SG_CALL sgDrawClear3ubv(const SGubyte* rgb)
 {
 	sgDrawClear3ub(rgb[0], rgb[1], rgb[2]);
 }
-void SG_EXPORT sgDrawClear2ubv(const SGubyte* ga)
+void SG_CALL sgDrawClear2ubv(const SGubyte* ga)
 {
 	sgDrawClear2ub(ga[0], ga[1]);
 }
-void SG_EXPORT sgDrawClear1ubv(const SGubyte* g)
+void SG_CALL sgDrawClear1ubv(const SGubyte* g)
 {
 	sgDrawClear1ub(g[0]);
 }
-void SG_EXPORT sgDrawClear(void)
+void SG_CALL sgDrawClear(void)
 {
 	sgDrawClear4f(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void SG_EXPORT sgDrawSetBlendFunc(SGenum src, SGenum dst)
+void SG_CALL sgDrawSetBlendFunc(SGenum src, SGenum dst)
 {
     if(psgmGraphicsDrawSetBlendFunc != NULL)
         psgmGraphicsDrawSetBlendFunc(_sg_gfxHandle, src, dst);
 }
-void SG_EXPORT sgDrawSetBlendEquation(SGenum equation)
+void SG_CALL sgDrawSetBlendEquation(SGenum equation)
 {
     if(psgmGraphicsDrawSetBlendEquation != NULL)
         psgmGraphicsDrawSetBlendEquation(_sg_gfxHandle, equation);
 }
 
-void SG_EXPORT sgDrawSetDepthFunc(SGenum func)
+void SG_CALL sgDrawSetDepthFunc(SGenum func)
 {
     if(psgmGraphicsDrawSetDepthFunc)
         psgmGraphicsDrawSetDepthFunc(_sg_gfxHandle, func);
 }
-void SG_EXPORT sgDrawSetDepthTest(SGbool test)
+void SG_CALL sgDrawSetDepthTest(SGbool test)
 {
     if(psgmGraphicsDrawSetDepthTest)
         psgmGraphicsDrawSetDepthTest(_sg_gfxHandle, test);
 }
 
-void SG_EXPORT sgDrawSetAlphaFunc(SGenum func, float ref)
+void SG_CALL sgDrawSetAlphaFunc(SGenum func, float ref)
 {
     if(psgmGraphicsDrawSetAlphaFunc)
         psgmGraphicsDrawSetAlphaFunc(_sg_gfxHandle, func, ref);
 }
-void SG_EXPORT sgDrawSetAlphaTest(SGbool test)
+void SG_CALL sgDrawSetAlphaTest(SGbool test)
 {
     if(psgmGraphicsDrawSetAlphaTest)
         psgmGraphicsDrawSetAlphaTest(_sg_gfxHandle, test);
 }
 
-void SG_EXPORT sgDrawSetPointSmooth(SGbool smooth)
+void SG_CALL sgDrawSetPointSmooth(SGbool smooth)
 {
     if(psgmGraphicsDrawSetPointSmooth)
         psgmGraphicsDrawSetPointSmooth(_sg_gfxHandle, smooth);
 }
-void SG_EXPORT sgDrawSetLineSmooth(SGbool smooth)
+void SG_CALL sgDrawSetLineSmooth(SGbool smooth)
 {
     if(psgmGraphicsDrawSetLineSmooth)
         psgmGraphicsDrawSetLineSmooth(_sg_gfxHandle, smooth);
 }
-void SG_EXPORT sgDrawSetPolygonSmooth(SGbool smooth)
+void SG_CALL sgDrawSetPolygonSmooth(SGbool smooth)
 {
     if(psgmGraphicsDrawSetPolygonSmooth)
         psgmGraphicsDrawSetPolygonSmooth(_sg_gfxHandle, smooth);
 }
 
-void SG_EXPORT sgDrawPoint(float x, float y)
+void SG_CALL sgDrawPoint(float x, float y)
 {
     sgDrawBegin(SG_POINTS);
 		sgDrawVertex2f(x, y);
 	sgDrawEnd();
 }
-void SG_EXPORT sgDrawPointSetSize(float size)
+void SG_CALL sgDrawPointSetSize(float size)
 {
 	if(psgmGraphicsDrawPointSetSize != NULL)
 		psgmGraphicsDrawPointSetSize(_sg_gfxHandle, size);
 }
-//float SG_EXPORT sgDrawPointGetSize(void);
+//float SG_CALL sgDrawPointGetSize(void);
 
-void SG_EXPORT sgDrawLine(float x1, float y1, float x2, float y2)
+void SG_CALL sgDrawLine(float x1, float y1, float x2, float y2)
 {
     sgDrawBegin(SG_LINES);
 		sgDrawVertex2f(x1, y1);
 		sgDrawVertex2f(x2, y2);
 	sgDrawEnd();
 }
-void SG_EXPORT sgDrawLineSetWidth(float width)
+void SG_CALL sgDrawLineSetWidth(float width)
 {
 	if(psgmGraphicsDrawLineSetWidth != NULL)
 		psgmGraphicsDrawLineSetWidth(_sg_gfxHandle, width);
 }
-//float SG_EXPORT sgDrawLineGetWidth(void);
+//float SG_CALL sgDrawLineGetWidth(void);
 
-void SG_EXPORT sgDrawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, SGbool fill)
+void SG_CALL sgDrawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, SGbool fill)
 {
 	if(fill)
         sgDrawBegin(SG_TRIANGLES);
@@ -535,7 +535,7 @@ void SG_EXPORT sgDrawTriangle(float x1, float y1, float x2, float y2, float x3, 
 	sgDrawEnd();
 }
 
-void SG_EXPORT sgDrawQuad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, SGbool fill)
+void SG_CALL sgDrawQuad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, SGbool fill)
 {
 	if(fill)
         sgDrawBegin(SG_QUADS);
@@ -549,16 +549,16 @@ void SG_EXPORT sgDrawQuad(float x1, float y1, float x2, float y2, float x3, floa
 	sgDrawEnd();
 }
 
-void SG_EXPORT sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fill)
+void SG_CALL sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fill)
 {
 	sgDrawQuad(x1, y1, x2, y1, x2, y2, x1, y2, fill);
 }
-void SG_EXPORT sgDrawRectangleWH(float x, float y, float w, float h, SGbool fill)
+void SG_CALL sgDrawRectangleWH(float x, float y, float w, float h, SGbool fill)
 {
 	sgDrawRectangle(x, y, x + w, y + h, fill);
 }
 
-void SG_EXPORT sgDrawRectangleRound(float x1, float y1, float x2, float y2, float rx, float ry, SGbool fill)
+void SG_CALL sgDrawRectangleRound(float x1, float y1, float x2, float y2, float rx, float ry, SGbool fill)
 {
     float tmp;
     if(x1 > x2)
@@ -592,22 +592,22 @@ void SG_EXPORT sgDrawRectangleRound(float x1, float y1, float x2, float y2, floa
         sgDrawLine(x1 + rx, y2, x2 - rx, y2);
     }
 }
-void SG_EXPORT sgDrawRectangleRoundWH(float x1, float y1, float w, float h, float rx, float ry, SGbool fill)
+void SG_CALL sgDrawRectangleRoundWH(float x1, float y1, float w, float h, float rx, float ry, SGbool fill)
 {
     sgDrawRectangleRound(x1, y1, x1 + w, y1 + h, rx, ry, fill);
 }
 
-void SG_EXPORT sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill)
+void SG_CALL sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill)
 {
 	sgDrawEArcRads(x, y, rx, ry, 0, 2 * SG_PI, SG_FALSE, fill);
 }
 
-void SG_EXPORT sgDrawCircle(float x, float y, float radius, SGbool fill)
+void SG_CALL sgDrawCircle(float x, float y, float radius, SGbool fill)
 {
 	sgDrawEllipse2R(x, y, radius, radius, fill);
 }
 
-void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_CALL sgDrawEArcRads(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	float adiff = a2 - a1;
 
@@ -637,16 +637,16 @@ void SG_EXPORT sgDrawEArcRads(float x, float y, float rx, float ry, float a1, fl
 
 	sgDrawEnd();
 }
-void SG_EXPORT sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_CALL sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	sgDrawEArcRads(x, y, rx, ry, a1 * SG_PI / 180.0, a2 * SG_PI / 180.0, ccw, fill);
 }
 
-void SG_EXPORT sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_CALL sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	sgDrawEArcRads(x, y, r, r, a1, a2, ccw, fill);
 }
-void SG_EXPORT sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
+void SG_CALL sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
 {
 	sgDrawEArcDegs(x, y, r, r, a1, a2, ccw, fill);
 }

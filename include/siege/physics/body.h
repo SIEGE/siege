@@ -36,49 +36,49 @@ typedef struct SGPhysicsBody
     struct SGEntity* entity;
 } SGPhysicsBody;
 
-SGPhysicsBody* SG_EXPORT sgPhysicsBodyCreate(SGPhysicsSpace* space, SGenum type);
-void SG_EXPORT sgPhysicsBodyDestroy(SGPhysicsBody* body);
+SGPhysicsBody* SG_CALL sgPhysicsBodyCreate(SGPhysicsSpace* space, SGenum type);
+void SG_CALL sgPhysicsBodyDestroy(SGPhysicsBody* body);
 
-void SG_EXPORT sgPhysicsBodySetData(SGPhysicsBody* body, void* data);
-void* SG_EXPORT sgPhysicsBodyGetData(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetData(SGPhysicsBody* body, void* data);
+void* SG_CALL sgPhysicsBodyGetData(SGPhysicsBody* body);
 
-void SG_EXPORT sgPhysicsBodySetSleeping(SGPhysicsBody* body, SGbool sleeping);
-SGbool SG_EXPORT sgPhysicsBodyGetSleeping(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetSleeping(SGPhysicsBody* body, SGbool sleeping);
+SGbool SG_CALL sgPhysicsBodyGetSleeping(SGPhysicsBody* body);
 
-void SG_EXPORT sgPhysicsBodySetPos(SGPhysicsBody* body, float x, float y);
-void SG_EXPORT sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y);
+void SG_CALL sgPhysicsBodySetPos(SGPhysicsBody* body, float x, float y);
+void SG_CALL sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y);
 
-void SG_EXPORT sgPhysicsBodySetPosX(SGPhysicsBody* body, float x);
-float SG_EXPORT sgPhysicsBodyGetPosX(SGPhysicsBody* body);
-void SG_EXPORT sgPhysicsBodySetPosY(SGPhysicsBody* body, float y);
-float SG_EXPORT sgPhysicsBodyGetPosY(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetPosX(SGPhysicsBody* body, float x);
+float SG_CALL sgPhysicsBodyGetPosX(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetPosY(SGPhysicsBody* body, float y);
+float SG_CALL sgPhysicsBodyGetPosY(SGPhysicsBody* body);
 
-void SG_EXPORT sgPhysicsBodySetAngleRads(SGPhysicsBody* body, float rads);
-float SG_EXPORT sgPhysicsBodyGetAngleRads(SGPhysicsBody* body);
-void SG_EXPORT sgPhysicsBodySetAngleDegs(SGPhysicsBody* body, float degs);
-float SG_EXPORT sgPhysicsBodyGetAngleDegs(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetAngleRads(SGPhysicsBody* body, float rads);
+float SG_CALL sgPhysicsBodyGetAngleRads(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetAngleDegs(SGPhysicsBody* body, float degs);
+float SG_CALL sgPhysicsBodyGetAngleDegs(SGPhysicsBody* body);
 
-void SG_EXPORT sgPhysicsBodySetVel(SGPhysicsBody* body, float x, float y);
-void SG_EXPORT sgPhysicsBodyGetVel(SGPhysicsBody* body, float* x, float* y);
+void SG_CALL sgPhysicsBodySetVel(SGPhysicsBody* body, float x, float y);
+void SG_CALL sgPhysicsBodyGetVel(SGPhysicsBody* body, float* x, float* y);
 
-void SG_EXPORT sgPhysicsBodySetVelX(SGPhysicsBody* body, float x);
-float SG_EXPORT sgPhysicsBodyGetVelX(SGPhysicsBody* body);
-void SG_EXPORT sgPhysicsBodySetVelY(SGPhysicsBody* body, float y);
-float SG_EXPORT sgPhysicsBodyGetVelY(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetVelX(SGPhysicsBody* body, float x);
+float SG_CALL sgPhysicsBodyGetVelX(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetVelY(SGPhysicsBody* body, float y);
+float SG_CALL sgPhysicsBodyGetVelY(SGPhysicsBody* body);
 
-void SG_EXPORT sgPhysicsBodySetAngVelRads(SGPhysicsBody* body, float rads);
-float SG_EXPORT sgPhysicsBodyGetAngVelRads(SGPhysicsBody* body);
-void SG_EXPORT sgPhysicsBodySetAngVelDegs(SGPhysicsBody* body, float degs);
-float SG_EXPORT sgPhysicsBodyGetAngVelDegs(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetAngVelRads(SGPhysicsBody* body, float rads);
+float SG_CALL sgPhysicsBodyGetAngVelRads(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetAngVelDegs(SGPhysicsBody* body, float degs);
+float SG_CALL sgPhysicsBodyGetAngVelDegs(SGPhysicsBody* body);
 
-void SG_EXPORT sgPhysicsBodySetMass(SGPhysicsBody* body, float mass);
-float SG_EXPORT sgPhysicsBodyGetMass(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetMass(SGPhysicsBody* body, float mass);
+float SG_CALL sgPhysicsBodyGetMass(SGPhysicsBody* body);
 
-void SG_EXPORT sgPhysicsBodySetMoment(SGPhysicsBody* body, float moment);
-float SG_EXPORT sgPhysicsBodyGetMoment(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetMoment(SGPhysicsBody* body, float moment);
+float SG_CALL sgPhysicsBodyGetMoment(SGPhysicsBody* body);
 
-void SG_EXPORT sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
-void SG_EXPORT sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
+void SG_CALL sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
+void SG_CALL sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
 
 #ifdef __cplusplus
 }

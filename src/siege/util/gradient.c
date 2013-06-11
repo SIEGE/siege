@@ -19,7 +19,7 @@
 #include <string.h>
 #include <math.h>
 
-SGVec2* SG_EXPORT _sgGradientFindMin(SGGradient* grad, float val)
+SGVec2* SG_CALL _sgGradientFindMin(SGGradient* grad, float val)
 {
     size_t i;
     for(i = 0; i < grad->numvals; i++)
@@ -32,7 +32,7 @@ SGVec2* SG_EXPORT _sgGradientFindMin(SGGradient* grad, float val)
     return NULL;
 }
 
-float SG_EXPORT _sgGradientInterpNearest(SGGradient* grad, float x)
+float SG_CALL _sgGradientInterpNearest(SGGradient* grad, float x)
 {
     SGVec2* min = _sgGradientFindMin(grad, x);
     if(!min) // not found - first element...
@@ -46,7 +46,7 @@ float SG_EXPORT _sgGradientInterpNearest(SGGradient* grad, float x)
 
     return (t < 0.5) ? min->y : max->y;
 }
-float SG_EXPORT _sgGradientInterpLinear(SGGradient* grad, float x)
+float SG_CALL _sgGradientInterpLinear(SGGradient* grad, float x)
 {
     SGVec2* min = _sgGradientFindMin(grad, x);
     if(!min) // not found - first element...
@@ -60,7 +60,7 @@ float SG_EXPORT _sgGradientInterpLinear(SGGradient* grad, float x)
 
     return min->y + t * (max->y - min->y);
 }
-float SG_EXPORT _sgGradientInterpCosine(SGGradient* grad, float x)
+float SG_CALL _sgGradientInterpCosine(SGGradient* grad, float x)
 {
     SGVec2* min = _sgGradientFindMin(grad, x);
     if(!min) // not found - first element...
@@ -76,7 +76,7 @@ float SG_EXPORT _sgGradientInterpCosine(SGGradient* grad, float x)
 
     return min->y + f * (max->y - min->y);
 }
-float SG_EXPORT _sgGradientInterpCubic(SGGradient* grad, float x)
+float SG_CALL _sgGradientInterpCubic(SGGradient* grad, float x)
 {
     SGVec2* min = _sgGradientFindMin(grad, x);
     if(!min) // not found - first element...
@@ -99,7 +99,7 @@ float SG_EXPORT _sgGradientInterpCubic(SGGradient* grad, float x)
     return p*t*t*t + q*t*t + r*t + s;
 }
 
-SGGradient* SG_EXPORT sgGradientCreate(void)
+SGGradient* SG_CALL sgGradientCreate(void)
 {
     SGGradient* grad = malloc(sizeof(SGGradient));
     if(!grad)
@@ -111,7 +111,7 @@ SGGradient* SG_EXPORT sgGradientCreate(void)
     grad->interp = _sgGradientInterpLinear;
     return grad;
 }
-void SG_EXPORT sgGradientDestroy(SGGradient* grad)
+void SG_CALL sgGradientDestroy(SGGradient* grad)
 {
     if(!grad)
         return;
@@ -119,7 +119,7 @@ void SG_EXPORT sgGradientDestroy(SGGradient* grad)
     free(grad);
 }
 
-void SG_EXPORT sgGradientSetInterp(SGGradient* grad, SGenum interp)
+void SG_CALL sgGradientSetInterp(SGGradient* grad, SGenum interp)
 {
     switch(interp)
     {
@@ -139,20 +139,20 @@ void SG_EXPORT sgGradientSetInterp(SGGradient* grad, SGenum interp)
             break;
     }
 }
-void SG_EXPORT sgGradientSetInterpFunc(SGGradient* grad, SGGradientInterp* interp)
+void SG_CALL sgGradientSetInterpFunc(SGGradient* grad, SGGradientInterp* interp)
 {
     if(!interp)
         interp = _sgGradientInterpLinear;
     grad->interp = interp;
 }
 
-void SG_EXPORT sgGradientSetStopIndex(SGGradient* grad, size_t i, float y)
+void SG_CALL sgGradientSetStopIndex(SGGradient* grad, size_t i, float y)
 {
     if(i >= grad->numvals)
         return;
     grad->vals[i].y = y;
 }
-void SG_EXPORT sgGradientSetStopKey(SGGradient* grad, float x, float y)
+void SG_CALL sgGradientSetStopKey(SGGradient* grad, float x, float y)
 {
     size_t i;
     SGVec2* v = _sgGradientFindMin(grad, x);
@@ -179,7 +179,7 @@ void SG_EXPORT sgGradientSetStopKey(SGGradient* grad, float x, float y)
     }
 }
 
-void SG_EXPORT sgGradientRemoveStopIndex(SGGradient* grad, size_t i)
+void SG_CALL sgGradientRemoveStopIndex(SGGradient* grad, size_t i)
 {
     if(i >= grad->numvals)
         return;
@@ -187,14 +187,14 @@ void SG_EXPORT sgGradientRemoveStopIndex(SGGradient* grad, size_t i)
     grad->numvals--;
     grad->vals = realloc(grad->vals, grad->numvals * sizeof(SGVec2));
 }
-void SG_EXPORT sgGradientRemoveStopKey(SGGradient* grad, float x)
+void SG_CALL sgGradientRemoveStopKey(SGGradient* grad, float x)
 {
     SGVec2* v = _sgGradientFindMin(grad, x);
     if(v && v->x == x)
         sgGradientRemoveStopIndex(grad, v - grad->vals);
 }
 
-float SG_EXPORT sgGradientGetValue(SGGradient* grad, float x)
+float SG_CALL sgGradientGetValue(SGGradient* grad, float x)
 {
     return grad->interp(grad, x);
 }

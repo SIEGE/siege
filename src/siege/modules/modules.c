@@ -36,7 +36,7 @@ static size_t _sg_modNumPrefs = 2;
 static char* _sg_modPrefs[256] = { "SGModule-", "libSGModule-" };
 static size_t _sg_modPrefsMaxLen = 12;
 
-char* SG_EXPORT _sgModuleGetFile(const char* module)
+char* SG_CALL _sgModuleGetFile(const char* module)
 {
     SGDirectory* dir;
     char* dname;
@@ -76,7 +76,7 @@ char* SG_EXPORT _sgModuleGetFile(const char* module)
     return NULL;
 }
 
-SGModule* SG_EXPORT sgModuleLoad(const char* name)
+SGModule* SG_CALL sgModuleLoad(const char* name)
 {
     char* fname = _sgModuleGetFile(name);
     if(fname == NULL)
@@ -115,7 +115,7 @@ SGModule* SG_EXPORT sgModuleLoad(const char* name)
     return module;
 }
 
-void SG_EXPORT sgModuleUnload(SGModule* module)
+void SG_CALL sgModuleUnload(SGModule* module)
 {
     if(module == NULL)
         return;
@@ -136,7 +136,7 @@ void SG_EXPORT sgModuleUnload(SGModule* module)
     free(module);
 }
 
-void SG_EXPORT sgModuleSetLoadDirsv(size_t ndirs, va_list args)
+void SG_CALL sgModuleSetLoadDirsv(size_t ndirs, va_list args)
 {
     // we only allow up to "ndirs" directories.
     if(ndirs > sizeof(_sg_modDirs) / sizeof(*_sg_modDirs))
@@ -166,28 +166,28 @@ void SG_EXPORT sgModuleSetLoadDirsv(size_t ndirs, va_list args)
     if(!_sg_modNumDirs)
         sgModuleSetLoadDir(NULL);
 }
-void SG_EXPORT sgModuleSetLoadDirs(size_t ndirs, ...)
+void SG_CALL sgModuleSetLoadDirs(size_t ndirs, ...)
 {
     va_list args;
     va_start(args, ndirs);
     sgModuleSetLoadDirsv(ndirs, args);
     va_end(args);
 }
-void SG_EXPORT sgModuleSetLoadDir(const char* dir)
+void SG_CALL sgModuleSetLoadDir(const char* dir)
 {
     if(!dir)
         sgModuleSetLoadDirs(1, "modules");
     else
         sgModuleSetLoadDirs(1, dir);
 }
-char** SG_EXPORT sgModuleGetLoadDirs(size_t* ndirs)
+char** SG_CALL sgModuleGetLoadDirs(size_t* ndirs)
 {
     if(ndirs)
         *ndirs = _sg_modNumDirs;
     return _sg_modDirs;
 }
 
-void SG_EXPORT sgModuleSetLoadPrefixesv(size_t nprefs, va_list args)
+void SG_CALL sgModuleSetLoadPrefixesv(size_t nprefs, va_list args)
 {
     // we only allow up to "ndirs" directories.
     if(nprefs > sizeof(_sg_modPrefs) / sizeof(*_sg_modPrefs))
@@ -217,28 +217,28 @@ void SG_EXPORT sgModuleSetLoadPrefixesv(size_t nprefs, va_list args)
     if(!_sg_modNumPrefs)
         sgModuleSetLoadPrefix(NULL);
 }
-void SG_EXPORT sgModuleSetLoadPrefixes(size_t nprefs, ...)
+void SG_CALL sgModuleSetLoadPrefixes(size_t nprefs, ...)
 {
     va_list args;
     va_start(args, nprefs);
     sgModuleSetLoadPrefixesv(nprefs, args);
     va_end(args);
 }
-void SG_EXPORT sgModuleSetLoadPrefix(const char* prefix)
+void SG_CALL sgModuleSetLoadPrefix(const char* prefix)
 {
     if(!prefix)
         sgModuleSetLoadPrefixes(2, "SGModule-", "libSGModule-");
     else
         sgModuleSetLoadPrefixes(1, prefix);
 }
-char** SG_EXPORT sgModuleGetLoadPrefixes(size_t* nprefs)
+char** SG_CALL sgModuleGetLoadPrefixes(size_t* nprefs)
 {
     if(nprefs)
         *nprefs = _sg_modNumPrefs;
     return _sg_modPrefs;
 }
 
-SGList* SG_EXPORT sgModuleGetList(void)
+SGList* SG_CALL sgModuleGetList(void)
 {
     return _sg_modList;
 }

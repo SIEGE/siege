@@ -34,17 +34,17 @@ void SG_CALL sgListDeinit(SGList* list)
         sgListRemoveNode(list, list->head);
 }
 
-SGList* SG_EXPORT sgListCreate(void)
+SGList* SG_CALL sgListCreate(void)
 {
     return sgListInit(malloc(sizeof(SGList)));
 }
-void SG_EXPORT sgListDestroy(SGList* list)
+void SG_CALL sgListDestroy(SGList* list)
 {
     sgListDeinit(list);
     free(list);
 }
 
-size_t SG_EXPORT sgListLength(SGList* list)
+size_t SG_CALL sgListLength(SGList* list)
 {
 	if(list == NULL)
 		return 0;
@@ -56,7 +56,7 @@ size_t SG_EXPORT sgListLength(SGList* list)
 	return i;
 }
 
-SGListNode* SG_EXPORT sgListFindItem(SGList* list, void* item)
+SGListNode* SG_CALL sgListFindItem(SGList* list, void* item)
 {
 	if(list == NULL)
 		return NULL;
@@ -67,7 +67,7 @@ SGListNode* SG_EXPORT sgListFindItem(SGList* list, void* item)
 			return node;
 	return NULL;
 }
-SGListNode* SG_EXPORT sgListFindIndex(SGList* list, size_t index)
+SGListNode* SG_CALL sgListFindIndex(SGList* list, size_t index)
 {
 	if(list == NULL)
 		return NULL;
@@ -80,7 +80,7 @@ SGListNode* SG_EXPORT sgListFindIndex(SGList* list, size_t index)
 	return NULL;
 }
 
-SGListNode* SG_EXPORT sgListInsertNode(SGList* list, SGListNode* after, void* item)
+SGListNode* SG_CALL sgListInsertNode(SGList* list, SGListNode* after, void* item)
 {
     if(!list) return NULL;
 
@@ -113,30 +113,30 @@ SGListNode* SG_EXPORT sgListInsertNode(SGList* list, SGListNode* after, void* it
 	node->item = item;
 	return node;
 }
-SGListNode* SG_EXPORT sgListInsertItem(SGList* list, void* after, void* item)
+SGListNode* SG_CALL sgListInsertItem(SGList* list, void* after, void* item)
 {
 	SGListNode* node = sgListFindItem(list, after);
 	if(node == NULL)
 		return NULL;
 	return sgListInsertNode(list, node, item);
 }
-SGListNode* SG_EXPORT sgListInsertIndex(SGList* list, size_t after, void* item)
+SGListNode* SG_CALL sgListInsertIndex(SGList* list, size_t after, void* item)
 {
 	SGListNode* node = sgListFindIndex(list, after);
 	if(node == NULL)
 		return NULL;
 	return sgListInsertNode(list, node, item);
 }
-SGListNode* SG_EXPORT sgListPrepend(SGList* list, void* item)
+SGListNode* SG_CALL sgListPrepend(SGList* list, void* item)
 {
 	return sgListInsertNode(list, NULL, item);
 }
-SGListNode* SG_EXPORT sgListAppend(SGList* list, void* item)
+SGListNode* SG_CALL sgListAppend(SGList* list, void* item)
 {
 	return sgListInsertNode(list, list->tail, item);
 }
 
-void SG_EXPORT sgListRemoveNode(SGList* list, SGListNode* node)
+void SG_CALL sgListRemoveNode(SGList* list, SGListNode* node)
 {
     if(!list) return;
     if(!node) return;
@@ -153,33 +153,33 @@ void SG_EXPORT sgListRemoveNode(SGList* list, SGListNode* node)
 
 	free(node);
 }
-void SG_EXPORT sgListRemoveItem(SGList* list, void* item)
+void SG_CALL sgListRemoveItem(SGList* list, void* item)
 {
 	SGListNode* node = sgListFindItem(list, item);
 	if(node != NULL)
 		sgListRemoveNode(list, node);
 }
-void SG_EXPORT sgListRemoveIndex(SGList* list, size_t index)
+void SG_CALL sgListRemoveIndex(SGList* list, size_t index)
 {
 	SGListNode* node = sgListFindIndex(list, index);
 	if(node != NULL)
 		sgListRemoveNode(list, node);
 }
 
-SGListNode* SG_EXPORT sgListGetFirst(SGList* list)
+SGListNode* SG_CALL sgListGetFirst(SGList* list)
 {
 	if(list == NULL)
 		return NULL;
 	return list->head;
 }
-SGListNode* SG_EXPORT sgListGetLast(SGList* list)
+SGListNode* SG_CALL sgListGetLast(SGList* list)
 {
 	if(list == NULL)
 		return NULL;
 	return list->tail;
 }
 
-void* SG_EXPORT sgListPopFirst(SGList* list)
+void* SG_CALL sgListPopFirst(SGList* list)
 {
 	if(list == NULL)
 		return NULL;
@@ -189,7 +189,7 @@ void* SG_EXPORT sgListPopFirst(SGList* list)
 	sgListRemoveNode(list, list->head);
 	return item;
 }
-void* SG_EXPORT sgListPopLast(SGList* list)
+void* SG_CALL sgListPopLast(SGList* list)
 {
 	if(list == NULL)
 		return NULL;

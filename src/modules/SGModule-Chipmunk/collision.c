@@ -61,37 +61,37 @@ void cbCollisionSeparate(cpArbiter* arb, cpSpace* space, void* data)
     }
 }
 
-SGenum SG_EXPORT sgmPhysicsCollisionIgnore(void* handle)
+SGenum SG_CALL sgmPhysicsCollisionIgnore(void* handle)
 {
     cpArbiterIgnore(handle);
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsCollisionGetNumContacts(void* handle, size_t* numcontacts)
+SGenum SG_CALL sgmPhysicsCollisionGetNumContacts(void* handle, size_t* numcontacts)
 {
     *numcontacts = cpArbiterGetCount(handle);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsCollisionGetPoint(void* handle, size_t index, float* x, float* y)
+SGenum SG_CALL sgmPhysicsCollisionGetPoint(void* handle, size_t index, float* x, float* y)
 {
     cpVect v = cpArbiterGetPoint(handle, index);
     *x = v.x;
     *y = v.y;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsCollisionGetNormal(void* handle, size_t index, float* x, float* y)
+SGenum SG_CALL sgmPhysicsCollisionGetNormal(void* handle, size_t index, float* x, float* y)
 {
     cpVect v = cpArbiterGetNormal(handle, index);
     *x = v.x;
     *y = v.y;
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsCollisionGetDistance(void* handle, size_t index, float* distance)
+SGenum SG_CALL sgmPhysicsCollisionGetDistance(void* handle, size_t index, float* distance)
 {
     *distance = cpArbiterGetDepth(handle, index);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmPhysicsCollisionGetImpulse(void* handle, float* x, float* y, SGbool friction)
+SGenum SG_CALL sgmPhysicsCollisionGetImpulse(void* handle, float* x, float* y, SGbool friction)
 {
     cpVect v;
     if(friction)
@@ -103,7 +103,7 @@ SGenum SG_EXPORT sgmPhysicsCollisionGetImpulse(void* handle, float* x, float* y,
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmPhysicsCollisionSetCallbacks(SGPhysicsCollisionCallbacks* callbacks)
+SGenum SG_CALL sgmPhysicsCollisionSetCallbacks(SGPhysicsCollisionCallbacks* callbacks)
 {
     colCallbacks = callbacks;
     return SG_OK;

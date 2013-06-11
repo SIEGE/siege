@@ -19,7 +19,7 @@
 #include <string.h>
 
 /// \TODO Non-recursive variant of this function.
-void SG_EXPORT _sgSetDestroyNode(SGSetNode* node)
+void SG_CALL _sgSetDestroyNode(SGSetNode* node)
 {
     if(!node)
         return;
@@ -28,7 +28,7 @@ void SG_EXPORT _sgSetDestroyNode(SGSetNode* node)
     free(node);
 }
 
-SGSetNode* SG_EXPORT _sgSetNodeSkew(SGSetNode* node)
+SGSetNode* SG_CALL _sgSetNodeSkew(SGSetNode* node)
 {
     SGSetNode* ret;
     size_t level = node->left ? node->left->level : 0;
@@ -42,7 +42,7 @@ SGSetNode* SG_EXPORT _sgSetNodeSkew(SGSetNode* node)
     }
     return node;
 }
-SGSetNode* SG_EXPORT _sgSetNodeSplit(SGSetNode* node)
+SGSetNode* SG_CALL _sgSetNodeSplit(SGSetNode* node)
 {
     SGSetNode* ret;
     size_t level = node->right ? (node->right->right ? node->right->right->level : 0) : 0;
@@ -65,7 +65,7 @@ SGSetNode* SG_EXPORT _sgSetNodeSplit(SGSetNode* node)
  * the typical amount of memory in a computer, nevermind that a single node is
  * more than 1 byte.
  */
-SGSetNode* SG_EXPORT _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node)
+SGSetNode* SG_CALL _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node)
 {
     SGSetNode* curr;
     SGSetNode* stack[256];
@@ -124,7 +124,7 @@ SGSetNode* SG_EXPORT _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* no
     }
     return root;
 }
-SGSetNode* SG_EXPORT _sgSetNodeRemove(SGSet* set, SGSetNode* root, SGSetNode* node)
+SGSetNode* SG_CALL _sgSetNodeRemove(SGSet* set, SGSetNode* root, SGSetNode* node)
 {
     SGSetNode* remove = NULL;
     SGSetNode* curr;
@@ -250,19 +250,19 @@ void SG_CALL sgSetDeinit(SGSet* set)
     _sgSetDestroyNode(set->root);
 }
 
-SGSet* SG_EXPORT sgSetCreate(SGSetCmp* cmp, void* data)
+SGSet* SG_CALL sgSetCreate(SGSetCmp* cmp, void* data)
 {
     return sgSetInit(malloc(sizeof(SGSet)), cmp, data);
 }
-void SG_EXPORT sgSetDestroy(SGSet* set)
+void SG_CALL sgSetDestroy(SGSet* set)
 {
     sgSetDeinit(set);
     free(set);
 }
 
-//size_t SG_EXPORT sgSetNumNodes(SGSet* set);
+//size_t SG_CALL sgSetNumNodes(SGSet* set);
 
-SGSetNode* SG_EXPORT sgSetSearch(SGSet* set, const void* item)
+SGSetNode* SG_CALL sgSetSearch(SGSet* set, const void* item)
 {
     SGSetNode* node = set->root;
     int cmp;
@@ -279,7 +279,7 @@ SGSetNode* SG_EXPORT sgSetSearch(SGSet* set, const void* item)
     return node;
 }
 
-SGSetNode* SG_EXPORT sgSetInsert(SGSet* set, void* item)
+SGSetNode* SG_CALL sgSetInsert(SGSet* set, void* item)
 {
     SGSetNode* node = malloc(sizeof(SGSetNode));
     if(!node)
@@ -293,11 +293,11 @@ SGSetNode* SG_EXPORT sgSetInsert(SGSet* set, void* item)
     return node;
 }
 
-void SG_EXPORT sgSetRemoveNode(SGSet* set, SGSetNode* node)
+void SG_CALL sgSetRemoveNode(SGSet* set, SGSetNode* node)
 {
     set->root = _sgSetNodeRemove(set, set->root, node);
 }
-void SG_EXPORT sgSetRemoveItem(SGSet* set, void* item)
+void SG_CALL sgSetRemoveItem(SGSet* set, void* item)
 {
     SGSetNode* node = sgSetSearch(set, item);
     if(!node)
@@ -305,11 +305,11 @@ void SG_EXPORT sgSetRemoveItem(SGSet* set, void* item)
     sgSetRemoveNode(set, node);
 }
 
-SGSetNode* SG_EXPORT sgSetGetRoot(SGSet* set)
+SGSetNode* SG_CALL sgSetGetRoot(SGSet* set)
 {
     return set->root;
 }
-SGSetNode* SG_EXPORT sgSetGetFirst(SGSet* set)
+SGSetNode* SG_CALL sgSetGetFirst(SGSet* set)
 {
     SGSetNode* curr = set->root;
     if(curr)
@@ -317,7 +317,7 @@ SGSetNode* SG_EXPORT sgSetGetFirst(SGSet* set)
             curr = curr->left;
     return curr;
 }
-SGSetNode* SG_EXPORT sgSetGetLast(SGSet* set)
+SGSetNode* SG_CALL sgSetGetLast(SGSet* set)
 {
     SGSetNode* curr = set->root;
     if(curr)
@@ -326,7 +326,7 @@ SGSetNode* SG_EXPORT sgSetGetLast(SGSet* set)
     return curr;
 }
 
-void* SG_EXPORT sgSetPopRoot(SGSet* set)
+void* SG_CALL sgSetPopRoot(SGSet* set)
 {
     SGSetNode* node = sgSetGetRoot(set);
     if(!node)
@@ -335,7 +335,7 @@ void* SG_EXPORT sgSetPopRoot(SGSet* set)
     sgSetRemoveNode(set, node);
     return item;
 }
-void* SG_EXPORT sgSetPopFirst(SGSet* set)
+void* SG_CALL sgSetPopFirst(SGSet* set)
 {
     SGSetNode* node = sgSetGetFirst(set);
     if(!node)
@@ -344,7 +344,7 @@ void* SG_EXPORT sgSetPopFirst(SGSet* set)
     sgSetRemoveNode(set, node);
     return item;
 }
-void* SG_EXPORT sgSetPopLast(SGSet* set)
+void* SG_CALL sgSetPopLast(SGSet* set)
 {
     SGSetNode* node = sgSetGetLast(set);
     if(!node)

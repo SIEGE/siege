@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-SGenum SG_EXPORT sgmCoreJoystickGetNumJoysticks(void* window, size_t* numjoys)
+SGenum SG_CALL sgmCoreJoystickGetNumJoysticks(void* window, size_t* numjoys)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -29,7 +29,7 @@ SGenum SG_EXPORT sgmCoreJoystickGetNumJoysticks(void* window, size_t* numjoys)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmCoreJoystickCreate(void** joystick, void* window, SGuint id)
+SGenum SG_CALL sgmCoreJoystickCreate(void** joystick, void* window, SGuint id)
 {
     if(window == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -47,7 +47,7 @@ SGenum SG_EXPORT sgmCoreJoystickCreate(void** joystick, void* window, SGuint id)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmCoreJoystickDestroy(void* joystick)
+SGenum SG_CALL sgmCoreJoystickDestroy(void* joystick)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -61,7 +61,7 @@ SGenum SG_EXPORT sgmCoreJoystickDestroy(void* joystick)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmCoreJoystickGetID(void* joystick, SGuint* id)
+SGenum SG_CALL sgmCoreJoystickGetID(void* joystick, SGuint* id)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -71,7 +71,7 @@ SGenum SG_EXPORT sgmCoreJoystickGetID(void* joystick, SGuint* id)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmCoreJoystickGetNumButtons(void* joystick, size_t* numbuttons)
+SGenum SG_CALL sgmCoreJoystickGetNumButtons(void* joystick, size_t* numbuttons)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -81,8 +81,8 @@ SGenum SG_EXPORT sgmCoreJoystickGetNumButtons(void* joystick, size_t* numbuttons
 
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmCoreJoystickButtonSetState(void* joystick, SGbool* state)
-SGenum SG_EXPORT sgmCoreJoystickButtonGetState(void* joystick, SGbool* state)
+//SGenum SG_CALL sgmCoreJoystickButtonSetState(void* joystick, SGbool* state)
+SGenum SG_CALL sgmCoreJoystickButtonGetState(void* joystick, SGbool* state)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -95,7 +95,7 @@ SGenum SG_EXPORT sgmCoreJoystickButtonGetState(void* joystick, SGbool* state)
 
     return SG_OK;
 }
-SGenum SG_EXPORT sgmCoreJoystickGetNumAxis(void* joystick, size_t* numaxis)
+SGenum SG_CALL sgmCoreJoystickGetNumAxis(void* joystick, size_t* numaxis)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -105,8 +105,8 @@ SGenum SG_EXPORT sgmCoreJoystickGetNumAxis(void* joystick, size_t* numaxis)
 
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmCoreJoystickAxisSetPosition(void* joystick, float* position);
-SGenum SG_EXPORT sgmCoreJoystickAxisGetPosition(void* joystick, float* position)
+//SGenum SG_CALL sgmCoreJoystickAxisSetPosition(void* joystick, float* position);
+SGenum SG_CALL sgmCoreJoystickAxisGetPosition(void* joystick, float* position)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -120,7 +120,7 @@ SGenum SG_EXPORT sgmCoreJoystickAxisGetPosition(void* joystick, float* position)
     return SG_OK;
 }
 
-SGenum SG_EXPORT sgmCoreJoystickSetCallbacks(void* joystick, SGCoreJoystickCallbacks* callbacks)
+SGenum SG_CALL sgmCoreJoystickSetCallbacks(void* joystick, SGCoreJoystickCallbacks* callbacks)
 {
     if(joystick == NULL)
         return SG_OK; // SG_INVALID_VALUE
@@ -133,4 +133,4 @@ SGenum SG_EXPORT sgmCoreJoystickSetCallbacks(void* joystick, SGCoreJoystickCallb
 
     return SG_OK;
 }
-//SGenum SG_EXPORT sgmCoreJoystickGetCallbacks(void* joystick, SGCoreJoystickCallbacks** callbacks);
+//SGenum SG_CALL sgmCoreJoystickGetCallbacks(void* joystick, SGCoreJoystickCallbacks** callbacks);

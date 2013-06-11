@@ -27,7 +27,7 @@ typedef struct LFile
     void* buf;
 } LFile;
 
-SGenum SG_EXPORT sgmAudioFileCreate(void** file, SGStream* stream, SGuint* channels, SGuint* format, SGuint* frequency)
+SGenum SG_CALL sgmAudioFileCreate(void** file, SGStream* stream, SGuint* channels, SGuint* format, SGuint* frequency)
 {
     if(!stream || !stream->read || !stream->seek || !stream->tell)
         return SG_INVALID_VALUE;
@@ -70,7 +70,7 @@ err:
     free(*file);
     return SG_UNKNOWN_ERROR;
 }
-SGenum SG_EXPORT sgmAudioFileDestroy(void* file)
+SGenum SG_CALL sgmAudioFileDestroy(void* file)
 {
     LFile* lfile = file;
     stb_vorbis_close(lfile->stb);
@@ -78,13 +78,13 @@ SGenum SG_EXPORT sgmAudioFileDestroy(void* file)
     free(lfile);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioFileNumSamples(void* file, SGuint* samples)
+SGenum SG_CALL sgmAudioFileNumSamples(void* file, SGuint* samples)
 {
     LFile* lfile = file;
     *samples = stb_vorbis_stream_length_in_samples(lfile->stb);
     return SG_OK;
 }
-SGenum SG_EXPORT sgmAudioFileRead(void* file, void* data, SGuint* datalen)
+SGenum SG_CALL sgmAudioFileRead(void* file, void* data, SGuint* datalen)
 {
     LFile* lfile = file;
 

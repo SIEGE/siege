@@ -36,7 +36,7 @@ extern "C"
 
 #endif // SG_BUILD_LIBRARY
 
-void SG_EXPORT _sgModuleLoadPhysics(SGLibrary* lib);
+void SG_CALL _sgModuleLoadPhysics(SGLibrary* lib);
 
 #ifdef __cplusplus
 }
