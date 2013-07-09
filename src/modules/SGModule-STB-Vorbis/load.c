@@ -95,25 +95,5 @@ SGenum SG_CALL sgmAudioFileRead(void* file, void* data, SGuint* datalen)
 #else
 #error "Unknown format type"
 #endif /* FORMAT_TYPE */
-
-    /*SGuint num = *datalen / lfile->size;
-    switch(lfile->format)
-    {
-        case SG_AUDIO_FORMAT_S16:
-            *datalen = lfile->size * sf_read_short(lfile->snd, (SGshort*)data, num);
-            break;
-        case SG_AUDIO_FORMAT_S32:
-            *datalen = lfile->size * sf_read_int(lfile->snd, (SGint*)data, num);
-            break;
-        case SG_AUDIO_FORMAT_F:
-            *datalen = lfile->size * sf_read_float(lfile->snd, (SGfloat*)data, num);
-            break;
-        case SG_AUDIO_FORMAT_D:
-            *datalen = lfile->size * sf_read_double(lfile->snd, (SGdouble*)data, num);
-            break;
-        default:
-            sf_close(lfile->snd);
-            return SG_UNKNOWN_ERROR;
-    }*/
     return SG_OK;
 }
