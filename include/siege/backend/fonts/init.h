@@ -12,13 +12,23 @@
  * Tim Chas <darkuranium@gmail.com>.
  */
 
-#include "common.h"
+#ifndef __SIEGE_BACKEND_FONTS_INIT_H__
+#define __SIEGE_BACKEND_FONTS_INIT_H__
 
-SGenum SG_CALL sgmALoadInit(void)
+#include "../../common.h"
+
+#ifndef SG_FPTR
+#define SG_FPTR(name)    name
+#endif // SG_FPTR
+
+#ifdef __cplusplus
+extern "C"
 {
-    return SG_OK;
+#endif
+    SGenum SG_CALL SG_FPTR(sgmFontsInit)(void);
+    SGenum SG_CALL SG_FPTR(sgmFontsDeinit)(void);
+#ifdef __cplusplus
 }
-SGenum SG_CALL sgmALoadDeinit(void)
-{
-    return SG_OK;
-}
+#endif
+
+#endif // __SIEGE_BACKEND_FONTS_INIT_H__

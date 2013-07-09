@@ -14,59 +14,16 @@
 
 #include "common.h"
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-SGenum SG_CALL sgmModuleInit(SGModuleInfo** minfo)
+SGenum SG_CALL sgmAudioInit(void)
 {
-    *minfo = (SGModuleInfo*) calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->vmajor = SG_VERSION_MAJOR;
-    (*minfo)->vminor = SG_VERSION_MINOR;
-    (*minfo)->vpatch = SG_VERSION_PATCH;
-
     device = alcOpenDevice(NULL);
     context = alcCreateContext(device, NULL);
     alcMakeContextCurrent(context);
-
-    const char* version = alGetString(AL_VERSION);
-    char* space = strchr(version, ' ');
-    char* ptr = (char*)version;
-    int numdots = 0;
-    while(ptr < space && ptr != NULL)
-    {
-        ptr = strchr(ptr, '.') + 1;
-        numdots++;
-    }
-    numdots--;
-    int mmajor, mminor;
-    int mpatch = 0;
-    if(numdots == 1)
-        sscanf(version, "%d.%d", &mmajor, &mminor);
-    else
-        sscanf(version, "%d.%d.%d", &mmajor, &mminor, &mpatch);
-
-    (*minfo)->mmajor = mmajor;
-    (*minfo)->mminor = mminor;
-    (*minfo)->mpatch = mpatch;
-    (*minfo)->type = SG_MODULE_AUDIO;
-    (*minfo)->name = "OpenAL";
-
     return SG_OK;
 }
-
-SGenum SG_CALL sgmModuleExit(SGModuleInfo* minfo)
+SGenum SG_CALL sgmAudioDeinit(void)
 {
     alcDestroyContext(context);
     alcCloseDevice(device);
-
-    free(minfo);
-
-    return SG_OK;
-}
-
-SGenum SG_CALL sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
-{
-    *ok = SG_TRUE; // we're independent of other modules
     return SG_OK;
 }

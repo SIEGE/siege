@@ -216,9 +216,6 @@ int main(void)
     size_t i, j;
     float x;
 
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("Chipmunk");
     sgInit(0);
     sgWindowOpen(WIDTH, HEIGHT, 32, 0);
     sgWindowSetTitle("SIEGE Pyramid Demo - Press F1 for debug overlay");

@@ -24,6 +24,12 @@
 void SG_CALL _sgModuleLoadGraphics(SGLibrary* lib)
 {
     void* fptr;
+
+    _SG_BIND(sgmGraphicsInit);
+    _SG_BIND(sgmGraphicsDeinit);
+    _SG_BIND(sgmGLoadInit);
+    _SG_BIND(sgmGLoadDeinit);
+
     /// Graphics
     _SG_BIND(sgmGraphicsContextCreate);
     _SG_BIND(sgmGraphicsContextDestroy);

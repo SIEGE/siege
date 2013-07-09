@@ -6,9 +6,6 @@
 SGFont* font;
 int main(void)
 {
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("STB-Image");
     sgInit(0);
     sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Collision Detection Example");

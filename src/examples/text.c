@@ -11,9 +11,6 @@ const char* text = "A Quick Brown Fox Jumps Over The Lazy Dog 0123456789";
 SGFont* font;
 int main(void)
 {
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("STB-TrueType");
     sgInit(0);
     sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Text Demo");

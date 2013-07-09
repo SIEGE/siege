@@ -67,9 +67,9 @@ char* SG_CALL sgGetCompileTime(void);
  * Returns:
  *     The number of successfully loaded modules.
  */
-SGuint SG_CALL sgLoadModulesv(size_t n, va_list args);
-SGuint SG_CALL sgLoadModules(size_t n, ...);
-SGbool SG_CALL sgLoadModule(const char* name);
+SGuint SG_CALL SG_HINT_DEPRECATED sgLoadModulesv(size_t n, va_list args);
+SGuint SG_CALL SG_HINT_DEPRECATED sgLoadModules(size_t n, ...);
+SGbool SG_CALL SG_HINT_DEPRECATED sgLoadModule(const char* name);
 /**
  * Function: sgInit
  *

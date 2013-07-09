@@ -39,10 +39,6 @@ void fillArea(SGAtlas* atlas, SGAtlasArea* area)
 
 int main(void)
 {
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("STB-Image");
-
     sgInit(0);
 
     sgWindowOpen(WIDTH, HEIGHT, 32, 0);

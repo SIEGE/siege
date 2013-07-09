@@ -28,7 +28,14 @@
 #include <siege/input/keyboard.h>
 #include <siege/input/mouse.h>
 #include <siege/input/joystick.h>
+
 #include <siege/modules/modules.h>
+#include <siege/modules/window.h>
+#include <siege/modules/graphics.h>
+#include <siege/modules/audio.h>
+#include <siege/modules/fonts.h>
+#include <siege/modules/physics.h>
+
 #include <siege/physics/space.h>
 #include <siege/physics/collision.h>
 #include <siege/util/timer.h>
@@ -78,27 +85,19 @@ char* SG_CALL sgGetCompileTime(void)
     return __TIME__;
 }
 
-SGuint SG_CALL sgLoadModulesv(size_t n, va_list args)
+SGuint SG_CALL SG_HINT_DEPRECATED sgLoadModulesv(size_t n, va_list args)
 {
-    SGuint loaded = 0;
-    size_t i;
-    for(i = 0; i < n; i++)
-        loaded += sgLoadModule(va_arg(args, char*));
-    return loaded;
+    SG_ERRSTUB();
+    return n;
 }
-SGuint SG_CALL sgLoadModules(size_t n, ...)
+SGuint SG_CALL SG_HINT_DEPRECATED sgLoadModules(size_t n, ...)
 {
-    va_list args;
-    va_start(args, n);
-    SGuint ret = sgLoadModulesv(n, args);
-    va_end(args);
-    return ret;
+    SG_ERRSTUB();
+    return n;
 }
-SGbool SG_CALL sgLoadModule(const char* name)
+SGbool SG_CALL SG_HINT_DEPRECATED sgLoadModule(const char* name)
 {
-    SGModule* module = sgModuleLoad(name);
-    if(module == NULL)
-        return SG_FALSE;
+    SG_ERRSTUB();
     return SG_TRUE;
 }
 
@@ -106,6 +105,22 @@ SGbool SG_CALL sgInit(SGenum flags)
 {
     if(_sg_hasInited)
         return SG_TRUE;
+
+    sgModuleLoad("SDL");
+    sgModuleLoad("OpenGL");
+    sgModuleLoad("OpenAL");
+    sgModuleLoad("STB-TrueType");
+    sgModuleLoad("Chipmunk");
+    sgModuleLoad("STB-Image");
+    sgModuleLoad("STB-Vorbis");
+
+    psgmCoreInit();
+    psgmGraphicsInit();
+    if(psgmAudioInit) psgmAudioInit();
+    if(psgmFontsInit) psgmFontsInit();
+    if(psgmPhysicsInit) psgmPhysicsInit();
+    if(psgmGLoadInit) psgmGLoadInit();
+    if(psgmALoadInit) psgmALoadInit();
 
     _sg_firstLoop = SG_TRUE;
     _sg_exitNow = SG_FALSE;
@@ -115,36 +130,6 @@ SGbool SG_CALL sgInit(SGenum flags)
         _sg_renderThread = sgThreadCreate(0, _sgRenderThread, NULL);
     else
         _sg_renderThread = NULL;
-
-    SGList* modList = sgModuleGetList();
-
-    size_t i;
-    size_t nmodules = modList ? sgListLength(modList) : 0;
-    SGListNode* node;
-    SGModuleInfo** infos = malloc(nmodules * sizeof(SGModuleInfo*));
-    SGModule* module;
-    for(i = 0, node = modList ? modList->head : NULL; node != NULL; node = node->next, i++)
-    {
-        module = node->item;
-        infos[i] = module->minfo;
-    }
-    SGbool ok = SG_TRUE;
-    SGbool mok;
-    for(node = modList ? modList->head : NULL; node != NULL; node = node->next)
-    {
-        module = node->item;
-        mok = SG_TRUE;
-        if(module->sgmModuleMatch != NULL)
-            module->sgmModuleMatch(infos, nmodules, &mok);
-        if(!mok)
-        {
-            fprintf(stderr, "Could not load module %s: Incompatible with other modules\n", module->minfo->name);
-            ok = SG_FALSE;
-        }
-    }
-    free(infos);
-    if(!ok)
-        return SG_FALSE;
 
     _sgEntityInit();
 
@@ -209,6 +194,14 @@ SGbool SG_CALL sgDeinit(void)
 
     _sgEntityDeinit();
 
+    if(psgmALoadDeinit) psgmALoadDeinit();
+    if(psgmGLoadDeinit) psgmGLoadDeinit();
+    if(psgmPhysicsDeinit) psgmPhysicsDeinit();
+    if(psgmFontsDeinit) psgmFontsDeinit();
+    if(psgmAudioDeinit) psgmAudioDeinit();
+    psgmGraphicsDeinit();
+    psgmCoreDeinit();
+
     SGList* modList;
     while((modList = sgModuleGetList()))
         sgModuleUnload(modList->head->item);
@@ -249,16 +242,6 @@ SGbool SG_CALL sgLoop(SGint* code)
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICKB);
 
     sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
-
-    SGList* modList = sgModuleGetList();
-    SGListNode* node;
-    SGModule* module;
-    for(node = modList ? modList->head : NULL; node != NULL; node = node->next)
-    {
-        module = node->item;
-        if(module->sgmModuleTick)
-            module->sgmModuleTick(_sg_curTick);
-    }
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICK);
 

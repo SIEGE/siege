@@ -17,10 +17,6 @@ void SG_CALL evMouseButtonLeftPress(SGEntity* entity)
 
 int main(void)
 {
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("OpenAL");
-    sgLoadModule("STB-Vorbis");
     sgInit(0);
     sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Audio Demo");

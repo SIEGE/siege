@@ -6,12 +6,15 @@ INCLUDE_DIRECTORIES("${CMAKE_SOURCE_DIR}/include")
 SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 SET(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 
-FIND_PACKAGE(Threads REQUIRED)
-FIND_PACKAGE(DL)
+find_package(SDL REQUIRED)
+find_package(Threads REQUIRED)
+find_package(DL)
+
+INCLUDE_DIRECTORIES("${SDL_INCLUDE_DIR}")
 
 IF(UNIX)
     SET(AUX_INCLUDES "")
-    SET(AUX_LIBRARIES "${DL_LIBRARY}" "m" "rt" ${CMAKE_THREAD_LIBS_INIT})
+    SET(AUX_LIBRARIES "${DL_LIBRARY}" "m" "rt" "${SDL_LIBRARY}" ${CMAKE_THREAD_LIBS_INIT})
 ELSE(UNIX)
     SET(AUX_INCLUDES "")
     SET(AUX_LIBRARIES "")
@@ -24,8 +27,8 @@ MACRO(SHARED_STATIC name dir ext)
     ADD_LIBRARY(${name} SHARED ${${name}_SOURCES})
     ADD_LIBRARY(${name}.static STATIC ${${name}_SOURCES})
 
-    TARGET_LINK_LIBRARIES(${name} ${ARGN})
-    TARGET_LINK_LIBRARIES(${name}.static ${ARGN})
+    TARGET_LINK_LIBRARIES(${name}        ${AUX_LIBRARIES} ${ARGN})
+    TARGET_LINK_LIBRARIES(${name}.static ${AUX_LIBRARIES} ${ARGN})
 
     SET_TARGET_PROPERTIES(${name} ${name}.static PROPERTIES OUTPUT_NAME ${name}
                                                             ENABLE_EXPORTS ON

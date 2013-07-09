@@ -14,11 +14,6 @@
 
 #include "common.h"
 
-#include <stdio.h>
-
-#include <stdlib.h>
-#include <string.h>
-
 static int f_read(void* data, char* ptr, int size)
 {
     SGStream* stream = data;
@@ -35,30 +30,15 @@ static int f_eof(void* data)
     return stream->eof(stream->data);
 }
 
-SGenum SG_CALL sgmModuleInit(SGModuleInfo** minfo)
+SGenum SG_CALL sgmGLoadInit(void)
 {
-    *minfo = (SGModuleInfo*) calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->vmajor = SG_VERSION_MAJOR;
-    (*minfo)->vminor = SG_VERSION_MINOR;
-    (*minfo)->vpatch = SG_VERSION_PATCH;
-
-    (*minfo)->name = "STB-Image";
-
     callbacks.read = f_read;
     callbacks.skip = f_skip;
     callbacks.eof = f_eof;
-
     return SG_OK;
 }
-
-SGenum SG_CALL sgmModuleExit(SGModuleInfo* minfo)
+SGenum SG_CALL sgmGLoadDeinit(void)
 {
-    free(minfo);
     return SG_OK;
 }
 
-SGenum SG_CALL sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
-{
-    *ok = SG_TRUE; // we're independent of other modules...
-    return SG_OK;
-}

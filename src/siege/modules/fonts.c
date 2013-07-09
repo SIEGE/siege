@@ -21,6 +21,9 @@ void SG_CALL _sgModuleLoadFonts(SGLibrary* lib)
 {
     void* fptr;
 
+    _SG_BIND(sgmFontsInit);
+    _SG_BIND(sgmFontsDeinit);
+
     /// Fonts
     _SG_BIND(sgmFontsFaceCreate);
     _SG_BIND(sgmFontsFaceDestroy);

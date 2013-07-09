@@ -240,10 +240,6 @@ void drawInstructions(SGFont* headf, SGFont* textf, SGColor fill, SGColor line, 
 
 int main(void)
 {
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("STB-TrueType");
-    //sgLoadModule("STB-Image");
     sgInit(0);
     sgWindowOpen(WIDTH, HEIGHT, 32, 0);
     sgWindowSetTitle("SIEGE A-Star Demo - Hit 'F1' for instructions");

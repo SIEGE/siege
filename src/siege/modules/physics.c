@@ -21,6 +21,9 @@ void SG_CALL _sgModuleLoadPhysics(SGLibrary* lib)
 {
     void* fptr;
 
+    _SG_BIND(sgmPhysicsInit);
+    _SG_BIND(sgmPhysicsDeinit);
+
     /// Physics
     _SG_BIND(sgmPhysicsBodyCreate);
     _SG_BIND(sgmPhysicsBodyDestroy);

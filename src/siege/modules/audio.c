@@ -20,6 +20,12 @@
 void SG_CALL _sgModuleLoadAudio(SGLibrary* lib)
 {
     void* fptr;
+
+    _SG_BIND(sgmAudioInit);
+    _SG_BIND(sgmAudioDeinit);
+    _SG_BIND(sgmALoadInit);
+    _SG_BIND(sgmALoadDeinit);
+
     /// Audio
     _SG_BIND(sgmAudioBufferCreate);
     //_SG_BIND(sgmAudioBufferCreateData);

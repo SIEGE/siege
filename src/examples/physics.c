@@ -194,11 +194,6 @@ void evMouseButtonRightPress(SGEntity* entity)
 
 int main(void)
 {
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("STB-Image");
-    sgLoadModule("Chipmunk");
-    sgLoadModule("STB-TrueType");
     sgInit(0);
     sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Physics Demo - Press F1 for debug overlay");

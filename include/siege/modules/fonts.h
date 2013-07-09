@@ -25,6 +25,7 @@ extern "C"
 #ifdef SG_BUILD_LIBRARY
 
 #define SG_FPTR(name) (*p##name)
+#include "../backend/fonts/init.h"
 #include "../backend/fonts/chars.h"
 #include "../backend/fonts/face.h"
 #undef SG_FPTR

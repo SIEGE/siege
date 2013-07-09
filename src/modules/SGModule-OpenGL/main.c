@@ -24,13 +24,13 @@
 
 PROC_HANDLE;
 
-void checkFBO(FBOFunctions* fbo)
-{
 #define CHECK(FBO, NAME)                    \
     FBO->NAME = GET_PROC_ADDRESS(#NAME);    \
     if(FBO->NAME == NULL)                   \
         FBO->hasFBO = 0;
 
+void checkFBO(FBOFunctions* fbo)
+{
     //GLboolean (*glIsRenderbufferEXT) (GLuint);
     CHECK(fbo, glBindRenderbufferEXT);
     CHECK(fbo, glDeleteRenderbuffersEXT);
@@ -49,7 +49,6 @@ void checkFBO(FBOFunctions* fbo)
     CHECK(fbo, glFramebufferRenderbufferEXT);
     //void (*glGetFramebufferAttachmentParameterivEXT) (GLenum, GLenum, GLenum, GLint *);
     //void (*glGenerateMipmapEXT) (GLenum);
-#undef CHECK
 }
 
 SGuint higherPower(SGuint num)
@@ -60,39 +59,13 @@ SGuint higherPower(SGuint num)
     return ret;
 }
 
-SGenum SG_CALL sgmModuleInit(SGModuleInfo** minfo)
+SGenum SG_CALL sgmGraphicsInit(void)
 {
-    *minfo = (SGModuleInfo*)calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->vmajor = SG_VERSION_MAJOR;
-    (*minfo)->vminor = SG_VERSION_MINOR;
-    (*minfo)->vpatch = SG_VERSION_PATCH;
-
-    // unknown version
-    (*minfo)->mmajor = 0;
-    (*minfo)->mminor = 0;
-    (*minfo)->mpatch = 0;
-    (*minfo)->type = SG_MODULE_GRAPHICS;
-    (*minfo)->name = "OpenGL";
-
     INIT_HANDLE();
-
     return SG_OK;
 }
-
-SGenum SG_CALL sgmModuleExit(SGModuleInfo* minfo)
+SGenum SG_CALL sgmGraphicsDeinit(void)
 {
-    if(minfo == NULL)
-        return SG_OK; // SG_INVALID_VALUE
-
     DEINIT_HANDLE();
-
-    free(minfo);
     return SG_OK;
 }
-
-SGenum SG_CALL sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
-{
-    *ok = SG_TRUE; // we'll let the core module decide for us...
-    return SG_OK;
-}
-

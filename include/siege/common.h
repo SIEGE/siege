@@ -612,6 +612,11 @@ typedef struct SGModuleInfo
     void* data;
 } SGModuleInfo;
 
+/* NOTE: TEMPORARY */
+#include <stdio.h>
+#define SG_ERRSTUB() fprintf(stderr, "Warning: Function `%s` has been removed; compatibility stub called.\n", __func__)
+/* END TEMPORARY */
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

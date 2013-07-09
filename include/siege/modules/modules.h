@@ -30,22 +30,11 @@ extern "C"
     if(fptr != NULL)    \
         (p##name) = fptr; // not completely valid C99, but blame POSIX for that
 
-typedef SGuint SG_CALL SGMModuleInitFunction(SGModuleInfo** minfo);
-typedef SGuint SG_CALL SGMModuleExitFunction(SGModuleInfo* minfo);
-typedef SGuint SG_CALL SGMModuleTickFunction(SGulong tick);
-typedef SGuint SG_CALL SGMModuleMatchFunction(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok);
-
 typedef struct SGModule
 {
     char* name;
     SGLibrary* lib;
-    SGModuleInfo* minfo;
     SGListNode* node;
-
-    SGMModuleInitFunction* sgmModuleInit;
-    SGMModuleExitFunction* sgmModuleExit;
-    SGMModuleTickFunction* sgmModuleTick;
-    SGMModuleMatchFunction* sgmModuleMatch;
 } SGModule;
 
 char* SG_CALL _sgModuleGetFile(const char* module);

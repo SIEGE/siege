@@ -94,20 +94,12 @@ SGModule* SG_CALL sgModuleLoad(const char* name)
         fprintf(stderr, "Warning: Unable to load module %s: Unknown error\n", name);
     free(fname);
 
-    module->sgmModuleInit = (SGMModuleInitFunction*)sgGetProcAddress(module->lib, "sgmModuleInit");
-    module->sgmModuleExit = (SGMModuleExitFunction*)sgGetProcAddress(module->lib, "sgmModuleExit");
-    module->sgmModuleTick = (SGMModuleTickFunction*)sgGetProcAddress(module->lib, "sgmModuleTick");
-    module->sgmModuleMatch = (SGMModuleMatchFunction*)sgGetProcAddress(module->lib, "sgmModuleMatch");
-
     _sgModuleLoadAudio(module->lib);
     _sgModuleLoadWindow(module->lib);
     _sgModuleLoadGraphics(module->lib);
     _sgModuleLoadInput(module->lib);
     _sgModuleLoadPhysics(module->lib);
     _sgModuleLoadFonts(module->lib);
-
-    if(module->sgmModuleInit != NULL)
-        module->sgmModuleInit(&module->minfo);
 
     if(!_sg_modList)
         _sg_modList = sgListCreate();
@@ -119,9 +111,6 @@ void SG_CALL sgModuleUnload(SGModule* module)
 {
     if(module == NULL)
         return;
-
-    if(module->sgmModuleExit != NULL)
-        module->sgmModuleExit(module->minfo);
 
     sgLibraryUnload(module->lib);
 

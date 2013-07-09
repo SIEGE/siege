@@ -25,6 +25,7 @@ extern "C"
 #ifdef SG_BUILD_LIBRARY
 
 #define SG_FPTR(name) (*p##name)
+#include "../backend/physics/init.h"
 #include "../backend/physics/body.h"
 #include "../backend/physics/collision.h"
 #include "../backend/physics/constraint.h"

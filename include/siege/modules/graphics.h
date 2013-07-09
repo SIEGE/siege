@@ -25,6 +25,7 @@ extern "C"
 #ifdef SG_BUILD_LIBRARY
 
 #define SG_FPTR(name) (*p##name)
+#include "../backend/graphics/init.h"
 #include "../backend/graphics/context.h"
 #include "../backend/graphics/draw.h"
 #include "../backend/graphics/surface.h"

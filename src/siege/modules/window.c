@@ -21,6 +21,9 @@ void SG_CALL _sgModuleLoadWindow(SGLibrary* lib)
 {
     void* fptr;
 
+    _SG_BIND(sgmCoreInit);
+    _SG_BIND(sgmCoreDeinit);
+
     /// Windowing
     _SG_BIND(sgmCoreWindowCreate);
     _SG_BIND(sgmCoreWindowDestroy);

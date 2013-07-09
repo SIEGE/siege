@@ -25,6 +25,7 @@ extern "C"
 #ifdef SG_BUILD_LIBRARY
 
 #define SG_FPTR(name) (*p##name)
+#include "../backend/core/init.h"
 #include "../backend/core/window.h"
 #undef SG_FPTR
 

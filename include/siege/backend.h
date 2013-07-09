@@ -17,7 +17,11 @@
 
 #define SG_BUILD_BACKEND
 
-#include "backend/module.h"
+#include "backend/core/init.h"
+#include "backend/graphics/init.h"
+#include "backend/audio/init.h"
+#include "backend/fonts/init.h"
+#include "backend/physics/init.h"
 // Graphics
 #include "backend/graphics/context.h"
 #include "backend/graphics/draw.h"

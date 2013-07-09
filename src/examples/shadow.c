@@ -78,9 +78,6 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
 
 int main(void)
 {
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("STB-Image");
     sgInit(/*SG_INIT_RENDERTHREAD*/0);
     sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitlef("SIEGE Shadows Demo - Press F1 for debug overlay, 1-%u to toggle lights", NLIGHTS);

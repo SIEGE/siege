@@ -14,29 +14,11 @@
 
 #include "common.h"
 
-#include <stdlib.h>
-
-SGenum SG_CALL sgmModuleInit(SGModuleInfo** minfo)
+SGenum SG_CALL sgmFontsInit(void)
 {
-    *minfo = (SGModuleInfo*) calloc(1, sizeof(SGModuleInfo));
-    (*minfo)->vmajor = SG_VERSION_MAJOR;
-    (*minfo)->vminor = SG_VERSION_MINOR;
-    (*minfo)->vpatch = SG_VERSION_PATCH;
-
-    (*minfo)->type = SG_MODULE_FONTLOAD;
-    (*minfo)->name = "STB-TrueType";
-
     return SG_OK;
 }
-
-SGenum SG_CALL sgmModuleExit(SGModuleInfo* minfo)
+SGenum SG_CALL sgmFontsDeinit(void)
 {
-    free(minfo);
-    return SG_OK;
-}
-
-SGenum SG_CALL sgmModuleMatch(SGModuleInfo** minfos, SGuint numinfos, SGbool* ok)
-{
-    *ok = SG_TRUE; // we're independent of other modules...
     return SG_OK;
 }

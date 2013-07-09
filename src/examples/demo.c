@@ -439,12 +439,6 @@ void drawLightDBG(Light* light)
 
 int main(void)
 {
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("STB-Image");
-    sgLoadModule("OpenAL");
-    sgLoadModule("SndFile");
-    sgLoadModule("Chipmunk");
     sgInit(0);
     sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitlef("SIEGE Demo - Press F1 for debug overlay, 1-%d to toggle lights", NLIGHTS);

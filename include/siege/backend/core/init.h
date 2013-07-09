@@ -11,10 +11,24 @@
  * If you did not recieve the file with this program, please email
  * Tim Chas <darkuranium@gmail.com>.
  */
-#ifndef __COMMON_H__
-#define __COMMON_H__
 
-#include <siege/backend.h>
-#include <IL/il.h>
+#ifndef __SIEGE_BACKEND_CORE_INIT_H__
+#define __SIEGE_BACKEND_CORE_INIT_H__
 
-#endif // __COMMON_H__
+#include "../../common.h"
+
+#ifndef SG_FPTR
+#define SG_FPTR(name)    name
+#endif // SG_FPTR
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    SGenum SG_CALL SG_FPTR(sgmCoreInit)(void);
+    SGenum SG_CALL SG_FPTR(sgmCoreDeinit)(void);
+#ifdef __cplusplus
+}
+#endif
+
+#endif // __SIEGE_BACKEND_CORE_INIT_H__

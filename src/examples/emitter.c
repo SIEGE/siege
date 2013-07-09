@@ -53,9 +53,6 @@ int main(void)
     int state = 0;
     float time = 0;
     /* necessary initialisations of siege */
-    sgLoadModule("SDL");
-    sgLoadModule("OpenGL");
-    sgLoadModule("STB-Image");
     sgInit(0);
     sgWindowOpen(640, 480, 32, 0);
     sgWindowSetTitle("SIEGE Emitter Demo");
