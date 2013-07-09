@@ -20,15 +20,6 @@
 #include <string.h>
 #include <math.h>
 
-SGbool SG_CALL _sgTurtleInit(void)
-{
-    return SG_TRUE;
-}
-SGbool SG_CALL _sgTurtleDeinit(void)
-{
-    return SG_TRUE;
-}
-
 SGTurtle* SG_CALL sgTurtleCreateRads(float x, float y, float rads, SGbool draw)
 {
     SGTurtle* turtle = malloc(sizeof(SGTurtle));

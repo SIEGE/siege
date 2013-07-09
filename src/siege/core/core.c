@@ -23,7 +23,6 @@
 #include <siege/graphics/light.h>
 #include <siege/graphics/surface.h>
 #include <siege/graphics/draw.h>
-#include <siege/graphics/turtle.h>
 #include <siege/graphics/viewport.h>
 #include <siege/input/keyboard.h>
 #include <siege/input/mouse.h>
@@ -138,7 +137,6 @@ SGbool SG_CALL sgInit(SGenum flags)
 
     _sgWindowInit();
     _sgViewportInit();
-    _sgTurtleInit();
     _sgSurfaceInit();
 
     _sgAudioSourceInit();
@@ -188,7 +186,6 @@ SGbool SG_CALL sgDeinit(void)
     _sgAudioSourceDeinit();
 
     _sgSurfaceDeinit();
-    _sgTurtleDeinit();
     _sgViewportDeinit();
     _sgWindowDeinit();
 

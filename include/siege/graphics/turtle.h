@@ -71,9 +71,6 @@ typedef struct SGTurtle
     /// @}
 } SGTurtle;
 
-SGbool SG_CALL _sgTurtleInit(void);
-SGbool SG_CALL _sgTurtleDeinit(void);
-
 /// @{
 /**
  * \brief Create a turtle with angle in radians
