@@ -14,8 +14,7 @@
 
 #ifndef __SIEGE_INPUT_MOUSE_H__
 #define __SIEGE_INPUT_MOUSE_H__
-
-#include "../modules/input.h"
+#include "../common.h"
 
 #ifdef __cplusplus
 extern "C"

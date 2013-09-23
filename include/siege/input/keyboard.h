@@ -15,7 +15,6 @@
 #ifndef __SIEGE_INPUT_KEYBOARD_H__
 #define __SIEGE_INPUT_KEYBOARD_H__
 #include "../common.h"
-#include "../modules/input.h"
 
 #ifdef __cplusplus
 extern "C"

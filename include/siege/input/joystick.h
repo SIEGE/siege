@@ -16,7 +16,6 @@
 #define __SIEGE_INPUT_JOYSTICK_H__
 
 #include "../common.h"
-#include "../modules/input.h"
 
 #ifdef __cplusplus
 extern "C"

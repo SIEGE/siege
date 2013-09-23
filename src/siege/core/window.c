@@ -21,7 +21,6 @@
 #include <siege/input/keyboard.h>
 #include <siege/input/mouse.h>
 #include <siege/modules/graphics.h>
-#include <siege/modules/window.h>
 #include <siege/util/string.h>
 #include <siege/util/time.h>
 

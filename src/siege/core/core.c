@@ -29,7 +29,6 @@
 #include <siege/input/joystick.h>
 
 #include <siege/modules/modules.h>
-#include <siege/modules/window.h>
 #include <siege/modules/graphics.h>
 #include <siege/modules/audio.h>
 #include <siege/modules/fonts.h>

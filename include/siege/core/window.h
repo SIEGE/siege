@@ -20,7 +20,6 @@
 #define __SIEGE_CORE_WINDOW_H__
 
 #include "../graphics/image.h"
-#include "../modules/window.h"
 
 #include <stdarg.h>
 

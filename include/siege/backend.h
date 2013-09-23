@@ -17,7 +17,6 @@
 
 #define SG_BUILD_BACKEND
 
-#include "backend/core/init.h"
 #include "backend/graphics/init.h"
 #include "backend/audio/init.h"
 #include "backend/fonts/init.h"
@@ -35,12 +34,6 @@
 #include "backend/audio/source.h"
 // Audio Load
 #include "backend/audio/load.h"
-// Input
-#include "backend/core/joystick.h"
-#include "backend/core/keyboard.h"
-#include "backend/core/mouse.h"
-// Windowing
-#include "backend/core/window.h"
 // Fonts
 #include "backend/fonts/face.h"
 #include "backend/fonts/chars.h"
