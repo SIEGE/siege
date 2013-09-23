@@ -30,15 +30,12 @@ extern "C"
 #endif // __cplusplus
 
 #ifdef SG_BUILD_LIBRARY
-char* _sg_winTitle;
-void* _sg_winHandle;
 void* _sg_gfxHandle;
-SGCoreWindowCallbacks _sg_winCallbacks;
 #endif // SG_BUILD_LIBRARY
 
-void SG_CALL _sg_cbWindowOpen(void* window);
-void SG_CALL _sg_cbWindowClose(void* window);
-void SG_CALL _sg_cbWindowResize(void* window, SGuint width, SGuint height);
+void SG_CALL _sg_cbWindowOpen(void);
+void SG_CALL _sg_cbWindowClose(void);
+void SG_CALL _sg_cbWindowResize(SGuint width, SGuint height);
 
 SGbool SG_CALL _sgWindowInit(void);
 SGbool SG_CALL _sgWindowDeinit(void);
@@ -206,6 +203,7 @@ SGfloat SG_CALL sgWindowGetFPS(void);
  * \ingroup Window
  * \brief Swap the window front and back buffers
  */
+void SG_CALL sgWindowHandleEvents(void);
 void SG_CALL sgWindowSwapBuffers(void);
 /// @}
 #ifdef __cplusplus

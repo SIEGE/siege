@@ -33,19 +33,22 @@ SGint _sg_mouseX;
 SGint _sg_mouseY;
 SGint _sg_mouseWheelPrev;
 SGint _sg_mouseWheel;
-
-void* _sg_mouseHandle;
-SGCoreMouseCallbacks _sg_mouseCallbacks;
 #endif // SG_BUILD_LIBRARY
 
-void SG_CALL _sg_cbMouseButton(void* mouse, SGuint button, SGbool action);
-void SG_CALL _sg_cbMouseMove(void* mouse, SGint x, SGint y);
-void SG_CALL _sg_cbMouseWheel(void* mouse, SGint w);
+void SG_CALL _sg_cbMouseButton(SGuint button, SGbool action);
+void SG_CALL _sg_cbMouseMove(SGint x, SGint y);
+void SG_CALL _sg_cbMouseWheel(SGint w);
 
 void SG_CALL _sgMouseUpdate(void);
 
 SGbool SG_CALL _sgMouseInit(void);
 SGbool SG_CALL _sgMouseDeinit(void);
+
+void SG_CALL sgMouseMove(SGint x, SGint y);
+
+void SG_CALL sgMouseSetVisible(SGbool vis);
+void SG_CALL sgMouseShow(void);
+void SG_CALL sgMouseHide(void);
 
 void SG_CALL sgMouseGetPosPrev(SGint* x, SGint* y);
 SGint SG_CALL sgMouseGetPosPrevX(void);

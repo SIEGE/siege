@@ -20,7 +20,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void SG_CALL _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
+#include <SDL/SDL.h>
+
+void SG_CALL _sg_cbMouseButton(SGuint button, SGbool down)
 {
     if(button - 1 >= _sg_mouseButtonNum)
         return;
@@ -68,7 +70,7 @@ void SG_CALL _sg_cbMouseButton(void* mouse, SGuint button, SGbool down)
 
     sgEntityEventSignal(numevents, events[0], button, events[1]);
 }
-void SG_CALL _sg_cbMouseMove(void* mouse, SGint x, SGint y)
+void SG_CALL _sg_cbMouseMove(SGint x, SGint y)
 {
     _sg_mouseXPrev = _sg_mouseX;
     _sg_mouseYPrev = _sg_mouseY;
@@ -77,7 +79,7 @@ void SG_CALL _sg_cbMouseMove(void* mouse, SGint x, SGint y)
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEMOVE, x, y);
 }
-void SG_CALL _sg_cbMouseWheel(void* mouse, SGint w)
+void SG_CALL _sg_cbMouseWheel(SGint w)
 {
     _sg_mouseWheelPrev = _sg_mouseWheel;
     _sg_mouseWheel = w;
@@ -121,19 +123,7 @@ void SG_CALL _sgMouseUpdate(void)
 
 SGbool SG_CALL _sgMouseInit(void)
 {
-    _sg_mouseCallbacks.button = _sg_cbMouseButton;
-    _sg_mouseCallbacks.move = _sg_cbMouseMove;
-    _sg_mouseCallbacks.wheel = _sg_cbMouseWheel;
-
-    if(psgmCoreMouseCreate != NULL)
-        psgmCoreMouseCreate(&_sg_mouseHandle, _sg_winHandle);
-
-    if(psgmCoreMouseSetCallbacks != NULL)
-        psgmCoreMouseSetCallbacks(_sg_mouseHandle, &_sg_mouseCallbacks);
-
-    _sg_mouseButtonNum = 3;
-    if(psgmCoreMouseGetNumButtons != NULL)
-        psgmCoreMouseGetNumButtons(_sg_mouseHandle, &_sg_mouseButtonNum);
+    _sg_mouseButtonNum = 7;
     _sg_mouseButtonPrev = malloc(_sg_mouseButtonNum * sizeof(SGbool));
     memset(_sg_mouseButtonPrev, 0, _sg_mouseButtonNum * sizeof(SGbool));
     _sg_mouseButtonBuff = malloc(_sg_mouseButtonNum * sizeof(SGbool));
@@ -157,10 +147,29 @@ SGbool SG_CALL _sgMouseDeinit(void)
     free(_sg_mouseButtonCurr);
     _sg_mouseButtonNum = 0;
 
-    if(psgmCoreMouseDestroy != NULL)
-        psgmCoreMouseDestroy(_sg_mouseHandle);
-
     return SG_TRUE;
+}
+
+void SG_CALL sgMouseMove(SGint x, SGint y)
+{
+    SDL_WarpMouse(x, y);
+    _sg_mouseXPrev = _sg_mouseX;
+    _sg_mouseYPrev = _sg_mouseY;
+    _sg_mouseX = x;
+    _sg_mouseY = y;
+}
+
+void SG_CALL sgMouseSetVisible(SGbool vis)
+{
+    SDL_ShowCursor(vis);
+}
+void SG_CALL sgMouseShow(void)
+{
+    sgMouseSetVisible(SG_TRUE);
+}
+void SG_CALL sgMouseHide(void)
+{
+    sgMouseSetVisible(SG_FALSE);
 }
 
 void SG_CALL sgMouseGetPosPrev(SGint* x, SGint* y)

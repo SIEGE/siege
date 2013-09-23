@@ -42,6 +42,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <SDL/SDL.h>
+
 static SGbool _sg_firstLoop;
 static SGbool _sg_exitNow;
 static SGint _sg_exitVal;
@@ -113,7 +115,15 @@ SGbool SG_CALL sgInit(SGenum flags)
     sgModuleLoad("STB-Image");
     sgModuleLoad("STB-Vorbis");
 
-    psgmCoreInit();
+    // CORE: SDL
+    // TODO: change SDL_INIT_EVERYTHING to appropriate values
+    if(SDL_Init(SDL_INIT_EVERYTHING))
+        return SG_FALSE;
+    SDL_JoystickEventState(SDL_ENABLE);
+    SDL_EnableUNICODE(1);
+    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
     psgmGraphicsInit();
     if(psgmAudioInit) psgmAudioInit();
     if(psgmFontsInit) psgmFontsInit();
@@ -197,7 +207,9 @@ SGbool SG_CALL sgDeinit(void)
     if(psgmFontsDeinit) psgmFontsDeinit();
     if(psgmAudioDeinit) psgmAudioDeinit();
     psgmGraphicsDeinit();
-    psgmCoreDeinit();
+
+    // CORE: SDL
+    SDL_Quit();
 
     SGList* modList;
     while((modList = sgModuleGetList()))

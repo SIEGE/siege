@@ -9,6 +9,10 @@ SET(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 find_package(Threads REQUIRED)
 find_package(DL)
 
+find_package(SDL REQUIRED)
+
+include_directories("${SDL_INCLUDE_DIR}")
+
 IF(UNIX)
     SET(AUX_INCLUDES "")
     SET(AUX_LIBRARIES "${DL_LIBRARY}" "m" "rt" ${CMAKE_THREAD_LIBS_INIT})
@@ -16,6 +20,8 @@ ELSE(UNIX)
     SET(AUX_INCLUDES "")
     SET(AUX_LIBRARIES "")
 ENDIF(UNIX)
+
+SET(AUX_LIBRARIES ${AUX_LIBRARIES} "${SDL_LIBRARY}")
 
 MACRO(SHARED_STATIC name dir ext)
     PROJECT(${name})

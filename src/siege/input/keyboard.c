@@ -20,7 +20,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void SG_CALL _sg_cbKeyboardKey(void* keyboard, SGenum key, SGbool down)
+#include <SDL/SDL.h>
+
+void SG_CALL _sg_cbKeyboardKey(SGenum key, SGbool down)
 {
     _sgKeyboardKeyUpdate(key, down);
     SGbool pressed = sgKeyboardKeyPress(key);
@@ -35,7 +37,7 @@ void SG_CALL _sg_cbKeyboardKey(void* keyboard, SGenum key, SGbool down)
 
     sgEntityEventSignal(1, evt, key);
 }
-void SG_CALL _sg_cbKeyboardChar(void* keyboard, SGdchar chr)
+void SG_CALL _sg_cbKeyboardChar(SGdchar chr)
 {
     sgEntityEventSignal(1, (SGenum)SG_EVF_KEYCHARP, chr);
 }
@@ -52,20 +54,10 @@ SGbool SG_CALL _sgKeyboardInit(void)
 {
     memset(_sg_keyPrev, 0, SG_KEY_NUM * sizeof(SGbool));
     memset(_sg_keyCurr, 0, SG_KEY_NUM * sizeof(SGbool));
-
-    _sg_keyCallbacks.key = _sg_cbKeyboardKey;
-    _sg_keyCallbacks.chr = _sg_cbKeyboardChar;
-
-    if(psgmCoreKeyboardCreate != NULL)
-        psgmCoreKeyboardCreate(&_sg_keyHandle, _sg_winHandle);
-    if(psgmCoreKeyboardSetCallbacks != NULL)
-        psgmCoreKeyboardSetCallbacks(_sg_keyHandle, &_sg_keyCallbacks);
     return SG_TRUE;
 }
 SGbool SG_CALL _sgKeyboardDeinit(void)
 {
-    if(psgmCoreKeyboardDestroy != NULL)
-        psgmCoreKeyboardDestroy(_sg_keyHandle);
     return SG_TRUE;
 }
 

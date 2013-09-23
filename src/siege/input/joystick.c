@@ -20,12 +20,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-void SG_CALL _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
-{
-    SGuint joy = 0;
-    if(psgmCoreJoystickGetID != NULL)
-        psgmCoreJoystickGetID(joystick, &joy);
+#include <SDL/SDL.h>
 
+void SG_CALL _sg_cbJoystickButton(SGuint joy, SGuint button, SGbool down)
+{
     _sg_joyJoys[joy]->bprev[button] = _sg_joyJoys[joy]->bcurr[button];
     _sg_joyJoys[joy]->bcurr[button] = down;
 
@@ -41,19 +39,15 @@ void SG_CALL _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down)
 
     sgEntityEventSignal(1, evt, joy, button);
 }
-void SG_CALL _sg_cbJoystickMove(void* joystick, float* axis)
+void SG_CALL _sg_cbJoystickMove(SGuint joy, SGuint axis, float pos)
 {
-    SGuint joy = 0;
-    if(psgmCoreJoystickGetID != NULL)
-        psgmCoreJoystickGetID(joystick, &joy);
-
     memcpy(_sg_joyJoys[joy]->aprev, _sg_joyJoys[joy]->acurr, _sg_joyJoys[joy]->numaxis * sizeof(float));
-    memcpy(_sg_joyJoys[joy]->acurr, axis, _sg_joyJoys[joy]->numaxis * sizeof(float));
+    _sg_joyJoys[joy]->acurr[axis] = pos;
     size_t i;
     for(i = 0; i < _sg_joyJoys[joy]->numaxis; i++)
         _sg_joyJoys[joy]->adelt[i] = _sg_joyJoys[joy]->acurr[i] - _sg_joyJoys[joy]->aprev[i];
 
-    sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, axis, _sg_joyJoys[joy]->numaxis);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, _sg_joyJoys[joy]->acurr, _sg_joyJoys[joy]->numaxis);
 }
 
 void SG_CALL _sgJoystickUpdate(void)
@@ -67,14 +61,8 @@ void SG_CALL _sgJoystickUpdate(void)
 
 SGbool SG_CALL _sgJoystickInit(void)
 {
-    _sg_joyCallbacks.button = _sg_cbJoystickButton;
-    _sg_joyCallbacks.move = _sg_cbJoystickMove;
-
     size_t i;
-    _sg_joyNum = 0;
-
-    if(psgmCoreJoystickGetNumJoysticks != NULL)
-        psgmCoreJoystickGetNumJoysticks(_sg_winHandle, &_sg_joyNum);
+    _sg_joyNum = SDL_NumJoysticks();
 
     _sg_joyJoys = malloc(_sg_joyNum * sizeof(_SGJoystick*));
     for(i = 0; i < _sg_joyNum; i++)
@@ -102,20 +90,16 @@ _SGJoystick* SG_CALL _sgJoystickCreate(SGuint id)
     joy->numbuttons = 0;
     joy->numaxis = 0;
 
-    if(psgmCoreJoystickCreate != NULL)
-        psgmCoreJoystickCreate(&joy->handle, _sg_winHandle, id);
-    if(psgmCoreJoystickSetCallbacks != NULL)
-        psgmCoreJoystickSetCallbacks(joy->handle, &_sg_joyCallbacks);
+    joy->handle = SDL_JoystickOpen(id);
+    joy->taxis = malloc(SDL_JoystickNumAxes(joy->handle) * sizeof(float));
 
-    if(psgmCoreJoystickGetNumButtons != NULL)
-        psgmCoreJoystickGetNumButtons(joy->handle, &joy->numbuttons);
+    joy->numbuttons = SDL_JoystickNumButtons(joy->handle);
     joy->bprev = malloc(joy->numbuttons * sizeof(SGbool));
     memset(joy->bprev, 0, joy->numbuttons * sizeof(SGbool));
     joy->bcurr = malloc(joy->numbuttons * sizeof(SGbool));
     memset(joy->bcurr, 0, joy->numbuttons * sizeof(SGbool));
 
-    if(psgmCoreJoystickGetNumAxis != NULL)
-        psgmCoreJoystickGetNumAxis(joy->handle, &joy->numaxis);
+    joy->numaxis = SDL_JoystickNumAxes(joy->handle);
     joy->aprev = malloc(joy->numaxis * sizeof(float));
     joy->acurr = malloc(joy->numaxis * sizeof(float));
     joy->adelt = malloc(joy->numaxis * sizeof(float));
@@ -130,8 +114,8 @@ void SG_CALL _sgJoystickDestroy(_SGJoystick* joy)
     if(joy == NULL)
         return;
 
-    if(psgmCoreJoystickDestroy != NULL)
-        psgmCoreJoystickDestroy(joy->handle);
+    SDL_JoystickClose(joy->handle);
+    free(joy->taxis);
 
     free(joy->aprev);
     free(joy->acurr);

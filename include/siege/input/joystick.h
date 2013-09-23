@@ -23,6 +23,8 @@ extern "C"
 {
 #endif // __cplusplus
 
+// TODO: Complete overhaul
+
 typedef struct _SGJoystick
 {
     SGuint id;
@@ -32,6 +34,7 @@ typedef struct _SGJoystick
     SGbool* bprev;
     SGbool* bcurr;
 
+    float* taxis;
     size_t numaxis;
     float* aprev;
     float* acurr;
@@ -41,11 +44,10 @@ typedef struct _SGJoystick
 #ifdef SG_BUILD_LIBRARY
 size_t _sg_joyNum;
 _SGJoystick** _sg_joyJoys;
-SGCoreJoystickCallbacks _sg_joyCallbacks;
 #endif // SG_BUILD_LIBRARY
 
-void SG_CALL _sg_cbJoystickButton(void* joystick, SGuint button, SGbool down);
-void SG_CALL _sg_cbJoystickMove(void* joystick, float* axis);
+void SG_CALL _sg_cbJoystickButton(SGuint joy, SGuint button, SGbool down);
+void SG_CALL _sg_cbJoystickMove(SGuint joy, SGuint axis, float pos);
 
 void SG_CALL _sgJoystickUpdate(void);
 

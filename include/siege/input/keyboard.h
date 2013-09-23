@@ -28,11 +28,10 @@ extern "C"
 SGbool _sg_keyPrev[SG_KEY_NUM];
 SGbool _sg_keyCurr[SG_KEY_NUM];
 void* _sg_keyHandle;
-SGCoreKeyboardCallbacks _sg_keyCallbacks;
 #endif // SG_BUILD_LIBRARY
 
-void SG_CALL _sg_cbKeyboardKey(void* keyboard, SGuint key, SGbool down);
-void SG_CALL _sg_cbKeyboardChar(void* keyboard, SGdchar chr);
+void SG_CALL _sg_cbKeyboardKey(SGuint key, SGbool down);
+void SG_CALL _sg_cbKeyboardChar(SGdchar chr);
 
 void SG_CALL _sgKeyboardUpdate(void);
 

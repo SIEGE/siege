@@ -14,9 +14,7 @@
 #define SG_BUILD_LIBRARY
 #include <siege/modules/modules.h>
 #include <siege/modules/audio.h>
-#include <siege/modules/window.h>
 #include <siege/modules/graphics.h>
-#include <siege/modules/input.h>
 #include <siege/modules/physics.h>
 #include <siege/modules/fonts.h>
 
@@ -95,9 +93,7 @@ SGModule* SG_CALL sgModuleLoad(const char* name)
     free(fname);
 
     _sgModuleLoadAudio(module->lib);
-    _sgModuleLoadWindow(module->lib);
     _sgModuleLoadGraphics(module->lib);
-    _sgModuleLoadInput(module->lib);
     _sgModuleLoadPhysics(module->lib);
     _sgModuleLoadFonts(module->lib);
 
