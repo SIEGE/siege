@@ -60,6 +60,8 @@ static SGbool bindGL(void)
     BIND(FramebufferRenderbuffer);
     BIND(GetFramebufferAttachmentParameteriv);
     BIND(GenerateMipmap);
+
+    BIND(BlendEquation);
     return SG_TRUE;
 }
 static SGbool initGL(void)

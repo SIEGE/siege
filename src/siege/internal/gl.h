@@ -32,6 +32,11 @@ PFNGLFRAMEBUFFERRENDERBUFFERPROC                glFramebufferRenderbufferEXT;
 PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC    glGetFramebufferAttachmentParameterivEXT;
 PFNGLGENERATEMIPMAPPROC                         glGenerateMipmapEXT;
 
+#ifndef GL_EXT_blend_minmax
+#error "SIEGE requires EXT_blend_minmax"
+#endif /* GL_EXT_blend_minmax */
+PFNGLBLENDEQUATIONPROC                          glBlendEquationEXT;
+
 #define GLTEX(x) (*(GLuint*)(x)->handle)
 #define GLFBO(x) (*(GLuint*)(x)->fboid)
 #define GLRB(x) (*(GLuint*)(x)->rbid)

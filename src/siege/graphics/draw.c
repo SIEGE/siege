@@ -178,9 +178,8 @@ static SGDrawContext* SG_CALL _sgDrawGetContext(void)
     return ctx;
 }
 
-static void enableAll(SGTexture* texture)
+static void enableAll(SGbool cd, SGbool td, SGbool id, SGTexture* texture)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
     if(texture)
     {
         glEnable(GL_TEXTURE_2D);
@@ -188,24 +187,23 @@ static void enableAll(SGTexture* texture)
     }
 
     glEnableClientState(GL_VERTEX_ARRAY);
-    if(ctx->cdata.ptr)
+    if(cd)
     {
         glPushAttrib(GL_CURRENT_BIT);
         glEnableClientState(GL_COLOR_ARRAY);
     }
-    if(ctx->tdata.ptr)
+    if(td)
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    if(ctx->idata.ptr)
+    if(id)
         glEnableClientState(GL_INDEX_ARRAY);
 }
-static void disableAll(SGTexture* texture)
+static void disableAll(SGbool cd, SGbool td, SGbool id, SGTexture* texture)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    if(ctx->idata.ptr)
+    if(id)
         glDisableClientState(GL_INDEX_ARRAY);
-    if(ctx->tdata.ptr)
+    if(td)
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    if(ctx->cdata.ptr)
+    if(cd)
     {
         glDisableClientState(GL_COLOR_ARRAY);
         glPopAttrib();
@@ -228,17 +226,17 @@ static void enablePointers(void)
     glTexCoordPointer(2, typeSGtoGL(ctx->tdata.type), ctx->tdata.stride, ctx->tdata.ptr);
     glIndexPointer(typeSGtoGL(ctx->idata.type), ctx->idata.stride, ctx->idata.ptr);
 }
-static void drawArraysRaw(SGenum mode, SGTexture* texture, size_t first, size_t count)
+static void drawArraysRaw(SGenum mode, SGbool cd, SGbool td, SGbool id, SGTexture* texture, size_t first, size_t count)
 {
-    enableAll(texture);
+    enableAll(cd, td, id, texture);
     glDrawArrays(modeSGtoGL(mode), first, count);
-    disableAll(texture);
+    disableAll(cd, td, id, texture);
 }
-static void drawElementsRaw(SGenum mode, SGTexture* texture, size_t count, SGenum type, const void* indices)
+static void drawElementsRaw(SGenum mode, SGbool cd, SGbool td, SGbool id, SGTexture* texture, size_t count, SGenum type, const void* indices)
 {
-    enableAll(texture);
+    enableAll(cd, td, id, texture);
     glDrawElements(modeSGtoGL(mode), count, typeSGtoGL(type), indices);
-    disableAll(texture);
+    disableAll(cd, td, id, texture);
 }
 
 SGbool SG_CALL _sgDrawInit(void)
@@ -293,13 +291,15 @@ void SG_CALL sgResetPointers(SGbool color, SGbool texcoord, SGbool index)
 
 void SG_CALL sgDrawArraysT(SGenum mode, SGTexture* texture, size_t first, size_t count)
 {
+    SGDrawContext* ctx = _sgDrawGetContext();
     enablePointers();
-    drawArraysRaw(mode, texture, first, count);
+    drawArraysRaw(mode, ctx->cdata.ptr != NULL, ctx->tdata.ptr != NULL, ctx->idata.ptr != NULL, texture, first, count);
 }
 void SG_CALL sgDrawElementsT(SGenum mode, SGTexture* texture, size_t count, SGenum type, const void* indices)
 {
+    SGDrawContext* ctx = _sgDrawGetContext();
     enablePointers();
-    drawElementsRaw(mode, texture, count, type, indices);
+    drawElementsRaw(mode, ctx->cdata.ptr != NULL, ctx->tdata.ptr != NULL, ctx->idata.ptr != NULL, texture, count, type, indices);
 }
 void SG_CALL sgDrawArrays(SGenum mode, size_t first, size_t count)
 {
@@ -335,7 +335,7 @@ void SG_CALL sgDrawEnd(void)
     glTexCoordPointer(2, GL_FLOAT, 0, ctx->texCoords);
     glIndexPointer(GL_FLOAT, 0, NULL);
 
-    drawArraysRaw(ctx->mode, ctx->texture, 0, ctx->numPoints);
+    drawArraysRaw(ctx->mode, SG_TRUE, SG_TRUE, SG_FALSE, ctx->texture, 0, ctx->numPoints);
     ctx->numPoints = 0;
 }
 void SG_CALL sgDrawColor4f(float r, float g, float b, float a)
@@ -565,8 +565,7 @@ void SG_CALL sgDrawSetBlendEquation(SGenum equation)
         };
     if(equation >= sizeof(table) / sizeof(GLenum))
         return;
-    // TODO
-    //glBlendEquation(table[equation]);
+    glBlendEquationEXT(table[equation]);
 }
 
 void SG_CALL sgDrawSetDepthFunc(SGenum func)
