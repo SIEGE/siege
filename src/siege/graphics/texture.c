@@ -28,27 +28,13 @@ SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream, SGbool delstream)
     SGenum bpp;
     void* data;
 
-    SGenum ret;
-    if(psgmGraphicsLoad)
-    {
-        ret = psgmGraphicsLoad(stream, &width, &height, &bpp, &data);
-        if(ret != SG_OK)
-        {
-            fprintf(stderr, "Could not load image\n");
-            return NULL;
-        }
-    }
-    else
-    {
-        fprintf(stderr, "Could not load image\n");
-        return NULL;
-    }
+    SGImageData* idata = sgImageDataCreateStream(stream, delstream);
+    if(!idata) return NULL;
+    sgImageDataGetData(idata, &width, &height, &bpp, &data);
 
     SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
-    if(psgmGraphicsLoadFreeData != NULL)
-        psgmGraphicsLoadFreeData(data);
-    if(delstream)
-        sgStreamDestroy(stream);
+
+    sgImageDataDestroy(idata);
     return texture;
 }
 SGTexture* SG_CALL sgTextureCreateFile(const char* fname)

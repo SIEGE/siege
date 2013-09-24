@@ -45,8 +45,6 @@ typedef struct SGStream
     void* data;
 } SGStream;
 
-/* these are not available for backend modules */
-#ifndef SG_BUILD_BACKEND
 SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data);
 SGStream* SG_CALL sgStreamCreateFile(const char* fname, const char* mode);
 SGStream* SG_CALL sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree);
@@ -60,7 +58,6 @@ SGlong SG_CALL sgStreamTell(SGStream* stream);
 SGulong SG_CALL sgStreamRead(SGStream* stream, void* ptr, size_t size, size_t count);
 SGulong SG_CALL sgStreamWrite(SGStream* stream, const void* ptr, size_t size, size_t count);
 SGbool SG_CALL sgStreamClose(SGStream* stream);
-#endif /* SG_BUILD_BACKEND */
 
 #ifdef __cplusplus
 }

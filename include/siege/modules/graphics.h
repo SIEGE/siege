@@ -31,7 +31,6 @@ extern "C"
 #include "../backend/graphics/surface.h"
 #include "../backend/graphics/texture.h"
 #include "../backend/graphics/viewport.h"
-#include "../backend/graphics/load.h"
 #undef SG_FPTR
 
 #endif // SG_BUILD_LIBRARY

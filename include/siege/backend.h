@@ -18,7 +18,6 @@
 #define SG_BUILD_BACKEND
 
 #include "backend/graphics/init.h"
-#include "backend/audio/init.h"
 #include "backend/physics/init.h"
 // Graphics
 #include "backend/graphics/context.h"
@@ -26,19 +25,12 @@
 #include "backend/graphics/surface.h"
 #include "backend/graphics/texture.h"
 #include "backend/graphics/viewport.h"
-// Graphics Load
-#include "backend/graphics/load.h"
-// Audio
-#include "backend/audio/buffer.h"
-#include "backend/audio/source.h"
 // Physics
 #include "backend/physics/body.h"
 #include "backend/physics/collision.h"
 #include "backend/physics/constraint.h"
 #include "backend/physics/shape.h"
 #include "backend/physics/space.h"
-// Util
-#include "backend/util/stream.h"
 
 // Test (things in a state of flux, will be removed or at least renamed)
 #ifdef SIEGE_TEST

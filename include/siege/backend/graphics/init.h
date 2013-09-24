@@ -27,8 +27,6 @@ extern "C"
 #endif
     SGenum SG_CALL SG_FPTR(sgmGraphicsInit)(void);
     SGenum SG_CALL SG_FPTR(sgmGraphicsDeinit)(void);
-    SGenum SG_CALL SG_FPTR(sgmGLoadInit)(void);
-    SGenum SG_CALL SG_FPTR(sgmGLoadDeinit)(void);
 #ifdef __cplusplus
 }
 #endif

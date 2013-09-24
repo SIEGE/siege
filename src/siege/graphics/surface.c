@@ -14,6 +14,7 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/surface.h>
+#include <siege/graphics/image.h>
 #include <siege/core/window.h>
 #include <siege/modules/graphics.h>
 
@@ -35,30 +36,16 @@ SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream, SGbool delstream)
 {
     size_t width;
     size_t height;
-    SGuint bpp;
+    SGenum bpp;
     void* data;
 
-    SGuint ret;
-    if(psgmGraphicsLoad)
-    {
-        ret = psgmGraphicsLoad(stream, &width, &height, &bpp, &data);
-        if(ret != SG_OK)
-        {
-            fprintf(stderr, "Could not load image\n");
-            return NULL;
-        }
-    }
-    else
-    {
-        fprintf(stderr, "Could not load image\n");
-        return NULL;
-    }
+    SGImageData* idata = sgImageDataCreateStream(stream, delstream);
+    if(!idata) return NULL;
+    sgImageDataGetData(idata, &width, &height, &bpp, &data);
 
     SGSurface* surface = sgSurfaceCreateData(width, height, bpp, data);
-    if(psgmGraphicsLoadFreeData != NULL)
-        psgmGraphicsLoadFreeData(data);
-    if(delstream)
-        sgStreamDestroy(stream);
+
+    sgImageDataDestroy(idata);
     return surface;
 }
 SGSurface* SG_CALL sgSurfaceCreateFile(const char* fname)

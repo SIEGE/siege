@@ -31,7 +31,6 @@
 
 #include <siege/modules/modules.h>
 #include <siege/modules/graphics.h>
-#include <siege/modules/audio.h>
 #include <siege/modules/physics.h>
 
 #include <siege/physics/space.h>
@@ -120,7 +119,6 @@ SGbool SG_CALL sgInit(SGenum flags)
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     psgmGraphicsInit();
-    if(psgmAudioInit) psgmAudioInit();
     if(psgmPhysicsInit) psgmPhysicsInit();
 
     _sg_firstLoop = SG_TRUE;
@@ -196,7 +194,6 @@ SGbool SG_CALL sgDeinit(void)
     _sgEntityDeinit();
 
     if(psgmPhysicsDeinit) psgmPhysicsDeinit();
-    if(psgmAudioDeinit) psgmAudioDeinit();
     psgmGraphicsDeinit();
 
     // CORE: SDL

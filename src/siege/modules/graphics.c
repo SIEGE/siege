@@ -27,8 +27,6 @@ void SG_CALL _sgModuleLoadGraphics(SGLibrary* lib)
 
     _SG_BIND(sgmGraphicsInit);
     _SG_BIND(sgmGraphicsDeinit);
-    _SG_BIND(sgmGLoadInit);
-    _SG_BIND(sgmGLoadDeinit);
 
     /// Graphics
     _SG_BIND(sgmGraphicsContextCreate);
@@ -101,9 +99,5 @@ void SG_CALL _sgModuleLoadGraphics(SGLibrary* lib)
     _SG_BIND(sgmGraphicsDrawSetPointSmooth);
     _SG_BIND(sgmGraphicsDrawSetLineSmooth);
     _SG_BIND(sgmGraphicsDrawSetPolygonSmooth);
-
-    /// Graphics Load
-    _SG_BIND(sgmGraphicsLoad);
-    _SG_BIND(sgmGraphicsLoadFreeData);
 }
 

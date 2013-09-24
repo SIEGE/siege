@@ -14,25 +14,72 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/audio/source.h>
-#include <siege/modules/audio.h>
 #include <siege/util/list.h> // plist
 
 #include <stdlib.h>
 #include <math.h>
 
+#include <al.h>
+#include <alc.h>
+
+static ALCdevice* audioDev;
+static ALCcontext* audioCtx;
+
+#define ALSRCD(x)   (*(ALuint*)(x)->handle)
+#define ALSRC(x)    ALSRCD((x)->dispatch)
+
+static ALint queryi(ALuint source, ALenum q)
+{
+    ALint ret;
+    alGetSourcei(source, q, &ret);
+    return ret;
+}
+static float queryf(ALuint source, ALenum q)
+{
+    float ret;
+    alGetSourcef(source, q, &ret);
+    return ret;
+}
+static ALint state(ALuint source)
+{
+    return queryi(source, AL_SOURCE_STATE);
+}
+
+static SGuint maxSources(void)
+{
+    alGetError();
+    ALuint threshold = 256;
+
+    ALuint max;
+    ALuint* buf = malloc(threshold * sizeof(ALuint));
+    for(max = 1; max <= threshold; max++)
+    {
+        alGenSources(max, buf);
+        if(alGetError() != AL_NO_ERROR)
+        {
+            max--;
+            break;
+        }
+        alDeleteSources(max, buf);
+    }
+    return max;
+}
+
 SGbool SG_CALL _sgAudioSourceInit(void)
 {
-    _sg_srcDisLength = 16;
-    if(psgmAudioSourceMaxSources != NULL)
-        psgmAudioSourceMaxSources(&_sg_srcDisLength);
+    audioDev = alcOpenDevice(NULL);
+    audioCtx = alcCreateContext(audioDev, NULL);
+    alcMakeContextCurrent(audioCtx);
+
+    _sg_srcDisLength = maxSources();
     _sg_srcDisList = malloc(_sg_srcDisLength * sizeof(SGAudioSourceDispatch));
 
     SGuint i;
     for(i = 0; i < _sg_srcDisLength; i++)
     {
         _sg_srcDisList[i].source = NULL;
-        if(psgmAudioSourceCreate != NULL)
-            psgmAudioSourceCreate(&_sg_srcDisList[i].handle);
+        _sg_srcDisList[i].handle = malloc(sizeof(ALuint));
+        alGenSources(1, _sg_srcDisList[i].handle);
     }
 
     _sg_srcDestroy = sgListCreate();
@@ -48,11 +95,14 @@ SGbool SG_CALL _sgAudioSourceDeinit(void)
     SGuint i;
     for(i = 0; i <_sg_srcDisLength; i++)
     {
-        if(psgmAudioSourceDestroy != NULL)
-            psgmAudioSourceDestroy(_sg_srcDisList[i].handle);
+        alDeleteSources(1, _sg_srcDisList[i].handle);
+        free(_sg_srcDisList[i].handle);
     }
-
     free(_sg_srcDisList);
+
+    alcMakeContextCurrent(NULL);
+    alcDestroyContext(audioCtx);
+    alcCloseDevice(audioDev);
 
     return SG_TRUE;
 }
@@ -74,13 +124,10 @@ SGAudioSourceDispatch* SG_CALL _sgAudioSourceGetFreeDispatch(SGAudioSource* sour
             _sg_srcDisList[i].source = source;
             return &_sg_srcDisList[i];
         }
-        if((psgmAudioSourceGetNumProcessedBuffers != NULL) && (psgmAudioSourceGetNumQueuedBuffers != NULL))
-        {
-            psgmAudioSourceGetNumProcessedBuffers(_sg_srcDisList[i].handle, &processed);
-            psgmAudioSourceGetNumQueuedBuffers(_sg_srcDisList[i].handle, &queued);
-            if(processed == queued)
-                blanki = i;
-        }
+        processed = queryi(ALSRCD(&_sg_srcDisList[i]), AL_BUFFERS_PROCESSED);
+        queued = queryi(ALSRCD(&_sg_srcDisList[i]), AL_BUFFERS_QUEUED);
+        if(processed == queued)
+            blanki = i;
         if(_sg_srcDisList[i].source->priority < minf)
         {
             mini = i;
@@ -161,8 +208,7 @@ void SG_CALL sgAudioSourcePlay(SGAudioSource* source)
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourcePlay != NULL)
-        psgmAudioSourcePlay(source->dispatch->handle);
+    alSourcePlay(ALSRC(source));
 }
 SGbool SG_CALL sgAudioSourceIsPlaying(SGAudioSource* source)
 {
@@ -171,10 +217,7 @@ SGbool SG_CALL sgAudioSourceIsPlaying(SGAudioSource* source)
     if(source->dispatch == NULL)
         return SG_FALSE;
 
-    SGbool playing = SG_FALSE;
-    if(psgmAudioSourceIsPlaying != NULL)
-        psgmAudioSourceIsPlaying(source->dispatch->handle, &playing);
-    return playing;
+    return state(ALSRC(source)) == AL_PLAYING;
 }
 void SG_CALL sgAudioSourcePause(SGAudioSource* source)
 {
@@ -183,8 +226,7 @@ void SG_CALL sgAudioSourcePause(SGAudioSource* source)
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourcePause != NULL)
-        psgmAudioSourcePause(source->dispatch->handle);
+    alSourcePause(ALSRC(source));
 }
 SGbool SG_CALL sgAudioSourceIsPaused(SGAudioSource* source)
 {
@@ -193,10 +235,7 @@ SGbool SG_CALL sgAudioSourceIsPaused(SGAudioSource* source)
     if(source->dispatch == NULL)
         return SG_FALSE;
 
-    SGbool paused = SG_FALSE;
-    if(psgmAudioSourceIsPaused != NULL)
-        psgmAudioSourceIsPaused(source->dispatch->handle, &paused);
-    return paused;
+    return state(ALSRC(source)) == AL_PAUSED;
 }
 void SG_CALL sgAudioSourceRewind(SGAudioSource* source)
 {
@@ -205,8 +244,7 @@ void SG_CALL sgAudioSourceRewind(SGAudioSource* source)
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceRewind != NULL)
-        psgmAudioSourceRewind(source->dispatch->handle);
+    alSourceRewind(ALSRC(source));
 }
 /*SGbool SG_CALL sgAudioSourceIsRewinded(SGAudioSource* source)
 {
@@ -227,8 +265,7 @@ void SG_CALL sgAudioSourceStop(SGAudioSource* source)
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceStop != NULL)
-        psgmAudioSourceStop(source->dispatch->handle);
+    alSourceStop(ALSRC(source));
 }
 SGbool SG_CALL sgAudioSourceIsStopped(SGAudioSource* source)
 {
@@ -237,10 +274,7 @@ SGbool SG_CALL sgAudioSourceIsStopped(SGAudioSource* source)
     if(source->dispatch == NULL)
         return SG_FALSE;
 
-    SGbool stopped = SG_FALSE;
-    if(psgmAudioSourceIsStopped != NULL)
-        psgmAudioSourceIsStopped(source->dispatch->handle, &stopped);
-    return stopped;
+    return state(ALSRC(source)) == AL_STOPPED;
 }
 SGbool SG_CALL sgAudioSourceIsActive(SGAudioSource* source)
 {
@@ -249,12 +283,8 @@ SGbool SG_CALL sgAudioSourceIsActive(SGAudioSource* source)
     if(source->dispatch == NULL)
         return SG_FALSE;
 
-    SGuint processed = 0;
-    SGuint queued = 0;
-    if(psgmAudioSourceGetNumProcessedBuffers != NULL)
-        psgmAudioSourceGetNumProcessedBuffers(source->dispatch->handle, &processed);
-    if(psgmAudioSourceGetNumQueuedBuffers != NULL)
-        psgmAudioSourceGetNumQueuedBuffers(source->dispatch->handle, &queued);
+    SGuint processed = sgAudioSourceGetNumProcessedBuffers(source);
+    SGuint queued = sgAudioSourceGetNumQueuedBuffers(source);
 
     return processed != queued;
 }
@@ -266,10 +296,7 @@ size_t SG_CALL sgAudioSourceGetNumProcessedBuffers(SGAudioSource* source)
     if(source->dispatch == NULL)
         return 0;
 
-    SGuint processed = 0;
-    if(psgmAudioSourceGetNumProcessedBuffers)
-        psgmAudioSourceGetNumProcessedBuffers(source->dispatch->handle, &processed);
-    return processed;
+    return queryi(ALSRC(source), AL_BUFFERS_PROCESSED);
 }
 size_t SG_CALL sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source)
 {
@@ -278,10 +305,7 @@ size_t SG_CALL sgAudioSourceGetNumQueuedBuffers(SGAudioSource* source)
     if(source->dispatch == NULL)
         return 0;
 
-    SGuint queued = 0;
-    if(psgmAudioSourceGetNumQueuedBuffers)
-        psgmAudioSourceGetNumQueuedBuffers(source->dispatch->handle, &queued);
-    return queued;
+    return queryi(ALSRC(source), AL_BUFFERS_QUEUED);
 }
 
 void SG_CALL sgAudioSourceQueueBuffers(SGAudioSource* source, SGAudioBuffer** buffers, size_t numbuffers)
@@ -302,8 +326,7 @@ void SG_CALL sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* buff
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceQueueBuffers != NULL)
-        psgmAudioSourceQueueBuffers(source->dispatch->handle, &buffer->handle, 1);
+    alSourceQueueBuffers(ALSRC(source), 1, buffer->handle);
 }
 void SG_CALL sgAudioSourceUnqueueBuffer(SGAudioSource* source)
 {
@@ -312,8 +335,8 @@ void SG_CALL sgAudioSourceUnqueueBuffer(SGAudioSource* source)
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceUnqueueBuffers)
-        psgmAudioSourceUnqueueBuffers(source->dispatch->handle, 1);
+    ALuint dummy;
+    alSourceUnqueueBuffers(ALSRC(source), 1, &dummy);
 }
 void SG_CALL sgAudioSourceUnqueueBuffers(SGAudioSource* source, size_t numbuffers)
 {
@@ -322,8 +345,9 @@ void SG_CALL sgAudioSourceUnqueueBuffers(SGAudioSource* source, size_t numbuffer
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceUnqueueBuffers)
-        psgmAudioSourceUnqueueBuffers(source->dispatch->handle, numbuffers);
+    ALuint* dummies = malloc(numbuffers * sizeof(ALuint));
+    alSourceUnqueueBuffers(ALSRC(source), numbuffers, dummies);
+    free(dummies);
 }
 
 void SG_CALL sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y, float z)
@@ -333,8 +357,7 @@ void SG_CALL sgAudioSourceSetPosition3f(SGAudioSource* source, float x, float y,
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceSetPosition != NULL)
-        psgmAudioSourceSetPosition(source->dispatch->handle, x, y, z);
+    alSource3f(ALSRC(source), AL_POSITION, x, y, z);
 }
 void SG_CALL sgAudioSourceSetPosition2f(SGAudioSource* source, float x, float y)
 {
@@ -347,16 +370,12 @@ void SG_CALL sgAudioSourceGetPosition3f(SGAudioSource* source, float* x, float* 
     if(source->dispatch == NULL)
         return;
 
-    float buf;
-    if(x == NULL)
-        x = &buf;
-    if(y == NULL)
-        y = &buf;
-    if(z == NULL)
-        z = &buf;
+    float tmp;
+    if(!x) x = &tmp;
+    if(!y) y = &tmp;
+    if(!z) z = &tmp;
 
-    if(psgmAudioSourceGetPosition != NULL)
-        psgmAudioSourceGetPosition(source->dispatch->handle, x, y, z);
+    alGetSource3f(ALSRC(source), AL_POSITION, x, y, z);
 }
 void SG_CALL sgAudioSourceGetPosition2f(SGAudioSource* source, float* x, float* y)
 {
@@ -370,8 +389,7 @@ void SG_CALL sgAudioSourceSetVelocity3f(SGAudioSource* source, float x, float y,
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceSetVelocity != NULL)
-        psgmAudioSourceSetVelocity(source->dispatch->handle, x, y, z);
+    alSource3f(ALSRC(source), AL_VELOCITY, x, y, z);
 }
 void SG_CALL sgAudioSourceSetVelocity2f(SGAudioSource* source, float x, float y)
 {
@@ -384,16 +402,12 @@ void SG_CALL sgAudioSourceGetVelocity3f(SGAudioSource* source, float* x, float* 
     if(source->dispatch == NULL)
         return;
 
-    float buf;
-    if(x == NULL)
-        x = &buf;
-    if(y == NULL)
-        y = &buf;
-    if(z == NULL)
-        z = &buf;
+    float tmp;
+    if(!x) x = &tmp;
+    if(!y) y = &tmp;
+    if(!z) z = &tmp;
 
-    if(psgmAudioSourceGetVelocity != NULL)
-        psgmAudioSourceGetVelocity(source->dispatch->handle, x, y, z);
+    alGetSource3f(ALSRC(source), AL_VELOCITY, x, y, z);
 }
 void SG_CALL sgAudioSourceGetVelocity2f(SGAudioSource* source, float* x, float* y)
 {
@@ -410,8 +424,7 @@ void SG_CALL sgAudioSourceSetPitch(SGAudioSource* source, float pitch)
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceSetPitch != NULL)
-        psgmAudioSourceSetPitch(source->dispatch->handle, pitch);
+    alSourcef(ALSRC(source), AL_PITCH, pitch);
 }
 float SG_CALL sgAudioSourceGetPitch(SGAudioSource* source)
 {
@@ -420,10 +433,7 @@ float SG_CALL sgAudioSourceGetPitch(SGAudioSource* source)
     if(source->dispatch == NULL)
         return SG_NAN;
 
-    float pitch = 1.0f;
-    if(psgmAudioSourceGetPitch != NULL)
-        psgmAudioSourceGetPitch(source->dispatch->handle, &pitch);
-    return pitch;
+    return queryf(ALSRC(source), AL_PITCH);
 }
 
 void SG_CALL sgAudioSourceSetVolume(SGAudioSource* source, float volume)
@@ -433,8 +443,7 @@ void SG_CALL sgAudioSourceSetVolume(SGAudioSource* source, float volume)
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceSetVolume != NULL)
-        psgmAudioSourceSetVolume(source->dispatch->handle, volume);
+    alSourcef(ALSRC(source), AL_GAIN, volume);
 }
 float SG_CALL sgAudioSourceGetVolume(SGAudioSource* source)
 {
@@ -443,10 +452,7 @@ float SG_CALL sgAudioSourceGetVolume(SGAudioSource* source)
     if(source->dispatch == NULL)
         return SG_NAN;
 
-    float volume = 1.0f;
-    if(psgmAudioSourceGetVolume != NULL)
-        psgmAudioSourceGetVolume(source->dispatch->handle, &volume);
-    return volume;
+    return queryf(ALSRC(source), AL_GAIN);
 }
 
 void SG_CALL sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping)
@@ -456,8 +462,7 @@ void SG_CALL sgAudioSourceSetLooping(SGAudioSource* source, SGbool looping)
     if(source->dispatch == NULL)
         return;
 
-    if(psgmAudioSourceSetLooping != NULL)
-        psgmAudioSourceSetLooping(source->dispatch->handle, looping);
+    alSourcei(ALSRC(source), AL_LOOPING, looping);
 }
 SGbool SG_CALL sgAudioSourceGetLooping(SGAudioSource* source)
 {
@@ -466,8 +471,5 @@ SGbool SG_CALL sgAudioSourceGetLooping(SGAudioSource* source)
     if(source->dispatch == NULL)
         return SG_FALSE;
 
-    SGbool looping = SG_FALSE;
-    if(psgmAudioSourceGetLooping != NULL)
-        psgmAudioSourceGetLooping(source->dispatch->handle, &looping);
-    return looping;
+    return queryi(ALSRC(source), AL_LOOPING) != 0;
 }

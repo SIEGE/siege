@@ -13,7 +13,6 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/modules/modules.h>
-#include <siege/modules/audio.h>
 #include <siege/modules/graphics.h>
 #include <siege/modules/physics.h>
 
@@ -91,7 +90,6 @@ SGModule* SG_CALL sgModuleLoad(const char* name)
         fprintf(stderr, "Warning: Unable to load module %s: Unknown error\n", name);
     free(fname);
 
-    _sgModuleLoadAudio(module->lib);
     _sgModuleLoadGraphics(module->lib);
     _sgModuleLoadPhysics(module->lib);
 
