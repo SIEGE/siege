@@ -24,8 +24,6 @@ extern "C"
 
 typedef struct SGViewport
 {
-    void* handle;
-
     SGuint wposx;
     SGuint wposy;
     SGuint wsizex;

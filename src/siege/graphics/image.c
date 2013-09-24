@@ -14,7 +14,6 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/image.h>
-#include <siege/modules/graphics.h>
 
 #include <stdlib.h>
 #include <stdio.h>

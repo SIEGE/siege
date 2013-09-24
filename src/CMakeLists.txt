@@ -10,9 +10,10 @@ find_package(Threads REQUIRED)
 find_package(DL)
 
 find_package(SDL REQUIRED)
+find_package(OpenGL REQUIRED)
 find_package(OpenAL REQUIRED)
 
-include_directories("${SDL_INCLUDE_DIR}" "${OPENAL_INCLUDE_DIR}")
+include_directories("${SDL_INCLUDE_DIR}" ${OPENGL_INCLUDE_DIR} "${OPENAL_INCLUDE_DIR}")
 
 IF(UNIX)
     SET(AUX_INCLUDES "")
@@ -22,7 +23,7 @@ ELSE(UNIX)
     SET(AUX_LIBRARIES "")
 ENDIF(UNIX)
 
-SET(AUX_LIBRARIES ${AUX_LIBRARIES} "${SDL_LIBRARY}" "${OPENAL_LIBRARY}")
+SET(AUX_LIBRARIES ${AUX_LIBRARIES} "${SDL_LIBRARY}" ${OPENGL_LIBRARIES} "${OPENAL_LIBRARY}")
 
 MACRO(SHARED_STATIC name dir ext)
     PROJECT(${name})

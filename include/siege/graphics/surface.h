@@ -16,6 +16,7 @@
 #define __SIEGE_GRAPHICS_SURFACE_H__
 
 #include "../common.h"
+#include "texture.h"
 #include "../util/stream.h"
 
 #ifdef __cplusplus
@@ -25,12 +26,11 @@ extern "C"
 
 typedef struct SGSurface
 {
-    void* handle;
+    void* fboid;
+    void* rbid;
+    SGTexture* texture;
+    SGbool deltex;
 } SGSurface;
-
-#ifdef SG_BUILD_LIBRARY
-void* _sg_surfTarget;
-#endif // SGC_BUILD_LIBRARY
 
 SGbool SG_CALL _sgSurfaceInit(void);
 SGbool SG_CALL _sgSurfaceDeinit(void);
@@ -38,8 +38,12 @@ SGbool SG_CALL _sgSurfaceDeinit(void);
 SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream, SGbool delstream);
 SGSurface* SG_CALL sgSurfaceCreateFile(const char* fname);
 SGSurface* SG_CALL sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data);
+SGSurface* SG_CALL sgSurfaceCreateTexture(SGTexture* texture, SGbool deltex);
 SGSurface* SG_CALL sgSurfaceCreate(SGuint width, SGuint height, SGenum bpp);
 void SG_CALL sgSurfaceDestroy(SGSurface* surface);
+
+SGbool SG_CALL sgSurfaceSetTexture(SGSurface* surface, SGTexture* texture, SGbool deltex);
+SGTexture* SG_CALL sgSurfaceGetTexture(SGSurface* surface);
 
 void SG_CALL sgSurfaceSetData(SGSurface* surface, size_t width, size_t height, SGenum bpp, void* data);
 void SG_CALL sgSurfaceSetSubData(SGSurface* surface, size_t x, size_t y, size_t width, size_t height, SGenum bpp, void* data);

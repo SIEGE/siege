@@ -26,6 +26,8 @@ extern "C"
 typedef struct SGTexture
 {
     void* handle;
+    SGuint width, height;
+    SGenum bpp;
 } SGTexture;
 
 SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream, SGbool delstream);

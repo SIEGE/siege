@@ -376,6 +376,8 @@ SGFont* SG_CALL sgFontCreateStream(SGStream* stream, SGbool delstream, float hei
     SGlong pos = sgStreamTell(stream);
     SGlong size = sgStreamTellSize(stream);
     size -= pos;
+    if(pos < 0 || size < 0)
+        goto err;
 
     fface->buf = malloc(size);
     if(sgStreamRead(stream, fface->buf, 1, size) != size)

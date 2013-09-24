@@ -159,20 +159,14 @@ SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstr
     if(!stream || !stream->read || !stream->seek || !stream->tell)
         return NULL;
 
-    SGlong pos;
-    SGlong size;
-
-    pos = stream->tell(stream->data);
-    if(pos < 0) goto lderr;
-
-    stream->seek(stream->data, 0, SG_SEEK_END);
-    size = stream->tell(stream->data);
-    stream->seek(stream->data, pos, SG_SEEK_SET);
-    if(size < 0) goto lderr;
+    SGlong pos = sgStreamTell(stream);
+    SGlong size = sgStreamTellSize(stream);
     size -= pos;
+    if(pos < 0 || size < 0)
+        goto lderr;
 
     buf = malloc(size);
-    if(stream->read(stream->data, buf, 1, size) != size)
+    if(sgStreamRead(stream, buf, 1, size) != size)
         goto lderr;
 
     stb = stb_vorbis_open_memory(buf, size, &error, NULL);

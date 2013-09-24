@@ -15,7 +15,6 @@
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/draw.h>
 #include <siege/core/window.h>
-#include <siege/modules/graphics.h>
 #include <siege/util/thread/thread.h>
 #include <siege/util/thread/key.h>
 
@@ -23,6 +22,67 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+
+#include <SDL/SDL.h>
+#include "../internal/gl.h"
+
+static const SGenum sgtypes[] = {
+    SG_BYTE, SG_UBYTE,
+    SG_SHORT, SG_USHORT,
+    SG_INT, SG_UINT,
+    SG_FLOAT, SG_DOUBLE,
+};
+static const GLenum gltypes[] = {
+    GL_BYTE, GL_UNSIGNED_BYTE,
+    GL_SHORT, GL_UNSIGNED_SHORT,
+    GL_INT, GL_UNSIGNED_INT,
+    GL_FLOAT, GL_DOUBLE,
+};
+
+static GLenum typeSGtoGL(SGenum type)
+{
+    size_t i;
+    for(i = 0; i < sizeof(sgtypes) / sizeof(*sgtypes); i++)
+        if(sgtypes[i] == type)
+            return gltypes[i];
+    return 0;
+}
+
+static GLenum modeSGtoGL(SGenum mode)
+{
+    switch(mode)
+    {
+        case SG_POINTS:     return GL_POINTS;
+        case SG_LINES:      return GL_LINES;
+        case SG_LINE_STRIP: return GL_LINE_STRIP;
+        case SG_LINE_FAN: /* TODO */
+            /*
+            *out = malloc((numverts - 1) * sizeof(GLuint) * 2);
+            for(i = 0; i < numverts - 1; i++)
+            {
+                out[2*i  ] = 0;
+                out[2*i+1] = i+1;
+            }
+            return GL_LINES;*/
+            return 0;
+        case SG_LINE_LOOP:      return GL_LINE_LOOP;
+        case SG_TRIANGLES:      return GL_TRIANGLES;
+        case SG_TRIANGLE_STRIP: return GL_TRIANGLE_STRIP;
+        case SG_TRIANGLE_FAN:   return GL_TRIANGLE_FAN;
+        //case SG_TRIANGLE_LOOP:
+        case SG_QUADS:          return GL_QUADS;
+        case SG_QUAD_STRIP:     return GL_QUAD_STRIP;
+        //case SG_QUAD_FAN:
+        //case SG_QUAD_LOOP:
+        case SG_CONVEX_POLYGON: return GL_POLYGON;
+
+        /* TODO -- convert! */
+        case SG_CONCAVE_POLYGON:
+        case SG_INTERSECTING_POLYGON:   return GL_POLYGON;
+
+        default: return 0;
+    }
+}
 
 typedef struct SGDrawContext
 {
@@ -118,19 +178,67 @@ static SGDrawContext* SG_CALL _sgDrawGetContext(void)
     return ctx;
 }
 
+static void enableAll(SGTexture* texture)
+{
+    SGDrawContext* ctx = _sgDrawGetContext();
+    if(texture)
+    {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, GLTEX(texture));
+    }
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    if(ctx->cdata.ptr)
+    {
+        glPushAttrib(GL_CURRENT_BIT);
+        glEnableClientState(GL_COLOR_ARRAY);
+    }
+    if(ctx->tdata.ptr)
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    if(ctx->idata.ptr)
+        glEnableClientState(GL_INDEX_ARRAY);
+}
+static void disableAll(SGTexture* texture)
+{
+    SGDrawContext* ctx = _sgDrawGetContext();
+    if(ctx->idata.ptr)
+        glDisableClientState(GL_INDEX_ARRAY);
+    if(ctx->tdata.ptr)
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    if(ctx->cdata.ptr)
+    {
+        glDisableClientState(GL_COLOR_ARRAY);
+        glPopAttrib();
+    }
+    glDisableClientState(GL_VERTEX_ARRAY);
+
+    if(texture)
+    {
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_TEXTURE_2D);
+    }
+}
 static void enablePointers(void)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
 
-    //void* context, SGubyte size, SGenum type, size_t stride, const void* ptr
-    if(psgmGraphicsSetVertexPointer)
-        psgmGraphicsSetVertexPointer(_sg_gfxHandle, ctx->vdata.size, ctx->vdata.type, ctx->vdata.stride, ctx->vdata.ptr);
-    if(psgmGraphicsSetColorPointer)
-        psgmGraphicsSetColorPointer(_sg_gfxHandle, ctx->cdata.size, ctx->cdata.type, ctx->cdata.stride, ctx->cdata.ptr);
-    if(psgmGraphicsSetTexCoordPointer)
-        psgmGraphicsSetTexCoordPointer(_sg_gfxHandle, ctx->tdata.type, ctx->tdata.stride, ctx->tdata.ptr);
-    if(psgmGraphicsSetIndexPointer)
-        psgmGraphicsSetIndexPointer(_sg_gfxHandle, ctx->idata.type, ctx->idata.stride, ctx->idata.ptr);
+    //GLuint size, GLenum type, GLuint stride, const void* ptr
+    glVertexPointer(ctx->vdata.size, typeSGtoGL(ctx->vdata.type), ctx->vdata.stride, ctx->vdata.ptr);
+    glColorPointer(ctx->cdata.size, typeSGtoGL(ctx->cdata.type), ctx->cdata.stride, ctx->cdata.ptr);
+    glTexCoordPointer(2, typeSGtoGL(ctx->tdata.type), ctx->tdata.stride, ctx->tdata.ptr);
+    glIndexPointer(typeSGtoGL(ctx->idata.type), ctx->idata.stride, ctx->idata.ptr);
+}
+static void drawArraysRaw(SGenum mode, SGTexture* texture, size_t first, size_t count)
+{
+    enableAll(texture);
+    glDrawArrays(modeSGtoGL(mode), first, count);
+    disableAll(texture);
+}
+static void drawElementsRaw(SGenum mode, SGTexture* texture, size_t count, SGenum type, const void* indices)
+{
+    enableAll(texture);
+    glDrawElements(modeSGtoGL(mode), count, typeSGtoGL(type), indices);
+    disableAll(texture);
 }
 
 SGbool SG_CALL _sgDrawInit(void)
@@ -186,14 +294,12 @@ void SG_CALL sgResetPointers(SGbool color, SGbool texcoord, SGbool index)
 void SG_CALL sgDrawArraysT(SGenum mode, SGTexture* texture, size_t first, size_t count)
 {
     enablePointers();
-    if(psgmGraphicsDrawArrays)
-        psgmGraphicsDrawArrays(_sg_gfxHandle, texture ? texture->handle : NULL, mode, first, count);
+    drawArraysRaw(mode, texture, first, count);
 }
 void SG_CALL sgDrawElementsT(SGenum mode, SGTexture* texture, size_t count, SGenum type, const void* indices)
 {
     enablePointers();
-    if(psgmGraphicsDrawElements)
-        psgmGraphicsDrawElements(_sg_gfxHandle, texture ? texture->handle : NULL, mode, count, type, indices);
+    drawElementsRaw(mode, texture, count, type, indices);
 }
 void SG_CALL sgDrawArrays(SGenum mode, size_t first, size_t count)
 {
@@ -223,18 +329,13 @@ void SG_CALL sgDrawBegin(SGenum mode)
 void SG_CALL sgDrawEnd(void)
 {
     SGDrawContext* ctx = _sgDrawGetContext();
-    void* texture = ctx->texture ? ctx->texture->handle : NULL;
 
-    if(psgmGraphicsSetVertexPointer)
-        psgmGraphicsSetVertexPointer(_sg_gfxHandle, 3, SG_FLOAT, 0, ctx->points);
-    if(psgmGraphicsSetColorPointer)
-        psgmGraphicsSetColorPointer(_sg_gfxHandle, 4, SG_FLOAT, 0, ctx->colors);
-    if(psgmGraphicsSetTexCoordPointer)
-        psgmGraphicsSetTexCoordPointer(_sg_gfxHandle, SG_FLOAT, 0, ctx->texCoords);
-    if(psgmGraphicsSetIndexPointer)
-        psgmGraphicsSetIndexPointer(_sg_gfxHandle, SG_FLOAT, 0, NULL);
-    if(psgmGraphicsDrawArrays)
-        psgmGraphicsDrawArrays(_sg_gfxHandle, texture, ctx->mode, 0, ctx->numPoints);
+    glVertexPointer(3, GL_FLOAT, 0, ctx->points);
+    glColorPointer(4, GL_FLOAT, 0, ctx->colors);
+    glTexCoordPointer(2, GL_FLOAT, 0, ctx->texCoords);
+    glIndexPointer(GL_FLOAT, 0, NULL);
+
+    drawArraysRaw(ctx->mode, ctx->texture, 0, ctx->numPoints);
     ctx->numPoints = 0;
 }
 void SG_CALL sgDrawColor4f(float r, float g, float b, float a)
@@ -244,8 +345,7 @@ void SG_CALL sgDrawColor4f(float r, float g, float b, float a)
     ctx->color[1] = g;
     ctx->color[2] = b;
     ctx->color[3] = a;
-    if(psgmGraphicsDrawSetColor != NULL)
-        psgmGraphicsDrawSetColor(_sg_gfxHandle, ctx->color);
+    glColor4fv(ctx->color);
 }
 void SG_CALL sgDrawColor3f(float r, float g, float b)
 {
@@ -373,13 +473,8 @@ void SG_CALL sgDrawVertex2fv(const float* xy)
 }
 void SG_CALL sgDrawClear4f(float r, float g, float b, float a)
 {
-    float col[4];
-    col[0] = r;
-    col[1] = g;
-    col[2] = b;
-    col[3] = a;
-    if(psgmGraphicsContextClear != NULL)
-        psgmGraphicsContextClear(_sg_gfxHandle, col);
+    glClearColor(r, g, b, a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT/* | GL_STENCIL_BUFFER_BIT | GL_ACCUM_BUFFER_BIT*/);
 }
 void SG_CALL sgDrawClear3f(float r, float g, float b)
 {
@@ -448,51 +543,116 @@ void SG_CALL sgDrawClear(void)
 
 void SG_CALL sgDrawSetBlendFunc(SGenum src, SGenum dst)
 {
-    if(psgmGraphicsDrawSetBlendFunc != NULL)
-        psgmGraphicsDrawSetBlendFunc(_sg_gfxHandle, src, dst);
+    static const GLenum table[] = {
+            GL_ZERO, GL_ONE,
+            GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR,
+            GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR,
+            GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
+            GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA,
+        };
+    if(src >= sizeof(table) / sizeof(GLenum)
+    || dst >= sizeof(table) / sizeof(GLenum))
+        return;
+
+    glBlendFunc(table[src], table[dst]);
 }
 void SG_CALL sgDrawSetBlendEquation(SGenum equation)
 {
-    if(psgmGraphicsDrawSetBlendEquation != NULL)
-        psgmGraphicsDrawSetBlendEquation(_sg_gfxHandle, equation);
+    static const GLenum table[] = {
+            GL_FUNC_ADD,
+            GL_FUNC_SUBTRACT, GL_FUNC_REVERSE_SUBTRACT,
+            GL_MIN, GL_MAX,
+        };
+    if(equation >= sizeof(table) / sizeof(GLenum))
+        return;
+    // TODO
+    //glBlendEquation(table[equation]);
 }
 
 void SG_CALL sgDrawSetDepthFunc(SGenum func)
 {
-    if(psgmGraphicsDrawSetDepthFunc)
-        psgmGraphicsDrawSetDepthFunc(_sg_gfxHandle, func);
+    GLenum glfunc = 0;
+    switch(func)
+    {
+        case SG_CMP_NEVER:    glfunc = GL_NEVER;    break;
+        case SG_CMP_EQUAL:    glfunc = GL_EQUAL;    break;
+        case SG_CMP_NOTEQUAL: glfunc = GL_NOTEQUAL; break;
+        case SG_CMP_LESS:     glfunc = GL_LESS;     break;
+        case SG_CMP_LEQUAL:   glfunc = GL_LEQUAL;   break;
+        case SG_CMP_GREATER:  glfunc = GL_GREATER;  break;
+        case SG_CMP_GEQUAL:   glfunc = GL_GEQUAL;   break;
+        case SG_CMP_ALWAYS:   glfunc = GL_ALWAYS;   break;
+        default:
+            return;
+    }
+    glDepthFunc(glfunc);
 }
 void SG_CALL sgDrawSetDepthTest(SGbool test)
 {
-    if(psgmGraphicsDrawSetDepthTest)
-        psgmGraphicsDrawSetDepthTest(_sg_gfxHandle, test);
+    if(test)
+        glEnable(GL_DEPTH_TEST);
+    else
+        glDisable(GL_DEPTH_TEST);
 }
 
 void SG_CALL sgDrawSetAlphaFunc(SGenum func, float ref)
 {
-    if(psgmGraphicsDrawSetAlphaFunc)
-        psgmGraphicsDrawSetAlphaFunc(_sg_gfxHandle, func, ref);
+    GLenum glfunc = 0;
+    switch(func)
+    {
+        case SG_CMP_NEVER:    glfunc = GL_NEVER;    break;
+        case SG_CMP_EQUAL:    glfunc = GL_EQUAL;    break;
+        case SG_CMP_NOTEQUAL: glfunc = GL_NOTEQUAL; break;
+        case SG_CMP_LESS:     glfunc = GL_LESS;     break;
+        case SG_CMP_LEQUAL:   glfunc = GL_LEQUAL;   break;
+        case SG_CMP_GREATER:  glfunc = GL_GREATER;  break;
+        case SG_CMP_GEQUAL:   glfunc = GL_GEQUAL;   break;
+        case SG_CMP_ALWAYS:   glfunc = GL_ALWAYS;   break;
+        default:
+            return;
+    }
+    glAlphaFunc(glfunc, ref);
 }
 void SG_CALL sgDrawSetAlphaTest(SGbool test)
 {
-    if(psgmGraphicsDrawSetAlphaTest)
-        psgmGraphicsDrawSetAlphaTest(_sg_gfxHandle, test);
+    if(test)
+        glEnable(GL_ALPHA_TEST);
+    else
+        glDisable(GL_ALPHA_TEST);
 }
 
 void SG_CALL sgDrawSetPointSmooth(SGbool smooth)
 {
-    if(psgmGraphicsDrawSetPointSmooth)
-        psgmGraphicsDrawSetPointSmooth(_sg_gfxHandle, smooth);
+    GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
+
+    glHint(GL_POINT_SMOOTH_HINT, mode);
+
+    if(smooth)
+        glEnable(GL_POINT_SMOOTH);
+    else
+        glDisable(GL_POINT_SMOOTH);
 }
 void SG_CALL sgDrawSetLineSmooth(SGbool smooth)
 {
-    if(psgmGraphicsDrawSetLineSmooth)
-        psgmGraphicsDrawSetLineSmooth(_sg_gfxHandle, smooth);
+    GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
+
+    glHint(GL_LINE_SMOOTH_HINT, mode);
+
+    if(smooth)
+        glEnable(GL_LINE_SMOOTH);
+    else
+        glDisable(GL_LINE_SMOOTH);
 }
 void SG_CALL sgDrawSetPolygonSmooth(SGbool smooth)
 {
-    if(psgmGraphicsDrawSetPolygonSmooth)
-        psgmGraphicsDrawSetPolygonSmooth(_sg_gfxHandle, smooth);
+    GLenum mode = smooth ? GL_NICEST : GL_FASTEST;
+
+    glHint(GL_POLYGON_SMOOTH_HINT, mode); // was GL_LINE_SMOOTH_HINT -- bug?
+
+    if(smooth)
+        glEnable(GL_POLYGON_SMOOTH);
+    else
+        glDisable(GL_POLYGON_SMOOTH);
 }
 
 void SG_CALL sgDrawPoint(float x, float y)
@@ -503,8 +663,7 @@ void SG_CALL sgDrawPoint(float x, float y)
 }
 void SG_CALL sgDrawPointSetSize(float size)
 {
-    if(psgmGraphicsDrawPointSetSize != NULL)
-        psgmGraphicsDrawPointSetSize(_sg_gfxHandle, size);
+    glPointSize(size);
 }
 //float SG_CALL sgDrawPointGetSize(void);
 
@@ -517,8 +676,7 @@ void SG_CALL sgDrawLine(float x1, float y1, float x2, float y2)
 }
 void SG_CALL sgDrawLineSetWidth(float width)
 {
-    if(psgmGraphicsDrawLineSetWidth != NULL)
-        psgmGraphicsDrawLineSetWidth(_sg_gfxHandle, width);
+    glLineWidth(width);
 }
 //float SG_CALL sgDrawLineGetWidth(void);
 

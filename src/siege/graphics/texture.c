@@ -15,11 +15,76 @@
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/texture.h>
 #include <siege/core/window.h>
-#include <siege/modules/graphics.h>
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+
+#include "../internal/gl.h"
+
+static SGubyte texinfoGL(GLuint* gliformat, GLuint* glformat, GLuint* gltype, SGenum bpp)
+{
+    GLuint tmp;
+    if(!gliformat)  gliformat = &tmp;
+    if(!glformat)   glformat = &tmp;
+    if(!gltype)     gltype = &tmp;
+    switch(bpp)
+    {
+        case 8:
+            *gliformat = GL_R3_G3_B2;
+            *glformat = GL_RGB;
+            *gltype = GL_UNSIGNED_BYTE_3_3_2;
+            return 1;
+        case 15:
+            *gliformat = GL_RGB5; // GL_RGB5_A1
+            *glformat = GL_RGB;
+            *gltype = GL_UNSIGNED_SHORT_5_5_5_1;
+            return 2;
+        case 16:
+            *gliformat = GL_RGB5;
+            *glformat = GL_RGB;
+            *gltype = GL_UNSIGNED_SHORT_5_6_5;
+            return 2;
+        case 24:
+            *gliformat = GL_RGB8;
+            *glformat = GL_RGB;
+            *gltype = GL_UNSIGNED_BYTE;
+            return 3;
+        case 32:
+            *gliformat = GL_RGBA8;
+            *glformat = GL_RGBA;
+            *gltype = GL_UNSIGNED_BYTE;
+            return 4;
+        default:
+            return 0;
+    }
+}
+static GLenum wrapSGtoGL(SGenum wrap)
+{
+    // Note: depends on GL_* not being 0
+    switch(wrap)
+    {
+        case SG_WRAP_CLAMP:             return GL_CLAMP;
+        case SG_WRAP_CLAMP_TO_EDGE:     return GL_CLAMP_TO_EDGE;
+        case SG_WRAP_MIRRORED_REPEAT:   return GL_MIRRORED_REPEAT;
+        case SG_WRAP_REPEAT:            return GL_REPEAT;
+        case SG_WRAP_CURRENT:
+        default:
+            return 0;
+    }
+}
+static GLenum interpSGtoGL(SGenum interp)
+{
+    // Note: depends on GL_* not being 0
+    switch(interp)
+    {
+        case SG_INTERP_NEAREST: return GL_NEAREST;
+        case SG_INTERP_LINEAR:  return GL_LINEAR;
+        case SG_INTERP_CURRENT:
+        default:
+            return 0;
+    }
+}
 
 SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream, SGbool delstream)
 {
@@ -50,11 +115,18 @@ SGTexture* SG_CALL sgTextureCreateFile(const char* fname)
 SGTexture* SG_CALL sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data)
 {
     SGTexture* texture = malloc(sizeof(SGTexture));
-    if(texture == NULL)
-        return NULL;
+    if(!texture) return NULL;
 
-    if(psgmGraphicsTextureCreate != NULL)
-        psgmGraphicsTextureCreate(&texture->handle, _sg_gfxHandle);
+    texture->handle = malloc(sizeof(GLuint));
+
+    glGenTextures(1, texture->handle);
+    glBindTexture(GL_TEXTURE_2D, GLTEX(texture));
+
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     sgTextureSetData(texture, width, height, bpp, data);
 
     return texture;
@@ -65,42 +137,101 @@ SGTexture* SG_CALL sgTextureCreate(SGuint width, SGuint height, SGenum bpp)
 }
 void SG_CALL sgTextureDestroy(SGTexture* texture)
 {
-    if(!texture)
-        return;
+    if(!texture) return;
 
-    if(psgmGraphicsTextureDestroy != NULL)
-        psgmGraphicsTextureDestroy(texture->handle);
+    glDeleteTextures(1, texture->handle);
+    free(texture->handle);
     free(texture);
 }
 
 void SG_CALL sgTextureSetData(SGTexture* texture, size_t width, size_t height, SGenum bpp, void* data)
 {
-    if(psgmGraphicsTextureSetData)
-        psgmGraphicsTextureSetData(texture->handle, width, height, bpp, data);
+    texture->width = width;
+    texture->height = height;
+    texture->bpp = bpp;
+
+    glBindTexture(GL_TEXTURE_2D, GLTEX(texture));
+
+    GLuint gliformat, glformat, gltype;
+    SGubyte bypp = texinfoGL(&gliformat, &glformat, &gltype, bpp);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, gliformat, width, height, 0, glformat, gltype, NULL);
+
+    /*if(data)
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, glformat, gltype, data);*/
+
+    size_t i;
+    if(data)
+        for(i = 0; i < height; i++)
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, texture->height - i - 1, width, 1, glformat, gltype, ((char*)data) + (i * width) * bypp);
 }
 void SG_CALL sgTextureSetSubData(SGTexture* texture, size_t x, size_t y, size_t width, size_t height, SGenum bpp, void* data)
 {
-    if(psgmGraphicsTextureSetSubData)
-        psgmGraphicsTextureSetSubData(texture->handle, x, y, width, height, bpp, data);
+    glBindTexture(GL_TEXTURE_2D, GLTEX(texture));
+
+    GLuint glformat, gltype;
+    SGubyte bypp = texinfoGL(NULL, &glformat, &gltype, bpp);
+
+    size_t i;
+    if(data)
+        for(i = 0; i < height; i++)
+            glTexSubImage2D(GL_TEXTURE_2D, 0, x, texture->height - y - i - 1, width, 1, glformat, gltype, ((char*)data) + (i * width) * bypp);
 }
 void* SG_CALL sgTextureGetData(SGTexture* texture)
 {
-    SGuint w, h;
-    SGenum bpp;
-    void* data = NULL;
-    if(psgmGraphicsTextureGetData)
-        psgmGraphicsTextureGetData(texture->handle, &w, &h, &bpp, &data);
+    GLuint glformat, gltype;
+    GLubyte bypp = texinfoGL(NULL, &glformat, &gltype, texture->bpp);
+    void* data = malloc(texture->width * texture->height * bypp);
+
+    glBindTexture(GL_TEXTURE_2D, GLTEX(texture));
+    glGetTexImage(GL_TEXTURE_2D, 0, glformat, gltype, data);
+
     return data;
 }
 void SG_CALL sgTextureFreeData(void* data)
 {
-    psgmGraphicsTextureFreeData(data);
+    if(data)
+        free(data);
 }
 
 void SG_CALL sgTextureDrawRads3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
-    if(psgmGraphicsTextureDraw != NULL)
-        psgmGraphicsTextureDraw(texture->handle, x, y, z, xscale, yscale, xoffset, yoffset, angle);
+    glPushMatrix();
+    glTranslatef(x, y, 0.0);
+    glRotatef(angle * 180.0 / SG_PI, 0.0, 0.0, 1.0);
+    glScalef(xscale, yscale, 1.0);
+    glTranslatef(-x - xoffset, -y - yoffset, 0.0);
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+    float vertices[4*3] = {
+            x                 , y                  , z,
+            x + texture->width, y                  , z,
+            x + texture->width, y + texture->height, z,
+            x                 , y + texture->height, z
+        };
+    float texcoords[4*2] = {
+            0.0, 1.0,
+            1.0, 1.0,
+            1.0, 0.0,
+            0.0, 0.0
+        };
+
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
+    glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, GLTEX(texture));
+
+    glDrawArrays(GL_QUADS, 0, 4);
+
+    glDisable(GL_TEXTURE_2D);
+
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
+
+    glPopMatrix();
 }
 void SG_CALL sgTextureDrawDegs3f2f2f1f(SGTexture* texture, float x, float y, float z, float xscale, float yscale, float xoffset, float yoffset, float angle)
 {
@@ -177,50 +308,44 @@ void SG_CALL sgTextureDraw(SGTexture* texture)
 
 void SG_CALL sgTextureSetWrap(SGTexture* texture, SGenum swrap, SGenum twrap)
 {
-    if(psgmGraphicsTextureSetWrap)
-        psgmGraphicsTextureSetWrap(texture->handle, swrap, twrap);
+    glBindTexture(GL_TEXTURE_2D, GLTEX(texture));
+
+    GLenum glwrap;
+
+    glwrap = wrapSGtoGL(swrap);
+    if(glwrap)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, glwrap);
+
+    glwrap = wrapSGtoGL(twrap);
+    if(glwrap)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, glwrap);
 }
 void SG_CALL sgTextureSetInterpolation(SGTexture* texture, SGenum interp)
 {
-    if(psgmGraphicsTextureSetInterpolation)
-        psgmGraphicsTextureSetInterpolation(texture->handle, interp);
+    glBindTexture(GL_TEXTURE_2D, GLTEX(texture));
+
+    GLenum glinterp = interpSGtoGL(interp);
+    if(glinterp)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glinterp);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glinterp);
+    }
 }
 
 void SG_CALL sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height)
 {
-    if((width == NULL) && (height == NULL))
-        return;
-    SGuint tmp;
-
-    // make sure we don't pass any nulls
-    if(width == NULL)
-        width = &tmp;
-    if(height == NULL)
-        height = &tmp;
-
-    if(psgmGraphicsTextureGetSize != NULL)
-        psgmGraphicsTextureGetSize(texture->handle, width, height);
+    if(width)   *width = texture->width;
+    if(height)  *height = texture->height;
 }
 SGuint SG_CALL sgTextureGetWidth(SGTexture* texture)
 {
-    SGuint width;
-    SGuint height;
-    if(psgmGraphicsTextureGetSize != NULL)
-        psgmGraphicsTextureGetSize(texture->handle, &width, &height);
-    return width;
+    return texture->width;
 }
 SGuint SG_CALL sgTextureGetHeight(SGTexture* texture)
 {
-    SGuint width;
-    SGuint height;
-    if(psgmGraphicsTextureGetSize != NULL)
-        psgmGraphicsTextureGetSize(texture->handle, &width, &height);
-    return height;
+    return texture->height;
 }
 SGenum SG_CALL sgTextureGetBPP(SGTexture* texture)
 {
-    SGenum bpp;
-    if(psgmGraphicsTextureGetBPP)
-        psgmGraphicsTextureGetBPP(texture->handle, &bpp);
-    return bpp;
+    return texture->bpp;
 }

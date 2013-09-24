@@ -17,14 +17,7 @@
 
 #define SG_BUILD_BACKEND
 
-#include "backend/graphics/init.h"
 #include "backend/physics/init.h"
-// Graphics
-#include "backend/graphics/context.h"
-#include "backend/graphics/draw.h"
-#include "backend/graphics/surface.h"
-#include "backend/graphics/texture.h"
-#include "backend/graphics/viewport.h"
 // Physics
 #include "backend/physics/body.h"
 #include "backend/physics/collision.h"

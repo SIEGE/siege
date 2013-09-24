@@ -14,7 +14,6 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/mask.h>
-#include <siege/modules/graphics.h>
 // for DrawDBG && _sg_drawCurColor
 #include <siege/graphics/draw.h>
 
@@ -47,12 +46,10 @@ SGMask* SG_CALL sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint y
     for(i = 0; i < mask->width; i++)
         mask->field[i] = calloc(mask->height, sizeof(SGbool));
 
-    SGuint awidth = 0;
-    SGuint aheight = 0;
-    SGuint bpp = 0;
-    char* data = NULL;
-    if(psgmGraphicsTextureGetData != NULL)
-        psgmGraphicsTextureGetData(texture->handle, &awidth, &aheight, &bpp, (void**)&data);
+    SGuint awidth, aheight;
+    sgTextureGetSize(texture, &awidth, &aheight);
+    SGuint bpp = sgTextureGetBPP(texture);
+    char* data = sgTextureGetData(texture);
 
     /*SGubyte bypp = 0;*/
     SGubyte r, g, b, a;
@@ -136,7 +133,7 @@ SGMask* SG_CALL sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint y
         }
     }
 
-    psgmGraphicsTextureFreeData(data);
+    sgTextureFreeData(data);
 
     return mask;
 }

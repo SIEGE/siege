@@ -20,7 +20,6 @@
 #include <siege/input/joystick.h>
 #include <siege/input/keyboard.h>
 #include <siege/input/mouse.h>
-#include <siege/modules/graphics.h>
 #include <siege/util/string.h>
 #include <siege/util/time.h>
 
@@ -30,6 +29,70 @@
 #include <stdio.h>
 
 #include <SDL/SDL.h>
+#include "../internal/gl.h"
+
+#define BIND(name)  \
+    do {            \
+        gl##name##EXT = SDL_GL_GetProcAddress("gl" #name);                          \
+        if(!gl##name##EXT) gl##name##EXT = SDL_GL_GetProcAddress("gl" #name "EXT"); \
+        if(!gl##name##EXT) {                                                        \
+            fprintf(stderr, "Unable to load extension function %s\n", "gl" #name);  \
+            return SG_FALSE;                                                        \
+        }                                                                           \
+    } while(0)
+
+static SGbool bindGL(void)
+{
+    BIND(IsRenderbuffer);
+    BIND(BindRenderbuffer);
+    BIND(DeleteRenderbuffers);
+    BIND(GenRenderbuffers);
+    BIND(RenderbufferStorage);
+    BIND(GetRenderbufferParameteriv);
+    BIND(IsFramebuffer);
+    BIND(BindFramebuffer);
+    BIND(DeleteFramebuffers);
+    BIND(GenFramebuffers);
+    BIND(CheckFramebufferStatus);
+    BIND(FramebufferTexture1D);
+    BIND(FramebufferTexture2D);
+    BIND(FramebufferTexture3D);
+    BIND(FramebufferRenderbuffer);
+    BIND(GetFramebufferAttachmentParameteriv);
+    BIND(GenerateMipmap);
+    return SG_TRUE;
+}
+static SGbool initGL(void)
+{
+    glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthFunc(GL_LEQUAL);
+    glDisable(GL_CULL_FACE);
+
+    glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+
+    if(!bindGL())
+        return SG_FALSE;
+    return SG_TRUE;
+}
+static void resizeGL(SGuint width, SGuint height)
+{
+    glViewport(0, 0, width, height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glOrtho(0, width, height, 0, 127, -128);
+
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
 
 static char*        winTitle;
 static SDL_Surface* winIcon;
@@ -143,8 +206,8 @@ SGbool SG_CALL sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flag
         return SG_FALSE;    // TODO: ERRORMSG
 
     sgWindowGetSize(&width, &height);
-    if(psgmGraphicsContextCreate != NULL)
-        psgmGraphicsContextCreate(&_sg_gfxHandle, width, height, bpp);
+    if(!initGL())
+        return SG_FALSE;
 
     _sg_viewMain = sgViewportCreate4i(0, 0, width, height);
 
@@ -158,8 +221,6 @@ SGbool SG_CALL sgWindowIsOpened(void)
 }
 void SG_CALL sgWindowClose(void)
 {
-    if(psgmGraphicsContextDestroy != NULL)
-        psgmGraphicsContextDestroy(_sg_gfxHandle);
     // TODO: Actually close the window (SDL2 ...)
     _sg_cbWindowClose();
 }
@@ -240,8 +301,7 @@ char* SG_CALL sgWindowGetTitle(void)
 void SG_CALL sgWindowSetSize(SGuint width, SGuint height)
 {
     winSurface = SDL_SetVideoMode(width, height, winSurface->format->BitsPerPixel, winSurface->flags);
-    if(psgmGraphicsContextResize != NULL)
-        psgmGraphicsContextResize(_sg_gfxHandle, width, height);
+    resizeGL(width, height);
     _sg_cbWindowResize(width, height);
 }
 void SG_CALL sgWindowGetSize(SGuint* width, SGuint* height)
@@ -350,6 +410,10 @@ void SG_CALL sgWindowHandleEvents(void)
 }
 void SG_CALL sgWindowSwapBuffers(void)
 {
+    // $$$$$$$$$$ TEMPORARY $$$$$$$$$$
+    // TODO: REMOVEME
+    sgWindowHandleEvents();
+
     SGlong origin = sgGetTime();
 
     SDL_GL_SwapBuffers();

@@ -15,9 +15,10 @@
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/viewport.h>
 #include <siege/core/window.h>
-#include <siege/modules/graphics.h>
 
 #include <stdlib.h>
+
+#include "../internal/gl.h"
 
 SGbool SG_CALL _sgViewportInit(void)
 {
@@ -60,8 +61,6 @@ SGViewport* SG_CALL sgViewportCreate(void)
     if(viewport == NULL)
         return NULL;
 
-    if(psgmGraphicsViewportCreate != NULL)
-        psgmGraphicsViewportCreate(&viewport->handle, _sg_gfxHandle);
     sgListAppend(_sg_viewList, viewport);
     return viewport;
 }
@@ -70,8 +69,6 @@ void SG_CALL sgViewportDestroy(SGViewport* viewport)
     if(viewport == NULL)
         return;
 
-    if(psgmGraphicsViewportDestroy != NULL)
-        psgmGraphicsViewportDestroy(viewport->handle);
     sgListRemoveItem(_sg_viewList, viewport);
     free(viewport);
 }
@@ -98,8 +95,15 @@ void SG_CALL sgViewportReset(SGViewport* viewport)
 {
     if(viewport == NULL)
         return;
-    if(psgmGraphicsViewportSetView != NULL)
-        psgmGraphicsViewportSetView(viewport->handle, viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey, viewport->posx, viewport->posy, viewport->sizex, viewport->sizey);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glViewport(viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey);
+    glOrtho(viewport->posx, viewport->posx + viewport->sizex, viewport->posy + viewport->sizey, viewport->posy, 127, -128);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void SG_CALL sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy)

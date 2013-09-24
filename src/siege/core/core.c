@@ -30,7 +30,6 @@
 #include <siege/input/joystick.h>
 
 #include <siege/modules/modules.h>
-#include <siege/modules/graphics.h>
 #include <siege/modules/physics.h>
 
 #include <siege/physics/space.h>
@@ -105,8 +104,6 @@ SGbool SG_CALL sgInit(SGenum flags)
     if(_sg_hasInited)
         return SG_TRUE;
 
-    sgModuleLoad("OpenGL");
-    sgModuleLoad("OpenAL");
     sgModuleLoad("Chipmunk");
 
     // CORE: SDL
@@ -118,7 +115,6 @@ SGbool SG_CALL sgInit(SGenum flags)
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    psgmGraphicsInit();
     if(psgmPhysicsInit) psgmPhysicsInit();
 
     _sg_firstLoop = SG_TRUE;
@@ -194,7 +190,6 @@ SGbool SG_CALL sgDeinit(void)
     _sgEntityDeinit();
 
     if(psgmPhysicsDeinit) psgmPhysicsDeinit();
-    psgmGraphicsDeinit();
 
     // CORE: SDL
     SDL_Quit();
