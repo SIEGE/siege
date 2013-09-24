@@ -94,7 +94,7 @@ SGbool SG_CALL _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbool
         return SG_TRUE;
     }
 
-    FontFace* fface = (FontFace*)font;
+    FontFace* fface = font->handle;
     int adv, left;
     int dw, dh;
     int xo, yo;
@@ -111,9 +111,9 @@ SGbool SG_CALL _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbool
     {
         glyph = stbtt_FindGlyphIndex(&fface->info, achars[i]);
 
-        //dw = dh = 0;
+        dw = dh = 0;
         data = stbtt_GetGlyphBitmap(&fface->info, fface->scale, fface->scale, glyph, &dw, &dh, &xo, &yo);
-        if(!data) goto err;
+        //if(!data) goto err;
         ci.dwidth = dw;
         ci.dheight = dh;
 
@@ -163,9 +163,6 @@ SGbool SG_CALL _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbool
 
     free(achars);
     return SG_TRUE;
-err:
-    free(achars);
-    return SG_FALSE;
 }
 SGubyte* SG_CALL _sgFontToRGBA(SGFont* font, SGubyte* data, SGuint datalen)
 {
@@ -281,13 +278,13 @@ static void SG_CALL _sgFontSetHeight(SGFont* font, float height, SGuint dpi)
 
     FontFace* fface = font->handle;
     //fface->scale = stbtt_ScaleForPixelHeight(&fface->info, height);
-    fface->scale = stbtt_ScaleForMappingEmToPixels(&fface->info, height * dpi / 72.0);
+    fface->scale = stbtt_ScaleForMappingEmToPixels(&fface->info, height * font->dpi / 72.0);
 
     int iasc, idesc, igap;
     stbtt_GetFontVMetrics(&fface->info, &iasc, &idesc, &igap);
-    font->ascent = iasc;
-    font->descent = idesc;
-    font->linegap = igap;
+    font->ascent = iasc * fface->scale;
+    font->descent = idesc * fface->scale;
+    font->linegap = igap * fface->scale;
 }
 
 typedef SGbool SG_CALL ExecLineStartFunction(SGFont* font, const SGdchar* text, const SGdchar* start, const SGdchar* end, void* data);
@@ -382,7 +379,8 @@ SGFont* SG_CALL sgFontCreateStream(SGStream* stream, SGbool delstream, float hei
     fface->buf = malloc(size);
     if(sgStreamRead(stream, fface->buf, 1, size) != size)
         goto err;
-    stbtt_InitFont(&fface->info, fface->buf, 0);
+    if(!stbtt_InitFont(&fface->info, fface->buf, 0))
+        goto err;
 
     fface->scale = 1.0;
 
