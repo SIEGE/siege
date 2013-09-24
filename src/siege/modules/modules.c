@@ -16,7 +16,6 @@
 #include <siege/modules/audio.h>
 #include <siege/modules/graphics.h>
 #include <siege/modules/physics.h>
-#include <siege/modules/fonts.h>
 
 #include <siege/util/directory.h>
 
@@ -95,7 +94,6 @@ SGModule* SG_CALL sgModuleLoad(const char* name)
     _sgModuleLoadAudio(module->lib);
     _sgModuleLoadGraphics(module->lib);
     _sgModuleLoadPhysics(module->lib);
-    _sgModuleLoadFonts(module->lib);
 
     if(!_sg_modList)
         _sg_modList = sgListCreate();

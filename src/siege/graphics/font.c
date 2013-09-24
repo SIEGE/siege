@@ -15,7 +15,6 @@
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/texture.h>
 #include <siege/graphics/font.h>
-#include <siege/modules/fonts.h>
 #include <siege/util/string.h>
 #include <siege/util/vector.h>
 
@@ -24,6 +23,15 @@
 #include <stdarg.h>
 #include <string.h>
 #include <wchar.h>
+
+#include "../internal/stb/stb_truetype.h"
+
+typedef struct FontFace
+{
+    stbtt_fontinfo info;
+    void* buf;
+    float scale;
+} FontFace;
 
 static SGint SG_CALL _sgFontMapCmp(const SGdchar* a, const SGdchar* b, void* data)
 {
@@ -86,13 +94,12 @@ SGbool SG_CALL _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbool
         return SG_TRUE;
     }
 
-    if(psgmFontsCharsCreate == NULL)
-    {
-        free(achars);
-        return SG_FALSE;
-    }
+    FontFace* fface = (FontFace*)font;
+    int adv, left;
+    int dw, dh;
+    int xo, yo;
+    int glyph;
 
-    SGuint ret = 0;
     SGuint i;
     SGCharInfo ci;
     void* data;
@@ -102,16 +109,24 @@ SGbool SG_CALL _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbool
     size_t* val;
     for(i = 0; i < alen; i++)
     {
-        ret |= psgmFontsCharsCreate(font->handle, &achars[i], 1, &ci.width, &ci.height, &ci.xpre, &ci.ypre, &ci.xpost, &ci.ypost, &ci.dwidth, &ci.dheight, &data);
-        if(ret != SG_OK)
-        {
-            free(achars);
-            return SG_FALSE;
-        }
+        glyph = stbtt_FindGlyphIndex(&fface->info, achars[i]);
+
+        //dw = dh = 0;
+        data = stbtt_GetGlyphBitmap(&fface->info, fface->scale, fface->scale, glyph, &dw, &dh, &xo, &yo);
+        if(!data) goto err;
+        ci.dwidth = dw;
+        ci.dheight = dh;
+
+        stbtt_GetGlyphHMetrics(&fface->info, glyph, &adv, &left);
+        ci.xpre = xo;
+        ci.ypre = yo;
+        ci.xpost = adv * fface->scale;
+        ci.ypost = 0;
+        ci.width = adv * fface->scale;
+        ci.height = 0; // TODO
 
         rgba = _sgFontToRGBA(font, data, ci.dwidth * ci.dheight);
-        if(psgmFontsCharsFreeData != NULL)
-            psgmFontsCharsFreeData(data);
+        stbtt_FreeBitmap(data, NULL);
 
         SGTexture* texture = sgTextureCreateData(ci.dwidth, ci.dheight, 32, rgba);
         sgTextureSetWrap(texture, SG_WRAP_CLAMP_TO_EDGE, SG_WRAP_CLAMP_TO_EDGE);
@@ -148,6 +163,9 @@ SGbool SG_CALL _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbool
 
     free(achars);
     return SG_TRUE;
+err:
+    free(achars);
+    return SG_FALSE;
 }
 SGubyte* SG_CALL _sgFontToRGBA(SGFont* font, SGubyte* data, SGuint datalen)
 {
@@ -260,16 +278,16 @@ static void SG_CALL _sgFontSetHeight(SGFont* font, float height, SGuint dpi)
 {
     font->height = height;
     font->dpi = dpi ? dpi : 96;
-    if(psgmFontsFaceSetHeight)
-        psgmFontsFaceSetHeight(font->handle, height, font->dpi);
-    if(psgmFontsFaceGetMetrics)
-        psgmFontsFaceGetMetrics(font->handle, &font->ascent, &font->descent, &font->linegap);
-    else
-    {
-        font->ascent = SG_NAN;
-        font->descent = SG_NAN;
-        font->linegap = SG_NAN;
-    }
+
+    FontFace* fface = font->handle;
+    //fface->scale = stbtt_ScaleForPixelHeight(&fface->info, height);
+    fface->scale = stbtt_ScaleForMappingEmToPixels(&fface->info, height * dpi / 72.0);
+
+    int iasc, idesc, igap;
+    stbtt_GetFontVMetrics(&fface->info, &iasc, &idesc, &igap);
+    font->ascent = iasc;
+    font->descent = idesc;
+    font->linegap = igap;
 }
 
 typedef SGbool SG_CALL ExecLineStartFunction(SGFont* font, const SGdchar* text, const SGdchar* start, const SGdchar* end, void* data);
@@ -280,6 +298,8 @@ static SGbool SG_CALL _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecL
 {
     if(!font)
         return SG_FALSE;
+
+    FontFace* fface = font->handle;
 
     float xoffset = 0.0;
     float yoffset = 0.0;
@@ -293,6 +313,7 @@ static SGbool SG_CALL _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecL
 
     SGCharInfo* info = NULL;
     float* kerning = NULL;
+    size_t i;
     while(start != NULL)
     {
         end = sgLineEndU32(start);
@@ -305,8 +326,8 @@ static SGbool SG_CALL _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecL
          * due to end being the same as start
          */
         kerning = realloc(kerning, (end - start) * sizeof(float));
-        if(psgmFontsCharsGetKerning)
-            psgmFontsCharsGetKerning(font->handle, start, end - start, kerning);
+        for(i = 1; i < end - start; i++)
+            kerning[i-1] = stbtt_GetCodepointKernAdvance(&fface->info, start[i-1], start[i]) * fface->scale;
         if(!_sgFontGetChars(font, (SGdchar*)start, end - start, info) && ((end - start) != 0))
         {
             start = sgNextLineU32(start);
@@ -318,7 +339,7 @@ static SGbool SG_CALL _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecL
         {
             if(execChar && execChar(font, text, chr, &info[chr-start], xoffset, yoffset, data))
                 goto end;
-            if(psgmFontsCharsGetKerning && chr != end - 1)
+            if(chr != end - 1)
                 xoffset += kerning[chr - start];
             xoffset += info[chr - start].xpost;
             yoffset += info[chr - start].ypost;
@@ -344,16 +365,24 @@ SGFont* SG_CALL sgFontCreateStream(SGStream* stream, SGbool delstream, float hei
 
     font->stream = stream;
     font->del = delstream;
+    FontFace* fface = NULL;
 
-    SGuint ret = SG_OK;
-    if(psgmFontsFaceCreate != NULL)
-        ret = psgmFontsFaceCreate(&font->handle, stream);
-    if(ret != SG_OK)
-    {
-        fprintf(stderr, "Warning: Cannot create font\n");
-        free(font);
-        return NULL;
-    }
+    fface = malloc(sizeof(FontFace));
+    if(!fface) goto err;
+    fface->buf = NULL;
+
+    font->handle = fface;
+
+    SGlong pos = sgStreamTell(stream);
+    SGlong size = sgStreamTellSize(stream);
+    size -= pos;
+
+    fface->buf = malloc(size);
+    if(sgStreamRead(stream, fface->buf, 1, size) != size)
+        goto err;
+    stbtt_InitFont(&fface->info, fface->buf, 0);
+
+    fface->scale = 1.0;
 
     font->conv[0] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_CHAR);
     font->conv[1] = sgConvCreate(SG_CONV_TYPE_UTF32, SG_CONV_TYPE_WCHAR_T);
@@ -366,6 +395,16 @@ SGFont* SG_CALL sgFontCreateStream(SGStream* stream, SGbool delstream, float hei
     _sgFontCreateCache(font);
 
     return font;
+err:
+    if(fface)
+    {
+        if(fface->buf)
+            free(fface->buf);
+        free(fface);
+    }
+    fprintf(stderr, "Warning: Cannot create font\n");
+    free(font);
+    return NULL;
 }
 SGFont* SG_CALL sgFontCreate(const char* fname, float height, SGuint dpi, SGuint preload)
 {
@@ -386,8 +425,9 @@ void SG_CALL sgFontDestroy(SGFont* font)
     for(i = 0; i < 4; i++)
         sgConvDestroy(font->conv[i]);
 
-    if(psgmFontsFaceDestroy != NULL)
-        psgmFontsFaceDestroy(font->handle);
+    FontFace* fface = font->handle;
+    free(fface->buf);
+    free(fface);
 
     _sgFontDestroyCache(font);
 

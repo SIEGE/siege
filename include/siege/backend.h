@@ -19,7 +19,6 @@
 
 #include "backend/graphics/init.h"
 #include "backend/audio/init.h"
-#include "backend/fonts/init.h"
 #include "backend/physics/init.h"
 // Graphics
 #include "backend/graphics/context.h"
@@ -32,9 +31,6 @@
 // Audio
 #include "backend/audio/buffer.h"
 #include "backend/audio/source.h"
-// Fonts
-#include "backend/fonts/face.h"
-#include "backend/fonts/chars.h"
 // Physics
 #include "backend/physics/body.h"
 #include "backend/physics/collision.h"

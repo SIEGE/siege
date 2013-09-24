@@ -15,7 +15,6 @@
 #define SG_BUILD_LIBRARY
 #include <siege/util/conv.h>
 #include <siege/util/string.h>
-#include <siege/modules/fonts.h>
 
 #include <stdlib.h>
 #include <string.h>

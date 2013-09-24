@@ -32,7 +32,6 @@
 #include <siege/modules/modules.h>
 #include <siege/modules/graphics.h>
 #include <siege/modules/audio.h>
-#include <siege/modules/fonts.h>
 #include <siege/modules/physics.h>
 
 #include <siege/physics/space.h>
@@ -107,13 +106,9 @@ SGbool SG_CALL sgInit(SGenum flags)
     if(_sg_hasInited)
         return SG_TRUE;
 
-    sgModuleLoad("SDL");
     sgModuleLoad("OpenGL");
     sgModuleLoad("OpenAL");
-    sgModuleLoad("STB-TrueType");
     sgModuleLoad("Chipmunk");
-    sgModuleLoad("STB-Image");
-    sgModuleLoad("STB-Vorbis");
 
     // CORE: SDL
     // TODO: change SDL_INIT_EVERYTHING to appropriate values
@@ -126,7 +121,6 @@ SGbool SG_CALL sgInit(SGenum flags)
 
     psgmGraphicsInit();
     if(psgmAudioInit) psgmAudioInit();
-    if(psgmFontsInit) psgmFontsInit();
     if(psgmPhysicsInit) psgmPhysicsInit();
 
     _sg_firstLoop = SG_TRUE;
@@ -202,7 +196,6 @@ SGbool SG_CALL sgDeinit(void)
     _sgEntityDeinit();
 
     if(psgmPhysicsDeinit) psgmPhysicsDeinit();
-    if(psgmFontsDeinit) psgmFontsDeinit();
     if(psgmAudioDeinit) psgmAudioDeinit();
     psgmGraphicsDeinit();
 
