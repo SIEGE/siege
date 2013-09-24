@@ -28,7 +28,6 @@ extern "C"
 #include "../backend/audio/init.h"
 #include "../backend/audio/buffer.h"
 #include "../backend/audio/source.h"
-#include "../backend/audio/load.h"
 #undef SG_FPTR
 
 #endif // SG_BUILD_LIBRARY

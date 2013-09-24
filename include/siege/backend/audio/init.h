@@ -27,8 +27,6 @@ extern "C"
 #endif
     SGenum SG_CALL SG_FPTR(sgmAudioInit)(void);
     SGenum SG_CALL SG_FPTR(sgmAudioDeinit)(void);
-    SGenum SG_CALL SG_FPTR(sgmALoadInit)(void);
-    SGenum SG_CALL SG_FPTR(sgmALoadDeinit)(void);
 #ifdef __cplusplus
 }
 #endif

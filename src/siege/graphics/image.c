@@ -19,26 +19,61 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "../internal/stb/stb_image.h"
+
+static int f_read(void* data, char* ptr, int size)
+{
+    SGStream* stream = data;
+    return stream->read(stream->data, ptr, 1, size);
+}
+static void f_skip(void* data, unsigned n)
+{
+    SGStream* stream = data;
+    stream->seek(stream->data, n, SG_SEEK_CUR);
+}
+static int f_eof(void* data)
+{
+    SGStream* stream = data;
+    return stream->eof(stream->data);
+}
+
+static stbi_io_callbacks imgCallbacks;
+
+SGbool SG_CALL _sgImageDataInit(void)
+{
+    imgCallbacks.read = f_read;
+    imgCallbacks.skip = f_skip;
+    imgCallbacks.eof = f_eof;
+    return SG_TRUE;
+}
+SGbool SG_CALL _sgImageDataDeinit(void)
+{
+    return SG_TRUE;
+}
+
 SGImageData* SG_CALL sgImageDataCreateStream(SGStream* stream, SGbool delstream)
 {
-    SGImageData* idata = malloc(sizeof(SGImageData));
+    SGImageData* idata = NULL;
+    if(!stream) goto err;
+    idata = malloc(sizeof(SGImageData));
     if(!idata) goto err;
 
-    SGenum ret;
-    if(psgmGraphicsLoad)
-    {
-        ret = psgmGraphicsLoad(stream, &idata->width, &idata->height, &idata->bpp, &idata->data);
-        if(ret != SG_OK)
-            goto err;
-    }
-    else
+
+    // TODO: Load with image BPP
+    int w, h, n;
+    idata->data = stbi_load_from_callbacks(&imgCallbacks, stream, &w, &h, &n, 4);
+    if(!idata->data)
         goto err;
+    idata->deldata = SG_TRUE;
+    idata->width = w;
+    idata->height = h;
+    idata->bpp = 32;
     return idata;
 err:
     fprintf(stderr, "Could not load image\n");
     if(idata)
     {
-        if(idata->data)
+        if(idata->deldata && idata->data)
             free(idata->data);
         free(idata);
     }
@@ -58,6 +93,7 @@ SGImageData* SG_CALL sgImageDataCreateData(size_t width, size_t height, SGenum b
     idata->height = height;
     idata->bpp = bpp;
     idata->data = data;
+    idata->deldata = SG_FALSE;
 
     return idata;
 }
@@ -69,8 +105,8 @@ void SG_CALL sgImageDataDestroy(SGImageData* idata)
 {
     if(!idata) return;
 
-    if(psgmGraphicsLoadFreeData)
-        psgmGraphicsLoadFreeData(idata->data);
+    if(idata->deldata)
+        free(idata->data);
     free(idata);
 }
 

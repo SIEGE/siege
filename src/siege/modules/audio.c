@@ -23,8 +23,6 @@ void SG_CALL _sgModuleLoadAudio(SGLibrary* lib)
 
     _SG_BIND(sgmAudioInit);
     _SG_BIND(sgmAudioDeinit);
-    _SG_BIND(sgmALoadInit);
-    _SG_BIND(sgmALoadDeinit);
 
     /// Audio
     _SG_BIND(sgmAudioBufferCreate);
@@ -66,12 +64,4 @@ void SG_CALL _sgModuleLoadAudio(SGLibrary* lib)
     _SG_BIND(sgmAudioSourceGetVolume);
     _SG_BIND(sgmAudioSourceSetLooping);
     _SG_BIND(sgmAudioSourceGetLooping);
-
-    /// Audio Load
-    _SG_BIND(sgmAudioFileCreate);
-    _SG_BIND(sgmAudioFileDestroy);
-    _SG_BIND(sgmAudioFileNumSamples);
-    _SG_BIND(sgmAudioFileRead);
-
-    _SG_BIND(sgmAudioFileGetHandle);
 }

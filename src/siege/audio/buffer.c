@@ -18,6 +18,10 @@
 
 #include <stdlib.h>
 
+#include "../internal/stb/stb_vorbis.h"
+
+// TODO: Streaming audio, proper error handling for loading
+
 SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstream)
 {
     SGAudioBuffer* buffer = malloc(sizeof(SGAudioBuffer));
@@ -28,62 +32,60 @@ SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstr
     if(psgmAudioBufferCreate != NULL)
         psgmAudioBufferCreate(&buffer->handle);
 
-    SGuint channels = 0;
-    SGuint format = 0;
-    SGuint frequency = 0;
+    SGuint channels;
+    SGuint format;
+    SGuint frequency;
     void* data = NULL;
-    SGuint datalen = 0;
-    SGuint nsamples = 0;
-    void* file = NULL;
-    void* handle = NULL;
-    if(psgmAudioFileCreate)
-        psgmAudioFileCreate(&file, stream, &channels, &format, &frequency);
+    SGuint datalen;
+    SGuint nsamples;
 
-    if(psgmAudioFileGetHandle
-    && psgmAudioFileGetHandle(file, &handle) == SG_OK
-    && psgmAudioBufferSetHandle
-    && psgmAudioBufferSetHandle(buffer->handle, handle) == SG_OK)
-    {
-    }
-    else
-    {
-        if(psgmAudioFileNumSamples)
-            psgmAudioFileNumSamples(file, &nsamples);
-        switch(format)
-        {
-            case SG_AUDIO_FORMAT_S8:
-            case SG_AUDIO_FORMAT_U8:
-                datalen = nsamples * channels;
-                break;
-            case SG_AUDIO_FORMAT_S16:
-            case SG_AUDIO_FORMAT_U16:
-                datalen = 2 * nsamples * channels;
-                break;
-            case SG_AUDIO_FORMAT_S24:
-            case SG_AUDIO_FORMAT_U24:
-                datalen = 3 * nsamples * channels;
-                break;
-            case SG_AUDIO_FORMAT_S32:
-            case SG_AUDIO_FORMAT_U32:
-                datalen = 4 * nsamples * channels;
-                break;
-            case SG_AUDIO_FORMAT_F:
-                datalen = 4 * nsamples * channels;
-                break;
-            case SG_AUDIO_FORMAT_D:
-                datalen = 8 * nsamples * channels;
-                break;
-        }
-        data = malloc(datalen);
-        if(psgmAudioFileRead)
-            psgmAudioFileRead(file, data, &datalen);
-        if(psgmAudioBufferSetData != NULL)
-            psgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
-        free(data);
-    }
+    void* buf = NULL;
+    int error = 0;
+    stb_vorbis* stb = NULL;
+    stb_vorbis_info info;
 
-    if(psgmAudioFileDestroy)
-        psgmAudioFileDestroy(file);
+    if(!stream || !stream->read || !stream->seek || !stream->tell)
+        return NULL;
+
+    SGlong pos;
+    SGlong size;
+
+    pos = stream->tell(stream->data);
+    if(pos < 0) goto lderr;
+
+    stream->seek(stream->data, 0, SG_SEEK_END);
+    size = stream->tell(stream->data);
+    stream->seek(stream->data, pos, SG_SEEK_SET);
+    if(size < 0) goto lderr;
+    size -= pos;
+
+    buf = malloc(size);
+    if(stream->read(stream->data, buf, 1, size) != size)
+        goto lderr;
+
+    stb = stb_vorbis_open_memory(buf, size, &error, NULL);
+    if(!stb) goto lderr;
+
+    info = stb_vorbis_get_info(stb);
+    channels = info.channels;
+    frequency = info.sample_rate;
+    format = SG_AUDIO_FORMAT_S16; // or SG_AUDIO_FORMAT_F
+
+    nsamples = stb_vorbis_stream_length_in_samples(stb);
+    datalen = 2 * nsamples * channels;
+    data = malloc(datalen);
+
+    datalen = 2 * stb_vorbis_get_samples_short_interleaved(stb, info.channels, data, datalen / 2);
+
+    if(psgmAudioBufferSetData != NULL)
+        psgmAudioBufferSetData(buffer->handle, channels, format, frequency, data, datalen);
+    free(data);
+
+lderr:
+    if(stb)
+        stb_vorbis_close(stb);
+    if(buf)
+        free(buf);
 
     return buffer;
 }

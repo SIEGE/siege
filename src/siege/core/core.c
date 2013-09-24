@@ -23,6 +23,7 @@
 #include <siege/graphics/light.h>
 #include <siege/graphics/surface.h>
 #include <siege/graphics/draw.h>
+#include <siege/graphics/image.h>
 #include <siege/graphics/viewport.h>
 #include <siege/input/keyboard.h>
 #include <siege/input/mouse.h>
@@ -127,8 +128,6 @@ SGbool SG_CALL sgInit(SGenum flags)
     if(psgmAudioInit) psgmAudioInit();
     if(psgmFontsInit) psgmFontsInit();
     if(psgmPhysicsInit) psgmPhysicsInit();
-    if(psgmGLoadInit) psgmGLoadInit();
-    if(psgmALoadInit) psgmALoadInit();
 
     _sg_firstLoop = SG_TRUE;
     _sg_exitNow = SG_FALSE;
@@ -144,6 +143,7 @@ SGbool SG_CALL sgInit(SGenum flags)
     sgEntityEventSignal(1, (SGenum)SG_EVF_INIT);
     _sg_hasInited = SG_TRUE;
 
+    _sgImageDataInit();
     _sgWindowInit();
     _sgViewportInit();
     _sgSurfaceInit();
@@ -197,11 +197,10 @@ SGbool SG_CALL sgDeinit(void)
     _sgSurfaceDeinit();
     _sgViewportDeinit();
     _sgWindowDeinit();
+    _sgImageDataDeinit();
 
     _sgEntityDeinit();
 
-    if(psgmALoadDeinit) psgmALoadDeinit();
-    if(psgmGLoadDeinit) psgmGLoadDeinit();
     if(psgmPhysicsDeinit) psgmPhysicsDeinit();
     if(psgmFontsDeinit) psgmFontsDeinit();
     if(psgmAudioDeinit) psgmAudioDeinit();

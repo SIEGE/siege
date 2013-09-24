@@ -29,7 +29,11 @@ typedef struct SGImageData
     size_t height;
     SGenum bpp;
     void* data;
+    SGbool deldata;
 } SGImageData;
+
+SGbool SG_CALL _sgImageDataInit(void);
+SGbool SG_CALL _sgImageDataDeinit(void);
 
 SGImageData* SG_CALL sgImageDataCreateStream(SGStream* stream, SGbool delstream);
 SGImageData* SG_CALL sgImageDataCreateFile(const char* fname);
