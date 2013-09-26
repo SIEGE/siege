@@ -206,13 +206,14 @@ SGint SG_CALL sgRun(void)
     _sg_firstLoop = SG_TRUE;
     if(_sg_exitNow)
         return _sg_exitVal;
-    while(sgLoop(&_sg_exitVal))
+    for(;;)
     {
         if(!_sg_renderThread)
-        {
-            sgWindowSwapBuffers();
             sgDrawClear();
-        }
+        if(!sgLoop(&_sg_exitVal))
+            break;
+        if(!_sg_renderThread)
+            sgWindowSwapBuffers();
     }
     return _sg_exitVal;
 }
@@ -236,6 +237,8 @@ SGbool SG_CALL sgLoop(SGint* code)
     sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICK);
+
+    sgWindowHandleEvents();
 
     if(!_sg_renderThread)
         sgEntityEventSignal(1, (SGenum)SG_EVF_DRAW);

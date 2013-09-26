@@ -412,10 +412,6 @@ void SG_CALL sgWindowHandleEvents(void)
 }
 void SG_CALL sgWindowSwapBuffers(void)
 {
-    // $$$$$$$$$$ TEMPORARY $$$$$$$$$$
-    // TODO: REMOVEME
-    sgWindowHandleEvents();
-
     SGlong origin = sgGetTime();
 
     SDL_GL_SwapBuffers();
