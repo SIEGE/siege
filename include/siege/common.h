@@ -151,8 +151,8 @@ typedef double SGdouble;
  */
 /// @{
 #define SG_VERSION_MAJOR 0
-#define SG_VERSION_MINOR 7
-#define SG_VERSION_PATCH 13
+#define SG_VERSION_MINOR 8
+#define SG_VERSION_PATCH 0
 /**
  * \brief Version string
  *
@@ -272,24 +272,6 @@ typedef double SGdouble;
 #define SG_UNKNOWN_ERROR    1
 #define SG_INVALID_VALUE    2
 #define SG_INVALID_ENUM     3
-/// @}
-
-/**
- * \name Module types
- *
- * Used in modules, to indicate which interface groups they implement. These are \b not used in SIEGE frontend - they are merely used in other modules, for checking module compatibility.
- */
-/// @{
-#define SG_MODULE_WINDOW       0x0001
-#define SG_MODULE_INPUT           0x0002
-#define SG_MODULE_CORE           (SG_MODULE_WINDOW | SG_MODULE_INPUT)
-#define SG_MODULE_GRAPHICS       0x0004
-#define SG_MODULE_GRAPHICSLOAD 0x0008
-#define SG_MODULE_AUDIO           0x0010
-#define SG_MODULE_AUDIOLOAD    0x0020
-#define SG_MODULE_FONTLOAD       0x0040
-#define SG_MODULE_FONTCONV       0x0080
-#define SG_MODULE_PHYSICS       0x0100
 /// @}
 
 /**
@@ -578,39 +560,6 @@ typedef double SGdouble;
 /// @}
 
 typedef void SG_CALL SGFree(void* ptr);
-
-/**
- * \brief Module info
- *
- * Used in modules, to send information about the module to SIEGE and other modules.
- */
-typedef struct SGModuleInfo
-{
-    /**
-     * \name SIEGE version
-     */
-    /// @{
-    SGushort vmajor;
-    SGushort vminor;
-    SGushort vpatch;
-    /// @}
-
-    /**
-     * \name Module version
-     */
-    /// @{
-    SGushort mmajor;
-    SGushort mminor;
-    SGushort mpatch;
-    /// @}
-
-    SGuint type;
-    char* name;
-    //char* longname;
-    //char* description;
-
-    void* data;
-} SGModuleInfo;
 
 /* NOTE: TEMPORARY */
 #include <stdio.h>
