@@ -27,7 +27,7 @@
 #define ALBUF(x) (*(ALuint*)(x)->handle)
 
 // TODO: Move this to an util library; clean it up.
-static void* toStereo(SGuint channels, void* data, SGuint* datalen, ALuint* alformat)
+static void* toStereo(SGuint channels, void* data, size_t* datalen, ALuint* alformat)
 {
     void* odata = data;
     if(channels == 2)
