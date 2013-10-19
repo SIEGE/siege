@@ -27,6 +27,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <ctype.h>
 
 #include <SDL/SDL.h>
 #include "../internal/gl.h"

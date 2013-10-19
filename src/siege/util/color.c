@@ -19,9 +19,9 @@
 #include <string.h>
 #include <ctype.h>
 
-const size_t _sg_colNum = 652;
+static const size_t _sg_colNum = 652;
 
-const SGubyte _sg_colFlags[] =
+static const SGubyte _sg_colFlags[] =
     {
         3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
         3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
@@ -54,7 +54,7 @@ const SGubyte _sg_colFlags[] =
         /*3, 3, 3, 3, 3,*/ 0
     };
 
-const char* _sg_colNames[] =
+static const char* _sg_colNames[] =
     {
         "snow", "GhostWhite", "WhiteSmoke", "gainsboro", "FloralWhite",
         "OldLace", "linen", "AntiqueWhite", "PapayaWhip", "BlanchedAlmond",
@@ -191,7 +191,7 @@ const char* _sg_colNames[] =
         /*"gray", "grey", "green", "maroon", "purple",*/ NULL
     };
 
-const SGColor _sg_colValues[] =
+static const SGColor _sg_colValues[] =
     {
         {255/255.0, 250/255.0, 250/255.0, 255/255.0}, {248/255.0, 248/255.0, 255/255.0, 255/255.0}, {245/255.0, 245/255.0, 245/255.0, 255/255.0},
         {220/255.0, 220/255.0, 220/255.0, 255/255.0}, {255/255.0, 250/255.0, 240/255.0, 255/255.0}, {253/255.0, 245/255.0, 230/255.0, 255/255.0},
