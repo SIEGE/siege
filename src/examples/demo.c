@@ -113,7 +113,7 @@ void lcPolyCollisionOneBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollisi
     SGVec2 v2;
     sgPhysicsBodyGetVel(sgEntityGetPhysicsBody(other), &v2.x, &v2.y);
 
-    float dist = sgPhysicsCollisionGetDistance(coll, 0);
+    float dist = sgPhysicsCollisionGetDepth(coll, 0);
 
     float vdiff = sgVec2Length(sgVec2Sub(v1, v2));
 

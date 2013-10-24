@@ -16,6 +16,7 @@
 #define __SIEGE_PHYSICS_BODY_H__
 
 #include "../common.h"
+#include "../config.h"
 #include "space.h"
 
 #ifdef __cplusplus
@@ -23,6 +24,7 @@ extern "C"
 {
 #endif // __cplusplus
 
+#ifdef SG_USE_PHYSICS
 struct SGEntity;
 
 typedef struct SGPhysicsBody
@@ -77,8 +79,24 @@ float SG_CALL sgPhysicsBodyGetMass(SGPhysicsBody* body);
 void SG_CALL sgPhysicsBodySetMoment(SGPhysicsBody* body, float moment);
 float SG_CALL sgPhysicsBodyGetMoment(SGPhysicsBody* body);
 
+void SG_CALL sgPhysicsBodySetForce(SGPhysicsBody* body, float x, float y);
+void SG_CALL sgPhysicsBodyGetForce(SGPhysicsBody* body, float* x, float* y);
+
+void SG_CALL sgPhysicsBodySetForceX(SGPhysicsBody* body, float x);
+float SG_CALL sgPhysicsBodyGetForceX(SGPhysicsBody* body);
+void SG_CALL sgPhysicsBodySetForceY(SGPhysicsBody* body, float y);
+float SG_CALL sgPhysicsBodyGetForceY(SGPhysicsBody* body);
+
+/* TODO: rads/degs? */
+void SG_CALL sgPhysicsBodySetTorque(SGPhysicsBody* body, float torque);
+float SG_CALL sgPhysicsBodyGetTorque(SGPhysicsBody* body);
+
 void SG_CALL sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
 void SG_CALL sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
+
+void SG_CALL sgPhysicsBodyWorldToLocal(SGPhysicsBody* body, float* xo, float* yo, float x, float y);
+void SG_CALL sgPhysicsBodyLocalToWorld(SGPhysicsBody* body, float* xo, float* yo, float x, float y);
+#endif /* SG_USE_PHYSICS */
 
 #ifdef __cplusplus
 }

@@ -14,10 +14,46 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/physics/space.h>
+#include <siege/physics/shape.h>
 #include <siege/physics/body.h>
-#include <siege/modules/physics.h>
+#include <siege/physics/constraint.h>
+#include <siege/physics/collision.h>
 
 #include <stdlib.h>
+
+#include "../internal/chipmunk.h"
+
+#ifdef SG_USE_PHYSICS
+static cpBool cbCollisionBegin(cpArbiter* arb, cpSpace* space, void* data)
+{
+    cpShape* one;
+    cpShape* two;
+    cpArbiterGetShapes(arb, &one, &two);
+    _sg_cbPhysicsCollisionBegin(cpShapeGetUserData(one), cpShapeGetUserData(two), arb);
+    return cpTrue;
+}
+static cpBool cbCollisionPreSolve(cpArbiter* arb, cpSpace* space, void* data)
+{
+    cpShape* one;
+    cpShape* two;
+    cpArbiterGetShapes(arb, &one, &two);
+    _sg_cbPhysicsCollisionPreSolve(cpShapeGetUserData(one), cpShapeGetUserData(two), arb);
+    return cpTrue;
+}
+static void cbCollisionPostSolve(cpArbiter* arb, cpSpace* space, void* data)
+{
+    cpShape* one;
+    cpShape* two;
+    cpArbiterGetShapes(arb, &one, &two);
+    _sg_cbPhysicsCollisionPostSolve(cpShapeGetUserData(one), cpShapeGetUserData(two), arb);
+}
+static void cbCollisionSeparate(cpArbiter* arb, cpSpace* space, void* data)
+{
+    cpShape* one;
+    cpShape* two;
+    cpArbiterGetShapes(arb, &one, &two);
+    _sg_cbPhysicsCollisionSeparate(cpShapeGetUserData(one), cpShapeGetUserData(two), arb);
+}
 
 SGbool SG_CALL _sgPhysicsSpaceInit(void)
 {
@@ -36,21 +72,18 @@ SGPhysicsSpace* SG_CALL sgPhysicsSpaceCreate(void)
     SGPhysicsSpace* space = malloc(sizeof(SGPhysicsSpace));
     if(!space)
         return NULL;
-    space->handle = NULL;
-
-    if(psgmPhysicsSpaceCreate != NULL)
-        psgmPhysicsSpaceCreate(&space->handle);
+    space->handle = cpSpaceNew();
 
     space->sbody = malloc(sizeof(SGPhysicsBody));
-    space->sbody->handle = NULL;
+    space->sbody->handle = cpSpaceGetStaticBody(space->handle);
     space->sbody->space = space;
     space->sbody->data = NULL;
     space->sbody->type = SG_BODY_STATIC;
     space->sbody->entity = NULL;
-    if(psgmPhysicsSpaceGetStaticBody)
-        psgmPhysicsSpaceGetStaticBody(space->handle, &space->sbody->handle);
-    if(psgmPhysicsBodySetData)
-        psgmPhysicsBodySetData(space->sbody->handle, space->sbody);
+    cpBodySetUserData(space->sbody->handle, space->sbody);
+
+    // TODO: Add this later, perhaps? (once a body is attached)
+    cpSpaceAddCollisionHandler(space->handle, 0, 0, cbCollisionBegin, cbCollisionPreSolve, cbCollisionPostSolve, cbCollisionSeparate, NULL);
 
     sgPhysicsSpaceSetGravity(space, 0.0, 0.0);
 
@@ -58,38 +91,31 @@ SGPhysicsSpace* SG_CALL sgPhysicsSpaceCreate(void)
 }
 void SG_CALL sgPhysicsSpaceDestroy(SGPhysicsSpace* space)
 {
-    if(!space)
-        return;
+    if(!space) return;
 
+    cpSpaceFree(space->handle);
     free(space->sbody);
-
-    if(psgmPhysicsSpaceDestroy != NULL)
-        psgmPhysicsSpaceDestroy(space->handle);
-
     free(space);
 }
 
 void SG_CALL sgPhysicsSpaceStep(SGPhysicsSpace* space, float time)
 {
-    if(psgmPhysicsSpaceStep != NULL)
-        psgmPhysicsSpaceStep(space->handle, time);
+    cpSpaceStep(space->handle, time);
 }
 
 void SG_CALL sgPhysicsSpaceSetIterations(SGPhysicsSpace* space, SGuint iterations)
 {
-    if(psgmPhysicsSpaceSetIterations)
-        psgmPhysicsSpaceSetIterations(space->handle, iterations);
+    cpSpaceSetIterations(space->handle, iterations);
 }
+// SGuint SG_CALL sgPhysicsSpaceGetIterations(SGPhysicsSpace* space);
 void SG_CALL sgPhysicsSpaceSetGravity(SGPhysicsSpace* space, float x, float y)
 {
-    if(psgmPhysicsSpaceSetGravity != NULL)
-        psgmPhysicsSpaceSetGravity(space->handle, x, y);
+    cpSpaceSetGravity(space->handle, cpv(x, y));
 }
 //void SG_CALL sgPhysicsSpaceGetGravity(SGPhysicsSpace* space, float* x, float* y);
 void SG_CALL sgPhysicsSpaceSetDamping(SGPhysicsSpace* space, float damping)
 {
-    if(psgmPhysicsSpaceSetDamping)
-        psgmPhysicsSpaceSetDamping(space->handle, damping);
+    cpSpaceSetDamping(space->handle, damping);
 }
 //float SG_CALL sgPhysicsSpaceGetDamping(SGPhysicsSpace* space);
 
@@ -110,3 +136,41 @@ SGPhysicsSpace* SG_CALL sgPhysicsSpaceGetDefault(void)
 {
     return _sg_physSpaceMain;
 }
+
+void SG_CALL _sgPhysicsSpaceAddShape(SGPhysicsSpace* space, SGPhysicsShape* shape)
+{
+    if(shape->body->type != SG_BODY_STATIC)
+        cpSpaceAddShape(space->handle, shape->handle);
+    else
+        cpSpaceAddStaticShape(space->handle, shape->handle);
+}
+void SG_CALL _sgPhysicsSpaceRemoveShape(SGPhysicsSpace* space, SGPhysicsShape* shape)
+{
+    if(shape->body->type != SG_BODY_STATIC)
+        cpSpaceRemoveShape(space->handle, shape->handle);
+    else
+        cpSpaceRemoveStaticShape(space->handle, shape->handle);
+}
+
+void SG_CALL _sgPhysicsSpaceAddBody(SGPhysicsSpace* space, SGPhysicsBody* body)
+{
+    if(body->type != SG_BODY_STATIC
+    && body->type != SG_BODY_SEMISTATIC)
+        cpSpaceAddBody(space->handle, body->handle);
+}
+void SG_CALL _sgPhysicsSpaceRemoveBody(SGPhysicsSpace* space, SGPhysicsBody* body)
+{
+    if(body->type != SG_BODY_STATIC
+    && body->type != SG_BODY_SEMISTATIC)
+        cpSpaceRemoveBody(space->handle, body->handle);
+}
+
+void SG_CALL _sgPhysicsSpaceAddConstraint(SGPhysicsSpace* space, SGPhysicsConstraint* constraint)
+{
+    cpSpaceAddConstraint(space->handle, constraint->handle);
+}
+void SG_CALL _sgPhysicsSpaceRemoveConstraint(SGPhysicsSpace* space, SGPhysicsConstraint* constraint)
+{
+    cpSpaceRemoveConstraint(space->handle, constraint->handle);
+}
+#endif /* SG_USE_PHYSICS */

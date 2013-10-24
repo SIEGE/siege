@@ -18,176 +18,126 @@
 
 #include <stdlib.h>
 
-SGbool SG_CALL _sgPhysicsCollisionInit(void)
-{
-    _sg_colCallbacks.begin = _sg_cbPhysicsCollisionBegin;
-    _sg_colCallbacks.step = _sg_cbPhysicsCollision;
-    _sg_colCallbacks.post = _sg_cbPhysicsCollisionPost;
-    _sg_colCallbacks.end = _sg_cbPhysicsCollisionEnd;
+#include "../internal/chipmunk.h"
 
-    if(psgmPhysicsCollisionSetCallbacks)
-        psgmPhysicsCollisionSetCallbacks(&_sg_colCallbacks);
-
-    return SG_TRUE;
-}
-
-SGbool SG_CALL _sgPhysicsCollisionDeinit(void)
-{
-    if(psgmPhysicsCollisionSetCallbacks)
-        psgmPhysicsCollisionSetCallbacks(NULL);
-
-    return SG_TRUE;
-}
-
-void SG_CALL _sg_cbPhysicsCollisionBegin(void* shandle1, void* shandle2, void* handle)
+#ifdef SG_USE_PHYSICS
+/* TODO: Return value */
+void SG_CALL _sg_cbPhysicsCollisionBegin(SGPhysicsShape* shape1, SGPhysicsShape* shape2, void* handle)
 {
     SGPhysicsCollision coll;
-    coll.shandle1 = shandle1;
-    coll.shandle2 = shandle2;
     coll.handle = handle;
-    coll.shape1 = NULL;
-    coll.shape2 = NULL;
+    coll.shape1 = shape1;
+    coll.shape2 = shape2;
 
-    if(psgmPhysicsShapeGetData)
+    if(shape1 && shape1->body->entity)
     {
-        psgmPhysicsShapeGetData(shandle1, (void**)&coll.shape1);
-        psgmPhysicsShapeGetData(shandle2, (void**)&coll.shape2);
+        if(shape1->body->entity->lcCollisionBegin)
+            shape1->body->entity->lcCollisionBegin(shape1->body->entity, shape2->body->entity, &coll);
+        if(shape1->body->entity->lcCollisionOneBegin)
+            shape1->body->entity->lcCollisionOneBegin(shape1->body->entity, shape2->body->entity, &coll);
     }
-
-    if(coll.shape1 && coll.shape1->body->entity)
+    if(shape2 && shape2->body->entity)
     {
-        if(coll.shape1->body->entity->lcCollisionBegin)
-            coll.shape1->body->entity->lcCollisionBegin(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
-        if(coll.shape1->body->entity->lcCollisionOneBegin)
-            coll.shape1->body->entity->lcCollisionOneBegin(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
-    }
-    if(coll.shape2 && coll.shape2->body->entity)
-    {
-        if(coll.shape2->body->entity->lcCollisionBegin)
-            coll.shape2->body->entity->lcCollisionBegin(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
-        if(coll.shape2->body->entity->lcCollisionTwoBegin)
-            coll.shape2->body->entity->lcCollisionTwoBegin(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
+        if(shape2->body->entity->lcCollisionBegin)
+            shape2->body->entity->lcCollisionBegin(shape2->body->entity, shape1->body->entity, &coll);
+        if(shape2->body->entity->lcCollisionTwoBegin)
+            shape2->body->entity->lcCollisionTwoBegin(shape2->body->entity, shape1->body->entity, &coll);
     }
 }
-void SG_CALL _sg_cbPhysicsCollision(void* shandle1, void* shandle2, void* handle)
+void SG_CALL _sg_cbPhysicsCollisionPreSolve(SGPhysicsShape* shape1, SGPhysicsShape* shape2, void* handle)
 {
     SGPhysicsCollision coll;
-    coll.shandle1 = shandle1;
-    coll.shandle2 = shandle2;
     coll.handle = handle;
-    coll.shape1 = NULL;
-    coll.shape2 = NULL;
+    coll.shape1 = shape1;
+    coll.shape2 = shape2;
 
-    if(psgmPhysicsShapeGetData)
+    if(shape1 && shape1->body->entity)
     {
-        psgmPhysicsShapeGetData(shandle1, (void**)&coll.shape1);
-        psgmPhysicsShapeGetData(shandle2, (void**)&coll.shape2);
+        if(shape1->body->entity->lcCollision)
+            shape1->body->entity->lcCollision(shape1->body->entity, shape2->body->entity, &coll);
+        if(shape1->body->entity->lcCollisionOne)
+            shape1->body->entity->lcCollisionOne(shape1->body->entity, shape2->body->entity, &coll);
     }
-
-    if(coll.shape1 && coll.shape1->body->entity)
+    if(shape2 && shape2->body->entity)
     {
-        if(coll.shape1->body->entity->lcCollision)
-            coll.shape1->body->entity->lcCollision(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
-        if(coll.shape1->body->entity->lcCollisionOne)
-            coll.shape1->body->entity->lcCollisionOne(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
-    }
-    if(coll.shape2 && coll.shape2->body->entity)
-    {
-        if(coll.shape2->body->entity->lcCollision)
-            coll.shape2->body->entity->lcCollision(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
-        if(coll.shape2->body->entity->lcCollisionTwo)
-            coll.shape2->body->entity->lcCollisionTwo(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
+        if(shape2->body->entity->lcCollision)
+            shape2->body->entity->lcCollision(shape2->body->entity, shape1->body->entity, &coll);
+        if(shape2->body->entity->lcCollisionTwo)
+            shape2->body->entity->lcCollisionTwo(shape2->body->entity, shape1->body->entity, &coll);
     }
 }
-void SG_CALL _sg_cbPhysicsCollisionPost(void* shandle1, void* shandle2, void* handle) /// \TODO TODO
+void SG_CALL _sg_cbPhysicsCollisionPostSolve(SGPhysicsShape* shape1, SGPhysicsShape* shape2, void* handle) /// \TODO TODO
 {
 }
-void SG_CALL _sg_cbPhysicsCollisionEnd(void* shandle1, void* shandle2, void* handle)
+void SG_CALL _sg_cbPhysicsCollisionSeparate(SGPhysicsShape* shape1, SGPhysicsShape* shape2, void* handle)
 {
     SGPhysicsCollision coll;
-    coll.shandle1 = shandle1;
-    coll.shandle2 = shandle2;
     coll.handle = handle;
-    coll.shape1 = NULL;
-    coll.shape2 = NULL;
+    coll.shape1 = shape1;
+    coll.shape2 = shape2;
 
-    if(psgmPhysicsShapeGetData)
+    if(shape1 && shape1->body->entity)
     {
-        psgmPhysicsShapeGetData(shandle1, (void**)&coll.shape1);
-        psgmPhysicsShapeGetData(shandle2, (void**)&coll.shape2);
+        if(shape1->body->entity->lcCollisionEnd)
+            shape1->body->entity->lcCollisionEnd(shape1->body->entity, shape2->body->entity, &coll);
+        if(shape1->body->entity->lcCollisionOneEnd)
+            shape1->body->entity->lcCollisionOneEnd(shape1->body->entity, shape2->body->entity, &coll);
     }
-
-    if(coll.shape1 && coll.shape1->body->entity)
+    if(shape2 && shape2->body->entity)
     {
-        if(coll.shape1->body->entity->lcCollisionEnd)
-            coll.shape1->body->entity->lcCollisionEnd(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
-        if(coll.shape1->body->entity->lcCollisionOneEnd)
-            coll.shape1->body->entity->lcCollisionOneEnd(coll.shape1->body->entity, coll.shape2->body->entity, &coll);
-    }
-    if(coll.shape2 && coll.shape2->body->entity)
-    {
-        if(coll.shape2->body->entity->lcCollisionEnd)
-            coll.shape2->body->entity->lcCollisionEnd(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
-        if(coll.shape2->body->entity->lcCollisionTwoEnd)
-            coll.shape2->body->entity->lcCollisionTwoEnd(coll.shape2->body->entity, coll.shape1->body->entity, &coll);
+        if(shape2->body->entity->lcCollisionEnd)
+            shape2->body->entity->lcCollisionEnd(shape2->body->entity, shape1->body->entity, &coll);
+        if(shape2->body->entity->lcCollisionTwoEnd)
+            shape2->body->entity->lcCollisionTwoEnd(shape2->body->entity, shape1->body->entity, &coll);
     }
 }
 
 void SG_CALL sgPhysicsCollisionIgnore(SGPhysicsCollision* coll)
 {
-    if(psgmPhysicsCollisionIgnore)
-        psgmPhysicsCollisionIgnore(coll->handle);
+    cpArbiterIgnore(coll->handle);
 }
 
 size_t SG_CALL sgPhysicsCollisionGetNumContacts(SGPhysicsCollision* coll)
 {
-    size_t num = 0;
-    if(psgmPhysicsCollisionGetNumContacts)
-        psgmPhysicsCollisionGetNumContacts(coll->handle, &num);
-    return num;
+    return cpArbiterGetCount(coll->handle);
 }
 void SG_CALL sgPhysicsCollisionGetPoint(SGPhysicsCollision* coll, size_t index, float* x, float* y)
 {
-    float tmp;
-    if(x == NULL)
-        x = &tmp;
-    if(y == NULL)
-        y = &tmp;
-    *x = SG_NAN;
-    *y = SG_NAN;
-    if(psgmPhysicsCollisionGetPoint)
-        psgmPhysicsCollisionGetPoint(coll->handle, index, x, y);
+    float t;
+    if(!x) x = &t;
+    if(!y) y = &t;
+
+    cpVect v = cpArbiterGetPoint(coll->handle, index);
+    *x = v.x;
+    *y = v.y;
 }
 void SG_CALL sgPhysicsCollisionGetNormal(SGPhysicsCollision* coll, size_t index, float* x, float* y)
 {
-    float tmp;
-    if(x == NULL)
-        x = &tmp;
-    if(y == NULL)
-        y = &tmp;
-    *x = SG_NAN;
-    *y = SG_NAN;
-    if(psgmPhysicsCollisionGetNormal)
-        psgmPhysicsCollisionGetNormal(coll->handle, index, x, y);
+    float t;
+    if(!x) x = &t;
+    if(!y) y = &t;
+
+    cpVect v = cpArbiterGetNormal(coll->handle, index);
+    *x = v.x;
+    *y = v.y;
 }
-float SG_CALL sgPhysicsCollisionGetDistance(SGPhysicsCollision* coll, size_t index)
+float SG_CALL sgPhysicsCollisionGetDepth(SGPhysicsCollision* coll, size_t index)
 {
-    float dist = SG_NAN;
-    if(psgmPhysicsCollisionGetDistance)
-        psgmPhysicsCollisionGetDistance(coll->handle, index, &dist);
-    return dist;
+    return cpArbiterGetDepth(coll->handle, index);
 }
 void SG_CALL sgPhysicsCollisionGetImpulse(SGPhysicsCollision* coll, float* x, float* y, SGbool friction)
 {
-    float tmp;
-    if(x == NULL)
-        x = &tmp;
-    if(y == NULL)
-        y = &tmp;
-    *x = SG_NAN;
-    *y = SG_NAN;
-    if(psgmPhysicsCollisionGetImpulse)
-        psgmPhysicsCollisionGetImpulse(coll->handle, x, y, friction);
+    float t;
+    if(!x) x = &t;
+    if(!y) y = &t;
+
+    cpVect v;
+    if(friction)
+        v = cpArbiterTotalImpulseWithFriction(coll->handle);
+    else
+        v = cpArbiterTotalImpulse(coll->handle);
+    *x = v.x;
+    *y = v.y;
 }
 SGPhysicsShape* SG_CALL sgPhysicsCollisionGetShapeOne(SGPhysicsCollision* coll)
 {
@@ -197,3 +147,4 @@ SGPhysicsShape* SG_CALL sgPhysicsCollisionGetShapeTwo(SGPhysicsCollision* coll)
 {
     return coll->shape2;
 }
+#endif /* SG_USE_PHYSICS */

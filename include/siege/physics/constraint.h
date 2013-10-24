@@ -16,6 +16,7 @@
 #define __SIEGE_PHYSICS_CONSTRAINT_H__
 
 #include "../common.h"
+#include "../config.h"
 #include "body.h"
 
 #ifdef __cplusplus
@@ -23,6 +24,7 @@ extern "C"
 {
 #endif // __cplusplus
 
+#ifdef SG_USE_PHYSICS
 typedef struct SGPhysicsConstraint
 {
     void* handle;
@@ -33,7 +35,7 @@ typedef struct SGPhysicsConstraint
     SGenum type;
 } SGPhysicsConstraint;
 
-SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreate(SGPhysicsBody* body1, SGPhysicsBody* body2, SGenum type, float* vdata);
+SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreate(SGPhysicsBody* body1, SGPhysicsBody* body2, SGenum type);
 SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreatePin(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2);
 SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreateSlide(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2, float min, float max);
 SGPhysicsConstraint* SG_CALL sgPhysicsConstraintCreatePivot(SGPhysicsBody* body1, SGPhysicsBody* body2, float x1, float y1, float x2, float y2);
@@ -68,6 +70,7 @@ void SG_CALL sgPhysicsConstraintSetMaxBias(SGPhysicsConstraint* constr, float ma
 
 void SG_CALL sgPhysicsConstraintSetData(SGPhysicsConstraint* constr, void* data);
 void* SG_CALL sgPhysicsConstraintGetData(SGPhysicsConstraint* constr);
+#endif /* SG_USE_PHYSICS */
 
 #ifdef __cplusplus
 }

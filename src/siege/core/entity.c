@@ -13,6 +13,8 @@
  */
 
 #define SG_BUILD_LIBRARY
+#include <siege/config.h>
+
 #include <siege/core/entity.h>
 #include <siege/audio/source.h>
 #include <siege/graphics/sprite.h>
@@ -354,6 +356,7 @@ SGMask* SG_CALL sgEntityGetMask(SGEntity* entity)
     return entity->mask;
 }
 
+#ifdef SG_USE_PHYSICS
 void SG_CALL sgEntitySetPhysicsBody(SGEntity* entity, SGPhysicsBody* body)
 {
     if(entity == NULL)
@@ -371,6 +374,7 @@ SGPhysicsBody* SG_CALL sgEntityGetPhysicsBody(SGEntity* entity)
 
     return entity->body;
 }
+#endif /* SG_USE_PHYSICS */
 
 void SG_CALL sgEntitySetAudioSource(SGEntity* entity, SGAudioSource* source)
 {
@@ -394,56 +398,55 @@ void SG_CALL sgEntitySetPos(SGEntity* entity, float x, float y)
 
     entity->x = x;
     entity->y = y;
+#ifdef SG_USE_PHYSICS
     if(entity->body != NULL)
         sgPhysicsBodySetPos(entity->body, x, y);
+#endif /* SG_USE_PHYSICS */
 }
 void SG_CALL sgEntityGetPos(SGEntity* entity, float* x, float* y)
 {
-    if(entity == NULL)
-        return;
+    float t;
+    if(!x) x = &t;
+    if(!y) y = &t;
 
-    if(x != NULL)
-        *x = entity->x;
-    if(y != NULL)
-        *y = entity->y;
+    *x = entity->x;
+    *y = entity->y;
+#ifdef SG_USE_PHYSICS
     if(entity->body != NULL)
         sgPhysicsBodyGetPos(entity->body, x, y);
+#endif /* SG_USE_PHYSICS */
 }
 
 void SG_CALL sgEntitySetPosX(SGEntity* entity, float x)
 {
-    if(entity == NULL)
-        return;
-
     entity->x = x;
+#ifdef SG_USE_PHYSICS
     if(entity->body != NULL)
         sgPhysicsBodySetPosX(entity->body, x);
+#endif /* SG_USE_PHYSICS */
 }
 float SG_CALL sgEntityGetPosX(SGEntity* entity)
 {
-    if(entity == NULL)
-        return SG_NAN;
-
+#ifdef SG_USE_PHYSICS
     if(entity->body != NULL)
         return sgPhysicsBodyGetPosX(entity->body);
+#endif /* SG_USE_PHYSICS */
     return entity->x;
 }
 void SG_CALL sgEntitySetPosY(SGEntity* entity, float y)
 {
-    if(entity == NULL)
-        return;
-
     entity->y = y;
+#ifdef SG_USE_PHYSICS
     if(entity->body != NULL)
         sgPhysicsBodySetPosY(entity->body, y);
+#endif /* SG_USE_PHYSICS */
 }
 float SG_CALL sgEntityGetPosY(SGEntity* entity)
 {
-    if(entity == NULL)
-        return SG_NAN;
-
+#ifdef SG_USE_PHYSICS
     if(entity->body != NULL)
         return sgPhysicsBodyGetPosY(entity->body);
+#endif /* SG_USE_PHYSICS */
     return entity->y;
 }
 
@@ -468,16 +471,20 @@ void SG_CALL sgEntitySetAngleRads(SGEntity* entity, float rads)
         return;
 
     entity->angle = rads;
+#ifdef SG_USE_PHYSICS
     if(entity->body != NULL)
         sgPhysicsBodySetAngleRads(entity->body, rads);
+#endif /* SG_USE_PHYSICS */
 }
 float SG_CALL sgEntityGetAngleRads(SGEntity* entity)
 {
     if(entity == NULL)
         return SG_NAN;
 
+#ifdef SG_USE_PHYSICS
     if(entity->body != NULL)
         return sgPhysicsBodyGetAngleRads(entity->body);
+#endif /* SG_USE_PHYSICS */
     return entity->angle;
 }
 void SG_CALL sgEntitySetAngleDegs(SGEntity* entity, float degs)
@@ -496,11 +503,13 @@ void SG_CALL sgEntityDraw(SGEntity* entity)
     if(entity->sprite == NULL)
         return;
 
+#ifdef SG_USE_PHYSICS
     if(entity->body != NULL)
     {
         sgPhysicsBodyGetPos(entity->body, &entity->x, &entity->y);
         entity->angle = sgPhysicsBodyGetAngleRads(entity->body);
     }
+#endif /* SG_USE_PHYSICS */
 
     sgSpriteDrawRads3f1f(entity->sprite, entity->x, entity->y, entity->depth, entity->angle);
 }

@@ -20,6 +20,7 @@
 #define __SIEGE_CORE_ENTITY_H__
 
 #include "../common.h"
+
 #include "../util/list.h"
 #include "../util/smap.h"
 

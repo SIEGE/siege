@@ -87,7 +87,7 @@ typedef double SGdouble;
 /* ^ Now we should have SG_NDEBUG xor SG_DEBUG defined. */
 
 /**
- * \brief Used for things like pasting together SG_INTERFACE_VSTRING
+ * \brief Used for things like pasting together SG_VERSION_STRING
  */
 /// @{
 #define _SG_STRING(P) #P
@@ -123,15 +123,6 @@ typedef double SGdouble;
 #    define SG_HINT_PRINTF(str, chk)
 #endif // __GCC__
 /// @}
-
-/**
- * \brief Use test functionality
- * \deprecated
- *    This is included for testing purposes and therefore may be removed in the future.
- *
- * Defined to indicate that some "test" functionality should be used in the modules.
- */
-#define SIEGE_TEST
 
 #ifndef SG_CALL
 #    if defined(__WIN32)

@@ -45,7 +45,7 @@ void boxCollisionBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollision* co
             sgPhysicsCollisionGetPoint(collision, i, &box->points[box->numcoll][i].x, &box->points[box->numcoll][i].y);
             sgPhysicsCollisionGetNormal(collision, i, &box->normals[box->numcoll][i].x, &box->normals[box->numcoll][i].y);
             //sgPhysicsCollisionGetImpulse(collision, &box->impulse[box->numcoll][i].x, &box->impulse[box->numcoll][i].y, SG_TRUE);
-            dist = sgPhysicsCollisionGetDistance(collision, i);
+            dist = sgPhysicsCollisionGetDepth(collision, i);
 
             box->normals[box->numcoll][i] = sgVec2Resize(box->normals[box->numcoll][i], dist);
         }

@@ -1,0 +1,7 @@
+#ifndef __SIEGE_CONFIG_H__
+#define __SIEGE_CONFIG_H__
+
+/* Do we want to use/support Chipmunk Physics? */
+#cmakedefine SG_USE_PHYSICS
+
+#endif /* __SIEGE_CONFIG_H__ */

@@ -16,13 +16,17 @@
 #define __SIEGE_PHYSICS_SPACE_H__
 
 #include "../common.h"
+#include "../config.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif // __cplusplus
 
+#ifdef SG_USE_PHYSICS
 struct SGPhysicsBody;
+struct SGPhysicsShape;
+struct SGPhysicsConstraint;
 
 typedef struct SGPhysicsSpace
 {
@@ -54,6 +58,16 @@ void* SG_CALL sgPhysicsSpaceGetData(SGPhysicsSpace* space);
 
 struct SGPhysicsBody* SG_CALL sgPhysicsSpaceGetStaticBody(SGPhysicsSpace* space);
 SGPhysicsSpace* SG_CALL sgPhysicsSpaceGetDefault(void);
+
+void SG_CALL _sgPhysicsSpaceAddShape(SGPhysicsSpace* space, struct SGPhysicsShape* shape);
+void SG_CALL _sgPhysicsSpaceRemoveShape(SGPhysicsSpace* space, struct SGPhysicsShape* shape);
+
+void SG_CALL _sgPhysicsSpaceAddBody(SGPhysicsSpace* space, struct SGPhysicsBody* body);
+void SG_CALL _sgPhysicsSpaceRemoveBody(SGPhysicsSpace* space, struct SGPhysicsBody* body);
+
+void SG_CALL _sgPhysicsSpaceAddConstraint(SGPhysicsSpace* space, struct SGPhysicsConstraint* constraint);
+void SG_CALL _sgPhysicsSpaceRemoveConstraint(SGPhysicsSpace* space, struct SGPhysicsConstraint* constraint);
+#endif /* SG_USE_PHYSICS */
 
 #ifdef __cplusplus
 }

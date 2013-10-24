@@ -16,6 +16,7 @@
 #define __SIEGE_PHYSICS_SHAPE_H__
 
 #include "../common.h"
+#include "../config.h"
 #include "body.h"
 
 #ifdef __cplusplus
@@ -23,6 +24,7 @@ extern "C"
 {
 #endif // __cplusplus
 
+#ifdef SG_USE_PHYSICS
 typedef struct SGPhysicsShape
 {
     void* handle;
@@ -47,6 +49,7 @@ void SG_CALL sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group);
 SGuint SG_CALL sgPhysicsShapeGetGroup(SGPhysicsShape* shape);
 void SG_CALL sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction);
 float SG_CALL sgPhysicsShapeGetFriction(SGPhysicsShape* shape);
+/* TODO: Rename to elasticity? */
 void SG_CALL sgPhysicsShapeSetRestitution(SGPhysicsShape* shape, float restitution);
 float SG_CALL sgPhysicsShapeGetRestitution(SGPhysicsShape* shape);
 void SG_CALL sgPhysicsShapeSetData(SGPhysicsShape* shape, void* data);
@@ -60,6 +63,7 @@ float SG_CALL sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float densit
 
 void SG_CALL sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, float* b, float* r);
 void SG_CALL sgPhysicsShapeDrawDBG(SGPhysicsShape* shape);
+#endif /* SG_USE_PHYSICS */
 
 #ifdef __cplusplus
 }

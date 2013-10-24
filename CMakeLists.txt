@@ -63,7 +63,9 @@ CONFIGURE_FILES("${CMAKE_SOURCE_DIR}/data" "${CMAKE_BINARY_DIR}/data")
 IF(INSTALL_EXAMPLES)
     INSTALL_DIR("${CMAKE_SOURCE_DIR}/data" data)
 ENDIF(INSTALL_EXAMPLES)
-INSTALL_DIR("${CMAKE_SOURCE_DIR}/include" include)
+
+CONFIGURE_FILES("${CMAKE_SOURCE_DIR}/include/siege" "${CMAKE_BINARY_DIR}/include/siege")
+INSTALL_DIR("${CMAKE_SOURCE_DIR}/include/siege" include/siege)
 
 INCLUDE(InstallRequiredSystemLibraries)
 

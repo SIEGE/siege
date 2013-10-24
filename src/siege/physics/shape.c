@@ -13,8 +13,8 @@
 */
 
 #define SG_BUILD_LIBRARY
+#include <siege/physics/space.h>
 #include <siege/physics/shape.h>
-#include <siege/modules/physics.h>
 
 #include <siege/util/vector.h>
 
@@ -25,6 +25,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
+#include "../internal/chipmunk.h"
+
+#ifdef SG_USE_PHYSICS
+static void _postCreate(SGPhysicsShape* shape)
+{
+    cpShapeSetUserData(shape->handle, shape);
+    _sgPhysicsSpaceAddShape(shape->body->space, shape);
+}
 
 SGPhysicsShape* SG_CALL sgPhysicsShapeCreate(SGPhysicsBody* body, SGenum type)
 {
@@ -45,8 +54,7 @@ SGPhysicsShape* SG_CALL sgPhysicsShapeCreate(SGPhysicsBody* body, SGenum type)
 SGPhysicsShape* SG_CALL sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float x1, float y1, float x2, float y2, float width)
 {
     SGPhysicsShape* shape = sgPhysicsShapeCreate(body, SG_SHAPE_SEGMENT);
-    if(shape == NULL)
-        return NULL;
+    if(!shape) return NULL;
 
     shape->x = 0;
     shape->y = 0;
@@ -59,20 +67,15 @@ SGPhysicsShape* SG_CALL sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float x
     shape->verts[3] = y2;
     shape->verts[4] = width;
 
-    if(psgmPhysicsShapeCreate != NULL)
-        psgmPhysicsShapeCreate(&shape->handle, body->handle, 0, 0, shape->type, shape->numverts, shape->verts);
-    if(psgmPhysicsShapeSetData != NULL)
-        psgmPhysicsShapeSetData(shape->handle, shape);
-    if(psgmPhysicsSpaceAddShape != NULL)
-        psgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
+    shape->handle = cpSegmentShapeNew(body->handle, cpv(x1, y1), cpv(x2, y2), width);
+    _postCreate(shape);
 
     return shape;
 }
 SGPhysicsShape* SG_CALL sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x, float y, float* verts, size_t numverts)
 {
     SGPhysicsShape* shape = sgPhysicsShapeCreate(body, SG_SHAPE_POLYGON);
-    if(shape == NULL)
-        return NULL;
+    if(!shape) return NULL;
 
     shape->x = x;
     shape->y = y;
@@ -81,24 +84,26 @@ SGPhysicsShape* SG_CALL sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x, f
     shape->verts = malloc(2 * numverts * sizeof(float));
     memcpy(shape->verts, verts, 2 * numverts * sizeof(float));
 
-    if(psgmPhysicsShapeCreate != NULL)
-        psgmPhysicsShapeCreate(&shape->handle, body->handle, x, y, shape->type, shape->numverts, shape->verts);
-    if(psgmPhysicsShapeSetData != NULL)
-        psgmPhysicsShapeSetData(shape->handle, shape);
-    if(psgmPhysicsSpaceAddShape != NULL)
-        psgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
+    size_t i;
+    cpVect* nvect = malloc(numverts * sizeof(cpVect));
+    for(i = 0; i < numverts; i++)
+        nvect[i] = cpv(verts[2*i], verts[2*i+1]);
+    shape->handle = cpPolyShapeNew(body->handle, numverts, nvect, cpv(x, y));
+    free(nvect);
+
+    _postCreate(shape);
 
     return shape;
 }
 SGPhysicsShape* SG_CALL sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float x, float y, float r1, float r2)
 {
     SGPhysicsShape* shape = sgPhysicsShapeCreate(body, SG_SHAPE_CIRCLE);
-    if(shape == NULL)
-        return NULL;
+    if(!shape) return NULL;
 
+    float tmp;
     if(r2 < r1)
     {
-        float tmp = r1;
+        tmp = r1;
         r1 = r2;
         r2 = tmp;
     }
@@ -111,65 +116,44 @@ SGPhysicsShape* SG_CALL sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float x,
     shape->verts[0] = r1;
     shape->verts[1] = r2;
 
-    if(psgmPhysicsShapeCreate != NULL)
-        psgmPhysicsShapeCreate(&shape->handle, body->handle, x, y, shape->type, shape->numverts, &shape->verts[1]);
-    if(psgmPhysicsShapeSetData != NULL)
-        psgmPhysicsShapeSetData(shape->handle, shape);
-    if(psgmPhysicsSpaceAddShape != NULL)
-        psgmPhysicsSpaceAddShape(body->space->handle, shape->handle);
+    shape->handle = cpCircleShapeNew(body->handle, r1, cpv(x, y));
+    _postCreate(shape);
 
     return shape;
 }
 void SG_CALL sgPhysicsShapeDestroy(SGPhysicsShape* shape)
 {
-    if(shape == NULL)
-        return;
+    if(!shape) return;
 
-    if(psgmPhysicsSpaceRemoveShape != NULL)
-        psgmPhysicsSpaceRemoveShape(shape->body->space->handle, shape->handle);
-    if(psgmPhysicsShapeDestroy != NULL)
-        psgmPhysicsShapeDestroy(shape->handle);
-
+    _sgPhysicsSpaceRemoveShape(shape->body->space, shape);
+    cpShapeFree(shape->handle);
     free(shape->verts);
-
     free(shape);
 }
 
 void SG_CALL sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group)
 {
-    if(psgmPhysicsShapeSetGroup)
-        psgmPhysicsShapeSetGroup(shape->handle, group);
+    cpShapeSetGroup(shape->handle, group);
 }
 SGuint SG_CALL sgPhysicsShapeGetGroup(SGPhysicsShape* shape)
 {
-    SGuint group = 0;
-    if(psgmPhysicsShapeGetGroup)
-        psgmPhysicsShapeGetGroup(shape->handle, &group);
-    return group;
+    return cpShapeGetGroup(shape->handle);
 }
 void SG_CALL sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction)
 {
-    if(psgmPhysicsShapeSetFriction != NULL)
-        psgmPhysicsShapeSetFriction(shape->handle, friction);
+    cpShapeSetFriction(shape->handle, friction);
 }
 float SG_CALL sgPhysicsShapeGetFriction(SGPhysicsShape* shape)
 {
-    float friction = SG_NAN;
-    if(psgmPhysicsShapeGetFriction != NULL)
-        psgmPhysicsShapeGetFriction(shape->handle, &friction);
-    return friction;
+    return cpShapeGetFriction(shape->handle);
 }
 void SG_CALL sgPhysicsShapeSetRestitution(SGPhysicsShape* shape, float restitution)
 {
-    if(psgmPhysicsShapeSetRestitution != NULL)
-        psgmPhysicsShapeSetRestitution(shape->handle, restitution);
+    cpShapeSetElasticity(shape->handle, restitution);
 }
 float SG_CALL sgPhysicsShapeGetRestitution(SGPhysicsShape* shape)
 {
-    float restitution = SG_NAN;
-    if(psgmPhysicsShapeGetRestitution != NULL)
-        psgmPhysicsShapeGetRestitution(shape->handle, &restitution);
-    return restitution;
+    return cpShapeGetElasticity(shape->handle);
 }
 void SG_CALL sgPhysicsShapeSetData(SGPhysicsShape* shape, void* data)
 {
@@ -221,6 +205,7 @@ float SG_CALL sgPhysicsShapeGetMass(SGPhysicsShape* shape, float density)
 {
     return sgPhysicsShapeGetAreaU(shape) * density;
 }
+/* TODO: Use builtin Chipmunk functionality for this */
 float SG_CALL sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass)
 {
     if(shape == NULL)
@@ -302,11 +287,14 @@ void SG_CALL sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, fl
     if(!b) b = &tmp;
     if(!r) r = &tmp;
 
-    *t = *l = *b = *r = SG_NAN;
-
-    if(psgmPhysicsShapeGetBBox)
-        psgmPhysicsShapeGetBBox(shape->handle, t, l, b, r);
+    cpBB bb = cpShapeGetBB(shape->handle);
+    *t = bb.t;
+    *l = bb.l;
+    *b = bb.b;
+    *r = bb.r;
 }
+
+/* TODO: Optimize */
 void SG_CALL sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
 {
     if(shape == NULL)
@@ -378,16 +366,16 @@ void SG_CALL sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
     }
 
     // draw shape
-    SGuint pnum;
-    float* points;
-    if(psgmPhysicsBodyLocalToWorld_TEST == NULL)
-        return;
-    if(psgmPhysicsShapeGetPoints_TEST != NULL)
-        psgmPhysicsShapeGetPoints_TEST(shape->handle, &pnum, &points);
+    SGuint pnum = shape->numverts;
+    float* points = malloc(pnum * 2 * sizeof(float));
 
+    cpVect v;
     SGuint i;
     for(i = 0; i < pnum; i++)
-        psgmPhysicsBodyLocalToWorld_TEST(shape->body->handle, &points[2*i], &points[2*i+1]);
+    {
+        v = cpPolyShapeGetVert(shape->handle, i);
+        sgPhysicsBodyLocalToWorld(shape->body, &points[2*i], &points[2*i+1], v.x, v.y);
+    }
 
     sgDrawBegin(SG_LINE_LOOP);
         for(i = 0; i < pnum; i++)
@@ -395,6 +383,6 @@ void SG_CALL sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
     sgDrawEnd();
     sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 
-    if(psgmPhysicsShapeFreePoints_TEST != NULL)
-        psgmPhysicsShapeFreePoints_TEST(points);
+    free(points);
 }
+#endif /* SG_USE_PHYSICS */
