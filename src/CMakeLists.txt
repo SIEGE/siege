@@ -12,19 +12,8 @@ find_package(SDL REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenAL REQUIRED)
 
-option(USE_PHYSICS "Use/support a physics engine" ON)
-if(USE_PHYSICS)
-    find_package(Chipmunk REQUIRED)
-    set(SG_USE_PHYSICS ON)
-else()
-    set(SG_USE_PHYSICS OFF)
-endif()
-
-configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/siege/config.h)
-install(FILES ${CMAKE_BINARY_DIR}/include/siege/config.h DESTINATION include/siege)
-
-include_directories("${CMAKE_BINARY_DIR}/include")
-include_directories("${SDL_INCLUDE_DIR}" ${OPENGL_INCLUDE_DIR} "${OPENAL_INCLUDE_DIR}" ${CHIPMUNK_INCLUDE_DIR})
+include_directories("${CMAKE_SOURCE_DIR}/include")
+include_directories("${SDL_INCLUDE_DIR}" ${OPENGL_INCLUDE_DIR} "${OPENAL_INCLUDE_DIR}")
 
 IF(UNIX)
     SET(AUX_INCLUDES "")
@@ -34,7 +23,7 @@ ELSE(UNIX)
     SET(AUX_LIBRARIES "")
 ENDIF(UNIX)
 
-SET(AUX_LIBRARIES ${AUX_LIBRARIES} "${SDL_LIBRARY}" ${OPENGL_LIBRARIES} "${OPENAL_LIBRARY}" ${CHIPMUNK_LIBRARY})
+SET(AUX_LIBRARIES ${AUX_LIBRARIES} "${SDL_LIBRARY}" ${OPENGL_LIBRARIES} "${OPENAL_LIBRARY}")
 
 MACRO(SHARED_STATIC name dir ext)
     PROJECT(${name})
@@ -59,3 +48,4 @@ OPTION(BUILD_SPLIT "Build the separated SIEGE build" OFF)
 
 ADD_SUBDIRECTORY(siege)
 ADD_SUBDIRECTORY(examples)
+ADD_SUBDIRECTORY(modules)

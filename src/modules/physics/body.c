@@ -12,15 +12,14 @@
     Tim Chas <darkuranium@gmail.com>.
 */
 
-#define SG_BUILD_LIBRARY
+#define SG_BUILD_MODULE
 #include <siege/physics/body.h>
 
 #include <stdlib.h>
 #include <math.h>
 
-#include "../internal/chipmunk.h"
+#include <chipmunk/chipmunk.h>
 
-#ifdef SG_USE_PHYSICS
 SGPhysicsBody* SG_CALL sgPhysicsBodyCreate(SGPhysicsSpace* space, SGenum type)
 {
     SGPhysicsBody* body = malloc(sizeof(SGPhysicsBody));
@@ -277,4 +276,3 @@ void SG_CALL sgPhysicsBodyLocalToWorld(SGPhysicsBody* body, float* xo, float* yo
     *xo = v.x;
     *yo = v.y;
 }
-#endif /* SG_USE_PHYSICS */

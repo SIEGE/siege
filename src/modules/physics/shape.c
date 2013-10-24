@@ -12,27 +12,39 @@
     Tim Chas <darkuranium@gmail.com>.
 */
 
-#define SG_BUILD_LIBRARY
+#define SG_BUILD_MODULE
 #include <siege/physics/space.h>
 #include <siege/physics/shape.h>
 
 #include <siege/util/vector.h>
 
 //
-#include <siege/graphics/draw.h>
+//#include <siege/graphics/draw.h>
 //
 
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
-#include "../internal/chipmunk.h"
+#include <chipmunk/chipmunk.h>
 
-#ifdef SG_USE_PHYSICS
 static void _postCreate(SGPhysicsShape* shape)
 {
     cpShapeSetUserData(shape->handle, shape);
     _sgPhysicsSpaceAddShape(shape->body->space, shape);
+}
+
+static float vec2pdot(SGVec2 a, SGVec2 b)
+{
+    return a.y * b.x - a.x * b.y;
+}
+static float vec2dot(SGVec2 a, SGVec2 b)
+{
+    return a.x * b.x + a.y * b.y;
+}
+static float vec2len2(SGVec2 v)
+{
+    return vec2dot(v, v);
 }
 
 SGPhysicsShape* SG_CALL sgPhysicsShapeCreate(SGPhysicsBody* body, SGenum type)
@@ -166,9 +178,6 @@ void* SG_CALL sgPhysicsShapeGetData(SGPhysicsShape* shape)
 
 float SG_CALL sgPhysicsShapeGetAreaS(SGPhysicsShape* shape)
 {
-    if(shape == NULL)
-        return SG_NAN;
-
     SGVec2 curr;
     SGVec2 next;
     float area;
@@ -188,7 +197,7 @@ float SG_CALL sgPhysicsShapeGetAreaS(SGPhysicsShape* shape)
                 next.x = shape->verts[2*((i+1) % shape->numverts)];
                 next.y = shape->verts[2*((i+1) % shape->numverts)+1];
 
-                area += sgVec2PDot(curr, next);
+                area += vec2pdot(curr, next);
             }
             return area / 2.0;
 
@@ -208,9 +217,6 @@ float SG_CALL sgPhysicsShapeGetMass(SGPhysicsShape* shape, float density)
 /* TODO: Use builtin Chipmunk functionality for this */
 float SG_CALL sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass)
 {
-    if(shape == NULL)
-        return SG_NAN;
-
     SGVec2 curr;
     SGVec2 next;
     float nom;
@@ -235,8 +241,8 @@ float SG_CALL sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass)
                 next.x = shape->verts[2*((i+1) % shape->numverts)] - shape->x;
                 next.y = shape->verts[2*((i+1) % shape->numverts)+1] - shape->y;
 
-                nom += fabs(sgVec2PDot(curr, next)) * (sgVec2Length2(next) + sgVec2Dot(next, curr) + sgVec2Length2(curr));
-                den += fabs(sgVec2PDot(curr, next));
+                nom += fabs(vec2pdot(curr, next)) * (vec2len2(next) + vec2dot(next, curr) + vec2len2(curr));
+                den += fabs(vec2pdot(curr, next));
             }
             return nom / den * mass / 6.0;
 
@@ -269,7 +275,7 @@ float SG_CALL sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float densit
                 next.x = shape->verts[2*((i+1) % shape->numverts)] - shape->x;
                 next.y = shape->verts[2*((i+1) % shape->numverts)+1] - shape->y;
 
-                moment += density / 12.0 * fabs(sgVec2PDot(curr, next)) * (sgVec2Length2(next) + sgVec2Dot(next, curr) + sgVec2Length2(curr));
+                moment += density / 12.0 * fabs(vec2pdot(curr, next)) * (vec2len2(next) + vec2dot(next, curr) + vec2len2(curr));
             }
             return moment;
 
@@ -297,7 +303,7 @@ void SG_CALL sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, fl
 /* TODO: Optimize */
 void SG_CALL sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
 {
-    if(shape == NULL)
+/*    if(shape == NULL)
         return;
 
     // draw BB
@@ -383,6 +389,5 @@ void SG_CALL sgPhysicsShapeDrawDBG(SGPhysicsShape* shape)
     sgDrawEnd();
     sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 
-    free(points);
+    free(points);*/
 }
-#endif /* SG_USE_PHYSICS */

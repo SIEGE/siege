@@ -16,7 +16,7 @@
 #define __SIEGE_PHYSICS_SHAPE_H__
 
 #include "../common.h"
-#include "../config.h"
+#include "../module.h"
 #include "body.h"
 
 #ifdef __cplusplus
@@ -24,7 +24,6 @@ extern "C"
 {
 #endif // __cplusplus
 
-#ifdef SG_USE_PHYSICS
 typedef struct SGPhysicsShape
 {
     void* handle;
@@ -39,31 +38,30 @@ typedef struct SGPhysicsShape
     float* verts;
 } SGPhysicsShape;
 
-SGPhysicsShape* SG_CALL sgPhysicsShapeCreate(SGPhysicsBody* body, SGenum type);
-SGPhysicsShape* SG_CALL sgPhysicsShapeCreateSegment(SGPhysicsBody* body, float x1, float y1, float x2, float y2, float width);
-SGPhysicsShape* SG_CALL sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x, float y, float* verts, size_t numverts);
-SGPhysicsShape* SG_CALL sgPhysicsShapeCreateCircle(SGPhysicsBody* body, float x, float y, float r1, float r2);
-void SG_CALL sgPhysicsShapeDestroy(SGPhysicsShape* shape);
+SGPhysicsShape* SG_CALL SG_FPTR(sgPhysicsShapeCreate)(SGPhysicsBody* body, SGenum type);
+SGPhysicsShape* SG_CALL SG_FPTR(sgPhysicsShapeCreateSegment)(SGPhysicsBody* body, float x1, float y1, float x2, float y2, float width);
+SGPhysicsShape* SG_CALL SG_FPTR(sgPhysicsShapeCreatePoly)(SGPhysicsBody* body, float x, float y, float* verts, size_t numverts);
+SGPhysicsShape* SG_CALL SG_FPTR(sgPhysicsShapeCreateCircle)(SGPhysicsBody* body, float x, float y, float r1, float r2);
+void SG_CALL SG_FPTR(sgPhysicsShapeDestroy)(SGPhysicsShape* shape);
 
-void SG_CALL sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group);
-SGuint SG_CALL sgPhysicsShapeGetGroup(SGPhysicsShape* shape);
-void SG_CALL sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction);
-float SG_CALL sgPhysicsShapeGetFriction(SGPhysicsShape* shape);
+void SG_CALL SG_FPTR(sgPhysicsShapeSetGroup)(SGPhysicsShape* shape, SGuint group);
+SGuint SG_CALL SG_FPTR(sgPhysicsShapeGetGroup)(SGPhysicsShape* shape);
+void SG_CALL SG_FPTR(sgPhysicsShapeSetFriction)(SGPhysicsShape* shape, float friction);
+float SG_CALL SG_FPTR(sgPhysicsShapeGetFriction)(SGPhysicsShape* shape);
 /* TODO: Rename to elasticity? */
-void SG_CALL sgPhysicsShapeSetRestitution(SGPhysicsShape* shape, float restitution);
-float SG_CALL sgPhysicsShapeGetRestitution(SGPhysicsShape* shape);
-void SG_CALL sgPhysicsShapeSetData(SGPhysicsShape* shape, void* data);
-void* SG_CALL sgPhysicsShapeGetData(SGPhysicsShape* shape);
+void SG_CALL SG_FPTR(sgPhysicsShapeSetRestitution)(SGPhysicsShape* shape, float restitution);
+float SG_CALL SG_FPTR(sgPhysicsShapeGetRestitution)(SGPhysicsShape* shape);
+void SG_CALL SG_FPTR(sgPhysicsShapeSetData)(SGPhysicsShape* shape, void* data);
+void* SG_CALL SG_FPTR(sgPhysicsShapeGetData)(SGPhysicsShape* shape);
 
-float SG_CALL sgPhysicsShapeGetAreaS(SGPhysicsShape* shape);
-float SG_CALL sgPhysicsShapeGetAreaU(SGPhysicsShape* shape);
-float SG_CALL sgPhysicsShapeGetMass(SGPhysicsShape* shape, float density);
-float SG_CALL sgPhysicsShapeGetMomentMass(SGPhysicsShape* shape, float mass);
-float SG_CALL sgPhysicsShapeGetMomentDensity(SGPhysicsShape* shape, float density);
+float SG_CALL SG_FPTR(sgPhysicsShapeGetAreaS)(SGPhysicsShape* shape);
+float SG_CALL SG_FPTR(sgPhysicsShapeGetAreaU)(SGPhysicsShape* shape);
+float SG_CALL SG_FPTR(sgPhysicsShapeGetMass)(SGPhysicsShape* shape, float density);
+float SG_CALL SG_FPTR(sgPhysicsShapeGetMomentMass)(SGPhysicsShape* shape, float mass);
+float SG_CALL SG_FPTR(sgPhysicsShapeGetMomentDensity)(SGPhysicsShape* shape, float density);
 
-void SG_CALL sgPhysicsShapeGetBBox(SGPhysicsShape* shape, float* t, float* l, float* b, float* r);
-void SG_CALL sgPhysicsShapeDrawDBG(SGPhysicsShape* shape);
-#endif /* SG_USE_PHYSICS */
+void SG_CALL SG_FPTR(sgPhysicsShapeGetBBox)(SGPhysicsShape* shape, float* t, float* l, float* b, float* r);
+void SG_CALL SG_FPTR(sgPhysicsShapeDrawDBG)(SGPhysicsShape* shape);
 
 #ifdef __cplusplus
 }

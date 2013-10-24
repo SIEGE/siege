@@ -14,7 +14,6 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/common.h>
-#include <siege/config.h>
 
 #include <siege/util/thread/thread.h>
 
@@ -32,8 +31,8 @@
 #include <siege/input/mouse.h>
 #include <siege/input/joystick.h>
 
+#include <siege/physics/module.h>
 #include <siege/physics/space.h>
-#include <siege/physics/collision.h>
 #include <siege/util/timer.h>
 
 #include <stdlib.h>
@@ -142,9 +141,9 @@ SGbool SG_CALL sgInit(SGenum flags)
 
     _sgDrawInit();
 
-#ifdef SG_USE_PHYSICS
-    _sgPhysicsSpaceInit();
-#endif /* SG_USE_PHYSICS */
+    _sgPhysicsLoad();
+    if(sgPhysicsIsAvailable())
+        _sgPhysicsInit();
 
     _sgLightInit();
 
@@ -166,9 +165,9 @@ SGbool SG_CALL sgDeinit(void)
 
     _sgLightDeinit();
 
-#ifdef SG_USE_PHYSICS
-    _sgPhysicsSpaceDeinit();
-#endif /* SG_USE_PHYSICS */
+    if(sgPhysicsIsAvailable())
+        _sgPhysicsDeinit();
+    _sgPhysicsUnload();
 
     _sgDrawDeinit();
 
@@ -226,9 +225,8 @@ SGbool SG_CALL sgLoop(SGint* code)
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICKB);
 
-#ifdef SG_USE_PHYSICS
-    sgPhysicsSpaceStep(_sg_physSpaceMain, 0.125);
-#endif /* SG_USE_PHYSICS */
+    if(sgPhysicsIsAvailable())
+        sgPhysicsSpaceStep(sgPhysicsSpaceGetDefault(), 0.125);
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_TICK);
 

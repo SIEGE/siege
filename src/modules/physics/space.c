@@ -12,7 +12,7 @@
     Tim Chas <darkuranium@gmail.com>.
 */
 
-#define SG_BUILD_LIBRARY
+#define SG_BUILD_MODULE
 #include <siege/physics/space.h>
 #include <siege/physics/shape.h>
 #include <siege/physics/body.h>
@@ -21,9 +21,8 @@
 
 #include <stdlib.h>
 
-#include "../internal/chipmunk.h"
+#include <chipmunk/chipmunk.h>
 
-#ifdef SG_USE_PHYSICS
 static cpBool cbCollisionBegin(cpArbiter* arb, cpSpace* space, void* data)
 {
     cpShape* one;
@@ -173,4 +172,3 @@ void SG_CALL _sgPhysicsSpaceRemoveConstraint(SGPhysicsSpace* space, SGPhysicsCon
 {
     cpSpaceRemoveConstraint(space->handle, constraint->handle);
 }
-#endif /* SG_USE_PHYSICS */

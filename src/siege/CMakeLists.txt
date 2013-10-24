@@ -8,7 +8,6 @@ IF(BUILD_SIEGE)
 
     IF(BUILD_SPLIT)
         SHARED_STATIC(SG-Util util c)
-        SHARED_STATIC(SG-Modules modules c)
 
         SHARED_STATIC(SG-AI ai c SG-Util)
         SHARED_STATIC(SG-Audio audio c SG-Util)

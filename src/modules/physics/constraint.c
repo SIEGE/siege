@@ -12,14 +12,13 @@
     Tim Chas <darkuranium@gmail.com>.
 */
 
-#define SG_BUILD_LIBRARY
+#define SG_BUILD_MODULE
 #include <siege/physics/constraint.h>
 
 #include <stdlib.h>
 
-#include "../internal/chipmunk.h"
+#include <chipmunk/chipmunk.h>
 
-#ifdef SG_USE_PHYSICS
 static void _postCreate(SGPhysicsConstraint* constr)
 {
     //SG_ASSERT(constr->body1->space == constr->body2->space);
@@ -224,4 +223,3 @@ void* SG_CALL sgPhysicsConstraintGetData(SGPhysicsConstraint* constr)
 {
     return constr->data;
 }
-#endif /* SG_USE_PHYSICS */

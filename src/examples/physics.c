@@ -65,10 +65,9 @@ void destroyBox(SGEntity* entity)
     if(entity == NULL)
         return;
 
-    sgPhysicsBodyDestroy(entity->body);
-
     Box* box = entity->data;
     sgPhysicsShapeDestroy(box->shape);
+    sgPhysicsBodyDestroy(entity->body);
 
     free(box);
 }
@@ -171,6 +170,7 @@ void boxDrawDBG(SGEntity* entity)
     //sgDrawLineSetWidth(1.0);
     sgDrawPointSetSize(1.0);
 
+    sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
     sgPhysicsShapeDrawDBG(box->shape);
 }
 

@@ -12,15 +12,14 @@
     Tim Chas <darkuranium@gmail.com>.
 */
 
-#define SG_BUILD_LIBRARY
+#define SG_BUILD_MODULE
 #include <siege/physics/collision.h>
 #include <siege/core/entity.h>
 
 #include <stdlib.h>
 
-#include "../internal/chipmunk.h"
+#include <chipmunk/chipmunk.h>
 
-#ifdef SG_USE_PHYSICS
 /* TODO: Return value */
 void SG_CALL _sg_cbPhysicsCollisionBegin(SGPhysicsShape* shape1, SGPhysicsShape* shape2, void* handle)
 {
@@ -147,4 +146,3 @@ SGPhysicsShape* SG_CALL sgPhysicsCollisionGetShapeTwo(SGPhysicsCollision* coll)
 {
     return coll->shape2;
 }
-#endif /* SG_USE_PHYSICS */

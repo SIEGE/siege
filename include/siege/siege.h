@@ -45,6 +45,7 @@
 #include "input/keyboard.h"
 #include "input/mouse.h"
 #include "input/joystick.h"
+#include "physics/module.h"
 #include "physics/body.h"
 #include "physics/collision.h"
 #include "physics/constraint.h"

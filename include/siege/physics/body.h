@@ -16,7 +16,7 @@
 #define __SIEGE_PHYSICS_BODY_H__
 
 #include "../common.h"
-#include "../config.h"
+#include "../module.h"
 #include "space.h"
 
 #ifdef __cplusplus
@@ -24,7 +24,6 @@ extern "C"
 {
 #endif // __cplusplus
 
-#ifdef SG_USE_PHYSICS
 struct SGEntity;
 
 typedef struct SGPhysicsBody
@@ -38,65 +37,64 @@ typedef struct SGPhysicsBody
     struct SGEntity* entity;
 } SGPhysicsBody;
 
-SGPhysicsBody* SG_CALL sgPhysicsBodyCreate(SGPhysicsSpace* space, SGenum type);
-void SG_CALL sgPhysicsBodyDestroy(SGPhysicsBody* body);
+SGPhysicsBody* SG_CALL SG_FPTR(sgPhysicsBodyCreate)(SGPhysicsSpace* space, SGenum type);
+void SG_CALL SG_FPTR(sgPhysicsBodyDestroy)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodySetData(SGPhysicsBody* body, void* data);
-void* SG_CALL sgPhysicsBodyGetData(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetData)(SGPhysicsBody* body, void* data);
+void* SG_CALL SG_FPTR(sgPhysicsBodyGetData)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodySetSleeping(SGPhysicsBody* body, SGbool sleeping);
-SGbool SG_CALL sgPhysicsBodyGetSleeping(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetSleeping)(SGPhysicsBody* body, SGbool sleeping);
+SGbool SG_CALL SG_FPTR(sgPhysicsBodyGetSleeping)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodySetPos(SGPhysicsBody* body, float x, float y);
-void SG_CALL sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y);
+void SG_CALL SG_FPTR(sgPhysicsBodySetPos)(SGPhysicsBody* body, float x, float y);
+void SG_CALL SG_FPTR(sgPhysicsBodyGetPos)(SGPhysicsBody* body, float* x, float* y);
 
-void SG_CALL sgPhysicsBodySetPosX(SGPhysicsBody* body, float x);
-float SG_CALL sgPhysicsBodyGetPosX(SGPhysicsBody* body);
-void SG_CALL sgPhysicsBodySetPosY(SGPhysicsBody* body, float y);
-float SG_CALL sgPhysicsBodyGetPosY(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetPosX)(SGPhysicsBody* body, float x);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetPosX)(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetPosY)(SGPhysicsBody* body, float y);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetPosY)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodySetAngleRads(SGPhysicsBody* body, float rads);
-float SG_CALL sgPhysicsBodyGetAngleRads(SGPhysicsBody* body);
-void SG_CALL sgPhysicsBodySetAngleDegs(SGPhysicsBody* body, float degs);
-float SG_CALL sgPhysicsBodyGetAngleDegs(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetAngleRads)(SGPhysicsBody* body, float rads);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetAngleRads)(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetAngleDegs)(SGPhysicsBody* body, float degs);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetAngleDegs)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodySetVel(SGPhysicsBody* body, float x, float y);
-void SG_CALL sgPhysicsBodyGetVel(SGPhysicsBody* body, float* x, float* y);
+void SG_CALL SG_FPTR(sgPhysicsBodySetVel)(SGPhysicsBody* body, float x, float y);
+void SG_CALL SG_FPTR(sgPhysicsBodyGetVel)(SGPhysicsBody* body, float* x, float* y);
 
-void SG_CALL sgPhysicsBodySetVelX(SGPhysicsBody* body, float x);
-float SG_CALL sgPhysicsBodyGetVelX(SGPhysicsBody* body);
-void SG_CALL sgPhysicsBodySetVelY(SGPhysicsBody* body, float y);
-float SG_CALL sgPhysicsBodyGetVelY(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetVelX)(SGPhysicsBody* body, float x);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetVelX)(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetVelY)(SGPhysicsBody* body, float y);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetVelY)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodySetAngVelRads(SGPhysicsBody* body, float rads);
-float SG_CALL sgPhysicsBodyGetAngVelRads(SGPhysicsBody* body);
-void SG_CALL sgPhysicsBodySetAngVelDegs(SGPhysicsBody* body, float degs);
-float SG_CALL sgPhysicsBodyGetAngVelDegs(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetAngVelRads)(SGPhysicsBody* body, float rads);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetAngVelRads)(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetAngVelDegs)(SGPhysicsBody* body, float degs);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetAngVelDegs)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodySetMass(SGPhysicsBody* body, float mass);
-float SG_CALL sgPhysicsBodyGetMass(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetMass)(SGPhysicsBody* body, float mass);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetMass)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodySetMoment(SGPhysicsBody* body, float moment);
-float SG_CALL sgPhysicsBodyGetMoment(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetMoment)(SGPhysicsBody* body, float moment);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetMoment)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodySetForce(SGPhysicsBody* body, float x, float y);
-void SG_CALL sgPhysicsBodyGetForce(SGPhysicsBody* body, float* x, float* y);
+void SG_CALL SG_FPTR(sgPhysicsBodySetForce)(SGPhysicsBody* body, float x, float y);
+void SG_CALL SG_FPTR(sgPhysicsBodyGetForce)(SGPhysicsBody* body, float* x, float* y);
 
-void SG_CALL sgPhysicsBodySetForceX(SGPhysicsBody* body, float x);
-float SG_CALL sgPhysicsBodyGetForceX(SGPhysicsBody* body);
-void SG_CALL sgPhysicsBodySetForceY(SGPhysicsBody* body, float y);
-float SG_CALL sgPhysicsBodyGetForceY(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetForceX)(SGPhysicsBody* body, float x);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetForceX)(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetForceY)(SGPhysicsBody* body, float y);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetForceY)(SGPhysicsBody* body);
 
 /* TODO: rads/degs? */
-void SG_CALL sgPhysicsBodySetTorque(SGPhysicsBody* body, float torque);
-float SG_CALL sgPhysicsBodyGetTorque(SGPhysicsBody* body);
+void SG_CALL SG_FPTR(sgPhysicsBodySetTorque)(SGPhysicsBody* body, float torque);
+float SG_CALL SG_FPTR(sgPhysicsBodyGetTorque)(SGPhysicsBody* body);
 
-void SG_CALL sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
-void SG_CALL sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
+void SG_CALL SG_FPTR(sgPhysicsBodyApplyImpulse)(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
+void SG_CALL SG_FPTR(sgPhysicsBodyApplyForce)(SGPhysicsBody* body, float jx, float jy, float rx, float ry);
 
-void SG_CALL sgPhysicsBodyWorldToLocal(SGPhysicsBody* body, float* xo, float* yo, float x, float y);
-void SG_CALL sgPhysicsBodyLocalToWorld(SGPhysicsBody* body, float* xo, float* yo, float x, float y);
-#endif /* SG_USE_PHYSICS */
+void SG_CALL SG_FPTR(sgPhysicsBodyWorldToLocal)(SGPhysicsBody* body, float* xo, float* yo, float x, float y);
+void SG_CALL SG_FPTR(sgPhysicsBodyLocalToWorld)(SGPhysicsBody* body, float* xo, float* yo, float x, float y);
 
 #ifdef __cplusplus
 }

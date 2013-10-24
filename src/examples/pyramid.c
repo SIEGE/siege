@@ -42,10 +42,9 @@ void destroyBox(SGEntity* entity)
     if(entity == NULL)
         return;
 
-    sgPhysicsBodyDestroy(entity->body);
-
     Box* box = entity->data;
     sgPhysicsShapeDestroy(box->shape);
+    sgPhysicsBodyDestroy(entity->body);
 
     free(box);
 }
@@ -133,6 +132,7 @@ SGEntity* createBox(float x, float y, float angle, float length, float width, fl
 SGEntity* createTile(float x, float y, float angle, float length, float width)
 {
     SGEntity* entity = createBox(x, y, angle, length, width, 1.0, SG_FALSE);
+    // TODO: Next line is problematic all of sudden ... why?
     sgPhysicsBodySetSleeping(sgEntityGetPhysicsBody(entity), SG_TRUE);
     return entity;
 }
