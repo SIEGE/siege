@@ -35,6 +35,7 @@ typedef struct SGSurface
 SGbool SG_CALL _sgSurfaceInit(void);
 SGbool SG_CALL _sgSurfaceDeinit(void);
 
+SGSurface* SG_CALL sgSurfaceCreateBitmap(SGBitmap* bmp, SGbool delbmp);
 SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream, SGbool delstream);
 SGSurface* SG_CALL sgSurfaceCreateFile(const char* fname);
 SGSurface* SG_CALL sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data);

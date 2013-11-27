@@ -14,7 +14,7 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/graphics/surface.h>
-#include <siege/graphics/image.h>
+#include <siege/graphics/bitmap.h>
 #include <siege/graphics/draw.h>
 #include <siege/core/window.h>
 
@@ -33,21 +33,24 @@ SGbool SG_CALL _sgSurfaceDeinit(void)
     return SG_TRUE;
 }
 
-SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream, SGbool delstream)
+SGSurface* SG_CALL sgSurfaceCreateBitmap(SGBitmap* bmp, SGbool delbmp)
 {
     size_t width;
     size_t height;
     SGenum bpp;
     void* data;
 
-    SGImageData* idata = sgImageDataCreateStream(stream, delstream);
-    if(!idata) return NULL;
-    sgImageDataGetData(idata, &width, &height, &bpp, &data);
-
+    sgBitmapGetData(bmp, &width, &height, &bpp, &data);
     SGSurface* surface = sgSurfaceCreateData(width, height, bpp, data);
-
-    sgImageDataDestroy(idata);
+    if(delbmp)
+        sgBitmapDestroy(bmp);
     return surface;
+}
+SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream, SGbool delstream)
+{
+    SGBitmap* bmp = sgBitmapCreateStream(stream, delstream);
+    if(!bmp) return NULL;
+    return sgSurfaceCreateBitmap(bmp, SG_TRUE);
 }
 SGSurface* SG_CALL sgSurfaceCreateFile(const char* fname)
 {

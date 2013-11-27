@@ -19,7 +19,7 @@
 #ifndef __SIEGE_CORE_WINDOW_H__
 #define __SIEGE_CORE_WINDOW_H__
 
-#include "../graphics/image.h"
+#include "../graphics/bitmap.h"
 
 #include <stdarg.h>
 
@@ -68,7 +68,7 @@ SGbool SG_CALL sgWindowIsOpened(void);
  */
 void SG_CALL sgWindowClose(void);
 
-void SG_CALL sgWindowSetIcon(SGImageData* idata);
+void SG_CALL sgWindowSetIcon(SGBitmap* bmp);
 
 /**
  * \name Title

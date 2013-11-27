@@ -86,21 +86,25 @@ static GLenum interpSGtoGL(SGenum interp)
     }
 }
 
-SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream, SGbool delstream)
+SGTexture* SG_CALL sgTextureCreateBitmap(SGBitmap* bmp, SGbool delbmp)
 {
     size_t width;
     size_t height;
     SGenum bpp;
     void* data;
 
-    SGImageData* idata = sgImageDataCreateStream(stream, delstream);
-    if(!idata) return NULL;
-    sgImageDataGetData(idata, &width, &height, &bpp, &data);
+    sgBitmapGetData(bmp, &width, &height, &bpp, &data);
 
     SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
-
-    sgImageDataDestroy(idata);
+    if(delbmp)
+        sgBitmapDestroy(bmp);
     return texture;
+}
+SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream, SGbool delstream)
+{
+    SGBitmap* bmp = sgBitmapCreateStream(stream, delstream);
+    if(!bmp) return NULL;
+    return sgTextureCreateBitmap(bmp, SG_TRUE);
 }
 SGTexture* SG_CALL sgTextureCreateFile(const char* fname)
 {

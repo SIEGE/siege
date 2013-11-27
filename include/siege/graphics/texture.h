@@ -16,6 +16,7 @@
 #define __SIEGE_GRAPHICS_TEXTURE_H__
 
 #include "../common.h"
+#include "bitmap.h"
 #include "../util/stream.h"
 
 #ifdef __cplusplus
@@ -30,6 +31,7 @@ typedef struct SGTexture
     SGenum bpp;
 } SGTexture;
 
+SGTexture* SG_CALL sgTextureCreateBitmap(SGBitmap* bmp, SGbool delbmp);
 SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream, SGbool delstream);
 SGTexture* SG_CALL sgTextureCreateFile(const char* fname);
 SGTexture* SG_CALL sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data);

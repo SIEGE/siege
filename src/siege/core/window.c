@@ -227,7 +227,7 @@ void SG_CALL sgWindowClose(void)
     // TODO: Actually close the window (SDL2 ...)
     _sg_cbWindowClose();
 }
-void SG_CALL sgWindowSetIcon(SGImageData* idata)
+void SG_CALL sgWindowSetIcon(SGBitmap* bmp)
 {
     if(winIcon)
         SDL_FreeSurface(winIcon);
@@ -247,7 +247,7 @@ void SG_CALL sgWindowSetIcon(SGImageData* idata)
 #endif
 
     SGubyte bypp;
-    switch(idata->bpp)
+    switch(bmp->bpp)
     {
         case 8:
             bypp = 1;
@@ -268,11 +268,11 @@ void SG_CALL sgWindowSetIcon(SGImageData* idata)
             return; // TODO: Report error
     }
 
-    winIcon = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, idata->width, idata->height, idata->bpp, rmask, gmask, bmask, amask);
+    winIcon = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, bmp->width, bmp->height, bmp->bpp, rmask, gmask, bmask, amask);
     SDL_LockSurface(winIcon);
     size_t i;
-    for(i = 0; i < idata->height; i++)
-        memcpy(&((char*)winIcon->pixels)[i * winIcon->pitch], ((char*)idata->data) + bypp * idata->width * i, bypp * idata->width);
+    for(i = 0; i < bmp->height; i++)
+        memcpy(&((char*)winIcon->pixels)[i * winIcon->pitch], ((char*)bmp->data) + bypp * bmp->width * i, bypp * bmp->width);
     SDL_UnlockSurface(winIcon);
     SDL_WM_SetIcon(winIcon, NULL);
 }

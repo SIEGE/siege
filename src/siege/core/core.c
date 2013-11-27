@@ -25,7 +25,7 @@
 #include <siege/graphics/light.h>
 #include <siege/graphics/surface.h>
 #include <siege/graphics/draw.h>
-#include <siege/graphics/image.h>
+#include <siege/graphics/bitmap.h>
 #include <siege/graphics/viewport.h>
 #include <siege/input/keyboard.h>
 #include <siege/input/mouse.h>
@@ -126,7 +126,7 @@ SGbool SG_CALL sgInit(SGenum flags)
     sgEntityEventSignal(1, (SGenum)SG_EVF_INIT);
     _sg_hasInited = SG_TRUE;
 
-    _sgImageDataInit();
+    _sgBitmapInit();
     _sgWindowInit();
     _sgViewportInit();
     _sgSurfaceInit();
@@ -182,7 +182,7 @@ SGbool SG_CALL sgDeinit(void)
     _sgSurfaceDeinit();
     _sgViewportDeinit();
     _sgWindowDeinit();
-    _sgImageDataDeinit();
+    _sgBitmapDeinit();
 
     _sgEntityDeinit();
 
