@@ -134,7 +134,7 @@ size_t SG_CALL sgBitmapGetHeight(SGBitmap* bmp)
     return bmp->height;
 }
 
-SGenum SG_CALL sgBitmapGetBpp(SGBitmap* bmp)
+SGenum SG_CALL sgBitmapGetBPP(SGBitmap* bmp)
 {
     return bmp->bpp;
 }

@@ -50,7 +50,7 @@ void SG_CALL sgBitmapGetSize(SGBitmap* bmp, size_t* width, size_t* height);
 size_t SG_CALL sgBitmapGetWidth(SGBitmap* bmp);
 size_t SG_CALL sgBitmapGetHeight(SGBitmap* bmp);
 
-SGenum SG_CALL sgBitmapGetBpp(SGBitmap* bmp);
+SGenum SG_CALL sgBitmapGetBPP(SGBitmap* bmp);
 
 #ifdef __cplusplus
 }
