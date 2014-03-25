@@ -71,7 +71,7 @@ void* SG_CALL sgMapReplace(SGMap* map, void* key, void* val)
         return old;
     }
 
-    mnode = malloc(sizeof(mnode));
+    mnode = malloc(sizeof(*mnode));
     if(!mnode) return NULL;
 
     mnode->key = key;
@@ -127,7 +127,7 @@ SGMapNode* SG_CALL sgMapAssignNode(SGMap* map, void* key, void* val)
         return mnode;
     }
 
-    mnode = malloc(sizeof(mnode));
+    mnode = malloc(sizeof(*mnode));
     if(!mnode) return NULL;
 
     mnode->key = key;

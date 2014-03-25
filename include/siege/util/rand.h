@@ -48,7 +48,7 @@ typedef struct SGRand
 {
     SGenum type;
     time_t stime;
-    SGubyte* data;
+    void* data;
     SGRandCallbacks cbs;
     SGulong max;
 } SGRand;
