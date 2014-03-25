@@ -47,7 +47,7 @@ void SG_CALL _sgSetDestroyNode(SGSetNode* node);
 SGSetNode* SG_CALL _sgSetNodeSkew(SGSetNode* node);
 SGSetNode* SG_CALL _sgSetNodeSplit(SGSetNode* node);
 
-SGSetNode* SG_CALL _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node);
+SGSetNode* SG_CALL _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode** cnode);
 SGSetNode* SG_CALL _sgSetNodeRemove(SGSet* set, SGSetNode* root, SGSetNode* node);
 
 SGSet* SG_CALL sgSetInit(SGSet* set, SGSetCmp* cmp, void* data);

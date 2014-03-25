@@ -65,12 +65,14 @@ SGSetNode* SG_CALL _sgSetNodeSplit(SGSetNode* node)
  * the typical amount of memory in a computer, nevermind that a single node is
  * more than 1 byte.
  */
-SGSetNode* SG_CALL _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node)
+SGSetNode* SG_CALL _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode** cnode)
 {
     SGSetNode* curr;
     SGSetNode* stack[256];
     ptrdiff_t top;
     int cmp;
+
+    SGSetNode* node = *cnode;
 
     if(!root)
         root = node;
@@ -94,6 +96,7 @@ SGSetNode* SG_CALL _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node
         {
             curr->item = node->item;
             free(node);
+            *cnode = curr;
             return root;
         }
 
@@ -287,8 +290,7 @@ SGSetNode* SG_CALL sgSetInsert(SGSet* set, void* item)
     node->right = NULL;
     node->level = 1;
     node->item = item;
-    set->root = _sgSetNodeInsert(set, set->root, node);
-    if(!set->root) return NULL;
+    set->root = _sgSetNodeInsert(set, set->root, &node);
     return node;
 }
 
