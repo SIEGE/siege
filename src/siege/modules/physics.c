@@ -17,7 +17,8 @@ static SGLibrary* lib;
 
 static SGbool loadAll(void)
 {
-    lib = sgLibraryLoad("libSGM-Physics");
+    lib = sgLibraryLoad("SGM-Physics");
+    if(!lib) lib = sgLibraryLoad("libSGM-Physics");
     if(!lib) return SG_FALSE;
 
     void* fptr;
