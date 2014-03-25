@@ -64,7 +64,7 @@ void SG_CALL _sg_cbMouseButton(SGuint button, SGbool down)
                 events[numevents-1] = SG_EVF_MOUSEBUTMR;
             break;
         default:
-            numevents--;
+            events[--numevents] = 0;
             break;
     }
 
