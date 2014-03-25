@@ -78,8 +78,7 @@ SGSetNode* SG_CALL _sgSetNodeInsert(SGSet* set, SGSetNode* root, SGSetNode* node
     {
         curr = root;
         top = 0;
-        cmp = 1;
-        while(1)
+        for(;;)
         {
             stack[top++] = curr;
             cmp = set->cmp(curr->item, node->item, set->data);
