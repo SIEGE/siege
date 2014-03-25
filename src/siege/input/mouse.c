@@ -68,6 +68,8 @@ void SG_CALL _sg_cbMouseButton(SGuint button, SGbool down)
             break;
     }
 
+    SG_ASSERT(numevents >= 2 || !events[1], "incorrectly initialized events[1]");
+    SG_ASSERT(numevents >= 1 || !events[0], "incorrectly initialized events[0]");
     sgEntityEventSignal(numevents, events[0], button, events[1]);
 }
 void SG_CALL _sg_cbMouseMove(SGint x, SGint y)
