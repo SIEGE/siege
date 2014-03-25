@@ -281,14 +281,14 @@ SGSetNode* SG_CALL sgSetSearch(SGSet* set, const void* item)
 SGSetNode* SG_CALL sgSetInsert(SGSet* set, void* item)
 {
     SGSetNode* node = malloc(sizeof(SGSetNode));
-    if(!node)
-        return NULL;
+    if(!node) return NULL;
     //node->parent = NULL;
     node->left = NULL;
     node->right = NULL;
     node->level = 1;
     node->item = item;
     set->root = _sgSetNodeInsert(set, set->root, node);
+    if(!set->root) return NULL;
     return node;
 }
 
