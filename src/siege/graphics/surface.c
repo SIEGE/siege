@@ -87,8 +87,8 @@ SGSurface* SG_CALL sgSurfaceCreateTexture(SGTexture* texture, SGbool deltex)
 
     if(!sgSurfaceSetTexture(surface, texture, deltex))
     {
-        surface->texture = NULL;
         sgSurfaceDestroy(surface);
+        return NULL;
     }
 
     return surface;
