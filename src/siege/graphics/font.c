@@ -309,7 +309,6 @@ static SGbool SG_CALL _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecL
     float linesep = font->ascent - font->descent + font->linegap;
 
     SGCharInfo* info = NULL;
-    float* kerning = NULL;
     size_t i;
     while(start != NULL)
     {
@@ -317,14 +316,6 @@ static SGbool SG_CALL _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecL
         if(execLineStart && execLineStart(font, text, start, end, data))
             goto end;
         info = realloc(info, (end - start) * sizeof(SGCharInfo));
-        /*
-         * we actually alloc 1 more, but it's better
-         * than getting into trouble because of unsigned wrap
-         * due to end being the same as start
-         */
-        kerning = realloc(kerning, (end - start) * sizeof(float));
-        for(i = 1; i < end - start; i++)
-            kerning[i-1] = stbtt_GetCodepointKernAdvance(&fface->info, start[i-1], start[i]) * fface->scale;
         if(!_sgFontGetChars(font, (SGdchar*)start, end - start, info) && ((end - start) != 0))
         {
             start = sgNextLineU32(start);
@@ -336,8 +327,8 @@ static SGbool SG_CALL _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecL
         {
             if(execChar && execChar(font, text, chr, &info[chr-start], xoffset, yoffset, data))
                 goto end;
-            if(chr != end - 1)
-                xoffset += kerning[chr - start];
+            if(chr != start)
+                xoffset += stbtt_GetCodepointKernAdvance(&fface->info, chr[-1], chr[0]) * fface->scale;
             xoffset += info[chr - start].xpost;
             yoffset += info[chr - start].ypost;
         }
@@ -348,7 +339,6 @@ static SGbool SG_CALL _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecL
     }
 end:
     free(info);
-    free(kerning);
     if(execDone)
         return execDone(font, xoffset, yoffset, data);
     return SG_TRUE;
