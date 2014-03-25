@@ -136,12 +136,16 @@ static void* toStereo(SGuint channels, void* data, size_t* datalen, ALuint* alfo
 
 SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstream)
 {
+    if(!stream || !stream->read || !stream->seek || !stream->tell) return NULL;
+
     SGAudioBuffer* buffer = malloc(sizeof(SGAudioBuffer));
+    if(!buffer) goto error;
 
     buffer->stream = stream;
     buffer->del = delstream;
 
     buffer->handle = malloc(sizeof(ALuint));
+    if(!buffer->handle) goto error;
     alGenBuffers(1, buffer->handle);
 
     SGuint channels;
@@ -155,9 +159,6 @@ SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstr
     int error = 0;
     stb_vorbis* stb = NULL;
     stb_vorbis_info info;
-
-    if(!stream || !stream->read || !stream->seek || !stream->tell)
-        return NULL;
 
     SGlong pos = sgStreamTell(stream);
     SGlong size = sgStreamTellSize(stream);
@@ -191,8 +192,12 @@ lderr:
         stb_vorbis_close(stb);
     if(buf)
         free(buf);
-
     return buffer;
+
+error:
+    if(buffer)
+        free(buffer);
+    return NULL;
 }
 SGAudioBuffer* SG_CALL sgAudioBufferCreateFile(const char* fname)
 {
