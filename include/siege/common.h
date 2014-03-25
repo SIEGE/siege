@@ -21,6 +21,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <assert.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -239,6 +240,9 @@ typedef double SGdouble;
 #define SG_PSIGN(x)                 (((x) >= 0) - ((x) < 0))
 #define SG_IN_RANGE(x, min, max)    ((min) <= (x) && (x) <= (max))
 #define SG_IN_XRANGE(x, a, b)       SG_IN_RANGE(x, SG_MIN(a, b), SG_MAX(a, b))
+
+/* TODO: Use msg */
+#define SG_ASSERT(x,msg)            assert(x)
 /// @}
 
 #define SG_BYTE     0
