@@ -57,13 +57,12 @@ SGBitmap* SG_CALL sgBitmapCreateStream(SGStream* stream, SGbool delstream)
     bmp = malloc(sizeof(SGBitmap));
     if(!bmp) goto err;
 
-
     // TODO: Load with image BPP
     int w, h, n;
     bmp->data = stbi_load_from_callbacks(&imgCallbacks, stream, &w, &h, &n, 4);
+    bmp->deldata = SG_TRUE;
     if(!bmp->data)
         goto err;
-    bmp->deldata = SG_TRUE;
     bmp->width = w;
     bmp->height = h;
     bmp->bpp = 32;
@@ -72,7 +71,7 @@ err:
     fprintf(stderr, "Could not load image\n");
     if(bmp)
     {
-        if(bmp->deldata && bmp->data)
+        if(bmp->data && bmp->deldata)
             free(bmp->data);
         free(bmp);
     }
