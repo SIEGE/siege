@@ -57,6 +57,9 @@ static SGubyte texinfoGL(GLuint* gliformat, GLuint* glformat, GLuint* gltype, SG
             return 4;
         default:
             SG_ASSERT(0, "Invalid BPP passed to texture");
+            *gliformat = 0;
+            *glformat = 0;
+            *gltype = 0;
             return 0;
     }
 }

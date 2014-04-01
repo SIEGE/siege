@@ -309,7 +309,6 @@ static SGbool SG_CALL _sgFontExecuteU32(SGFont* font, const SGdchar* text, ExecL
     float linesep = font->ascent - font->descent + font->linegap;
 
     SGCharInfo* info = NULL;
-    size_t i;
     while(start != NULL)
     {
         end = sgLineEndU32(start);
