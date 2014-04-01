@@ -183,7 +183,7 @@ void SG_CALL _sgFontCenterOffsetU32(SGFont* font, float* x, float* y, const SGdc
     float sx, sy;
     sgFontStrSizeU32(font, &sx, &sy, text);
     *x = -sx / 2.0;
-    *y = sy / 2.0;
+    *y = -sy / 2.0 + font->ascent;
 }
 
 SGdchar* SG_CALL _sgFontU16ToU32(SGFont* font, const SGwchar* text)
