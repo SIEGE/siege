@@ -62,6 +62,7 @@
 #include "util/conv.h"
 #include "util/directory.h"
 #include "util/error.h"
+#include "util/getopt.h"
 #include "util/gradient.h"
 #include "util/inter.h"
 #include "util/link.h"
