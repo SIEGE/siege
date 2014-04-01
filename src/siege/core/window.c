@@ -69,8 +69,10 @@ static SGbool initGL(void)
 {
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_ALPHA_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthFunc(GL_LEQUAL);
+    glAlphaFunc(GL_GREATER, 0.0);
     glDisable(GL_CULL_FACE);
 
     glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
