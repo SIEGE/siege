@@ -61,8 +61,8 @@ static SGint _sgGetOptLongInd(SGGetOpt* getopt, SGlong* longind, char** arg, cha
 
     getopt->ind++;
 
-    *longind = getopt->longind;
-    *arg = getopt->arg;
+    if(longind) *longind = getopt->longind;
+    if(arg) *arg = getopt->arg;
     return getopt->err ? getopt->err : getopt->val;
 }
 
@@ -113,7 +113,7 @@ static SGint _sgGetOptInArg(SGGetOpt* getopt, SGlong* longind, char** arg)
         getopt->inarg = NULL;
     }
 
-    *arg = getopt->arg;
+    if(arg) *arg = getopt->arg;
     return getopt->err ? getopt->err : getopt->val;
 }
 
