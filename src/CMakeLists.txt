@@ -47,5 +47,6 @@ OPTION(BUILD_MONOLITHIC "Build the monolithic SIEGE build" ON)
 OPTION(BUILD_SPLIT "Build the separated SIEGE build" OFF)
 
 ADD_SUBDIRECTORY(siege)
-ADD_SUBDIRECTORY(examples)
 ADD_SUBDIRECTORY(modules)
+ADD_SUBDIRECTORY(examples)
+ADD_SUBDIRECTORY(tests)

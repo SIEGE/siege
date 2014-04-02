@@ -1,5 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 OPTION(BUILD_EXAMPLES "Build the examples" ON)
+OPTION(INSTALL_EXAMPLES "Install examples and data" OFF)
 
 MACRO(EXAMPLE name)
     STRING(TOLOWER ${name} sname)
