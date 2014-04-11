@@ -143,11 +143,11 @@ SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStrea
 }
 SGStream* SG_CALL sgStreamCreateFile(const char* fname, const char* mode)
 {
-    char mbuf[256];
+    char mbuf[258];
     mbuf[0] = 0;
 
     size_t i;
-    for(i = 0; mode[i] && i < 255; i++)
+    for(i = 0; mode[i] && i < 256; i++)
     {
         if(!strchr("rwa+", mode[i]))
             continue;

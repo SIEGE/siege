@@ -53,7 +53,7 @@ SGTimer* SG_CALL sgTimerCreate(SGbool pausable)
 void SG_CALL sgTimerDestroy(SGTimer* timer)
 {
     if(timer->snode)
-        remTimer(&_sg_stimerList, timer->tnode);
+        remTimer(&_sg_stimerList, timer->snode);
     if(timer->tnode)
         remTimer(&_sg_timerList, timer->tnode);
     free(timer);

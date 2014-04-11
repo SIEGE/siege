@@ -235,6 +235,7 @@ static void SG_CALL _sg_evCall(SGEntity* entity, size_t num, va_list args)
             case SG_EVF_LVLEND:
                 if(entity->evLevelEnd != NULL)
                     entity->evLevelEnd(entity);
+                break;
 
             default:
                 if(type & SG_EVT_USER)
