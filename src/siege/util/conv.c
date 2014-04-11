@@ -405,12 +405,11 @@ static size_t SG_CALL _sgConvU32ToW(wchar_t* out, const SGdchar* in, size_t* inl
         *out = *in;
         return 1;
     }
-    size_t ilen = 1;
-    SGwchar buf;
-    size_t len = _sgConvU32ToU16(&buf, in, inlen, strict);
+    SGwchar buf[2];
+    size_t len = _sgConvU32ToU16(buf, in, inlen, strict);
     if(!len)
         return 0;
-    return _sgConvU16ToW(out, &buf, &ilen, strict);
+    return _sgConvU16ToW(out, buf, &len, strict);
 //#else
     /* TODO */
 //    #error TODO
