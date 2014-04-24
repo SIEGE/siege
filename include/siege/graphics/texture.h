@@ -19,6 +19,16 @@
 #include "bitmap.h"
 #include "../util/stream.h"
 
+#define SG_WRAP_CURRENT             0x00
+#define SG_WRAP_CLAMP               0x01
+#define SG_WRAP_CLAMP_TO_EDGE       0x02
+#define SG_WRAP_MIRRORED_REPEAT     0x03
+#define SG_WRAP_REPEAT              0x04
+
+#define SG_INTERP_CURRENT   0x00
+#define SG_INTERP_NEAREST   0x01
+#define SG_INTERP_LINEAR    0x02
+
 #ifdef __cplusplus
 extern "C"
 {

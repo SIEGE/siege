@@ -19,6 +19,30 @@
 #include "../module.h"
 #include "space.h"
 
+/**
+ * \name Physics body types
+ */
+/// @{
+/**
+ * Completely non-interactive body type.
+ */
+#define SG_BODY_PASSIVE     0x01
+/**
+ * "Normal" body type, with normal physics interaction.
+ */
+#define SG_BODY_NORMAL      0x02
+/**
+ * A body type with seemingly infinite mass, but still movable (usually through user interaction).
+ * \note
+ *    May be deprecated in the future.
+ */
+#define SG_BODY_SEMISTATIC  0x03
+/**
+ * A completely static, non-movable body type with seemingly infinite mass.
+ */
+#define SG_BODY_STATIC      0x04
+/// @}
+
 #ifdef __cplusplus
 extern "C"
 {

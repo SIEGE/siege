@@ -23,6 +23,14 @@
 
 #include <stdarg.h>
 
+/**
+ * \name Window flags
+ */
+/// @{
+#define SG_WINDOW_FULLSCREEN 0x01
+#define SG_WINDOW_RESIZABLE  0x02
+/// @}
+
 #ifdef __cplusplus
 extern "C"
 {

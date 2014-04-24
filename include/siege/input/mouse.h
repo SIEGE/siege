@@ -16,6 +16,15 @@
 #define __SIEGE_INPUT_MOUSE_H__
 #include "../common.h"
 
+/**
+ * \name Mouse buttons
+ */
+/// @{
+#define SG_MOUSE_BUTTON_LEFT   1
+#define SG_MOUSE_BUTTON_RIGHT  2
+#define SG_MOUSE_BUTTON_MIDDLE 3
+/// @}
+
 #ifdef __cplusplus
 extern "C"
 {

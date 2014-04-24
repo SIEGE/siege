@@ -22,6 +22,11 @@
 #include "../common.h"
 #include <stdarg.h>
 
+/**
+ * Init flags
+ */
+#define SG_INIT_RENDERTHREAD 0x04
+
 #ifdef __cplusplus
 extern "C"
 {

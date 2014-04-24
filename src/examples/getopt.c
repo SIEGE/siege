@@ -1,5 +1,7 @@
 #include <siege/siege.h>
 
+#include <stdio.h>
+
 /*
  * Testcase:
  *      ./Example-GetOpt\

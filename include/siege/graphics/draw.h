@@ -25,6 +25,116 @@
 #include "../util/list.h"
 #include "texture.h"
 
+#define SG_BYTE     0
+#define SG_UBYTE    1
+#define SG_SHORT    2
+#define SG_USHORT   3
+#define SG_INT      4
+#define SG_UINT     5
+#define SG_FLOAT    6
+#define SG_DOUBLE   7
+
+/**
+ * \name Graphics primitives types
+ */
+/// @{
+/**
+ * Each vertex makes a point.
+ */
+#define SG_POINTS           0x01
+/**
+ * Each 2 vertices make a line. The number of passed vertices must be even.
+ */
+#define SG_LINES            0x02
+/**
+ * Last vertex of previous line becomes the first vertex of the next one, drawing a connected line defined by the set of vertices.
+ * \sa
+ *    SG_TRIANGLE_STRIP
+ *    SG_QUAD_STRIP
+ */
+#define SG_LINE_STRIP       0x03
+/**
+ * The first vertex is the "origin" for all the lines.
+ * \sa
+ *    SG_TRIANGLE_FAN
+ */
+#define SG_LINE_FAN         0x04
+/**
+ * Lines are created in a loop. This is similar to \ref SG_LINE_STRIP "SG_LINE_STRIP", except that the last and first vertex become connected by a line.
+ * \sa
+ *    SG_LINE_STRIP
+ */
+#define SG_LINE_LOOP        0x05
+/**
+ * Each 3 vertices make a triangle. The number of passed vertices must be a multiple of 3.
+ */
+#define SG_TRIANGLES        0x06
+/**
+ * Last 2 vertices of the previous triangle become the first two vertices of the next one, making a connected hull. This is analogous to \ref SG_LINE_STRIP "SG_LINE_STRIP".
+ * \sa
+ *    SG_LINE_STRIP
+ */
+#define SG_TRIANGLE_STRIP   0x07
+/**
+ * The first vertex becomes a "common point" between all the triangles. This is analogous to \ref SG_LINE_FAN "SG_LINE_FAN".
+ * \sa
+ *    SG_LINE_FAN
+ */
+#define SG_TRIANGLE_FAN     0x08
+//#define SG_TRIANGLE_LOOP        0x09
+/**
+ * Each 4 vertices make a quad. The number of passed vertices must be a multiple of 4.
+ */
+#define SG_QUADS                0x0A
+/**
+ * Last 2 vertices of the previous quad become the first two vertices of the next one. This is analogous to \ref SG_LINE_STRIP "SG_LINE_STRIP" and \ref SG_TRIANGLE_STRIP "SG_TRIANGLE_STRIP".
+ * \sa
+ *    SG_LINE_STRIP
+ *    SG_TRIANGLE_STRIP
+ */
+#define SG_QUAD_STRIP           0x0B
+//#define SG_QUAD_FAN             0x0C
+//#define SG_QUAD_LOOP            0x0D
+
+/**
+ * Create a convex polygon - the vertices passed are assumed to form one.
+ */
+#define SG_CONVEX_POLYGON       0x10
+/**
+ * Create polygon that is possibly concave (but not self-intersecting).
+ * \note
+ *    The vertices passed may be implicitly converted to a series of convex polygons.
+ * \note
+ *    It is perfectly fine (if not best for performance) to pass a convex polygon as a concave one.
+ */
+#define SG_CONCAVE_POLYGON      0x20
+/**
+ * Create a polygon that is possibly self-intersecting.
+ * \note
+ *    The vertices passed may be implicitly converted to a series of convex polygons.
+ * \note
+ *    It is perfectly fine (if not best for performance) to pass non-intersecting polygon as an intersecting one.
+ */
+#define SG_INTERSECTING_POLYGON 0x30
+/// @}
+
+#define SG_FUNC_ZERO                    0x00
+#define SG_FUNC_ONE                     0x01
+#define SG_FUNC_SRC_COLOR               0x02
+#define SG_FUNC_ONE_MINUS_SRC_COLOR     0x03
+#define SG_FUNC_DST_COLOR               0x04
+#define SG_FUNC_ONE_MINUS_DST_COLOR     0x05
+#define SG_FUNC_SRC_ALPHA               0x06
+#define SG_FUNC_ONE_MINUS_SRC_ALPHA     0x07
+#define SG_FUNC_DST_ALPHA               0x08
+#define SG_FUNC_ONE_MINUS_DST_ALPHA     0x09
+
+#define SG_EQUATION_ADD                 0x00
+#define SG_EQUATION_SUBTRACT            0x01
+#define SG_EQUATION_REVERSE_SUBTRACT    0x02
+#define SG_EQUATION_MIN                 0x03
+#define SG_EQUATION_MAX                 0x04
+
 #ifdef __cplusplus
 extern "C"
 {

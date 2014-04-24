@@ -18,6 +18,26 @@
 #include "../common.h"
 #include "../util/stream.h"
 
+/**
+ * \name Audio formats
+ *
+ * These are used to indicate the format of the data passed to audio buffers.
+ */
+/// @{
+#define SG_AUDIO_FORMAT_S8  0x01
+#define SG_AUDIO_FORMAT_S16 0x02
+#define SG_AUDIO_FORMAT_S24 0x03
+#define SG_AUDIO_FORMAT_S32 0x04
+
+#define SG_AUDIO_FORMAT_U8  0x05
+#define SG_AUDIO_FORMAT_U16 0x06
+#define SG_AUDIO_FORMAT_U24 0x07
+#define SG_AUDIO_FORMAT_U32 0x08
+
+#define SG_AUDIO_FORMAT_F   0x0A
+#define SG_AUDIO_FORMAT_D   0x0B
+/// @}
+
 #ifdef __cplusplus
 extern "C"
 {

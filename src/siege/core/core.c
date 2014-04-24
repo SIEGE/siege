@@ -82,6 +82,9 @@ char* SG_CALL sgGetCompileTime(void)
     return __TIME__;
 }
 
+/* NOTE: TEMPORARY */
+#define SG_ERRSTUB() fprintf(stderr, "Warning: Function `%s` has been removed; compatibility stub called.\n", __func__)
+/* END TEMPORARY */
 SGuint SG_CALL SG_HINT_DEPRECATED sgLoadModulesv(size_t n, va_list args)
 {
     SG_ERRSTUB();

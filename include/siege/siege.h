@@ -20,6 +20,8 @@
 #define __SIEGE_H__
 
 #include "common.h"
+#include "types.h"
+#include "smath.h"
 
 #include "ai/astar.h"
 #include "ai/grid.h"
