@@ -660,11 +660,11 @@ void SG_CALL sgDrawPoint(float x, float y)
         sgDrawVertex2f(x, y);
     sgDrawEnd();
 }
-void SG_CALL sgDrawPointSetSize(float size)
+void SG_CALL sgDrawSetPointSize(float size)
 {
     glPointSize(size);
 }
-//float SG_CALL sgDrawPointGetSize(void);
+//float SG_CALL sgDrawGetPointSize(void);
 
 void SG_CALL sgDrawLine(float x1, float y1, float x2, float y2)
 {
@@ -673,11 +673,11 @@ void SG_CALL sgDrawLine(float x1, float y1, float x2, float y2)
         sgDrawVertex2f(x2, y2);
     sgDrawEnd();
 }
-void SG_CALL sgDrawLineSetWidth(float width)
+void SG_CALL sgDrawSetLineWidth(float width)
 {
     glLineWidth(width);
 }
-//float SG_CALL sgDrawLineGetWidth(void);
+//float SG_CALL sgDrawGetLineWidth(void);
 
 void SG_CALL sgDrawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, SGbool fill)
 {
@@ -806,4 +806,14 @@ void SG_CALL sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool
 void SG_CALL sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill)
 {
     sgDrawEArcDegs(x, y, r, r, a1, a2, ccw, fill);
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgDrawPointSetSize(float size)
+{
+    sgDrawSetPointSize(size);
+}
+void SG_CALL SG_HINT_DEPRECATED sgDrawLineSetWidth(float width)
+{
+    sgDrawSetLineWidth(width);
 }

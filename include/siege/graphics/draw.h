@@ -185,8 +185,8 @@ void SG_CALL sgDrawPoint(float x, float y);
  *
  * \param size New point size
  */
-void SG_CALL sgDrawPointSetSize(float size);
-//float SG_CALL sgDrawPointGetSize(void);
+void SG_CALL sgDrawSetPointSize(float size);
+//float SG_CALL sgDrawGetPointSize(void);
 /// @}
 
 /**
@@ -207,8 +207,8 @@ void SG_CALL sgDrawLine(float x1, float y1, float x2, float y2);
  *
  * \param width New line width
  */
-void SG_CALL sgDrawLineSetWidth(float width);
-//float SG_CALL sgDrawLineGetWidth(void);
+void SG_CALL sgDrawSetLineWidth(float width);
+//float SG_CALL sgDrawGetLineWidth(void);
 /// @}
 
 /**
@@ -265,6 +265,10 @@ void SG_CALL sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, floa
 void SG_CALL sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill);
 void SG_CALL sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill);
 /// @}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgDrawPointSetSize(float size);
+void SG_CALL SG_HINT_DEPRECATED sgDrawLineSetWidth(float width);
 
 #ifdef __cplusplus
 }

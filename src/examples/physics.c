@@ -143,8 +143,8 @@ void boxDrawDBG(SGEntity* entity)
         sgEntityDraw(entity);
     }
 
-    //sgDrawLineSetWidth(2.0);
-    sgDrawPointSetSize(2.0);
+    //sgDrawSetLineWidth(2.0);
+    sgDrawSetPointSize(2.0);
 
     /*SGVec2 pos;
     sgEntityGetPos(entity, &pos.x, &pos.y);*/
@@ -167,8 +167,8 @@ void boxDrawDBG(SGEntity* entity)
         }
     }
 
-    //sgDrawLineSetWidth(1.0);
-    sgDrawPointSetSize(1.0);
+    //sgDrawSetLineWidth(1.0);
+    sgDrawSetPointSize(1.0);
 
     sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
     sgPhysicsShapeDrawDBG(box->shape);
