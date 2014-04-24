@@ -125,58 +125,7 @@ typedef struct SGDrawContext
     } idata;
 } SGDrawContext;
 
-static SGThreadKey* _sg_drawKey;
-static SGDrawContext* _sg_drawCtx;
-
-static void SG_CALL _sgDrawThreadDeinit(void)
-{
-    SGDrawContext* ctx;
-    if(sgThreadGetCurrent() == sgThreadGetMain())
-        ctx = _sg_drawCtx;
-    else
-        ctx = sgThreadKeyGetVal(_sg_drawKey);
-    if(!ctx)
-        return;
-    free(ctx->points);
-    free(ctx->texCoords);
-    free(ctx->colors);
-    free(ctx);
-}
-static void SG_CALL _sgDrawThreadInit(void)
-{
-    sgThreadAtExit(_sgDrawThreadDeinit);
-
-    SGDrawContext* ctx = malloc(sizeof(SGDrawContext));
-    sgThreadKeySetVal(_sg_drawKey, ctx);
-
-    if(sgThreadGetCurrent() == sgThreadGetMain())
-        _sg_drawCtx = ctx;
-
-    ctx->texCoord[0] = 0.0f;
-    ctx->texCoord[1] = 0.0f;
-    ctx->color[0] = 1.0f;
-    ctx->color[1] = 1.0f;
-    ctx->color[2] = 1.0f;
-    ctx->color[3] = 1.0f;
-
-    ctx->points = NULL;
-    ctx->texCoords = NULL;
-    ctx->colors = NULL;
-    ctx->numPoints = 0;
-
-    ctx->vdata.ptr = NULL;
-    ctx->cdata.ptr = NULL;
-    ctx->tdata.ptr = NULL;
-    ctx->idata.ptr = NULL;
-}
-static SGDrawContext* SG_CALL _sgDrawGetContext(void)
-{
-    SGDrawContext* ctx = sgThreadKeyGetVal(_sg_drawKey);
-    if(!ctx)
-        _sgDrawThreadInit();
-    ctx = sgThreadKeyGetVal(_sg_drawKey);
-    return ctx;
-}
+static SGDrawContext drawCtx;
 
 static void enableAll(SGbool cd, SGbool td, SGbool id, SGTexture* texture)
 {
@@ -218,13 +167,11 @@ static void disableAll(SGbool cd, SGbool td, SGbool id, SGTexture* texture)
 }
 static void enablePointers(void)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-
     //GLuint size, GLenum type, GLuint stride, const void* ptr
-    glVertexPointer(ctx->vdata.size, typeSGtoGL(ctx->vdata.type), ctx->vdata.stride, ctx->vdata.ptr);
-    glColorPointer(ctx->cdata.size, typeSGtoGL(ctx->cdata.type), ctx->cdata.stride, ctx->cdata.ptr);
-    glTexCoordPointer(2, typeSGtoGL(ctx->tdata.type), ctx->tdata.stride, ctx->tdata.ptr);
-    glIndexPointer(typeSGtoGL(ctx->idata.type), ctx->idata.stride, ctx->idata.ptr);
+    glVertexPointer(drawCtx.vdata.size, typeSGtoGL(drawCtx.vdata.type), drawCtx.vdata.stride, drawCtx.vdata.ptr);
+    glColorPointer(drawCtx.cdata.size, typeSGtoGL(drawCtx.cdata.type), drawCtx.cdata.stride, drawCtx.cdata.ptr);
+    glTexCoordPointer(2, typeSGtoGL(drawCtx.tdata.type), drawCtx.tdata.stride, drawCtx.tdata.ptr);
+    glIndexPointer(typeSGtoGL(drawCtx.idata.type), drawCtx.idata.stride, drawCtx.idata.ptr);
 }
 static void drawArraysRaw(SGenum mode, SGbool cd, SGbool td, SGbool id, SGTexture* texture, size_t first, size_t count)
 {
@@ -241,65 +188,75 @@ static void drawElementsRaw(SGenum mode, SGbool cd, SGbool td, SGbool id, SGText
 
 SGbool SG_CALL _sgDrawInit(void)
 {
-    _sg_drawKey = sgThreadKeyCreate();
+    drawCtx.texCoord[0] = 0.0f;
+    drawCtx.texCoord[1] = 0.0f;
+    drawCtx.color[0] = 1.0f;
+    drawCtx.color[1] = 1.0f;
+    drawCtx.color[2] = 1.0f;
+    drawCtx.color[3] = 1.0f;
+
+    drawCtx.points = NULL;
+    drawCtx.texCoords = NULL;
+    drawCtx.colors = NULL;
+    drawCtx.numPoints = 0;
+
+    drawCtx.vdata.ptr = NULL;
+    drawCtx.cdata.ptr = NULL;
+    drawCtx.tdata.ptr = NULL;
+    drawCtx.idata.ptr = NULL;
     return SG_TRUE;
 }
 SGbool SG_CALL _sgDrawDeinit(void)
 {
-    sgThreadKeyDestroy(_sg_drawKey);
+    free(drawCtx.points);
+    free(drawCtx.texCoords);
+    free(drawCtx.colors);
     return SG_TRUE;
 }
 
 void SG_CALL sgVertexPointer(SGubyte size, SGenum type, size_t stride, const void* ptr)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    ctx->vdata.size = size;
-    ctx->vdata.type = type;
-    ctx->vdata.stride = stride;
-    ctx->vdata.ptr = ptr;
+    drawCtx.vdata.size = size;
+    drawCtx.vdata.type = type;
+    drawCtx.vdata.stride = stride;
+    drawCtx.vdata.ptr = ptr;
 }
 void SG_CALL sgColorPointer(SGubyte size, SGenum type, size_t stride, const void* ptr)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    ctx->cdata.size = size;
-    ctx->cdata.type = type;
-    ctx->cdata.stride = stride;
-    ctx->cdata.ptr = ptr;
+    drawCtx.cdata.size = size;
+    drawCtx.cdata.type = type;
+    drawCtx.cdata.stride = stride;
+    drawCtx.cdata.ptr = ptr;
 }
 void SG_CALL sgTexCoordPointer(SGenum type, size_t stride, const void* ptr)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    ctx->tdata.type = type;
-    ctx->tdata.stride = stride;
-    ctx->tdata.ptr = ptr;
+    drawCtx.tdata.type = type;
+    drawCtx.tdata.stride = stride;
+    drawCtx.tdata.ptr = ptr;
 }
 void SG_CALL sgIndexPointer(SGenum type, size_t stride, const void* ptr)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    ctx->idata.type = type;
-    ctx->idata.stride = stride;
-    ctx->idata.ptr = ptr;
+    drawCtx.idata.type = type;
+    drawCtx.idata.stride = stride;
+    drawCtx.idata.ptr = ptr;
 }
 
 void SG_CALL sgResetPointers(SGbool color, SGbool texcoord, SGbool index)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    if(color)    ctx->cdata.ptr = NULL;
-    if(texcoord) ctx->tdata.ptr = NULL;
-    if(index)    ctx->idata.ptr = NULL;
+    if(color)    drawCtx.cdata.ptr = NULL;
+    if(texcoord) drawCtx.tdata.ptr = NULL;
+    if(index)    drawCtx.idata.ptr = NULL;
 }
 
 void SG_CALL sgDrawArraysT(SGenum mode, SGTexture* texture, size_t first, size_t count)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
     enablePointers();
-    drawArraysRaw(mode, ctx->cdata.ptr != NULL, ctx->tdata.ptr != NULL, ctx->idata.ptr != NULL, texture, first, count);
+    drawArraysRaw(mode, !!drawCtx.cdata.ptr, !!drawCtx.tdata.ptr, !!drawCtx.idata.ptr, texture, first, count);
 }
 void SG_CALL sgDrawElementsT(SGenum mode, SGTexture* texture, size_t count, SGenum type, const void* indices)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
     enablePointers();
-    drawElementsRaw(mode, ctx->cdata.ptr != NULL, ctx->tdata.ptr != NULL, ctx->idata.ptr != NULL, texture, count, type, indices);
+    drawElementsRaw(mode, !!drawCtx.cdata.ptr, !!drawCtx.tdata.ptr, !!drawCtx.idata.ptr, texture, count, type, indices);
 }
 void SG_CALL sgDrawArrays(SGenum mode, size_t first, size_t count)
 {
@@ -312,15 +269,14 @@ void SG_CALL sgDrawElements(SGenum mode, size_t count, SGenum type, const void* 
 
 void SG_CALL sgDrawBeginT(SGenum mode, SGTexture* texture)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    if(ctx->numPoints)
+    if(drawCtx.numPoints)
     {
         fprintf(stderr, "Warning: sgDrawBegin called without sgDrawEnd\n");
         return;
     }
 
-    ctx->mode = mode;
-    ctx->texture = texture;
+    drawCtx.mode = mode;
+    drawCtx.texture = texture;
 }
 void SG_CALL sgDrawBegin(SGenum mode)
 {
@@ -328,24 +284,21 @@ void SG_CALL sgDrawBegin(SGenum mode)
 }
 void SG_CALL sgDrawEnd(void)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-
-    glVertexPointer(3, GL_FLOAT, 0, ctx->points);
-    glColorPointer(4, GL_FLOAT, 0, ctx->colors);
-    glTexCoordPointer(2, GL_FLOAT, 0, ctx->texCoords);
+    glVertexPointer(3, GL_FLOAT, 0, drawCtx.points);
+    glColorPointer(4, GL_FLOAT, 0, drawCtx.colors);
+    glTexCoordPointer(2, GL_FLOAT, 0, drawCtx.texCoords);
     glIndexPointer(GL_FLOAT, 0, NULL);
 
-    drawArraysRaw(ctx->mode, SG_TRUE, SG_TRUE, SG_FALSE, ctx->texture, 0, ctx->numPoints);
-    ctx->numPoints = 0;
+    drawArraysRaw(drawCtx.mode, SG_TRUE, SG_TRUE, SG_FALSE, drawCtx.texture, 0, drawCtx.numPoints);
+    drawCtx.numPoints = 0;
 }
 void SG_CALL sgDrawColor4f(float r, float g, float b, float a)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    ctx->color[0] = r;
-    ctx->color[1] = g;
-    ctx->color[2] = b;
-    ctx->color[3] = a;
-    glColor4fv(ctx->color);
+    drawCtx.color[0] = r;
+    drawCtx.color[1] = g;
+    drawCtx.color[2] = b;
+    drawCtx.color[3] = a;
+    glColor4fv(drawCtx.color);
 }
 void SG_CALL sgDrawColor3f(float r, float g, float b)
 {
@@ -410,11 +363,10 @@ void SG_CALL sgDrawColor1ubv(const SGubyte* g)
 
 void SG_CALL sgDrawGetColor4f(float* r, float* g, float* b, float* a)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    if(r) *r = ctx->color[0];
-    if(g) *g = ctx->color[1];
-    if(b) *b = ctx->color[2];
-    if(a) *a = ctx->color[3];
+    if(r) *r = drawCtx.color[0];
+    if(g) *g = drawCtx.color[1];
+    if(b) *b = drawCtx.color[2];
+    if(a) *a = drawCtx.color[3];
 }
 void SG_CALL sgDrawGetColor4ub(SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a)
 {
@@ -436,9 +388,8 @@ void SG_CALL sgDrawGetColor4ubv(SGubyte* rgba)
 
 void SG_CALL sgDrawTexCoord2f(float s, float t)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    ctx->texCoord[0] = s;
-    ctx->texCoord[1] = t;
+    drawCtx.texCoord[0] = s;
+    drawCtx.texCoord[1] = t;
 }
 void SG_CALL sgDrawTexCoord2fv(const float* st)
 {
@@ -446,18 +397,17 @@ void SG_CALL sgDrawTexCoord2fv(const float* st)
 }
 void SG_CALL sgDrawVertex3f(float x, float y, float z)
 {
-    SGDrawContext* ctx = _sgDrawGetContext();
-    ctx->point[0] = x;
-    ctx->point[1] = y;
-    ctx->point[2] = z;
+    drawCtx.point[0] = x;
+    drawCtx.point[1] = y;
+    drawCtx.point[2] = z;
 
-    ctx->numPoints++;
-    ctx->points = realloc(ctx->points, ctx->numPoints * sizeof(ctx->point));
-    ctx->texCoords = realloc(ctx->texCoords, ctx->numPoints * sizeof(ctx->texCoord));
-    ctx->colors = realloc(ctx->colors, ctx->numPoints * sizeof(ctx->color));
-    memcpy(&ctx->points[(ctx->numPoints - 1) * 3], ctx->point, sizeof(ctx->point));
-    memcpy(&ctx->texCoords[(ctx->numPoints - 1) * 2], ctx->texCoord, sizeof(ctx->texCoord));
-    memcpy(&ctx->colors[(ctx->numPoints - 1) * 4], ctx->color, sizeof(ctx->color));
+    drawCtx.numPoints++;
+    drawCtx.points = realloc(drawCtx.points, drawCtx.numPoints * sizeof(drawCtx.point));
+    drawCtx.texCoords = realloc(drawCtx.texCoords, drawCtx.numPoints * sizeof(drawCtx.texCoord));
+    drawCtx.colors = realloc(drawCtx.colors, drawCtx.numPoints * sizeof(drawCtx.color));
+    memcpy(&drawCtx.points[(drawCtx.numPoints - 1) * 3], drawCtx.point, sizeof(drawCtx.point));
+    memcpy(&drawCtx.texCoords[(drawCtx.numPoints - 1) * 2], drawCtx.texCoord, sizeof(drawCtx.texCoord));
+    memcpy(&drawCtx.colors[(drawCtx.numPoints - 1) * 4], drawCtx.color, sizeof(drawCtx.color));
 }
 void SG_CALL sgDrawVertex2f(float x, float y)
 {
