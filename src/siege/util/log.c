@@ -46,7 +46,7 @@ static void SG_CALL _sgLogDefaultCallback(SGLogContext* ctx, SGenum level, const
 {
     fflush(stdout);
     fprintf(stderr, "%s: ", sgLogGetLevelString(level, SG_TRUE));
-    if(level == SG_LOGL_DEBUG || ctx)
+    if(level == SG_LOGL_DEBUG && ctx)
         fprintf(stderr, "%s:%s(%u): ", ctx->file, ctx->func, ctx->line);
     fprintf(stderr, "%s\n", msg);
     fflush(stderr);
