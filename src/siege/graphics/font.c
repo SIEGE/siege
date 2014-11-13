@@ -178,14 +178,6 @@ SGubyte* SG_CALL _sgFontToRGBA(SGFont* font, SGubyte* data, SGuint datalen)
     return newData;
 }
 
-void SG_CALL _sgFontCenterOffsetU32(SGFont* font, float* x, float* y, const SGdchar* text)
-{
-    float sx, sy;
-    sgFontStrSizeU32(font, &sx, &sy, text);
-    *x = -sx / 2.0;
-    *y = -sy / 2.0 + font->ascent;
-}
-
 SGdchar* SG_CALL _sgFontU16ToU32(SGFont* font, const SGwchar* text)
 {
     size_t len;
@@ -530,23 +522,21 @@ void SG_CALL SG_HINT_PRINTF(5, 0) sgFontPrintAlignedfv(SGFont* font, float x, fl
 
 void SG_CALL sgFontPrintAlignedU32(SGFont* font, float x, float y, SGenum align, const SGdchar* text)
 {
-    float ox, oy;
-    float sx, sy;
     // todo: only calc these when needed
-    _sgFontCenterOffsetU32(font, &ox, &oy, text);
-    sgFontStrSizeU32(font, &sx, &sy, text);
+    SGRect rect = sgFontStrRectU32(font, text);
+    SGVec2 co = sgRectCenter(rect);
     switch(align & SG_ALIGN_HMASK)
     {
-        case SG_ALIGN_CENTER: x += ox; break;
-        case SG_ALIGN_LEFT: break;
-        case SG_ALIGN_RIGHT: x += ox - sx / 2.0; break;
+        case SG_ALIGN_CENTER: x -= co.x; break;
+        case SG_ALIGN_LEFT:   x -= rect.a.x; break;
+        case SG_ALIGN_RIGHT:  x -= rect.b.x; break;
     }
     switch(align & SG_ALIGN_VMASK)
     {
-        case SG_ALIGN_CENTER: y += oy; break;
-        case SG_ALIGN_TOP: y += oy + sy / 2.0; break;
+        case SG_ALIGN_CENTER:   y += co.y; break;
+        case SG_ALIGN_TOP:      y += rect.b.y; break;
         case SG_ALIGN_BASELINE: break;
-        case SG_ALIGN_BOTTOM: y += oy - sy / 2.0; break;
+        case SG_ALIGN_BOTTOM:   y += rect.a.y; break;
     }
     sgFontPrintU32(font, x, y, text);
 }
@@ -575,77 +565,85 @@ void SG_CALL sgFontPrintAligned(SGFont* font, float x, float y, SGenum align, co
     free(dtext);
 }
 
-void SG_CALL sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...)
+SGRect SG_CALL sgFontStrRectfW(SGFont* font, const wchar_t* format, ...)
 {
     va_list args;
     va_start(args, format);
-    sgFontStrSizefvW(font, x, y, format, args);
+    SGRect rect = sgFontStrRectfvW(font, format, args);
     va_end(args);
+    return rect;
 }
-void SG_CALL sgFontStrSizefvW(SGFont* font, float* x, float* y, const wchar_t* format, va_list args)
+SGRect SG_CALL sgFontStrRectfvW(SGFont* font, const wchar_t* format, va_list args)
 {
     wchar_t* buf = sgAPrintfvW(format, args);
-    sgFontStrSizeW(font, x, y, buf);
+    SGRect rect = sgFontStrRectW(font, buf);
     sgAPrintFree(buf);
+    return rect;
 }
 
-void SG_CALL sgFontStrSizef(SGFont* font, float* x, float* y, const char* format, ...)
+SGRect SG_CALL sgFontStrRectf(SGFont* font, const char* format, ...)
 {
     va_list args;
     va_start(args, format);
-    sgFontStrSizefv(font, x, y, format, args);
+    SGRect rect = sgFontStrRectfv(font, format, args);
     va_end(args);
+    return rect;
 }
-void SG_CALL sgFontStrSizefv(SGFont* font, float* x, float* y, const char* format, va_list args)
+SGRect SG_CALL sgFontStrRectfv(SGFont* font, const char* format, va_list args)
 {
     char* buf = sgAPrintfv(format, args);
-    sgFontStrSize(font, x, y, buf);
+    SGRect rect = sgFontStrRect(font, buf);
     sgAPrintFree(buf);
+    return rect;
 }
 
-static SGbool SG_CALL _strSizeLineEnd(SGFont* font, const SGdchar* text, const SGdchar* start, const SGdchar* end, float xoffset, float yoffset, void* data)
+static SGbool SG_CALL _strRectLineEnd(SGFont* font, const SGdchar* text, const SGdchar* start, const SGdchar* end, float xoffset, float yoffset, void* data)
 {
-    SGVec2* size = data;
-    if(size->x < xoffset)
-        size->x = xoffset;
+    SGRect* rect = data;
+    if(rect->b.x < xoffset)
+        rect->b.x = xoffset;
     return SG_FALSE;
 }
-static SGbool SG_CALL _strSizeDone(SGFont* font, float xoffset, float yoffset, void* data)
+static SGbool SG_CALL _strRectDone(SGFont* font, float xoffset, float yoffset, void* data)
 {
-    SGVec2* size = data;
-    size->y = yoffset + font->ascent - font->descent;
+    SGRect* rect = data;
+    rect->b.y = font->ascent;
+    rect->a.y = font->descent - yoffset;
     return SG_TRUE;
 }
-void SG_CALL sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar* text)
+SGRect SG_CALL sgFontStrRectU32(SGFont* font, const SGdchar* text)
 {
-    SGVec2 size = sgVec2f(0.0, 0.0);
-    _sgFontExecuteU32(font, text, NULL, NULL, _strSizeLineEnd, _strSizeDone, &size);
-    *x = size.x;
-    *y = size.y;
+    SGRect rect = sgRect(0.0, 0.0, 0.0, 0.0);
+    _sgFontExecuteU32(font, text, NULL, NULL, _strRectLineEnd, _strRectDone, &rect);
+    return rect;
 }
-void SG_CALL sgFontStrSizeU16(SGFont* font, float* x, float* y, const SGwchar* text)
+SGRect SG_CALL sgFontStrRectU16(SGFont* font, const SGwchar* text)
 {
     SGdchar* dtext = _sgFontU16ToU32(font, text);
-    sgFontStrSizeU32(font, x, y, dtext);
+    SGRect rect = sgFontStrRectU32(font, dtext);
     free(dtext);
+    return rect;
 }
-void SG_CALL sgFontStrSizeU8(SGFont* font, float* x, float* y, const SGchar* text)
+SGRect SG_CALL sgFontStrRectU8(SGFont* font, const SGchar* text)
 {
     SGdchar* dtext = _sgFontU8ToU32(font, text);
-    sgFontStrSizeU32(font, x, y, dtext);
+    SGRect rect = sgFontStrRectU32(font, dtext);
     free(dtext);
+    return rect;
 }
-void SG_CALL sgFontStrSizeW(SGFont* font, float* x, float* y, const wchar_t* text)
+SGRect SG_CALL sgFontStrRectW(SGFont* font, const wchar_t* text)
 {
     SGdchar* dtext = _sgFontWToU32(font, text);
-    sgFontStrSizeU32(font, x, y, dtext);
+    SGRect rect = sgFontStrRectU32(font, dtext);
     free(dtext);
+    return rect;
 }
-void SG_CALL sgFontStrSize(SGFont* font, float* x, float* y, const char* text)
+SGRect SG_CALL sgFontStrRect(SGFont* font, const char* text)
 {
     SGdchar* dtext = _sgFontToU32(font, text);
-    sgFontStrSizeU32(font, x, y, dtext);
+    SGRect rect = sgFontStrRectU32(font, dtext);
     free(dtext);
+    return rect;
 }
 
 size_t SG_CALL sgFontFindIndexfW(SGFont* font, float x, float y, const wchar_t* format, ...)
@@ -695,7 +693,8 @@ size_t SG_CALL sgFontFindIndexU32(SGFont* font, float x, float y, const SGdchar*
     SGdchar* cpy = malloc((len + 1) * sizeof(SGdchar));
     memset(cpy, 0, (len + 1) * sizeof(SGdchar));
 
-    float sx, sy, px;
+    SGVec2 size;
+    float px;
 
     const SGdchar* prev = text;
     const SGdchar* line = text;
@@ -707,7 +706,7 @@ size_t SG_CALL sgFontFindIndexU32(SGFont* font, float x, float y, const SGdchar*
 
         memcpy(&cpy[line-text], &text[line-text], (end - line) * sizeof(SGdchar));
 
-        sgFontStrSizeU32(font, &sx, &sy, cpy);
+        size = sgRectSize(sgFontStrRectU32(font, cpy));
 
         prev = line;
         line = sgNextLineU32(end);
@@ -715,12 +714,12 @@ size_t SG_CALL sgFontFindIndexU32(SGFont* font, float x, float y, const SGdchar*
         if(line)
             memcpy(&cpy[end-text], &text[end-text], (line - end) * sizeof(SGdchar)); // append CR/LF/CRLF
     }
-    while(line && sy < y);
+    while(line && size.y < y);
 
     end = sgLineEndU32(prev);
     memcpy(cpy, &text[prev-text], (end-prev) * sizeof(SGdchar));
 
-    sx = 0.0;
+    size.x = 0.0;
 
     line = prev;
     do
@@ -728,20 +727,20 @@ size_t SG_CALL sgFontFindIndexU32(SGFont* font, float x, float y, const SGdchar*
         cpy[line - prev] = *line;
         cpy[line - prev + 1] = 0;
 
-        px = sx;
-        sgFontStrSizeU32(font, &sx, &sy, cpy);
+        px = size.x;
+        size = sgRectSize(sgFontStrRectU32(font, cpy));
 
         line++;
     }
-    while(line < end && sx < x);
+    while(line < end && size.x < x);
 
     free(cpy);
 
-    if(sx < x)
+    if(size.x < x)
         return line - text;
 
-    //float avg = (int)((px + sx) * 0.5 + 0.5); // rounded of average
-    if(SG_ABS(px - x) < SG_ABS(sx - x))
+    //float avg = (int)((px + size.x) * 0.5 + 0.5); // rounded of average
+    if(SG_ABS(px - x) < SG_ABS(size.x - x))
         return line - text - 1;
     return line - text;
     //return line - text - 1;
@@ -865,5 +864,81 @@ void SG_CALL sgFontGetPos(SGFont* font, float* x, float* y, size_t index, const 
 {
     SGdchar* dtext = _sgFontToU32(font, text);
     sgFontGetPosU32(font, x, y, index, dtext);
+    free(dtext);
+}
+
+/* DEPRECATED */
+void SG_CALL sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    SGRect rect = sgFontStrRectfvW(font, format, args);
+    *x = rect.b.x - rect.a.x;
+    *y = rect.b.y - rect.a.y;
+    va_end(args);
+}
+void SG_CALL sgFontStrSizefvW(SGFont* font, float* x, float* y, const wchar_t* format, va_list args)
+{
+    wchar_t* buf = sgAPrintfvW(format, args);
+    SGRect rect = sgFontStrRectW(font, buf);
+    *x = rect.b.x - rect.a.x;
+    *y = rect.b.y - rect.a.y;
+    sgAPrintFree(buf);
+}
+
+void SG_CALL sgFontStrSizef(SGFont* font, float* x, float* y, const char* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    SGRect rect = sgFontStrRectfv(font, format, args);
+    *x = rect.b.x - rect.a.x;
+    *y = rect.b.y - rect.a.y;
+    va_end(args);
+}
+void SG_CALL sgFontStrSizefv(SGFont* font, float* x, float* y, const char* format, va_list args)
+{
+    char* buf = sgAPrintfv(format, args);
+    SGRect rect = sgFontStrRect(font, buf);
+    *x = rect.b.x - rect.a.x;
+    *y = rect.b.y - rect.a.y;
+    sgAPrintFree(buf);
+}
+
+void SG_CALL sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar* text)
+{
+    SGRect rect = sgFontStrRectU32(font, text);
+    *x = rect.b.x - rect.a.x;
+    *y = rect.b.y - rect.a.y;
+}
+void SG_CALL sgFontStrSizeU16(SGFont* font, float* x, float* y, const SGwchar* text)
+{
+    SGdchar* dtext = _sgFontU16ToU32(font, text);
+    SGRect rect = sgFontStrRectU32(font, dtext);
+    *x = rect.b.x - rect.a.x;
+    *y = rect.b.y - rect.a.y;
+    free(dtext);
+}
+void SG_CALL sgFontStrSizeU8(SGFont* font, float* x, float* y, const SGchar* text)
+{
+    SGdchar* dtext = _sgFontU8ToU32(font, text);
+    SGRect rect = sgFontStrRectU32(font, dtext);
+    *x = rect.b.x - rect.a.x;
+    *y = rect.b.y - rect.a.y;
+    free(dtext);
+}
+void SG_CALL sgFontStrSizeW(SGFont* font, float* x, float* y, const wchar_t* text)
+{
+    SGdchar* dtext = _sgFontWToU32(font, text);
+    SGRect rect = sgFontStrRectU32(font, dtext);
+    *x = rect.b.x - rect.a.x;
+    *y = rect.b.y - rect.a.y;
+    free(dtext);
+}
+void SG_CALL sgFontStrSize(SGFont* font, float* x, float* y, const char* text)
+{
+    SGdchar* dtext = _sgFontToU32(font, text);
+    SGRect rect = sgFontStrRectU32(font, dtext);
+    *x = rect.b.x - rect.a.x;
+    *y = rect.b.y - rect.a.y;
     free(dtext);
 }

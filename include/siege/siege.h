@@ -73,6 +73,7 @@
 #include "util/map.h"
 #include "util/matrix.h"
 #include "util/rand.h"
+#include "util/rect.h"
 #include "util/set.h"
 #include "util/smap.h"
 #include "util/stream.h"

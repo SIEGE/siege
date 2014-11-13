@@ -24,6 +24,7 @@
 #include "../util/stream.h"
 #include "../util/conv.h"
 #include "../util/map.h"
+#include "../util/rect.h"
 #include "texture.h"
 
 #include <stdarg.h>
@@ -155,8 +156,6 @@ void SG_CALL _sgFontToLoad(SGFont* font, SGdchar* input, SGuint inlen, SGdchar* 
 SGbool SG_CALL _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbool force);
 SGubyte* SG_CALL _sgFontToRGBA(SGFont* font, SGubyte* data, SGuint datalen);
 
-void SG_CALL _sgFontCenterOffsetU32(SGFont* font, float* x, float* y, const SGdchar* text);
-
 SGdchar* SG_CALL _sgFontU16ToU32(SGFont* font, const SGwchar* text);
 SGdchar* SG_CALL _sgFontU8ToU32(SGFont* font, const SGchar* text);
 SGdchar* SG_CALL _sgFontWToU32(SGFont* font, const wchar_t* text);
@@ -230,37 +229,18 @@ void SG_CALL sgFontPrintAlignedU8(SGFont* font, float x, float y, SGenum align, 
 void SG_CALL sgFontPrintAlignedW(SGFont* font, float x, float y, SGenum align, const wchar_t* text);
 void SG_CALL sgFontPrintAligned(SGFont* font, float x, float y, SGenum align, const char* text);
 
-/**
- * \name Get size of printed text
- *
- * \param font The font face to use for printing.
- * \param[out] x Width
- * \param[out] y Height
- *
- * These functions return the size of the text, had it been printed,
- * in <em>x</em>,<em>y</em>, with the former being the width and the
- * latter height.
- */
-/// @{
-void SG_CALL sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...);
-void SG_CALL sgFontStrSizefvW(SGFont* font, float* x, float* y, const wchar_t* format, va_list args);
-/**
- * \brief printf-style text
- */
-void SG_CALL SG_HINT_PRINTF(4, 5) sgFontStrSizef(SGFont* font, float* x, float* y, const char* format, ...);
-/**
- * \brief vprintf-style text
- */
-void SG_CALL SG_HINT_PRINTF(4, 0) sgFontStrSizefv(SGFont* font, float* x, float* y, const char* format, va_list args);
-/**
- * \brief plain text
- */
-void SG_CALL sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar* text);
-void SG_CALL sgFontStrSizeU16(SGFont* font, float* x, float* y, const SGwchar* text);
-void SG_CALL sgFontStrSizeU8(SGFont* font, float* x, float* y, const SGchar* text);
-void SG_CALL sgFontStrSizeW(SGFont* font, float* x, float* y, const wchar_t* text);
-void SG_CALL sgFontStrSize(SGFont* font, float* x, float* y, const char* text);
-/// @}
+/* get the bounding rectangle of a string */
+SGRect SG_CALL sgFontStrRectfW(SGFont* font, const wchar_t* format, ...);
+SGRect SG_CALL sgFontStrRectfvW(SGFont* font, const wchar_t* format, va_list args);
+
+SGRect SG_CALL SG_HINT_PRINTF(2, 3) sgFontStrRectf(SGFont* font, const char* format, ...);
+SGRect SG_CALL SG_HINT_PRINTF(2, 0) sgFontStrRectfv(SGFont* font, const char* format, va_list args);
+
+SGRect SG_CALL sgFontStrRectU32(SGFont* font, const SGdchar* text);
+SGRect SG_CALL sgFontStrRectU16(SGFont* font, const SGwchar* text);
+SGRect SG_CALL sgFontStrRectU8(SGFont* font, const SGchar* text);
+SGRect SG_CALL sgFontStrRectW(SGFont* font, const wchar_t* text);
+SGRect SG_CALL sgFontStrRect(SGFont* font, const char* text);
 
 // need a better name for FindIndex and GetPos...
 size_t SG_CALL sgFontFindIndexfW(SGFont* font, float x, float y, const wchar_t* format, ...);
@@ -286,6 +266,19 @@ void SG_CALL sgFontGetPosU16(SGFont* font, float* x, float* y, size_t index, con
 void SG_CALL sgFontGetPosU8(SGFont* font, float* x, float* y, size_t index, const SGchar* text);
 void SG_CALL sgFontGetPosW(SGFont* font, float* x, float* y, size_t index, const wchar_t* text);
 void SG_CALL sgFontGetPos(SGFont* font, float* x, float* y, size_t index, const char* text);
+
+/* DEPRECATED: Use sgFontStrRect* instead */
+void SG_CALL SG_HINT_DEPRECATED sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...);
+void SG_CALL SG_HINT_DEPRECATED sgFontStrSizefvW(SGFont* font, float* x, float* y, const wchar_t* format, va_list args);
+
+void SG_CALL SG_HINT_PRINTF(4, 5) SG_HINT_DEPRECATED sgFontStrSizef(SGFont* font, float* x, float* y, const char* format, ...);
+void SG_CALL SG_HINT_PRINTF(4, 0) SG_HINT_DEPRECATED sgFontStrSizefv(SGFont* font, float* x, float* y, const char* format, va_list args);
+
+void SG_CALL SG_HINT_DEPRECATED sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar* text);
+void SG_CALL SG_HINT_DEPRECATED sgFontStrSizeU16(SGFont* font, float* x, float* y, const SGwchar* text);
+void SG_CALL SG_HINT_DEPRECATED sgFontStrSizeU8(SGFont* font, float* x, float* y, const SGchar* text);
+void SG_CALL SG_HINT_DEPRECATED sgFontStrSizeW(SGFont* font, float* x, float* y, const wchar_t* text);
+void SG_CALL SG_HINT_DEPRECATED sgFontStrSize(SGFont* font, float* x, float* y, const char* text);
 
 #ifdef __cplusplus
 }

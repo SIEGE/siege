@@ -228,7 +228,7 @@ void drawInstructions(SGFont* headf, SGFont* textf, SGColor fill, SGColor line, 
 
     sgDrawColor4fv(&head.r);
     sgFontPrint(headf, border.x + margin.x, border.y + margin.y, headt);
-    sgFontStrSize(headf, &csize.x, &csize.y, headt);
+    csize = sgRectSize(sgFontStrRect(headf, headt));
 
     sgDrawColor4fv(&line.r);
     sgDrawRectangle(border.x, border.y, WIDTH - border.x, HEIGHT - border.y, SG_FALSE);

@@ -24,8 +24,7 @@ int main(void)
     SGuint width = sgWindowGetWidth();
     SGuint height = sgWindowGetHeight();
 
-    //float wx, wy;
-    //sgFontStrSize(font, &wx, &wy, "W");
+    SGVec2 size;
 
     float dx, dy;
     float y;
@@ -41,8 +40,8 @@ int main(void)
         y = 0.0;
         for(i = 0; i < numsizes; i++)
         {
-            sgFontStrSize(sizes[i], &dx, &dy, text);
-            y += dy;
+            size = sgRectSize(sgFontStrRect(sizes[i], text));
+            y += size.y;
             sgFontPrint(sizes[i], 0, floor(y), text);
         }
 
@@ -59,7 +58,7 @@ int main(void)
         sgFontPrintf(font, width / 4, height - height / 3, "Well, this is some more text...\nUseful for UI, consoles, etc...");
 
         pos = sgFontFindIndexf(font, mx - (SGint)(width / 4), my - (SGint)(height - height / 3), "Well, this is some more text...\nUseful for UI, consoles, etc...");
-        sgFontGetPos(font, &dx, &dy, pos, "Well, this is some more text...\nUseful for UI, consoles, etc...");
+        sgFontGetPosf(font, &dx, &dy, pos, "Well, this is some more text...\nUseful for UI, consoles, etc...");
         dx += width / 4;
         dy += height - height / 3;
         sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
@@ -71,22 +70,22 @@ int main(void)
         sgFontPrintW(font, 2, 256, L"Testing: ABC abc 012\nčšž\nSome cyrillic: Съешь ещё этих мягких французских булок да выпей же чаю\nAnd now for greek: Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός");
         sgFontPrintfW(font, 2, 328, L"sgFontPrintfW: %ls", L"čšž");
 
-        sgFontStrSizef(font, &dx, &dy, "Some test text");
+        size = sgRectSize(sgFontStrRectf(font, "Some test text"));
         sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
-        sgDrawLine(640 - 160, 480 - 120, 640 - 160 + dx, 480 - 120);
-        sgDrawRectangle(640 / 2 - dx / 2, 480 - 120 - dy / 2,
-                        640 / 2 + dx / 2, 480 - 120 + dy / 2,
+        sgDrawLine(640 - 160, 480 - 120, 640 - 160 + size.x, 480 - 120);
+        sgDrawRectangle(640 / 2 - size.x / 2, 480 - 120 - size.y / 2,
+                        640 / 2 + size.x / 2, 480 - 120 + size.y / 2,
                         SG_TRUE);
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
         sgFontPrint(font, 640 - 160, 480 - 120, "Some test text");
 
         sgDrawColor4f(0.0, 0.0, 1.0, 1.0);
-        sgDrawRectangle(640 / 2 - dx / 2, 480 - 120 - dy / 2,
-                        640 / 2 + dx / 2, 480 - 120 + dy / 2,
+        sgDrawRectangle(640 / 2 - size.x / 2, 480 - 120 - size.y / 2,
+                        640 / 2 + size.x / 2, 480 - 120 + size.y / 2,
                         SG_TRUE);
         sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
-        sgDrawRectangle(640 / 2 - dx / 2, 480 - 120 - dy / 2,
-                        640 / 2 + dx / 2, 480 - 120 + dy / 2,
+        sgDrawRectangle(640 / 2 - size.x / 2, 480 - 120 - size.y / 2,
+                        640 / 2 + size.x / 2, 480 - 120 + size.y / 2,
                         SG_FALSE);
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
         sgFontPrintAligned(font, 640 / 2, 480 - 120, SG_ALIGN_CENTER, "Some test text");
