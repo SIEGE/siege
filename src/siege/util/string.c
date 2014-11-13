@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <wchar.h>
 
-#ifdef __MINGW32__
+#ifdef _WIN32
 /*
  * MinGW thinks it's smart and uses its own variant of vswprintf, though
  * I suppose it's mostly Microsoft's fault since this is the variant
@@ -45,6 +45,19 @@ static int ugly_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* forma
         return len;
     return vswprintf(wcs, format, args);
 }
+static int ugly_vsnprintf_hack(char* buf, size_t maxlen, const char* format, va_list args)
+{
+    int len;
+    va_list argcpy;
+    va_copy(argcpy, args);
+    len = _vscprintf(format, argcpy);
+    va_end(argcpy);
+
+    if(maxlen < len + 1)
+        return len;
+    return vsnprintf(buf, maxlen + 1, format, args);
+}
+#define vsnprintf ugly_vsnprintf_hack
 #else /* and if it's not MinGW, we need a different hack... UGH */
 static int ugly_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* format, va_list args)
 {
@@ -72,7 +85,7 @@ static int ugly_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* forma
         return len;
     return vswprintf(wcs, maxlen, format, args);
 }
-#endif /* __MINGW32__ */
+#endif /* _WIN32 */
 #define vswprintf ugly_vswprintf_hack
 
 char* _sgStringAppend(char** str, size_t* len, size_t* mem, const char* what)
