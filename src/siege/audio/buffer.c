@@ -134,6 +134,25 @@ static void* toStereo(SGuint channels, void* data, size_t* datalen, ALuint* alfo
     return odata;
 }
 
+SGAudioBuffer* SG_CALL sgAudioBufferCreateData(SGuint channels, SGenum format, SGuint frequency, void* data, size_t datalen)
+{
+    SGAudioBuffer* buffer = malloc(sizeof(SGAudioBuffer));
+    if(!buffer) goto error;
+
+    buffer->stream = NULL;
+    buffer->del = SG_FALSE;
+
+    buffer->handle = malloc(sizeof(ALuint));
+    if(!buffer->handle) goto error;
+    alGenBuffers(1, buffer->handle);
+    sgAudioBufferSetData(buffer, channels, format, frequency, data, datalen);
+
+    return buffer;
+error:
+    if(buffer)
+        free(buffer);
+    return NULL;
+}
 SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstream)
 {
     if(!stream || !stream->read || !stream->seek || !stream->tell) return NULL;
@@ -295,7 +314,7 @@ void SG_CALL sgAudioBufferSetData(SGAudioBuffer* buffer, SGuint channels, SGuint
             {
                 fcur = (SGfloat*)&bdata[i];
                 scur = (SGshort*)&bdata[i / 4 * 2];
-                *scur = (SGshort)(*fcur * 0xFFFF);
+                *scur = (SGshort)(*fcur * 32767.5);
             }
             datalen = datalen / 4 * 2;
             break;
@@ -305,7 +324,7 @@ void SG_CALL sgAudioBufferSetData(SGAudioBuffer* buffer, SGuint channels, SGuint
             {
                 dcur = (SGdouble*)&bdata[i];
                 scur = (SGshort*)&bdata[i / 8 * 2];
-                *scur = (SGshort)(*dcur * 0xFFFF);
+                *scur = (SGshort)(*dcur * 32767.5);
             }
             datalen = datalen / 8 * 2;
             break;
