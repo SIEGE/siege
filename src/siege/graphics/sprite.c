@@ -122,6 +122,17 @@ float SG_CALL sgSpriteGetSpeed(SGSprite* sprite)
     return sprite->speed;
 }
 
+void SG_CALL sgSpriteSetOffset(SGSprite* sprite, float x, float y)
+{
+    sprite->xoffset = x;
+    sprite->yoffset = y;
+}
+void SG_CALL sgSpriteGetOffset(SGSprite* sprite, float* x, float* y)
+{
+    if(x) *x = sprite->xoffset;
+    if(y) *y = sprite->yoffset;
+}
+
 void SG_CALL sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle)
 {
     if(sprite == NULL)

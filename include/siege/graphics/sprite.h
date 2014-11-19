@@ -50,6 +50,9 @@ float SG_CALL sgSpriteGetImage(SGSprite* sprite);
 void SG_CALL sgSpriteSetSpeed(SGSprite* sprite, float speed);
 float SG_CALL sgSpriteGetSpeed(SGSprite* sprite);
 
+void SG_CALL sgSpriteSetOffset(SGSprite* sprite, float x, float y);
+void SG_CALL sgSpriteGetOffset(SGSprite* sprite, float* x, float* y);
+
 void SG_CALL sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle);
 void SG_CALL sgSpriteDrawDegs3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle);
 void SG_CALL sgSpriteDrawRads2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle);
