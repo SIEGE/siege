@@ -23,6 +23,7 @@
 
 #include "../util/list.h"
 #include "../util/smap.h"
+#include "../util/vector.h"
 
 #include <stdarg.h>
 
@@ -250,8 +251,7 @@ typedef struct SGEntity
      * Warning:
      *    For internal use only.
      */
-    float x;
-    float y;
+    SGVec2 pos;
     /**
      * Variable: depth
      *
@@ -656,8 +656,9 @@ struct SGAudioSource* SG_CALL sgEntityGetAudioSource(SGEntity* entity);
  * Returns:
  *     PosX/PosY variants return the current x and y position, respectively.
  */
-void SG_CALL sgEntitySetPos(SGEntity* entity, float x, float y);
-void SG_CALL sgEntityGetPos(SGEntity* entity, float* x, float* y);
+SG_EXPORT void SG_CALL sgEntitySetPos2fv(SGEntity* entity, SGVec2 pos);
+SG_EXPORT void SG_CALL sgEntitySetPos2f(SGEntity* entity, float x, float y);
+SG_EXPORT SGVec2 SG_CALL sgEntityGetPos2fv(SGEntity* entity);
 
 void SG_CALL sgEntitySetPosX(SGEntity* entity, float x);
 float SG_CALL sgEntityGetPosX(SGEntity* entity);

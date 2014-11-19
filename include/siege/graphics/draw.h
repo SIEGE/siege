@@ -23,6 +23,9 @@
 
 #include "../common.h"
 #include "../util/list.h"
+#include "../util/vector.h"
+#include "../util/color.h"
+#include "../util/rect.h"
 #include "texture.h"
 
 #define SG_BYTE     0
@@ -184,6 +187,7 @@ void SG_CALL sgDrawEnd(void);
  * \param b Blue
  * \param a Alpha
  */
+SG_EXPORT void SG_CALL sgDrawColorC(SGColor col);
 void SG_CALL sgDrawColor4f(float r, float g, float b, float a);
 void SG_CALL sgDrawColor3f(float r, float g, float b);
 void SG_CALL sgDrawColor2f(float g, float a);
@@ -192,15 +196,16 @@ void SG_CALL sgDrawColor4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a);
 void SG_CALL sgDrawColor3ub(SGubyte r, SGubyte g, SGubyte b);
 void SG_CALL sgDrawColor2ub(SGubyte g, SGubyte a);
 void SG_CALL sgDrawColor1ub(SGubyte g);
-void SG_CALL sgDrawColor4fv(const float* rgba);
-void SG_CALL sgDrawColor3fv(const float* rgb);
-void SG_CALL sgDrawColor2fv(const float* ga);
-void SG_CALL sgDrawColor1fv(const float* g);
-void SG_CALL sgDrawColor4ubv(const SGubyte* rgba);
-void SG_CALL sgDrawColor3ubv(const SGubyte* rgb);
-void SG_CALL sgDrawColor2ubv(const SGubyte* ga);
-void SG_CALL sgDrawColor1ubv(const SGubyte* g);
+SG_EXPORT void SG_CALL sgDrawColor4fp(const float* rgba);
+SG_EXPORT void SG_CALL sgDrawColor3fp(const float* rgb);
+SG_EXPORT void SG_CALL sgDrawColor2fp(const float* ga);
+SG_EXPORT void SG_CALL sgDrawColor1fp(const float* g);
+SG_EXPORT void SG_CALL sgDrawColor4ubp(const SGubyte* rgba);
+SG_EXPORT void SG_CALL sgDrawColor3ubp(const SGubyte* rgb);
+SG_EXPORT void SG_CALL sgDrawColor2ubp(const SGubyte* ga);
+SG_EXPORT void SG_CALL sgDrawColor1ubp(const SGubyte* g);
 
+SG_EXPORT SGColor SG_CALL sgDrawGetColorC(void);
 void SG_CALL sgDrawGetColor4f(float* r, float* g, float* b, float* a);
 void SG_CALL sgDrawGetColor4ub(SGubyte* r, SGubyte* g, SGubyte* b, SGubyte* a);
 void SG_CALL sgDrawGetColor4fv(float* rgba);
@@ -217,8 +222,9 @@ void SG_CALL sgDrawGetColor4ubv(SGubyte* rgba);
  *    outside this range can sometimes (depending on the texture
  *    clipping mode) indicate flipping or tiling.
  */
-void SG_CALL sgDrawTexCoord2f(float s, float t);
-void SG_CALL sgDrawTexCoord2fv(const float* st);
+SG_EXPORT void SG_CALL sgDrawTexCoord2fv(SGVec2 pos);
+SG_EXPORT void SG_CALL sgDrawTexCoord2f(float s, float t);
+SG_EXPORT void SG_CALL sgDrawTexCoord2fp(const float* st);
 /**
  * \brief Place a vertex at a specific depth
  *
@@ -226,10 +232,12 @@ void SG_CALL sgDrawTexCoord2fv(const float* st);
  * \param y Y coordinate
  * \param z Z coordinate (the depth)
  */
-void SG_CALL sgDrawVertex3f(float x, float y, float z);
-void SG_CALL sgDrawVertex2f(float x, float y);
-void SG_CALL sgDrawVertex3fv(const float* xyz);
-void SG_CALL sgDrawVertex2fv(const float* xy);
+SG_EXPORT void SG_CALL sgDrawVertex3fv(SGVec3 pos);
+SG_EXPORT void SG_CALL sgDrawVertex2fv(SGVec2 pos);
+SG_EXPORT void SG_CALL sgDrawVertex3f(float x, float y, float z);
+SG_EXPORT void SG_CALL sgDrawVertex2f(float x, float y);
+SG_EXPORT void SG_CALL sgDrawVertex3fp(const float* xyz);
+SG_EXPORT void SG_CALL sgDrawVertex2fp(const float* xy);
 /// @}
 
 /**
@@ -244,6 +252,7 @@ void SG_CALL sgDrawVertex2fv(const float* xy);
  * \param b Blue
  * \param a Alpha
  */
+SG_EXPORT void SG_CALL sgDrawClearC(SGColor col);
 void SG_CALL sgDrawClear4f(float r, float g, float b, float a);
 void SG_CALL sgDrawClear3f(float r, float g, float b);
 void SG_CALL sgDrawClear2f(float g, float a);
@@ -252,14 +261,14 @@ void SG_CALL sgDrawClear4ub(SGubyte r, SGubyte g, SGubyte b, SGubyte a);
 void SG_CALL sgDrawClear3ub(SGubyte r, SGubyte g, SGubyte b);
 void SG_CALL sgDrawClear2ub(SGubyte g, SGubyte a);
 void SG_CALL sgDrawClear1ub(SGubyte g);
-void SG_CALL sgDrawClear4fv(const float* rgba);
-void SG_CALL sgDrawClear3fv(const float* rgb);
-void SG_CALL sgDrawClear2fv(const float* ga);
-void SG_CALL sgDrawClear1fv(const float* g);
-void SG_CALL sgDrawClear4ubv(const SGubyte* rgba);
-void SG_CALL sgDrawClear3ubv(const SGubyte* rgb);
-void SG_CALL sgDrawClear2ubv(const SGubyte* ga);
-void SG_CALL sgDrawClear1ubv(const SGubyte* g);
+SG_EXPORT void SG_CALL sgDrawClear4fp(const float* rgba);
+SG_EXPORT void SG_CALL sgDrawClear3fp(const float* rgb);
+SG_EXPORT void SG_CALL sgDrawClear2fp(const float* ga);
+SG_EXPORT void SG_CALL sgDrawClear1fp(const float* g);
+SG_EXPORT void SG_CALL sgDrawClear4ubp(const SGubyte* rgba);
+SG_EXPORT void SG_CALL sgDrawClear3ubp(const SGubyte* rgb);
+SG_EXPORT void SG_CALL sgDrawClear2ubp(const SGubyte* ga);
+SG_EXPORT void SG_CALL sgDrawClear1ubp(const SGubyte* g);
 /**
  * \brief Clear the drawable with black color
  */
@@ -289,7 +298,8 @@ void SG_CALL sgDrawSetPolygonSmooth(SGbool smooth);
  * \param x X coordinate
  * \param y Y coordinate
  */
-void SG_CALL sgDrawPoint(float x, float y);
+SG_EXPORT void SG_CALL sgDrawPoint2fv(SGVec2 pos);
+SG_EXPORT void SG_CALL sgDrawPoint2f(float x, float y);
 /**
  * \brief Set the point size
  *
@@ -311,7 +321,8 @@ void SG_CALL sgDrawSetPointSize(float size);
  * \param x2 End x coordinate
  * \param y2 End y coordinate
  */
-void SG_CALL sgDrawLine(float x1, float y1, float x2, float y2);
+SG_EXPORT void SG_CALL sgDrawLine2fv(SGVec2 a, SGVec2 b);
+SG_EXPORT void SG_CALL sgDrawLine2f(float x1, float y1, float x2, float y2);
 /**
  * \brief Set the line width
  *
@@ -325,55 +336,69 @@ void SG_CALL sgDrawSetLineWidth(float width);
  * \name Triangles
  */
 /// @{
-void SG_CALL sgDrawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawTriangle2fv(SGVec2 a, SGVec2 b, SGVec2 c, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawTriangle2f(float x1, float y1, float x2, float y2, float x3, float y3, SGbool fill);
 /// @}
 
 /**
  * \name Quads
  */
 /// @{
-void SG_CALL sgDrawQuad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawQuad2fv(SGVec2 a, SGVec2 b, SGVec2 c, SGVec2 d, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawQuad2f(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, SGbool fill);
 /// @}
 
 /**
  * \name Rectangles
  */
 /// @{
-void SG_CALL sgDrawRectangle(float x1, float y1, float x2, float y2, SGbool fill);
-void SG_CALL sgDrawRectangleWH(float x, float y, float w, float h, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangleR(SGRect rect, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangle2fv(SGVec2 a, SGVec2 b, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangle2f(float x1, float y1, float x2, float y2, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangle2fvWH(SGVec2 pos, SGVec2 size, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangle2fWH(float x, float y, float w, float h, SGbool fill);
 /// @}
 
-void SG_CALL sgDrawRectangleRound(float x1, float y1, float x2, float y2, float rx, float ry, SGbool fill);
-void SG_CALL sgDrawRectangleRoundWH(float x1, float y1, float w, float h, float rx, float ry, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangleRoundR(SGRect rect, SGVec2 r, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangleRound2fv(SGVec2 a, SGVec2 b, SGVec2 r, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangleRound2f(float x1, float y1, float x2, float y2, float rx, float ry, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangleRound2fvWH(SGVec2 pos, SGVec2 size, SGVec2 r, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawRectangleRound2fWH(float x, float y, float w, float h, float rx, float ry, SGbool fill);
 
 /**
  * \name Ellipses
  */
 /// @{
-void SG_CALL sgDrawEllipse2R(float x, float y, float rx, float ry, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawEllipse2fv2R(SGVec2 pos, SGVec2 r, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawEllipse2f2R(float x, float y, float rx, float ry, SGbool fill);
 /// @}
 
 /**
  * \name Circles
  */
 /// @{
-void SG_CALL sgDrawCircle(float x, float y, float radius, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawCircle2fv(SGVec2 pos, float radius, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawCircle2f(float x, float y, float radius, SGbool fill);
 /// @}
 
 /**
  * \name Elliptic Arcs
  */
 /// @{
-void SG_CALL sgDrawEArcRads(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill);
-void SG_CALL sgDrawEArcDegs(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawEArcRads2fv(SGVec2 pos, SGVec2 r, float a1, float a2, SGbool ccw, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawEArcDegs2fv(SGVec2 pos, SGVec2 r, float a1, float a2, SGbool ccw, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawEArcRads2f(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawEArcDegs2f(float x, float y, float rx, float ry, float a1, float a2, SGbool ccw, SGbool fill);
 /// @}
 
 /**
  * \name Circle arcs
  */
 /// @{
-void SG_CALL sgDrawArcRads(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill);
-void SG_CALL sgDrawArcDegs(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawArcRads2fv(SGVec2 pos, float r, float a1, float a2, SGbool ccw, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawArcDegs2fv(SGVec2 pos, float r, float a1, float a2, SGbool ccw, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawArcRads2f(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill);
+SG_EXPORT void SG_CALL sgDrawArcDegs2f(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill);
 /// @}
 
 /* DEPRECATED */

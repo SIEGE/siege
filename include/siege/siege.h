@@ -82,4 +82,6 @@
 #include "util/timer.h"
 #include "util/vector.h"
 
+#include "compat.h"
+
 #endif // __SIEGE_H__

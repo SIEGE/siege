@@ -422,7 +422,7 @@ void SG_CALL sgLightDraw(SGLight* light)
 void SG_CALL sgLightDrawDBG(SGLight* light)
 {
     sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
-    sgDrawCircle(light->pos.x, light->pos.y, light->radius, SG_FALSE);
+    sgDrawCircle2fv(light->pos, light->radius, SG_FALSE);
 }
 
 SGShadowShape* SG_CALL sgShadowShapeCreate(SGLightSpace* space, SGenum type)
@@ -554,8 +554,7 @@ void SG_CALL sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
         case SG_SHAPE_SEGMENT:
             vec = sgVec2RotateRads(shape->verts[0],
                                      sgVec2AngleRads(shape->verts[0]) + shape->angle);
-            sgDrawLine(shape->pos.x + vec.x, shape->pos.y + vec.y,
-                       shape->pos.x - vec.x, shape->pos.y - vec.y);
+            sgDrawLine2fv(sgVec2Add(shape->pos, vec), sgVec2Sub(shape->pos, vec));
             break;
         case SG_SHAPE_POLYGON:
             if(fill)
@@ -566,12 +565,12 @@ void SG_CALL sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill)
             {
                 vec = sgVec2RotateRads(shape->verts[i],
                                          sgVec2AngleRads(shape->verts[i]) + shape->angle);
-                sgDrawVertex2f(shape->pos.x + vec.x, shape->pos.y + vec.y);
+                sgDrawVertex2fv(sgVec2Add(shape->pos, vec));
             }
             sgDrawEnd();
             break;
         case SG_SHAPE_CIRCLE:
-            sgDrawCircle(shape->pos.x, shape->pos.y, shape->verts[0].x, fill);
+            sgDrawCircle2fv(shape->pos, shape->verts[0].x, fill);
             break;
     }
 }

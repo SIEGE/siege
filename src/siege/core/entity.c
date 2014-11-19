@@ -262,8 +262,7 @@ SGEntity* SG_CALL sgEntityCreate(void)
     entity->pausable = SG_TRUE;
 
     entity->visible = SG_TRUE;
-    entity->x = 0.0;
-    entity->y = 0.0;
+    entity->pos = sgVec2f(0.0, 0.0);
     entity->depth = 0.0;
     entity->angle = 0.0;
 
@@ -389,31 +388,33 @@ SGAudioSource* SG_CALL sgEntityGetAudioSource(SGEntity* entity)
     return entity->source;
 }
 
-void SG_CALL sgEntitySetPos(SGEntity* entity, float x, float y)
+void SG_CALL sgEntitySetPos2fv(SGEntity* entity, SGVec2 pos)
 {
     if(entity == NULL)
         return;
 
-    entity->x = x;
-    entity->y = y;
+    entity->pos = pos;
     if(entity->body != NULL)
-        sgPhysicsBodySetPos(entity->body, x, y);
+        sgPhysicsBodySetPos(entity->body, pos.x, pos.y);
 }
-void SG_CALL sgEntityGetPos(SGEntity* entity, float* x, float* y)
+void SG_CALL sgEntitySetPos2f(SGEntity* entity, float x, float y)
 {
-    float t;
-    if(!x) x = &t;
-    if(!y) y = &t;
-
-    *x = entity->x;
-    *y = entity->y;
+    sgEntitySetPos2fv(entity, sgVec2f(x, y));
+}
+SGVec2 SG_CALL sgEntityGetPos2fv(SGEntity* entity)
+{
     if(entity->body != NULL)
-        sgPhysicsBodyGetPos(entity->body, x, y);
+    {
+        SGVec2 ret;
+        sgPhysicsBodyGetPos(entity->body, &ret.x, &ret.y);
+        return ret;
+    }
+    return entity->pos;
 }
 
 void SG_CALL sgEntitySetPosX(SGEntity* entity, float x)
 {
-    entity->x = x;
+    entity->pos.x = x;
     if(entity->body != NULL)
         sgPhysicsBodySetPosX(entity->body, x);
 }
@@ -421,11 +422,11 @@ float SG_CALL sgEntityGetPosX(SGEntity* entity)
 {
     if(entity->body != NULL)
         return sgPhysicsBodyGetPosX(entity->body);
-    return entity->x;
+    return entity->pos.x;
 }
 void SG_CALL sgEntitySetPosY(SGEntity* entity, float y)
 {
-    entity->y = y;
+    entity->pos.y = y;
     if(entity->body != NULL)
         sgPhysicsBodySetPosY(entity->body, y);
 }
@@ -433,7 +434,7 @@ float SG_CALL sgEntityGetPosY(SGEntity* entity)
 {
     if(entity->body != NULL)
         return sgPhysicsBodyGetPosY(entity->body);
-    return entity->y;
+    return entity->pos.y;
 }
 
 void SG_CALL sgEntitySetDepth(SGEntity* entity, float depth)
@@ -487,11 +488,11 @@ void SG_CALL sgEntityDraw(SGEntity* entity)
 
     if(entity->body != NULL)
     {
-        sgPhysicsBodyGetPos(entity->body, &entity->x, &entity->y);
+        sgPhysicsBodyGetPos(entity->body, &entity->pos.x, &entity->pos.y);
         entity->angle = sgPhysicsBodyGetAngleRads(entity->body);
     }
 
-    sgSpriteDrawRads3f1f(entity->sprite, entity->x, entity->y, entity->depth, entity->angle);
+    sgSpriteDrawRads3f1f(entity->sprite, entity->pos.x, entity->pos.y, entity->depth, entity->angle);
 }
 
 SGList* SG_CALL sgEntityFind(const char* name)

@@ -96,13 +96,18 @@ extern "C"
 #    endif  // defined(__WIN32)
 #endif // defined(SG_CALL)
 
+//TODO WIN32
+#ifndef SG_EXPORT
+#define SG_EXPORT
+#endif /* SG_EXPORT */
+
 /**
  * \name Version information
  */
 /// @{
 #define SG_VERSION_MAJOR 0
 #define SG_VERSION_MINOR 8
-#define SG_VERSION_PATCH 3
+#define SG_VERSION_PATCH 4
 /**
  * \brief Version string
  *

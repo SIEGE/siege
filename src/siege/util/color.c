@@ -488,19 +488,19 @@ SGColor SG_CALL sgColor1f(float g)
 {
     return sgColor4f(g, g, g, 1.0);
 }
-SGColor SG_CALL sgColor4fv(const float* rgba)
+SGColor SG_CALL sgColor4fp(const float* rgba)
 {
     return sgColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-SGColor SG_CALL sgColor3fv(const float* rgb)
+SGColor SG_CALL sgColor3fp(const float* rgb)
 {
     return sgColor3f(rgb[0], rgb[1], rgb[2]);
 }
-SGColor SG_CALL sgColor2fv(const float* ga)
+SGColor SG_CALL sgColor2fp(const float* ga)
 {
     return sgColor2f(ga[0], ga[1]);
 }
-SGColor SG_CALL sgColor1fv(const float* g)
+SGColor SG_CALL sgColor1fp(const float* g)
 {
     return sgColor1f(g[0]);
 }
@@ -520,19 +520,19 @@ SGColor SG_CALL sgColor1ub(SGubyte g)
 {
     return sgColor4ub(g, g, g, 255);
 }
-SGColor SG_CALL sgColor4ubv(const SGubyte* rgba)
+SGColor SG_CALL sgColor4ubp(const SGubyte* rgba)
 {
     return sgColor4ub(rgba[0], rgba[1], rgba[2], rgba[3]);
 }
-SGColor SG_CALL sgColor3ubv(const SGubyte* rgb)
+SGColor SG_CALL sgColor3ubp(const SGubyte* rgb)
 {
     return sgColor3ub(rgb[0], rgb[1], rgb[2]);
 }
-SGColor SG_CALL sgColor2ubv(const SGubyte* ga)
+SGColor SG_CALL sgColor2ubp(const SGubyte* ga)
 {
     return sgColor2ub(ga[0], ga[1]);
 }
-SGColor SG_CALL sgColor1ubv(const SGubyte* g)
+SGColor SG_CALL sgColor1ubp(const SGubyte* g)
 {
     return sgColor1ub(g[0]);
 }

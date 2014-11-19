@@ -613,7 +613,7 @@ static SGbool SG_CALL _strRectDone(SGFont* font, float xoffset, float yoffset, v
 }
 SGRect SG_CALL sgFontStrRectU32(SGFont* font, const SGdchar* text)
 {
-    SGRect rect = sgRect(0.0, 0.0, 0.0, 0.0);
+    SGRect rect = sgRect2f(0.0, 0.0, 0.0, 0.0);
     _sgFontExecuteU32(font, text, NULL, NULL, _strRectLineEnd, _strRectDone, &rect);
     return rect;
 }

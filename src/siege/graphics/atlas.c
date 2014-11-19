@@ -91,11 +91,11 @@ static void SG_CALL _sgAtlasNodeDrawDBG(SGAtlasNode* node, float x, float y)
     _sgAtlasNodeDrawDBG(node->child[0], x, y);
     _sgAtlasNodeDrawDBG(node->child[1], x, y);
 
-    /*sgDrawRectangleWH(node->x + x - BORDER, node->y + y - BORDER, node->w, BORDER, SG_TRUE);
-    sgDrawRectangleWH(node->x + x - BORDER, node->y + y - BORDER + node->h, node->w, BORDER, SG_TRUE);
-    sgDrawRectangleWH(node->x + x - BORDER, node->y + y - BORDER, BORDER, node->h, SG_TRUE);
-    sgDrawRectangleWH(node->x + x - BORDER + node->w, node->y + y - BORDER, BORDER, node->h, SG_TRUE);*/
-    sgDrawRectangleWH(node->area.x + x, node->area.y + y, node->area.w, node->area.h, SG_FALSE);
+    /*sgDrawRectangle2fWH(node->x + x - BORDER, node->y + y - BORDER, node->w, BORDER, SG_TRUE);
+    sgDrawRectangle2fWH(node->x + x - BORDER, node->y + y - BORDER + node->h, node->w, BORDER, SG_TRUE);
+    sgDrawRectangle2fWH(node->x + x - BORDER, node->y + y - BORDER, BORDER, node->h, SG_TRUE);
+    sgDrawRectangle2fWH(node->x + x - BORDER + node->w, node->y + y - BORDER, BORDER, node->h, SG_TRUE);*/
+    sgDrawRectangle2fWH(node->area.x + x, node->area.y + y, node->area.w, node->area.h, SG_FALSE);
 }
 
 static SGTexture* _sgAtlasAddTexture(SGAtlas* atlas, SGTexture* texture, SGbool owner)
@@ -335,7 +335,7 @@ void SG_CALL sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbo
 {
     if(index > atlas->numtextures)
     {
-        sgDrawRectangleWH(x, y, atlas->width, atlas->height, SG_FALSE);
+        sgDrawRectangle2fWH(x, y, atlas->width, atlas->height, SG_FALSE);
         return;
     }
     if(wires)

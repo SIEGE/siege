@@ -14,8 +14,10 @@ typedef struct SGRect
     SGVec2 b;
 } SGRect;
 
-SGRect SG_CALL sgRect(float x1, float y1, float x2, float y2);
-SGRect SG_CALL sgRectWH(float x, float y, float w, float h);
+SG_EXPORT SGRect SG_CALL sgRect2fv(SGVec2 a, SGVec2 b);
+SG_EXPORT SGRect SG_CALL sgRect2f(float x1, float y1, float x2, float y2);
+SG_EXPORT SGRect SG_CALL sgRect2fvWH(SGVec2 pos, SGVec2 size);
+SG_EXPORT SGRect SG_CALL sgRectWH(float x, float y, float w, float h);
 
 SGVec2 SG_CALL sgRectSize(SGRect rect);
 SGVec2 SG_CALL sgRectCenter(SGRect rect);
