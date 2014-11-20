@@ -350,6 +350,8 @@ void SG_CALL sgWindowHandleEvents(void)
 
     // TODO: Rework this completely.
 
+    _sgKeyboardUpdatePre();
+
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -410,7 +412,7 @@ void SG_CALL sgWindowHandleEvents(void)
         }
     }
     _sgMouseUpdate();
-    _sgKeyboardUpdate();
+    _sgKeyboardUpdatePost();
     _sgJoystickUpdate();
 }
 void SG_CALL sgWindowSwapBuffers(void)

@@ -96,13 +96,15 @@ extern "C"
 #define SG_KEY_NUM 0x400
 SGbool _sg_keyPrev[SG_KEY_NUM];
 SGbool _sg_keyCurr[SG_KEY_NUM];
+SGbool _sg_keyAgn[SG_KEY_NUM];
 void* _sg_keyHandle;
 #endif // SG_BUILD_LIBRARY
 
 void SG_CALL _sg_cbKeyboardKey(SGuint key, SGbool down);
 void SG_CALL _sg_cbKeyboardChar(SGdchar chr);
 
-void SG_CALL _sgKeyboardUpdate(void);
+void SG_CALL _sgKeyboardUpdatePre(void);
+void SG_CALL _sgKeyboardUpdatePost(void);
 
 SGbool SG_CALL _sgKeyboardInit(void);
 SGbool SG_CALL _sgKeyboardDeinit(void);
@@ -112,6 +114,7 @@ void SG_CALL _sgKeyboardKeyUpdate(SGenum key, SGbool down);
 SGbool SG_CALL sgKeyboardKey(SGenum key);
 SGbool SG_CALL sgKeyboardKeyPress(SGenum key);
 SGbool SG_CALL sgKeyboardKeyRelease(SGenum key);
+SGbool SG_CALL sgKeyboardKeyRepeat(SGenum key);
 
 // might re-add this in the future; probably not
 // SGbool SG_CALL sgKeyboardCharPress(SGdchar chr);

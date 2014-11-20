@@ -42,7 +42,12 @@ void SG_CALL _sg_cbKeyboardChar(SGdchar chr)
     sgEntityEventSignal(1, (SGenum)SG_EVF_KEYCHARP, chr);
 }
 
-void SG_CALL _sgKeyboardUpdate(void)
+void SG_CALL _sgKeyboardUpdatePre(void)
+{
+    memcpy(_sg_keyPrev, _sg_keyCurr, SG_KEY_NUM * sizeof(*_sg_keyCurr));
+    memset(_sg_keyAgn, 0, SG_KEY_NUM * sizeof(*_sg_keyAgn));
+}
+void SG_CALL _sgKeyboardUpdatePost(void)
 {
     SGenum i;
     for(i = 0; i < SG_KEY_NUM; i++)
@@ -64,7 +69,7 @@ SGbool SG_CALL _sgKeyboardDeinit(void)
 void SG_CALL _sgKeyboardKeyUpdate(SGenum key, SGbool down)
 {
     if(key >= SG_KEY_NUM) return;
-    _sg_keyPrev[key] = _sg_keyCurr[key];
+    _sg_keyAgn[key] = (_sg_keyCurr[key] == down);
     _sg_keyCurr[key] = down;
 }
 
@@ -82,4 +87,9 @@ SGbool SG_CALL sgKeyboardKeyRelease(SGenum key)
 {
     if(key >= SG_KEY_NUM) return SG_FALSE;
     return _sg_keyPrev[key] && !_sg_keyCurr[key];
+}
+SGbool SG_CALL sgKeyboardKeyRepeat(SGenum key)
+{
+    if(key >= SG_KEY_NUM) return SG_FALSE;
+    return _sg_keyAgn[key];
 }
