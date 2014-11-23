@@ -170,19 +170,16 @@ SGVec2 SG_CALL sgVec2Refract(SGVec2 ray, SGVec2 normal, float eta)
 }
 SGVec2 SG_CALL sgVec2Reflect(SGVec2 ray, SGVec2 normal)
 {
-    ray = sgVec2Normalize(ray);
-    normal = sgVec2Normalize(normal);
-
-    return sgVec2Sub(ray, sgVec2Resize(normal, 2.0 * sgVec2Dot(ray, normal)));
+    return sgVec2Sub(ray, sgVec2Mulf(normal, 2.0 * sgVec2Dot(ray, normal)));
 }
 float SG_CALL sgVec2ProjectScalar(SGVec2 v, SGVec2 target)
 {
-    return sgVec2Dot(v, target) / sgVec2Length(target);
+    return sgVec2Dot(v, target);
 }
 // relative to target
 SGVec2 SG_CALL sgVec2Project(SGVec2 v, SGVec2 target)
 {
-    return sgVec2Resize(target, sgVec2ProjectScalar(v, target));
+    return sgVec2Mulf(target, sgVec2ProjectScalar(v, target));
 }
 // relative to v
 SGVec2 SG_CALL sgVec2Reject(SGVec2 v, SGVec2 target)
@@ -331,18 +328,15 @@ SGVec3 SG_CALL sgVec3Refract(SGVec3 ray, SGVec3 normal, float eta)
 }
 SGVec3 SG_CALL sgVec3Reflect(SGVec3 ray, SGVec3 normal)
 {
-    ray = sgVec3Normalize(ray);
-    normal = sgVec3Normalize(normal);
-
-    return sgVec3Sub(ray, sgVec3Resize(normal, 2.0 * sgVec3Dot(ray, normal)));
+    return sgVec3Sub(ray, sgVec3Mulf(normal, 2.0 * sgVec3Dot(ray, normal)));
 }
 float SG_CALL sgVec3ProjectScalar(SGVec3 v, SGVec3 target)
 {
-    return sgVec3Dot(v, target) / sgVec3Length(target);
+    return sgVec3Dot(v, target);
 }
 SGVec3 SG_CALL sgVec3Project(SGVec3 v, SGVec3 target)
 {
-    return sgVec3Resize(target, sgVec3ProjectScalar(v, target));
+    return sgVec3Mulf(target, sgVec3ProjectScalar(v, target));
 }
 SGVec3 SG_CALL sgVec3Reject(SGVec3 v, SGVec3 target)
 {
@@ -477,18 +471,15 @@ SGVec4 SG_CALL sgVec4Refract(SGVec4 ray, SGVec4 normal, float eta)
 }
 SGVec4 SG_CALL sgVec4Reflect(SGVec4 ray, SGVec4 normal)
 {
-    ray = sgVec4Normalize(ray);
-    normal = sgVec4Normalize(normal);
-
-    return sgVec4Sub(ray, sgVec4Resize(normal, 2.0 * sgVec4Dot(ray, normal)));
+    return sgVec4Sub(ray, sgVec4Mulf(normal, 2.0 * sgVec4Dot(ray, normal)));
 }
 float SG_CALL sgVec4ProjectScalar(SGVec4 v, SGVec4 target)
 {
-    return sgVec4Dot(v, target) / sgVec4Length(target);
+    return sgVec4Dot(v, target);
 }
 SGVec4 SG_CALL sgVec4Project(SGVec4 v, SGVec4 target)
 {
-    return sgVec4Resize(target, sgVec4ProjectScalar(v, target));
+    return sgVec4Mulf(target, sgVec4ProjectScalar(v, target));
 }
 SGVec4 SG_CALL sgVec4Reject(SGVec4 v, SGVec4 target)
 {
