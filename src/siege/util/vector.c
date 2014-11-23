@@ -24,7 +24,7 @@ SGVec2 SG_CALL sgVec2f(float x, float y)
     vec.x = x; vec.y = y;
     return vec;
 }
-SGVec2 SG_CALL sgVec2fv(const float* xy)
+SGVec2 SG_CALL sgVec2fp(const float* xy)
 {
     return sgVec2f(xy[0], xy[1]);
 }
@@ -194,7 +194,7 @@ SGVec3 SG_CALL sgVec3f(float x, float y, float z)
     vec.x = x; vec.y = y; vec.z = z;
     return vec;
 }
-SGVec3 SG_CALL sgVec3fv(const float* xyz)
+SGVec3 SG_CALL sgVec3fp(const float* xyz)
 {
     return sgVec3f(xyz[0], xyz[1], xyz[2]);
 }
@@ -351,7 +351,7 @@ SGVec4 SG_CALL sgVec4f(float x, float y, float z, float w)
     vec.x = x; vec.y = y; vec.z = z; vec.w = w;
     return vec;
 }
-SGVec4 SG_CALL sgVec4fv(const float* xyzw)
+SGVec4 SG_CALL sgVec4fp(const float* xyzw)
 {
     return sgVec4f(xyzw[0], xyzw[1], xyzw[2], xyzw[3]);
 }

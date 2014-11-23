@@ -47,7 +47,7 @@ typedef struct SGVec4
     \return A new 2D vector.
 */
 SGVec2 SG_CALL sgVec2f(float x, float y);
-SGVec2 SG_CALL sgVec2fv(const float* xy);
+SGVec2 SG_CALL sgVec2fp(const float* xy);
 /**
     \memberof SGVec2
     \brief Create a 2D vector from polar coordinates in radians
@@ -119,7 +119,7 @@ SGVec2 SG_CALL sgVec2Reject(SGVec2 v, SGVec2 target);
 
 
 SGVec3 SG_CALL sgVec3f(float x, float y, float z);
-SGVec3 SG_CALL sgVec3fv(const float* xyz);
+SGVec3 SG_CALL sgVec3fp(const float* xyz);
 SGVec3 SG_CALL sgVec3CylindricalRads(float rads, float radius, float z);
 SGVec3 SG_CALL sgVec3CylindricalDegs(float degs, float radius, float z);
 SGVec3 SG_CALL sgVec3SphericalRads(float azimuth, float zenith, float radius);
@@ -166,7 +166,7 @@ SGVec3 SG_CALL sgVec3Reject(SGVec3 v, SGVec3 target);
 
 
 SGVec4 SG_CALL sgVec4f(float x, float y, float z, float w);
-SGVec4 SG_CALL sgVec4fv(const float* xyzw);
+SGVec4 SG_CALL sgVec4fp(const float* xyzw);
 //SGVec4 sgVec4PolarRads(float rads, float len);
 //SGVec4 sgVec4PolarDegs(float degs, float len);
 SGVec4 SG_CALL sgVec4Nan(void);
