@@ -21,6 +21,19 @@
 #include <string.h>
 
 #include <SDL/SDL.h>
+#include "../internal/bitop.h"
+
+#define SG_NUM_KEYS     0x400
+
+#define KEYARR_LENGTH   ARR_BITLENGTH(SG_NUM_KEYS)
+
+#if SG_NUM_KEYS % 64
+#error "SG_NUM_KEYS must be divisible by 64!"
+#endif
+
+static SGulong _sg_keyPrev[KEYARR_LENGTH];
+static SGulong _sg_keyCurr[KEYARR_LENGTH];
+static SGulong _sg_keyAgn[KEYARR_LENGTH];
 
 void SG_CALL _sg_cbKeyboardKey(SGenum key, SGbool down)
 {
@@ -44,21 +57,30 @@ void SG_CALL _sg_cbKeyboardChar(SGdchar chr)
 
 void SG_CALL _sgKeyboardUpdatePre(void)
 {
-    memcpy(_sg_keyPrev, _sg_keyCurr, SG_KEY_NUM * sizeof(*_sg_keyCurr));
-    memset(_sg_keyAgn, 0, SG_KEY_NUM * sizeof(*_sg_keyAgn));
+    memcpy(_sg_keyPrev, _sg_keyCurr, sizeof(_sg_keyCurr));
+    memset(_sg_keyAgn, 0, sizeof(_sg_keyAgn));
 }
 void SG_CALL _sgKeyboardUpdatePost(void)
 {
-    SGenum i;
-    for(i = 0; i < SG_KEY_NUM; i++)
-        if(_sg_keyCurr[i])
-            sgEntityEventSignal(1, (SGenum)SG_EVF_KEYKEYH, i);
+    SGenum i, j;
+    SGulong buffer;
+    for(i = 0; i < KEYARR_LENGTH; i++)
+    {
+        j = i * ARR_BITS;
+        for(buffer = ARR_BITITEM(_sg_keyCurr, i); buffer; buffer >>= 1)
+        {
+            if(buffer & 1)
+                sgEntityEventSignal(1, (SGenum)SG_EVF_KEYKEYH, j);
+            j++;
+        }
+    }
 }
 
 SGbool SG_CALL _sgKeyboardInit(void)
 {
-    memset(_sg_keyPrev, 0, SG_KEY_NUM * sizeof(SGbool));
-    memset(_sg_keyCurr, 0, SG_KEY_NUM * sizeof(SGbool));
+    memset(_sg_keyPrev, 0, sizeof(_sg_keyPrev));
+    memset(_sg_keyCurr, 0, sizeof(_sg_keyCurr));
+    memset(_sg_keyAgn, 0, sizeof(_sg_keyAgn));
     return SG_TRUE;
 }
 SGbool SG_CALL _sgKeyboardDeinit(void)
@@ -68,28 +90,28 @@ SGbool SG_CALL _sgKeyboardDeinit(void)
 
 void SG_CALL _sgKeyboardKeyUpdate(SGenum key, SGbool down)
 {
-    if(key >= SG_KEY_NUM) return;
-    _sg_keyAgn[key] = (_sg_keyCurr[key] == down);
-    _sg_keyCurr[key] = down;
+    if(key >= SG_NUM_KEYS) return;
+    SET_BITARR(_sg_keyAgn, key, GET_BITARR(_sg_keyAgn, key) == down);
+    SET_BITARR_CURR(key, key, down);
 }
 
 SGbool SG_CALL sgKeyboardKey(SGenum key)
 {
-    if(key >= SG_KEY_NUM) return SG_FALSE;
+    if(key >= SG_NUM_KEYS) return SG_FALSE;
     return _sg_keyCurr[key];
 }
 SGbool SG_CALL sgKeyboardKeyPress(SGenum key)
 {
-    if(key >= SG_KEY_NUM) return SG_FALSE;
+    if(key >= SG_NUM_KEYS) return SG_FALSE;
     return !_sg_keyPrev[key] && _sg_keyCurr[key];
 }
 SGbool SG_CALL sgKeyboardKeyRelease(SGenum key)
 {
-    if(key >= SG_KEY_NUM) return SG_FALSE;
+    if(key >= SG_NUM_KEYS) return SG_FALSE;
     return _sg_keyPrev[key] && !_sg_keyCurr[key];
 }
 SGbool SG_CALL sgKeyboardKeyRepeat(SGenum key)
 {
-    if(key >= SG_KEY_NUM) return SG_FALSE;
+    if(key >= SG_NUM_KEYS) return SG_FALSE;
     return _sg_keyAgn[key];
 }
