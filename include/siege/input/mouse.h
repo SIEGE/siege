@@ -60,6 +60,9 @@ SGint SG_CALL sgMouseGetPosY(void);
 SGint SG_CALL sgMouseGetWheelPrev(void);
 SGint SG_CALL sgMouseGetWheel(void);
 
+SGulong SG_CALL sgMouseGetButtonMaskPrev(void);
+SGulong SG_CALL sgMouseGetButtonMask(void);
+
 SGbool SG_CALL sgMouseGetButtonPrev(SGuint button);
 SGbool SG_CALL sgMouseGetButton(SGuint button);
 SGbool SG_CALL sgMouseGetButtonPress(SGuint button);

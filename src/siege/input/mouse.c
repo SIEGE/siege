@@ -213,6 +213,15 @@ SGint SG_CALL sgMouseGetWheel(void)
     return _sg_mouseWheel;
 }
 
+SGulong SG_CALL sgMouseGetButtonMaskPrev(void)
+{
+    return _sg_mouseButtonPrev;
+}
+SGulong SG_CALL sgMouseGetButtonMask(void)
+{
+    return _sg_mouseButtonCurr;
+}
+
 SGbool SG_CALL sgMouseGetButtonPrev(SGuint button)
 {
     return GET_BIT_PREV(mouseButton, button - 1);
