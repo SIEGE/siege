@@ -15,6 +15,7 @@
 #ifndef __SIEGE_INPUT_MOUSE_H__
 #define __SIEGE_INPUT_MOUSE_H__
 #include "../common.h"
+#include "../util/vector.h"
 #include "../util/ivector.h"
 
 /**
@@ -60,10 +61,12 @@ void SG_CALL sgMouseShow(void);
 void SG_CALL sgMouseHide(void);
 
 SGIVec2 SG_CALL sgMouseGetPosPrev2iv(void);
+SGVec2 SG_CALL sgMouseGetPosPrev2fv(void);
 SGint SG_CALL sgMouseGetPosPrevX(void);
 SGint SG_CALL sgMouseGetPosPrevY(void);
 
 SGIVec2 SG_CALL sgMouseGetPos2iv(void);
+SGVec2 SG_CALL sgMouseGetPos2fv(void);
 SGint SG_CALL sgMouseGetPosX(void);
 SGint SG_CALL sgMouseGetPosY(void);
 

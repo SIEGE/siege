@@ -179,6 +179,10 @@ SGIVec2 SG_CALL sgMouseGetPosPrev2iv(void)
 {
     return sgIVec2i(_sg_mouseXPrev, _sg_mouseYPrev);
 }
+SGVec2 SG_CALL sgMouseGetPosPrev2fv(void)
+{
+    return sgVec2iv(sgMouseGetPosPrev2iv());
+}
 SGint SG_CALL sgMouseGetPosPrevX(void)
 {
     return _sg_mouseXPrev;
@@ -191,6 +195,10 @@ SGint SG_CALL sgMouseGetPosPrevY(void)
 SGIVec2 SG_CALL sgMouseGetPos2iv(void)
 {
     return sgIVec2i(_sg_mouseX, _sg_mouseY);
+}
+SGVec2 SG_CALL sgMouseGetPos2fv(void)
+{
+    return sgVec2iv(sgMouseGetPos2iv());
 }
 SGint SG_CALL sgMouseGetPosX(void)
 {
