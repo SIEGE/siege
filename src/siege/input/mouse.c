@@ -175,12 +175,9 @@ void SG_CALL sgMouseHide(void)
     sgMouseSetVisible(SG_FALSE);
 }
 
-void SG_CALL sgMouseGetPosPrev(SGint* x, SGint* y)
+SGIVec2 SG_CALL sgMouseGetPosPrev2iv(void)
 {
-    if(x != NULL)
-        *x = _sg_mouseXPrev;
-    if(y != NULL)
-        *y = _sg_mouseYPrev;
+    return sgIVec2i(_sg_mouseXPrev, _sg_mouseYPrev);
 }
 SGint SG_CALL sgMouseGetPosPrevX(void)
 {
@@ -191,12 +188,9 @@ SGint SG_CALL sgMouseGetPosPrevY(void)
     return _sg_mouseYPrev;
 }
 
-void SG_CALL sgMouseGetPos(SGint* x, SGint* y)
+SGIVec2 SG_CALL sgMouseGetPos2iv(void)
 {
-    if(x != NULL)
-        *x = _sg_mouseX;
-    if(y != NULL)
-        *y = _sg_mouseY;
+    return sgIVec2i(_sg_mouseX, _sg_mouseY);
 }
 SGint SG_CALL sgMouseGetPosX(void)
 {
@@ -290,4 +284,18 @@ SGbool SG_CALL sgMouseGetButtonMiddlePress(void)
 SGbool SG_CALL sgMouseGetButtonMiddleRelease(void)
 {
     return sgMouseGetButtonRelease(SG_MOUSE_BUTTON_MIDDLE);
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgMouseGetPosPrev(SGint* x, SGint* y)
+{
+    SGIVec2 pos = sgMouseGetPosPrev2iv();
+    if(x) *x = pos.x;
+    if(y) *y = pos.y;
+}
+void SG_CALL SG_HINT_DEPRECATED sgMouseGetPos(SGint* x, SGint* y)
+{
+    SGIVec2 pos = sgMouseGetPos2iv();
+    if(x) *x = pos.x;
+    if(y) *y = pos.y;
 }

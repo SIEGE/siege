@@ -15,6 +15,7 @@
 #ifndef __SIEGE_INPUT_MOUSE_H__
 #define __SIEGE_INPUT_MOUSE_H__
 #include "../common.h"
+#include "../util/ivector.h"
 
 /**
  * \name Mouse buttons
@@ -58,11 +59,11 @@ void SG_CALL sgMouseSetVisible(SGbool vis);
 void SG_CALL sgMouseShow(void);
 void SG_CALL sgMouseHide(void);
 
-void SG_CALL sgMouseGetPosPrev(SGint* x, SGint* y);
+SGIVec2 SG_CALL sgMouseGetPosPrev2iv(void);
 SGint SG_CALL sgMouseGetPosPrevX(void);
 SGint SG_CALL sgMouseGetPosPrevY(void);
 
-void SG_CALL sgMouseGetPos(SGint* x, SGint* y);
+SGIVec2 SG_CALL sgMouseGetPos2iv(void);
 SGint SG_CALL sgMouseGetPosX(void);
 SGint SG_CALL sgMouseGetPosY(void);
 
@@ -88,6 +89,9 @@ SGbool SG_CALL sgMouseGetButtonMiddlePrev(void);
 SGbool SG_CALL sgMouseGetButtonMiddle(void);
 SGbool SG_CALL sgMouseGetButtonMiddlePress(void);
 SGbool SG_CALL sgMouseGetButtonMiddleRelease(void);
+
+void SG_CALL SG_HINT_DEPRECATED sgMouseGetPosPrev(SGint* x, SGint* y);
+void SG_CALL SG_HINT_DEPRECATED sgMouseGetPos(SGint* x, SGint* y);
 
 #ifdef __cplusplus
 }
