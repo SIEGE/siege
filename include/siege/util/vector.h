@@ -91,6 +91,8 @@ SGVec2 SG_CALL sgVec2Sub(SGVec2 a, SGVec2 b);
 SGVec2 SG_CALL sgVec2Mul(SGVec2 a, SGVec2 b);
 SGVec2 SG_CALL sgVec2Div(SGVec2 a, SGVec2 b);
 
+SGVec2 SG_CALL sgVec2QMul2(SGVec2 a, SGVec2 b);
+
 float SG_CALL sgVec2Distance(SGVec2 a, SGVec2 b);
 float SG_CALL sgVec2Distance2(SGVec2 a, SGVec2 b);
 
@@ -104,9 +106,12 @@ float SG_CALL sgVec2Dot(SGVec2 a, SGVec2 b);
 float SG_CALL sgVec2PDot(SGVec2 a, SGVec2 b);
 SGVec2 SG_CALL sgVec2Cross(SGVec2 a);
 
+SGVec2 SG_CALL sgVec2Refract(SGVec2 ray, SGVec2 normal, float eta);
 SGVec2 SG_CALL sgVec2Reflect(SGVec2 ray, SGVec2 normal);
 float SG_CALL sgVec2ProjectScalar(SGVec2 v, SGVec2 target);
 SGVec2 SG_CALL sgVec2Project(SGVec2 v, SGVec2 target);
+SGVec2 SG_CALL sgVec2Reject(SGVec2 v, SGVec2 target);
+
 
 SGVec3 SG_CALL sgVec3f(float x, float y, float z);
 SGVec3 SG_CALL sgVec3fv(const float* xyz);
@@ -143,9 +148,11 @@ SGVec3 SG_CALL sgVec3Cross(SGVec3 a, SGVec3 b);
 // A dot (B cross C)
 float SG_CALL sgVec3Triple(SGVec3 a, SGVec3 b, SGVec3 c);
 
+SGVec3 SG_CALL sgVec3Refract(SGVec3 ray, SGVec3 normal, float eta);
 SGVec3 SG_CALL sgVec3Reflect(SGVec3 ray, SGVec3 normal);
 float SG_CALL sgVec3ProjectScalar(SGVec3 v, SGVec3 target);
 SGVec3 SG_CALL sgVec3Project(SGVec3 v, SGVec3 target);
+SGVec3 SG_CALL sgVec3Reject(SGVec3 v, SGVec3 target);
 
 
 SGVec4 SG_CALL sgVec4f(float x, float y, float z, float w);
@@ -173,15 +180,19 @@ SGVec4 SG_CALL sgVec4Sub(SGVec4 a, SGVec4 b);
 SGVec4 SG_CALL sgVec4Mul(SGVec4 a, SGVec4 b);
 SGVec4 SG_CALL sgVec4Div(SGVec4 a, SGVec4 b);
 
+SGVec4 SG_CALL sgVec4QMul4(SGVec4 a, SGVec4 b);
+
 float SG_CALL sgVec4Distance(SGVec4 a, SGVec4 b);
 float SG_CALL sgVec4Distance2(SGVec4 a, SGVec4 b);
 
 float SG_CALL sgVec4Dot(SGVec4 a, SGVec4 b);
 //SGVec4 sgVec4Cross(SGVec4 a, SGVec4 b, SGVec4 c);
 
+SGVec4 SG_CALL sgVec4Refract(SGVec4 ray, SGVec4 normal, float eta);
 SGVec4 SG_CALL sgVec4Reflect(SGVec4 ray, SGVec4 normal);
 float SG_CALL sgVec4ProjectScalar(SGVec4 v, SGVec4 target);
 SGVec4 SG_CALL sgVec4Project(SGVec4 v, SGVec4 target);
+SGVec4 SG_CALL sgVec4Reject(SGVec4 v, SGVec4 target);
 
 #ifdef __cplusplus
 }

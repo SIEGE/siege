@@ -130,6 +130,28 @@ SGVec2 SG_CALL sgVec2Cross(SGVec2 a)
     return sgVec2f(a.y, -a.x);
 }
 
+SGVec2 SG_CALL sgVec2QMul2(SGVec2 a, SGVec2 b)
+{
+    // (ax + ay I) * (bx + by I)
+    SGVec2 ret;
+    ret.x = a.x * b.x - a.y * b.y;
+    ret.y = a.x * b.y + a.y * b.x;
+    return ret;
+}
+
+/* shamelessly stolen from GLSL docs */
+SGVec2 SG_CALL sgVec2Refract(SGVec2 ray, SGVec2 normal, float eta)
+{
+    float dot = sgVec2Dot(ray, normal);
+    float eta2 = eta * eta;
+
+    float k = 1.0 - eta2 * (1.0 - dot * dot);
+    if(k < 0.0)
+        return sgVec2f(0.0, 0.0);
+
+    float f = eta * dot + sqrt(k);
+    return sgVec2Sub(sgVec2Mul(ray, sgVec2f(eta, eta)), sgVec2Mul(normal, sgVec2f(f, f)));
+}
 SGVec2 SG_CALL sgVec2Reflect(SGVec2 ray, SGVec2 normal)
 {
     ray = sgVec2Normalize(ray);
@@ -141,9 +163,15 @@ float SG_CALL sgVec2ProjectScalar(SGVec2 v, SGVec2 target)
 {
     return sgVec2Dot(v, target) / sgVec2Length(target);
 }
+// relative to target
 SGVec2 SG_CALL sgVec2Project(SGVec2 v, SGVec2 target)
 {
     return sgVec2Resize(target, sgVec2ProjectScalar(v, target));
+}
+// relative to v
+SGVec2 SG_CALL sgVec2Reject(SGVec2 v, SGVec2 target)
+{
+    return sgVec2Sub(v, sgVec2Project(v, target));
 }
 
 
@@ -257,6 +285,18 @@ float SG_CALL sgVec3Triple(SGVec3 a, SGVec3 b, SGVec3 c)
     return sgVec3Dot(a, sgVec3Cross(b, c));
 }
 
+SGVec3 SG_CALL sgVec3Refract(SGVec3 ray, SGVec3 normal, float eta)
+{
+    float dot = sgVec3Dot(ray, normal);
+    float eta2 = eta * eta;
+
+    float k = 1.0 - eta2 * (1.0 - dot * dot);
+    if(k < 0.0)
+        return sgVec3f(0.0, 0.0, 0.0);
+
+    float f = eta * dot + sqrt(k);
+    return sgVec3Sub(sgVec3Mul(ray, sgVec3f(eta, eta, eta)), sgVec3Mul(normal, sgVec3f(f, f, f)));
+}
 SGVec3 SG_CALL sgVec3Reflect(SGVec3 ray, SGVec3 normal)
 {
     ray = sgVec3Normalize(ray);
@@ -272,6 +312,11 @@ SGVec3 SG_CALL sgVec3Project(SGVec3 v, SGVec3 target)
 {
     return sgVec3Resize(target, sgVec3ProjectScalar(v, target));
 }
+SGVec3 SG_CALL sgVec3Reject(SGVec3 v, SGVec3 target)
+{
+    return sgVec3Sub(v, sgVec3Project(v, target));
+}
+
 
 
 SGVec4 SG_CALL sgVec4f(float x, float y, float z, float w)
@@ -344,6 +389,17 @@ SGVec4 SG_CALL sgVec4Div(SGVec4 a, SGVec4 b)
     return sgVec4f(a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w);
 }
 
+SGVec4 SG_CALL sgVec4QMul4(SGVec4 a, SGVec4 b)
+{
+    // (ax + ay I + az J + aw K) * (bx + by I + bz J + bw K)
+    SGVec4 ret;
+    ret.x = a.x * b.x - a.y * b.y - a.z * b.z - a.w * b.w;
+    ret.y = a.x * b.y + a.y * b.x + a.z * b.w - a.w * b.z;
+    ret.z = a.x * b.z - a.y * b.w + a.z * b.x + a.w * b.y;
+    ret.w = a.x * b.w + a.y * b.z - a.z * b.y + a.w * b.x;
+    return ret;
+}
+
 float SG_CALL sgVec4Distance(SGVec4 a, SGVec4 b)
 {
     return sgVec4Length(sgVec4Sub(a, b));
@@ -359,6 +415,18 @@ float SG_CALL sgVec4Dot(SGVec4 a, SGVec4 b)
 }
 //SGVec4 SG_CALL sgVec4Cross(SGVec4 a, SGVec4 b, SGVec4 c);
 
+SGVec4 SG_CALL sgVec4Refract(SGVec4 ray, SGVec4 normal, float eta)
+{
+    float dot = sgVec4Dot(ray, normal);
+    float eta2 = eta * eta;
+
+    float k = 1.0 - eta2 * (1.0 - dot * dot);
+    if(k < 0.0)
+        return sgVec4f(0.0, 0.0, 0.0, 0.0);
+
+    float f = eta * dot + sqrt(k);
+    return sgVec4Sub(sgVec4Mul(ray, sgVec4f(eta, eta, eta, eta)), sgVec4Mul(normal, sgVec4f(f, f, f, f)));
+}
 SGVec4 SG_CALL sgVec4Reflect(SGVec4 ray, SGVec4 normal)
 {
     ray = sgVec4Normalize(ray);
@@ -373,4 +441,8 @@ float SG_CALL sgVec4ProjectScalar(SGVec4 v, SGVec4 target)
 SGVec4 SG_CALL sgVec4Project(SGVec4 v, SGVec4 target)
 {
     return sgVec4Resize(target, sgVec4ProjectScalar(v, target));
+}
+SGVec4 SG_CALL sgVec4Reject(SGVec4 v, SGVec4 target)
+{
+    return sgVec4Sub(v, sgVec4Project(v, target));
 }
