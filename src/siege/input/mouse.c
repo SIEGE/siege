@@ -21,13 +21,20 @@
 #include <string.h>
 
 #include <SDL/SDL.h>
+#include "../internal/bitop.h"
+
+static SGulong _sg_mouseButtonPrev;
+static SGulong _sg_mouseButtonBuff;
+static SGulong _sg_mouseButtonCurr;
+
+static SGIVec2 _sg_mousePosPrev;
+static SGIVec2 _sg_mousePos;
+static SGint _sg_mouseWheelPrev;
+static SGint _sg_mouseWheel;
 
 void SG_CALL _sg_cbMouseButton(SGuint button, SGbool down)
 {
-    if(button - 1 >= _sg_mouseButtonNum)
-        return;
-    //_sg_mouseButtonPrev[button - 1] = !down; //_sg_mouseButtonCurr[button - 1];
-    _sg_mouseButtonCurr[button - 1] = down;
+    SET_BIT_CURR(mouseButton, button - 1, down);
 
     SGbool pressed = sgMouseGetButtonPress(button);
 
@@ -75,29 +82,29 @@ void SG_CALL _sg_cbMouseButton(SGuint button, SGbool down)
 }
 void SG_CALL _sg_cbMouseMove(SGint x, SGint y)
 {
-    _sg_mouseXPrev = _sg_mouseX;
-    _sg_mouseYPrev = _sg_mouseY;
-    _sg_mouseX = x;
-    _sg_mouseY = y;
+    _sg_mousePosPrev = _sg_mousePos;
+    _sg_mousePos = sgIVec2i(x, y);
 
     sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEMOVE, x, y);
 }
-void SG_CALL _sg_cbMouseWheel(SGint w)
+void SG_CALL _sg_cbMouseWheel(SGint dw)
 {
     _sg_mouseWheelPrev = _sg_mouseWheel;
-    _sg_mouseWheel = w;
+    _sg_mouseWheel = _sg_mouseWheelPrev + dw;
 
-    sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEWHEEL, w);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEWHEEL, _sg_mouseWheel);
 }
 
 void SG_CALL _sgMouseUpdate(void)
 {
     size_t numevents;
     SGenum events[2];
-    SGuint i;
-    for(i = 0; i < _sg_mouseButtonNum; i++)
+
+    SGuint i = 1;
+    SGulong buttons;
+    for(buttons = _sg_mouseButtonCurr; buttons; buttons >>= 1)
     {
-        if(_sg_mouseButtonCurr[i])
+        if(buttons & 1)
         {
             numevents = 2;
             events[0] = SG_EVF_MOUSEBUTH;
@@ -117,27 +124,22 @@ void SG_CALL _sgMouseUpdate(void)
                     numevents--;
                     break;
             }
-            sgEntityEventSignal(numevents, events[0], i + 1, events[1]);
+            sgEntityEventSignal(numevents, events[0], i, events[1]);
         }
+        i++;
     }
-    memcpy(_sg_mouseButtonPrev, _sg_mouseButtonBuff, _sg_mouseButtonNum * sizeof(SGbool));
-    memcpy(_sg_mouseButtonBuff, _sg_mouseButtonCurr, _sg_mouseButtonNum * sizeof(SGbool));
+    _sg_mouseButtonPrev = _sg_mouseButtonBuff;
+    _sg_mouseButtonBuff = _sg_mouseButtonCurr;
 }
 
 SGbool SG_CALL _sgMouseInit(void)
 {
-    _sg_mouseButtonNum = 7;
-    _sg_mouseButtonPrev = malloc(_sg_mouseButtonNum * sizeof(SGbool));
-    memset(_sg_mouseButtonPrev, 0, _sg_mouseButtonNum * sizeof(SGbool));
-    _sg_mouseButtonBuff = malloc(_sg_mouseButtonNum * sizeof(SGbool));
-    memset(_sg_mouseButtonBuff, 0, _sg_mouseButtonNum * sizeof(SGbool));
-    _sg_mouseButtonCurr = malloc(_sg_mouseButtonNum * sizeof(SGbool));
-    memset(_sg_mouseButtonCurr, 0, _sg_mouseButtonNum * sizeof(SGbool));
+    _sg_mouseButtonPrev = 0;
+    _sg_mouseButtonCurr = 0;
+    _sg_mouseButtonBuff = 0;
 
-    _sg_mouseXPrev = 0;
-    _sg_mouseYPrev = 0;
-    _sg_mouseX = 0;
-    _sg_mouseY = 0;
+    _sg_mousePosPrev = sgIVec2i(0, 0);
+    _sg_mousePos = sgIVec2i(0, 0);
     _sg_mouseWheelPrev = 0;
     _sg_mouseWheel = 0;
 
@@ -145,21 +147,14 @@ SGbool SG_CALL _sgMouseInit(void)
 }
 SGbool SG_CALL _sgMouseDeinit(void)
 {
-    free(_sg_mouseButtonPrev);
-    free(_sg_mouseButtonBuff);
-    free(_sg_mouseButtonCurr);
-    _sg_mouseButtonNum = 0;
-
     return SG_TRUE;
 }
 
 void SG_CALL sgMouseMove(SGint x, SGint y)
 {
     SDL_WarpMouse(x, y);
-    _sg_mouseXPrev = _sg_mouseX;
-    _sg_mouseYPrev = _sg_mouseY;
-    _sg_mouseX = x;
-    _sg_mouseY = y;
+    _sg_mousePosPrev = _sg_mousePos;
+    _sg_mousePos = sgIVec2i(x, y);
 }
 
 void SG_CALL sgMouseSetVisible(SGbool vis)
@@ -177,7 +172,7 @@ void SG_CALL sgMouseHide(void)
 
 SGIVec2 SG_CALL sgMouseGetPosPrev2iv(void)
 {
-    return sgIVec2i(_sg_mouseXPrev, _sg_mouseYPrev);
+    return _sg_mousePosPrev;
 }
 SGVec2 SG_CALL sgMouseGetPosPrev2fv(void)
 {
@@ -185,16 +180,16 @@ SGVec2 SG_CALL sgMouseGetPosPrev2fv(void)
 }
 SGint SG_CALL sgMouseGetPosPrevX(void)
 {
-    return _sg_mouseXPrev;
+    return _sg_mousePosPrev.x;
 }
 SGint SG_CALL sgMouseGetPosPrevY(void)
 {
-    return _sg_mouseYPrev;
+    return _sg_mousePosPrev.y;
 }
 
 SGIVec2 SG_CALL sgMouseGetPos2iv(void)
 {
-    return sgIVec2i(_sg_mouseX, _sg_mouseY);
+    return _sg_mousePos;
 }
 SGVec2 SG_CALL sgMouseGetPos2fv(void)
 {
@@ -202,11 +197,11 @@ SGVec2 SG_CALL sgMouseGetPos2fv(void)
 }
 SGint SG_CALL sgMouseGetPosX(void)
 {
-    return _sg_mouseX;
+    return _sg_mousePos.x;
 }
 SGint SG_CALL sgMouseGetPosY(void)
 {
-    return _sg_mouseY;
+    return _sg_mousePos.y;
 }
 
 SGint SG_CALL sgMouseGetWheelPrev(void)
@@ -220,27 +215,19 @@ SGint SG_CALL sgMouseGetWheel(void)
 
 SGbool SG_CALL sgMouseGetButtonPrev(SGuint button)
 {
-    if(button - 1 < _sg_mouseButtonNum)
-        return _sg_mouseButtonPrev[button - 1];
-    return SG_FALSE;
+    return GET_BIT_PREV(mouseButton, button - 1);
 }
 SGbool SG_CALL sgMouseGetButton(SGuint button)
 {
-    if(button - 1 < _sg_mouseButtonNum)
-        return _sg_mouseButtonCurr[button - 1];
-    return SG_FALSE;
+    return GET_BIT_CURR(mouseButton, button - 1);
 }
 SGbool SG_CALL sgMouseGetButtonPress(SGuint button)
 {
-    if(button - 1 < _sg_mouseButtonNum)
-        return !_sg_mouseButtonPrev[button - 1] && _sg_mouseButtonCurr[button - 1];
-    return SG_FALSE;
+    return !GET_BIT_PREV(mouseButton, button - 1) && GET_BIT_CURR(mouseButton, button - 1);
 }
 SGbool SG_CALL sgMouseGetButtonRelease(SGuint button)
 {
-    if(button - 1 < _sg_mouseButtonNum)
-        return _sg_mouseButtonPrev[button - 1] && !_sg_mouseButtonCurr[button - 1];
-    return SG_FALSE;
+    return GET_BIT_PREV(mouseButton, button - 1) && !GET_BIT_CURR(mouseButton, button - 1);
 }
 
 SGbool SG_CALL sgMouseGetButtonLeftPrev(void)

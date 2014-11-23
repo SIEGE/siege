@@ -32,22 +32,9 @@ extern "C"
 {
 #endif // __cplusplus
 
-#ifdef SG_BUILD_LIBRARY
-SGbool* _sg_mouseButtonPrev;
-SGbool* _sg_mouseButtonBuff;
-SGbool* _sg_mouseButtonCurr;
-size_t _sg_mouseButtonNum;
-SGint _sg_mouseXPrev;
-SGint _sg_mouseYPrev;
-SGint _sg_mouseX;
-SGint _sg_mouseY;
-SGint _sg_mouseWheelPrev;
-SGint _sg_mouseWheel;
-#endif // SG_BUILD_LIBRARY
-
 void SG_CALL _sg_cbMouseButton(SGuint button, SGbool action);
 void SG_CALL _sg_cbMouseMove(SGint x, SGint y);
-void SG_CALL _sg_cbMouseWheel(SGint w);
+void SG_CALL _sg_cbMouseWheel(SGint dw);
 
 void SG_CALL _sgMouseUpdate(void);
 

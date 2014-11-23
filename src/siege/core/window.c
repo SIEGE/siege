@@ -371,12 +371,12 @@ void SG_CALL sgWindowHandleEvents(void)
                 if(event.button.button == SDL_BUTTON_WHEELUP)
                 {
                     if(event.button.state == SDL_PRESSED)
-                        _sg_cbMouseWheel(_sg_mouseWheel + 1);
+                        _sg_cbMouseWheel(+1);
                 }
                 else if(event.button.button == SDL_BUTTON_WHEELDOWN)
                 {
                     if(event.button.state == SDL_PRESSED)
-                        _sg_cbMouseWheel(_sg_mouseWheel - 1);
+                        _sg_cbMouseWheel(-1);
                 }
                 else
                 {
