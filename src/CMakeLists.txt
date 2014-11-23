@@ -16,7 +16,7 @@ include_directories("${SDL_INCLUDE_DIR}" ${OPENGL_INCLUDE_DIR} "${OPENAL_INCLUDE
 
 IF(UNIX)
     SET(AUX_INCLUDES "")
-    SET(AUX_LIBRARIES ${CMAKE_DL_LIBS} "m" "rt" ${CMAKE_THREAD_LIBS_INIT})
+    SET(AUX_LIBRARIES ${CMAKE_DL_LIBS} "-lm" "-lrt" ${CMAKE_THREAD_LIBS_INIT})
 ELSE(UNIX)
     SET(AUX_INCLUDES "")
     SET(AUX_LIBRARIES "")
@@ -49,3 +49,14 @@ ADD_SUBDIRECTORY(siege)
 ADD_SUBDIRECTORY(modules)
 ADD_SUBDIRECTORY(examples)
 ADD_SUBDIRECTORY(tests)
+
+string(REPLACE ";" " " AUX_LIBLIST "${AUX_LIBRARIES}")
+
+set(CMAKE_INSTALL_EXEC_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH "install location for architecture-dependent files")
+configure_file("${CMAKE_SOURCE_DIR}/SIEGE.pc.in" "${CMAKE_BINARY_DIR}/SIEGE.pc" @ONLY)
+
+option(INSTALL_PKGCONFIG "Install the pkg-config files" OFF)
+
+if(INSTALL_PKGCONFIG)
+    install(FILES "${CMAKE_BINARY_DIR}/SIEGE.pc" DESTINATION libdata/pkgconfig)
+endif()
