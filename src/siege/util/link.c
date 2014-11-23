@@ -22,6 +22,7 @@
     #include <windows.h>
 #else
     #include <dlfcn.h>
+    #include <stdio.h>
 #endif
 
 SGLibrary* SG_CALL sgLibraryLoad(const char* fname)
@@ -34,7 +35,9 @@ SGLibrary* SG_CALL sgLibraryLoad(const char* fname)
         printf("Error loading %s: %d\n", fname, err);
     }*/
 #else
-    void* handle = dlopen(fname, RTLD_LAZY | RTLD_LOCAL);
+    char buf[512];
+    snprintf(buf, sizeof(buf), "%s.so", fname);
+    void* handle = dlopen(buf, RTLD_LAZY | RTLD_LOCAL);
 #endif
     if(handle == NULL)
         return NULL;
