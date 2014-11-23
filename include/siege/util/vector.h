@@ -91,6 +91,11 @@ SGVec2 SG_CALL sgVec2Sub(SGVec2 a, SGVec2 b);
 SGVec2 SG_CALL sgVec2Mul(SGVec2 a, SGVec2 b);
 SGVec2 SG_CALL sgVec2Div(SGVec2 a, SGVec2 b);
 
+SGVec2 SG_CALL sgVec2Addf(SGVec2 a, float f);
+SGVec2 SG_CALL sgVec2Subf(SGVec2 a, float f);
+SGVec2 SG_CALL sgVec2Mulf(SGVec2 a, float f);
+SGVec2 SG_CALL sgVec2Divf(SGVec2 a, float f);
+
 SGVec2 SG_CALL sgVec2QMul2(SGVec2 a, SGVec2 b);
 
 float SG_CALL sgVec2Distance(SGVec2 a, SGVec2 b);
@@ -140,6 +145,11 @@ SGVec3 SG_CALL sgVec3Sub(SGVec3 a, SGVec3 b);
 SGVec3 SG_CALL sgVec3Mul(SGVec3 a, SGVec3 b);
 SGVec3 SG_CALL sgVec3Div(SGVec3 a, SGVec3 b);
 
+SGVec3 SG_CALL sgVec3Addf(SGVec3 a, float f);
+SGVec3 SG_CALL sgVec3Subf(SGVec3 a, float f);
+SGVec3 SG_CALL sgVec3Mulf(SGVec3 a, float f);
+SGVec3 SG_CALL sgVec3Divf(SGVec3 a, float f);
+
 float SG_CALL sgVec3Distance(SGVec3 a, SGVec3 b);
 float SG_CALL sgVec3Distance2(SGVec3 a, SGVec3 b);
 
@@ -179,6 +189,11 @@ SGVec4 SG_CALL sgVec4Add(SGVec4 a, SGVec4 b);
 SGVec4 SG_CALL sgVec4Sub(SGVec4 a, SGVec4 b);
 SGVec4 SG_CALL sgVec4Mul(SGVec4 a, SGVec4 b);
 SGVec4 SG_CALL sgVec4Div(SGVec4 a, SGVec4 b);
+
+SGVec4 SG_CALL sgVec4Addf(SGVec4 a, float f);
+SGVec4 SG_CALL sgVec4Subf(SGVec4 a, float f);
+SGVec4 SG_CALL sgVec4Mulf(SGVec4 a, float f);
+SGVec4 SG_CALL sgVec4Divf(SGVec4 a, float f);
 
 SGVec4 SG_CALL sgVec4QMul4(SGVec4 a, SGVec4 b);
 

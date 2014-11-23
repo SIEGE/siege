@@ -108,6 +108,23 @@ SGVec2 SG_CALL sgVec2Div(SGVec2 a, SGVec2 b)
     return sgVec2f(a.x / b.x, a.y / b.y);
 }
 
+SGVec2 SG_CALL sgVec2Addf(SGVec2 a, float f)
+{
+    return sgVec2Add(a, sgVec2f(f, f));
+}
+SGVec2 SG_CALL sgVec2Subf(SGVec2 a, float f)
+{
+    return sgVec2Sub(a, sgVec2f(f, f));
+}
+SGVec2 SG_CALL sgVec2Mulf(SGVec2 a, float f)
+{
+    return sgVec2Mul(a, sgVec2f(f, f));
+}
+SGVec2 SG_CALL sgVec2Divf(SGVec2 a, float f)
+{
+    return sgVec2Div(a, sgVec2f(f, f));
+}
+
 float SG_CALL sgVec2Distance(SGVec2 a, SGVec2 b)
 {
     return sgVec2Length(sgVec2Sub(a, b));
@@ -263,6 +280,23 @@ SGVec3 SG_CALL sgVec3Div(SGVec3 a, SGVec3 b)
     return sgVec3f(a.x / b.x, a.y / b.y, a.z / b.z);
 }
 
+SGVec3 SG_CALL sgVec3Addf(SGVec3 a, float f)
+{
+    return sgVec3Add(a, sgVec3f(f, f, f));
+}
+SGVec3 SG_CALL sgVec3Subf(SGVec3 a, float f)
+{
+    return sgVec3Sub(a, sgVec3f(f, f, f));
+}
+SGVec3 SG_CALL sgVec3Mulf(SGVec3 a, float f)
+{
+    return sgVec3Mul(a, sgVec3f(f, f, f));
+}
+SGVec3 SG_CALL sgVec3Divf(SGVec3 a, float f)
+{
+    return sgVec3Div(a, sgVec3f(f, f, f));
+}
+
 float SG_CALL sgVec3Distance(SGVec3 a, SGVec3 b)
 {
     return sgVec3Length(sgVec3Sub(a, b));
@@ -387,6 +421,23 @@ SGVec4 SG_CALL sgVec4Mul(SGVec4 a, SGVec4 b)
 SGVec4 SG_CALL sgVec4Div(SGVec4 a, SGVec4 b)
 {
     return sgVec4f(a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w);
+}
+
+SGVec4 SG_CALL sgVec4Addf(SGVec4 a, float f)
+{
+    return sgVec4Add(a, sgVec4f(f, f, f, f));
+}
+SGVec4 SG_CALL sgVec4Subf(SGVec4 a, float f)
+{
+    return sgVec4Sub(a, sgVec4f(f, f, f, f));
+}
+SGVec4 SG_CALL sgVec4Mulf(SGVec4 a, float f)
+{
+    return sgVec4Mul(a, sgVec4f(f, f, f, f));
+}
+SGVec4 SG_CALL sgVec4Divf(SGVec4 a, float f)
+{
+    return sgVec4Div(a, sgVec4f(f, f, f, f));
 }
 
 SGVec4 SG_CALL sgVec4QMul4(SGVec4 a, SGVec4 b)
