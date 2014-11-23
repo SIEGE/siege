@@ -166,8 +166,7 @@ SGVec2 SG_CALL sgVec2Refract(SGVec2 ray, SGVec2 normal, float eta)
     if(k < 0.0)
         return sgVec2f(0.0, 0.0);
 
-    float f = eta * dot + sqrt(k);
-    return sgVec2Sub(sgVec2Mul(ray, sgVec2f(eta, eta)), sgVec2Mul(normal, sgVec2f(f, f)));
+    return sgVec2Sub(sgVec2Mulf(ray, eta), sgVec2Mulf(normal, eta * dot + sqrt(k)));
 }
 SGVec2 SG_CALL sgVec2Reflect(SGVec2 ray, SGVec2 normal)
 {
@@ -328,8 +327,7 @@ SGVec3 SG_CALL sgVec3Refract(SGVec3 ray, SGVec3 normal, float eta)
     if(k < 0.0)
         return sgVec3f(0.0, 0.0, 0.0);
 
-    float f = eta * dot + sqrt(k);
-    return sgVec3Sub(sgVec3Mul(ray, sgVec3f(eta, eta, eta)), sgVec3Mul(normal, sgVec3f(f, f, f)));
+    return sgVec3Sub(sgVec3Mulf(ray, eta), sgVec3Mulf(normal, eta * dot + sqrt(k)));
 }
 SGVec3 SG_CALL sgVec3Reflect(SGVec3 ray, SGVec3 normal)
 {
@@ -475,8 +473,7 @@ SGVec4 SG_CALL sgVec4Refract(SGVec4 ray, SGVec4 normal, float eta)
     if(k < 0.0)
         return sgVec4f(0.0, 0.0, 0.0, 0.0);
 
-    float f = eta * dot + sqrt(k);
-    return sgVec4Sub(sgVec4Mul(ray, sgVec4f(eta, eta, eta, eta)), sgVec4Mul(normal, sgVec4f(f, f, f, f)));
+    return sgVec4Sub(sgVec4Mulf(ray, eta), sgVec4Mulf(normal, eta * dot + sqrt(k)));
 }
 SGVec4 SG_CALL sgVec4Reflect(SGVec4 ray, SGVec4 normal)
 {
