@@ -204,6 +204,15 @@ SGint SG_CALL sgMouseGetPosY(void)
     return _sg_mousePos.y;
 }
 
+SGIVec2 SG_CALL sgMouseGetDelta2iv(void)
+{
+    return sgIVec2Sub(sgMouseGetPos2iv(), sgMouseGetPosPrev2iv());
+}
+SGVec2 SG_CALL sgMouseGetDelta2fv(void)
+{
+    return sgVec2iv(sgMouseGetDelta2iv());
+}
+
 SGint SG_CALL sgMouseGetWheelPrev(void)
 {
     return _sg_mouseWheelPrev;

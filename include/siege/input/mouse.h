@@ -57,6 +57,9 @@ SGVec2 SG_CALL sgMouseGetPos2fv(void);
 SGint SG_CALL sgMouseGetPosX(void);
 SGint SG_CALL sgMouseGetPosY(void);
 
+SGIVec2 SG_CALL sgMouseGetDelta2iv(void);
+SGVec2 SG_CALL sgMouseGetDelta2fv(void);
+
 SGint SG_CALL sgMouseGetWheelPrev(void);
 SGint SG_CALL sgMouseGetWheel(void);
 
