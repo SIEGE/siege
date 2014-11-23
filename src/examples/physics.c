@@ -95,7 +95,7 @@ SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density,
 
     sgEntitySetPhysicsBody(entity, body);
     sgEntitySetSprite(entity, spr);
-    sgEntitySetPos(entity, x, y);
+    sgEntitySetPos2f(entity, x, y);
     sgEntitySetAngleDegs(entity, angle);
 
     box->shape = sgPhysicsShapeCreatePoly(body, 0.0, 0.0, verts, 4);
@@ -157,13 +157,13 @@ void boxDrawDBG(SGEntity* entity)
         for(j = 0; j < box->numcontacts[i]; j++)
         {
             //sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-            sgDrawPoint(box->points[i][j].x, box->points[i][j].y);
+            sgDrawPoint2f(box->points[i][j].x, box->points[i][j].y);
 
             //sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
-            //sgDrawLine(box->points[i][j].x, box->points[i][j].y, box->points[i][j].x + box->normals[i][j].x, box->points[i][j].y + box->normals[i][j].y);
+            //sgDrawLine2f(box->points[i][j].x, box->points[i][j].y, box->points[i][j].x + box->normals[i][j].x, box->points[i][j].y + box->normals[i][j].y);
 
             //sgDrawColor4f(0.0, 0.0, 1.0, 1.0);
-            //sgDrawLine(pos.x, pos.y, pos.x + box->impulse[i][j].x, pos.y + box->impulse[i][j].y);
+            //sgDrawLine2f(pos.x, pos.y, pos.x + box->impulse[i][j].x, pos.y + box->impulse[i][j].y);
         }
     }
 

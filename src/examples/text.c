@@ -62,7 +62,7 @@ int main(void)
         dx += width / 4;
         dy += height - height / 3;
         sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-        sgDrawLine(dx, dy, dx, dy - 10);
+        sgDrawLine2f(dx, dy, dx, dy - 10);
 
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 
@@ -72,21 +72,21 @@ int main(void)
 
         size = sgRectSize(sgFontStrRectf(font, "Some test text"));
         sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
-        sgDrawLine(640 - 160, 480 - 120, 640 - 160 + size.x, 480 - 120);
-        sgDrawRectangle(640 / 2 - size.x / 2, 480 - 120 - size.y / 2,
-                        640 / 2 + size.x / 2, 480 - 120 + size.y / 2,
-                        SG_TRUE);
+        sgDrawLine2f(640 - 160, 480 - 120, 640 - 160 + size.x, 480 - 120);
+        sgDrawRectangle2f(640 / 2 - size.x / 2, 480 - 120 - size.y / 2,
+                          640 / 2 + size.x / 2, 480 - 120 + size.y / 2,
+                          SG_TRUE);
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
         sgFontPrint(font, 640 - 160, 480 - 120, "Some test text");
 
         sgDrawColor4f(0.0, 0.0, 1.0, 1.0);
-        sgDrawRectangle(640 / 2 - size.x / 2, 480 - 120 - size.y / 2,
-                        640 / 2 + size.x / 2, 480 - 120 + size.y / 2,
-                        SG_TRUE);
+        sgDrawRectangle2f(640 / 2 - size.x / 2, 480 - 120 - size.y / 2,
+                          640 / 2 + size.x / 2, 480 - 120 + size.y / 2,
+                          SG_TRUE);
         sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
-        sgDrawRectangle(640 / 2 - size.x / 2, 480 - 120 - size.y / 2,
-                        640 / 2 + size.x / 2, 480 - 120 + size.y / 2,
-                        SG_FALSE);
+        sgDrawRectangle2f(640 / 2 - size.x / 2, 480 - 120 - size.y / 2,
+                          640 / 2 + size.x / 2, 480 - 120 + size.y / 2,
+                          SG_FALSE);
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
         sgFontPrintAligned(font, 640 / 2, 480 - 120, SG_ALIGN_CENTER, "Some test text");
 

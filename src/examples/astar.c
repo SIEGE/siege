@@ -27,14 +27,14 @@ void drawGrid(SGNavGrid* grid, SGenum type, SGColor color, SGbool fill)
 {
     size_t i, j;
     SGNavGridData* data;
-    sgDrawColor4fv(&color.r);
+    sgDrawColorC(color);
     for(i = 0; i < grid->width; i++)
     {
         for(j = 0; j < grid->height; j++)
         {
             data = sgNavGridGetNode(grid, i, j)->data;
             if(data->type == type)
-                sgDrawRectangleWH(i * cellw, j * cellh, cellw, cellh, fill);
+                sgDrawRectangle2fWH(i * cellw, j * cellh, cellw, cellh, fill);
         }
     }
 }
@@ -48,14 +48,14 @@ void drawPath(SGList* path, SGColor color, SGbool lines, SGbool fill)
     SGNavGridData* data;
     if(lines)
         sgDrawBegin(SG_LINE_STRIP);
-    sgDrawColor4fv(&color.r);
+    sgDrawColorC(color);
     for(node = path->head; node; node = node->next)
     {
         data = node->item;
         if(lines)
             sgDrawVertex2f(data->x * cellw + cellw/2, data->y * cellh + cellh/2);
         else
-            sgDrawRectangleWH(data->x * cellw, data->y * cellh, cellw, cellh, fill);
+            sgDrawRectangle2fWH(data->x * cellw, data->y * cellh, cellw, cellh, fill);
     }
     if(lines)
         sgDrawEnd();
@@ -77,7 +77,7 @@ void drawScore(SGNavGrid* grid, SGFont* font, SGchar score, SGColor color)
     if(!score)
         return;
 
-    sgDrawColor4fv(&color.r);
+    sgDrawColorC(color);
 
     SGAStarNode* node;
     float nscore;
@@ -197,6 +197,7 @@ void SG_CALL evKeyboardKeyPress(SGEntity* entity, SGenum key)
 
 void drawInstructions(SGFont* headf, SGFont* textf, SGColor fill, SGColor line, SGColor head, SGColor text)
 {
+    SGVec2 size = sgVec2f(WIDTH, HEIGHT);
     SGVec2 border = sgVec2f(WIDTH / 8, HEIGHT / 8);
     SGVec2 margin = sgVec2f(16, 24);
     SGVec2 csize;
@@ -223,18 +224,18 @@ void drawInstructions(SGFont* headf, SGFont* textf, SGColor fill, SGColor line, 
     "past, resulting in odd (to our eye) behaviour."
     ;
 
-    sgDrawColor4fv(&fill.r);
-    sgDrawRectangle(border.x, border.y, WIDTH - border.x, HEIGHT - border.y, SG_TRUE);
+    sgDrawColorC(fill);
+    sgDrawRectangle2fv(border, sgVec2Sub(size, border), SG_TRUE);
 
-    sgDrawColor4fv(&head.r);
+    sgDrawColorC(head);
     sgFontPrint(headf, border.x + margin.x, border.y + margin.y, headt);
     csize = sgRectSize(sgFontStrRect(headf, headt));
 
-    sgDrawColor4fv(&line.r);
-    sgDrawRectangle(border.x, border.y, WIDTH - border.x, HEIGHT - border.y, SG_FALSE);
-    sgDrawLine(border.x, border.y + margin.y + csize.y / 2, WIDTH - border.x, border.y + margin.y + csize.y / 2);
+    sgDrawColorC(line);
+    sgDrawRectangle2fv(border, sgVec2Sub(size, border), SG_FALSE);
+    sgDrawLine2f(border.x, border.y + margin.y + csize.y / 2, WIDTH - border.x, border.y + margin.y + csize.y / 2);
 
-    sgDrawColor4fv(&text.r);
+    sgDrawColorC(text);
     sgFontPrint(textf, border.x + margin.x, border.y + margin.y + csize.y, textt);
 }
 

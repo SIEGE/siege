@@ -135,9 +135,12 @@ void drawPoly(Polygon* poly)
 {
     size_t i;
 
+    SGVec2 pos;
     float x, y;
     SGVec2 tpos;
-    sgEntityGetPos(poly->entity, &x, &y);
+    pos = sgEntityGetPos2fv(poly->entity);
+    x = pos.x;
+    y = pos.y;
 
     if(poly->texture == NULL)
         sgDrawColor4f(0.0, 0.5, 0.75, 1.0);
@@ -216,7 +219,7 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
 
     poly->body = sgPhysicsBodyCreate(NULL, stat ? SG_BODY_STATIC : SG_BODY_NORMAL);
     sgEntitySetPhysicsBody(poly->entity, poly->body);
-    sgEntitySetPos(poly->entity, x, y);
+    sgEntitySetPos2f(poly->entity, x, y);
     poly->shape = sgPhysicsShapeCreatePoly(poly->body, 0.0, 0.0, (float*)points, nump);
     sgPhysicsShapeSetRestitution(poly->shape, 0.25);
     sgPhysicsShapeSetFriction(poly->shape, 0.75);
@@ -258,6 +261,7 @@ void drawLight(Light* light)
     Polygon* poly;
     SGVec2 tmpc, tmpn;
     size_t i, p;
+    SGVec2 pos;
     float x, y;
 
     int sides = SG_MAX(3, (int)(light->radius * 0.5));
@@ -272,7 +276,7 @@ void drawLight(Light* light)
                            light->pos.y + sin(f * i) * light->radius);
         }
     sgDrawEnd();
-    //sgDrawCircle(light->pos.x, light->pos.y, light->radius, SG_TRUE);
+    //sgDrawCircle2f(light->pos.x, light->pos.y, light->radius, SG_TRUE);
 
     sgDrawColor4f(0.0, 0.0, 0.0, 1.0);
     for(p = 0; p < npolys; p++)
@@ -280,7 +284,9 @@ void drawLight(Light* light)
         sgDrawBegin(SG_TRIANGLES);
         poly = polys[p];
 
-        sgEntityGetPos(poly->entity, &x, &y);
+        pos = sgEntityGetPos2fv(poly->entity);
+        x = pos.x;
+        y = pos.y;
         if(poly->nump > 0)
         {
             tcurr = sgVec2RotateRads(poly->points[0], sgVec2AngleRads(poly->points[0]) + sgEntityGetAngleRads(poly->entity));
@@ -363,10 +369,11 @@ void drawLightDBG(Light* light)
     Polygon* poly;
     SGVec2 tmpc, tmpn;
     size_t p, i;
+    SGVec2 pos;
     float x, y;
 
     sgDrawColor4f(1.0, 1.0, 0.0, 1.0);
-    sgDrawCircle(light->pos.x, light->pos.y, light->radius, SG_FALSE);
+    sgDrawCircle2fv(light->pos, light->radius, SG_FALSE);
 
     sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
     sgDrawBegin(SG_LINES);
@@ -374,7 +381,9 @@ void drawLightDBG(Light* light)
     {
         poly = polys[p];
 
-        sgEntityGetPos(poly->entity, &x, &y);
+        pos = sgEntityGetPos2fv(poly->entity);
+        x = pos.x;
+        y = pos.y;
         if(poly->nump > 0)
         {
             tcurr = sgVec2RotateRads(poly->points[0], sgVec2AngleRads(poly->points[0]) + sgEntityGetAngleRads(poly->entity));
@@ -404,7 +413,9 @@ void drawLightDBG(Light* light)
         sgDrawBegin(SG_LINES);
         poly = polys[p];
 
-        sgEntityGetPos(poly->entity, &x, &y);
+        pos = sgEntityGetPos2fv(poly->entity);
+        x = pos.x;
+        y = pos.y;
         if(poly->nump > 0)
         {
             tcurr = sgVec2RotateRads(poly->points[0], sgVec2AngleRads(poly->points[0]) + sgEntityGetAngleRads(poly->entity));

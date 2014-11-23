@@ -62,8 +62,11 @@ void drawBox(SGEntity* entity)
     verts[2] = sgVec2f( box->length / 2.0,  box->width / 2.0);
     verts[3] = sgVec2f( box->length / 2.0, -box->width / 2.0);
 
+    SGVec2 pos;
     float x, y;
-    sgEntityGetPos(entity, &x, &y);
+    pos = sgEntityGetPos2fv(entity);
+    x = pos.x;
+    y = pos.y;
     float angle = sgEntityGetAngleRads(entity);
     for(i = 0; i < 4; i++)
     {
@@ -75,12 +78,12 @@ void drawBox(SGEntity* entity)
     sgDrawColor4f(0.75, 0.75, 0.75, 1.0);
     sgDrawBegin(SG_QUADS);
         for(i = 0; i < 4; i++)
-            sgDrawVertex2fv(&verts[i].x);
+            sgDrawVertex2fv(verts[i]);
     sgDrawEnd();
     sgDrawColor4f(0.0, 0.0, 0.0, 1.0);
     sgDrawBegin(SG_LINE_LOOP);
         for(i = 0; i < 4; i++)
-            sgDrawVertex2fv(&verts[i].x);
+            sgDrawVertex2fv(verts[i]);
     sgDrawEnd();
     sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 }
@@ -108,7 +111,7 @@ SGEntity* createBox(float x, float y, float angle, float length, float width, fl
     entity->data = box;
 
     sgEntitySetPhysicsBody(entity, body);
-    sgEntitySetPos(entity, x, y);
+    sgEntitySetPos2f(entity, x, y);
     sgEntitySetAngleDegs(entity, angle);
 
     box->shape = sgPhysicsShapeCreatePoly(body, 0.0, 0.0, verts, 4);

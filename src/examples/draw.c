@@ -12,31 +12,31 @@ int main(void)
     while(sgLoop(NULL))
     {
         sgDrawColor4f(0.0, 0.0, 1.0, 1.0);
-        sgDrawEArcDegs(192, 32, 64, 32, 0, 45, SG_FALSE, SG_TRUE);
+        sgDrawEArcDegs2f(192, 32, 64, 32, 0, 45, SG_FALSE, SG_TRUE);
         sgDrawColor4f(0.0, 1.0, 0.0, 1.0);
-        sgDrawEArcDegs(320, 32, 64, 32, 45, 0, SG_FALSE, SG_TRUE);
+        sgDrawEArcDegs2f(320, 32, 64, 32, 45, 0, SG_FALSE, SG_TRUE);
 
         sgDrawColor4f(0.0, 1.0, 1.0, 1.0);
-        sgDrawEArcDegs(192, 96, 64, 32, 0, 45, SG_TRUE, SG_TRUE);
+        sgDrawEArcDegs2f(192, 96, 64, 32, 0, 45, SG_TRUE, SG_TRUE);
         sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-        sgDrawEArcDegs(320, 96, 64, 32, 45, 0, SG_TRUE, SG_TRUE);
+        sgDrawEArcDegs2f(320, 96, 64, 32, 45, 0, SG_TRUE, SG_TRUE);
 
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
-        sgDrawEllipse2R(64, 32, 64, 32, SG_TRUE);
+        sgDrawEllipse2f2R(64, 32, 64, 32, SG_TRUE);
 
-        sgDrawEllipse2R(192, 32, 64, 32, SG_FALSE);
-        sgDrawEllipse2R(320, 32, 64, 32, SG_FALSE);
-        sgDrawEllipse2R(192, 96, 64, 32, SG_FALSE);
-        sgDrawEllipse2R(320, 96, 64, 32, SG_FALSE);
+        sgDrawEllipse2f2R(192, 32, 64, 32, SG_FALSE);
+        sgDrawEllipse2f2R(320, 32, 64, 32, SG_FALSE);
+        sgDrawEllipse2f2R(192, 96, 64, 32, SG_FALSE);
+        sgDrawEllipse2f2R(320, 96, 64, 32, SG_FALSE);
 
         sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
-        sgDrawLine(64, 160, 192, 288);
+        sgDrawLine2f(64, 160, 192, 288);
 
         sgDrawColor4f(0.0, 0.5, 0.75, 1.0);
-        sgDrawRectangleRoundWH(320, 240, 128, 128, 32, 16, SG_TRUE);
+        sgDrawRectangleRound2fWH(320, 240, 128, 128, 32, 16, SG_TRUE);
 
         sgDrawColor4f(0.0, 0.75, 1.0, 1.0);
-        sgDrawRectangleRoundWH(320, 240, 128, 128, 32, 16, SG_FALSE);
+        sgDrawRectangleRound2fWH(320, 240, 128, 128, 32, 16, SG_FALSE);
 
         sgWindowSwapBuffers();
         sgDrawClear();

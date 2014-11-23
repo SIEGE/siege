@@ -22,10 +22,10 @@ int main(void)
 
         sgSurfaceTarget(surf);
         sgDrawColor4f(0.0, 0.5, 0.75, 1.0);
-        sgDrawCircle(mx, my, 16, SG_TRUE);
+        sgDrawCircle2f(mx, my, 16, SG_TRUE);
 
         sgDrawColor4f(0.0, 0.75, 1.0, 1.0);
-        sgDrawCircle(mx, my, 16, SG_FALSE);
+        sgDrawCircle2f(mx, my, 16, SG_FALSE);
         sgSurfaceUntarget(surf);
 
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);

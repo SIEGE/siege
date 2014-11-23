@@ -34,9 +34,9 @@ int main(void)
 
         sgDrawColor3f(0.25, 0.0, 0.0);
         for(i = WPART / 2; i < WIDTH; i += WPART)
-            sgDrawLine(i, 0, i, HEIGHT);
+            sgDrawLine2f(i, 0, i, HEIGHT);
         for(j = HPART / 2; j < HEIGHT; j += HPART)
-            sgDrawLine(0, j, WIDTH, j);
+            sgDrawLine2f(0, j, WIDTH, j);
         sgDrawColor3f(0.5, 0.5, 0.0);
         for(k = 0; k < ARRSIZE(Text); k++)
             for(i = 0; i < ARRSIZE(AlignW); i++)
