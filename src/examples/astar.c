@@ -9,6 +9,8 @@
 size_t cellw = 32;
 size_t cellh = 32;
 
+#define CELLSZ sgIVec2i(cellw, cellh)
+
 #define GRIDW (WIDTH/cellw)
 #define GRIDH (HEIGHT/cellh)
 
@@ -256,6 +258,7 @@ int main(void)
 
     recreateGrid(SG_FALSE, SG_FALSE);
 
+    SGIVec2 mpos;
     SGint mx, my;
 
     SGEntity* handler = sgEntityCreate();
@@ -264,9 +267,9 @@ int main(void)
 
     while(sgLoop(NULL))
     {
-        sgMouseGetPos(&mx, &my);
-        mx /= cellw;
-        my /= cellh;
+        mpos = sgIVec2Div(sgMouseGetPos2iv(), CELLSZ);
+        mx = mpos.x;
+        my = mpos.y;
         if(0 <= mx && mx < GRIDW
         && 0 <= my && my < GRIDH)
         {

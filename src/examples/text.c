@@ -29,12 +29,15 @@ int main(void)
     float dx, dy;
     float y;
 
+    SGIVec2 mpos;
     SGint mx, my;
     size_t pos;
 
     while(sgLoop(NULL))
     {
-        sgMouseGetPos(&mx, &my);
+        mpos = sgMouseGetPos2iv();
+        mx = mpos.x;
+        my = mpos.y;
 
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
         y = 0.0;

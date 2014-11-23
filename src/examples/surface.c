@@ -12,20 +12,20 @@ int main(void)
     SGSurface* surf = sgSurfaceCreate(640, 480, 32);
     sgSurfaceClear(surf);
 
-    SGint mx, my;
+    SGIVec2 mpos;
     while(sgLoop(NULL))
     {
         if(sgKeyboardKeyPress(SG_KEY_F1))
             sgSurfaceClear(surf);
 
-        sgMouseGetPos(&mx, &my);
+        mpos = sgMouseGetPos2iv();
 
         sgSurfaceTarget(surf);
         sgDrawColor4f(0.0, 0.5, 0.75, 1.0);
-        sgDrawCircle2f(mx, my, 16, SG_TRUE);
+        sgDrawCircle2f(mpos.x, mpos.y, 16, SG_TRUE);
 
         sgDrawColor4f(0.0, 0.75, 1.0, 1.0);
-        sgDrawCircle2f(mx, my, 16, SG_FALSE);
+        sgDrawCircle2f(mpos.x, mpos.y, 16, SG_FALSE);
         sgSurfaceUntarget(surf);
 
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);

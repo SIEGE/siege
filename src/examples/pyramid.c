@@ -161,20 +161,16 @@ void evKeyboardKeyRepeat(SGEntity* entity, SGenum key)
 }
 void evMouseButtonLeftPress(SGEntity* entity)
 {
-    SGint mx, my;
-    sgMouseGetPos(&mx, &my);
+    SGIVec2 mpos = sgMouseGetPos2iv();
 
-    createBox(mx, my, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
+    createBox(mpos.x, mpos.y, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
 }
 void evMouseButtonRightPress(SGEntity* entity)
 {
-    SGint mx, my;
-    sgMouseGetPos(&mx, &my);
-
-    SGVec2 mouse = sgVec2f(mx, my);
+    SGVec2 mouse = sgVec2iv(sgMouseGetPos2iv());
 
     SGVec2 pos;
-    pos.x = mx < WIDTH / 2.0 ? 0 : WIDTH;
+    pos.x = mouse.x < WIDTH / 2.0 ? 0 : WIDTH;
     pos.y = HEIGHT / 2.0;
 
     SGVec2 vel = sgVec2Resize(sgVec2Sub(mouse, pos), 100.0);
@@ -185,8 +181,7 @@ void evMouseButtonRightPress(SGEntity* entity)
 }
 void evMouseButtonMiddlePress(SGEntity* entity)
 {
-    SGint mx, my;
-    sgMouseGetPos(&mx, &my);
+    SGIVec2 mpos = sgMouseGetPos2iv();
 
     SGEntity* bentity;
     SGPhysicsBody* body;
@@ -199,7 +194,7 @@ void evMouseButtonMiddlePress(SGEntity* entity)
     size_t nboxes = numboxes;
     for(i = 0; i < NEXPAR; i++)
     {
-        bentity = createBox(mx, my, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
+        bentity = createBox(mpos.x, mpos.y, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
         body = sgEntityGetPhysicsBody(bentity);
         box = bentity->data;
 

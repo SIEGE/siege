@@ -59,8 +59,7 @@ void evMouseButtonPress(SGEntity* ent, SGuint button)
     SGTexture* tex = (button == SG_MOUSE_BUTTON_LEFT) ? mbox : wbox;
     float dens = (button == SG_MOUSE_BUTTON_LEFT) ? 2.5 : 1.0;
 
-    SGint mx, my;
-    sgMouseGetPos(&mx, &my);
+    SGIVec2 mpos = sgMouseGetPos2iv();
 
     float w = sgTextureGetWidth(tex);
     float h = sgTextureGetHeight(tex);
@@ -70,7 +69,7 @@ void evMouseButtonPress(SGEntity* ent, SGuint button)
                        w / 2.0, +h / 2.0,
                        w / 2.0, -h / 2.0};
 
-    createPoly(mx, my, (SGVec2*)verts, 4, tex, dens, SG_FALSE);
+    createPoly(mpos.x, mpos.y, (SGVec2*)verts, 4, tex, dens, SG_FALSE);
 }
 
 void evKeyboardKeyPress(SGEntity* ent, SGenum key)
@@ -541,8 +540,7 @@ int main(void)
 
         sgDrawSetBlendFunc(SG_FUNC_SRC_ALPHA, SG_FUNC_ONE_MINUS_SRC_ALPHA);
 
-        lights[0]->pos.x = sgMouseGetPosX();
-        lights[0]->pos.y = sgMouseGetPosY();
+        lights[0]->pos = sgVec2iv(sgMouseGetPos2iv());
 
         if(overlayDBG)
         {

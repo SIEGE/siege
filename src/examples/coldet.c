@@ -16,12 +16,13 @@ int main(void)
     SGSprite* support = sgSpriteCreateFile("data/sprites/SupportBar.png");
     SGMask* supportm = sgMaskCreateSprite(support);
 
+    SGIVec2 mpos;
     SGint mx, my;
     while(sgLoop(NULL))
     {
-        sgMouseGetPos(&mx, &my);
-        mx -= mx % 2;
-        my -= my % 2;
+        mpos = sgMouseGetPos2iv();
+        mx = mpos.x - mpos.x % 2;
+        my = mpos.y - mpos.y % 2;
 
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 
