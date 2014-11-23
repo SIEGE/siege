@@ -14,6 +14,7 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/util/vector.h>
+#include <siege/util/ivector.h>
 
 #include <stdlib.h>
 #include <math.h>
@@ -27,6 +28,10 @@ SGVec2 SG_CALL sgVec2f(float x, float y)
 SGVec2 SG_CALL sgVec2fp(const float* xy)
 {
     return sgVec2f(xy[0], xy[1]);
+}
+SGVec2 SG_CALL sgVec2iv(SGIVec2 vec)
+{
+    return sgVec2f(vec.x, vec.y);
 }
 SGVec2 SG_CALL sgVec2PolarRads(float rads, float len)
 {
@@ -198,6 +203,10 @@ SGVec3 SG_CALL sgVec3fp(const float* xyz)
 {
     return sgVec3f(xyz[0], xyz[1], xyz[2]);
 }
+SGVec3 SG_CALL sgVec3iv(SGIVec3 vec)
+{
+    return sgVec3f(vec.x, vec.y, vec.z);
+}
 SGVec3 SG_CALL sgVec3CylindricalRads(float rads, float radius, float z)
 {
     return sgVec3f(cos(rads) * radius, sin(rads) * radius, z);
@@ -354,6 +363,10 @@ SGVec4 SG_CALL sgVec4f(float x, float y, float z, float w)
 SGVec4 SG_CALL sgVec4fp(const float* xyzw)
 {
     return sgVec4f(xyzw[0], xyzw[1], xyzw[2], xyzw[3]);
+}
+SGVec4 SG_CALL sgVec4iv(SGIVec4 vec)
+{
+    return sgVec4f(vec.x, vec.y, vec.z, vec.w);
 }
 /*SGVec4 SG_CALL sgVec4PolarRads(float rads, float len);
 SGVec4 SG_CALL sgVec4PolarDegs(float degs, float len);*/
