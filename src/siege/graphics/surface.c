@@ -292,9 +292,13 @@ void SG_CALL sgSurfaceClear(SGSurface* surface)
     sgSurfaceClear4f(surface, 0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void SG_CALL sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height)
+SGIVec2 SG_CALL sgSurfaceGetSize2iv(SGSurface* surface)
 {
-    sgTextureGetSize(surface->texture, width, height);
+    return sgTextureGetSize2iv(surface->texture);
+}
+SGVec2 SG_CALL sgSurfaceGetSize2fv(SGSurface* surface)
+{
+    return sgVec2iv(sgSurfaceGetSize2iv(surface));
 }
 SGuint SG_CALL sgSurfaceGetWidth(SGSurface* surface)
 {
@@ -307,4 +311,12 @@ SGuint SG_CALL sgSurfaceGetHeight(SGSurface* surface)
 SGenum SG_CALL sgSurfaceGetBPP(SGSurface* surface)
 {
     return sgTextureGetBPP(surface->texture);
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height)
+{
+    SGIVec2 size = sgSurfaceGetSize2iv(surface);
+    if(width)   *width = size.x;
+    if(height)  *height = size.y;
 }

@@ -22,6 +22,8 @@
 #include "../common.h"
 #include "sprite.h"
 #include "texture.h"
+#include "../util/ivector.h"
+#include "../util/vector.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -68,7 +70,8 @@ void SG_CALL sgMaskDestroy(SGMask* mask);
  */
 SGbool SG_CALL sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
 
-void SG_CALL sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height);
+SGIVec2 SG_CALL sgMaskGetSize2iv(SGMask* mask);
+SGVec2 SG_CALL sgMaskGetSize2fv(SGMask* mask);
 SGuint SG_CALL sgMaskGetWidth(SGMask* mask);
 SGuint SG_CALL sgMaskGetHeight(SGMask* mask);
 
@@ -81,6 +84,9 @@ SGuint SG_CALL sgMaskGetHeight(SGMask* mask);
  * \todo sg[Sprite|Texture|Surface]CreateMask(SGMask* mask)
  */
 void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height);
 
 #ifdef __cplusplus
 }

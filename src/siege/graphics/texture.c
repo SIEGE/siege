@@ -340,10 +340,13 @@ void SG_CALL sgTextureSetInterpolation(SGTexture* texture, SGenum interp)
     }
 }
 
-void SG_CALL sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height)
+SGIVec2 SG_CALL sgTextureGetSize2iv(SGTexture* texture)
 {
-    if(width)   *width = texture->width;
-    if(height)  *height = texture->height;
+    return sgIVec2i(texture->width, texture->height);
+}
+SGVec2 SG_CALL sgTextureGetSize2fv(SGTexture* texture)
+{
+    return sgVec2iv(sgTextureGetSize2iv(texture));
 }
 SGuint SG_CALL sgTextureGetWidth(SGTexture* texture)
 {
@@ -356,4 +359,12 @@ SGuint SG_CALL sgTextureGetHeight(SGTexture* texture)
 SGenum SG_CALL sgTextureGetBPP(SGTexture* texture)
 {
     return texture->bpp;
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height)
+{
+    SGIVec2 size = sgTextureGetSize2iv(texture);
+    if(width)   *width = size.x;
+    if(height)  *height = size.y;
 }

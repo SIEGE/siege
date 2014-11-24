@@ -18,6 +18,8 @@
 #include "../common.h"
 #include "bitmap.h"
 #include "../util/stream.h"
+#include "../util/ivector.h"
+#include "../util/vector.h"
 
 #define SG_WRAP_CURRENT             0x00
 #define SG_WRAP_CLAMP               0x01
@@ -76,10 +78,14 @@ void SG_CALL sgTextureDraw(SGTexture* texture);
 void SG_CALL sgTextureSetWrap(SGTexture* texture, SGenum swrap, SGenum twrap);
 void SG_CALL sgTextureSetInterpolation(SGTexture* texture, SGenum interp);
 
-void SG_CALL sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height);
+SGIVec2 SG_CALL sgTextureGetSize2iv(SGTexture* texture);
+SGVec2 SG_CALL sgTextureGetSize2fv(SGTexture* texture);
 SGuint SG_CALL sgTextureGetWidth(SGTexture* texture);
 SGuint SG_CALL sgTextureGetHeight(SGTexture* texture);
 SGenum SG_CALL sgTextureGetBPP(SGTexture* texture);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height);
 
 #ifdef __cplusplus
 }

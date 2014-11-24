@@ -20,6 +20,8 @@
 #define __SIEGE_CORE_WINDOW_H__
 
 #include "../graphics/bitmap.h"
+#include "../util/ivector.h"
+#include "../util/vector.h"
 
 #include <stdarg.h>
 
@@ -125,7 +127,8 @@ char* SG_CALL sgWindowGetTitle(void);
  *    sgWindowSetWidth
  *    sgWindowSetHeight
  */
-void SG_CALL sgWindowSetSize(SGuint width, SGuint height);
+void SG_CALL sgWindowSetSize2iv(SGIVec2 size);
+void SG_CALL sgWindowSetSize2i(SGint w, SGint h);
 /**
  * \ingroup Window
  * \brief Get the window size
@@ -137,7 +140,8 @@ void SG_CALL sgWindowSetSize(SGuint width, SGuint height);
  *    sgWindowGetWidth
  *    sgWindowGetHeight
  */
-void SG_CALL sgWindowGetSize(SGuint* width, SGuint* height);
+SGIVec2 SG_CALL sgWindowGetSize2iv(void);
+SGVec2 SG_CALL sgWindowGetSize2fv(void);
 
 /**
  * \ingroup Window
@@ -213,6 +217,11 @@ SGfloat SG_CALL sgWindowGetFPS(void);
 void SG_CALL sgWindowHandleEvents(void);
 void SG_CALL sgWindowSwapBuffers(void);
 /// @}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgWindowSetSize(SGuint width, SGuint height);
+void SG_CALL SG_HINT_DEPRECATED sgWindowGetSize(SGuint* width, SGuint* height);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

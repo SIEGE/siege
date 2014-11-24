@@ -17,6 +17,8 @@
 
 #include "../common.h"
 #include "../util/stream.h"
+#include "../util/ivector.h"
+#include "../util/vector.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -46,11 +48,15 @@ void SG_CALL sgBitmapDestroy(SGBitmap* bmp);
 //void SG_CALL sgBitmapSetData(SGBitmap* bmp, size_t width, size_t height, SGenum bpp, void* data);
 void SG_CALL sgBitmapGetData(SGBitmap* bmp, size_t* width, size_t* height, SGenum* bpp, void** data);
 
-void SG_CALL sgBitmapGetSize(SGBitmap* bmp, size_t* width, size_t* height);
+SGIVec2 SG_CALL sgBitmapGetSize2iv(SGBitmap* bmp);
+SGVec2 SG_CALL sgBitmapGetSize2fv(SGBitmap* bmp);
 size_t SG_CALL sgBitmapGetWidth(SGBitmap* bmp);
 size_t SG_CALL sgBitmapGetHeight(SGBitmap* bmp);
 
 SGenum SG_CALL sgBitmapGetBPP(SGBitmap* bmp);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgBitmapGetSize(SGBitmap* bmp, size_t* width, size_t* height);
 
 #ifdef __cplusplus
 }

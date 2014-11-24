@@ -317,10 +317,13 @@ SGTexture* SG_CALL sgAtlasGetTextureA(SGAtlas* atlas, SGAtlasArea* area)
     return sgAtlasGetTexture(atlas, area->index);
 }
 
-void SG_CALL sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height)
+SGIVec2 SG_CALL sgAtlasGetSize2iv(SGAtlas* atlas)
 {
-    if(width) *width = atlas->width;
-    if(height) *height = atlas->height;
+    return sgIVec2i(atlas->width, atlas->height);
+}
+SGVec2 SG_CALL sgAtlasGetSize2fv(SGAtlas* atlas)
+{
+    return sgVec2iv(sgAtlasGetSize2iv(atlas));
 }
 size_t SG_CALL sgAtlasGetWidth(SGAtlas* atlas)
 {
@@ -342,4 +345,12 @@ void SG_CALL sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbo
         _sgAtlasNodeDrawDBG(atlas->textures[index].root, x, y);
     else
         sgTextureDraw2f(atlas->textures[index].texture, x, y);
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height)
+{
+    SGIVec2 size = sgAtlasGetSize2iv(atlas);
+    if(width)   *width = size.x;
+    if(height)  *height = size.y;
 }

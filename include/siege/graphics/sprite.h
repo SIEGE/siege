@@ -17,6 +17,8 @@
 
 #include "../common.h"
 #include "texture.h"
+#include "../util/ivector.h"
+#include "../util/vector.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -66,9 +68,14 @@ void SG_CALL sgSpriteDraw2f2f(SGSprite* sprite, float x, float y, float xscale, 
 void SG_CALL sgSpriteDraw3f(SGSprite* sprite, float x, float y, float z);
 void SG_CALL sgSpriteDraw2f(SGSprite* sprite, float x, float y);
 
-void SG_CALL sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height);
+SGIVec2 SG_CALL sgSpriteGetSize2iv(SGSprite* sprite);
+SGVec2 SG_CALL sgSpriteGetSize2fv(SGSprite* sprite);
 SGuint SG_CALL sgSpriteGetWidth(SGSprite* sprite);
 SGuint SG_CALL sgSpriteGetHeight(SGSprite* sprite);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

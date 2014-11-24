@@ -119,10 +119,13 @@ void SG_CALL sgBitmapGetData(SGBitmap* bmp, size_t* width, size_t* height, SGenu
     if(data) *data = bmp->data;
 }
 
-void SG_CALL sgBitmapGetSize(SGBitmap* bmp, size_t* width, size_t* height)
+SGIVec2 SG_CALL sgBitmapGetSize2iv(SGBitmap* bmp)
 {
-    if(width) *width = bmp->width;
-    if(height) *height = bmp->height;
+    return sgIVec2i(bmp->width, bmp->height);
+}
+SGVec2 SG_CALL sgBitmapGetSize2fv(SGBitmap* bmp)
+{
+    return sgVec2iv(sgBitmapGetSize2iv(bmp));
 }
 size_t SG_CALL sgBitmapGetWidth(SGBitmap* bmp)
 {
@@ -136,4 +139,12 @@ size_t SG_CALL sgBitmapGetHeight(SGBitmap* bmp)
 SGenum SG_CALL sgBitmapGetBPP(SGBitmap* bmp)
 {
     return bmp->bpp;
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgBitmapGetSize(SGBitmap* bmp, size_t* width, size_t* height)
+{
+    SGIVec2 size = sgBitmapGetSize2iv(bmp);
+    if(width)   *width = size.x;
+    if(height)  *height = size.y;
 }

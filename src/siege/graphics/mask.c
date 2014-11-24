@@ -46,8 +46,8 @@ SGMask* SG_CALL sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint y
     for(i = 0; i < mask->width; i++)
         mask->field[i] = calloc(mask->height, sizeof(SGbool));
 
-    SGuint awidth, aheight;
-    sgTextureGetSize(texture, &awidth, &aheight);
+    SGIVec2 asize = sgTextureGetSize2iv(texture);
+    SGuint awidth = asize.x;
     SGuint bpp = sgTextureGetBPP(texture);
     char* data = sgTextureGetData(texture);
 
@@ -219,15 +219,13 @@ SGbool SG_CALL sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, 
     return SG_FALSE;
 }
 
-void SG_CALL sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height)
+SGIVec2 SG_CALL sgMaskGetSize2iv(SGMask* mask)
 {
-    if(mask == NULL)
-        return;
-
-    if(width != NULL)
-        *width = mask->width;
-    if(height != NULL)
-        *height = mask->height;
+    return sgIVec2i(mask->width, mask->height);
+}
+SGVec2 SG_CALL sgMaskGetSize2fv(SGMask* mask)
+{
+    return sgVec2iv(sgMaskGetSize2iv(mask));
 }
 SGuint SG_CALL sgMaskGetWidth(SGMask* mask)
 {
@@ -260,4 +258,12 @@ void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent)
             }
         }
     sgDrawEnd();
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height)
+{
+    SGIVec2 size = sgMaskGetSize2iv(mask);
+    if(width)   *width = size.x;
+    if(height)  *height = size.y;
 }

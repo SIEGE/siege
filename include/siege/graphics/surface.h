@@ -18,6 +18,8 @@
 #include "../common.h"
 #include "texture.h"
 #include "../util/stream.h"
+#include "../util/ivector.h"
+#include "../util/vector.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -83,10 +85,14 @@ void SG_CALL sgSurfaceClear2ub(SGSurface* surface, SGubyte g, SGubyte a);
 void SG_CALL sgSurfaceClear1ub(SGSurface* surface, SGubyte g);
 void SG_CALL sgSurfaceClear(SGSurface* surface);
 
-void SG_CALL sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height);
+SGIVec2 SG_CALL sgSurfaceGetSize2iv(SGSurface* surface);
+SGVec2 SG_CALL sgSurfaceGetSize2fv(SGSurface* surface);
 SGuint SG_CALL sgSurfaceGetWidth(SGSurface* surface);
 SGuint SG_CALL sgSurfaceGetHeight(SGSurface* surface);
 SGenum SG_CALL sgSurfaceGetBPP(SGSurface* surface);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height);
 
 #ifdef __cplusplus
 }

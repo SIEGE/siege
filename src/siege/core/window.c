@@ -210,14 +210,14 @@ SGbool SG_CALL sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flag
     if(!winSurface)
         return SG_FALSE;    // TODO: ERRORMSG
 
-    sgWindowGetSize(&width, &height);
+    SGIVec2 size = sgWindowGetSize2iv();
     if(!initGL())
         return SG_FALSE;
 
-    _sg_viewMain = sgViewportCreate4i(0, 0, width, height);
+    _sg_viewMain = sgViewportCreate4i(0, 0, size.x, size.y);
 
     _sg_cbWindowOpen();
-    _sg_cbWindowResize(width, height);
+    _sg_cbWindowResize(size.x, size.y);
     return SG_TRUE;
 }
 SGbool SG_CALL sgWindowIsOpened(void)
@@ -303,45 +303,42 @@ char* SG_CALL sgWindowGetTitle(void)
 {
     return winTitle;
 }
-void SG_CALL sgWindowSetSize(SGuint width, SGuint height)
-{
-    winSurface = SDL_SetVideoMode(width, height, winSurface->format->BitsPerPixel, winSurface->flags);
-    resizeGL(width, height);
-    _sg_cbWindowResize(width, height);
-}
-void SG_CALL sgWindowGetSize(SGuint* width, SGuint* height)
-{
-    SGuint tmp;
-    if(!width)  width = &tmp;
-    if(!height) height = &tmp;
 
+void SG_CALL sgWindowSetSize2iv(SGIVec2 size)
+{
+    winSurface = SDL_SetVideoMode(size.x, size.y, winSurface->format->BitsPerPixel, winSurface->flags);
+    resizeGL(size.x, size.y);
+    _sg_cbWindowResize(size.x, size.y);
+}
+void SG_CALL sgWindowSetSize2i(SGint w, SGint h)
+{
+    sgWindowSetSize2iv(sgIVec2i(w, h));
+}
+SGIVec2 SG_CALL sgWindowGetSize2iv(void)
+{
     if(!winSurface)
-        *width = *height = 0;
-    else
-    {
-        *width = winSurface->w;
-        *height = winSurface->h;
-    }
+        return sgIVec2i(0, 0);
+    return sgIVec2i(winSurface->w, winSurface->h);
+}
+SGVec2 SG_CALL sgWindowGetSize2fv(void)
+{
+    return sgVec2iv(sgWindowGetSize2iv());
 }
 void SG_CALL sgWindowSetWidth(SGuint width)
 {
-    sgWindowSetSize(width, sgWindowGetHeight());
+    sgWindowSetSize2i(width, sgWindowGetHeight());
 }
 SGuint SG_CALL sgWindowGetWidth(void)
 {
-    SGuint width;
-    sgWindowGetSize(&width, NULL);
-    return width;
+    return sgWindowGetSize2iv().x;
 }
 void SG_CALL sgWindowSetHeight(SGuint height)
 {
-    sgWindowSetSize(sgWindowGetWidth(), height);
+    sgWindowSetSize2i(sgWindowGetWidth(), height);
 }
 SGuint SG_CALL sgWindowGetHeight(void)
 {
-    SGuint height;
-    sgWindowGetSize(NULL, &height);
-    return height;
+    return sgWindowGetSize2iv().y;
 }
 void SG_CALL sgWindowHandleEvents(void)
 {
@@ -358,7 +355,7 @@ void SG_CALL sgWindowHandleEvents(void)
         switch(event.type)
         {
             case SDL_VIDEORESIZE:
-                sgWindowSetSize(event.resize.w, event.resize.h);
+                sgWindowSetSize2i(event.resize.w, event.resize.h);
                 break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
@@ -447,4 +444,16 @@ void SG_CALL sgWindowSetFPSLimit(SGfloat limit)
 SGfloat SG_CALL sgWindowGetFPS(void)
 {
     return _sg_achievedFramerate;
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgWindowSetSize(SGuint width, SGuint height)
+{
+    sgWindowSetSize2i(width, height);
+}
+void SG_CALL SG_HINT_DEPRECATED sgWindowGetSize(SGuint* width, SGuint* height)
+{
+    SGIVec2 size = sgWindowGetSize2iv();
+    if(width)   *width = size.x;
+    if(height)  *height = size.y;
 }

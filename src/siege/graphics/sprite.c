@@ -189,12 +189,13 @@ void SG_CALL sgSpriteDraw2f(SGSprite* sprite, float x, float y)
     sgSpriteDrawRads3f2f1f(sprite, x, y, 0.0, 1.0, 1.0, 0.0);
 }
 
-void SG_CALL sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height)
+SGIVec2 SG_CALL sgSpriteGetSize2iv(SGSprite* sprite)
 {
-    if(sprite == NULL)
-        return;
-
-    sgTextureGetSize(sprite->subimages[0], width, height);
+    return sgTextureGetSize2iv(sprite->subimages[0]);
+}
+SGVec2 SG_CALL sgSpriteGetSize2fv(SGSprite* sprite)
+{
+    return sgVec2iv(sgSpriteGetSize2iv(sprite));
 }
 SGuint SG_CALL sgSpriteGetWidth(SGSprite* sprite)
 {
@@ -209,4 +210,12 @@ SGuint SG_CALL sgSpriteGetHeight(SGSprite* sprite)
         return 0;
 
     return sgTextureGetHeight(sprite->subimages[0]);
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height)
+{
+    SGIVec2 size = sgSpriteGetSize2iv(sprite);
+    if(width)   *width = size.x;
+    if(height)  *height = size.y;
 }

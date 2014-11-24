@@ -17,6 +17,8 @@
 
 #include "../common.h"
 #include "texture.h"
+#include "../util/ivector.h"
+#include "../util/vector.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -88,11 +90,15 @@ size_t SG_CALL sgAtlasGetNumTextures(SGAtlas* atlas);
 SGTexture* SG_CALL sgAtlasGetTexture(SGAtlas* atlas, size_t index);
 SGTexture* SG_CALL sgAtlasGetTextureA(SGAtlas* atlas, SGAtlasArea* area);
 
-void SG_CALL sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height);
+SGIVec2 SG_CALL sgAtlasGetSize2iv(SGAtlas* atlas);
+SGVec2 SG_CALL sgAtlasGetSize2fv(SGAtlas* atlas);
 size_t SG_CALL sgAtlasGetWidth(SGAtlas* atlas);
 size_t SG_CALL sgAtlasGetHeight(SGAtlas* atlas);
 
 void SG_CALL sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbool wires);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height);
 
 #ifdef __cplusplus
 }
