@@ -98,20 +98,20 @@ void SG_CALL _sgKeyboardKeyUpdate(SGenum key, SGbool down)
 SGbool SG_CALL sgKeyboardKey(SGenum key)
 {
     if(key >= SG_NUM_KEYS) return SG_FALSE;
-    return _sg_keyCurr[key];
+    return GET_BITARR_CURR(key, key);
 }
 SGbool SG_CALL sgKeyboardKeyPress(SGenum key)
 {
     if(key >= SG_NUM_KEYS) return SG_FALSE;
-    return !_sg_keyPrev[key] && _sg_keyCurr[key];
+    return !GET_BITARR_PREV(key, key) && GET_BITARR_CURR(key, key);
 }
 SGbool SG_CALL sgKeyboardKeyRelease(SGenum key)
 {
     if(key >= SG_NUM_KEYS) return SG_FALSE;
-    return _sg_keyPrev[key] && !_sg_keyCurr[key];
+    return GET_BITARR_PREV(key, key) && !GET_BITARR_CURR(key, key);
 }
 SGbool SG_CALL sgKeyboardKeyRepeat(SGenum key)
 {
     if(key >= SG_NUM_KEYS) return SG_FALSE;
-    return _sg_keyAgn[key];
+    return GET_BITARR(_sg_keyAgn, key);
 }
