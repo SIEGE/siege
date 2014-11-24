@@ -19,6 +19,24 @@
 #include <stdlib.h>
 #include <math.h>
 
+static float wrapFloat(float a, float min, float max)
+{
+    a -= min;
+    max -= min;
+
+    return min + (a < 0 ? fmod(max - fmod(-a, max), max) : fmod(a, max));
+}
+static void swapFloat(float* x, float* y)
+{
+    float tmp = *x;
+    *x = *y;
+    *y = tmp;
+}
+static void sortFloat(float* x, float* y)
+{
+    if(*y < *x) swapFloat(x, y);
+}
+
 SGVec2 SG_CALL sgVec2f(float x, float y)
 {
     SGVec2 vec;
@@ -137,6 +155,39 @@ float SG_CALL sgVec2Distance(SGVec2 a, SGVec2 b)
 float SG_CALL sgVec2Distance2(SGVec2 a, SGVec2 b)
 {
     return sgVec2Length2(sgVec2Sub(a, b));
+}
+
+SGVec2 SG_CALL sgVec2Min(SGVec2 a, SGVec2 b)
+{
+    return sgVec2f(SG_MIN(a.x, b.x), SG_MIN(a.y, b.y));
+}
+SGVec2 SG_CALL sgVec2Max(SGVec2 a, SGVec2 b)
+{
+    return sgVec2f(SG_MAX(a.x, b.x), SG_MAX(a.y, b.y));
+}
+SGVec2 SG_CALL sgVec2Abs(SGVec2 a)
+{
+    return sgVec2f(SG_ABS(a.x), SG_ABS(a.y));
+}
+SGVec2 SG_CALL sgVec2Wrap(SGVec2 a, SGVec2 min, SGVec2 max)
+{
+    return sgVec2f(wrapFloat(a.x, min.x, max.x), wrapFloat(a.y, min.y, max.y));
+}
+SGVec2 SG_CALL sgVec2Clamp(SGVec2 a, SGVec2 min, SGVec2 max)
+{
+    return sgVec2Min(sgVec2Max(a, min), max);
+}
+SGVec2 SG_CALL sgVec2XWrap(SGVec2 a, SGVec2 min, SGVec2 max)
+{
+    sortFloat(&min.x, &max.x);
+    sortFloat(&min.y, &max.y);
+    return sgVec2Wrap(a, min, max);
+}
+SGVec2 SG_CALL sgVec2XClamp(SGVec2 a, SGVec2 min, SGVec2 max)
+{
+    sortFloat(&min.x, &max.x);
+    sortFloat(&min.y, &max.y);
+    return sgVec2Clamp(a, min, max);
 }
 
 float SG_CALL sgVec2Dot(SGVec2 a, SGVec2 b)
@@ -311,6 +362,41 @@ float SG_CALL sgVec3Distance2(SGVec3 a, SGVec3 b)
     return sgVec3Length2(sgVec3Sub(a, b));
 }
 
+SGVec3 SG_CALL sgVec3Min(SGVec3 a, SGVec3 b)
+{
+    return sgVec3f(SG_MIN(a.x, b.x), SG_MIN(a.y, b.y), SG_MIN(a.z, b.z));
+}
+SGVec3 SG_CALL sgVec3Max(SGVec3 a, SGVec3 b)
+{
+    return sgVec3f(SG_MAX(a.x, b.x), SG_MAX(a.y, b.y), SG_MAX(a.z, b.z));
+}
+SGVec3 SG_CALL sgVec3Abs(SGVec3 a)
+{
+    return sgVec3f(SG_ABS(a.x), SG_ABS(a.y), SG_ABS(a.z));
+}
+SGVec3 SG_CALL sgVec3Wrap(SGVec3 a, SGVec3 min, SGVec3 max)
+{
+    return sgVec3f(wrapFloat(a.x, min.x, max.x), wrapFloat(a.y, min.y, max.y), wrapFloat(a.z, min.z, max.z));
+}
+SGVec3 SG_CALL sgVec3Clamp(SGVec3 a, SGVec3 min, SGVec3 max)
+{
+    return sgVec3Min(sgVec3Max(a, min), max);
+}
+SGVec3 SG_CALL sgVec3XWrap(SGVec3 a, SGVec3 min, SGVec3 max)
+{
+    sortFloat(&min.x, &max.x);
+    sortFloat(&min.y, &max.y);
+    sortFloat(&min.z, &max.z);
+    return sgVec3Wrap(a, min, max);
+}
+SGVec3 SG_CALL sgVec3XClamp(SGVec3 a, SGVec3 min, SGVec3 max)
+{
+    sortFloat(&min.x, &max.x);
+    sortFloat(&min.y, &max.y);
+    sortFloat(&min.z, &max.z);
+    return sgVec3Clamp(a, min, max);
+}
+
 float SG_CALL sgVec3Dot(SGVec3 a, SGVec3 b)
 {
     return a.x * b.x + a.y * b.y + a.z * b.z;
@@ -463,6 +549,43 @@ float SG_CALL sgVec4Distance(SGVec4 a, SGVec4 b)
 float SG_CALL sgVec4Distance2(SGVec4 a, SGVec4 b)
 {
     return sgVec4Length2(sgVec4Sub(a, b));
+}
+
+SGVec4 SG_CALL sgVec4Min(SGVec4 a, SGVec4 b)
+{
+    return sgVec4f(SG_MIN(a.x, b.x), SG_MIN(a.y, b.y), SG_MIN(a.z, b.z), SG_MIN(a.w, b.w));
+}
+SGVec4 SG_CALL sgVec4Max(SGVec4 a, SGVec4 b)
+{
+    return sgVec4f(SG_MAX(a.x, b.x), SG_MAX(a.y, b.y), SG_MAX(a.z, b.z), SG_MAX(a.w, b.w));
+}
+SGVec4 SG_CALL sgVec4Abs(SGVec4 a)
+{
+    return sgVec4f(SG_ABS(a.x), SG_ABS(a.y), SG_ABS(a.z), SG_ABS(a.w));
+}
+SGVec4 SG_CALL sgVec4Wrap(SGVec4 a, SGVec4 min, SGVec4 max)
+{
+    return sgVec4f(wrapFloat(a.x, min.x, max.x), wrapFloat(a.y, min.y, max.y), wrapFloat(a.z, min.z, max.z), wrapFloat(a.w, min.w, max.w));
+}
+SGVec4 SG_CALL sgVec4Clamp(SGVec4 a, SGVec4 min, SGVec4 max)
+{
+    return sgVec4Min(sgVec4Max(a, min), max);
+}
+SGVec4 SG_CALL sgVec4XWrap(SGVec4 a, SGVec4 min, SGVec4 max)
+{
+    sortFloat(&min.x, &max.x);
+    sortFloat(&min.y, &max.y);
+    sortFloat(&min.z, &max.z);
+    sortFloat(&min.w, &max.w);
+    return sgVec4Wrap(a, min, max);
+}
+SGVec4 SG_CALL sgVec4XClamp(SGVec4 a, SGVec4 min, SGVec4 max)
+{
+    sortFloat(&min.x, &max.x);
+    sortFloat(&min.y, &max.y);
+    sortFloat(&min.z, &max.z);
+    sortFloat(&min.w, &max.w);
+    return sgVec4Clamp(a, min, max);
 }
 
 float SG_CALL sgVec4Dot(SGVec4 a, SGVec4 b)

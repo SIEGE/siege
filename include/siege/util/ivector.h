@@ -59,6 +59,14 @@ SGIVec2 SG_CALL sgIVec2QMul2(SGIVec2 a, SGIVec2 b);
 float SG_CALL sgIVec2Distance(SGIVec2 a, SGIVec2 b);
 SGint SG_CALL sgIVec2Distance2(SGIVec2 a, SGIVec2 b);
 
+SGIVec2 SG_CALL sgIVec2Min(SGIVec2 a, SGIVec2 b);
+SGIVec2 SG_CALL sgIVec2Max(SGIVec2 a, SGIVec2 b);
+SGIVec2 SG_CALL sgIVec2Abs(SGIVec2 a);
+SGIVec2 SG_CALL sgIVec2Wrap(SGIVec2 a, SGIVec2 min, SGIVec2 max);
+SGIVec2 SG_CALL sgIVec2Clamp(SGIVec2 a, SGIVec2 min, SGIVec2 max);
+SGIVec2 SG_CALL sgIVec2XWrap(SGIVec2 a, SGIVec2 min, SGIVec2 max);
+SGIVec2 SG_CALL sgIVec2XClamp(SGIVec2 a, SGIVec2 min, SGIVec2 max);
+
 SGint SG_CALL sgIVec2Dot(SGIVec2 a, SGIVec2 b);
 /*
  * Calculates the perpendicular dot product.
@@ -91,6 +99,14 @@ SGIVec3 SG_CALL sgIVec3Divi(SGIVec3 a, SGint i);
 float SG_CALL sgIVec3Distance(SGIVec3 a, SGIVec3 b);
 SGint SG_CALL sgIVec3Distance2(SGIVec3 a, SGIVec3 b);
 
+SGIVec3 SG_CALL sgIVec3Min(SGIVec3 a, SGIVec3 b);
+SGIVec3 SG_CALL sgIVec3Max(SGIVec3 a, SGIVec3 b);
+SGIVec3 SG_CALL sgIVec3Abs(SGIVec3 a);
+SGIVec3 SG_CALL sgIVec3Wrap(SGIVec3 a, SGIVec3 min, SGIVec3 max);
+SGIVec3 SG_CALL sgIVec3Clamp(SGIVec3 a, SGIVec3 min, SGIVec3 max);
+SGIVec3 SG_CALL sgIVec3XWrap(SGIVec3 a, SGIVec3 min, SGIVec3 max);
+SGIVec3 SG_CALL sgIVec3XClamp(SGIVec3 a, SGIVec3 min, SGIVec3 max);
+
 SGint SG_CALL sgIVec3Dot(SGIVec3 a, SGIVec3 b);
 SGIVec3 SG_CALL sgIVec3Cross(SGIVec3 a, SGIVec3 b);
 // A dot (B cross C)
@@ -119,6 +135,14 @@ SGIVec4 SG_CALL sgIVec4QMul4(SGIVec4 a, SGIVec4 b);
 
 float SG_CALL sgIVec4Distance(SGIVec4 a, SGIVec4 b);
 SGint SG_CALL sgIVec4Distance2(SGIVec4 a, SGIVec4 b);
+
+SGIVec4 SG_CALL sgIVec4Min(SGIVec4 a, SGIVec4 b);
+SGIVec4 SG_CALL sgIVec4Max(SGIVec4 a, SGIVec4 b);
+SGIVec4 SG_CALL sgIVec4Abs(SGIVec4 a);
+SGIVec4 SG_CALL sgIVec4Wrap(SGIVec4 a, SGIVec4 min, SGIVec4 max);
+SGIVec4 SG_CALL sgIVec4Clamp(SGIVec4 a, SGIVec4 min, SGIVec4 max);
+SGIVec4 SG_CALL sgIVec4XWrap(SGIVec4 a, SGIVec4 min, SGIVec4 max);
+SGIVec4 SG_CALL sgIVec4XClamp(SGIVec4 a, SGIVec4 min, SGIVec4 max);
 
 SGint SG_CALL sgIVec4Dot(SGIVec4 a, SGIVec4 b);
 //SGIVec4 sgIVec4Cross(SGIVec4 a, SGIVec4 b, SGIVec4 c);

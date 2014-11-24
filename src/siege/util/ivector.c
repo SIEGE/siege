@@ -5,6 +5,24 @@
 #include <stdlib.h>
 #include <math.h>
 
+static SGint wrapInt(SGint a, SGint min, SGint max)
+{
+    a -= min;
+    max -= min;
+
+    return min + (a < 0 ? fmod(max - fmod(-a, max), max) : fmod(a, max));
+}
+static void swapInt(SGint* x, SGint* y)
+{
+    SGint tmp = *x;
+    *x = *y;
+    *y = tmp;
+}
+static void sortInt(SGint* x, SGint* y)
+{
+    if(*y < *x) swapInt(x, y);
+}
+
 SGIVec2 SG_CALL sgIVec2i(SGint x, SGint y)
 {
     SGIVec2 vec;
@@ -74,6 +92,39 @@ float SG_CALL sgIVec2Distance(SGIVec2 a, SGIVec2 b)
 SGint SG_CALL sgIVec2Distance2(SGIVec2 a, SGIVec2 b)
 {
     return sgIVec2Length2(sgIVec2Sub(a, b));
+}
+
+SGIVec2 SG_CALL sgIVec2Min(SGIVec2 a, SGIVec2 b)
+{
+    return sgIVec2i(SG_MIN(a.x, b.x), SG_MIN(a.y, b.y));
+}
+SGIVec2 SG_CALL sgIVec2Max(SGIVec2 a, SGIVec2 b)
+{
+    return sgIVec2i(SG_MAX(a.x, b.x), SG_MAX(a.y, b.y));
+}
+SGIVec2 SG_CALL sgIVec2Abs(SGIVec2 a)
+{
+    return sgIVec2i(SG_ABS(a.x), SG_ABS(a.y));
+}
+SGIVec2 SG_CALL sgIVec2Wrap(SGIVec2 a, SGIVec2 min, SGIVec2 max)
+{
+    return sgIVec2i(wrapInt(a.x, min.x, max.x), wrapInt(a.y, min.y, max.y));
+}
+SGIVec2 SG_CALL sgIVec2Clamp(SGIVec2 a, SGIVec2 min, SGIVec2 max)
+{
+    return sgIVec2Min(sgIVec2Max(a, min), max);
+}
+SGIVec2 SG_CALL sgIVec2XWrap(SGIVec2 a, SGIVec2 min, SGIVec2 max)
+{
+    sortInt(&min.x, &max.x);
+    sortInt(&min.y, &max.y);
+    return sgIVec2Wrap(a, min, max);
+}
+SGIVec2 SG_CALL sgIVec2XClamp(SGIVec2 a, SGIVec2 min, SGIVec2 max)
+{
+    sortInt(&min.x, &max.x);
+    sortInt(&min.y, &max.y);
+    return sgIVec2Clamp(a, min, max);
 }
 
 SGint SG_CALL sgIVec2Dot(SGIVec2 a, SGIVec2 b)
@@ -170,6 +221,41 @@ SGint SG_CALL sgIVec3Distance2(SGIVec3 a, SGIVec3 b)
     return sgIVec3Length2(sgIVec3Sub(a, b));
 }
 
+SGIVec3 SG_CALL sgIVec3Min(SGIVec3 a, SGIVec3 b)
+{
+    return sgIVec3i(SG_MIN(a.x, b.x), SG_MIN(a.y, b.y), SG_MIN(a.z, b.z));
+}
+SGIVec3 SG_CALL sgIVec3Max(SGIVec3 a, SGIVec3 b)
+{
+    return sgIVec3i(SG_MAX(a.x, b.x), SG_MAX(a.y, b.y), SG_MAX(a.z, b.z));
+}
+SGIVec3 SG_CALL sgIVec3Abs(SGIVec3 a)
+{
+    return sgIVec3i(SG_ABS(a.x), SG_ABS(a.y), SG_ABS(a.z));
+}
+SGIVec3 SG_CALL sgIVec3Wrap(SGIVec3 a, SGIVec3 min, SGIVec3 max)
+{
+    return sgIVec3i(wrapInt(a.x, min.x, max.x), wrapInt(a.y, min.y, max.y), wrapInt(a.z, min.z, max.z));
+}
+SGIVec3 SG_CALL sgIVec3Clamp(SGIVec3 a, SGIVec3 min, SGIVec3 max)
+{
+    return sgIVec3Min(sgIVec3Max(a, min), max);
+}
+SGIVec3 SG_CALL sgIVec3XWrap(SGIVec3 a, SGIVec3 min, SGIVec3 max)
+{
+    sortInt(&min.x, &max.x);
+    sortInt(&min.y, &max.y);
+    sortInt(&min.z, &max.z);
+    return sgIVec3Wrap(a, min, max);
+}
+SGIVec3 SG_CALL sgIVec3XClamp(SGIVec3 a, SGIVec3 min, SGIVec3 max)
+{
+    sortInt(&min.x, &max.x);
+    sortInt(&min.y, &max.y);
+    sortInt(&min.z, &max.z);
+    return sgIVec3Clamp(a, min, max);
+}
+
 SGint SG_CALL sgIVec3Dot(SGIVec3 a, SGIVec3 b)
 {
     return a.x * b.x + a.y * b.y + a.z * b.z;
@@ -264,6 +350,43 @@ float SG_CALL sgIVec4Distance(SGIVec4 a, SGIVec4 b)
 SGint SG_CALL sgIVec4Distance2(SGIVec4 a, SGIVec4 b)
 {
     return sgIVec4Length2(sgIVec4Sub(a, b));
+}
+
+SGIVec4 SG_CALL sgIVec4Min(SGIVec4 a, SGIVec4 b)
+{
+    return sgIVec4i(SG_MIN(a.x, b.x), SG_MIN(a.y, b.y), SG_MIN(a.z, b.z), SG_MIN(a.w, b.w));
+}
+SGIVec4 SG_CALL sgIVec4Max(SGIVec4 a, SGIVec4 b)
+{
+    return sgIVec4i(SG_MAX(a.x, b.x), SG_MAX(a.y, b.y), SG_MAX(a.z, b.z), SG_MAX(a.w, b.w));
+}
+SGIVec4 SG_CALL sgIVec4Abs(SGIVec4 a)
+{
+    return sgIVec4i(SG_ABS(a.x), SG_ABS(a.y), SG_ABS(a.z), SG_ABS(a.w));
+}
+SGIVec4 SG_CALL sgIVec4Wrap(SGIVec4 a, SGIVec4 min, SGIVec4 max)
+{
+    return sgIVec4i(wrapInt(a.x, min.x, max.x), wrapInt(a.y, min.y, max.y), wrapInt(a.z, min.z, max.z), wrapInt(a.w, min.w, max.w));
+}
+SGIVec4 SG_CALL sgIVec4Clamp(SGIVec4 a, SGIVec4 min, SGIVec4 max)
+{
+    return sgIVec4Min(sgIVec4Max(a, min), max);
+}
+SGIVec4 SG_CALL sgIVec4XWrap(SGIVec4 a, SGIVec4 min, SGIVec4 max)
+{
+    sortInt(&min.x, &max.x);
+    sortInt(&min.y, &max.y);
+    sortInt(&min.z, &max.z);
+    sortInt(&min.w, &max.w);
+    return sgIVec4Wrap(a, min, max);
+}
+SGIVec4 SG_CALL sgIVec4XClamp(SGIVec4 a, SGIVec4 min, SGIVec4 max)
+{
+    sortInt(&min.x, &max.x);
+    sortInt(&min.y, &max.y);
+    sortInt(&min.z, &max.z);
+    sortInt(&min.w, &max.w);
+    return sgIVec4Clamp(a, min, max);
 }
 
 SGint SG_CALL sgIVec4Dot(SGIVec4 a, SGIVec4 b)
