@@ -26,13 +26,10 @@
 
 #ifdef _WIN32
 /*
- * MinGW thinks it's smart and uses its own variant of vswprintf, though
- * I suppose it's mostly Microsoft's fault since this is the variant
- * present in WinAPI...
- *
- * Either way, because of this problem, we we have to use this
- * workaround...
+ * Workarounds for non-conforming vswprintf in some versions of MinGW (don't
+ * know about MSVC).
  */
+
 static int ugly_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* format, va_list args)
 {
     int len;
@@ -43,7 +40,7 @@ static int ugly_vswprintf_hack(wchar_t* wcs, size_t maxlen, const wchar_t* forma
 
     if(maxlen < len + 1)
         return len;
-    return vswprintf(wcs, format, args);
+    return _vswprintf(wcs, format, args);
 }
 static int ugly_vsnprintf_hack(char* buf, size_t maxlen, const char* format, va_list args)
 {
