@@ -11,5 +11,4 @@ Version: @SG_VERSION_STRING@
 Requires:
 Conflicts:
 Libs: -L${libdir} -Wl,-rpath,${libdir} -lSIEGE -pthread
-Libs.private: @AUX_LIBLIST@
 Cflags: -I${includedir}

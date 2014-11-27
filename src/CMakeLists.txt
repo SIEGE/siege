@@ -50,8 +50,6 @@ ADD_SUBDIRECTORY(modules)
 ADD_SUBDIRECTORY(examples)
 ADD_SUBDIRECTORY(tests)
 
-string(REPLACE ";" " " AUX_LIBLIST "${AUX_LIBRARIES}")
-
 set(CMAKE_INSTALL_EXEC_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH "install location for architecture-dependent files")
 configure_file("${CMAKE_SOURCE_DIR}/SIEGE.pc.in" "${CMAKE_BINARY_DIR}/SIEGE.pc" @ONLY)
 
