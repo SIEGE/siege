@@ -67,7 +67,7 @@ void SG_CALL _sgKeyboardUpdatePost(void)
     for(i = 0; i < KEYARR_LENGTH; i++)
     {
         j = i * ARR_BITS;
-        for(buffer = ARR_BITITEM(_sg_keyCurr, i); buffer; buffer >>= 1)
+        for(buffer = _sg_keyCurr[i]; buffer; buffer >>= 1)
         {
             if(buffer & 1)
                 sgEntityEventSignal(1, (SGenum)SG_EVF_KEYKEYH, j);
