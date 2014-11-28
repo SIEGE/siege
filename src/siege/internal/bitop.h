@@ -10,7 +10,7 @@
 #define ARR_BITITEM(arr, n) ((arr)[(n) / ARR_BITS])
 #define ARR_BITLENGTH(n)    ((n) / ARR_BITS)
 
-#define SET_BIT(arr, n, val)    (arr = (((SGulong)(val)) << (n)))
+#define SET_BIT(arr, n, val)    (arr = (val) ? ((arr) | (((SGulong)1) << (n))) : ((arr) & ~(((SGulong)1) << (n))))
 #define GET_BIT(arr, n)         ((arr >> (n)) & 1)
 
 #define SET_BIT_PREV(base, n, val)  SET_BIT(_sg_##base##Prev, n, val)
