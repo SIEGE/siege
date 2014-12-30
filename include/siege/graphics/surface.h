@@ -20,6 +20,7 @@
 #include "../util/stream.h"
 #include "../util/ivector.h"
 #include "../util/vector.h"
+#include "../util/rcount.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -28,24 +29,29 @@ extern "C"
 
 typedef struct SGSurface
 {
+    SGRCount cnt;
+
     void* fboid;
     void* rbid;
     SGTexture* texture;
-    SGbool deltex;
 } SGSurface;
 
 SGbool SG_CALL _sgSurfaceInit(void);
 SGbool SG_CALL _sgSurfaceDeinit(void);
 
-SGSurface* SG_CALL sgSurfaceCreateBitmap(SGBitmap* bmp, SGbool delbmp);
-SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream, SGbool delstream);
+SGSurface* SG_CALL sgSurfaceCreateBitmap(SGBitmap* bmp);
+SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream);
 SGSurface* SG_CALL sgSurfaceCreateFile(const char* fname);
 SGSurface* SG_CALL sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data);
-SGSurface* SG_CALL sgSurfaceCreateTexture(SGTexture* texture, SGbool deltex);
+SGSurface* SG_CALL sgSurfaceCreateTexture(SGTexture* texture);
 SGSurface* SG_CALL sgSurfaceCreate(SGuint width, SGuint height, SGenum bpp);
-void SG_CALL sgSurfaceDestroy(SGSurface* surface);
+void SG_CALL sgSurfaceForceDestroy(SGSurface* surface);
 
-SGbool SG_CALL sgSurfaceSetTexture(SGSurface* surface, SGTexture* texture, SGbool deltex);
+void SG_CALL sgSurfaceRelease(SGSurface* surface);
+void SG_CALL sgSurfaceLock(SGSurface* surface);
+void SG_CALL sgSurfaceUnlock(SGSurface* surface);
+
+SGbool SG_CALL sgSurfaceSetTexture(SGSurface* surface, SGTexture* texture);
 SGTexture* SG_CALL sgSurfaceGetTexture(SGSurface* surface);
 
 void SG_CALL sgSurfaceSetData(SGSurface* surface, size_t width, size_t height, SGenum bpp, void* data);
@@ -92,6 +98,7 @@ SGuint SG_CALL sgSurfaceGetHeight(SGSurface* surface);
 SGenum SG_CALL sgSurfaceGetBPP(SGSurface* surface);
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgSurfaceDestroy(SGSurface* surface);
 void SG_CALL SG_HINT_DEPRECATED sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height);
 
 #ifdef __cplusplus

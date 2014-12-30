@@ -19,6 +19,7 @@
 #include "texture.h"
 #include "../util/ivector.h"
 #include "../util/vector.h"
+#include "../util/rcount.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -26,10 +27,11 @@ extern "C"
 #endif // __cplusplus
 typedef struct SGSprite
 {
+    SGRCount cnt;
+
     SGulong tick;
 
     SGVec2 offset;
-    SGbool extimages;
     SGuint numimages;
     SGTexture** subimages;
     float image;
@@ -44,7 +46,11 @@ SGSprite* SG_CALL sgSpriteCreateTexture(SGTexture* texture);
 SGSprite* SG_CALL sgSpriteCreateFile2f(const char* fname, float xoffset, float yoffset);
 SGSprite* SG_CALL sgSpriteCreateFile2fv(const char* fname, SGVec2 offset);
 SGSprite* SG_CALL sgSpriteCreateFile(const char* fname);
-void SG_CALL sgSpriteDestroy(SGSprite* sprite);
+void SG_CALL sgSpriteForceDestroy(SGSprite* sprite);
+
+void SG_CALL sgSpriteRelease(SGSprite* sprite);
+void SG_CALL sgSpriteLock(SGSprite* sprite);
+void SG_CALL sgSpriteUnlock(SGSprite* sprite);
 
 SGbool SG_CALL sgSpriteAddFrameFile(SGSprite* sprite, const char* fname);
 
@@ -78,6 +84,7 @@ void SG_CALL SG_HINT_DEPRECATED sgSpriteSetSpeed(SGSprite* sprite, float speed);
 float SG_CALL SG_HINT_DEPRECATED sgSpriteGetSpeed(SGSprite* sprite);
 void SG_CALL SG_HINT_DEPRECATED sgSpriteSetOffset(SGSprite* sprite, float x, float y);
 void SG_CALL SG_HINT_DEPRECATED sgSpriteGetOffset(SGSprite* sprite, float* x, float* y);
+void SG_CALL SG_HINT_DEPRECATED sgSpriteDestroy(SGSprite* sprite);;
 void SG_CALL SG_HINT_DEPRECATED sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height);
 
 #ifdef __cplusplus

@@ -16,6 +16,7 @@
 #define __SIEGE_GRAPHICS_TURTLE_H__
 
 #include "../common.h"
+#include "../util/rcount.h"
 
 #include <stdlib.h>
 
@@ -54,6 +55,8 @@ typedef struct SGTurtleState
  */
 typedef struct SGTurtle
 {
+    SGRCount cnt;
+
     /**
      * \privatesection
      */
@@ -104,8 +107,12 @@ SGTurtle* SG_CALL sgTurtleCreateDegs(float x, float y, float degs, SGbool draw);
  *
  * \param turtle The turtle to destroy
  */
-void SG_CALL sgTurtleDestroy(SGTurtle* turtle);
+void SG_CALL sgTurtleForceDestroy(SGTurtle* turtle);
 /// @}
+
+void SG_CALL sgTurtleRelease(SGTurtle* turtle);
+void SG_CALL sgTurtleLock(SGTurtle* turtle);
+void SG_CALL sgTurtleUnlock(SGTurtle* turtle);
 
 /**
  * \name State
@@ -397,6 +404,9 @@ void SG_CALL sgTurtleSetAngleDegs(SGTurtle* turtle, float degs);
  */
 float SG_CALL sgTurtleGetAngleDegs(SGTurtle* turtle);
 /// @}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgTurtleDestroy(SGTurtle* turtle);
 
 #ifdef __cplusplus
 }

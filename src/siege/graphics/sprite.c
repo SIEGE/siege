@@ -38,13 +38,14 @@ SGSprite* SG_CALL sgSpriteCreateTexture2fv(SGTexture* texture, SGVec2 offset)
     SGSprite* sprite = malloc(sizeof(SGSprite));
     if(sprite == NULL)
         return NULL;
+    sgRCountInit(&sprite->cnt);
 
     sprite->tick = sgGetTick();
 
-    sprite->extimages = SG_TRUE;
     sprite->numimages = 1;
     sprite->subimages = malloc(sizeof(SGTexture*));
     sprite->subimages[0] = texture;
+    sgTextureLock(texture);
 
     if(SG_IS_NAN(offset.x))
         offset.x = sgTextureGetWidth(texture) / 2.0;
@@ -72,43 +73,50 @@ SGSprite* SG_CALL sgSpriteCreateFile2fv(const char* fname, SGVec2 offset)
         return NULL;
     sgTextureSetWrap(texture, SG_WRAP_CLAMP_TO_EDGE, SG_WRAP_CLAMP_TO_EDGE);
     SGSprite* sprite = sgSpriteCreateTexture2fv(texture, offset);
-    if(sprite == NULL)
-    {
-        sgTextureDestroy(texture);
-        return NULL;
-    }
-    sprite->extimages = SG_FALSE;
+    sgTextureRelease(texture);
     return sprite;
 }
 SGSprite* SG_CALL sgSpriteCreateFile(const char* fname)
 {
     return sgSpriteCreateFile2f(fname, SG_NAN, SG_NAN);
 }
-void SG_CALL sgSpriteDestroy(SGSprite* sprite)
+void SG_CALL sgSpriteForceDestroy(SGSprite* sprite)
 {
     if(sprite == NULL)
         return;
 
     SGuint i;
-    if(!sprite->extimages)
-    {
-        for(i = 0; i < sprite->numimages; i++)
-            sgTextureDestroy(sprite->subimages[i]);
-    }
+    for(i = 0; i < sprite->numimages; i++)
+        sgTextureUnlock(sprite->subimages[i]);
     free(sprite->subimages);
+    sgRCountDeinit(&sprite->cnt);
     free(sprite);
+}
+
+void SG_CALL sgSpriteRelease(SGSprite* sprite)
+{
+    sgSpriteUnlock(sprite);
+}
+void SG_CALL sgSpriteLock(SGSprite* sprite)
+{
+    if(!sprite) return;
+    sgRCountInc(&sprite->cnt);
+}
+void SG_CALL sgSpriteUnlock(SGSprite* sprite)
+{
+    if(!sprite) return;
+    if(!sgRCountDec(&sprite->cnt))
+        sgSpriteForceDestroy(sprite);
 }
 
 SGbool SG_CALL sgSpriteAddFrameFile(SGSprite* sprite, const char* fname)
 {
     sprite->numimages++;
-    sprite->subimages = realloc(sprite->subimages, sprite->numimages * sizeof(SGTexture*));
-    sprite->subimages[sprite->numimages - 1] = sgTextureCreateFile(fname);
-    if(!sprite->subimages[sprite->numimages - 1])
-    {
-        sprite->numimages--; // failed, reset the number of images
+    sprite->subimages = realloc(sprite->subimages, (sprite->numimages + 1) * sizeof(SGTexture*));
+    sprite->subimages[sprite->numimages] = sgTextureCreateFile(fname);
+    if(!sprite->subimages[sprite->numimages])
         return SG_FALSE;
-    }
+    sprite->numimages++;
     return SG_TRUE;
 }
 
@@ -232,6 +240,10 @@ float SG_CALL SG_HINT_DEPRECATED sgSpriteGetSpeed(SGSprite* sprite)
     return 0.0f;
 }
 
+void SG_CALL SG_HINT_DEPRECATED sgSpriteDestroy(SGSprite* sprite)
+{
+    sgSpriteRelease(sprite);
+}
 void SG_CALL SG_HINT_DEPRECATED sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height)
 {
     SGIVec2 size = sgSpriteGetSize2iv(sprite);

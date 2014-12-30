@@ -35,7 +35,7 @@ int main(void)
         sgDrawClear();
     }
 
-    sgSurfaceDestroy(surf);
+    sgSurfaceRelease(surf);
 
     sgDeinit();
 

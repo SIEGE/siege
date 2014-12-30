@@ -16,6 +16,7 @@
 #define __SIEGE_GRAPHICS_TRAIL_H__
 
 #include "../common.h"
+#include "../util/rcount.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -27,6 +28,8 @@ extern "C"
  */
 typedef struct SGTrail
 {
+    SGRCount cnt;
+
     SGuint numpoints;    /// < The number of points in the trail
 
     float* xpoints;        /// < X point positions
@@ -53,8 +56,12 @@ SGTrail* SG_CALL sgTrailCreate(SGuint maxpoints);
  *
  * \param trail The trail to destroy. It should not be used anymore after this call.
  */
-void SG_CALL sgTrailDestroy(SGTrail* trail);
+void SG_CALL sgTrailForceDestroy(SGTrail* trail);
 /// @}
+
+void SG_CALL sgTrailRelease(SGTrail* trail);
+void SG_CALL sgTrailLock(SGTrail* trail);
+void SG_CALL sgTrailUnlock(SGTrail* trail);
 
 //void SG_CALL sgTrailSetGradient(SGGradient* grad);
 
@@ -95,6 +102,9 @@ void SG_CALL sgTrailAddBreak(SGTrail* trail);
  */
 void SG_CALL sgTrailDraw(SGTrail* trail);
 /// @}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgTrailDestroy(SGTrail* trail);
 
 #ifdef __cplusplus
 }

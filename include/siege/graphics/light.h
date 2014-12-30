@@ -19,6 +19,7 @@
 #include "../util/list.h"
 #include "../util/color.h"
 #include "../util/vector.h"
+#include "../util/rcount.h"
 #include "surface.h"
 #include "sprite.h"
 
@@ -35,15 +36,19 @@ extern "C"
 
 typedef struct SGLightSpace
 {
+    SGRCount cnt;
+
     SGSurface* buffer;
     SGSurface* lbuffer;
-    SGList* lights;
-    SGList* shapes;
+    SGList lights;
+    SGList shapes;
     SGColor ambience;
 } SGLightSpace;
 
 typedef struct SGLight
 {
+    SGRCount cnt;
+
     SGLightSpace* space;
     SGListNode* node;
 
@@ -66,6 +71,8 @@ typedef struct SGLight
 
 typedef struct SGShadowShape
 {
+    SGRCount cnt;
+
     SGLightSpace* space;
     SGListNode* node;
 
@@ -99,7 +106,11 @@ void SG_CALL _sgLightSpaceRemoveShadowShape(SGLightSpace* space, SGShadowShape* 
 
 
 SGLightSpace* SG_CALL sgLightSpaceCreate(SGuint width, SGuint height);
-void SG_CALL sgLightSpaceDestroy(SGLightSpace* space);
+void SG_CALL sgLightSpaceForceDestroy(SGLightSpace* space);
+
+void SG_CALL sgLightSpaceRelease(SGLightSpace* space);
+void SG_CALL sgLightSpaceLock(SGLightSpace* space);
+void SG_CALL sgLightSpaceUnlock(SGLightSpace* space);
 
 /*
  * TODO: Should this set the ambience to 1.0f and premultiply the rest?
@@ -116,7 +127,11 @@ void SG_CALL sgLightSpaceDraw(SGLightSpace* space, SGenum flags);
 void SG_CALL sgLightSpaceDrawDBG(SGLightSpace* space, SGenum flags);
 
 SGLight* SG_CALL sgLightCreate(SGLightSpace* space, float x, float y, float radius);
-void SG_CALL sgLightDestroy(SGLight* light);
+void SG_CALL sgLightForceDestroy(SGLight* light);
+
+void SG_CALL sgLightRelease(SGLight* light);
+void SG_CALL sgLightLock(SGLight* light);
+void SG_CALL sgLightUnlock(SGLight* light);
 
 void SG_CALL sgLightSetPos(SGLight* light, float x, float y);
 void SG_CALL sgLightSetPosX(SGLight* light, float x);
@@ -174,7 +189,11 @@ SGShadowShape* SG_CALL sgShadowShapeCreate(SGLightSpace* space, SGenum type);
 SGShadowShape* SG_CALL sgShadowShapeCreateSegment(SGLightSpace* space, float x1, float y1, float x2, float y2);
 SGShadowShape* SG_CALL sgShadowShapeCreatePoly(SGLightSpace* space, float x, float y, float* verts, size_t numverts);
 SGShadowShape* SG_CALL sgShadowShapeCreateCircle(SGLightSpace* space, float x, float y, float radius);
-void SG_CALL sgShadowShapeDestroy(SGShadowShape* shape);
+void SG_CALL sgShadowShapeForceDestroy(SGShadowShape* shape);
+
+void SG_CALL sgShadowShapeRelease(SGShadowShape* shape);
+void SG_CALL sgShadowShapeLock(SGShadowShape* shape);
+void SG_CALL sgShadowShapeUnlock(SGShadowShape* shape);
 
 void SG_CALL sgShadowShapeSetDepth(SGShadowShape* shape, float depth);
 float SG_CALL sgShadowShapeGetDepth(SGShadowShape* shape);
@@ -189,6 +208,11 @@ void SG_CALL sgShadowShapeDrawDBG(SGShadowShape* shape, SGbool fill);
 
 void SG_CALL sgShadowShapeCast(SGShadowShape* shape, SGLight* light);
 void SG_CALL sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgLightSpaceDestroy(SGLightSpace* space);
+void SG_CALL SG_HINT_DEPRECATED sgLightDestroy(SGLight* light);
+void SG_CALL SG_HINT_DEPRECATED sgShadowShapeDestroy(SGShadowShape* shape);
 
 #ifdef __cplusplus
 }

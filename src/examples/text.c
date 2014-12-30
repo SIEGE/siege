@@ -97,10 +97,10 @@ int main(void)
         sgDrawClear();
     }
 
-    sgFontDestroy(font);
+    sgFontRelease(font);
 
     for(i = 0; i < numsizes; i++)
-        sgFontDestroy(sizes[i]);
+        sgFontRelease(sizes[i]);
 
     sgDeinit();
 

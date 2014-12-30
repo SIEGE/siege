@@ -129,6 +129,7 @@ SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStrea
 {
     SGStream* stream = malloc(sizeof(SGStream));
     if(!stream) return NULL;
+    sgRCountInit(&stream->cnt);
 
     stream->seek = seek;
     stream->tell = tell;
@@ -218,12 +219,29 @@ SGStream* SG_CALL sgStreamCreateBuffer(size_t size)
     }
     return stream;
 }
-void SG_CALL sgStreamDestroy(SGStream* stream)
+void SG_CALL sgStreamForceDestroy(SGStream* stream)
 {
     if(!stream) return;
     if(stream->close)
         stream->close(stream->data);
+    sgRCountDeinit(&stream->cnt);
     free(stream);
+}
+
+void SG_CALL sgStreamRelease(SGStream* stream)
+{
+    sgStreamUnlock(stream);
+}
+void SG_CALL sgStreamLock(SGStream* stream)
+{
+    if(!stream) return;
+    sgRCountInc(&stream->cnt);
+}
+void SG_CALL sgStreamUnlock(SGStream* stream)
+{
+    if(!stream) return;
+    if(!sgRCountDec(&stream->cnt))
+        sgStreamForceDestroy(stream);
 }
 
 SGlong SG_CALL sgStreamTellSize(SGStream* stream)
@@ -271,4 +289,10 @@ SGbool SG_CALL sgStreamClose(SGStream* stream)
     stream->write = NULL;
     stream->close = NULL;
     return ret;
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgStreamDestroy(SGStream* stream)
+{
+    sgStreamRelease(stream);
 }

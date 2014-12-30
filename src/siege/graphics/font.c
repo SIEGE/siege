@@ -141,7 +141,7 @@ SGbool SG_CALL _sgFontLoad(SGFont* font, SGdchar* chars, SGuint numchars, SGbool
             cache = _sgFontFindCache(font, achars[i]);
             if(cache != NULL)
             {
-                sgTextureDestroy(cache->texture);
+                sgTextureRelease(cache->texture);
             }
             else
             {
@@ -239,9 +239,9 @@ static void SG_CALL _sgFontDestroyCache(SGFont* font)
 {
     size_t i;
     for(i = 0; i < font->numchars; i++)
-        sgTextureDestroy(font->chars[i].texture);
+        sgTextureRelease(font->chars[i].texture);
     for(i = 0; i < font->numcache; i++)
-        sgTextureDestroy(font->cache[i].texture);
+        sgTextureRelease(font->cache[i].texture);
 
     free(font->chars);
     free(font->cachechars);
@@ -335,14 +335,15 @@ end:
     return SG_TRUE;
 }
 
-SGFont* SG_CALL sgFontCreateStream(SGStream* stream, SGbool delstream, float height, SGuint dpi, SGuint preload)
+SGFont* SG_CALL sgFontCreateStream(SGStream* stream, float height, SGuint dpi, SGuint preload)
 {
     SGFont* font = malloc(sizeof(SGFont));
     if(font == NULL)
         return NULL;
+    sgRCountInit(&font->cnt);
 
     font->stream = stream;
-    font->del = delstream;
+    sgStreamLock(stream);
     FontFace* fface = NULL;
 
     fface = malloc(sizeof(FontFace));
@@ -395,9 +396,11 @@ SGFont* SG_CALL sgFontCreate(const char* fname, float height, SGuint dpi, SGuint
         fprintf(stderr, "Warning: Cannot create font %s\n", fname);
         return NULL;
     }
-    return sgFontCreateStream(stream, SG_TRUE, height, dpi, preload);
+    SGFont* font = sgFontCreateStream(stream, height, dpi, preload);
+    sgStreamRelease(stream);
+    return font;
 }
-void SG_CALL sgFontDestroy(SGFont* font)
+void SG_CALL sgFontForceDestroy(SGFont* font)
 {
     if(font == NULL)
         return;
@@ -412,9 +415,25 @@ void SG_CALL sgFontDestroy(SGFont* font)
 
     _sgFontDestroyCache(font);
 
-    if(font->del)
-        sgStreamDestroy(font->stream);
+    sgStreamUnlock(font->stream);
+    sgRCountDeinit(&font->cnt);
     free(font);
+}
+
+void SG_CALL sgFontRelease(SGFont* font)
+{
+    sgFontUnlock(font);
+}
+void SG_CALL sgFontLock(SGFont* font)
+{
+    if(!font) return;
+    sgRCountInc(&font->cnt);
+}
+void SG_CALL sgFontUnlock(SGFont* font)
+{
+    if(!font) return;
+    if(!sgRCountDec(&font->cnt))
+        sgFontForceDestroy(font);
 }
 
 void SG_CALL sgFontClearCache(SGFont* font)
@@ -868,6 +887,10 @@ void SG_CALL sgFontGetPos(SGFont* font, float* x, float* y, size_t index, const 
 }
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgFontDestroy(SGFont* font)
+{
+    sgFontRelease(font);
+}
 void SG_CALL sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...)
 {
     va_list args;

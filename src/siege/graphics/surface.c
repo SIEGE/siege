@@ -33,7 +33,7 @@ SGbool SG_CALL _sgSurfaceDeinit(void)
     return SG_TRUE;
 }
 
-SGSurface* SG_CALL sgSurfaceCreateBitmap(SGBitmap* bmp, SGbool delbmp)
+SGSurface* SG_CALL sgSurfaceCreateBitmap(SGBitmap* bmp)
 {
     size_t width;
     size_t height;
@@ -41,16 +41,15 @@ SGSurface* SG_CALL sgSurfaceCreateBitmap(SGBitmap* bmp, SGbool delbmp)
     void* data;
 
     sgBitmapGetData(bmp, &width, &height, &bpp, &data);
-    SGSurface* surface = sgSurfaceCreateData(width, height, bpp, data);
-    if(delbmp)
-        sgBitmapDestroy(bmp);
-    return surface;
+    return sgSurfaceCreateData(width, height, bpp, data);
 }
-SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream, SGbool delstream)
+SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream)
 {
-    SGBitmap* bmp = sgBitmapCreateStream(stream, delstream);
+    SGBitmap* bmp = sgBitmapCreateStream(stream);
     if(!bmp) return NULL;
-    return sgSurfaceCreateBitmap(bmp, SG_TRUE);
+    SGSurface* surface = sgSurfaceCreateBitmap(bmp);
+    sgBitmapRelease(bmp);
+    return surface;
 }
 SGSurface* SG_CALL sgSurfaceCreateFile(const char* fname)
 {
@@ -60,34 +59,35 @@ SGSurface* SG_CALL sgSurfaceCreateFile(const char* fname)
         fprintf(stderr, "Could not load image %s\n", fname);
         return NULL;
     }
-    return sgSurfaceCreateStream(stream, SG_TRUE);
+    SGSurface* surface = sgSurfaceCreateStream(stream);
+    sgStreamRelease(stream);
+    return surface;
 }
 SGSurface* SG_CALL sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data)
 {
     SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
     if(!texture) return NULL;
 
-    SGSurface* surface = sgSurfaceCreateTexture(texture, SG_TRUE);
-    if(!surface)
-        sgTextureDestroy(texture);
+    SGSurface* surface = sgSurfaceCreateTexture(texture);
+    sgTextureRelease(texture);
     return surface;
 }
-SGSurface* SG_CALL sgSurfaceCreateTexture(SGTexture* texture, SGbool deltex)
+SGSurface* SG_CALL sgSurfaceCreateTexture(SGTexture* texture)
 {
     SGSurface* surface = malloc(sizeof(SGSurface));
     if(!surface) return NULL;
+    sgRCountInit(&surface->cnt);
 
     surface->fboid = malloc(sizeof(GLuint));
     surface->rbid = malloc(sizeof(GLuint));
     surface->texture = NULL;
-    surface->deltex = SG_FALSE;
 
     glGenFramebuffersEXT(1, surface->fboid);
     glGenRenderbuffersEXT(1, surface->rbid);
 
-    if(!sgSurfaceSetTexture(surface, texture, deltex))
+    if(!sgSurfaceSetTexture(surface, texture))
     {
-        sgSurfaceDestroy(surface);
+        sgSurfaceRelease(surface);
         return NULL;
     }
 
@@ -97,27 +97,40 @@ SGSurface* SG_CALL sgSurfaceCreate(SGuint width, SGuint height, SGenum bpp)
 {
     return sgSurfaceCreateData(width, height, bpp, NULL);
 }
-void SG_CALL sgSurfaceDestroy(SGSurface* surface)
+void SG_CALL sgSurfaceForceDestroy(SGSurface* surface)
 {
+    if(!surface) return;
     glDeleteRenderbuffersEXT(1, surface->rbid);
     glDeleteFramebuffersEXT(1, surface->fboid);
+    sgTextureUnlock(surface->texture);
     free(surface->rbid);
     free(surface->fboid);
-    if(surface->deltex && surface->texture)
-        sgTextureDestroy(surface->texture);
+    sgRCountDeinit(&surface->cnt);
     free(surface);
 }
 
-SGbool SG_CALL sgSurfaceSetTexture(SGSurface* surface, SGTexture* texture, SGbool deltex)
+void SG_CALL sgSurfaceRelease(SGSurface* surface)
+{
+    sgSurfaceUnlock(surface);
+}
+void SG_CALL sgSurfaceLock(SGSurface* surface)
+{
+    if(!surface) return;
+    sgRCountInc(&surface->cnt);
+}
+void SG_CALL sgSurfaceUnlock(SGSurface* surface)
+{
+    if(!surface) return;
+    if(!sgRCountDec(&surface->cnt))
+        sgSurfaceForceDestroy(surface);
+}
+
+SGbool SG_CALL sgSurfaceSetTexture(SGSurface* surface, SGTexture* texture)
 {
     if(!texture) return SG_FALSE;
-    if(surface->deltex)
-    {
-        if(surface->texture != texture)
-            sgTextureDestroy(surface->texture);
-    }
+    sgTextureLock(texture);
+    sgTextureUnlock(surface->texture);
     surface->texture = texture;
-    surface->deltex = deltex;
 
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, GLFBO(surface));
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, GLTEX(texture), 0);
@@ -141,7 +154,7 @@ SGTexture* SG_CALL sgSurfaceGetTexture(SGSurface* surface)
 void SG_CALL sgSurfaceSetData(SGSurface* surface, size_t width, size_t height, SGenum bpp, void* data)
 {
     sgTextureSetData(surface->texture, width, height, bpp, data);
-    sgSurfaceSetTexture(surface, surface->texture, surface->deltex);
+    sgSurfaceSetTexture(surface, surface->texture);
 }
 void SG_CALL sgSurfaceSetSubData(SGSurface* surface, size_t x, size_t y, size_t width, size_t height, SGenum bpp, void* data)
 {
@@ -315,6 +328,10 @@ SGenum SG_CALL sgSurfaceGetBPP(SGSurface* surface)
 }
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgSurfaceDestroy(SGSurface* surface)
+{
+    sgSurfaceRelease(surface);
+}
 void SG_CALL SG_HINT_DEPRECATED sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height)
 {
     SGIVec2 size = sgSurfaceGetSize2iv(surface);

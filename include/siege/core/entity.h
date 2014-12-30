@@ -24,6 +24,7 @@
 #include "../util/list.h"
 #include "../util/smap.h"
 #include "../util/vector.h"
+#include "../util/rcount.h"
 
 #include <stdarg.h>
 
@@ -144,6 +145,8 @@ struct SGPhysicsCollision;
  */
 typedef struct SGEntity
 {
+    SGRCount cnt;
+
     /**
      * Variable: active
      *
@@ -169,6 +172,7 @@ typedef struct SGEntity
      *  For internal use only.
      */
     SGListNode* node;
+    SGListNode* anode;
     /**
      * Variable: data
      *
@@ -187,7 +191,8 @@ typedef struct SGEntity
      * Is the entity visible?
      *
      * If an entity is invisible, it is not automatically drawn. This
-     * does not affect manually drawing the entity via <SGEntityDraw>.
+     * does not affect manually drawing the entity via <SGEntityDraw>,
+     * but it *does* affect <evDraw>.
      */
     SGbool visible;
 
@@ -308,6 +313,7 @@ typedef struct SGEntity
      * The entity is about to be destroyed.
      */
     void SG_CALL (*lcDestroy)(struct SGEntity* entity);
+    void SG_CALL (*lcKill)(struct SGEntity* entity);
 
     /**
      * Variables: lcCollision*
@@ -518,12 +524,6 @@ typedef struct SGEntity
     void SG_CALL (*evUser)(struct SGEntity* entity, SGuint id, va_list args);
 } SGEntity;
 
-#ifdef SG_BUILD_LIBRARY
-SGList* _sg_entList;
-SGSMap* _sg_entSMap;
-SGbool _sg_entStop;
-#endif // SG_BUILD_LIBRARY
-
 /**
  * Group: Functions
  */
@@ -550,8 +550,18 @@ SGEntity* SG_CALL sgEntityCreate(void);
  * Parameters:
  *     entity - The entity to destroy. It should not be used anymore after this call.
  */
-void SG_CALL sgEntityDestroy(SGEntity* entity);
-void SG_CALL sgEntityDestroyAll(void);
+void SG_CALL sgEntityForceDestroy(SGEntity* entity);
+void SG_CALL sgEntityForceDestroyAll(void);
+
+void SG_CALL sgEntityRelease(SGEntity* entity);
+void SG_CALL sgEntityLock(SGEntity* entity);
+void SG_CALL sgEntityUnlock(SGEntity* entity);
+
+void SG_CALL sgEntityKill(SGEntity* entity);
+void SG_CALL sgEntityKillAll(void);
+void SG_CALL sgEntityKillRelease(SGEntity* entity);
+
+SGbool SG_CALL sgEntityIsAlive(SGEntity* entity);
 
 void SG_CALL sgEntitySetName(SGEntity* entity, const char* name);
 char* SG_CALL sgEntityGetName(SGEntity* entity);
@@ -736,6 +746,10 @@ SGEntity* SG_CALL sgEntityFindIter(SGEntity* prev, const char* name);
 void SG_CALL sgEntityEventSignalv(size_t num, va_list args);
 void SG_CALL sgEntityEventSignal(size_t num, ...);
 void SG_CALL sgEntityEventStop(void);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgEntityDestroy(SGEntity* entity);
+void SG_CALL SG_HINT_DEPRECATED sgEntityDestroyAll(void);
 
 #ifdef __cplusplus
 }

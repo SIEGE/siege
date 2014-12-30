@@ -117,6 +117,7 @@ SGAtlas* SG_CALL sgAtlasCreateData(size_t width, size_t height, SGenum bpp, void
 {
     SGAtlas* atlas = malloc(sizeof(SGAtlas));
     if(!atlas) return NULL;
+    sgRCountInit(&atlas->cnt);
 
     atlas->width = width;
     atlas->height = height;
@@ -141,7 +142,7 @@ SGAtlas* SG_CALL sgAtlasCreateFile(const char* fname)
 {
     return sgAtlasCreateTexture(sgTextureCreateFile(fname), SG_TRUE);
 }
-void SG_CALL sgAtlasDestroy(SGAtlas* atlas)
+void SG_CALL sgAtlasForceDestroy(SGAtlas* atlas)
 {
     if(!atlas)
         return;
@@ -154,7 +155,24 @@ void SG_CALL sgAtlasDestroy(SGAtlas* atlas)
         _sgAtlasNodeDestroy(atlas->textures[i].root);
     }
     free(atlas->textures);
+    sgRCountDeinit(&atlas->cnt);
     free(atlas);
+}
+
+void SG_CALL sgAtlasRelease(SGAtlas* atlas)
+{
+    sgAtlasUnlock(atlas);
+}
+void SG_CALL sgAtlasLock(SGAtlas* atlas)
+{
+    if(!atlas) return;
+    sgRCountInc(&atlas->cnt);
+}
+void SG_CALL sgAtlasUnlock(SGAtlas* atlas)
+{
+    if(!atlas) return;
+    if(!sgRCountDec(&atlas->cnt))
+        sgAtlasForceDestroy(atlas);
 }
 
 SGAtlasArea* SG_CALL sgAtlasAreaReserve(SGAtlas* atlas, size_t width, size_t height, SGbool overflow)
@@ -348,6 +366,10 @@ void SG_CALL sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbo
 }
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgAtlasDestroy(SGAtlas* atlas)
+{
+    sgAtlasRelease(atlas);
+}
 void SG_CALL SG_HINT_DEPRECATED sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height)
 {
     SGIVec2 size = sgAtlasGetSize2iv(atlas);

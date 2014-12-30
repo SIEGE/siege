@@ -35,6 +35,7 @@ SGMask* SG_CALL sgMaskCreateTexture2iv(SGTexture* texture, SGIVec2 offset)
     SGMask* mask = malloc(sizeof(SGMask));
     if(mask == NULL)
         return NULL;
+    sgRCountInit(&mask->cnt);
 
     SGuint i, j;
 
@@ -158,10 +159,8 @@ SGMask* SG_CALL sgMaskCreateFile2iv(const char* fname, SGIVec2 offset)
     SGTexture* texture = sgTextureCreateFile(fname);
     if(texture == NULL)
         return NULL;
-
     SGMask* mask = sgMaskCreateTexture2iv(texture, offset);
-    sgTextureDestroy(texture);
-
+    sgTextureRelease(texture);
     return mask;
 }
 SGMask* SG_CALL sgMaskCreateFile(const char* fname)
@@ -173,7 +172,7 @@ SGMask* SG_CALL sgMaskCreateFile(const char* fname)
     mask->offset.y = mask->height / 2;
     return mask;
 }
-void SG_CALL sgMaskDestroy(SGMask* mask)
+void SG_CALL sgMaskForceDestroy(SGMask* mask)
 {
     if(mask == NULL)
         return;
@@ -182,7 +181,24 @@ void SG_CALL sgMaskDestroy(SGMask* mask)
     for(i = 0; i < mask->width; i++)
         free(mask->field[i]);
     free(mask->field);
+    sgRCountDeinit(&mask->cnt);
     free(mask);
+}
+
+void SG_CALL sgMaskRelease(SGMask* mask)
+{
+    sgMaskUnlock(mask);
+}
+void SG_CALL sgMaskLock(SGMask* mask)
+{
+    if(!mask) return;
+    sgRCountInc(&mask->cnt);
+}
+void SG_CALL sgMaskUnlock(SGMask* mask)
+{
+    if(!mask) return;
+    if(!sgRCountDec(&mask->cnt))
+        sgMaskForceDestroy(mask);
 }
 
 SGbool SG_CALL sgMaskCheckCollision2i(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
@@ -280,6 +296,11 @@ void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent)
 SGbool SG_CALL SG_HINT_DEPRECATED sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
 {
     return sgMaskCheckCollision2i(m1, x1, y1, m2, x2, y2);
+}
+
+void SG_CALL SG_HINT_DEPRECATED sgMaskDestroy(SGMask* mask)
+{
+    sgMaskRelease(mask);
 }
 void SG_CALL SG_HINT_DEPRECATED sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height)
 {

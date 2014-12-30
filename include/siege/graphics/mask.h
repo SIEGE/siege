@@ -24,6 +24,7 @@
 #include "texture.h"
 #include "../util/ivector.h"
 #include "../util/vector.h"
+#include "../util/rcount.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -35,6 +36,8 @@ extern "C"
  */
 typedef struct SGMask
 {
+    SGRCount cnt;
+
     SGuint width;
     SGuint height;
 
@@ -51,7 +54,11 @@ SGMask* SG_CALL sgMaskCreateTexture(SGTexture* texture);
 SGMask* SG_CALL sgMaskCreateFile2i(const char* fname, SGint xoffset, SGint yoffset);
 SGMask* SG_CALL sgMaskCreateFile2iv(const char* fname, SGIVec2 offset);
 SGMask* SG_CALL sgMaskCreateFile(const char* fname);
-void SG_CALL sgMaskDestroy(SGMask* mask);
+void SG_CALL sgMaskForceDestroy(SGMask* mask);
+
+void SG_CALL sgMaskRelease(SGMask* mask);
+void SG_CALL sgMaskLock(SGMask* mask);
+void SG_CALL sgMaskUnlock(SGMask* mask);
 
 /**
  * \brief Check the collision between two masks
@@ -89,6 +96,7 @@ void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent);
 
 /* DEPRECATED */
 SGbool SG_CALL SG_HINT_DEPRECATED sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
+void SG_CALL SG_HINT_DEPRECATED sgMaskDestroy(SGMask* mask);
 void SG_CALL SG_HINT_DEPRECATED sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height);
 
 #ifdef __cplusplus

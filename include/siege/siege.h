@@ -75,6 +75,7 @@
 #include "util/map.h"
 #include "util/matrix.h"
 #include "util/rand.h"
+#include "util/rcount.h"
 #include "util/rect.h"
 #include "util/set.h"
 #include "util/smap.h"

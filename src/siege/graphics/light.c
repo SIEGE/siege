@@ -35,9 +35,8 @@ SGbool SG_CALL _sgLightInit(void)
 }
 SGbool SG_CALL _sgLightDeinit(void)
 {
-    sgLightSpaceDestroy(_sg_lightSpaceMain);
+    sgLightSpaceForceDestroy(_sg_lightSpaceMain);
     _sg_lightSpaceMain = NULL;
-
     return SG_TRUE;
 }
 
@@ -45,26 +44,30 @@ void SG_CALL _sgLightSpaceAddLight(SGLightSpace* space, SGLight* light)
 {
     if(space == NULL) space = _sgLightGetSpace();
     light->space = space;
-    light->node = sgListAppend(space->lights, light);
+    light->node = sgListAppend(&space->lights, light);
+    sgLightLock(light);
 }
 void SG_CALL _sgLightSpaceAddShadowShape(SGLightSpace* space, SGShadowShape* shape)
 {
     if(space == NULL) space = _sgLightGetSpace();
     shape->space = space;
-    shape->node = sgListAppend(space->shapes, shape);
+    shape->node = sgListAppend(&space->shapes, shape);
+    sgShadowShapeLock(shape);
 }
 void SG_CALL _sgLightSpaceRemoveLight(SGLightSpace* space, SGLight* light)
 {
-    sgListRemoveNode(space->lights, light->node);
+    sgListRemoveNode(&space->lights, light->node);
 }
 void SG_CALL _sgLightSpaceRemoveShadowShape(SGLightSpace* space, SGShadowShape* shape)
 {
-    sgListRemoveNode(space->shapes, shape->node);
+    sgListRemoveNode(&space->shapes, shape->node);
 }
 
 SGLightSpace* SG_CALL sgLightSpaceCreate(SGuint width, SGuint height)
 {
     SGLightSpace* space = malloc(sizeof(SGLightSpace));
+    if(!space) return NULL;
+    sgRCountInit(&space->cnt);
 
     if(!width)
         width = sgWindowGetWidth();
@@ -74,8 +77,8 @@ SGLightSpace* SG_CALL sgLightSpaceCreate(SGuint width, SGuint height)
     space->buffer = sgSurfaceCreate(width, height, 32);
     space->lbuffer = sgSurfaceCreate(width, height, 32);
 
-    space->lights = sgListCreate();
-    space->shapes = sgListCreate();
+    sgListInit(&space->lights);
+    sgListInit(&space->shapes);
 
     space->ambience.r = 0.0;
     space->ambience.g = 0.0;
@@ -84,25 +87,48 @@ SGLightSpace* SG_CALL sgLightSpaceCreate(SGuint width, SGuint height)
 
     return space;
 }
-void SG_CALL sgLightSpaceDestroy(SGLightSpace* space)
+void SG_CALL sgLightSpaceForceDestroy(SGLightSpace* space)
 {
     if(!space)
         return;
 
     SGListNode* node;
+    SGListNode* next;
 
-    for(node = space->lights->head; node != NULL; node = node->next)
-        sgLightDestroy(node->item);
-    sgListDestroy(space->lights);
+    for(node = space->lights.head; node; node = next)
+    {
+        next = node->next;
+        sgLightUnlock(node->item);
+    }
+    sgListDeinit(&space->lights);
 
-    for(node = space->shapes->head; node != NULL; node = node->next)
-        sgShadowShapeDestroy(node->item);
-    sgListDestroy(space->shapes);
+    for(node = space->shapes.head; node; node = next)
+    {
+        next = node->next;
+        sgShadowShapeUnlock(node->item);
+    }
+    sgListDeinit(&space->shapes);
 
-    sgSurfaceDestroy(space->buffer);
-    sgSurfaceDestroy(space->lbuffer);
-
+    sgSurfaceRelease(space->buffer);
+    sgSurfaceRelease(space->lbuffer);
+    sgRCountDeinit(&space->cnt);
     free(space);
+}
+
+void SG_CALL sgLightSpaceRelease(SGLightSpace* space)
+{
+    sgLightSpaceUnlock(space);
+}
+void SG_CALL sgLightSpaceLock(SGLightSpace* space)
+{
+    if(!space) return;
+    sgRCountInc(&space->cnt);
+}
+void SG_CALL sgLightSpaceUnlock(SGLightSpace* space)
+{
+    if(!space) return;
+    if(!sgRCountDec(&space->cnt))
+        sgLightSpaceForceDestroy(space);
 }
 
 void SG_CALL sgLightSpaceSetAmbience4f(SGLightSpace* space, float r, float g, float b, float a)
@@ -120,8 +146,8 @@ SGSurface* SG_CALL sgLightSpaceGetBuffer(SGLightSpace* space)
 
 void SG_CALL sgLightSpaceResize(SGLightSpace* space, SGuint width, SGuint height)
 {
-    sgSurfaceDestroy(space->buffer);
-    sgSurfaceDestroy(space->lbuffer);
+    sgSurfaceRelease(space->buffer);
+    sgSurfaceRelease(space->lbuffer);
     space->buffer = sgSurfaceCreate(width, height, 32);
     space->lbuffer = sgSurfaceCreate(width, height, 32);
 }
@@ -131,7 +157,7 @@ void SG_CALL sgLightSpaceUpdate(SGLightSpace* space)
     SGListNode* snode;
 
     sgSurfaceClear4f(space->buffer, space->ambience.r, space->ambience.g, space->ambience.b, space->ambience.a);
-    for(lnode = space->lights->head; lnode != NULL; lnode = lnode->next)
+    for(lnode = space->lights.head; lnode != NULL; lnode = lnode->next)
     {
         if(!sgLightGetActive(lnode->item))
             continue;
@@ -141,7 +167,7 @@ void SG_CALL sgLightSpaceUpdate(SGLightSpace* space)
         sgLightDraw(lnode->item);
         if(sgLightGetShadow(lnode->item))
         {
-            for(snode = space->shapes->head; snode != NULL; snode = snode->next)
+            for(snode = space->shapes.head; snode != NULL; snode = snode->next)
             {
                 if(!sgShadowShapeGetActive(snode->item))
                     continue;
@@ -176,26 +202,26 @@ void SG_CALL sgLightSpaceDrawDBG(SGLightSpace* space, SGenum flags)
 {
     SGListNode* lnode;
     SGListNode* snode;
-    for(snode = space->shapes->head; snode != NULL; snode = snode->next)
+    for(snode = space->shapes.head; snode != NULL; snode = snode->next)
     {
         if(!sgShadowShapeGetActive(snode->item))
             continue;
         sgShadowShapeDrawDBG(snode->item, SG_TRUE);
     }
-    for(snode = space->shapes->head; snode != NULL; snode = snode->next)
+    for(snode = space->shapes.head; snode != NULL; snode = snode->next)
     {
         if(!sgShadowShapeGetActive(snode->item))
             continue;
         sgShadowShapeDrawDBG(snode->item, SG_FALSE);
     }
-    for(lnode = space->lights->head; lnode != NULL; lnode = lnode->next)
+    for(lnode = space->lights.head; lnode != NULL; lnode = lnode->next)
     {
         if(!sgLightGetActive(lnode->item))
             continue;
         sgLightDrawDBG(lnode->item);
         if(sgLightGetShadow(lnode->item))
         {
-            for(snode = space->shapes->head; snode != NULL; snode = snode->next)
+            for(snode = space->shapes.head; snode != NULL; snode = snode->next)
             {
                 if(!sgShadowShapeGetActive(snode->item))
                     continue;
@@ -210,6 +236,7 @@ SGLight* SG_CALL sgLightCreate(SGLightSpace* space, float x, float y, float radi
     SGLight* light = malloc(sizeof(SGLight));
     if(light == NULL)
         return NULL;
+    sgRCountInit(&light->cnt);
 
     _sgLightSpaceAddLight(space, light);
 
@@ -230,7 +257,7 @@ SGLight* SG_CALL sgLightCreate(SGLightSpace* space, float x, float y, float radi
 
     return light;
 }
-void SG_CALL sgLightDestroy(SGLight* light)
+void SG_CALL sgLightForceDestroy(SGLight* light)
 {
     if(light == NULL)
         return;
@@ -239,7 +266,24 @@ void SG_CALL sgLightDestroy(SGLight* light)
 
     //if(light->sprite)
     //    sgSpriteDestroy(light->sprite);
+    sgRCountDeinit(&light->cnt);
     free(light);
+}
+
+void SG_CALL sgLightRelease(SGLight* light)
+{
+    sgLightUnlock(light);
+}
+void SG_CALL sgLightLock(SGLight* light)
+{
+    if(!light) return;
+    sgRCountInc(&light->cnt);
+}
+void SG_CALL sgLightUnlock(SGLight* light)
+{
+    if(!light) return;
+    if(!sgRCountDec(&light->cnt))
+        sgLightForceDestroy(light);
 }
 
 void SG_CALL sgLightSetPos(SGLight* light, float x, float y)
@@ -430,6 +474,7 @@ SGShadowShape* SG_CALL sgShadowShapeCreate(SGLightSpace* space, SGenum type)
     SGShadowShape* shape = malloc(sizeof(SGShadowShape));
     if(shape == NULL)
         return NULL;
+    sgRCountInit(&shape->cnt);
 
     _sgLightSpaceAddShadowShape(space, shape);
 
@@ -498,7 +543,7 @@ SGShadowShape* SG_CALL sgShadowShapeCreateCircle(SGLightSpace* space, float x, f
 
     return shape;
 }
-void SG_CALL sgShadowShapeDestroy(SGShadowShape* shape)
+void SG_CALL sgShadowShapeForceDestroy(SGShadowShape* shape)
 {
     if(shape == NULL)
         return;
@@ -506,7 +551,24 @@ void SG_CALL sgShadowShapeDestroy(SGShadowShape* shape)
     _sgLightSpaceRemoveShadowShape(shape->space, shape);
 
     free(shape->verts);
+    sgRCountDeinit(&shape->cnt);
     free(shape);
+}
+
+void SG_CALL sgShadowShapeRelease(SGShadowShape* shape)
+{
+    sgShadowShapeUnlock(shape);
+}
+void SG_CALL sgShadowShapeLock(SGShadowShape* shape)
+{
+    if(!shape) return;
+    sgRCountInc(&shape->cnt);
+}
+void SG_CALL sgShadowShapeUnlock(SGShadowShape* shape)
+{
+    if(!shape) return;
+    if(!sgRCountDec(&shape->cnt))
+        sgShadowShapeForceDestroy(shape);
 }
 
 void SG_CALL sgShadowShapeSetDepth(SGShadowShape* shape, float depth)
@@ -665,4 +727,18 @@ void SG_CALL sgShadowShapeCastDBG(SGShadowShape* shape, SGLight* light)
     }
 
     sgDrawEnd();
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgLightSpaceDestroy(SGLightSpace* space)
+{
+    sgLightSpaceRelease(space);
+}
+void SG_CALL SG_HINT_DEPRECATED sgLightDestroy(SGLight* light)
+{
+    sgLightRelease(light);
+}
+void SG_CALL SG_HINT_DEPRECATED sgShadowShapeDestroy(SGShadowShape* shape)
+{
+    sgShadowShapeRelease(shape);
 }

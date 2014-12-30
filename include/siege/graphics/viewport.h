@@ -16,6 +16,7 @@
 #define __SIEGE_GRAPHICS_VIEWPORT_H__
 #include "../common.h"
 #include "../util/list.h"
+#include "../util/rcount.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -24,6 +25,8 @@ extern "C"
 
 typedef struct SGViewport
 {
+    SGRCount cnt;
+
     SGuint wposx;
     SGuint wposy;
     SGuint wsizex;
@@ -45,7 +48,12 @@ SGbool SG_CALL _sgViewportDeinit(void);
 SGViewport* SG_CALL sgViewportCreate4i4f(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey);
 SGViewport* SG_CALL sgViewportCreate4i(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey);
 SGViewport* SG_CALL sgViewportCreate(void);
-void SG_CALL sgViewportDestroy(SGViewport* viewport);
+void SG_CALL sgViewportForceDestroy(SGViewport* viewport);
+
+void SG_CALL sgViewportRelease(SGViewport* viewport);
+void SG_CALL sgViewportLock(SGViewport* viewport);
+void SG_CALL sgViewportUnlock(SGViewport* viewport);
+
 void SG_CALL sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey);
 void SG_CALL sgViewportSet4i(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey);
 void SG_CALL sgViewportReset(SGViewport* viewport);
@@ -61,6 +69,9 @@ SGbool SG_CALL sgViewportInsideLocal(SGViewport* viewport, float x, float y);
 
 void SG_CALL sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* wy, float lx, float ly);
 void SG_CALL sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly, float wx, float wy);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgViewportDestroy(SGViewport* viewport);
 
 #ifdef __cplusplus
 }

@@ -19,6 +19,7 @@
 #include "../util/stream.h"
 #include "../util/ivector.h"
 #include "../util/vector.h"
+#include "../util/rcount.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -27,6 +28,8 @@ extern "C"
 
 typedef struct SGBitmap
 {
+    SGRCount cnt;
+
     size_t width;
     size_t height;
     SGenum bpp;
@@ -37,11 +40,15 @@ typedef struct SGBitmap
 SGbool SG_CALL _sgBitmapInit(void);
 SGbool SG_CALL _sgBitmapDeinit(void);
 
-SGBitmap* SG_CALL sgBitmapCreateStream(SGStream* stream, SGbool delstream);
+SGBitmap* SG_CALL sgBitmapCreateStream(SGStream* stream);
 SGBitmap* SG_CALL sgBitmapCreateFile(const char* fname);
 SGBitmap* SG_CALL sgBitmapCreateData(size_t width, size_t height, SGenum bpp, void* data);
 SGBitmap* SG_CALL sgBitmapCreate(size_t width, size_t height, SGenum bpp);
-void SG_CALL sgBitmapDestroy(SGBitmap* bmp);
+void SG_CALL sgBitmapForceDestroy(SGBitmap* bmp);
+
+void SG_CALL sgBitmapRelease(SGBitmap* bmp);
+void SG_CALL sgBitmapLock(SGBitmap* bmp);
+void SG_CALL sgBitmapUnlock(SGBitmap* bmp);
 
 //SGbool SG_CALL sgBitmapConvert(SGBitmap* bmp, SGenum bpp);
 
@@ -56,6 +63,7 @@ size_t SG_CALL sgBitmapGetHeight(SGBitmap* bmp);
 SGenum SG_CALL sgBitmapGetBPP(SGBitmap* bmp);
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgBitmapDestroy(SGBitmap* bmp);
 void SG_CALL SG_HINT_DEPRECATED sgBitmapGetSize(SGBitmap* bmp, size_t* width, size_t* height);
 
 #ifdef __cplusplus

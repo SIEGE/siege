@@ -90,7 +90,7 @@ static GLenum interpSGtoGL(SGenum interp)
     }
 }
 
-SGTexture* SG_CALL sgTextureCreateBitmap(SGBitmap* bmp, SGbool delbmp)
+SGTexture* SG_CALL sgTextureCreateBitmap(SGBitmap* bmp)
 {
     size_t width;
     size_t height;
@@ -98,17 +98,15 @@ SGTexture* SG_CALL sgTextureCreateBitmap(SGBitmap* bmp, SGbool delbmp)
     void* data;
 
     sgBitmapGetData(bmp, &width, &height, &bpp, &data);
-
-    SGTexture* texture = sgTextureCreateData(width, height, bpp, data);
-    if(delbmp)
-        sgBitmapDestroy(bmp);
-    return texture;
+    return sgTextureCreateData(width, height, bpp, data);
 }
-SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream, SGbool delstream)
+SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream)
 {
-    SGBitmap* bmp = sgBitmapCreateStream(stream, delstream);
+    SGBitmap* bmp = sgBitmapCreateStream(stream);
     if(!bmp) return NULL;
-    return sgTextureCreateBitmap(bmp, SG_TRUE);
+    SGTexture* texture = sgTextureCreateBitmap(bmp);
+    sgBitmapRelease(bmp);
+    return texture;
 }
 SGTexture* SG_CALL sgTextureCreateFile(const char* fname)
 {
@@ -118,12 +116,15 @@ SGTexture* SG_CALL sgTextureCreateFile(const char* fname)
         fprintf(stderr, "Could not load image %s\n", fname);
         return NULL;
     }
-    return sgTextureCreateStream(stream, SG_TRUE);
+    SGTexture* texture = sgTextureCreateStream(stream);
+    sgStreamRelease(stream);
+    return texture;
 }
 SGTexture* SG_CALL sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data)
 {
     SGTexture* texture = malloc(sizeof(SGTexture));
     if(!texture) return NULL;
+    sgRCountInit(&texture->cnt);
 
     texture->handle = malloc(sizeof(GLuint));
 
@@ -143,13 +144,29 @@ SGTexture* SG_CALL sgTextureCreate(SGuint width, SGuint height, SGenum bpp)
 {
     return sgTextureCreateData(width, height, bpp, NULL);
 }
-void SG_CALL sgTextureDestroy(SGTexture* texture)
+void SG_CALL sgTextureForceDestroy(SGTexture* texture)
 {
     if(!texture) return;
-
     glDeleteTextures(1, texture->handle);
     free(texture->handle);
+    sgRCountDeinit(&texture->cnt);
     free(texture);
+}
+
+void SG_CALL sgTextureRelease(SGTexture* texture)
+{
+    sgTextureUnlock(texture);
+}
+void SG_CALL sgTextureLock(SGTexture* texture)
+{
+    if(!texture) return;
+    sgRCountInc(&texture->cnt);
+}
+void SG_CALL sgTextureUnlock(SGTexture* texture)
+{
+    if(!texture) return;
+    if(!sgRCountDec(&texture->cnt))
+        sgTextureForceDestroy(texture);
 }
 
 void SG_CALL sgTextureSetData(SGTexture* texture, size_t width, size_t height, SGenum bpp, void* data)
@@ -362,6 +379,10 @@ SGenum SG_CALL sgTextureGetBPP(SGTexture* texture)
 }
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgTextureDestroy(SGTexture* texture)
+{
+    sgTextureRelease(texture);
+}
 void SG_CALL SG_HINT_DEPRECATED sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height)
 {
     SGIVec2 size = sgTextureGetSize2iv(texture);

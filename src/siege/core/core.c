@@ -167,7 +167,7 @@ SGbool SG_CALL sgDeinit(void)
     _sg_hasInited = SG_FALSE;
     sgEntityEventSignal(1, (SGenum)SG_EVF_DEINIT);
 
-    sgEntityDestroyAll();
+    sgEntityForceDestroyAll();
 
     _sgLightDeinit();
 

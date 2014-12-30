@@ -19,6 +19,7 @@
 #include "texture.h"
 #include "../util/ivector.h"
 #include "../util/vector.h"
+#include "../util/rcount.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -47,6 +48,8 @@ typedef struct SGAtlasTexture
 
 typedef struct SGAtlas
 {
+    SGRCount cnt;
+
     size_t width;
     size_t height;
     SGenum bpp;
@@ -58,7 +61,11 @@ SGAtlas* SG_CALL sgAtlasCreate(size_t width, size_t height, SGenum bpp);
 SGAtlas* SG_CALL sgAtlasCreateData(size_t width, size_t height, SGenum bpp, void* data);
 SGAtlas* SG_CALL sgAtlasCreateTexture(SGTexture* texture, SGbool owner);
 SGAtlas* SG_CALL sgAtlasCreateFile(const char* fname);
-void SG_CALL sgAtlasDestroy(SGAtlas* atlas);
+void SG_CALL sgAtlasForceDestroy(SGAtlas* atlas);
+
+void SG_CALL sgAtlasRelease(SGAtlas* atlas);
+void SG_CALL sgAtlasLock(SGAtlas* atlas);
+void SG_CALL sgAtlasUnlock(SGAtlas* atlas);
 
 SGAtlasArea* SG_CALL sgAtlasAreaReserve(SGAtlas* atlas, size_t width, size_t height, SGbool overflow);
 void SG_CALL sgAtlasAreaSetData(SGAtlas* atlas, SGAtlasArea* area, size_t width, size_t height, SGenum bpp, void* data);
@@ -98,6 +105,7 @@ size_t SG_CALL sgAtlasGetHeight(SGAtlas* atlas);
 void SG_CALL sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbool wires);
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgAtlasDestroy(SGAtlas* atlas);
 void SG_CALL SG_HINT_DEPRECATED sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height);
 
 #ifdef __cplusplus

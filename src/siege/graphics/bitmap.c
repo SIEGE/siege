@@ -50,43 +50,40 @@ SGbool SG_CALL _sgBitmapDeinit(void)
     return SG_TRUE;
 }
 
-SGBitmap* SG_CALL sgBitmapCreateStream(SGStream* stream, SGbool delstream)
+SGBitmap* SG_CALL sgBitmapCreateStream(SGStream* stream)
 {
-    SGBitmap* bmp = NULL;
-    if(!stream) goto err;
-    bmp = malloc(sizeof(SGBitmap));
-    if(!bmp) goto err;
-
     // TODO: Load with image BPP
     int w, h, n;
-    bmp->data = stbi_load_from_callbacks(&imgCallbacks, stream, &w, &h, &n, 4);
-    bmp->deldata = SG_TRUE;
-    if(!bmp->data)
-        goto err;
-    bmp->width = w;
-    bmp->height = h;
-    bmp->bpp = 32;
-    return bmp;
-err:
-    fprintf(stderr, "Could not load image\n");
+    void* data = stbi_load_from_callbacks(&imgCallbacks, stream, &w, &h, &n, 4);
+    SGBitmap* bmp = sgBitmapCreateData(w, h, 32, data);
     if(bmp)
+        bmp->deldata = SG_TRUE;
+    else
     {
-        if(bmp->data && bmp->deldata)
-            free(bmp->data);
-        free(bmp);
+        stbi_image_free(data);
+        fprintf(stderr, "Could not load image\n");
+        return NULL;
     }
-    return NULL;
+    return bmp;
 }
 SGBitmap* SG_CALL sgBitmapCreateFile(const char* fname)
 {
     SGStream* stream = sgStreamCreateFile(fname, "r");
     if(!stream)
+    {
         fprintf(stderr, "Could not load image %s\n", fname);
-    return sgBitmapCreateStream(stream, SG_TRUE);
+        return NULL;
+    }
+    SGBitmap* bmp = sgBitmapCreateStream(stream);
+    sgStreamRelease(stream);
+    return bmp;
 }
 SGBitmap* SG_CALL sgBitmapCreateData(size_t width, size_t height, SGenum bpp, void* data)
 {
     SGBitmap* bmp = malloc(sizeof(SGBitmap));
+    if(!bmp) return NULL;
+    sgRCountInit(&bmp->cnt);
+
     bmp->width = width;
     bmp->height = height;
     bmp->bpp = bpp;
@@ -99,13 +96,30 @@ SGBitmap* SG_CALL sgBitmapCreate(size_t width, size_t height, SGenum bpp)
 {
     return sgBitmapCreateData(width, height, bpp, NULL);
 }
-void SG_CALL sgBitmapDestroy(SGBitmap* bmp)
+void SG_CALL sgBitmapForceDestroy(SGBitmap* bmp)
 {
     if(!bmp) return;
 
     if(bmp->deldata)
         free(bmp->data);
+    sgRCountDeinit(&bmp->cnt);
     free(bmp);
+}
+
+void SG_CALL sgBitmapRelease(SGBitmap* bmp)
+{
+    sgBitmapUnlock(bmp);
+}
+void SG_CALL sgBitmapLock(SGBitmap* bmp)
+{
+    if(!bmp) return;
+    sgRCountInc(&bmp->cnt);
+}
+void SG_CALL sgBitmapUnlock(SGBitmap* bmp)
+{
+    if(!bmp) return;
+    if(!sgRCountDec(&bmp->cnt))
+        sgBitmapForceDestroy(bmp);
 }
 
 //SGbool SG_CALL sgBitmapConvert(SGBitmap* bmp, SGenum bpp);
@@ -142,6 +156,10 @@ SGenum SG_CALL sgBitmapGetBPP(SGBitmap* bmp)
 }
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgBitmapDestroy(SGBitmap* bmp)
+{
+    sgBitmapRelease(bmp);
+}
 void SG_CALL SG_HINT_DEPRECATED sgBitmapGetSize(SGBitmap* bmp, size_t* width, size_t* height)
 {
     SGIVec2 size = sgBitmapGetSize2iv(bmp);

@@ -32,7 +32,9 @@ float SG_CALL sgIntersectU(SGVec2* inter, SGVec2* u, SGVec2 p1, SGVec2 p2, SGVec
     SGVec2 p13 = sgVec2Sub(p1, p3);
     SGVec2 p21 = sgVec2Sub(p2, p1);
 
-    float den = p43.y * p21.x - p43.x * p21.y;
+    //    return a.x * b.y - a.y * b.x;
+    float den = sgVec2PDot(p21, p43);
+    //float den = p21.x * p43.y - p21.y * p43.x;
 
     if(!u && !inter)
         return den;
@@ -41,8 +43,10 @@ float SG_CALL sgIntersectU(SGVec2* inter, SGVec2* u, SGVec2 p1, SGVec2 p2, SGVec
     if(!u)
         u = &tu;
 
-    u->x = (p43.x * p13.y - p43.y * p13.x) / den;
-    u->y = (p21.x * p13.y - p21.y * p13.x) / den;
+    u->x = sgVec2PDot(p43, p13) / den;
+    u->y = sgVec2PDot(p21, p13) / den;
+    //u->x = (p43.x * p13.y - p43.y * p13.x) / den;
+    //u->y = (p21.x * p13.y - p21.y * p13.x) / den;
 
     if(!inter)
         return den;

@@ -277,6 +277,8 @@ void SG_CALL sgDrawBeginT(SGenum mode, SGTexture* texture)
     }
 
     drawCtx.mode = mode;
+    sgTextureLock(texture);
+    sgTextureUnlock(drawCtx.texture);
     drawCtx.texture = texture;
 }
 void SG_CALL sgDrawBegin(SGenum mode)
@@ -292,6 +294,8 @@ void SG_CALL sgDrawEnd(void)
 
     drawArraysRaw(drawCtx.mode, SG_TRUE, SG_TRUE, SG_FALSE, drawCtx.texture, 0, drawCtx.numPoints);
     drawCtx.numPoints = 0;
+
+    sgTextureUnlock(drawCtx.texture);
 }
 
 void SG_CALL sgDrawColorC(SGColor col)

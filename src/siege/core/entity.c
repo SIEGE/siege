@@ -24,19 +24,27 @@
 #include <string.h>
 #include <math.h>
 
+SGList _sg_entList;
+SGList _sg_entAct;
+SGSMap _sg_entSMap;
+SGbool _sg_entStop;
+
 SGbool SG_CALL _sgEntityInit(void)
 {
-    _sg_entList = sgListCreate();
-    if(!_sg_entList)
+    if(!sgListInit(&_sg_entList))
         return SG_FALSE;
-    _sg_entSMap = sgSMapCreate();
+    if(!sgListInit(&_sg_entAct))
+        return SG_FALSE;
+    if(!sgSMapInit(&_sg_entSMap))
+        return SG_FALSE;
     return SG_TRUE;
 }
 SGbool SG_CALL _sgEntityDeinit(void)
 {
-    sgEntityDestroyAll();
-    sgListDestroy(_sg_entList);
-    sgSMapDestroy(_sg_entSMap);
+    sgEntityForceDestroyAll();
+    sgSMapDeinit(&_sg_entSMap);
+    sgListDeinit(&_sg_entAct);
+    sgListDeinit(&_sg_entList);
     return SG_TRUE;
 }
 
@@ -254,10 +262,11 @@ static void SG_CALL _sg_evDraw(SGEntity* entity)
 
 SGEntity* SG_CALL sgEntityCreate(void)
 {
-    static const SGEntity DefaultEntity = { 0 };
+    static const SGEntity DefaultEntity = {};
 
     SGEntity* entity = malloc(sizeof(SGEntity));
     *entity = DefaultEntity;
+    sgRCountInit(&entity->cnt);
     entity->active = SG_TRUE;
     entity->pausable = SG_TRUE;
 
@@ -270,27 +279,74 @@ SGEntity* SG_CALL sgEntityCreate(void)
 
     entity->evDraw = _sg_evDraw;
 
-    entity->node = sgListAppend(_sg_entList, entity);
+    entity->node = sgListAppend(&_sg_entList, entity);
+    sgEntityLock(entity);
+    entity->anode = sgListAppend(&_sg_entAct, entity);
     entity->mnode = NULL;
     return entity;
 }
-void SG_CALL sgEntityDestroy(SGEntity* entity)
+void SG_CALL sgEntityForceDestroy(SGEntity* entity)
 {
     if(entity == NULL)
         return;
+    sgEntityKill(entity);
 
-    if(entity->lcDestroy != NULL)
+    if(entity->lcDestroy)
         entity->lcDestroy(entity);
-
-    sgListRemoveNode(_sg_entList, entity->node);
-    sgEntitySetName(entity, NULL);
-
+    sgListRemoveNode(&_sg_entList, entity->node);
+    sgRCountDeinit(&entity->cnt);
     free(entity);
 }
-void SG_CALL sgEntityDestroyAll(void)
+void SG_CALL sgEntityForceDestroyAll(void)
 {
-    while(_sg_entList->head)
-        sgEntityDestroy(_sg_entList->head->item);
+    sgEntityKillAll();
+    while(_sg_entList.head)
+        sgEntityForceDestroy(_sg_entList.head->item);
+}
+
+void SG_CALL sgEntityRelease(SGEntity* entity)
+{
+    sgEntityUnlock(entity);
+}
+void SG_CALL sgEntityLock(SGEntity* entity)
+{
+    if(!entity) return;
+    sgRCountInc(&entity->cnt);
+}
+void SG_CALL sgEntityUnlock(SGEntity* entity)
+{
+    if(!entity) return;
+    if(!sgRCountDec(&entity->cnt))
+        sgEntityForceDestroy(entity);
+}
+
+void SG_CALL sgEntityKill(SGEntity* entity)
+{
+    if(!entity->anode) return;
+
+    if(entity->lcKill)
+        entity->lcKill(entity);
+
+    sgListRemoveNode(&_sg_entAct, entity->anode);
+    /* one release is always done (because of the list) */
+    sgEntityRelease(entity);
+    entity->anode = NULL;
+    sgEntitySetName(entity, NULL);
+}
+void SG_CALL sgEntityKillAll(void)
+{
+    while(_sg_entAct.head)
+        sgEntityKill(_sg_entAct.head->item);
+}
+void SG_CALL sgEntityKillRelease(SGEntity* entity)
+{
+    sgEntityKill(entity);
+    sgEntityRelease(entity);
+}
+
+SGbool SG_CALL sgEntityIsAlive(SGEntity* entity)
+{
+    return !!entity->anode;
 }
 
 void SG_CALL sgEntitySetName(SGEntity* entity, const char* name)
@@ -302,7 +358,7 @@ void SG_CALL sgEntitySetName(SGEntity* entity, const char* name)
         sgListRemoveNode(list, entity->mlnode);
         if(!list->head)
         {
-            sgSMapRemove(_sg_entSMap, entity->mnode->key);
+            sgSMapRemove(&_sg_entSMap, entity->mnode->key);
             sgListDestroy(list);
         }
         entity->mnode = NULL;
@@ -311,9 +367,9 @@ void SG_CALL sgEntitySetName(SGEntity* entity, const char* name)
     if(!name)
         return;
 
-    SGSMapNode* mnode = sgSMapFind(_sg_entSMap, name);
+    SGSMapNode* mnode = sgSMapFind(&_sg_entSMap, name);
     if(!mnode)
-        mnode = sgSMapAssignNode(_sg_entSMap, name, sgListCreate());
+        mnode = sgSMapAssignNode(&_sg_entSMap, name, sgListCreate());
 
     entity->mnode = mnode;
     entity->mlnode = sgListAppend(mnode->val, entity);
@@ -330,6 +386,7 @@ void SG_CALL sgEntitySetSprite(SGEntity* entity, SGSprite* sprite)
     if(entity == NULL)
         return;
 
+    // TODO lock/unlock
     entity->sprite = sprite;
 }
 SGSprite* SG_CALL sgEntityGetSprite(SGEntity* entity)
@@ -345,6 +402,7 @@ void SG_CALL sgEntitySetMask(SGEntity* entity, SGMask* mask)
     if(entity == NULL)
         return;
 
+    // TODO lock/unlock
     entity->mask = mask;
 }
 SGMask* SG_CALL sgEntityGetMask(SGEntity* entity)
@@ -363,6 +421,8 @@ void SG_CALL sgEntitySetPhysicsBody(SGEntity* entity, SGPhysicsBody* body)
         entity->body->entity = NULL;
     if(body)
         body->entity = entity;
+
+    // TODO lock/unlock
     entity->body = body;
 }
 SGPhysicsBody* SG_CALL sgEntityGetPhysicsBody(SGEntity* entity)
@@ -378,6 +438,7 @@ void SG_CALL sgEntitySetAudioSource(SGEntity* entity, SGAudioSource* source)
     if(entity == NULL)
         return;
 
+    // TODO lock/unlock
     entity->source = source;
 }
 SGAudioSource* SG_CALL sgEntityGetAudioSource(SGEntity* entity)
@@ -497,7 +558,7 @@ void SG_CALL sgEntityDraw(SGEntity* entity)
 
 SGList* SG_CALL sgEntityFind(const char* name)
 {
-    return sgSMapFind(_sg_entSMap, name);
+    return sgSMapFind(&_sg_entSMap, name);
 }
 SGEntity* SG_CALL sgEntityFindIter(SGEntity* prev, const char* name)
 {
@@ -516,7 +577,7 @@ void SG_CALL sgEntityEventSignalv(size_t num, va_list args)
     SGListNode* node;
     SGListNode* next;
     va_list curarg;
-    for(node = _sg_entList->head; node; node = next)
+    for(node = _sg_entAct.head; node; node = next)
     {
         next = node->next;
 
@@ -539,4 +600,14 @@ void SG_CALL sgEntityEventSignal(size_t num, ...)
 void SG_CALL sgEntityEventStop(void)
 {
     _sg_entStop = SG_TRUE;
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgEntityDestroy(SGEntity* entity)
+{
+    sgEntityKillRelease(entity);
+}
+void SG_CALL SG_HINT_DEPRECATED sgEntityDestroyAll(void)
+{
+    sgEntityKillAll();
 }

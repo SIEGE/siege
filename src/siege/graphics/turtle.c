@@ -23,6 +23,8 @@
 SGTurtle* SG_CALL sgTurtleCreateRads(float x, float y, float rads, SGbool draw)
 {
     SGTurtle* turtle = malloc(sizeof(SGTurtle));
+    if(!turtle) return NULL;
+    sgRCountInit(&turtle->cnt);
     turtle->stack = NULL;
     turtle->stacklen = 0;
 
@@ -37,13 +39,30 @@ SGTurtle* SG_CALL sgTurtleCreateDegs(float x, float y, float degs, SGbool draw)
 {
     return sgTurtleCreateRads(x, y, degs * SG_PI / 180.0, draw);
 }
-void SG_CALL sgTurtleDestroy(SGTurtle* turtle)
+void SG_CALL sgTurtleForceDestroy(SGTurtle* turtle)
 {
     if(turtle == NULL)
         return;
 
     free(turtle->stack);
+    sgRCountDeinit(&turtle->cnt);
     free(turtle);
+}
+
+void SG_CALL sgTurtleRelease(SGTurtle* turtle)
+{
+    sgTurtleUnlock(turtle);
+}
+void SG_CALL sgTurtleLock(SGTurtle* turtle)
+{
+    if(!turtle) return;
+    sgRCountInc(&turtle->cnt);
+}
+void SG_CALL sgTurtleUnlock(SGTurtle* turtle)
+{
+    if(!turtle) return;
+    if(!sgRCountDec(&turtle->cnt))
+        sgTurtleForceDestroy(turtle);
 }
 
 void SG_CALL sgTurtleReset(SGTurtle* turtle)
@@ -222,4 +241,10 @@ void SG_CALL sgTurtleSetAngleDegs(SGTurtle* turtle, float degs)
 float SG_CALL sgTurtleGetAngleDegs(SGTurtle* turtle)
 {
     return sgTurtleGetAngleRads(turtle) * 180.0 / SG_PI;
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgTurtleDestroy(SGTurtle* turtle)
+{
+    sgTurtleRelease(turtle);
 }

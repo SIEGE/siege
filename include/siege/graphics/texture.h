@@ -20,6 +20,7 @@
 #include "../util/stream.h"
 #include "../util/ivector.h"
 #include "../util/vector.h"
+#include "../util/rcount.h"
 
 #define SG_WRAP_CURRENT             0x00
 #define SG_WRAP_CLAMP               0x01
@@ -38,17 +39,23 @@ extern "C"
 
 typedef struct SGTexture
 {
+    SGRCount cnt;
+
     void* handle;
     SGuint width, height;
     SGenum bpp;
 } SGTexture;
 
-SGTexture* SG_CALL sgTextureCreateBitmap(SGBitmap* bmp, SGbool delbmp);
-SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream, SGbool delstream);
+SGTexture* SG_CALL sgTextureCreateBitmap(SGBitmap* bmp);
+SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream);
 SGTexture* SG_CALL sgTextureCreateFile(const char* fname);
 SGTexture* SG_CALL sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data);
 SGTexture* SG_CALL sgTextureCreate(SGuint width, SGuint height, SGenum bpp);
-void SG_CALL sgTextureDestroy(SGTexture* texture);
+void SG_CALL sgTextureForceDestroy(SGTexture* texture);
+
+void SG_CALL sgTextureRelease(SGTexture* texture);
+void SG_CALL sgTextureLock(SGTexture* texture);
+void SG_CALL sgTextureUnlock(SGTexture* texture);
 
 void SG_CALL sgTextureSetData(SGTexture* texture, size_t width, size_t height, SGenum bpp, void* data);
 void SG_CALL sgTextureSetSubData(SGTexture* texture, size_t x, size_t y, size_t width, size_t height, SGenum bpp, void* data);
@@ -85,6 +92,7 @@ SGuint SG_CALL sgTextureGetHeight(SGTexture* texture);
 SGenum SG_CALL sgTextureGetBPP(SGTexture* texture);
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgTextureDestroy(SGTexture* texture);
 void SG_CALL SG_HINT_DEPRECATED sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height);
 
 #ifdef __cplusplus

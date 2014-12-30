@@ -16,6 +16,7 @@
 #define __SIEGE_UTIL_STREAM_H__
 
 #include "../common.h"
+#include "rcount.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -35,6 +36,8 @@ typedef SGbool  SG_CALL SGStreamEOF(void* stream);
 
 typedef struct SGStream
 {
+    SGRCount cnt;
+
     SGStreamSeek* seek;
     SGStreamTell* tell;
     SGStreamRead* read;
@@ -50,7 +53,11 @@ SGStream* SG_CALL sgStreamCreateFile(const char* fname, const char* mode);
 SGStream* SG_CALL sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree);
 SGStream* SG_CALL sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbfree);
 SGStream* SG_CALL sgStreamCreateBuffer(size_t size);
-void SG_CALL sgStreamDestroy(SGStream* stream);
+void SG_CALL sgStreamForceDestroy(SGStream* stream);
+
+void SG_CALL sgStreamRelease(SGStream* stream);
+void SG_CALL sgStreamLock(SGStream* stream);
+void SG_CALL sgStreamUnlock(SGStream* stream);
 
 SGlong SG_CALL sgStreamTellSize(SGStream* stream);
 SGbool SG_CALL sgStreamSeek(SGStream* stream, SGlong offset, SGenum origin);
@@ -58,6 +65,9 @@ SGlong SG_CALL sgStreamTell(SGStream* stream);
 SGulong SG_CALL sgStreamRead(SGStream* stream, void* ptr, size_t size, size_t count);
 SGulong SG_CALL sgStreamWrite(SGStream* stream, const void* ptr, size_t size, size_t count);
 SGbool SG_CALL sgStreamClose(SGStream* stream);
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgStreamDestroy(SGStream* stream);
 
 #ifdef __cplusplus
 }

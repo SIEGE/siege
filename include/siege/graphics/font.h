@@ -25,6 +25,7 @@
 #include "../util/conv.h"
 #include "../util/map.h"
 #include "../util/rect.h"
+#include "../util/rcount.h"
 #include "texture.h"
 
 #include <stdarg.h>
@@ -110,6 +111,8 @@ typedef struct SGCharInfo
  */
 typedef struct SGFont
 {
+    SGRCount cnt;
+
     /// @{
     /**
      * \brief Internal handle
@@ -147,7 +150,6 @@ typedef struct SGFont
     /// @}
 
     SGStream* stream;
-    SGbool del;
 } SGFont;
 
 SGCharInfo* SG_CALL _sgFontFindCache(SGFont* font, SGdchar c);
@@ -161,7 +163,7 @@ SGdchar* SG_CALL _sgFontU8ToU32(SGFont* font, const SGchar* text);
 SGdchar* SG_CALL _sgFontWToU32(SGFont* font, const wchar_t* text);
 SGdchar* SG_CALL _sgFontToU32(SGFont* font, const char* text);
 
-SGFont* SG_CALL sgFontCreateStream(SGStream* stream, SGbool delstream, float height, SGuint dpi, SGuint preload);
+SGFont* SG_CALL sgFontCreateStream(SGStream* stream, float height, SGuint dpi, SGuint preload);
 /// @{
 /**
  * \brief Load a font
@@ -179,8 +181,12 @@ SGFont* SG_CALL sgFontCreate(const char* fname, float height, SGuint dpi, SGuint
  * \param font The font info to destroy.
  * It should not be used anymore after this call.
  */
-void SG_CALL sgFontDestroy(SGFont* font);
+void SG_CALL sgFontForceDestroy(SGFont* font);
 /// @}
+
+void SG_CALL sgFontRelease(SGFont* font);
+void SG_CALL sgFontLock(SGFont* font);
+void SG_CALL sgFontUnlock(SGFont* font);
 
 void SG_CALL sgFontClearCache(SGFont* font);
 void SG_CALL sgFontSetHeight(SGFont* font, float height, SGuint dpi);
@@ -268,6 +274,8 @@ void SG_CALL sgFontGetPosW(SGFont* font, float* x, float* y, size_t index, const
 void SG_CALL sgFontGetPos(SGFont* font, float* x, float* y, size_t index, const char* text);
 
 /* DEPRECATED: Use sgFontStrRect* instead */
+void SG_CALL SG_HINT_DEPRECATED sgFontDestroy(SGFont* font);
+
 void SG_CALL SG_HINT_DEPRECATED sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...);
 void SG_CALL SG_HINT_DEPRECATED sgFontStrSizefvW(SGFont* font, float* x, float* y, const wchar_t* format, va_list args);
 

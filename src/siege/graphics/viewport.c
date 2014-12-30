@@ -36,7 +36,7 @@ SGbool SG_CALL _sgViewportDeinit(void)
     for(node = _sg_viewList->head; node != NULL; node = next)
     {
         next = node->next;
-        sgViewportDestroy(node->item);
+        sgViewportForceDestroy(node->item);
     }
     sgListDestroy(_sg_viewList);
     return SG_TRUE;
@@ -60,18 +60,37 @@ SGViewport* SG_CALL sgViewportCreate(void)
     SGViewport* viewport = malloc(sizeof(SGViewport));
     if(viewport == NULL)
         return NULL;
+    sgRCountInit(&viewport->cnt);
 
     sgListAppend(_sg_viewList, viewport);
     return viewport;
 }
-void SG_CALL sgViewportDestroy(SGViewport* viewport)
+void SG_CALL sgViewportForceDestroy(SGViewport* viewport)
 {
     if(viewport == NULL)
         return;
 
     sgListRemoveItem(_sg_viewList, viewport);
+    sgRCountDeinit(&viewport->cnt);
     free(viewport);
 }
+
+void SG_CALL sgViewportRelease(SGViewport* viewport)
+{
+    sgViewportUnlock(viewport);
+}
+void SG_CALL sgViewportLock(SGViewport* viewport)
+{
+    if(!viewport) return;
+    sgRCountInc(&viewport->cnt);
+}
+void SG_CALL sgViewportUnlock(SGViewport* viewport)
+{
+    if(!viewport) return;
+    if(!sgRCountDec(&viewport->cnt))
+        sgViewportForceDestroy(viewport);
+}
+
 void SG_CALL sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)
 {
     if(viewport == NULL)
@@ -169,4 +188,10 @@ void SG_CALL sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly,
 
     *lx = viewport->posx + wx * viewport->sizex / viewport->wsizex;
     *ly = viewport->posy + wy * viewport->sizey / viewport->wsizey;
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgViewportDestroy(SGViewport* viewport)
+{
+    sgViewportRelease(viewport);
 }

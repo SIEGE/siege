@@ -49,7 +49,7 @@ int main(void)
         sgWindowSwapBuffers();
     }
 
-    sgFontDestroy(font);
+    sgFontRelease(font);
     sgDeinit();
     return ret;
 }

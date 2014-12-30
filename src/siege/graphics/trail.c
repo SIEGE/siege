@@ -39,6 +39,7 @@ SGTrail* SG_CALL sgTrailCreate(SGuint maxpoints)
     SGTrail* trail = malloc(sizeof(SGTrail));
     if(trail == NULL)
         return NULL;
+    sgRCountInit(&trail->cnt);
     trail->numpoints = 0;
     trail->xpoints = NULL;
     trail->ypoints = NULL;
@@ -46,14 +47,31 @@ SGTrail* SG_CALL sgTrailCreate(SGuint maxpoints)
     trail->maxpoints = maxpoints;
     return trail;
 }
-void SG_CALL sgTrailDestroy(SGTrail* trail)
+void SG_CALL sgTrailForceDestroy(SGTrail* trail)
 {
     if(trail == NULL)
         return;
 
     free(trail->xpoints);
     free(trail->ypoints);
+    sgRCountDeinit(&trail->cnt);
     free(trail);
+}
+
+void SG_CALL sgTrailRelease(SGTrail* trail)
+{
+    sgTrailUnlock(trail);
+}
+void SG_CALL sgTrailLock(SGTrail* trail)
+{
+    if(!trail) return;
+    sgRCountInc(&trail->cnt);
+}
+void SG_CALL sgTrailUnlock(SGTrail* trail)
+{
+    if(!trail) return;
+    if(!sgRCountDec(&trail->cnt))
+        sgTrailForceDestroy(trail);
 }
 
 //void SG_CALL sgTrailSetGradient(SGGradient* grad);
@@ -127,4 +145,10 @@ void SG_CALL sgTrailDraw(SGTrail* trail)
             py = y;
         }
     sgDrawEnd();
+}
+
+/* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgTrailDestroy(SGTrail* trail)
+{
+    sgTrailRelease(trail);
 }

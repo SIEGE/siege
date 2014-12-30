@@ -342,10 +342,10 @@ int main(void)
         sgDrawClear();
     }
 
-    sgFontDestroy(score);
+    sgFontRelease(score);
 
-    sgFontDestroy(text);
-    sgFontDestroy(head);
+    sgFontRelease(text);
+    sgFontRelease(head);
 
     sgNavGridDestroy(grid);
 
