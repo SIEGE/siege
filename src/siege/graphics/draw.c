@@ -278,7 +278,6 @@ void SG_CALL sgDrawBeginT(SGenum mode, SGTexture* texture)
 
     drawCtx.mode = mode;
     sgTextureLock(texture);
-    sgTextureUnlock(drawCtx.texture);
     drawCtx.texture = texture;
 }
 void SG_CALL sgDrawBegin(SGenum mode)
