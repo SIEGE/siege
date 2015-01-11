@@ -177,7 +177,7 @@ SGAudioSource* SG_CALL sgAudioSourceCreate(float priority, float volume, float p
         return NULL;
     }
 
-    sgAudioSourceUnqueueBuffers(source, sgAudioSourceGetNumProcessedBuffers(source) + sgAudioSourceGetNumProcessedBuffers(source));
+    //sgAudioSourceUnqueueBuffers(source, sgAudioSourceGetNumQueuedBuffers(source) + sgAudioSourceGetNumProcessedBuffers(source));
 
     sgAudioSourceSetVolume(source, volume);
     sgAudioSourceSetPitch(source, pitch);
@@ -328,7 +328,8 @@ void SG_CALL sgAudioSourceQueueBuffer(SGAudioSource* source, SGAudioBuffer* buff
     if(source->dispatch == NULL)
         return;
 
-    alSourceQueueBuffers(ALSRC(source), 1, buffer->handle);
+    //alSourceQueueBuffers(ALSRC(source), 1, buffer->handle);
+    alSourcei(ALSRC(source), AL_BUFFER, *(ALint*)buffer->handle);
 }
 void SG_CALL sgAudioSourceUnqueueBuffer(SGAudioSource* source)
 {
