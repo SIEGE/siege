@@ -125,11 +125,9 @@ static void SG_CALL cbBufferFree(void* ptr)
     free(ptr);
 }
 
-SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data)
+SGStream* SG_CALL sgStreamInit(SGStream* stream, SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data)
 {
-    SGStream* stream = malloc(sizeof(SGStream));
     if(!stream) return NULL;
-    sgRCountInit(&stream->cnt);
 
     stream->seek = seek;
     stream->tell = tell;
@@ -142,34 +140,32 @@ SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStrea
 
     return stream;
 }
-SGStream* SG_CALL sgStreamCreateFile(const char* fname, const char* mode)
+SGStream* SG_CALL sgStreamInitFile(SGStream* stream, const char* fname, SGenum fmode)
 {
-    char mbuf[258];
-    mbuf[0] = 0;
+    if(!stream) return NULL;
 
-    size_t i;
-    for(i = 0; mode[i] && i < 256; i++)
+    const char* modestr;
+    switch(fmode)
     {
-        if(!strchr("rwa+", mode[i]))
-            continue;
-        mbuf[i] = mode[i];
+        case SG_FMODE_READ: modestr = "rb"; break;
+        case SG_FMODE_WRITE: modestr = "wb"; break;
+        case SG_FMODE_APPEND: modestr = "ab"; break;
+        /* TODO: Should a RDWR mode be added? */
+        default: return NULL;
     }
-    mbuf[i++] = 'b';
-    mbuf[i++] = 0;
 
-    FILE* file = fopen(fname, mbuf);
+    FILE* file = fopen(fname, modestr);
     if(!file) return NULL;
 
-    SGStream* stream = sgStreamCreate(cbFileSeek, cbFileTell, cbFileRead, cbFileWrite, cbFileClose, cbFileEOF, file);
+    stream = sgStreamInit(stream, cbFileSeek, cbFileTell, cbFileRead, cbFileWrite, cbFileClose, cbFileEOF, file);
     if(!stream)
-    {
         fclose(file);
-        return NULL;
-    }
     return stream;
 }
-SGStream* SG_CALL sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree)
+SGStream* SG_CALL sgStreamInitMemory(SGStream* stream, void* mem, size_t size, SGFree* cbFree)
 {
+    if(!stream) return NULL;
+
     MemoryInfo* minfo = malloc(sizeof(MemoryInfo));
     if(!minfo) return NULL;
 
@@ -179,16 +175,15 @@ SGStream* SG_CALL sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree)
 
     minfo->free = free;
 
-    SGStream* stream = sgStreamCreate(cbMemorySeek, cbMemoryTell, cbMemoryRead, cbMemoryWrite, cbMemoryClose, cbMemoryEOF, minfo);
+    stream = sgStreamInit(stream, cbMemorySeek, cbMemoryTell, cbMemoryRead, cbMemoryWrite, cbMemoryClose, cbMemoryEOF, minfo);
     if(!stream)
-    {
         free(minfo);
-        return NULL;
-    }
     return stream;
 }
-SGStream* SG_CALL sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbfree)
+SGStream* SG_CALL sgStreamInitCMemory(SGStream* stream, const void* mem, size_t size, SGFree* cbFree)
 {
+    if(!stream) return NULL;
+
     MemoryInfo* minfo = malloc(sizeof(MemoryInfo));
     if(!minfo) return NULL;
 
@@ -198,20 +193,19 @@ SGStream* SG_CALL sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cb
 
     minfo->free = free;
 
-    SGStream* stream = sgStreamCreate(cbMemorySeek, cbMemoryTell, cbMemoryRead, NULL, cbMemoryClose, cbMemoryEOF, minfo);
+    stream = sgStreamCreate(cbMemorySeek, cbMemoryTell, cbMemoryRead, NULL, cbMemoryClose, cbMemoryEOF, minfo);
     if(!stream)
-    {
         free(minfo);
-        return NULL;
-    }
     return stream;
 }
-SGStream* SG_CALL sgStreamCreateBuffer(size_t size)
+SGStream* SG_CALL sgStreamInitBuffer(SGStream* stream, size_t size)
 {
+    if(!stream) return NULL;
+
     void* mem = malloc(size);
     if(!mem) return NULL;
 
-    SGStream* stream = sgStreamCreateMemory(mem, size, cbBufferFree);
+    stream = sgStreamInitMemory(stream, mem, size, cbBufferFree);
     if(!stream)
     {
         free(mem);
@@ -219,29 +213,50 @@ SGStream* SG_CALL sgStreamCreateBuffer(size_t size)
     }
     return stream;
 }
-void SG_CALL sgStreamForceDestroy(SGStream* stream)
+void SG_CALL sgStreamDeinit(SGStream* stream)
 {
     if(!stream) return;
-    if(stream->close)
-        stream->close(stream->data);
-    sgRCountDeinit(&stream->cnt);
-    free(stream);
+    sgStreamClose(stream);
+    /*if(stream->close)
+        stream->close(stream->data);*/
 }
 
-void SG_CALL sgStreamRelease(SGStream* stream)
+SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data)
 {
-    sgStreamUnlock(stream);
+    return sgStreamInit(malloc(sizeof(SGStream)), seek, tell, read, write, close, eof, data);
 }
-void SG_CALL sgStreamLock(SGStream* stream)
+SGStream* SG_CALL sgStreamCreateFile(const char* fname, SGenum fmode)
 {
-    if(!stream) return;
-    sgRCountInc(&stream->cnt);
+    SGStream* stream = malloc(sizeof(SGStream));
+    if(!sgStreamInitFile(stream, fname, fmode))
+    {
+        free(stream);
+        return NULL;
+    }
+    return stream;
 }
-void SG_CALL sgStreamUnlock(SGStream* stream)
+SGStream* SG_CALL sgStreamCreateMemory(void* mem, size_t size, SGFree* cbFree)
 {
-    if(!stream) return;
-    if(!sgRCountDec(&stream->cnt))
-        sgStreamForceDestroy(stream);
+    return sgStreamInitMemory(malloc(sizeof(SGStream)), mem, size, cbFree);
+}
+SGStream* SG_CALL sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbFree)
+{
+    return sgStreamInitCMemory(malloc(sizeof(SGStream)), mem, size, cbFree);
+}
+SGStream* SG_CALL sgStreamCreateBuffer(size_t size)
+{
+    SGStream* stream = malloc(sizeof(SGStream));
+    if(!sgStreamInitBuffer(stream, size))
+    {
+        free(stream);
+        return NULL;
+    }
+    return stream;
+}
+void SG_CALL sgStreamDestroy(SGStream* stream)
+{
+    sgStreamDeinit(stream);
+    free(stream);
 }
 
 SGlong SG_CALL sgStreamTellSize(SGStream* stream)
@@ -289,10 +304,4 @@ SGbool SG_CALL sgStreamClose(SGStream* stream)
     stream->write = NULL;
     stream->close = NULL;
     return ret;
-}
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgStreamDestroy(SGStream* stream)
-{
-    sgStreamRelease(stream);
 }

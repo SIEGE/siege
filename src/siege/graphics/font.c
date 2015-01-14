@@ -343,7 +343,6 @@ SGFont* SG_CALL sgFontCreateStream(SGStream* stream, float height, SGuint dpi, S
     sgRCountInit(&font->cnt);
 
     font->stream = stream;
-    sgStreamLock(stream);
     FontFace* fface = NULL;
 
     fface = malloc(sizeof(FontFace));
@@ -390,14 +389,14 @@ err:
 }
 SGFont* SG_CALL sgFontCreate(const char* fname, float height, SGuint dpi, SGuint preload)
 {
-    SGStream* stream = sgStreamCreateFile(fname, "r");
-    if(!stream)
+    SGStream stream;
+    if(!sgStreamInitFile(&stream, fname, SG_FMODE_READ))
     {
         fprintf(stderr, "Warning: Cannot create font %s\n", fname);
         return NULL;
     }
-    SGFont* font = sgFontCreateStream(stream, height, dpi, preload);
-    sgStreamRelease(stream);
+    SGFont* font = sgFontCreateStream(&stream, height, dpi, preload);
+    sgStreamDeinit(&stream);
     return font;
 }
 void SG_CALL sgFontForceDestroy(SGFont* font)
@@ -415,7 +414,6 @@ void SG_CALL sgFontForceDestroy(SGFont* font)
 
     _sgFontDestroyCache(font);
 
-    sgStreamUnlock(font->stream);
     sgRCountDeinit(&font->cnt);
     free(font);
 }

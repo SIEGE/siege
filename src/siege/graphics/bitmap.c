@@ -68,14 +68,14 @@ SGBitmap* SG_CALL sgBitmapCreateStream(SGStream* stream)
 }
 SGBitmap* SG_CALL sgBitmapCreateFile(const char* fname)
 {
-    SGStream* stream = sgStreamCreateFile(fname, "r");
-    if(!stream)
+    SGStream stream;
+    if(!sgStreamInitFile(&stream, fname, SG_FMODE_READ))
     {
         fprintf(stderr, "Could not load image %s\n", fname);
         return NULL;
     }
-    SGBitmap* bmp = sgBitmapCreateStream(stream);
-    sgStreamRelease(stream);
+    SGBitmap* bmp = sgBitmapCreateStream(&stream);
+    sgStreamDeinit(&stream);
     return bmp;
 }
 SGBitmap* SG_CALL sgBitmapCreateData(size_t width, size_t height, SGenum bpp, void* data)

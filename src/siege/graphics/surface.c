@@ -53,14 +53,14 @@ SGSurface* SG_CALL sgSurfaceCreateStream(SGStream* stream)
 }
 SGSurface* SG_CALL sgSurfaceCreateFile(const char* fname)
 {
-    SGStream* stream = sgStreamCreateFile(fname, "r");
-    if(!stream)
+    SGStream stream;
+    if(!sgStreamInitFile(&stream, fname, SG_FMODE_READ))
     {
         fprintf(stderr, "Could not load image %s\n", fname);
         return NULL;
     }
-    SGSurface* surface = sgSurfaceCreateStream(stream);
-    sgStreamRelease(stream);
+    SGSurface* surface = sgSurfaceCreateStream(&stream);
+    sgStreamDeinit(&stream);
     return surface;
 }
 SGSurface* SG_CALL sgSurfaceCreateData(SGuint width, SGuint height, SGenum bpp, void* data)

@@ -140,7 +140,6 @@ SGAudioBuffer* SG_CALL sgAudioBufferCreateData(SGuint channels, SGenum format, S
     if(!buffer) goto error;
 
     buffer->stream = NULL;
-    buffer->del = SG_FALSE;
 
     buffer->handle = malloc(sizeof(ALuint));
     if(!buffer->handle) goto error;
@@ -153,7 +152,7 @@ error:
         free(buffer);
     return NULL;
 }
-SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstream)
+SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream)
 {
     if(!stream || !stream->read || !stream->seek || !stream->tell) return NULL;
 
@@ -161,7 +160,6 @@ SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstr
     if(!buffer) goto error;
 
     buffer->stream = stream;
-    buffer->del = delstream;
 
     buffer->handle = malloc(sizeof(ALuint));
     if(!buffer->handle) goto error;
@@ -226,7 +224,15 @@ error:
 }
 SGAudioBuffer* SG_CALL sgAudioBufferCreateFile(const char* fname)
 {
-    return sgAudioBufferCreateStream(sgStreamCreateFile(fname, "r"), SG_TRUE);
+    SGStream stream;
+    if(!sgStreamInitFile(&stream, fname, SG_FMODE_READ))
+    {
+        fprintf(stderr, "Could not load audio file %s\n", fname);
+        return NULL;
+    }
+    SGAudioBuffer* buffer = sgAudioBufferCreateStream(&stream);
+    sgStreamDeinit(&stream);
+    return buffer;
 }
 void SG_CALL sgAudioBufferDestroy(SGAudioBuffer* buffer)
 {
@@ -235,8 +241,6 @@ void SG_CALL sgAudioBufferDestroy(SGAudioBuffer* buffer)
 
     alDeleteBuffers(1, buffer->handle);
     free(buffer->handle);
-    if(buffer->del)
-        sgStreamDestroy(buffer->stream);
     free(buffer);
 }
 

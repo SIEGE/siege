@@ -61,11 +61,10 @@ typedef struct SGAudioBuffer
     void* handle;
 
     SGStream* stream;
-    SGbool del;
 } SGAudioBuffer;
 
 SGAudioBuffer* SG_CALL sgAudioBufferCreateData(SGuint channels, SGenum format, SGuint frequency, void* data, size_t datalen);
-SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstream);
+SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream);
 /// @{
 /**
  * \memberof SGAudioBuffer

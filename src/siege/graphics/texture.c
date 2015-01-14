@@ -110,14 +110,14 @@ SGTexture* SG_CALL sgTextureCreateStream(SGStream* stream)
 }
 SGTexture* SG_CALL sgTextureCreateFile(const char* fname)
 {
-    SGStream* stream = sgStreamCreateFile(fname, "r");
-    if(!stream)
+    SGStream stream;
+    if(!sgStreamInitFile(&stream, fname, SG_FMODE_READ))
     {
         fprintf(stderr, "Could not load image %s\n", fname);
         return NULL;
     }
-    SGTexture* texture = sgTextureCreateStream(stream);
-    sgStreamRelease(stream);
+    SGTexture* texture = sgTextureCreateStream(&stream);
+    sgStreamDeinit(&stream);
     return texture;
 }
 SGTexture* SG_CALL sgTextureCreateData(SGuint width, SGuint height, SGenum bpp, void* data)

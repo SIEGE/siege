@@ -16,12 +16,15 @@
 #define __SIEGE_UTIL_STREAM_H__
 
 #include "../common.h"
-#include "rcount.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif // __cplusplus
+
+#define SG_FMODE_READ       1
+#define SG_FMODE_WRITE      2
+#define SG_FMODE_APPEND     4
 
 #define SG_SEEK_SET 0
 #define SG_SEEK_CUR 1
@@ -36,8 +39,6 @@ typedef SGbool  SG_CALL SGStreamEOF(void* stream);
 
 typedef struct SGStream
 {
-    SGRCount cnt;
-
     SGStreamSeek* seek;
     SGStreamTell* tell;
     SGStreamRead* read;
@@ -48,16 +49,19 @@ typedef struct SGStream
     void* data;
 } SGStream;
 
-SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data);
-SGStream* SG_CALL sgStreamCreateFile(const char* fname, const char* mode);
-SGStream* SG_CALL sgStreamCreateMemory(void* mem, size_t size, SGFree* cbfree);
-SGStream* SG_CALL sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbfree);
-SGStream* SG_CALL sgStreamCreateBuffer(size_t size);
-void SG_CALL sgStreamForceDestroy(SGStream* stream);
+SGStream* SG_CALL sgStreamInit(SGStream* stream, SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data);
+SGStream* SG_CALL sgStreamInitFile(SGStream* stream, const char* fname, SGenum fmode);
+SGStream* SG_CALL sgStreamInitMemory(SGStream* stream, void* mem, size_t size, SGFree* cbFree);
+SGStream* SG_CALL sgStreamInitCMemory(SGStream* stream, const void* mem, size_t size, SGFree* cbFree);
+SGStream* SG_CALL sgStreamInitBuffer(SGStream* stream, size_t size);
+void SG_CALL sgStreamDeinit(SGStream* stream);
 
-void SG_CALL sgStreamRelease(SGStream* stream);
-void SG_CALL sgStreamLock(SGStream* stream);
-void SG_CALL sgStreamUnlock(SGStream* stream);
+SGStream* SG_CALL sgStreamCreate(SGStreamSeek* seek, SGStreamTell* tell, SGStreamRead* read, SGStreamWrite* write, SGStreamClose* close, SGStreamEOF* eof, void* data);
+SGStream* SG_CALL sgStreamCreateFile(const char* fname, SGenum fmode);
+SGStream* SG_CALL sgStreamCreateMemory(void* mem, size_t size, SGFree* cbFree);
+SGStream* SG_CALL sgStreamCreateCMemory(const void* mem, size_t size, SGFree* cbFree);
+SGStream* SG_CALL sgStreamCreateBuffer(size_t size);
+void SG_CALL sgStreamDestroy(SGStream* stream);
 
 SGlong SG_CALL sgStreamTellSize(SGStream* stream);
 SGbool SG_CALL sgStreamSeek(SGStream* stream, SGlong offset, SGenum origin);
@@ -65,9 +69,6 @@ SGlong SG_CALL sgStreamTell(SGStream* stream);
 SGulong SG_CALL sgStreamRead(SGStream* stream, void* ptr, size_t size, size_t count);
 SGulong SG_CALL sgStreamWrite(SGStream* stream, const void* ptr, size_t size, size_t count);
 SGbool SG_CALL sgStreamClose(SGStream* stream);
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgStreamDestroy(SGStream* stream);
 
 #ifdef __cplusplus
 }
