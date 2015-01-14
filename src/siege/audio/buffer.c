@@ -206,13 +206,19 @@ SGAudioBuffer* SG_CALL sgAudioBufferCreateStream(SGStream* stream, SGbool delstr
     sgAudioBufferSetData(buffer, channels, format, frequency, data, datalen);
     free(data);
 
-lderr:
+end:
     if(stb)
         stb_vorbis_close(stb);
     if(buf)
         free(buf);
     return buffer;
-
+lderr:
+    if(buffer)
+    {
+        free(buffer);
+        buffer = NULL;
+        goto end;
+    }
 error:
     if(buffer)
         free(buffer);
