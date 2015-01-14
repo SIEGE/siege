@@ -175,7 +175,7 @@ SGint SG_CALL sgGetOptNext(SGGetOpt* getopt, SGlong* longind, char** arg)
             return _sgGetOptInArg(getopt, longind, arg);
         }
         else /* "-"; not an option */
-            goto end;
+            return EOF;
     }
 end:
     getopt->ind++;
