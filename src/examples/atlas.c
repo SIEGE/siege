@@ -73,7 +73,7 @@ int main(void)
         sgDrawClear();
     }
 
-    sgAtlasDestroy(atlas);
+    sgAtlasRelease(atlas);
 
     sgDeinit();
 

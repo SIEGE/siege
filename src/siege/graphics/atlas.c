@@ -98,12 +98,11 @@ static void SG_CALL _sgAtlasNodeDrawDBG(SGAtlasNode* node, float x, float y)
     sgDrawRectangle2fWH(node->area.x + x, node->area.y + y, node->area.w, node->area.h, SG_FALSE);
 }
 
-static SGTexture* _sgAtlasAddTexture(SGAtlas* atlas, SGTexture* texture, SGbool owner)
+static SGTexture* _sgAtlasAddTexture(SGAtlas* atlas, SGTexture* texture)
 {
     if(!texture) return NULL;
     atlas->textures = realloc(atlas->textures, (atlas->numtextures + 1) * sizeof(SGAtlasTexture));
     atlas->textures[atlas->numtextures].texture = texture;
-    atlas->textures[atlas->numtextures].owner = owner;
     atlas->textures[atlas->numtextures].root = _sgAtlasNodeCreate(0, 0, atlas->width, atlas->height, atlas->numtextures);
     atlas->numtextures++;
     return texture;
@@ -125,22 +124,27 @@ SGAtlas* SG_CALL sgAtlasCreateData(size_t width, size_t height, SGenum bpp, void
     atlas->numtextures = 0;
     atlas->textures = NULL;
 
-    _sgAtlasAddTexture(atlas, sgTextureCreateData(width, height, bpp, data), SG_TRUE);
+    _sgAtlasAddTexture(atlas, sgTextureCreateData(width, height, bpp, data));
 
     return atlas;
 }
-SGAtlas* SG_CALL sgAtlasCreateTexture(SGTexture* texture, SGbool owner)
+SGAtlas* SG_CALL sgAtlasCreateTexture(SGTexture* texture)
 {
     SGAtlas* atlas = sgAtlasCreate(sgTextureGetWidth(texture), sgTextureGetHeight(texture), sgTextureGetBPP(texture));
     if(!atlas) return NULL;
 
-    _sgAtlasAddTexture(atlas, texture, owner);
+    sgTextureLock(texture);
+    _sgAtlasAddTexture(atlas, texture);
 
     return atlas;
 }
 SGAtlas* SG_CALL sgAtlasCreateFile(const char* fname)
 {
-    return sgAtlasCreateTexture(sgTextureCreateFile(fname), SG_TRUE);
+    SGTexture* texture = sgTextureCreateFile(fname);
+    if(!texture) return NULL;
+    SGAtlas* atlas = sgAtlasCreateTexture(texture);
+    sgTextureRelease(texture);
+    return atlas;
 }
 void SG_CALL sgAtlasForceDestroy(SGAtlas* atlas)
 {
@@ -150,8 +154,7 @@ void SG_CALL sgAtlasForceDestroy(SGAtlas* atlas)
     size_t i;
     for(i = 0; i < atlas->numtextures; i++)
     {
-        if(atlas->textures[i].owner)
-            sgTextureDestroy(atlas->textures[i].texture);
+        sgTextureRelease(atlas->textures[i].texture);
         _sgAtlasNodeDestroy(atlas->textures[i].root);
     }
     free(atlas->textures);
@@ -186,7 +189,7 @@ SGAtlasArea* SG_CALL sgAtlasAreaReserve(SGAtlas* atlas, size_t width, size_t hei
     // no node, and we don't allow overflow
     if(!overflow) return NULL;
 
-    _sgAtlasAddTexture(atlas, sgTextureCreateData(atlas->width, atlas->height, atlas->bpp, NULL), SG_TRUE);
+    _sgAtlasAddTexture(atlas, sgTextureCreateData(atlas->width, atlas->height, atlas->bpp, NULL));
     node = _sgAtlasNodeInsert(atlas->textures[atlas->numtextures - 1].root, width, height, atlas->numtextures - 1);
     if(node) return &node->area;
 

@@ -43,7 +43,6 @@ typedef struct SGAtlasTexture
 {
     SGTexture* texture;
     SGAtlasNode* root;
-    SGbool owner;
 } SGAtlasTexture;
 
 typedef struct SGAtlas
@@ -59,7 +58,7 @@ typedef struct SGAtlas
 
 SGAtlas* SG_CALL sgAtlasCreate(size_t width, size_t height, SGenum bpp);
 SGAtlas* SG_CALL sgAtlasCreateData(size_t width, size_t height, SGenum bpp, void* data);
-SGAtlas* SG_CALL sgAtlasCreateTexture(SGTexture* texture, SGbool owner);
+SGAtlas* SG_CALL sgAtlasCreateTexture(SGTexture* texture);
 SGAtlas* SG_CALL sgAtlasCreateFile(const char* fname);
 void SG_CALL sgAtlasForceDestroy(SGAtlas* atlas);
 
