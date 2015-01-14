@@ -41,12 +41,12 @@ int main(void)
         sgDrawClear();
     }
 
-    sgSpriteDestroy(sprCrateSmall);
-    sgSpriteDestroy(sprFloorMetalPlate);
-    sgSpriteDestroy(sprHazardWall);
-    sgSpriteDestroy(sprPacman);
-    sgSpriteDestroy(sprStrongboxSmall);
-    sgSpriteDestroy(sprSupportBar);
+    sgSpriteRelease(sprCrateSmall);
+    sgSpriteRelease(sprFloorMetalPlate);
+    sgSpriteRelease(sprHazardWall);
+    sgSpriteRelease(sprPacman);
+    sgSpriteRelease(sprStrongboxSmall);
+    sgSpriteRelease(sprSupportBar);
 
     sgDeinit();
 

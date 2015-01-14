@@ -92,7 +92,7 @@ void evKeyboardKeyPress(SGEntity* ent, SGenum key)
 
 void destroyPoly(Polygon* poly)
 {
-    sgEntityDestroy(poly->entity);
+    sgEntityKillRelease(poly->entity);
 }
 
 void destroyPolyEntity(SGEntity* ent)
@@ -237,14 +237,14 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
 
 void destroyLight(Light* light)
 {
-    sgEntityDestroy(light->entity);
+    sgEntityKillRelease(light->entity);
 }
 
 void destroyLightEntity(SGEntity* ent)
 {
     Light* light = ent->data;
 
-    sgSurfaceDestroy(light->surface);
+    sgSurfaceRelease(light->surface);
     free(light);
 }
 
@@ -564,14 +564,14 @@ int main(void)
         sgSurfaceDraw(tileset);
     }
 
-    sgTextureDestroy(mbox);
-    sgTextureDestroy(wbox);
+    sgTextureRelease(mbox);
+    sgTextureRelease(wbox);
 
-    sgTextureDestroy(ptexture);
+    sgTextureRelease(ptexture);
 
-    sgSurfaceDestroy(buffer);
-    sgSurfaceDestroy(tileset);
-    sgSpriteDestroy(tile);
+    sgSurfaceRelease(buffer);
+    sgSurfaceRelease(tileset);
+    sgSpriteRelease(tile);
 
     sgAudioBufferDestroy(bufBoom);
 

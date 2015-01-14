@@ -43,11 +43,11 @@ int main(void)
         sgDrawClear();
     }
 
-    sgMaskDestroy(supportm);
-    sgSpriteDestroy(support);
+    sgMaskRelease(supportm);
+    sgSpriteRelease(support);
 
-    sgMaskDestroy(pacmanm);
-    sgSpriteDestroy(pacman);
+    sgMaskRelease(pacmanm);
+    sgSpriteRelease(pacman);
 
     sgDeinit();
 

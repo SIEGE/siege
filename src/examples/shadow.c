@@ -127,10 +127,10 @@ int main(void)
 
     SGint ret = sgRun();
 
-    sgSurfaceDestroy(tileset);
-    sgSpriteDestroy(tile);
+    sgSurfaceRelease(tileset);
+    sgSpriteRelease(tile);
 
-    sgLightSpaceDestroy(space);
+    sgLightSpaceRelease(space);
 
     sgDeinit();
 
