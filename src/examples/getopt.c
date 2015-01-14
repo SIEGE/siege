@@ -46,7 +46,9 @@ int main(int argc, char** argv)
         ret = sgGetOptNext(&getopt, &longind, &arg);
         if(ret == EOF) break;
 
-        if(longind == -1)
+        if(getopt.err)
+            printf("UNKNOWN %c", getopt.val);
+        else if(longind == -1)
             printf("-%c", ret);
         else
             printf("--%s", longopts[longind].name);

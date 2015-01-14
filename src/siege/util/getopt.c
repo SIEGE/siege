@@ -81,6 +81,7 @@ static SGint _sgGetOptInArg(SGGetOpt* getopt, SGlong* longind, char** arg)
     {
         getopt->err = '?'; /* missing argument to -%c */
         getopt->val = *inarg;
+        getopt->inarg = inarg + 1;
     }
     else
     {
