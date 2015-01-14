@@ -8,6 +8,7 @@
 #include <sys/refcount.h>
 #else /* other POSIX */
 #include <pthread.h>
+#include <stdlib.h>
 
 typedef struct RCHandle
 {
@@ -68,7 +69,7 @@ SG_EXPORT SGbool SG_CALL sgRCountDec(SGRCount* cnt)
     ret = !refcount_release(cnt->handle);
 #else /* other POSIX */
     pthread_spin_lock(&RCHANDLE(cnt)->lock);
-    ret = !!--RCHANDLE(cnt)->val--;
+    ret = !!--RCHANDLE(cnt)->val;
     pthread_spin_unlock(&RCHANDLE(cnt)->lock);
 #endif
     if(!ret)
