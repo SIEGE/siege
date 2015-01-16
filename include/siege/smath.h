@@ -48,6 +48,14 @@ static union _SG_MSVC_INF_HACK _sg_msvc_infHack = {{0x00, 0x00, 0x80, 0x7F}};
 #define SG_PI 3.14159265358979323846
 #endif /* SG_PI */
 
+#ifdef isnanf
+#define SG_IS_NAN(x)    isnanf(x)
+#elif defined(isnan)
+#define SG_IS_NAN(x)    isnan(x)
+#else
+#define SG_IS_NAN(x)    ((x) != (x))
+#endif
+
 /*
  * Using this will allow me to set the epsilon, just in case some system doesn't
  * define FLT_EPSILON

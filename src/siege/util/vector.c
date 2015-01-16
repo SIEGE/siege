@@ -107,7 +107,7 @@ float SG_CALL sgVec2AngleDegs(SGVec2 vec)
 
 SGbool SG_CALL sgVec2IsNan(SGVec2 vec)
 {
-    return (vec.x != vec.x) || (vec.y != vec.y);
+    return SG_IS_NAN(vec.x) || SG_IS_NAN(vec.y);
 }
 
 SGVec2 SG_CALL sgVec2Neg(SGVec2 a)
@@ -312,7 +312,7 @@ float SG_CALL sgVec3GetAngleDegs(SGVec3 vec);*/
 
 SGbool SG_CALL sgVec3IsNan(SGVec3 vec)
 {
-    return (vec.x != vec.x) || (vec.y != vec.y) || (vec.z != vec.z);
+    return SG_IS_NAN(vec.x) || SG_IS_NAN(vec.y) || SG_IS_NAN(vec.z);
 }
 
 SGVec3 SG_CALL sgVec3Neg(SGVec3 a)
@@ -490,7 +490,7 @@ float SG_CALL sgVec4GetAngleDegs(SGVec4 vec);*/
 
 SGbool SG_CALL sgVec4IsNan(SGVec4 vec)
 {
-    return (vec.x != vec.x) || (vec.y != vec.y) || (vec.z != vec.z) || (vec.w != vec.w);
+    return SG_IS_NAN(vec.x) || SG_IS_NAN(vec.y) || SG_IS_NAN(vec.z) || SG_IS_NAN(vec.w);
 }
 
 SGVec4 SG_CALL sgVec4Neg(SGVec4 a)

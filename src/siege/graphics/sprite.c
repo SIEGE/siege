@@ -46,9 +46,9 @@ SGSprite* SG_CALL sgSpriteCreateTexture2fv(SGTexture* texture, SGVec2 offset)
     sprite->subimages = malloc(sizeof(SGTexture*));
     sprite->subimages[0] = texture;
 
-    if(offset.x != offset.x)
+    if(SG_IS_NAN(offset.x))
         offset.x = sgTextureGetWidth(texture) / 2.0;
-    if(offset.y != offset.y)
+    if(SG_IS_NAN(offset.y))
         offset.y = sgTextureGetHeight(texture) / 2.0;
     sprite->offset = offset;
 

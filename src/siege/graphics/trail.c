@@ -98,7 +98,7 @@ void SG_CALL sgTrailDraw(SGTrail* trail)
     {
         x = trail->xpoints[i];
         y = trail->ypoints[i];
-        if((x != x) || (y != y))
+        if(SG_IS_NAN(x) || SG_IS_NAN(y))
             continue;
         sumlen += sqrt((px - x) * (px - x) + (py - y) * (py - y));
         px = x;
@@ -112,7 +112,7 @@ void SG_CALL sgTrailDraw(SGTrail* trail)
         {
             x = trail->xpoints[i];
             y = trail->ypoints[i];
-            if((x != x) || (y != y))
+            if(SG_IS_NAN(x) || SG_IS_NAN(y))
             {
                 sgDrawEnd();
                 sgDrawBegin(SG_LINE_STRIP);
