@@ -731,6 +731,7 @@ float SG_CALL sgEntityGetAngleDegs(SGEntity* entity);
 void SG_CALL sgEntityDraw(SGEntity* entity);
 
 SGList* SG_CALL sgEntityFind(const char* name);
+SGEntity* SG_CALL sgEntityFindIter(SGEntity* prev, const char* name);
 
 void SG_CALL sgEntityEventSignalv(size_t num, va_list args);
 void SG_CALL sgEntityEventSignal(size_t num, ...);

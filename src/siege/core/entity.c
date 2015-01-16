@@ -499,6 +499,15 @@ SGList* SG_CALL sgEntityFind(const char* name)
 {
     return sgSMapFind(_sg_entSMap, name);
 }
+SGEntity* SG_CALL sgEntityFindIter(SGEntity* prev, const char* name)
+{
+    if(prev)
+        return prev->mlnode ? prev->mlnode->next->item : NULL;
+    SGList* list = sgSMapFind(_sg_entSMap, name);
+    if(list)
+        return list->head->item;
+    return NULL;
+}
 
 void SG_CALL sgEntityEventSignalv(size_t num, va_list args)
 {
