@@ -26,7 +26,7 @@ int main(void)
 
         sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
 
-        if(sgMaskCheckCollision(supportm, 320, 240,
+        if(sgMaskCheckCollision2i(supportm, 320, 240,
                                 pacmanm, mx, my))
             sgDrawColor4f(1.0, 0.0, 0.0, 1.0);
         //sgMaskDrawDBG(supportm, 320, 240, SG_TRUE);

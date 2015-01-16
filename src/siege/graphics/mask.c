@@ -24,9 +24,13 @@
 
 SGMask* SG_CALL sgMaskCreateSprite(SGSprite* sprite)
 {
-    return sgMaskCreateTexture2i(sprite->subimages[0], sprite->xoffset, sprite->yoffset);
+    return sgMaskCreateTexture2iv(sprite->subimages[0], sgIVec2fv(sprite->offset));
 }
 SGMask* SG_CALL sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint yoffset)
+{
+    return sgMaskCreateTexture2iv(texture, sgIVec2i(xoffset, yoffset));
+}
+SGMask* SG_CALL sgMaskCreateTexture2iv(SGTexture* texture, SGIVec2 offset)
 {
     SGMask* mask = malloc(sizeof(SGMask));
     if(mask == NULL)
@@ -37,8 +41,7 @@ SGMask* SG_CALL sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint y
     mask->width = sgTextureGetWidth(texture);
     mask->height = sgTextureGetHeight(texture);
 
-    mask->xoffset = xoffset;
-    mask->yoffset = yoffset;
+    mask->offset = offset;
 
     mask->precise = SG_TRUE;
 
@@ -142,17 +145,21 @@ SGMask* SG_CALL sgMaskCreateTexture(SGTexture* texture)
     SGMask* mask = sgMaskCreateTexture2i(texture, 0, 0);
     if(mask == NULL)
         return NULL;
-    mask->xoffset = mask->width / 2;
-    mask->yoffset = mask->height / 2;
+    mask->offset.x = mask->width / 2;
+    mask->offset.y = mask->height / 2;
     return mask;
 }
 SGMask* SG_CALL sgMaskCreateFile2i(const char* fname, SGint xoffset, SGint yoffset)
+{
+    return sgMaskCreateFile2iv(fname, sgIVec2i(xoffset, yoffset));
+}
+SGMask* SG_CALL sgMaskCreateFile2iv(const char* fname, SGIVec2 offset)
 {
     SGTexture* texture = sgTextureCreateFile(fname);
     if(texture == NULL)
         return NULL;
 
-    SGMask* mask = sgMaskCreateTexture2i(texture, xoffset, yoffset);
+    SGMask* mask = sgMaskCreateTexture2iv(texture, offset);
     sgTextureDestroy(texture);
 
     return mask;
@@ -162,8 +169,8 @@ SGMask* SG_CALL sgMaskCreateFile(const char* fname)
     SGMask* mask = sgMaskCreateFile2i(fname, 0, 0);
     if(mask == NULL)
         return NULL;
-    mask->xoffset = mask->width / 2;
-    mask->yoffset = mask->height / 2;
+    mask->offset.x = mask->width / 2;
+    mask->offset.y = mask->height / 2;
     return mask;
 }
 void SG_CALL sgMaskDestroy(SGMask* mask)
@@ -178,12 +185,21 @@ void SG_CALL sgMaskDestroy(SGMask* mask)
     free(mask);
 }
 
-SGbool SG_CALL sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
+SGbool SG_CALL sgMaskCheckCollision2i(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
 {
-    x1 -= m1->xoffset;
-    y1 -= m1->yoffset;
-    x2 -= m2->xoffset;
-    y2 -= m2->yoffset;
+    return sgMaskCheckCollision2iv(m1, sgIVec2i(x1, y1), m2, sgIVec2i(x2, y2));
+}
+SGbool SG_CALL sgMaskCheckCollision2iv(SGMask* m1, SGIVec2 p1, SGMask* m2, SGIVec2 p2)
+{
+    int x1 = p1.x;
+    int y1 = p1.y;
+    int x2 = p2.x;
+    int y2 = p2.y;
+
+    x1 -= m1->offset.x;
+    y1 -= m1->offset.y;
+    x2 -= m2->offset.x;
+    y2 -= m2->offset.y;
 
     if(x2 > x1)
     {
@@ -254,13 +270,17 @@ void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent)
                 if(!transparent)
                     sgDrawColor1f(mask->field[i][j] ? 1.0 : 0.0);
                 if(mask->field[i][j] || !transparent)
-                    sgDrawVertex2f(x - mask->xoffset + i, y - mask->yoffset + j);
+                    sgDrawVertex2f(x - mask->offset.x + i, y - mask->offset.y + j);
             }
         }
     sgDrawEnd();
 }
 
 /* DEPRECATED */
+SGbool SG_CALL SG_HINT_DEPRECATED sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
+{
+    return sgMaskCheckCollision2i(m1, x1, y1, m2, x2, y2);
+}
 void SG_CALL SG_HINT_DEPRECATED sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height)
 {
     SGIVec2 size = sgMaskGetSize2iv(mask);

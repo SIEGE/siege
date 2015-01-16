@@ -38,8 +38,7 @@ typedef struct SGMask
     SGuint width;
     SGuint height;
 
-    SGint xoffset;
-    SGint yoffset;
+    SGIVec2 offset;
 
     SGbool precise;
     SGbool** field;
@@ -47,8 +46,10 @@ typedef struct SGMask
 
 SGMask* SG_CALL sgMaskCreateSprite(SGSprite* sprite);
 SGMask* SG_CALL sgMaskCreateTexture2i(SGTexture* texture, SGint xoffset, SGint yoffset);
+SGMask* SG_CALL sgMaskCreateTexture2iv(SGTexture* texture, SGIVec2 offset);
 SGMask* SG_CALL sgMaskCreateTexture(SGTexture* texture);
 SGMask* SG_CALL sgMaskCreateFile2i(const char* fname, SGint xoffset, SGint yoffset);
+SGMask* SG_CALL sgMaskCreateFile2iv(const char* fname, SGIVec2 offset);
 SGMask* SG_CALL sgMaskCreateFile(const char* fname);
 void SG_CALL sgMaskDestroy(SGMask* mask);
 
@@ -68,7 +69,8 @@ void SG_CALL sgMaskDestroy(SGMask* mask);
  * \todo Use the \c precise field
  * \todo Use bounding box info once BB's are added
  */
-SGbool SG_CALL sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
+SGbool SG_CALL sgMaskCheckCollision2i(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
+SGbool SG_CALL sgMaskCheckCollision2iv(SGMask* m1, SGIVec2 p1, SGMask* m2, SGIVec2 p2);
 
 SGIVec2 SG_CALL sgMaskGetSize2iv(SGMask* mask);
 SGVec2 SG_CALL sgMaskGetSize2fv(SGMask* mask);
@@ -86,6 +88,7 @@ SGuint SG_CALL sgMaskGetHeight(SGMask* mask);
 void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent);
 
 /* DEPRECATED */
+SGbool SG_CALL SG_HINT_DEPRECATED sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
 void SG_CALL SG_HINT_DEPRECATED sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height);
 
 #ifdef __cplusplus

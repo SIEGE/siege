@@ -31,6 +31,10 @@ void SG_CALL _sgSpriteUpdateTick(SGSprite* sprite)
 
 SGSprite* SG_CALL sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, float yoffset)
 {
+    return sgSpriteCreateTexture2fv(texture, sgVec2f(xoffset, yoffset));
+}
+SGSprite* SG_CALL sgSpriteCreateTexture2fv(SGTexture* texture, SGVec2 offset)
+{
     SGSprite* sprite = malloc(sizeof(SGSprite));
     if(sprite == NULL)
         return NULL;
@@ -42,12 +46,11 @@ SGSprite* SG_CALL sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, flo
     sprite->subimages = malloc(sizeof(SGTexture*));
     sprite->subimages[0] = texture;
 
-    if(xoffset != xoffset)
-        xoffset = sgTextureGetWidth(texture) / 2.0;
-    if(yoffset != yoffset)
-        yoffset = sgTextureGetHeight(texture) / 2.0;
-    sprite->xoffset = xoffset;
-    sprite->yoffset = yoffset;
+    if(offset.x != offset.x)
+        offset.x = sgTextureGetWidth(texture) / 2.0;
+    if(offset.y != offset.y)
+        offset.y = sgTextureGetHeight(texture) / 2.0;
+    sprite->offset = offset;
 
     sprite->image = 0.0;
     sprite->speed = 1.0;
@@ -60,11 +63,15 @@ SGSprite* SG_CALL sgSpriteCreateTexture(SGTexture* texture)
 }
 SGSprite* SG_CALL sgSpriteCreateFile2f(const char* fname, float xoffset, float yoffset)
 {
+    return sgSpriteCreateFile2fv(fname, sgVec2f(xoffset, yoffset));
+}
+SGSprite* SG_CALL sgSpriteCreateFile2fv(const char* fname, SGVec2 offset)
+{
     SGTexture* texture = sgTextureCreateFile(fname);
     if(texture == NULL)
         return NULL;
     sgTextureSetWrap(texture, SG_WRAP_CLAMP_TO_EDGE, SG_WRAP_CLAMP_TO_EDGE);
-    SGSprite* sprite = sgSpriteCreateTexture2f(texture, xoffset, yoffset);
+    SGSprite* sprite = sgSpriteCreateTexture2fv(texture, offset);
     if(sprite == NULL)
     {
         sgTextureDestroy(texture);
@@ -113,24 +120,18 @@ float SG_CALL sgSpriteGetImage(SGSprite* sprite)
 {
     return sprite->image;
 }
-void SG_CALL sgSpriteSetSpeed(SGSprite* sprite, float speed)
-{
-    sprite->speed = speed;
-}
-float SG_CALL sgSpriteGetSpeed(SGSprite* sprite)
-{
-    return sprite->speed;
-}
 
-void SG_CALL sgSpriteSetOffset(SGSprite* sprite, float x, float y)
+void SG_CALL sgSpriteSetOffset2f(SGSprite* sprite, float xoffset, float yoffset)
 {
-    sprite->xoffset = x;
-    sprite->yoffset = y;
+    sgSpriteSetOffset2fv(sprite, sgVec2f(xoffset, yoffset));
 }
-void SG_CALL sgSpriteGetOffset(SGSprite* sprite, float* x, float* y)
+void SG_CALL sgSpriteSetOffset2fv(SGSprite* sprite, SGVec2 offset)
 {
-    if(x) *x = sprite->xoffset;
-    if(y) *y = sprite->yoffset;
+    sprite->offset = offset;
+}
+SGVec2 SG_CALL sgSpriteGetOffset2fv(SGSprite* sprite)
+{
+    return sprite->offset;
 }
 
 void SG_CALL sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z, float xscale, float yscale, float angle)
@@ -140,7 +141,7 @@ void SG_CALL sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z,
 
     _sgSpriteUpdateTick(sprite);
 
-    sgTextureDrawRads3f2f2f1f(sprite->subimages[(SGuint)sprite->image], x, y, z, xscale, yscale, sprite->xoffset, sprite->yoffset, angle);
+    sgTextureDrawRads3f2f2f1f(sprite->subimages[(SGuint)sprite->image], x, y, z, xscale, yscale, sprite->offset.x, sprite->offset.y, angle);
 }
 void SG_CALL sgSpriteDrawRads2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle)
 {
@@ -213,6 +214,24 @@ SGuint SG_CALL sgSpriteGetHeight(SGSprite* sprite)
 }
 
 /* DEPRECATED */
+void SG_CALL SG_HINT_DEPRECATED sgSpriteSetOffset(SGSprite* sprite, float x, float y)
+{
+    sgSpriteSetOffset2f(sprite, x, y);
+}
+void SG_CALL sgSpriteGetOffset(SGSprite* sprite, float* x, float* y)
+{
+    SGVec2 offset = sgSpriteGetOffset2fv(sprite);
+    if(x) *x = offset.x;
+    if(y) *y = offset.y;
+}
+void SG_CALL SG_HINT_DEPRECATED sgSpriteSetSpeed(SGSprite* sprite, float speed)
+{
+}
+float SG_CALL SG_HINT_DEPRECATED sgSpriteGetSpeed(SGSprite* sprite)
+{
+    return 0.0f;
+}
+
 void SG_CALL SG_HINT_DEPRECATED sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height)
 {
     SGIVec2 size = sgSpriteGetSize2iv(sprite);
