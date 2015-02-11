@@ -3,22 +3,27 @@
 
 #include <stdint.h>
 
-/// @{
-typedef uint8_t  SGbool;
-/// \brief Equivalent to SGuint
-typedef uint32_t SGenum;
-/// @}
-
 /// \name Characters
 /// @{
 typedef char     SGchar;
-#if 0 // TODO: replace with __STDC_VERSION__ for C1x
+/*
+ * TODO: <uchar.h> was (supposedly) actually introduced in a technical report
+ * *before* C11; find out the version number and use that, instead.
+ */
+#if __STDC_VERSION__ >= 201112L || __cplusplus >= 201103L
+#include <uchar.h>
 typedef char16_t SGwchar;
 typedef char32_t SGdchar;
 #else // C1x
 typedef uint16_t SGwchar;
 typedef uint32_t SGdchar;
 #endif // C1x
+/// @}
+
+/// @{
+typedef uint8_t  SGbool;
+/// \brief Equivalent to SGuint
+typedef uint32_t SGenum;
 /// @}
 
 /**
