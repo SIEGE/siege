@@ -447,7 +447,7 @@ void SG_CALL sgDrawVertex2fp(const float* xy)
 void SG_CALL sgDrawClearC(SGColor col)
 {
     glClearColor(col.r, col.g, col.b, col.a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT/* | GL_STENCIL_BUFFER_BIT | GL_ACCUM_BUFFER_BIT*/);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT /*| GL_ACCUM_BUFFER_BIT*/);
 }
 void SG_CALL sgDrawClear4f(float r, float g, float b, float a)
 {

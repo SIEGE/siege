@@ -123,8 +123,9 @@ SGbool SG_CALL sgSurfaceSetTexture(SGSurface* surface, SGTexture* texture, SGboo
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, GLTEX(texture), 0);
 
     glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, GLRB(surface));
-    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, texture->width, texture->height);
+    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH24_STENCIL8_EXT, texture->width, texture->height);
     glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, GLRB(surface));
+    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, GLRB(surface));
     glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 
     GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
