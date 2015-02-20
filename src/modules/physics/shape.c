@@ -26,7 +26,7 @@
 #include <string.h>
 #include <math.h>
 
-#include <chipmunk/chipmunk.h>
+#include "compat.h"
 
 static void _postCreate(SGPhysicsShape* shape)
 {
@@ -99,8 +99,8 @@ SGPhysicsShape* SG_CALL sgPhysicsShapeCreatePoly(SGPhysicsBody* body, float x, f
     size_t i;
     cpVect* nvect = malloc(numverts * sizeof(cpVect));
     for(i = 0; i < numverts; i++)
-        nvect[i] = cpv(verts[2*i], verts[2*i+1]);
-    shape->handle = cpPolyShapeNew(body->handle, numverts, nvect, cpv(x, y));
+        nvect[i] = cpv(x + verts[2*i], y + verts[2*i+1]);
+    shape->handle = cpPolyShapeNewRaw(body->handle, numverts, nvect, 0.0f);
     free(nvect);
 
     _postCreate(shape);

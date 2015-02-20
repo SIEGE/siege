@@ -18,7 +18,7 @@
 
 #include <stdlib.h>
 
-#include <chipmunk/chipmunk.h>
+#include "compat.h"
 
 /* TODO: Return value */
 void SG_CALL _sg_cbPhysicsCollisionBegin(SGPhysicsShape* shape1, SGPhysicsShape* shape2, void* handle)
@@ -106,9 +106,10 @@ void SG_CALL sgPhysicsCollisionGetPoint(SGPhysicsCollision* coll, size_t index, 
     if(!x) x = &t;
     if(!y) y = &t;
 
-    cpVect v = cpArbiterGetPoint(coll->handle, index);
-    *x = v.x;
-    *y = v.y;
+    cpVect a = cpArbiterGetPointA(coll->handle, index);
+    cpVect b = cpArbiterGetPointB(coll->handle, index);
+    *x = (a.x + b.x) / 2.0f;
+    *y = (a.y + b.y) / 2.0f;
 }
 void SG_CALL sgPhysicsCollisionGetNormal(SGPhysicsCollision* coll, size_t index, float* x, float* y)
 {
@@ -116,7 +117,7 @@ void SG_CALL sgPhysicsCollisionGetNormal(SGPhysicsCollision* coll, size_t index,
     if(!x) x = &t;
     if(!y) y = &t;
 
-    cpVect v = cpArbiterGetNormal(coll->handle, index);
+    cpVect v = cpArbiterGetNormal(coll->handle);
     *x = v.x;
     *y = v.y;
 }
@@ -130,11 +131,7 @@ void SG_CALL sgPhysicsCollisionGetImpulse(SGPhysicsCollision* coll, float* x, fl
     if(!x) x = &t;
     if(!y) y = &t;
 
-    cpVect v;
-    if(friction)
-        v = cpArbiterTotalImpulseWithFriction(coll->handle);
-    else
-        v = cpArbiterTotalImpulse(coll->handle);
+    cpVect v = cpArbiterTotalImpulse(coll->handle);
     *x = v.x;
     *y = v.y;
 }

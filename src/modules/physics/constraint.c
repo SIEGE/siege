@@ -17,7 +17,7 @@
 
 #include <stdlib.h>
 
-#include <chipmunk/chipmunk.h>
+#include "compat.h"
 
 static void _postCreate(SGPhysicsConstraint* constr)
 {

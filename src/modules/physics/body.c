@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <chipmunk/chipmunk.h>
+#include "compat.h"
 
 SGPhysicsBody* SG_CALL sgPhysicsBodyCreate(SGPhysicsSpace* space, SGenum type)
 {
@@ -74,7 +74,7 @@ SGbool SG_CALL sgPhysicsBodyGetSleeping(SGPhysicsBody* body)
 
 void SG_CALL sgPhysicsBodySetPos(SGPhysicsBody* body, float x, float y)
 {
-    cpBodySetPos(body->handle, cpv(x, y));
+    cpBodySetPosition(body->handle, cpv(x, y));
 }
 void SG_CALL sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y)
 {
@@ -82,7 +82,7 @@ void SG_CALL sgPhysicsBodyGetPos(SGPhysicsBody* body, float* x, float* y)
     if(!x) x = &t;
     if(!y) y = &t;
 
-    cpVect pos = cpBodyGetPos(body->handle);
+    cpVect pos = cpBodyGetPosition(body->handle);
     *x = pos.x;
     *y = pos.y;
 }
@@ -129,7 +129,7 @@ float SG_CALL sgPhysicsBodyGetAngleDegs(SGPhysicsBody* body)
 
 void SG_CALL sgPhysicsBodySetVel(SGPhysicsBody* body, float x, float y)
 {
-    cpBodySetVel(body->handle, cpv(x, y));
+    cpBodySetVelocity(body->handle, cpv(x, y));
 }
 void SG_CALL sgPhysicsBodyGetVel(SGPhysicsBody* body, float* x, float* y)
 {
@@ -137,7 +137,7 @@ void SG_CALL sgPhysicsBodyGetVel(SGPhysicsBody* body, float* x, float* y)
     if(!x) x = &t;
     if(!y) y = &t;
 
-    cpVect vel = cpBodyGetVel(body->handle);
+    cpVect vel = cpBodyGetVelocity(body->handle);
     *x = vel.x;
     *y = vel.y;
 }
@@ -262,7 +262,7 @@ void SG_CALL sgPhysicsBodyWorldToLocal(SGPhysicsBody* body, float* xo, float* yo
     if(!xo) xo = &t;
     if(!yo) yo = &t;
 
-    cpVect v = cpBodyWorld2Local(body->handle, cpv(x, y));
+    cpVect v = cpBodyWorldToLocal(body->handle, cpv(x, y));
     *xo = v.x;
     *yo = v.y;
 }
@@ -272,7 +272,7 @@ void SG_CALL sgPhysicsBodyLocalToWorld(SGPhysicsBody* body, float* xo, float* yo
     if(!xo) xo = &t;
     if(!yo) yo = &t;
 
-    cpVect v = cpBodyLocal2World(body->handle, cpv(x, y));
+    cpVect v = cpBodyLocalToWorld(body->handle, cpv(x, y));
     *xo = v.x;
     *yo = v.y;
 }

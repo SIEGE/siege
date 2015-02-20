@@ -21,7 +21,7 @@
 
 #include <stdlib.h>
 
-#include <chipmunk/chipmunk.h>
+#include "compat.h"
 
 static cpBool cbCollisionBegin(cpArbiter* arb, cpSpace* space, void* data)
 {
@@ -81,8 +81,16 @@ SGPhysicsSpace* SG_CALL sgPhysicsSpaceCreate(void)
     space->sbody->entity = NULL;
     cpBodySetUserData(space->sbody->handle, space->sbody);
 
+#if CP_VERSION_MAJOR < 7
     // TODO: Add this later, perhaps? (once a body is attached)
     cpSpaceAddCollisionHandler(space->handle, 0, 0, cbCollisionBegin, cbCollisionPreSolve, cbCollisionPostSolve, cbCollisionSeparate, NULL);
+#else
+    cpCollisionHandler* handler = cpSpaceAddCollisionHandler(space->handle, 0, 0);
+    handler->beginFunc = cbCollisionBegin;
+    handler->preSolveFunc = cbCollisionPreSolve;
+    handler->postSolveFunc = cbCollisionPostSolve;
+    handler->separateFunc = cbCollisionSeparate;
+#endif
 
     sgPhysicsSpaceSetGravity(space, 0.0, 0.0);
 
@@ -138,17 +146,11 @@ SGPhysicsSpace* SG_CALL sgPhysicsSpaceGetDefault(void)
 
 void SG_CALL _sgPhysicsSpaceAddShape(SGPhysicsSpace* space, SGPhysicsShape* shape)
 {
-    if(shape->body->type != SG_BODY_STATIC)
-        cpSpaceAddShape(space->handle, shape->handle);
-    else
-        cpSpaceAddStaticShape(space->handle, shape->handle);
+    cpSpaceAddShape(space->handle, shape->handle);
 }
 void SG_CALL _sgPhysicsSpaceRemoveShape(SGPhysicsSpace* space, SGPhysicsShape* shape)
 {
-    if(shape->body->type != SG_BODY_STATIC)
-        cpSpaceRemoveShape(space->handle, shape->handle);
-    else
-        cpSpaceRemoveStaticShape(space->handle, shape->handle);
+    cpSpaceRemoveShape(space->handle, shape->handle);
 }
 
 void SG_CALL _sgPhysicsSpaceAddBody(SGPhysicsSpace* space, SGPhysicsBody* body)
