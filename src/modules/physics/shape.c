@@ -145,11 +145,20 @@ void SG_CALL sgPhysicsShapeDestroy(SGPhysicsShape* shape)
 
 void SG_CALL sgPhysicsShapeSetGroup(SGPhysicsShape* shape, SGuint group)
 {
+#if CP_VERSION_MAJOR < 7
     cpShapeSetGroup(shape->handle, group);
+#else
+    /* TODO */
+#endif
 }
 SGuint SG_CALL sgPhysicsShapeGetGroup(SGPhysicsShape* shape)
 {
+#if CP_VERSION_MAJOR < 7
     return cpShapeGetGroup(shape->handle);
+#else
+    /* TODO */
+    return 0;
+#endif
 }
 void SG_CALL sgPhysicsShapeSetFriction(SGPhysicsShape* shape, float friction)
 {

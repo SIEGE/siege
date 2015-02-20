@@ -3,10 +3,17 @@
 #include <chipmunk/chipmunk.h>
 
 #if CP_VERSION_MAJOR < 7
+
 #define cpBodySetPosition   cpBodySetPos
 #define cpBodyGetPosition   cpBodyGetPos
 #define cpBodySetVelocity   cpBodySetVel
 #define cpBodyGetVelocity   cpBodyGetVel
+
+#define cpBodySetAngularVelocity    cpBodySetAngVel
+#define cpBodyGetAngularVelocity    cpBodyGetAngVel
+
+#define cpBodyApplyForceAtLocalPoint    cpBodyApplyForce
+#define cpBodyApplyImpulseAtLocalPoint  cpBodyApplyImpulse
 
 #define cpBodyWorldToLocal  cpBodyWorld2Local
 #define cpBodyLocalToWorld  cpBodyLocal2World
@@ -31,6 +38,12 @@
                                                     cpSpaceRemoveStaticShape(space, _tmp_shape);   \
                                                 else cpSpaceRemoveShape(space, _tmp_shape);        \
                                             } while(0)
-#endif /* CP_VERSION_MAJOR < 7 */
+
+#elif CP_VERSION_MAJOR == 7 && CP_VERSION_MINOR == 0 && CP_VERSION_RELEASE == 0
+
+/* fix missing cpPolyShapeNewRaw */
+#define cpPolyShapeNewRaw(body, count, verts, radius)   ((cpShape*)cpPolyShapeInitRaw(cpPolyShapeAlloc(), body, count, verts, radius))
+
+#endif /* CP_VERSION_MAJOR */
 
 #endif /* __SIEGE_MODULE_PHYSICS_COMPAT_H__ */

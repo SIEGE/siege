@@ -167,11 +167,11 @@ float SG_CALL sgPhysicsBodyGetVelY(SGPhysicsBody* body)
 
 void SG_CALL sgPhysicsBodySetAngVelRads(SGPhysicsBody* body, float rads)
 {
-    cpBodySetAngVel(body->handle, rads);
+    cpBodySetAngularVelocity(body->handle, rads);
 }
 float SG_CALL sgPhysicsBodyGetAngVelRads(SGPhysicsBody* body)
 {
-    return cpBodyGetAngVel(body->handle);
+    return cpBodyGetAngularVelocity(body->handle);
 }
 void SG_CALL sgPhysicsBodySetAngVelDegs(SGPhysicsBody* body, float degs)
 {
@@ -249,11 +249,11 @@ float SG_CALL sgPhysicsBodyGetTorque(SGPhysicsBody* body)
 
 void SG_CALL sgPhysicsBodyApplyImpulse(SGPhysicsBody* body, float jx, float jy, float rx, float ry)
 {
-    cpBodyApplyImpulse(body->handle, cpv(jx, jy), cpv(rx, ry));
+    cpBodyApplyImpulseAtLocalPoint(body->handle, cpv(jx, jy), cpv(rx, ry));
 }
 void SG_CALL sgPhysicsBodyApplyForce(SGPhysicsBody* body, float jx, float jy, float rx, float ry)
 {
-    cpBodyApplyForce(body->handle, cpv(jx, jy), cpv(rx, ry));
+    cpBodyApplyForceAtLocalPoint(body->handle, cpv(jx, jy), cpv(rx, ry));
 }
 
 void SG_CALL sgPhysicsBodyWorldToLocal(SGPhysicsBody* body, float* xo, float* yo, float x, float y)
