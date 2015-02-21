@@ -47,6 +47,9 @@ typedef struct SGConv
     SGenum src;
 } SGConv;
 
+SGConv* SG_CALL sgConvInit(SGConv* conv, SGenum dst, SGenum src);
+void SG_CALL sgConvDeinit(SGConv* conv);
+
 SGConv* SG_CALL sgConvCreate(SGenum dst, SGenum src);
 void SG_CALL sgConvDestroy(SGConv* conv);
 

@@ -517,13 +517,12 @@ static size_t _sgConvSize(SGenum type)
     return 0;
 }
 
-SGConv* SG_CALL sgConvCreate(SGenum dst, SGenum src)
+SGConv* SG_CALL sgConvInit(SGConv* conv, SGenum dst, SGenum src)
 {
+    if(!conv) return NULL;
+
     SGConvFunction* func = _sgConvFunction(dst, src);
     if(!func) return NULL;
-
-    SGConv* conv = malloc(sizeof(SGConv));
-    if(!conv) return NULL;
 
     conv->func = func;
     conv->dst = dst;
@@ -531,10 +530,24 @@ SGConv* SG_CALL sgConvCreate(SGenum dst, SGenum src)
 
     return conv;
 }
-void SG_CALL sgConvDestroy(SGConv* conv)
+void SG_CALL sgConvDeinit(SGConv* conv)
 {
     if(!conv) return;
+}
 
+SGConv* SG_CALL sgConvCreate(SGenum dst, SGenum src)
+{
+    SGConv* conv = malloc(sizeof(SGConv));
+    if(!sgConvInit(conv, dst, src))
+    {
+        free(conv);
+        return NULL;
+    }
+    return conv;
+}
+void SG_CALL sgConvDestroy(SGConv* conv)
+{
+    sgConvDeinit(conv);
     free(conv);
 }
 
