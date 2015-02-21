@@ -222,8 +222,11 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
     poly->shape = sgPhysicsShapeCreatePoly(poly->body, 0.0, 0.0, (float*)points, nump);
     sgPhysicsShapeSetRestitution(poly->shape, 0.25);
     sgPhysicsShapeSetFriction(poly->shape, 0.75);
-    sgPhysicsBodySetMass(poly->body, sgPhysicsShapeGetMass(poly->shape, density));
-    sgPhysicsBodySetMoment(poly->body, sgPhysicsShapeGetMomentDensity(poly->shape, density));
+    if(density != SG_INF)
+    {
+        sgPhysicsBodySetMass(poly->body, sgPhysicsShapeGetMass(poly->shape, density));
+        sgPhysicsBodySetMoment(poly->body, sgPhysicsShapeGetMomentDensity(poly->shape, density));
+    }
 
     npolys++;
     polys = realloc(polys, npolys * sizeof(Polygon*));

@@ -117,8 +117,11 @@ SGEntity* createBox(float x, float y, float angle, float length, float width, fl
     box->shape = sgPhysicsShapeCreatePoly(body, 0.0, 0.0, verts, 4);
     sgPhysicsShapeSetRestitution(box->shape, 0.25);
     sgPhysicsShapeSetFriction(box->shape, 1.0);
-    sgPhysicsBodySetMass(body, sgPhysicsShapeGetMass(box->shape, density));
-    sgPhysicsBodySetMoment(body, sgPhysicsShapeGetMomentDensity(box->shape, density));
+    if(density != SG_INF)
+    {
+        sgPhysicsBodySetMass(body, sgPhysicsShapeGetMass(box->shape, density));
+        sgPhysicsBodySetMoment(body, sgPhysicsShapeGetMomentDensity(box->shape, density));
+    }
 
     entity->lcDestroy = destroyBox;
     entity->evDraw = drawBox;

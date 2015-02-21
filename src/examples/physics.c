@@ -101,8 +101,11 @@ SGEntity* createBox(SGSprite* spr, float x, float y, float angle, float density,
     box->shape = sgPhysicsShapeCreatePoly(body, 0.0, 0.0, verts, 4);
     sgPhysicsShapeSetRestitution(box->shape, 0.25);
     sgPhysicsShapeSetFriction(box->shape, 0.75);
-    sgPhysicsBodySetMass(body, sgPhysicsShapeGetMass(box->shape, density));
-    sgPhysicsBodySetMoment(body, sgPhysicsShapeGetMomentDensity(box->shape, density));
+    if(density != SG_INF)
+    {
+        sgPhysicsBodySetMass(body, sgPhysicsShapeGetMass(box->shape, density));
+        sgPhysicsBodySetMoment(body, sgPhysicsShapeGetMomentDensity(box->shape, density));
+    }
 
     entity->lcCollisionBegin = boxCollisionBegin;
     entity->lcCollisionEnd = boxCollisionEnd;
