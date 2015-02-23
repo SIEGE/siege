@@ -28,13 +28,13 @@
 
 #define cpSpaceAddShape(space, shape)       do {    \
                                                 cpShape* _tmp_shape = (shape);                  \
-                                                if(cpBodyGetType(cpShapeGetBody(_tmp_shape)) == CP_BODY_TYPE_STATIC)    \
+                                                if(cpBodyIsStatic(cpShapeGetBody(_tmp_shape)))    \
                                                     cpSpaceAddStaticShape(space, _tmp_shape);   \
                                                 else cpSpaceAddShape(space, _tmp_shape);        \
                                             } while(0)
 #define cpSpaceRemoveShape(space, shape)    do {    \
                                                 cpShape* _tmp_shape = (shape);                  \
-                                                if(cpBodyGetType(cpShapeGetBody(_tmp_shape)) == CP_BODY_TYPE_STATIC)    \
+                                                if(cpBodyIsStatic(cpShapeGetBody(_tmp_shape)))    \
                                                     cpSpaceRemoveStaticShape(space, _tmp_shape);   \
                                                 else cpSpaceRemoveShape(space, _tmp_shape);        \
                                             } while(0)
