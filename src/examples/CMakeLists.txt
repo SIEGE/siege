@@ -5,7 +5,7 @@ OPTION(INSTALL_EXAMPLES "Install examples and data" OFF)
 MACRO(EXAMPLE name)
     STRING(TOLOWER ${name} sname)
 
-    PROJECT(Example-${name})
+    PROJECT(Example-${name} C)
     ADD_DEPENDENCIES(examples ${PROJECT_NAME})
 
     ADD_EXECUTABLE(${PROJECT_NAME} ${sname})

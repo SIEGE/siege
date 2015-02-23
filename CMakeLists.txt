@@ -68,7 +68,7 @@ INSTALL_DIR("${CMAKE_SOURCE_DIR}/include/siege" include/siege)
 
 INCLUDE(InstallRequiredSystemLibraries)
 
-PROJECT(SIEGE)
+PROJECT(SIEGE C)
 
 SET(CPACK_PACKAGE_NAME "SIEGE")
 SET(CPACK_PACKAGE_VENDOR "SIEGE development team")

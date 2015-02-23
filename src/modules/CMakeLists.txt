@@ -5,7 +5,7 @@ if(BUILD_MODULES)
     option(MOD_PHYSICS "Build the physics module" ON)
 
     if(MOD_PHYSICS)
-        project(SGM-Physics)
+        project(SGM-Physics C)
 
         find_package(Chipmunk REQUIRED)
         include_directories(${CHIPMUNK_INCLUDE_DIR})

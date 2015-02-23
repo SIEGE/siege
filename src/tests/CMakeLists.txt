@@ -5,7 +5,7 @@ MACRO(TEST name)
     STRING(TOLOWER ${name} sname)
     STRING(REGEX REPLACE "-" "" oname ${name})
 
-    PROJECT(Test-${oname})
+    PROJECT(Test-${oname} C)
     ADD_DEPENDENCIES(tests ${PROJECT_NAME})
 
     ADD_EXECUTABLE(${PROJECT_NAME} ${sname})

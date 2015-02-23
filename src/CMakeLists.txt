@@ -25,7 +25,7 @@ ENDIF(UNIX)
 SET(AUX_LIBRARIES ${AUX_LIBRARIES} "${SDL_LIBRARY}" ${OPENGL_LIBRARIES} "${OPENAL_LIBRARY}")
 
 MACRO(SHARED_STATIC name dir ext)
-    PROJECT(${name})
+    PROJECT(${name} C)
 
     FILE(GLOB_RECURSE ${name}_SOURCES ${dir}/*.${ext})
     ADD_LIBRARY(${name} SHARED ${${name}_SOURCES})
