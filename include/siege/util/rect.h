@@ -20,8 +20,10 @@ SG_EXPORT SGRect SG_CALL sgRect2fvWH(SGVec2 pos, SGVec2 size);
 SG_EXPORT SGRect SG_CALL sgRectWH(float x, float y, float w, float h);
 
 SGVec2 SG_CALL sgRectSize(SGRect rect);
-SGVec2 SG_CALL sgRectCenter(SGRect rect);
+SGRect SG_CALL sgRectOffset2fv(SGRect rect, SGVec2 pos);
 SGRect SG_CALL sgRectOffset2f(SGRect rect, float x, float y);
+
+SGVec2 SG_CALL sgRectCenter(SGRect rect);
 
 #ifdef __cplusplus
 }

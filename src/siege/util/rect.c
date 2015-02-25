@@ -24,14 +24,18 @@ SGVec2 SG_CALL sgRectSize(SGRect rect)
 {
     return sgVec2Sub(rect.b, rect.a);
 }
-SGVec2 SG_CALL sgRectCenter(SGRect rect)
+SGRect SG_CALL sgRectOffset2fv(SGRect rect, SGVec2 off)
 {
-    return sgVec2Div(sgVec2Add(rect.a, rect.b), sgVec2f(2.0, 2.0));
-}
-SGRect SG_CALL sgRectOffset2f(SGRect rect, float x, float y)
-{
-    SGVec2 off = sgVec2f(x, y);
     rect.a = sgVec2Add(rect.a, off);
     rect.b = sgVec2Add(rect.b, off);
     return rect;
+}
+SGRect SG_CALL sgRectOffset2f(SGRect rect, float x, float y)
+{
+    return sgRectOffset2fv(rect, sgVec2f(x, y));
+}
+
+SGVec2 SG_CALL sgRectCenter(SGRect rect)
+{
+    return sgVec2Divf(sgVec2Add(rect.a, rect.b), 2.0);
 }
