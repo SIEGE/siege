@@ -67,6 +67,7 @@
 #include "util/getopt.h"
 #include "util/gradient.h"
 #include "util/inter.h"
+#include "util/irect.h"
 #include "util/ivector.h"
 #include "util/link.h"
 #include "util/list.h"
