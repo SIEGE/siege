@@ -25,7 +25,7 @@ static int f_read(void* data, char* ptr, int size)
     SGStream* stream = data;
     return stream->read(stream->data, ptr, 1, size);
 }
-static void f_skip(void* data, unsigned n)
+static void f_skip(void* data, int n)
 {
     SGStream* stream = data;
     stream->seek(stream->data, n, SG_SEEK_CUR);
