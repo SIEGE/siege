@@ -11,7 +11,7 @@ SGIRect SG_CALL sgIRect2i(SGint x1, SGint y1, SGint x2, SGint y2)
 {
     return sgIRect2iv(sgIVec2i(x1, y1), sgIVec2i(x2, y2));
 }
-SGIRect SG_CALL sgIRect2fvWH(SGIVec2 pos, SGIVec2 size)
+SGIRect SG_CALL sgIRect2ivWH(SGIVec2 pos, SGIVec2 size)
 {
     return sgIRect2iv(pos, sgIVec2Add(pos, size));
 }
