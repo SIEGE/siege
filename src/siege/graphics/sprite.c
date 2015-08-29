@@ -19,16 +19,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-void SG_CALL _sgSpriteUpdateTick(SGSprite* sprite)
-{
-    SGulong tick = sgGetTick();
-    sprite->image += sprite->speed * (tick - sprite->tick);
-    sprite->tick = tick;
-
-    while((SGuint)sprite->image >= sprite->numimages)
-        sprite->image -= sprite->numimages;
-}
-
 SGSprite* SG_CALL sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, float yoffset)
 {
     return sgSpriteCreateTexture2fv(texture, sgVec2f(xoffset, yoffset));
@@ -39,11 +29,10 @@ SGSprite* SG_CALL sgSpriteCreateTexture2fv(SGTexture* texture, SGVec2 offset)
     if(sprite == NULL)
         return NULL;
 
-    sprite->tick = sgGetTick();
-
-    sprite->extimages = SG_TRUE;
     sprite->numimages = 1;
-    sprite->subimages = malloc(sizeof(SGTexture*));
+    sprite->delimages = malloc(1 * sizeof(SGbool));
+    sprite->subimages = malloc(1 * sizeof(SGTexture*));
+    sprite->delimages[0] = SG_FALSE;
     sprite->subimages[0] = texture;
 
     if(SG_IS_NAN(offset.x))
@@ -53,7 +42,6 @@ SGSprite* SG_CALL sgSpriteCreateTexture2fv(SGTexture* texture, SGVec2 offset)
     sprite->offset = offset;
 
     sprite->image = 0.0;
-    sprite->speed = 1.0;
 
     return sprite;
 }
@@ -77,7 +65,7 @@ SGSprite* SG_CALL sgSpriteCreateFile2fv(const char* fname, SGVec2 offset)
         sgTextureDestroy(texture);
         return NULL;
     }
-    sprite->extimages = SG_FALSE;
+    sprite->delimages[0] = SG_TRUE;
     return sprite;
 }
 SGSprite* SG_CALL sgSpriteCreateFile(const char* fname)
@@ -90,25 +78,21 @@ void SG_CALL sgSpriteDestroy(SGSprite* sprite)
         return;
 
     SGuint i;
-    if(!sprite->extimages)
-    {
-        for(i = 0; i < sprite->numimages; i++)
+    for(i = 0; i < sprite->numimages; i++)
+        if(sprite->delimages[i])
             sgTextureDestroy(sprite->subimages[i]);
-    }
+    free(sprite->delimages);
     free(sprite->subimages);
     free(sprite);
 }
 
 SGbool SG_CALL sgSpriteAddFrameFile(SGSprite* sprite, const char* fname)
 {
-    sprite->numimages++;
-    sprite->subimages = realloc(sprite->subimages, sprite->numimages * sizeof(SGTexture*));
-    sprite->subimages[sprite->numimages - 1] = sgTextureCreateFile(fname);
-    if(!sprite->subimages[sprite->numimages - 1])
-    {
-        sprite->numimages--; // failed, reset the number of images
+    sprite->subimages = realloc(sprite->subimages, (sprite->numimages + 1) * sizeof(SGTexture*));
+    sprite->subimages[sprite->numimages] = sgTextureCreateFile(fname);
+    if(!sprite->subimages[sprite->numimages])
         return SG_FALSE;
-    }
+    sprite->numimages++;
     return SG_TRUE;
 }
 
@@ -121,6 +105,10 @@ float SG_CALL sgSpriteGetImage(SGSprite* sprite)
     return sprite->image;
 }
 
+void SG_CALL sgSpriteSetOffsetCenter(SGSprite* sprite)
+{
+    sgSpriteSetOffset2fv(sprite, sgVec2Divf(sgSpriteGetSize2fv(sprite), 2));
+}
 void SG_CALL sgSpriteSetOffset2f(SGSprite* sprite, float xoffset, float yoffset)
 {
     sgSpriteSetOffset2fv(sprite, sgVec2f(xoffset, yoffset));
@@ -138,9 +126,6 @@ void SG_CALL sgSpriteDrawRads3f2f1f(SGSprite* sprite, float x, float y, float z,
 {
     if(sprite == NULL)
         return;
-
-    _sgSpriteUpdateTick(sprite);
-
     sgTextureDrawRads3f2f2f1f(sprite->subimages[(SGuint)sprite->image], x, y, z, xscale, yscale, sprite->offset.x, sprite->offset.y, angle);
 }
 void SG_CALL sgSpriteDrawRads2f2f1f(SGSprite* sprite, float x, float y, float xscale, float yscale, float angle)
@@ -211,30 +196,4 @@ SGuint SG_CALL sgSpriteGetHeight(SGSprite* sprite)
         return 0;
 
     return sgTextureGetHeight(sprite->subimages[0]);
-}
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgSpriteSetOffset(SGSprite* sprite, float x, float y)
-{
-    sgSpriteSetOffset2f(sprite, x, y);
-}
-void SG_CALL sgSpriteGetOffset(SGSprite* sprite, float* x, float* y)
-{
-    SGVec2 offset = sgSpriteGetOffset2fv(sprite);
-    if(x) *x = offset.x;
-    if(y) *y = offset.y;
-}
-void SG_CALL SG_HINT_DEPRECATED sgSpriteSetSpeed(SGSprite* sprite, float speed)
-{
-}
-float SG_CALL SG_HINT_DEPRECATED sgSpriteGetSpeed(SGSprite* sprite)
-{
-    return 0.0f;
-}
-
-void SG_CALL SG_HINT_DEPRECATED sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height)
-{
-    SGIVec2 size = sgSpriteGetSize2iv(sprite);
-    if(width)   *width = size.x;
-    if(height)  *height = size.y;
 }

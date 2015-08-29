@@ -26,17 +26,12 @@ extern "C"
 #endif // __cplusplus
 typedef struct SGSprite
 {
-    SGulong tick;
-
     SGVec2 offset;
-    SGbool extimages;
     SGuint numimages;
+    SGbool* delimages;
     SGTexture** subimages;
     float image;
-    float speed;
 } SGSprite;
-
-void SG_CALL _sgSpriteUpdateTick(SGSprite* sprite);
 
 SGSprite* SG_CALL sgSpriteCreateTexture2f(SGTexture* texture, float xoffset, float yoffset);
 SGSprite* SG_CALL sgSpriteCreateTexture2fv(SGTexture* texture, SGVec2 offset);
@@ -51,6 +46,7 @@ SGbool SG_CALL sgSpriteAddFrameFile(SGSprite* sprite, const char* fname);
 void SG_CALL sgSpriteSetImage(SGSprite* sprite, float image);
 float SG_CALL sgSpriteGetImage(SGSprite* sprite);
 
+void SG_CALL sgSpriteSetOffsetCenter(SGSprite* sprite);
 void SG_CALL sgSpriteSetOffset2f(SGSprite* sprite, float xoffset, float yoffset);
 void SG_CALL sgSpriteSetOffset2fv(SGSprite* sprite, SGVec2 offset);
 SGVec2 SG_CALL sgSpriteGetOffset2fv(SGSprite* sprite);
@@ -72,13 +68,6 @@ SGIVec2 SG_CALL sgSpriteGetSize2iv(SGSprite* sprite);
 SGVec2 SG_CALL sgSpriteGetSize2fv(SGSprite* sprite);
 SGuint SG_CALL sgSpriteGetWidth(SGSprite* sprite);
 SGuint SG_CALL sgSpriteGetHeight(SGSprite* sprite);
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgSpriteSetSpeed(SGSprite* sprite, float speed);
-float SG_CALL SG_HINT_DEPRECATED sgSpriteGetSpeed(SGSprite* sprite);
-void SG_CALL SG_HINT_DEPRECATED sgSpriteSetOffset(SGSprite* sprite, float x, float y);
-void SG_CALL SG_HINT_DEPRECATED sgSpriteGetOffset(SGSprite* sprite, float* x, float* y);
-void SG_CALL SG_HINT_DEPRECATED sgSpriteGetSize(SGSprite* sprite, SGuint* width, SGuint* height);
 
 #ifdef __cplusplus
 }
