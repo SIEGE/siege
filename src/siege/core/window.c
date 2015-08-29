@@ -16,6 +16,7 @@
 #include <siege/core/core.h>
 #include <siege/core/entity.h>
 #include <siege/core/window.h>
+#include <siege/graphics/camera.h>
 #include <siege/graphics/viewport.h>
 #include <siege/input/joystick.h>
 #include <siege/input/keyboard.h>
@@ -214,6 +215,7 @@ SGbool SG_CALL sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flag
     if(!initGL())
         return SG_FALSE;
 
+    _sg_cameraMain = sgCameraCreateR(sgRectWH(0, 0, size.x, size.y), 0.0);
     _sg_viewMain = sgViewportCreate4i(0, 0, size.x, size.y);
 
     _sg_cbWindowOpen();
@@ -228,6 +230,8 @@ void SG_CALL sgWindowClose(void)
 {
     // TODO: Actually close the window (SDL2 ...)
     _sg_cbWindowClose();
+    sgViewportDestroy(_sg_viewMain);
+    sgCameraDestroy(_sg_cameraMain);
 }
 void SG_CALL sgWindowSetIcon(SGBitmap* bmp)
 {

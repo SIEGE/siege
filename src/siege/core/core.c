@@ -26,6 +26,7 @@
 #include <siege/graphics/surface.h>
 #include <siege/graphics/draw.h>
 #include <siege/graphics/bitmap.h>
+#include <siege/graphics/camera.h>
 #include <siege/graphics/viewport.h>
 #include <siege/input/keyboard.h>
 #include <siege/input/mouse.h>
@@ -115,6 +116,7 @@ SGbool SG_CALL sgInit(SGenum flags)
 
     _sgBitmapInit();
     _sgWindowInit();
+    _sgCameraInit();
     _sgViewportInit();
     _sgSurfaceInit();
 
@@ -168,6 +170,7 @@ SGbool SG_CALL sgDeinit(void)
 
     _sgSurfaceDeinit();
     _sgViewportDeinit();
+    _sgCameraDeinit();
     _sgWindowDeinit();
     _sgBitmapDeinit();
 
