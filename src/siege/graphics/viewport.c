@@ -27,7 +27,6 @@ SGbool SG_CALL _sgViewportInit(void)
         return SG_FALSE;
     return SG_TRUE;
 }
-
 SGbool SG_CALL _sgViewportDeinit(void)
 {
     //sgViewportDestroy(_sg_viewMain);
@@ -42,131 +41,91 @@ SGbool SG_CALL _sgViewportDeinit(void)
     return SG_TRUE;
 }
 
-SGViewport* SG_CALL sgViewportCreate4i4f(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)
-{
-    SGViewport* viewport = sgViewportCreate();
-    if(viewport == NULL)
-        return NULL;
-
-    sgViewportSet4i4f(viewport, wposx, wposy, wsizex, wsizey, posx, posy, sizex, sizey);
-    return viewport;
-}
-SGViewport* SG_CALL sgViewportCreate4i(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey)
-{
-    return sgViewportCreate4i4f(wposx, wposy, wsizex, wsizey, wposx, wposy, wsizex, wsizey);
-}
-SGViewport* SG_CALL sgViewportCreate(void)
+SGViewport* SG_CALL sgViewportCreateR(SGCamera* camera, SGIRect rect)
 {
     SGViewport* viewport = malloc(sizeof(SGViewport));
-    if(viewport == NULL)
-        return NULL;
-
-    sgListAppend(_sg_viewList, viewport);
+    if(!viewport) return NULL;
+    viewport->camera = camera;
+    viewport->rect = rect;
     return viewport;
 }
 void SG_CALL sgViewportDestroy(SGViewport* viewport)
 {
-    if(viewport == NULL)
-        return;
-
+    if(!viewport) return;
     sgListRemoveItem(_sg_viewList, viewport);
     free(viewport);
 }
-void SG_CALL sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey)
-{
-    if(viewport == NULL)
-        return;
 
-    viewport->wposx = wposx;
-    viewport->wposy = wposy;
-    viewport->wsizex = wsizex;
-    viewport->wsizey = wsizey;
-    viewport->posx = posx;
-    viewport->posy = posy;
-    viewport->sizex = sizex;
-    viewport->sizey = sizey;
-    sgViewportReset(viewport);
+void SG_CALL sgViewportSetRect(SGViewport* viewport, SGIRect rect)
+{
+    viewport->rect = rect;
+    if(_sg_viewCurr == viewport)
+        sgViewportUse(viewport);
 }
-void SG_CALL sgViewportSet4i(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey)
+SGIRect SG_CALL sgViewportGetRect(SGViewport* viewport)
 {
-    sgViewportSet4i4f(viewport, wposx, wposy, wsizex, wsizey, wposx, wposy, wsizex, wsizey);
-}
-void SG_CALL sgViewportReset(SGViewport* viewport)
-{
-    if(viewport == NULL)
-        return;
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    glViewport(viewport->wposx, viewport->wposy, viewport->wsizex, viewport->wsizey);
-    glOrtho(viewport->posx, viewport->posx + viewport->sizex, viewport->posy + viewport->sizey, viewport->posy, 127, -128);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    return viewport->rect;
 }
 
-void SG_CALL sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy)
+void SG_CALL sgViewportSetPos2fv(SGViewport* viewport, SGIVec2 pos)
 {
-    viewport->wposx = wposx;
-    viewport->wposy = wposy;
-    sgViewportReset(viewport);
+    sgViewportSetRect(viewport, sgIRect2ivWH(pos, sgIRectSize(viewport->rect)));
 }
-void SG_CALL sgViewportSetWSize(SGViewport* viewport, SGuint wsizex, SGuint wsizey)
+/*void SG_CALL sgViewportSetPosCenter2fv(SGViewport* viewport, SGIVec2 pos)
 {
-    viewport->wsizex = wsizex;
-    viewport->wsizey = wsizey;
-    sgViewportReset(viewport);
+    SGUVec2 size = sgRectSize(viewport->rect);
+    sgViewportSetRect(viewport, sgRect2ivWH(sgIVec2Sub(pos, sgIVec2Divf(size, 2)), size));
+    //TODO
+}*/
+void SG_CALL sgViewportSetSize2fv(SGViewport* viewport, SGIVec2 size)
+{
+    sgViewportSetRect(viewport, sgIRect2ivWH(viewport->rect.a, size));
 }
-void SG_CALL sgViewportSetPos(SGViewport* viewport, float posx, float posy)
+/*void SG_CALL sgViewportSetSizeCenter2fv(SGViewport* viewport, SGVec2 size)
 {
-    viewport->posx = posx;
-    viewport->posy = posy;
-    sgViewportReset(viewport);
-}
-void SG_CALL sgViewportSetSize(SGViewport* viewport, float sizex, float sizey)
+    SGUVec2 pos = viewport->rect.a;
+    // TODO
+}*/
+
+void SG_CALL sgViewportUse(SGViewport* viewport)
 {
-    viewport->sizex = sizex;
-    viewport->sizey = sizey;
-    sgViewportReset(viewport);
-}
-void SG_CALL sgViewportZoomCentered(SGViewport* viewport, float factor)
-{
-    float ox = viewport->sizex;
-    float oy = viewport->sizey;
-    viewport->sizex /= factor;
-    viewport->sizey /= factor;
-    viewport->posx += ox - viewport->sizex / 2;
-    viewport->posy += oy - viewport->sizey / 2;
-    sgViewportReset(viewport);
+    if(!viewport) return;
+    _sg_viewCurr = viewport;
+
+    glViewport(viewport->rect.a.x, viewport->rect.a.y, viewport->rect.b.x - viewport->rect.a.x, viewport->rect.b.y - viewport->rect.b.x);
+
+    if(viewport->camera)
+        sgCameraUse(viewport->camera);
 }
 
-SGbool SG_CALL sgViewportInsideWindow(SGViewport* viewport, float x, float y)
+SGbool SG_CALL sgViewportPointInside2fv(SGViewport* viewport, SGVec2 point)
 {
-    return viewport->wposx <= x && viewport->wposx + viewport->wsizex <= x
-        && viewport->wposy <= y && viewport->wposy + viewport->wsizey <= y;
-}
-SGbool SG_CALL sgViewportInsideLocal(SGViewport* viewport, float x, float y)
-{
-    return viewport->posx <= x && viewport->posx + viewport->sizex <= x
-        && viewport->posy <= y && viewport->posy + viewport->sizey <= y;
+    return viewport->rect.a.x <= point.x && point.x <= viewport->rect.b.x
+        && viewport->rect.a.y <= point.y && point.y <= viewport->rect.b.y;
 }
 
-void SG_CALL sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* wy, float lx, float ly)
+SGVec2 SG_CALL sgViewportNormalToWindow2fv(SGViewport* viewport, SGVec2 npoint)
 {
-    float tmp;
-    if(!wx) wx = &tmp;
-    if(!wy) wy = &tmp;
-
-    *wx = (lx + viewport->posx) * viewport->wsizex / viewport->sizex;
-    *wy = (ly + viewport->posy) * viewport->wsizey / viewport->sizey;
+    SGVec2 pos = sgVec2iv(viewport->rect.a);
+    SGVec2 size = sgVec2iv(sgIRectSize(viewport->rect));
+    // basically Normal->Local without rotation
+    return sgVec2Add(pos, sgVec2Mul(npoint, size));
 }
-void SG_CALL sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly, float wx, float wy)
+SGVec2 SG_CALL sgViewportWindowToNormal2fv(SGViewport* viewport, SGVec2 wpoint)
 {
-    float tmp;
-    if(!lx) lx = &tmp;
-    if(!ly) ly = &tmp;
+    SGVec2 pos = sgVec2iv(viewport->rect.a);
+    SGVec2 size = sgVec2iv(sgIRectSize(viewport->rect));
+    // basically Local->Normal without rotation
+    return sgVec2Div(sgVec2Sub(wpoint, pos), size);
+}
 
-    *lx = viewport->posx + wx * viewport->sizex / viewport->wsizex;
-    *ly = viewport->posy + wy * viewport->sizey / viewport->wsizey;
+SGVec2 SG_CALL sgViewportLocalToWindow2fv(SGViewport* viewport, SGVec2 lpoint)
+{
+    SGVec2 npoint = sgCameraLocalToNormal2fv(viewport->camera, lpoint);
+    return sgViewportNormalToWindow2fv(viewport, npoint);
+}
+SGVec2 SG_CALL sgViewportWindowToLocal2fv(SGViewport* viewport, SGVec2 wpoint)
+{
+    SGVec2 npoint = sgViewportWindowToNormal2fv(viewport, wpoint);
+    return sgCameraNormalToLocal2fv(viewport->camera, npoint);
 }

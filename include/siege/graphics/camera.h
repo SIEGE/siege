@@ -15,6 +15,7 @@ typedef struct SGCamera
 
 #ifdef SG_BUILD_LIBRARY
 SGCamera* _sg_cameraMain;
+SGCamera* _sg_cameraCurr;
 #endif // SG_BUILD_LIBRARY
 
 SGbool SG_CALL _sgCameraInit(void);
@@ -35,6 +36,18 @@ void SG_CALL sgCameraSetSize2fv(SGCamera* camera, SGVec2 size);
 void SG_CALL sgCameraSetSizeCenter2fv(SGCamera* camera, SGVec2 size);
 
 void SG_CALL sgCameraUse(SGCamera* camera);
+
+SGbool SG_CALL sgCameraPointInside2fv(SGCamera* camera, SGVec2 point);
+
+// TODO: Rename to Project/Unproject?
+SGVec2 SG_CALL sgCameraLocalToNormal2fv(SGCamera* camera, SGVec2 lpoint);
+SGVec2 SG_CALL sgCameraNormalToLocal2fv(SGCamera* camera, SGVec2 npoint);
+
+/*
+ * semi-DEPRECATED: use sgCameraSetSizeCenter2fv, instead
+ * (function will likely be renamed)
+ */
+void SG_CALL sgCameraZoomCentered(SGCamera* camera, float factor);
 
 #ifdef __cplusplus
 }

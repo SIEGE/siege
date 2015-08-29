@@ -216,7 +216,9 @@ SGbool SG_CALL sgWindowOpen(SGuint width, SGuint height, SGuint bpp, SGenum flag
         return SG_FALSE;
 
     _sg_cameraMain = sgCameraCreateR(sgRectWH(0, 0, size.x, size.y), 0.0);
-    _sg_viewMain = sgViewportCreate4i(0, 0, size.x, size.y);
+    _sg_viewMain = sgViewportCreateR(_sg_cameraMain, sgIRectWH(0, 0, size.x, size.y));
+
+    sgViewportUse(_sg_viewMain);
 
     _sg_cbWindowOpen();
     _sg_cbWindowResize(size.x, size.y);

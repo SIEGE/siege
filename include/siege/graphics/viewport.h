@@ -16,6 +16,8 @@
 #define __SIEGE_GRAPHICS_VIEWPORT_H__
 #include "../common.h"
 #include "../util/list.h"
+#include "../util/irect.h"
+#include "camera.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -24,6 +26,8 @@ extern "C"
 
 typedef struct SGViewport
 {
+    SGCamera* camera;
+    SGIRect rect;
     SGuint wposx;
     SGuint wposy;
     SGuint wsizex;
@@ -37,30 +41,31 @@ typedef struct SGViewport
 #ifdef SG_BUILD_LIBRARY
 SGList* _sg_viewList;
 SGViewport* _sg_viewMain;
+SGViewport* _sg_viewCurr;
 #endif // SG_BUILD_LIBRARY
 
 SGbool SG_CALL _sgViewportInit(void);
 SGbool SG_CALL _sgViewportDeinit(void);
 
-SGViewport* SG_CALL sgViewportCreate4i4f(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey);
-SGViewport* SG_CALL sgViewportCreate4i(SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey);
-SGViewport* SG_CALL sgViewportCreate(void);
+SGViewport* SG_CALL sgViewportCreateR(SGCamera* camera, SGIRect rect);
 void SG_CALL sgViewportDestroy(SGViewport* viewport);
-void SG_CALL sgViewportSet4i4f(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey, float posx, float posy, float sizex, float sizey);
-void SG_CALL sgViewportSet4i(SGViewport* viewport, SGuint wposx, SGuint wposy, SGuint wsizex, SGuint wsizey);
-void SG_CALL sgViewportReset(SGViewport* viewport);
 
-void SG_CALL sgViewportSetWPos(SGViewport* viewport, SGuint wposx, SGuint wposy);
-void SG_CALL sgViewportSetWSize(SGViewport* viewport, SGuint wsizex, SGuint wsizey);
-void SG_CALL sgViewportSetPos(SGViewport* viewport, float posx, float posy);
-void SG_CALL sgViewportSetSize(SGViewport* viewport, float sizex, float sizey);
-void SG_CALL sgViewportZoomCentered(SGViewport* viewport, float factor);
+void SG_CALL sgViewportSetRect(SGViewport* viewport, SGIRect rect);
+SGIRect SG_CALL sgViewportGetRect(SGViewport* viewport);
 
-SGbool SG_CALL sgViewportInsideWindow(SGViewport* viewport, float x, float y);
-SGbool SG_CALL sgViewportInsideLocal(SGViewport* viewport, float x, float y);
+void SG_CALL sgViewportSetPos2iv(SGViewport* viewport, SGIVec2 pos);
+void SG_CALL sgViewportSetSize2iv(SGViewport* viewport, SGIVec2 size);
 
-void SG_CALL sgViewportLocalToWindow(SGViewport* viewport, float* wx, float* wy, float lx, float ly);
-void SG_CALL sgViewportWindowToLocal(SGViewport* viewport, float* lx, float* ly, float wx, float wy);
+void SG_CALL sgViewportUse(SGViewport* viewport);
+
+SGbool SG_CALL sgViewportPointInside2fv(SGViewport* viewport, SGVec2 point);
+
+SGVec2 SG_CALL sgViewportNormalToWindow2fv(SGViewport* viewport, SGVec2 npoint);
+SGVec2 SG_CALL sgViewportWindowToNormal2fv(SGViewport* viewport, SGVec2 wpoint);
+
+// TODO: Move these out of viewport?
+SGVec2 SG_CALL sgViewportLocalToWindow2fv(SGViewport* viewport, SGVec2 lpoint);
+SGVec2 SG_CALL sgViewportWindowToLocal2fv(SGViewport* viewport, SGVec2 wpoint);
 
 #ifdef __cplusplus
 }
