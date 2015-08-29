@@ -275,15 +275,3 @@ void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent)
         }
     sgDrawEnd();
 }
-
-/* DEPRECATED */
-SGbool SG_CALL SG_HINT_DEPRECATED sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2)
-{
-    return sgMaskCheckCollision2i(m1, x1, y1, m2, x2, y2);
-}
-void SG_CALL SG_HINT_DEPRECATED sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height)
-{
-    SGIVec2 size = sgMaskGetSize2iv(mask);
-    if(width)   *width = size.x;
-    if(height)  *height = size.y;
-}

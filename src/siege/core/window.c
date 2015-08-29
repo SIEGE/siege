@@ -445,15 +445,3 @@ SGfloat SG_CALL sgWindowGetFPS(void)
 {
     return _sg_achievedFramerate;
 }
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgWindowSetSize(SGuint width, SGuint height)
-{
-    sgWindowSetSize2i(width, height);
-}
-void SG_CALL SG_HINT_DEPRECATED sgWindowGetSize(SGuint* width, SGuint* height)
-{
-    SGIVec2 size = sgWindowGetSize2iv();
-    if(width)   *width = size.x;
-    if(height)  *height = size.y;
-}

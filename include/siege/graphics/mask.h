@@ -87,10 +87,6 @@ SGuint SG_CALL sgMaskGetHeight(SGMask* mask);
  */
 void SG_CALL sgMaskDrawDBG(SGMask* mask, SGint x, SGint y, SGbool transparent);
 
-/* DEPRECATED */
-SGbool SG_CALL SG_HINT_DEPRECATED sgMaskCheckCollision(SGMask* m1, SGint x1, SGint y1, SGMask* m2, SGint x2, SGint y2);
-void SG_CALL SG_HINT_DEPRECATED sgMaskGetSize(SGMask* mask, SGuint* width, SGuint* height);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

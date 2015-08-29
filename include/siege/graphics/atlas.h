@@ -97,9 +97,6 @@ size_t SG_CALL sgAtlasGetHeight(SGAtlas* atlas);
 
 void SG_CALL sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbool wires);
 
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

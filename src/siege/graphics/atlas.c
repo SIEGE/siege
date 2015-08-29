@@ -346,11 +346,3 @@ void SG_CALL sgAtlasDrawDBG(SGAtlas* atlas, float x, float y, size_t index, SGbo
     else
         sgTextureDraw2f(atlas->textures[index].texture, x, y);
 }
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgAtlasGetSize(SGAtlas* atlas, size_t* width, size_t* height)
-{
-    SGIVec2 size = sgAtlasGetSize2iv(atlas);
-    if(width)   *width = size.x;
-    if(height)  *height = size.y;
-}

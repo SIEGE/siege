@@ -859,13 +859,3 @@ SG_EXPORT void SG_CALL sgDrawArcDegs2f(float x, float y, float r, float a1, floa
 {
     sgDrawArcDegs2fv(sgVec2f(x, y), r, a1, a2, ccw, fill);
 }
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgDrawPointSetSize(float size)
-{
-    sgDrawSetPointSize(size);
-}
-void SG_CALL SG_HINT_DEPRECATED sgDrawLineSetWidth(float width)
-{
-    sgDrawSetLineWidth(width);
-}

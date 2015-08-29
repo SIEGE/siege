@@ -64,17 +64,6 @@ void SG_CALL sgLogfv(SGenum level, const char* format, va_list args);
 void SG_CALL sgLogf(SGenum level, const char* format, ...);
 void SG_CALL sgLog(SGenum level, const char* msg);
 
-/* ----- BEGIN DEPRECATED ----- */
-/* Use SG_LOG_DEBUG{F,} instead. */
-#ifdef SG_DEBUG
-#define SG_LDEBUGF(...) sgLogf(SG_LOGL_DEBUG, __VA_ARGS__)
-#define SG_LDEBUG(msg) sgLog(SG_LOGL_DEBUG, msg)
-#else
-#define SG_LDEBUGF(...)
-#define SG_LDEBUG(msg)
-#endif /* SG_DEBUG */
-/* ----- END DEPRECATED ----- */
-
 #define SG_LOGF(level, ...) sgLogCtxf(SG_LOG_CONTEXT(), (level), __VA_ARGS__)
 #define SG_LOG(level, msg) sgLogCtx(SG_LOG_CONTEXT(), (level), (msg))
 

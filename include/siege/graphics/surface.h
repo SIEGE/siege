@@ -91,9 +91,6 @@ SGuint SG_CALL sgSurfaceGetWidth(SGSurface* surface);
 SGuint SG_CALL sgSurfaceGetHeight(SGSurface* surface);
 SGenum SG_CALL sgSurfaceGetBPP(SGSurface* surface);
 
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -313,11 +313,3 @@ SGenum SG_CALL sgSurfaceGetBPP(SGSurface* surface)
 {
     return sgTextureGetBPP(surface->texture);
 }
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgSurfaceGetSize(SGSurface* surface, SGuint* width, SGuint* height)
-{
-    SGIVec2 size = sgSurfaceGetSize2iv(surface);
-    if(width)   *width = size.x;
-    if(height)  *height = size.y;
-}

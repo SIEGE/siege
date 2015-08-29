@@ -40,42 +40,6 @@ char* SG_CALL sgGetCompileDate(void);
 char* SG_CALL sgGetCompileTime(void);
 
 /**
- * Functions: sgLoadModule*
- *
- * Load a module or a number of modules.
- *
- * sgLoadModulesv - Load a va_list of modules
- * sgLoadModules  - Load multiple modules
- * sgLoadModule   - Load a single module
- *
- * The "Modules" folder is used to look for the modules.
- *
- * For example, if the module "Foo" is requested, SIEGE will look for it
- * in this order (replace ".so" with whatever the dynamic library ending
- * of the OS is):
- * - Modules/SGModule-Foo.so
- * - Modules/libSGModule-Foo.so
- * - Modules/SGModule-Foo.debug.so
- * - Modules/libSGModule-Foo.debug.so
- *
- * In debug builds, SIEGE tries to find the ".debug." versions first.
- *
- * Warning:
- *     This function should be called *before* sgInit()!
- *
- * Parameters:
- *     n    - The number of modules to load
- *     args - The va_list of modules to load
- *     ...  - List of modules to load (n items)
- *  name - Name of the module to load
- *
- * Returns:
- *     The number of successfully loaded modules.
- */
-SGuint SG_CALL SG_HINT_DEPRECATED sgLoadModulesv(size_t n, va_list args);
-SGuint SG_CALL SG_HINT_DEPRECATED sgLoadModules(size_t n, ...);
-SGbool SG_CALL SG_HINT_DEPRECATED sgLoadModule(const char* name);
-/**
  * Function: sgInit
  *
  * Initialize SIEGE.

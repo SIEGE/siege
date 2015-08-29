@@ -84,9 +84,6 @@ SGuint SG_CALL sgTextureGetWidth(SGTexture* texture);
 SGuint SG_CALL sgTextureGetHeight(SGTexture* texture);
 SGenum SG_CALL sgTextureGetBPP(SGTexture* texture);
 
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgTextureGetSize(SGTexture* texture, SGuint* width, SGuint* height);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

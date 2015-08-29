@@ -298,17 +298,3 @@ SGbool SG_CALL sgMouseGetButtonMiddleRelease(void)
 {
     return sgMouseGetButtonRelease(SG_MOUSE_BUTTON_MIDDLE);
 }
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgMouseGetPosPrev(SGint* x, SGint* y)
-{
-    SGIVec2 pos = sgMouseGetPosPrev2iv();
-    if(x) *x = pos.x;
-    if(y) *y = pos.y;
-}
-void SG_CALL SG_HINT_DEPRECATED sgMouseGetPos(SGint* x, SGint* y)
-{
-    SGIVec2 pos = sgMouseGetPos2iv();
-    if(x) *x = pos.x;
-    if(y) *y = pos.y;
-}

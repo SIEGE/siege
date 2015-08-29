@@ -86,9 +86,6 @@ SGbool SG_CALL sgMouseGetButtonMiddle(void);
 SGbool SG_CALL sgMouseGetButtonMiddlePress(void);
 SGbool SG_CALL sgMouseGetButtonMiddleRelease(void);
 
-void SG_CALL SG_HINT_DEPRECATED sgMouseGetPosPrev(SGint* x, SGint* y);
-void SG_CALL SG_HINT_DEPRECATED sgMouseGetPos(SGint* x, SGint* y);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -140,11 +140,3 @@ SGenum SG_CALL sgBitmapGetBPP(SGBitmap* bmp)
 {
     return bmp->bpp;
 }
-
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgBitmapGetSize(SGBitmap* bmp, size_t* width, size_t* height)
-{
-    SGIVec2 size = sgBitmapGetSize2iv(bmp);
-    if(width)   *width = size.x;
-    if(height)  *height = size.y;
-}

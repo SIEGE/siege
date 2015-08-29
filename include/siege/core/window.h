@@ -218,10 +218,6 @@ void SG_CALL sgWindowHandleEvents(void);
 void SG_CALL sgWindowSwapBuffers(void);
 /// @}
 
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgWindowSetSize(SGuint width, SGuint height);
-void SG_CALL SG_HINT_DEPRECATED sgWindowGetSize(SGuint* width, SGuint* height);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

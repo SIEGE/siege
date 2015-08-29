@@ -55,9 +55,6 @@ size_t SG_CALL sgBitmapGetHeight(SGBitmap* bmp);
 
 SGenum SG_CALL sgBitmapGetBPP(SGBitmap* bmp);
 
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgBitmapGetSize(SGBitmap* bmp, size_t* width, size_t* height);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -401,10 +401,6 @@ SG_EXPORT void SG_CALL sgDrawArcRads2f(float x, float y, float r, float a1, floa
 SG_EXPORT void SG_CALL sgDrawArcDegs2f(float x, float y, float r, float a1, float a2, SGbool ccw, SGbool fill);
 /// @}
 
-/* DEPRECATED */
-void SG_CALL SG_HINT_DEPRECATED sgDrawPointSetSize(float size);
-void SG_CALL SG_HINT_DEPRECATED sgDrawLineSetWidth(float width);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

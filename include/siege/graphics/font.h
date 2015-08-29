@@ -267,19 +267,6 @@ void SG_CALL sgFontGetPosU8(SGFont* font, float* x, float* y, size_t index, cons
 void SG_CALL sgFontGetPosW(SGFont* font, float* x, float* y, size_t index, const wchar_t* text);
 void SG_CALL sgFontGetPos(SGFont* font, float* x, float* y, size_t index, const char* text);
 
-/* DEPRECATED: Use sgFontStrRect* instead */
-void SG_CALL SG_HINT_DEPRECATED sgFontStrSizefW(SGFont* font, float* x, float* y, const wchar_t* format, ...);
-void SG_CALL SG_HINT_DEPRECATED sgFontStrSizefvW(SGFont* font, float* x, float* y, const wchar_t* format, va_list args);
-
-void SG_CALL SG_HINT_PRINTF(4, 5) SG_HINT_DEPRECATED sgFontStrSizef(SGFont* font, float* x, float* y, const char* format, ...);
-void SG_CALL SG_HINT_PRINTF(4, 0) SG_HINT_DEPRECATED sgFontStrSizefv(SGFont* font, float* x, float* y, const char* format, va_list args);
-
-void SG_CALL SG_HINT_DEPRECATED sgFontStrSizeU32(SGFont* font, float* x, float* y, const SGdchar* text);
-void SG_CALL SG_HINT_DEPRECATED sgFontStrSizeU16(SGFont* font, float* x, float* y, const SGwchar* text);
-void SG_CALL SG_HINT_DEPRECATED sgFontStrSizeU8(SGFont* font, float* x, float* y, const SGchar* text);
-void SG_CALL SG_HINT_DEPRECATED sgFontStrSizeW(SGFont* font, float* x, float* y, const wchar_t* text);
-void SG_CALL SG_HINT_DEPRECATED sgFontStrSize(SGFont* font, float* x, float* y, const char* text);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus
