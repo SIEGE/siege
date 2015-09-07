@@ -24,13 +24,13 @@ SGIVec2 SG_CALL sgIRectSize(SGIRect rect)
 {
     return sgIVec2Sub(rect.b, rect.a);
 }
-SGIRect SG_CALL sgIRectOffset2fv(SGIRect rect, SGIVec2 off)
+SGIRect SG_CALL sgIRectOffset2iv(SGIRect rect, SGIVec2 off)
 {
     rect.a = sgIVec2Add(rect.a, off);
     rect.b = sgIVec2Add(rect.b, off);
     return rect;
 }
-SGIRect SG_CALL sgIRectOffset2f(SGIRect rect, SGint x, SGint y)
+SGIRect SG_CALL sgIRectOffset2i(SGIRect rect, SGint x, SGint y)
 {
-    return sgIRectOffset2fv(rect, sgIVec2i(x, y));
+    return sgIRectOffset2iv(rect, sgIVec2i(x, y));
 }
