@@ -105,8 +105,10 @@ void destroyPolyEntity(SGEntity* ent)
     free(poly);
 }
 
-void lcPolyCollisionOneBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollision* coll)
+void lcPolyCollisionBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollision* coll, SGubyte idx)
 {
+    if(idx) return;
+
     SGVec2 v1;
     sgPhysicsBodyGetVel(sgEntityGetPhysicsBody(entity), &v1.x, &v1.y);
     SGVec2 v2;
@@ -186,7 +188,7 @@ Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* te
     poly->entity = sgEntityCreate();
     poly->entity->data = poly;
     poly->entity->lcDestroy = destroyPolyEntity;
-    poly->entity->lcCollisionOneBegin = lcPolyCollisionOneBegin;
+    poly->entity->lcCollisionBegin = lcPolyCollisionBegin;
     poly->entity->evDraw = drawPolyEntity;
 
     poly->texture = texture;

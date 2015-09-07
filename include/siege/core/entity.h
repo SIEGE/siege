@@ -315,34 +315,19 @@ typedef struct SGEntity
      * Physical collision events.
      *
      * lcCollision - Two objects are in collision with one another
-     * lcCollisionOne - Collision event for the first of the two objects
-     * lcCollisionTwo - Collision event for the second of the two objects
-     *
      * lcCollisionBegin - Two objects have just come into colision with one another
-     * lcCollisionOneBegin - Collision start event for the first of the two objects
-     * lcCollisionTwoBegin - Collision start event for the second of the two objects
-     *
      * lcCollisionEnd - Two objects are no longer in collision with one another
-     * lcCollisionOneEnd - Collision end event for the first of the two objects
-     * lcCollisionTwoEnd - Collision end event for the second of the two objects
      *
      * Parameters:
      *     entity - The entity which is receiving the message
-     *  other - The entity that the collision happened with
-     *  coll - Collision handler
+     *     other - The entity that the collision happened with
+     *     col - Collision handler
+     *     idx - Object number in the collision (either 0 or 1)
      */
 
-    void SG_CALL (*lcCollision)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-    void SG_CALL (*lcCollisionOne)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-    void SG_CALL (*lcCollisionTwo)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-
-    void SG_CALL (*lcCollisionBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-    void SG_CALL (*lcCollisionOneBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-    void SG_CALL (*lcCollisionTwoBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-
-    void SG_CALL (*lcCollisionEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-    void SG_CALL (*lcCollisionOneEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
-    void SG_CALL (*lcCollisionTwoEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* coll);
+    void SG_CALL (*lcCollision)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* col, SGubyte idx);
+    void SG_CALL (*lcCollisionBegin)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* col, SGubyte idx);
+    void SG_CALL (*lcCollisionEnd)(struct SGEntity* entity, struct SGEntity* other, struct SGPhysicsCollision* col, SGubyte idx);
 
     /**
      * Group: Global events

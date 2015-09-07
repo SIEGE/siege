@@ -31,16 +31,12 @@ void SG_CALL _sg_cbPhysicsCollisionBegin(SGPhysicsShape* shape1, SGPhysicsShape*
     if(shape1 && shape1->body->entity)
     {
         if(shape1->body->entity->lcCollisionBegin)
-            shape1->body->entity->lcCollisionBegin(shape1->body->entity, shape2->body->entity, &coll);
-        if(shape1->body->entity->lcCollisionOneBegin)
-            shape1->body->entity->lcCollisionOneBegin(shape1->body->entity, shape2->body->entity, &coll);
+            shape1->body->entity->lcCollisionBegin(shape1->body->entity, shape2->body->entity, &coll, 0);
     }
     if(shape2 && shape2->body->entity)
     {
         if(shape2->body->entity->lcCollisionBegin)
-            shape2->body->entity->lcCollisionBegin(shape2->body->entity, shape1->body->entity, &coll);
-        if(shape2->body->entity->lcCollisionTwoBegin)
-            shape2->body->entity->lcCollisionTwoBegin(shape2->body->entity, shape1->body->entity, &coll);
+            shape2->body->entity->lcCollisionBegin(shape2->body->entity, shape1->body->entity, &coll, 1);
     }
 }
 void SG_CALL _sg_cbPhysicsCollisionPreSolve(SGPhysicsShape* shape1, SGPhysicsShape* shape2, void* handle)
@@ -53,16 +49,12 @@ void SG_CALL _sg_cbPhysicsCollisionPreSolve(SGPhysicsShape* shape1, SGPhysicsSha
     if(shape1 && shape1->body->entity)
     {
         if(shape1->body->entity->lcCollision)
-            shape1->body->entity->lcCollision(shape1->body->entity, shape2->body->entity, &coll);
-        if(shape1->body->entity->lcCollisionOne)
-            shape1->body->entity->lcCollisionOne(shape1->body->entity, shape2->body->entity, &coll);
+            shape1->body->entity->lcCollision(shape1->body->entity, shape2->body->entity, &coll, 0);
     }
     if(shape2 && shape2->body->entity)
     {
         if(shape2->body->entity->lcCollision)
-            shape2->body->entity->lcCollision(shape2->body->entity, shape1->body->entity, &coll);
-        if(shape2->body->entity->lcCollisionTwo)
-            shape2->body->entity->lcCollisionTwo(shape2->body->entity, shape1->body->entity, &coll);
+            shape2->body->entity->lcCollision(shape2->body->entity, shape1->body->entity, &coll, 1);
     }
 }
 void SG_CALL _sg_cbPhysicsCollisionPostSolve(SGPhysicsShape* shape1, SGPhysicsShape* shape2, void* handle) /// \TODO TODO
@@ -78,16 +70,12 @@ void SG_CALL _sg_cbPhysicsCollisionSeparate(SGPhysicsShape* shape1, SGPhysicsSha
     if(shape1 && shape1->body->entity)
     {
         if(shape1->body->entity->lcCollisionEnd)
-            shape1->body->entity->lcCollisionEnd(shape1->body->entity, shape2->body->entity, &coll);
-        if(shape1->body->entity->lcCollisionOneEnd)
-            shape1->body->entity->lcCollisionOneEnd(shape1->body->entity, shape2->body->entity, &coll);
+            shape1->body->entity->lcCollisionEnd(shape1->body->entity, shape2->body->entity, &coll, 0);
     }
     if(shape2 && shape2->body->entity)
     {
         if(shape2->body->entity->lcCollisionEnd)
-            shape2->body->entity->lcCollisionEnd(shape2->body->entity, shape1->body->entity, &coll);
-        if(shape2->body->entity->lcCollisionTwoEnd)
-            shape2->body->entity->lcCollisionTwoEnd(shape2->body->entity, shape1->body->entity, &coll);
+            shape2->body->entity->lcCollisionEnd(shape2->body->entity, shape1->body->entity, &coll, 1);
     }
 }
 

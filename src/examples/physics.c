@@ -31,7 +31,7 @@ typedef struct Box
     //SGVec2 impulse[MAXCOLLS][MAXCONTS];
 } Box;
 
-void boxCollisionBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollision* collision)
+void boxCollisionBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollision* collision, SGubyte idx)
 {
     Box* box = entity->data;
 
@@ -53,7 +53,7 @@ void boxCollisionBegin(SGEntity* entity, SGEntity* other, SGPhysicsCollision* co
 
     box->numcoll++;
 }
-void boxCollisionEnd(SGEntity* entity, SGEntity* other, SGPhysicsCollision* collision)
+void boxCollisionEnd(SGEntity* entity, SGEntity* other, SGPhysicsCollision* collision, SGubyte idx)
 {
     Box* box = entity->data;
     if(box->numcoll)
