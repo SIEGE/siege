@@ -31,6 +31,7 @@
 #include <siege/input/keyboard.h>
 #include <siege/input/mouse.h>
 #include <siege/input/joystick.h>
+#include <siege/input/vinput.h>
 
 #include <siege/physics/module.h>
 #include <siege/physics/space.h>
@@ -125,6 +126,7 @@ SGbool SG_CALL sgInit(SGenum flags)
     _sgKeyboardInit();
     _sgMouseInit();
     _sgJoystickInit();
+    _sgVInputInit();
 
     _sgConsoleInit();
 
@@ -162,6 +164,7 @@ SGbool SG_CALL sgDeinit(void)
 
     _sgConsoleDeinit();
 
+    _sgVInputDeinit();
     _sgJoystickDeinit();
     _sgMouseDeinit();
     _sgKeyboardDeinit();

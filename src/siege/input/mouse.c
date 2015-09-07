@@ -14,6 +14,7 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/input/mouse.h>
+#include <siege/input/vinput.h>
 #include <siege/core/window.h>
 #include <siege/core/entity.h>
 
@@ -22,15 +23,6 @@
 
 #include <SDL/SDL.h>
 #include "../internal/bitop.h"
-
-static SGulong _sg_mouseButtonPrev;
-static SGulong _sg_mouseButtonBuff;
-static SGulong _sg_mouseButtonCurr;
-
-static SGIVec2 _sg_mousePosPrev;
-static SGIVec2 _sg_mousePos;
-static SGint _sg_mouseWheelPrev;
-static SGint _sg_mouseWheel;
 
 void SG_CALL _sg_cbMouseButton(SGuint button, SGbool down)
 {
@@ -130,6 +122,8 @@ void SG_CALL _sgMouseUpdate(void)
     }
     _sg_mouseButtonPrev = _sg_mouseButtonBuff;
     _sg_mouseButtonBuff = _sg_mouseButtonCurr;
+
+    _sgVInputUpdateMouse();
 }
 
 SGbool SG_CALL _sgMouseInit(void)

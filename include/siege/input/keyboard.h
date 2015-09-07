@@ -91,6 +91,13 @@ extern "C"
 {
 #endif // __cplusplus
 
+#ifdef SG_BUILD_LIBRARY
+#define SGI_NUM_KEYS        0x400
+extern SGulong _sg_keyPrev[];
+extern SGulong _sg_keyCurr[];
+extern SGulong _sg_keyAgn[];
+#endif /* SG_BUILD_LIBRARY */
+
 void SG_CALL _sg_cbKeyboardKey(SGuint key, SGbool down);
 void SG_CALL _sg_cbKeyboardChar(SGdchar chr);
 
