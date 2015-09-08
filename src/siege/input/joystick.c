@@ -14,7 +14,6 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/input/joystick.h>
-#include <siege/core/window.h>
 #include <siege/core/entity.h>
 
 #include <stdlib.h>
