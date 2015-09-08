@@ -30,6 +30,11 @@ void SG_CALL _sgVInputUpdateMouse(void)
         mouse->dpos[i] = mouse->dposi[i];
     }
 }
+void SG_CALL _sgVInputUpdateJoystick(SGuint joy)
+{
+    //SG_INPUT_ID_JOYSTICK(joy);
+    /* nothing to do [yet?] */
+}
 
 SGbool SG_CALL _sgVInputInit(void)
 {
@@ -46,6 +51,7 @@ SGbool SG_CALL _sgVInputInit(void)
 
     keyboard->paxis = keyboard->axis = keyboard->daxis = NULL;
     keyboard->ppos = keyboard->pos = keyboard->dpos = NULL;
+    keyboard->pposi = keyboard->posi = keyboard->dposi = NULL;
     _sgVInputUpdateKeyboard();
 
     static float m_axis[3][1];
@@ -73,6 +79,29 @@ SGbool SG_CALL _sgVInputInit(void)
     mouse->posi = &_sg_mousePos.x;
     mouse->dposi = m_posi[0];
     _sgVInputUpdateMouse();
+
+    SGIInput* joystick;
+    size_t numjoys = SG_MIN(_sg_joyNum, 14);
+    size_t i;
+    for(i = 0; i < numjoys; i++)
+    {
+        joystick = &_sg_inputs[SG_INPUT_ID_JOYSTICK(i)];
+        joystick->available = SG_TRUE;
+        joystick->nbuttons = _sg_joyJoys[i]->numbuttons;
+        joystick->naxis = _sg_joyJoys[i]->numaxis;
+        joystick->npos = 0;
+
+        joystick->pbuttons = _sg_joyJoys[i]->bprev;
+        joystick->buttons = _sg_joyJoys[i]->bcurr;
+
+        joystick->paxis = _sg_joyJoys[i]->aprev;
+        joystick->axis = _sg_joyJoys[i]->acurr;
+        joystick->daxis = _sg_joyJoys[i]->adelt;
+
+        joystick->ppos = joystick->pos = joystick->dpos = NULL;
+        joystick->pposi = joystick->posi = joystick->dposi = NULL;
+        _sgVInputUpdateJoystick(i);
+    }
 
     return SG_TRUE;
 }

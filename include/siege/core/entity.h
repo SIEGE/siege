@@ -42,7 +42,7 @@ extern "C"
 #define SG_EVT_WINDOW    0x00040000U
 #define SG_EVT_INPUT    0x00080000U
 #define SG_EVT_TEXT     0x00100000U
-#define SG_EVT_JOYSTICK 0x00200000U
+/*#define SG_EVT_JOYSTICK 0x00200000U*/
 #define SG_EVT_NETWORK    0x00400000U
 #define SG_EVT_PHYSICS    0x00800000U
 #define SG_EVT_LEVEL    0x01000000U
@@ -71,11 +71,6 @@ extern "C"
 #define SG_EVF_WINRESIZE (SG_EVT_WINDOW | 0x0004)
 
 #define SG_EVF_TEXTCHARP    (SG_EVT_TEXT | 0x0001)
-
-#define SG_EVF_JOYSTICKBUTH (SG_EVT_JOYSTICK | 0x0001)
-#define SG_EVF_JOYSTICKBUTP (SG_EVT_JOYSTICK | 0x0002)
-#define SG_EVF_JOYSTICKBUTR (SG_EVT_JOYSTICK | 0x0004)
-#define SG_EVF_JOYSTICKMOVE (SG_EVT_JOYSTICK | 0x0008)
 
 /*
  * H: held
@@ -375,28 +370,6 @@ typedef struct SGEntity
     void SG_CALL (*evWindowResize)(struct SGEntity* entity, SGuint width, SGuint height);
 
     void SG_CALL (*evKeyboardCharPress)(struct SGEntity* entity, SGdchar chr);
-
-    /**
-     * Variables: evJoystick*
-     *
-     * Joystick-related events.
-     *
-     * evJoystickButton - A joystick button is being held down
-     * evJoystickButtonPress - A joystick button has just been pressed
-     * evJoystickButtonRelease - A joystick button has just been released
-     * evJoystickMode - The joystick axis have moved
-     *
-     * Parameters:
-     *     entity  - The entity which is receiving the message
-     *  joy     - The joystick ID
-     *  button  - The button ID
-     *  axis    - The axis positions
-     *  numaxis - The number of axis
-     */
-    void SG_CALL (*evJoystickButton)(struct SGEntity* entity, SGuint joy, SGuint button);
-    void SG_CALL (*evJoystickButtonPress)(struct SGEntity* entity, SGuint joy, SGuint button);
-    void SG_CALL (*evJoystickButtonRelease)(struct SGEntity* entity, SGuint joy, SGuint button);
-    void SG_CALL (*evJoystickMove)(struct SGEntity* entity, SGuint joy, SGfloat* axis, size_t numaxis);
 
     //SGuint imask;
     void SG_CALL (*evInputButton)(struct SGEntity* entity, SGint id, SGuint button);

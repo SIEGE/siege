@@ -36,6 +36,7 @@ SGulong _sg_keyAgn[SGI_KEYARR_LENGTH];
 void SG_CALL _sg_cbKeyboardKey(SGenum key, SGbool down)
 {
     _sgKeyboardKeyUpdate(key, down);
+    _sgVInputUpdateKeyboard();
     SGbool pressed = sgKeyboardKeyPress(key);
 
     size_t numevents = 1;
@@ -77,7 +78,6 @@ void SG_CALL _sgKeyboardUpdatePost(void)
             j++;
         }
     }
-    _sgVInputUpdateKeyboard();
 }
 
 SGbool SG_CALL _sgKeyboardInit(void)

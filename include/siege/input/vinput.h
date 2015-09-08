@@ -8,6 +8,8 @@ extern "C" {
 
 #define SG_INPUT_ID_KEYBOARD    -1
 #define SG_INPUT_ID_MOUSE       -2
+#define SG_INPUT_ID_JOYSTICK0   -3
+#define SG_INPUT_ID_JOYSTICK(n) (SG_INPUT_ID_JOYSTICK0 - (SGint)(n))
 
 #ifdef SG_BUILD_LIBRARY
 typedef struct SGIInput
@@ -37,6 +39,7 @@ SGIInput* _sg_inputs;
 
 void SG_CALL _sgVInputUpdateKeyboard(void);
 void SG_CALL _sgVInputUpdateMouse(void);
+void SG_CALL _sgVInputUpdateJoystick(SGuint joy);
 #endif /* SG_BUILD_LIBRARY */
 
 SGbool SG_CALL _sgVInputInit(void);

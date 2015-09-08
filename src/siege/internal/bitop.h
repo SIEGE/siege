@@ -8,7 +8,7 @@
 #define ARR_MASK        (ARR_BITS - 1)
 
 #define ARR_BITITEM(arr, n) ((arr)[(n) / ARR_BITS])
-#define ARR_BITLENGTH(n)    ((n) / ARR_BITS)
+#define ARR_BITLENGTH(n)    (((n) + (ARR_BITS - 1)) / ARR_BITS)
 
 #define SET_BIT(arr, n, val)    (arr = (val) ? ((arr) | (((SGulong)1) << (n))) : ((arr) & ~(((SGulong)1) << (n))))
 #define GET_BIT(arr, n)         ((arr >> (n)) & 1)

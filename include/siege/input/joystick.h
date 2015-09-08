@@ -24,25 +24,25 @@ extern "C"
 
 // TODO: Complete overhaul
 
-typedef struct _SGJoystick
+#ifdef SG_BUILD_LIBRARY
+typedef struct SGIJoystick
 {
     SGuint id;
     void* handle;
-
     size_t numbuttons;
-    SGbool* bprev;
-    SGbool* bcurr;
+    size_t numaxis;
+
+    SGulong* bprev;
+    SGulong* bcurr;
 
     float* taxis;
-    size_t numaxis;
     float* aprev;
     float* acurr;
     float* adelt;
-} _SGJoystick;
+} SGIJoystick;
 
-#ifdef SG_BUILD_LIBRARY
 size_t _sg_joyNum;
-_SGJoystick** _sg_joyJoys;
+SGIJoystick** _sg_joyJoys;
 #endif // SG_BUILD_LIBRARY
 
 void SG_CALL _sg_cbJoystickButton(SGuint joy, SGuint button, SGbool down);
@@ -52,9 +52,6 @@ void SG_CALL _sgJoystickUpdate(void);
 
 SGbool SG_CALL _sgJoystickInit(void);
 SGbool SG_CALL _sgJoystickDeinit(void);
-
-_SGJoystick* SG_CALL _sgJoystickCreate(SGuint id);
-void SG_CALL _sgJoystickDestroy(_SGJoystick* joy);
 
 size_t SG_CALL sgJoystickGetNumJoysticks(void);
 size_t SG_CALL sgJoystickGetNumButtons(SGuint joy);

@@ -14,29 +14,30 @@
 
 #define SG_BUILD_LIBRARY
 #include <siege/input/joystick.h>
+#include <siege/input/vinput.h>
 #include <siege/core/entity.h>
 
 #include <stdlib.h>
 #include <string.h>
 
 #include <SDL/SDL.h>
+#include "../internal/bitop.h"
 
 void SG_CALL _sg_cbJoystickButton(SGuint joy, SGuint button, SGbool down)
 {
-    _sg_joyJoys[joy]->bprev[button] = _sg_joyJoys[joy]->bcurr[button];
-    _sg_joyJoys[joy]->bcurr[button] = down;
+    SET_BITARR(_sg_joyJoys[joy]->bcurr, button, down);
+    _sgVInputUpdateJoystick(joy);
+    SGbool pressed = sgJoystickGetButtonPress(joy, button);
 
-    SGbool pressed = _sg_joyJoys[joy]->bcurr[button] && !_sg_joyJoys[joy]->bprev[button];
-
-    SGenum evt = 0;
+    SGenum event = 0;
     if(pressed)
-        evt = SG_EVF_JOYSTICKBUTP;
+        event = SG_EVF_INPUTBUTP;
     else if(!down)
-        evt = SG_EVF_JOYSTICKBUTR;
+        event = SG_EVF_INPUTBUTR;
     else
         return;
 
-    sgEntityEventSignal(1, evt, joy, button);
+    sgEntityEventSignal(1, event, SG_INPUT_ID_JOYSTICK(joy), button);
 }
 void SG_CALL _sg_cbJoystickMove(SGuint joy, SGuint axis, float pos)
 {
@@ -46,59 +47,26 @@ void SG_CALL _sg_cbJoystickMove(SGuint joy, SGuint axis, float pos)
     for(i = 0; i < _sg_joyJoys[joy]->numaxis; i++)
         _sg_joyJoys[joy]->adelt[i] = _sg_joyJoys[joy]->acurr[i] - _sg_joyJoys[joy]->aprev[i];
 
-    sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKMOVE, joy, _sg_joyJoys[joy]->acurr, _sg_joyJoys[joy]->numaxis);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_INPUTAMOVE, SG_INPUT_ID_JOYSTICK(joy), _sg_joyJoys[joy]->acurr, _sg_joyJoys[joy]->numaxis);
 }
 
-void SG_CALL _sgJoystickUpdate(void)
+static SGIJoystick* SG_CALL _sgJoystickCreate(SGuint id)
 {
-    SGenum i, j;
-    for(i = 0; i < _sg_joyNum; i++)
-        for(j = 0; j < _sg_joyJoys[i]->numbuttons; j++)
-            if(_sg_joyJoys[i]->bcurr[j])
-                sgEntityEventSignal(1, (SGenum)SG_EVF_JOYSTICKBUTH, i, j);
-}
-
-SGbool SG_CALL _sgJoystickInit(void)
-{
-    size_t i;
-    _sg_joyNum = SDL_NumJoysticks();
-
-    _sg_joyJoys = malloc(_sg_joyNum * sizeof(_SGJoystick*));
-    for(i = 0; i < _sg_joyNum; i++)
-        _sg_joyJoys[i] = _sgJoystickCreate(i);
-
-    return SG_TRUE;
-}
-SGbool SG_CALL _sgJoystickDeinit(void)
-{
-    SGuint i;
-    for(i = 0; i < _sg_joyNum; i++)
-        _sgJoystickDestroy(_sg_joyJoys[i]);
-    free(_sg_joyJoys);
-
-    return SG_TRUE;
-}
-
-_SGJoystick* SG_CALL _sgJoystickCreate(SGuint id)
-{
-    _SGJoystick* joy = malloc(sizeof(_SGJoystick));
+    SGIJoystick* joy = malloc(sizeof(SGIJoystick));
     if(joy == NULL)
         return NULL;
 
     joy->id = id;
-    joy->numbuttons = 0;
-    joy->numaxis = 0;
-
     joy->handle = SDL_JoystickOpen(id);
-    joy->taxis = malloc(SDL_JoystickNumAxes(joy->handle) * sizeof(float));
-
     joy->numbuttons = SDL_JoystickNumButtons(joy->handle);
-    joy->bprev = malloc(joy->numbuttons * sizeof(SGbool));
-    memset(joy->bprev, 0, joy->numbuttons * sizeof(SGbool));
-    joy->bcurr = malloc(joy->numbuttons * sizeof(SGbool));
-    memset(joy->bcurr, 0, joy->numbuttons * sizeof(SGbool));
-
     joy->numaxis = SDL_JoystickNumAxes(joy->handle);
+
+    joy->bprev = malloc(ARR_BITLENGTH(joy->numbuttons) * sizeof(*joy->bprev));
+    memset(joy->bprev, 0, ARR_BITLENGTH(joy->numbuttons) * sizeof(*joy->bprev));
+    joy->bcurr = malloc(ARR_BITLENGTH(joy->numbuttons) * sizeof(*joy->bcurr));
+    memset(joy->bcurr, 0, ARR_BITLENGTH(joy->numbuttons) * sizeof(*joy->bcurr));
+
+    joy->taxis = malloc(joy->numaxis * sizeof(float));
     joy->aprev = malloc(joy->numaxis * sizeof(float));
     joy->acurr = malloc(joy->numaxis * sizeof(float));
     joy->adelt = malloc(joy->numaxis * sizeof(float));
@@ -108,7 +76,7 @@ _SGJoystick* SG_CALL _sgJoystickCreate(SGuint id)
 
     return joy;
 }
-void SG_CALL _sgJoystickDestroy(_SGJoystick* joy)
+static void SG_CALL _sgJoystickDestroy(SGIJoystick* joy)
 {
     if(joy == NULL)
         return;
@@ -123,6 +91,40 @@ void SG_CALL _sgJoystickDestroy(_SGJoystick* joy)
     free(joy->bcurr);
 
     free(joy);
+}
+
+void SG_CALL _sgJoystickUpdate(void)
+{
+    SGenum i, j;
+    for(i = 0; i < _sg_joyNum; i++)
+    {
+        for(j = 0; j < _sg_joyJoys[i]->numbuttons; j++)
+            if(_sg_joyJoys[i]->bcurr[j])
+                sgEntityEventSignal(1, (SGenum)SG_EVF_INPUTBUTH, SG_INPUT_ID_JOYSTICK(i), j);
+        memcpy(_sg_joyJoys[i]->bprev, _sg_joyJoys[i]->bcurr, ARR_BITLENGTH(_sg_joyJoys[i]->numbuttons) * sizeof(*_sg_joyJoys[i]->bcurr));
+    }
+}
+
+SGbool SG_CALL _sgJoystickInit(void)
+{
+    size_t i;
+    _sg_joyNum = SDL_NumJoysticks();
+    if(_sg_joyNum > 14) _sg_joyNum = 14;
+
+    _sg_joyJoys = malloc(_sg_joyNum * sizeof(SGIJoystick*));
+    for(i = 0; i < _sg_joyNum; i++)
+        _sg_joyJoys[i] = _sgJoystickCreate(i);
+
+    return SG_TRUE;
+}
+SGbool SG_CALL _sgJoystickDeinit(void)
+{
+    SGuint i;
+    for(i = 0; i < _sg_joyNum; i++)
+        _sgJoystickDestroy(_sg_joyJoys[i]);
+    free(_sg_joyJoys);
+
+    return SG_TRUE;
 }
 
 size_t SG_CALL sgJoystickGetNumJoysticks(void)

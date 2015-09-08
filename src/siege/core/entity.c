@@ -111,32 +111,6 @@ static void SG_CALL _sg_evCall(SGEntity* entity, size_t num, va_list args)
                     entity->evKeyboardCharPress(entity, val[0]);
                 break;
 
-            case SG_EVF_JOYSTICKBUTH:
-                val[0] = va_arg(args, SGuint);
-                val[1] = va_arg(args, SGuint);
-                if(entity->evJoystickButton != NULL)
-                    entity->evJoystickButton(entity, val[0], val[1]);
-                break;
-            case SG_EVF_JOYSTICKBUTP:
-                val[0] = va_arg(args, SGuint);
-                val[1] = va_arg(args, SGuint);
-                if(entity->evJoystickButtonPress != NULL)
-                    entity->evJoystickButtonPress(entity, val[0], val[1]);
-                break;
-            case SG_EVF_JOYSTICKBUTR:
-                val[0] = va_arg(args, SGuint);
-                val[1] = va_arg(args, SGuint);
-                if(entity->evJoystickButtonRelease != NULL)
-                    entity->evJoystickButtonRelease(entity, val[0], val[1]);
-                break;
-            case SG_EVF_JOYSTICKMOVE:
-                val[0] = va_arg(args, SGuint);
-                ptr[0] = va_arg(args, float*);
-                siz[0] = va_arg(args, size_t);
-                if(entity->evJoystickMove != NULL)
-                    entity->evJoystickMove(entity, val[0], ptr[0], siz[0]);
-                break;
-
             case SG_EVF_INPUTBUTH:
                 val[0] = va_arg(args, SGint);
                 val[1] = va_arg(args, SGuint);
