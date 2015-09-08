@@ -32,14 +32,14 @@ SGbool overlayDBG = SG_FALSE;
 SGSprite* tile;
 SGSurface* tileset;
 
-void evTick(SGEntity* ent)
+void SG_CALL evTick(SGEntity* ent)
 {
     sgLightSpaceUpdate(space);
 
     lights[0]->pos.x = sgMouseGetPosX();
     lights[0]->pos.y = sgMouseGetPosY();
 }
-void evDraw(SGEntity* ent)
+void SG_CALL evDraw(SGEntity* ent)
 {
     sgDrawColor4f(1.0, 1.0, 1.0, 1.0);
     sgSurfaceDraw(tileset);
@@ -58,19 +58,19 @@ void evDraw(SGEntity* ent)
     if(overlayDBG)
         sgLightSpaceDrawDBG(space, 0);
 }
-void evKeyboardKeyPress(SGEntity* ent, SGenum key)
+void SG_CALL evInputButtonPress(SGEntity* ent, SGint id, SGenum button)
 {
-    switch(key)
+    if(id != SG_INPUT_ID_KEYBOARD) return;
+    switch(button)
     {
         case SG_KEY_F1:
             overlayDBG = !overlayDBG;
             break;
-
         default:
-            if('1' <= key && key <= '9')
+            if('1' <= button && button <= '9')
             {
-                if(key - '1' < NLIGHTS)
-                    sgLightSetActive(lights[key - '1'], !sgLightGetActive(lights[key - '1']));
+                if(button - '1' < NLIGHTS)
+                    sgLightSetActive(lights[button - '1'], !sgLightGetActive(lights[button - '1']));
             }
             break;
     }
@@ -90,7 +90,7 @@ int main(void)
     SGEntity* handler = sgEntityCreate();
     handler->evTick = evTick;
     handler->evDraw = evDraw;
-    handler->evKeyboardKeyPress = evKeyboardKeyPress;
+    handler->evInputButtonPress = evInputButtonPress;
 
     tile = sgSpriteCreateFile2f("data/sprites/FloorMetalPlate.png", 0.0, 0.0);
     tileset = sgSurfaceCreate(640, 480, 32);

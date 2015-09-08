@@ -153,58 +153,53 @@ void boxDrawDBG(SGEntity* entity)
     sgPhysicsShapeDrawDBG(box->shape);
 }
 
-void evKeyboardKeyPress(SGEntity* entity, SGenum key)
+void SG_CALL evInputButtonPress(SGEntity* entity, SGint id, SGuint button)
 {
-    if(key == SG_KEY_F1)
-        overlay = !overlay;
-}
-void evKeyboardKeyRepeat(SGEntity* entity, SGenum key)
-{
-    evKeyboardKeyPress(entity, key);
-}
-void evMouseButtonLeftPress(SGEntity* entity)
-{
-    SGIVec2 mpos = sgMouseGetPos2iv();
-
-    createBox(mpos.x, mpos.y, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
-}
-void evMouseButtonRightPress(SGEntity* entity)
-{
-    SGVec2 mouse = sgVec2iv(sgMouseGetPos2iv());
-
-    SGVec2 pos;
-    pos.x = mouse.x < WIDTH / 2.0 ? 0 : WIDTH;
-    pos.y = HEIGHT / 2.0;
-
-    SGVec2 vel = sgVec2Resize(sgVec2Sub(mouse, pos), 100.0);
-
-    SGEntity* bentity = createBox(pos.x, pos.y, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
-    SGPhysicsBody* body = sgEntityGetPhysicsBody(bentity);
-    sgPhysicsBodySetVel(body, vel.x, vel.y);
-}
-void evMouseButtonMiddlePress(SGEntity* entity)
-{
-    SGIVec2 mpos = sgMouseGetPos2iv();
-
-    SGEntity* bentity;
-    SGPhysicsBody* body;
-    Box* box;
-    size_t i;
-
-    SGVec2 vel;
-
-    // we do this to ensure that each explosion doesn't interact with itself!
-    size_t nboxes = numboxes;
-    for(i = 0; i < NEXPAR; i++)
+    if(id == SG_INPUT_ID_KEYBOARD)
     {
-        bentity = createBox(mpos.x, mpos.y, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
-        body = sgEntityGetPhysicsBody(bentity);
-        box = bentity->data;
+        if(button == SG_KEY_F1)
+            overlay = !overlay;
+    }
+    else if(id == SG_INPUT_ID_MOUSE)
+    {
+        SGVec2 mpos = sgMouseGetPos2fv();
+        if(button == SG_MOUSE_BUTTON_LEFT)
+            createBox(mpos.x, mpos.y, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
+        else if(button == SG_MOUSE_BUTTON_RIGHT)
+        {
+            SGVec2 pos;
+            pos.x = mpos.x < WIDTH / 2.0 ? 0 : WIDTH;
+            pos.y = HEIGHT / 2.0;
 
-        sgPhysicsShapeSetGroup(box->shape, nboxes);
+            SGVec2 vel = sgVec2Resize(sgVec2Sub(mpos, pos), 100.0);
 
-        vel = sgVec2PolarRads(rand() / (float)RAND_MAX * SG_PI * 2, 100.0);
-        sgPhysicsBodySetVel(body, vel.x, vel.y);
+            SGEntity* bentity = createBox(pos.x, pos.y, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
+            SGPhysicsBody* body = sgEntityGetPhysicsBody(bentity);
+            sgPhysicsBodySetVel(body, vel.x, vel.y);
+        }
+        else if(button == SG_MOUSE_BUTTON_MIDDLE)
+        {
+            SGEntity* bentity;
+            SGPhysicsBody* body;
+            Box* box;
+            size_t i;
+
+            SGVec2 vel;
+
+            // we do this to ensure that each explosion doesn't interact with itself!
+            size_t nboxes = numboxes;
+            for(i = 0; i < NEXPAR; i++)
+            {
+                bentity = createBox(mpos.x, mpos.y, 0.0, ISIZE, ISIZE, 1.0, SG_FALSE);
+                body = sgEntityGetPhysicsBody(bentity);
+                box = bentity->data;
+
+                sgPhysicsShapeSetGroup(box->shape, nboxes);
+
+                vel = sgVec2PolarRads(rand() / (float)RAND_MAX * SG_PI * 2, 100.0);
+                sgPhysicsBodySetVel(body, vel.x, vel.y);
+            }
+        }
     }
 }
 
@@ -230,11 +225,7 @@ int main(void)
     sgPhysicsSpaceSetGravity(space, 0.0, 9.81/*0.5*/);
 
     controller = sgEntityCreate();
-    controller->evMouseButtonLeftPress = evMouseButtonLeftPress;
-    controller->evMouseButtonRightPress = evMouseButtonRightPress;
-    controller->evMouseButtonMiddlePress = evMouseButtonMiddlePress;
-    controller->evKeyboardKeyPress = evKeyboardKeyPress;
-    controller->evKeyboardKeyRepeat = evKeyboardKeyRepeat;
+    controller->evInputButtonPress = evInputButtonPress;
 
     createFloor(WIDTH / 2.0, HEIGHT - FLOORHEIGHT / 2.0, WIDTH, FLOORHEIGHT);
 

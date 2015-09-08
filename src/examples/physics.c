@@ -177,7 +177,7 @@ void boxDrawDBG(SGEntity* entity)
     sgPhysicsShapeDrawDBG(box->shape);
 }
 
-void evInputButtonPress(SGEntity* entity, SGint id, SGenum button)
+void SG_CALL evInputButtonPress(SGEntity* entity, SGint id, SGenum button)
 {
     if(id == SG_INPUT_ID_KEYBOARD && button == SG_KEY_F1)
         overlay = !overlay;

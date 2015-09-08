@@ -54,39 +54,40 @@ SGTexture* wbox;
 
 Polygon* createPoly(float x, float y, SGVec2* points, size_t nump, SGTexture* texture, float density, SGbool stat);
 
-void evMouseButtonPress(SGEntity* ent, SGuint button)
+void SG_CALL evInputButtonPress(SGEntity* ent, SGint id, SGuint button)
 {
-    SGTexture* tex = (button == SG_MOUSE_BUTTON_LEFT) ? mbox : wbox;
-    float dens = (button == SG_MOUSE_BUTTON_LEFT) ? 2.5 : 1.0;
-
-    SGIVec2 mpos = sgMouseGetPos2iv();
-
-    float w = sgTextureGetWidth(tex);
-    float h = sgTextureGetHeight(tex);
-
-    float verts[8] = {-w / 2.0, -h / 2.0,
-                       -w / 2.0, +h / 2.0,
-                       w / 2.0, +h / 2.0,
-                       w / 2.0, -h / 2.0};
-
-    createPoly(mpos.x, mpos.y, (SGVec2*)verts, 4, tex, dens, SG_FALSE);
-}
-
-void evKeyboardKeyPress(SGEntity* ent, SGenum key)
-{
-    switch(key)
+    if(id == SG_INPUT_ID_MOUSE)
     {
-        case SG_KEY_F1:
-            overlayDBG = !overlayDBG;
-            break;
+        SGTexture* tex = (button == SG_MOUSE_BUTTON_LEFT) ? mbox : wbox;
+        float dens = (button == SG_MOUSE_BUTTON_LEFT) ? 2.5 : 1.0;
 
-        default:
-            if('1' <= key && key <= '9')
-            {
-                if(key - '1' < NLIGHTS)
-                    lights[key - '1']->enabled = !lights[key - '1']->enabled;
-            }
-            break;
+        SGIVec2 mpos = sgMouseGetPos2iv();
+
+        float w = sgTextureGetWidth(tex);
+        float h = sgTextureGetHeight(tex);
+
+        float verts[8] = {-w / 2.0, -h / 2.0,
+                           -w / 2.0, +h / 2.0,
+                           w / 2.0, +h / 2.0,
+                           w / 2.0, -h / 2.0};
+
+        createPoly(mpos.x, mpos.y, (SGVec2*)verts, 4, tex, dens, SG_FALSE);
+    }
+    else if(id == SG_INPUT_ID_KEYBOARD)
+    {
+        switch(button)
+        {
+            case SG_KEY_F1:
+                overlayDBG = !overlayDBG;
+                break;
+            default:
+                if('1' <= button && button <= '9')
+                {
+                    if(button - '1' < NLIGHTS)
+                        lights[button - '1']->enabled = !lights[button - '1']->enabled;
+                }
+                break;
+        }
     }
 }
 
@@ -469,8 +470,7 @@ int main(void)
     sgPhysicsSpaceSetDamping(space, 0.75);
 
     SGEntity* handler = sgEntityCreate();
-    handler->evMouseButtonPress = evMouseButtonPress;
-    handler->evKeyboardKeyPress = evKeyboardKeyPress;
+    handler->evInputButtonPress = evInputButtonPress;
 
     SGSprite* tile = sgSpriteCreateFile2f("data/sprites/FloorMetalPlate.png", 0.0, 0.0);
     SGSurface* tileset = sgSurfaceCreate(640, 480, 32);

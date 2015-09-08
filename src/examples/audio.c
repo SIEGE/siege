@@ -7,8 +7,10 @@ SGAudioBuffer* bufBoom;
 SGAudioBuffer* bufMusic;
 SGAudioSource* srcMusic;
 
-void SG_CALL evMouseButtonLeftPress(SGEntity* entity)
+void SG_CALL evInputButtonPress(SGEntity* entity, SGint id, SGuint button)
 {
+    if(id != SG_INPUT_ID_MOUSE || button != SG_MOUSE_BUTTON_LEFT) return;
+
     SGAudioSource* source = sgAudioSourceCreate(0.0, 1.0, 1.0, SG_FALSE);
     sgAudioSourceQueueBuffer(source, bufBoom);
     sgAudioSourcePlay(source);
@@ -34,7 +36,7 @@ int main(void)
     sgAudioSourcePlay(srcMusic);
 
     SGEntity* handle = sgEntityCreate();
-    handle->evMouseButtonLeftPress = evMouseButtonLeftPress;
+    handle->evInputButtonPress = evInputButtonPress;
 
     while(sgLoop(NULL))
     {

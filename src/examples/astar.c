@@ -150,24 +150,26 @@ void recreateGrid(SGbool copy, SGbool refont)
     changed = SG_TRUE;
 }
 
-void SG_CALL evKeyboardKeyPress(SGEntity* entity, SGenum key)
+void SG_CALL evInputButtonPress(SGEntity* entity, SGint id, SGuint button)
 {
-    if(key == SG_KEY_F1)
+    if(id != SG_INPUT_ID_KEYBOARD) return;
+
+    if(button == SG_KEY_F1)
     {
         instructions = !instructions;
     }
-    else if(key == 'S')
+    else if(button == 'S')
     {
         slow = !slow;
         changed = SG_TRUE;
     }
-    else if(key == 'F')
+    else if(button == 'F')
         scores = (scores != 'F') ? 'F' : 0;
-    else if(key == 'G')
+    else if(button == 'G')
         scores = (scores != 'G') ? 'G' : 0;
-    else if(key == 'H')
+    else if(button == 'H')
         scores = (scores != 'H') ? 'H' : 0;
-    else if(key == '+' || key == SG_KEY_KP_ADD)
+    else if(button == '+' || button == SG_KEY_KP_ADD)
     {
         if(cellw < 128)
         {
@@ -176,7 +178,7 @@ void SG_CALL evKeyboardKeyPress(SGEntity* entity, SGenum key)
             recreateGrid(SG_FALSE, SG_TRUE);
         }
     }
-    else if(key == '-' || key == SG_KEY_KP_SUBTRACT)
+    else if(button == '-' || button == SG_KEY_KP_SUBTRACT)
     {
         if(cellw > 8)
         {
@@ -185,12 +187,12 @@ void SG_CALL evKeyboardKeyPress(SGEntity* entity, SGenum key)
             recreateGrid(SG_FALSE, SG_TRUE);
         }
     }
-    else if(key == 'D')
+    else if(button == 'D')
     {
         diag = !diag;
         recreateGrid(SG_TRUE, SG_FALSE);
     }
-    else if(key == 'W')
+    else if(button == 'W')
     {
         wdiag = !wdiag;
         recreateGrid(SG_TRUE, SG_FALSE);
@@ -262,8 +264,7 @@ int main(void)
     SGint mx, my;
 
     SGEntity* handler = sgEntityCreate();
-    handler->evKeyboardKeyPress = evKeyboardKeyPress;
-    handler->evKeyboardKeyRepeat = evKeyboardKeyPress;
+    handler->evInputButtonPress = evInputButtonPress;
 
     while(sgLoop(NULL))
     {
