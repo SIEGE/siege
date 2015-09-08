@@ -116,9 +116,9 @@ SGbool SG_CALL sgInit(SGenum flags)
     _sg_hasInited = SG_TRUE;
 
     _sgBitmapInit();
-    _sgWindowInit();
     _sgCameraInit();
     _sgViewportInit();
+    _sgWindowInit();
     _sgSurfaceInit();
 
     _sgAudioSourceInit();
@@ -172,9 +172,9 @@ SGbool SG_CALL sgDeinit(void)
     _sgAudioSourceDeinit();
 
     _sgSurfaceDeinit();
+    _sgWindowDeinit();
     _sgViewportDeinit();
     _sgCameraDeinit();
-    _sgWindowDeinit();
     _sgBitmapDeinit();
 
     _sgEntityDeinit();

@@ -234,6 +234,8 @@ void SG_CALL sgWindowClose(void)
     _sg_cbWindowClose();
     sgViewportDestroy(_sg_viewMain);
     sgCameraDestroy(_sg_cameraMain);
+    _sg_viewMain = NULL;
+    _sg_cameraMain = NULL;
 }
 void SG_CALL sgWindowSetIcon(SGBitmap* bmp)
 {
