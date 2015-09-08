@@ -40,23 +40,23 @@ void SG_CALL _sg_cbKeyboardKey(SGenum key, SGbool down)
     SGbool pressed = sgKeyboardKeyPress(key);
 
     size_t numevents = 1;
-    SGenum evt;
+    SGenum event;
     if(pressed)
-        evt = SG_EVF_INPUTBUTP;
+        event = SG_EVF_INPUTBUTP;
     else if(!down)
-        evt = SG_EVF_INPUTBUTR;
+        event = SG_EVF_INPUTBUTR;
     else
     {
-        //evt = SG_EVF_KEYKEYA;
-        evt = 0;
+        /* repeat (but we ignore it) */
+        event = 0;
         numevents--;
     }
 
-    sgEntityEventSignal(numevents, evt, SG_INPUT_ID_KEYBOARD, key);
+    sgEntityEventSignal(numevents, event, SG_INPUT_ID_KEYBOARD, key);
 }
 void SG_CALL _sg_cbKeyboardChar(SGdchar chr)
 {
-    sgEntityEventSignal(1, (SGenum)SG_EVF_KEYCHARP, chr);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_TEXTCHARP, chr);
 }
 
 void SG_CALL _sgKeyboardUpdatePre(void)

@@ -40,10 +40,9 @@ extern "C"
 #define SG_EVT_MODULE    0x00010000U
 #define SG_EVT_CORE        0x00020000U
 #define SG_EVT_WINDOW    0x00040000U
-#define SG_EVT_MOUSE    0x00080000U
-#define SG_EVT_KEYBOARD 0x00100000U
+#define SG_EVT_INPUT    0x00080000U
+#define SG_EVT_TEXT     0x00100000U
 #define SG_EVT_JOYSTICK 0x00200000U
-#define SG_EVT_INPUT    0x04000000U
 #define SG_EVT_NETWORK    0x00400000U
 #define SG_EVT_PHYSICS    0x00800000U
 #define SG_EVT_LEVEL    0x01000000U
@@ -71,39 +70,19 @@ extern "C"
 #define SG_EVF_WINCLOSE  (SG_EVT_WINDOW | 0x0002)
 #define SG_EVF_WINRESIZE (SG_EVT_WINDOW | 0x0004)
 
-/*
- * H: held
- * P: press
- * R: release
- * A: repeat ("again")
- */
-
-#define SG_EVF_MOUSEBUTH  (SG_EVT_MOUSE | 0x0001)
-#define SG_EVF_MOUSEBUTP  (SG_EVT_MOUSE | 0x0002)
-#define SG_EVF_MOUSEBUTR  (SG_EVT_MOUSE | 0x0004)
-#define SG_EVF_MOUSEBUTLH (SG_EVT_MOUSE | 0x0008)
-#define SG_EVF_MOUSEBUTLP (SG_EVT_MOUSE | 0x0010)
-#define SG_EVF_MOUSEBUTLR (SG_EVT_MOUSE | 0x0020)
-#define SG_EVF_MOUSEBUTRH (SG_EVT_MOUSE | 0x0040)
-#define SG_EVF_MOUSEBUTRP (SG_EVT_MOUSE | 0x0080)
-#define SG_EVF_MOUSEBUTRR (SG_EVT_MOUSE | 0x0100)
-#define SG_EVF_MOUSEBUTMH (SG_EVT_MOUSE | 0x0200)
-#define SG_EVF_MOUSEBUTMP (SG_EVT_MOUSE | 0x0400)
-#define SG_EVF_MOUSEBUTMR (SG_EVT_MOUSE | 0x0800)
-#define SG_EVF_MOUSEMOVE  (SG_EVT_MOUSE | 0x1000)
-#define SG_EVF_MOUSEWHEEL (SG_EVT_MOUSE | 0x2000)
-
-#define SG_EVF_KEYKEYH    (SG_EVT_KEYBOARD | 0x0001)
-#define SG_EVF_KEYKEYP    (SG_EVT_KEYBOARD | 0x0002)
-#define SG_EVF_KEYKEYR    (SG_EVT_KEYBOARD | 0x0004)
-#define SG_EVF_KEYKEYA    (SG_EVT_KEYBOARD | 0x0008)
-#define SG_EVF_KEYCHARP (SG_EVT_KEYBOARD | 0x0020)
+#define SG_EVF_TEXTCHARP    (SG_EVT_TEXT | 0x0001)
 
 #define SG_EVF_JOYSTICKBUTH (SG_EVT_JOYSTICK | 0x0001)
 #define SG_EVF_JOYSTICKBUTP (SG_EVT_JOYSTICK | 0x0002)
 #define SG_EVF_JOYSTICKBUTR (SG_EVT_JOYSTICK | 0x0004)
 #define SG_EVF_JOYSTICKMOVE (SG_EVT_JOYSTICK | 0x0008)
 
+/*
+ * H: held
+ * P: press
+ * R: release
+ * A: repeat ("again")
+ */
 #define SG_EVF_INPUTBUTH    (SG_EVT_INPUT | 0x0001)
 #define SG_EVF_INPUTBUTP    (SG_EVT_INPUT | 0x0002)
 #define SG_EVF_INPUTBUTR    (SG_EVT_INPUT | 0x0004)
@@ -394,78 +373,6 @@ typedef struct SGEntity
     void SG_CALL (*evWindowOpen)(struct SGEntity* entity);
     void SG_CALL (*evWindowClose)(struct SGEntity* entity);
     void SG_CALL (*evWindowResize)(struct SGEntity* entity, SGuint width, SGuint height);
-
-    /**
-     * Variables: evMouse*
-     *
-     * Mouse-related global events.
-     *
-     * evMouseButton - A mouse button is being held down
-     * evMouseButtonPress - A mouse button has just been pressed
-     * evMouseButtonRelease - A mouse button has just been released
-     *
-     * evMouseButtonLeft - Left mouse button is being held down
-     * evMouseButtonLeftPress - Left mouse button has just been pressed
-     * evMouseButtonLeftRelease - Left mouse button has just been released
-     *
-     * evMouseButtonRight - Right mouse button is being held down
-     * evMouseButtonRightPress - Right mouse button has just been pressed
-     * evMouseButtonRightRelease - Right mouse button has just been released
-     *
-     * evMouseButtonMiddle - Middle mouse button is being held down
-     * evMouseButtonMiddlePress - Middle mouse button has just been pressed
-     * evMouseButtonMiddleRelease - Middle mouse button has just been released
-     *
-     * evMouseMove - The mouse has just been moved
-     * evMouseWheel - The mouse wheel has just been scrolled
-     *
-     * Parameters:
-     *     entity - The entity which is receiving the message
-     *  button - The mouse button
-     *  x, y   - New mouse position
-     *  wheel  - New mouse wheel position
-     */
-    void SG_CALL (*evMouseButton)(struct SGEntity* entity, SGuint button);
-    void SG_CALL (*evMouseButtonPress)(struct SGEntity* entity, SGuint button);
-    void SG_CALL (*evMouseButtonRelease)(struct SGEntity* entity, SGuint button);
-
-    void SG_CALL (*evMouseButtonLeft)(struct SGEntity* entity);
-    void SG_CALL (*evMouseButtonLeftPress)(struct SGEntity* entity);
-    void SG_CALL (*evMouseButtonLeftRelease)(struct SGEntity* entity);
-
-    void SG_CALL (*evMouseButtonRight)(struct SGEntity* entity);
-    void SG_CALL (*evMouseButtonRightPress)(struct SGEntity* entity);
-    void SG_CALL (*evMouseButtonRightRelease)(struct SGEntity* entity);
-
-    void SG_CALL (*evMouseButtonMiddle)(struct SGEntity* entity);
-    void SG_CALL (*evMouseButtonMiddlePress)(struct SGEntity* entity);
-    void SG_CALL (*evMouseButtonMiddleRelease)(struct SGEntity* entity);
-
-    void SG_CALL (*evMouseMove)(struct SGEntity* entity, SGint x, SGint y);
-    void SG_CALL (*evMouseWheel)(struct SGEntity* entity, SGint wheel);
-
-    /**
-     * Variables: evKeyboard*
-     *
-     * Keyboard-related events.
-     *
-     * evKeyboardKey - A key is being held down
-     * evKeyboardKeyPress - A key has just been pressed
-     * evKeyboardKeyRelease - A key has just been released
-     * evKeyboardKeyRepeat - A key repeat according to the key repeat interval
-     *
-     * evKeyboardKeyPress - A key representing a character has just been pressed
-     * evKeyboardKeyRepeat - A key representing a character has just been repeated according to the key repeat interval
-     *
-     * Parameters:
-     *     entity - The entity which is receiving the message
-     *  key    - The key that triggered the event
-     *  chr    - The UTF-32 character that triggered the event
-     */
-    void SG_CALL (*evKeyboardKey)(struct SGEntity* entity, SGuint key);
-    void SG_CALL (*evKeyboardKeyPress)(struct SGEntity* entity, SGuint key);
-    void SG_CALL (*evKeyboardKeyRelease)(struct SGEntity* entity, SGuint key);
-    void SG_CALL (*evKeyboardKeyRepeat)(struct SGEntity* entity, SGuint key);
 
     void SG_CALL (*evKeyboardCharPress)(struct SGEntity* entity, SGdchar chr);
 
