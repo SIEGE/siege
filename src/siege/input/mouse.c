@@ -27,6 +27,7 @@
 void SG_CALL _sg_cbMouseButton(SGuint button, SGbool down)
 {
     SET_BIT_CURR(mouseButton, button - 1, down);
+    _sgVInputUpdateMouse();
 
     SGbool pressed = sgMouseGetButtonPress(button);
 
@@ -34,9 +35,9 @@ void SG_CALL _sg_cbMouseButton(SGuint button, SGbool down)
     SGenum events[2];
 
     if(pressed)
-        events[0] = SG_EVF_MOUSEBUTP;
+        events[0] = SG_EVF_INPUTBUTP;
     else if(!down)
-        events[0] = SG_EVF_MOUSEBUTR;
+        events[0] = SG_EVF_INPUTBUTR;
     else
     {
         events[0] = 0;
@@ -70,21 +71,23 @@ void SG_CALL _sg_cbMouseButton(SGuint button, SGbool down)
 
     SG_ASSERT(numevents >= 2 || !events[1], "incorrectly initialized events[1]");
     SG_ASSERT(numevents >= 1 || !events[0], "incorrectly initialized events[0]");
-    sgEntityEventSignal(numevents, events[0], button, events[1]);
+    sgEntityEventSignal(numevents, events[0], SG_INPUT_ID_MOUSE, button, events[1]);
 }
 void SG_CALL _sg_cbMouseMove(SGint x, SGint y)
 {
     _sg_mousePosPrev = _sg_mousePos;
     _sg_mousePos = sgIVec2i(x, y);
+    _sgVInputUpdateMouse();
 
-    sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEMOVE, x, y);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_INPUTPMOVE, SG_INPUT_ID_MOUSE, _sg_inputs[SG_INPUT_ID_MOUSE].pos, (size_t)2);
 }
 void SG_CALL _sg_cbMouseWheel(SGint dw)
 {
     _sg_mouseWheelPrev = _sg_mouseWheel;
-    _sg_mouseWheel = _sg_mouseWheelPrev + dw;
+    _sg_mouseWheel = dw;
+    _sgVInputUpdateMouse();
 
-    sgEntityEventSignal(1, (SGenum)SG_EVF_MOUSEWHEEL, _sg_mouseWheel);
+    sgEntityEventSignal(1, (SGenum)SG_EVF_INPUTAMOVE, SG_INPUT_ID_MOUSE, _sg_inputs[SG_INPUT_ID_MOUSE].axis, (size_t)1);
 }
 
 void SG_CALL _sgMouseUpdate(void)
@@ -99,7 +102,7 @@ void SG_CALL _sgMouseUpdate(void)
         if(buttons & 1)
         {
             numevents = 2;
-            events[0] = SG_EVF_MOUSEBUTH;
+            events[0] = SG_EVF_INPUTBUTH;
             switch(i + 1)
             {
                 case SG_MOUSE_BUTTON_LEFT:
@@ -116,14 +119,12 @@ void SG_CALL _sgMouseUpdate(void)
                     numevents--;
                     break;
             }
-            sgEntityEventSignal(numevents, events[0], i, events[1]);
+            sgEntityEventSignal(numevents, events[0], SG_INPUT_ID_MOUSE, i, events[1]);
         }
         i++;
     }
     _sg_mouseButtonPrev = _sg_mouseButtonBuff;
     _sg_mouseButtonBuff = _sg_mouseButtonCurr;
-
-    _sgVInputUpdateMouse();
 }
 
 SGbool SG_CALL _sgMouseInit(void)

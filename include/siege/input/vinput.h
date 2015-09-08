@@ -6,7 +6,35 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#define SG_INPUT_ID_KEYBOARD    -1
+#define SG_INPUT_ID_MOUSE       -2
+
 #ifdef SG_BUILD_LIBRARY
+typedef struct SGIInput
+{
+    SGbool available;
+
+    // TODO: SGuint or size_t?
+    SGuint nbuttons;
+    SGuint naxis;
+    SGuint npos;
+
+    // TODO: Merge to reduce heap impact
+    SGulong* pbuttons;
+    SGulong* buttons;
+    float* paxis;
+    float* axis;
+    float* daxis;
+    float* ppos;
+    float* pos;
+    float* dpos;
+    SGint* pposi;
+    SGint* posi;
+    SGint* dposi;
+} SGIInput;
+
+SGIInput* _sg_inputs;
+
 void SG_CALL _sgVInputUpdateKeyboard(void);
 void SG_CALL _sgVInputUpdateMouse(void);
 #endif /* SG_BUILD_LIBRARY */

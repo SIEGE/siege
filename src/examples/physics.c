@@ -177,22 +177,17 @@ void boxDrawDBG(SGEntity* entity)
     sgPhysicsShapeDrawDBG(box->shape);
 }
 
-void evKeyboardKeyPress(SGEntity* entity, SGenum key)
+void evInputButtonPress(SGEntity* entity, SGint id, SGenum button)
 {
-    if(key == SG_KEY_F1)
+    if(id == SG_INPUT_ID_KEYBOARD && button == SG_KEY_F1)
         overlay = !overlay;
-}
-void evKeyboardKeyRepeat(SGEntity* entity, SGenum key)
-{
-    evKeyboardKeyPress(entity, key);
-}
-void evMouseButtonLeftPress(SGEntity* entity)
-{
-    createMetalBox(sgMouseGetPosX(), sgMouseGetPosY(), 0.0);
-}
-void evMouseButtonRightPress(SGEntity* entity)
-{
-    createWoodenBox(sgMouseGetPosX(), sgMouseGetPosY(), 0.0);
+    else if(id == SG_INPUT_ID_MOUSE)
+    {
+        if(button == SG_MOUSE_BUTTON_LEFT)
+            createMetalBox(sgMouseGetPosX(), sgMouseGetPosY(), 0.0);
+        else if(button == SG_MOUSE_BUTTON_RIGHT)
+            createWoodenBox(sgMouseGetPosX(), sgMouseGetPosY(), 0.0);
+    }
 }
 
 int main(void)
@@ -224,10 +219,7 @@ int main(void)
         createFloor(sprHazardWall, i, 320);
 
     controller = sgEntityCreate();
-    controller->evMouseButtonLeftPress = evMouseButtonLeftPress;
-    controller->evMouseButtonRightPress = evMouseButtonRightPress;
-    controller->evKeyboardKeyPress = evKeyboardKeyPress;
-    controller->evKeyboardKeyRepeat = evKeyboardKeyRepeat;
+    controller->evInputButtonPress = evInputButtonPress;
 
     SGlong accum = SG_NANOSECONDS_IN_A_SECOND, origin = sgGetTime();
     SGfloat fps = 0.0;

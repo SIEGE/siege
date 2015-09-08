@@ -43,6 +43,7 @@ extern "C"
 #define SG_EVT_MOUSE    0x00080000U
 #define SG_EVT_KEYBOARD 0x00100000U
 #define SG_EVT_JOYSTICK 0x00200000U
+#define SG_EVT_INPUT    0x04000000U
 #define SG_EVT_NETWORK    0x00400000U
 #define SG_EVT_PHYSICS    0x00800000U
 #define SG_EVT_LEVEL    0x01000000U
@@ -102,6 +103,12 @@ extern "C"
 #define SG_EVF_JOYSTICKBUTP (SG_EVT_JOYSTICK | 0x0002)
 #define SG_EVF_JOYSTICKBUTR (SG_EVT_JOYSTICK | 0x0004)
 #define SG_EVF_JOYSTICKMOVE (SG_EVT_JOYSTICK | 0x0008)
+
+#define SG_EVF_INPUTBUTH    (SG_EVT_INPUT | 0x0001)
+#define SG_EVF_INPUTBUTP    (SG_EVT_INPUT | 0x0002)
+#define SG_EVF_INPUTBUTR    (SG_EVT_INPUT | 0x0004)
+#define SG_EVF_INPUTAMOVE   (SG_EVT_INPUT | 0x0008)
+#define SG_EVF_INPUTPMOVE   (SG_EVT_INPUT | 0x0010)
 
 //#define SG_EVF_NET (SG_EVT_NETWORK | 0x0001)
 
@@ -483,6 +490,13 @@ typedef struct SGEntity
     void SG_CALL (*evJoystickButtonPress)(struct SGEntity* entity, SGuint joy, SGuint button);
     void SG_CALL (*evJoystickButtonRelease)(struct SGEntity* entity, SGuint joy, SGuint button);
     void SG_CALL (*evJoystickMove)(struct SGEntity* entity, SGuint joy, SGfloat* axis, size_t numaxis);
+
+    //SGuint imask;
+    void SG_CALL (*evInputButton)(struct SGEntity* entity, SGint id, SGuint button);
+    void SG_CALL (*evInputButtonPress)(struct SGEntity* entity, SGint id, SGuint button);
+    void SG_CALL (*evInputButtonRelease)(struct SGEntity* entity, SGint id, SGuint button);
+    void SG_CALL (*evInputAxisMove)(struct SGEntity* entity, SGint id, SGfloat* axis, size_t numaxis);
+    void SG_CALL (*evInputPosMove)(struct SGEntity* entity, SGint id, SGfloat* pos, size_t numpos);
 
     // networking goes here
 

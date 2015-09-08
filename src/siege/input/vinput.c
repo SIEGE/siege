@@ -7,32 +7,7 @@
 
 #include "../internal/bitop.h"
 
-typedef struct SGIInput
-{
-    SGbool available;
-
-    // TODO: SGuint or size_t?
-    SGuint nbuttons;
-    SGuint naxis;
-    SGuint npos;
-
-    // TODO: Merge to reduce heap impact
-    SGulong* pbuttons;
-    SGulong* buttons;
-    float* paxis;
-    float* axis;
-    float* daxis;
-    float* ppos;
-    float* pos;
-    float* dpos;
-    SGint* pposi;
-    SGint* posi;
-    SGint* dposi;
-} SGIInput;
-
 static SGIInput inputsA[33] = {};
-// TODO: cleanup
-static SGIInput* inputs = inputsA + 16;
 
 void SG_CALL _sgVInputUpdateKeyboard(void)
 {
@@ -40,7 +15,7 @@ void SG_CALL _sgVInputUpdateKeyboard(void)
 }
 void SG_CALL _sgVInputUpdateMouse(void)
 {
-    SGIInput* mouse = &inputs[-2];
+    SGIInput* mouse = &_sg_inputs[SG_INPUT_ID_MOUSE];
 
     mouse->paxis[0] = _sg_mouseWheelPrev;
     mouse->axis[0] = _sg_mouseWheel;
@@ -58,7 +33,9 @@ void SG_CALL _sgVInputUpdateMouse(void)
 
 SGbool SG_CALL _sgVInputInit(void)
 {
-    SGIInput* keyboard = &inputs[-1];
+    _sg_inputs = inputsA + 16;
+
+    SGIInput* keyboard = &_sg_inputs[SG_INPUT_ID_KEYBOARD];
     keyboard->available = SG_TRUE;
     keyboard->nbuttons = SGI_NUM_KEYS;
     keyboard->naxis = 0;
@@ -75,7 +52,7 @@ SGbool SG_CALL _sgVInputInit(void)
     static float m_pos[3][2];
     static SGint m_posi[1][2];
 
-    SGIInput* mouse = &inputs[-2];
+    SGIInput* mouse = &_sg_inputs[SG_INPUT_ID_MOUSE];
     mouse->available = SG_TRUE;
     mouse->nbuttons = 64;
     mouse->naxis = 1;
@@ -106,75 +83,75 @@ SGbool SG_CALL _sgVInputDeinit(void)
 
 SGbool SG_CALL sgInputIsAvailable(SGint id)
 {
-    return inputs[id].available;
+    return _sg_inputs[id].available;
 }
 
 // TODO: SGuint or size_t?
 size_t SG_CALL sgInputGetNumButtons(SGint id)
 {
-    if(!inputs[id].available) return 0;
-    return inputs[id].nbuttons;
+    if(!_sg_inputs[id].available) return 0;
+    return _sg_inputs[id].nbuttons;
 }
 size_t SG_CALL sgInputGetNumAxis(SGint id)
 {
-    if(!inputs[id].available) return 0;
-    return inputs[id].naxis;
+    if(!_sg_inputs[id].available) return 0;
+    return _sg_inputs[id].naxis;
 }
 size_t SG_CALL sgInputGetNumPos(SGint id)
 {
-    if(!inputs[id].available) return 0;
-    return inputs[id].npos;
+    if(!_sg_inputs[id].available) return 0;
+    return _sg_inputs[id].npos;
 }
 
 SGbool SG_CALL sgInputGetButtonPrev(SGint id, SGuint button)
 {
-    if(button >= inputs[id].nbuttons) return SG_FALSE;
-    return GET_BITARR(inputs[id].pbuttons, button);
+    if(button >= _sg_inputs[id].nbuttons) return SG_FALSE;
+    return GET_BITARR(_sg_inputs[id].pbuttons, button);
 }
 SGbool SG_CALL sgInputGetButton(SGint id, SGuint button)
 {
-    if(button >= inputs[id].nbuttons) return SG_FALSE;
-    return GET_BITARR(inputs[id].buttons, button);
+    if(button >= _sg_inputs[id].nbuttons) return SG_FALSE;
+    return GET_BITARR(_sg_inputs[id].buttons, button);
 }
 SGbool SG_CALL sgInputGetButtonPress(SGint id, SGuint button)
 {
-    if(button >= inputs[id].nbuttons) return SG_FALSE;
-    return !GET_BITARR(inputs[id].pbuttons, button) && GET_BITARR(inputs[id].buttons, button);
+    if(button >= _sg_inputs[id].nbuttons) return SG_FALSE;
+    return !GET_BITARR(_sg_inputs[id].pbuttons, button) && GET_BITARR(_sg_inputs[id].buttons, button);
 }
 SGbool SG_CALL sgInputGetButtonRelease(SGint id, SGuint button)
 {
-    if(button >= inputs[id].nbuttons) return SG_FALSE;
-    return GET_BITARR(inputs[id].pbuttons, button) && !GET_BITARR(inputs[id].buttons, button);
+    if(button >= _sg_inputs[id].nbuttons) return SG_FALSE;
+    return GET_BITARR(_sg_inputs[id].pbuttons, button) && !GET_BITARR(_sg_inputs[id].buttons, button);
 }
 
 float* SG_CALL sgInputGetAxisPrev(SGint id)
 {
-    if(!inputs[id].available) return NULL;
-    return inputs[id].paxis;
+    if(!_sg_inputs[id].available) return NULL;
+    return _sg_inputs[id].paxis;
 }
 float* SG_CALL sgInputGetAxis(SGint id)
 {
-    if(!inputs[id].available) return NULL;
-    return inputs[id].axis;
+    if(!_sg_inputs[id].available) return NULL;
+    return _sg_inputs[id].axis;
 }
 float* SG_CALL sgInputGetAxisDelta(SGint id)
 {
-    if(!inputs[id].available) return NULL;
-    return inputs[id].daxis;
+    if(!_sg_inputs[id].available) return NULL;
+    return _sg_inputs[id].daxis;
 }
 
 float* SG_CALL sgInputGetPosPrev(SGint id)
 {
-    if(!inputs[id].available) return NULL;
-    return inputs[id].ppos;
+    if(!_sg_inputs[id].available) return NULL;
+    return _sg_inputs[id].ppos;
 }
 float* SG_CALL sgInputGetPos(SGint id)
 {
-    if(!inputs[id].available) return NULL;
-    return inputs[id].pos;
+    if(!_sg_inputs[id].available) return NULL;
+    return _sg_inputs[id].pos;
 }
 float* SG_CALL sgInputGetPosDelta(SGint id)
 {
-    if(!inputs[id].available) return NULL;
-    return inputs[id].dpos;
+    if(!_sg_inputs[id].available) return NULL;
+    return _sg_inputs[id].dpos;
 }

@@ -225,6 +225,39 @@ static void SG_CALL _sg_evCall(SGEntity* entity, size_t num, va_list args)
                     entity->evJoystickMove(entity, val[0], ptr[0], siz[0]);
                 break;
 
+            case SG_EVF_INPUTBUTH:
+                val[0] = va_arg(args, SGint);
+                val[1] = va_arg(args, SGuint);
+                if(entity->evInputButton != NULL)
+                    entity->evInputButton(entity, val[0], val[1]);
+                break;
+            case SG_EVF_INPUTBUTP:
+                val[0] = va_arg(args, SGint);
+                val[1] = va_arg(args, SGuint);
+                if(entity->evInputButtonPress != NULL)
+                    entity->evInputButtonPress(entity, val[0], val[1]);
+                break;
+            case SG_EVF_INPUTBUTR:
+                val[0] = va_arg(args, SGint);
+                val[1] = va_arg(args, SGuint);
+                if(entity->evInputButtonRelease != NULL)
+                    entity->evInputButtonRelease(entity, val[0], val[1]);
+                break;
+            case SG_EVF_INPUTAMOVE:
+                val[0] = va_arg(args, SGint);
+                ptr[0] = va_arg(args, float*);
+                siz[0] = va_arg(args, size_t);
+                if(entity->evInputAxisMove != NULL)
+                    entity->evInputAxisMove(entity, val[0], ptr[0], siz[0]);
+                break;
+            case SG_EVF_INPUTPMOVE:
+                val[0] = va_arg(args, SGint);
+                ptr[0] = va_arg(args, float*);
+                siz[0] = va_arg(args, size_t);
+                if(entity->evInputPosMove != NULL)
+                    entity->evInputPosMove(entity, val[0], ptr[0], siz[0]);
+                break;
+
             // networking goes here (SG_EVF_NET)
 
             case SG_EVF_LVLSTART:
@@ -269,6 +302,8 @@ SGEntity* SG_CALL sgEntityCreate(void)
     entity->minside = SG_FALSE;
 
     entity->evDraw = _sg_evDraw;
+
+    //entity->imask = ~0; //< TODO: Figure out the proper mask for this
 
     entity->node = sgListAppend(_sg_entList, entity);
     entity->mnode = NULL;
