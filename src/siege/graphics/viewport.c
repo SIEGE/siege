@@ -47,6 +47,7 @@ SGViewport* SG_CALL sgViewportCreateR(SGCamera* camera, SGIRect rect)
     if(!viewport) return NULL;
     viewport->camera = camera;
     viewport->rect = rect;
+    sgListAppend(_sg_viewList, viewport);
     return viewport;
 }
 void SG_CALL sgViewportDestroy(SGViewport* viewport)
