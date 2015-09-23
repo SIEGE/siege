@@ -25,11 +25,13 @@ extern "C" {
 #define SG_MILLISECONDS_IN_A_SECOND 1000ULL
 
 /**
- * Function: sgGetTime
+ * Function: sgGetNTime, sgGetUTime, sgGetMTime
  *
- * Returns: nanoseconds from a fixed, unspecified, origin.
+ * Returns: Time from a fixed, unspecified, origin in {nano/micro/milli}seconds.
  */
-SGlong SG_CALL sgGetTime(void);
+SGulong SG_CALL sgGetNTime(void);
+SGulong SG_CALL sgGetUTime(void);
+SGulong SG_CALL sgGetMTime(void);
 
 /**
  * Functions: sgNSleep, sgUSleep, sgMSleep

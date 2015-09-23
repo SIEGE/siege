@@ -22,7 +22,7 @@
     #include <unistd.h>
 #endif
 
-SGlong SG_CALL sgGetTime(void)
+SGulong SG_CALL sgGetNTime(void)
 {
 #ifdef __WIN32__
     LARGE_INTEGER freq;
@@ -42,6 +42,14 @@ SGlong SG_CALL sgGetTime(void)
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return (ts.tv_sec * SG_NANOSECONDS_IN_A_SECOND) + ts.tv_nsec;
 #endif
+}
+SGulong SG_CALL sgGetUTime(void)
+{
+    return sgGetNTime() / 1000U;
+}
+SGulong SG_CALL sgGetMTime(void)
+{
+    return sgGetUTime() / 1000U;
 }
 
 void SG_CALL sgNSleep(SGulong nseconds)

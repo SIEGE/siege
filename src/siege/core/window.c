@@ -422,12 +422,12 @@ void SG_CALL sgWindowHandleEvents(void)
 }
 void SG_CALL sgWindowSwapBuffers(void)
 {
-    SGlong origin = sgGetTime();
+    SGulong origin = sgGetNTime();
 
     SDL_GL_SwapBuffers();
 
-    SGlong time = sgGetTime();
-    SGlong updateLength = time - origin;
+    SGulong time = sgGetNTime();
+    SGulong updateLength = time - origin;
 
     if(_sg_FPS > 0.0f)
     {
@@ -437,7 +437,7 @@ void SG_CALL sgWindowSwapBuffers(void)
         }
     }
 
-    SGlong frameLength = updateLength + (sgGetTime() - time);
+    SGulong frameLength = updateLength + (sgGetNTime() - time);
     _sg_achievedFramerate = (SGfloat) SG_NANOSECONDS_IN_A_SECOND / frameLength;
 }
 SGfloat SG_CALL sgWindowGetFPSLimit(void)

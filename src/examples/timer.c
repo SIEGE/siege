@@ -26,8 +26,8 @@ int main(void)
 
     sgTimerMSingle(5000, func, "5.0 second timer", SG_FALSE);
 
-    SGulong start = sgGetTime();
-    while(sgGetTime() - start <= 10 * SG_NANOSECONDS_IN_A_SECOND)
+    SGulong start = sgGetNTime();
+    while(sgGetNTime() - start <= 10 * SG_NANOSECONDS_IN_A_SECOND)
         sgTimerUpdateAll(SG_FALSE, SG_FALSE);
 
     sgTimerDestroy(timer2000);

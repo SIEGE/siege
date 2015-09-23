@@ -221,18 +221,18 @@ int main(void)
     controller = sgEntityCreate();
     controller->evInputButtonPress = evInputButtonPress;
 
-    SGlong accum = SG_NANOSECONDS_IN_A_SECOND, origin = sgGetTime();
+    SGlong accum = SG_NANOSECONDS_IN_A_SECOND, origin = sgGetNTime();
     SGfloat fps = 0.0;
     while(sgLoop(NULL))
     {
-        accum += sgGetTime() - origin;
+        accum += sgGetNTime() - origin;
         if(overlay)
             for(i = 0; i < numboxes; i++)
                 boxDrawDBG(boxes[i]);
         if(accum >= SG_NANOSECONDS_IN_A_SECOND)
         {
             accum = 0;
-            origin = sgGetTime();
+            origin = sgGetNTime();
             fps = sgWindowGetFPS();
         }
         sgFontPrintf(font, 1.0, 10.0, "FPS: %.2f", fps);

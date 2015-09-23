@@ -42,7 +42,7 @@ SGTimer* SG_CALL sgTimerCreate(SGbool pausable)
 
     timer->interval = 0;
     timer->age = 0;
-    timer->prev = sgGetTime();
+    timer->prev = sgGetNTime();
     timer->func = NULL;
     timer->data = NULL;
     timer->pausable = pausable;
@@ -75,7 +75,7 @@ void SG_CALL sgTimerPause(SGTimer* timer, SGbool pause)
     else if(!pause && !timer->tnode)
     {
         timer->tnode = addTimer(&_sg_timerList, timer);
-        timer->prev = sgGetTime();
+        timer->prev = sgGetNTime();
     }
 }
 void SG_CALL sgTimerStop(SGTimer* timer)
@@ -100,7 +100,7 @@ void SG_CALL sgTimerNStart(SGTimer* timer, SGulong nsecs)
 {
     timer->interval = nsecs;
     timer->age = 0;
-    timer->prev = sgGetTime();
+    timer->prev = sgGetNTime();
     timer->useTicks = SG_FALSE;
 
     sgTimerPause(timer, SG_FALSE);
@@ -147,7 +147,7 @@ void SG_CALL sgTimerTickSingle(SGulong ticks, SGTimerFunction* func, void* data,
 
 void SG_CALL sgTimerUpdate(SGTimer* timer, SGbool paused, SGbool tick)
 {
-    SGulong time = sgGetTime();
+    SGulong time = sgGetNTime();
 
     if(paused && timer->pausable)
     {
