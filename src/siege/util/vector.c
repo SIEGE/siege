@@ -190,9 +190,18 @@ SGVec2 SG_CALL sgVec2XClamp(SGVec2 a, SGVec2 min, SGVec2 max)
     return sgVec2Clamp(a, min, max);
 }
 
+float SG_CALL sgVec2HSum(SGVec2 a)
+{
+    return a.x + a.y;
+}
+float SG_CALL sgVec2HProd(SGVec2 a)
+{
+    return a.x * a.y;
+}
+
 float SG_CALL sgVec2Dot(SGVec2 a, SGVec2 b)
 {
-    return a.x * b.x + a.y * b.y;
+    return sgVec2HSum(sgVec2Mul(a, b));
 }
 float SG_CALL sgVec2PDot(SGVec2 a, SGVec2 b)
 {
@@ -203,13 +212,10 @@ SGVec2 SG_CALL sgVec2Cross(SGVec2 a)
     return sgVec2f(a.y, -a.x);
 }
 
-SGVec2 SG_CALL sgVec2QMul2(SGVec2 a, SGVec2 b)
+SGVec2 SG_CALL sgVec2CMul(SGVec2 a, SGVec2 b)
 {
     // (ax + ay I) * (bx + by I)
-    SGVec2 ret;
-    ret.x = a.x * b.x - a.y * b.y;
-    ret.y = a.x * b.y + a.y * b.x;
-    return ret;
+    return sgVec2f(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
 }
 
 /* shamelessly stolen from GLSL docs */
@@ -397,9 +403,18 @@ SGVec3 SG_CALL sgVec3XClamp(SGVec3 a, SGVec3 min, SGVec3 max)
     return sgVec3Clamp(a, min, max);
 }
 
+float SG_CALL sgVec3HSum(SGVec3 a)
+{
+    return a.x + a.y + a.z;
+}
+float SG_CALL sgVec3HProd(SGVec3 a)
+{
+    return a.x * a.y * a.z;
+}
+
 float SG_CALL sgVec3Dot(SGVec3 a, SGVec3 b)
 {
-    return a.x * b.x + a.y * b.y + a.z * b.z;
+    return sgVec3HSum(sgVec3Mul(a, b));
 }
 SGVec3 SG_CALL sgVec3Cross(SGVec3 a, SGVec3 b)
 {
@@ -531,7 +546,7 @@ SGVec4 SG_CALL sgVec4Divf(SGVec4 a, float f)
     return sgVec4Div(a, sgVec4f(f, f, f, f));
 }
 
-SGVec4 SG_CALL sgVec4QMul4(SGVec4 a, SGVec4 b)
+SGVec4 SG_CALL sgVec4QMul(SGVec4 a, SGVec4 b)
 {
     // (ax + ay I + az J + aw K) * (bx + by I + bz J + bw K)
     SGVec4 ret;
@@ -588,11 +603,28 @@ SGVec4 SG_CALL sgVec4XClamp(SGVec4 a, SGVec4 min, SGVec4 max)
     return sgVec4Clamp(a, min, max);
 }
 
+float SG_CALL sgVec4HSum(SGVec4 a)
+{
+    return a.x + a.y + a.z + a.w;
+}
+float SG_CALL sgVec4HProd(SGVec4 a)
+{
+    return a.x * a.y * a.z * a.w;
+}
+
 float SG_CALL sgVec4Dot(SGVec4 a, SGVec4 b)
 {
-    return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+    return sgVec4HSum(sgVec4Mul(a, b));
 }
-//SGVec4 SG_CALL sgVec4Cross(SGVec4 a, SGVec4 b, SGVec4 c);
+SGVec4 SG_CALL sgVec4Cross(SGVec4 a, SGVec4 b, SGVec4 c)
+{
+    return sgVec4f(
+        + b.y*c.z*a.w - b.z*c.y*a.w - b.w*c.z*a.y + b.z*c.w*a.y - b.y*c.w*a.z + b.w*c.y*a.z,
+        - c.z*b.x*a.w + b.z*c.x*a.w + b.w*c.z*a.x - b.z*c.w*a.x + c.w*b.x*a.z - b.w*c.x*a.z,
+        - b.y*c.x*a.w + b.x*c.y*a.w + b.y*c.w*a.x - b.w*c.y*a.x - c.w*b.x*a.y + b.w*c.x*a.y,
+        - b.y*c.z*a.x + b.z*c.y*a.x + c.z*b.x*a.y - b.z*c.x*a.y + b.y*c.x*a.z - b.x*c.y*a.z
+    );
+}
 
 SGVec4 SG_CALL sgVec4Refract(SGVec4 ray, SGVec4 normal, float eta)
 {
@@ -620,4 +652,14 @@ SGVec4 SG_CALL sgVec4Project(SGVec4 v, SGVec4 target)
 SGVec4 SG_CALL sgVec4Reject(SGVec4 v, SGVec4 target)
 {
     return sgVec4Sub(v, sgVec4Project(v, target));
+}
+
+// DEPRECATED
+SG_HINT_DEPRECATED SGVec2 SG_CALL sgVec2QMul2(SGVec2 a, SGVec2 b)
+{
+    return sgVec2CMul(a, b);
+}
+SG_HINT_DEPRECATED SGVec4 SG_CALL sgVec4QMul4(SGVec4 a, SGVec4 b)
+{
+    return sgVec4QMul(a, b);
 }

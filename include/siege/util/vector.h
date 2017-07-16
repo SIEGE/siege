@@ -101,7 +101,7 @@ SGVec2 SG_CALL sgVec2Subf(SGVec2 a, float f);
 SGVec2 SG_CALL sgVec2Mulf(SGVec2 a, float f);
 SGVec2 SG_CALL sgVec2Divf(SGVec2 a, float f);
 
-SGVec2 SG_CALL sgVec2QMul2(SGVec2 a, SGVec2 b);
+SGVec2 SG_CALL sgVec2CMul(SGVec2 a, SGVec2 b);
 
 float SG_CALL sgVec2Distance(SGVec2 a, SGVec2 b);
 float SG_CALL sgVec2Distance2(SGVec2 a, SGVec2 b);
@@ -113,6 +113,9 @@ SGVec2 SG_CALL sgVec2Wrap(SGVec2 a, SGVec2 min, SGVec2 max);
 SGVec2 SG_CALL sgVec2Clamp(SGVec2 a, SGVec2 min, SGVec2 max);
 SGVec2 SG_CALL sgVec2XWrap(SGVec2 a, SGVec2 min, SGVec2 max);
 SGVec2 SG_CALL sgVec2XClamp(SGVec2 a, SGVec2 min, SGVec2 max);
+
+float SG_CALL sgVec2HSum(SGVec2 a);
+float SG_CALL sgVec2HProd(SGVec2 a);
 
 float SG_CALL sgVec2Dot(SGVec2 a, SGVec2 b);
 /*
@@ -146,11 +149,6 @@ SGVec3 SG_CALL sgVec3Resize(SGVec3 vec, float length);
 float SG_CALL sgVec3Length(SGVec3 vec);
 float SG_CALL sgVec3Length2(SGVec3 vec);
 
-//SGVec3 sgVec3SetAngleRads(SGVec3 vec, float rads);
-//float sgVec3GetAngleRads(SGVec3 vec);
-//SGVec3 sgVec3SetAngleDegs(SGVec3 vec, float degs);
-//float sgVec3GetAngleDegs(SGVec3 vec);
-
 SGbool SG_CALL sgVec3IsNan(SGVec3 vec);
 
 SGVec3 SG_CALL sgVec3Neg(SGVec3 a);
@@ -174,6 +172,9 @@ SGVec3 SG_CALL sgVec3Wrap(SGVec3 a, SGVec3 min, SGVec3 max);
 SGVec3 SG_CALL sgVec3Clamp(SGVec3 a, SGVec3 min, SGVec3 max);
 SGVec3 SG_CALL sgVec3XWrap(SGVec3 a, SGVec3 min, SGVec3 max);
 SGVec3 SG_CALL sgVec3XClamp(SGVec3 a, SGVec3 min, SGVec3 max);
+
+float SG_CALL sgVec3HSum(SGVec3 a);
+float SG_CALL sgVec3HProd(SGVec3 a);
 
 float SG_CALL sgVec3Dot(SGVec3 a, SGVec3 b);
 SGVec3 SG_CALL sgVec3Cross(SGVec3 a, SGVec3 b);
@@ -218,7 +219,7 @@ SGVec4 SG_CALL sgVec4Subf(SGVec4 a, float f);
 SGVec4 SG_CALL sgVec4Mulf(SGVec4 a, float f);
 SGVec4 SG_CALL sgVec4Divf(SGVec4 a, float f);
 
-SGVec4 SG_CALL sgVec4QMul4(SGVec4 a, SGVec4 b);
+SGVec4 SG_CALL sgVec4QMul(SGVec4 a, SGVec4 b);
 
 float SG_CALL sgVec4Distance(SGVec4 a, SGVec4 b);
 float SG_CALL sgVec4Distance2(SGVec4 a, SGVec4 b);
@@ -231,14 +232,21 @@ SGVec4 SG_CALL sgVec4Clamp(SGVec4 a, SGVec4 min, SGVec4 max);
 SGVec4 SG_CALL sgVec4XWrap(SGVec4 a, SGVec4 min, SGVec4 max);
 SGVec4 SG_CALL sgVec4XClamp(SGVec4 a, SGVec4 min, SGVec4 max);
 
+float SG_CALL sgVec4HSum(SGVec4 a);
+float SG_CALL sgVec4HProd(SGVec4 a);
+
 float SG_CALL sgVec4Dot(SGVec4 a, SGVec4 b);
-//SGVec4 sgVec4Cross(SGVec4 a, SGVec4 b, SGVec4 c);
+SGVec4 sgVec4Cross(SGVec4 a, SGVec4 b, SGVec4 c);
 
 SGVec4 SG_CALL sgVec4Refract(SGVec4 ray, SGVec4 normal, float eta);
 SGVec4 SG_CALL sgVec4Reflect(SGVec4 ray, SGVec4 normal);
 float SG_CALL sgVec4ProjectScalar(SGVec4 v, SGVec4 target);
 SGVec4 SG_CALL sgVec4Project(SGVec4 v, SGVec4 target);
 SGVec4 SG_CALL sgVec4Reject(SGVec4 v, SGVec4 target);
+
+// DEPRECATED
+SG_HINT_DEPRECATED SGVec2 SG_CALL sgVec2QMul2(SGVec2 a, SGVec2 b);///< Use sgVec2CMul() instead
+SG_HINT_DEPRECATED SGVec4 SG_CALL sgVec4QMul4(SGVec4 a, SGVec4 b);///< Use sgVec4QMul() instead
 
 #ifdef __cplusplus
 }
